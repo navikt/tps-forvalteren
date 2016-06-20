@@ -12,5 +12,15 @@
     <artifactId>tps-vedlikehold-provider-web</artifactId>
     <name>TPS Vedlikeholdsklient :: Provider :: Web</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

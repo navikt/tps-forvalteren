@@ -12,5 +12,19 @@
     <artifactId>tps-vedlikehold-service</artifactId>
     <name>TPS Vedlikeholdsklient :: Service</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-domain</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
