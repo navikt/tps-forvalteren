@@ -9,7 +9,9 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,30 +53,30 @@ public class DefaultUserContextHolderTest {
     @InjectMocks
     private DefaultUserContextHolder userContextHolder;
 
-    private Authentication authenticationMock = Mockito.mock(Authentication.class);
+    private Authentication authenticationMock = mock(Authentication.class);
 
     @Before
     public void setUp() {
         SecurityContextHolder.setContext(securityContextMock);
 
-        Mockito.doReturn(authenticationMock).when(securityContextMock).getAuthentication();
-        Mockito.doReturn(userDetailsMock).when(authenticationMock).getPrincipal();
+        doReturn(authenticationMock).when(securityContextMock).getAuthentication();
+        doReturn(userDetailsMock).when(authenticationMock).getPrincipal();
 
-        Mockito.when( authenticationMock.isAuthenticated() ).thenReturn(true);
+        when( authenticationMock.isAuthenticated() ).thenReturn(true);
     }
 
     /* getDisplayName() */
 
     @Test
     public void getDisplayNameReturnsDisplayNameFromUserDetails() {
-        Mockito.when( userDetailsMock.getDn() ).thenReturn(DISPLAY_NAME);
+        when( userDetailsMock.getDn() ).thenReturn(DISPLAY_NAME);
         assertThat(userContextHolder.getDisplayName(), is(DISPLAY_NAME));
     }
 
     @Test
     public void getDisplayNameThrowsExceptionIfPrincipalIsOfWrongType() {
-        Principal principalMock = Mockito.mock(Principal.class);
-        Mockito.when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
+        Principal principalMock = mock(Principal.class);
+        when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
 
         expectedException.expect(RuntimeException.class);
         //TODO: Test error message
@@ -83,16 +85,17 @@ public class DefaultUserContextHolderTest {
     }
 
     /* getUsername() */
+
     @Test
     public void getUsernameReturnsUsernameFromUserDetails() {
-        Mockito.when( userDetailsMock.getUsername() ).thenReturn(USERNAME);
+        when( userDetailsMock.getUsername() ).thenReturn(USERNAME);
         assertThat(userContextHolder.getUsername(), is(USERNAME));
     }
 
     @Test
     public void getUsernameThrowsExceptionIfPrincipalIsOfWrongType() {
-        Principal principalMock = Mockito.mock(Principal.class);
-        Mockito.when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
+        Principal principalMock = mock(Principal.class);
+        when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
 
         expectedException.expect(RuntimeException.class);
         //TODO: Test error message
@@ -111,13 +114,13 @@ public class DefaultUserContextHolderTest {
 
     @Test
     public void isAuthenticatedReturnsFalseIfAuthenticationIsNull() {
-        Mockito.when( securityContextMock.getAuthentication() ).thenReturn(null);
+        when( securityContextMock.getAuthentication() ).thenReturn(null);
         assertThat(userContextHolder.isAuthenticated(), is(false));
     }
 
     @Test
     public void isAuthenticatedReturnsFalseIfAuthenticationIsNotNullAndNotAuthenticated() {
-        Mockito.when( authenticationMock.isAuthenticated() ).thenReturn(false);
+        when( authenticationMock.isAuthenticated() ).thenReturn(false);
         assertThat(userContextHolder.isAuthenticated(), is(false));
     }
 
@@ -130,14 +133,14 @@ public class DefaultUserContextHolderTest {
 
     @Test
     public void getRolesReturnsRolesFromAuthentication() {
-        Mockito.doReturn(ROLES).when(userDetailsMock).getAuthorities();
+        doReturn(ROLES).when(userDetailsMock).getAuthorities();
         assertThat(userContextHolder.getRoles(), containsInAnyOrder((GrantedAuthority)UserRole.READ, (GrantedAuthority) UserRole.WRITE));
     }
 
     @Test
     public void getRolesThrowsExceptionIfPrincipalIsOfWrongType() {
-        Principal principalMock = Mockito.mock(Principal.class);
-        Mockito.when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
+        Principal principalMock = mock(Principal.class);
+        when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
 
         expectedException.expect(RuntimeException.class);
         //TODO: Test error message

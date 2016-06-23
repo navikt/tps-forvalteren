@@ -10,7 +10,8 @@ import org.junit.runner.RunWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -44,11 +45,11 @@ public class UserControllerTest {
 
     @Before
     public void setUp() {
-        Mockito.doReturn(ROLES).when(userContextHolderMock).getRoles();
-        Mockito.doReturn(USERNAME).when(userContextHolderMock).getUsername();
-        Mockito.doReturn(DISPLAY_NAME).when(userContextHolderMock).getDisplayName();
+        doReturn(ROLES).when(userContextHolderMock).getRoles();
+        when( userContextHolderMock.getUsername() ).thenReturn(USERNAME);
+        when( userContextHolderMock.getDisplayName() ).thenReturn(DISPLAY_NAME);
 
-        Mockito.doReturn(SESSION_ID).when(httpSessionMock).getId();
+        when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
 
     @Test

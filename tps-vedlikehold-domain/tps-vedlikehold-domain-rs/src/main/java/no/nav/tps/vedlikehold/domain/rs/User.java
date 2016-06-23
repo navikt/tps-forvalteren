@@ -4,8 +4,10 @@ import java.util.Set;
 
 /**
  * Class representing a user
+ *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
+
 public class User {
     private String name;
     private String username;

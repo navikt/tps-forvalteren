@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Implementation of the UserContextHolder interface using spring security
+ * 
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
@@ -25,6 +26,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return display name of the authenticated user
      */
+
     @Override
     public String getDisplayName() {
         return getUserDetails().getDn();
@@ -35,6 +37,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return username of the authenticated user
      */
+
     @Override
     public String getUsername() {
         return getUserDetails().getUsername();
@@ -45,6 +48,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return An Authentication object
      */
+
     @Override
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -55,6 +59,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return boolean indicating whether the user is authenticated
      */
+
     @Override
     public Boolean isAuthenticated() {
         Authentication authentication = getAuthentication();
@@ -66,6 +71,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return collection of the authenticated users roles
      */
+
     @Override
     public Collection<? extends GrantedAuthority> getRoles() {
         return getUserDetails().getAuthorities();
@@ -74,6 +80,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
     /**
      * Logout the authenticated user
      */
+
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         if ( isAuthenticated() ) {
@@ -88,6 +95,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return User details as an LdapUserDetails object
      */
+
     private LdapUserDetails getUserDetails() {
         Object userDetails = getAuthentication().getPrincipal();
 
