@@ -9,9 +9,39 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "angular": "^1.5.7",
-    "angular-animate": "^1.5.7",
-    "angular-aria": "^1.5.7",
-    "angular-material": "^1.1.0-rc.5"
+    "angular": "*",
+    "angular-cookies": "*",
+    "angular-material-data-table": "*",
+    "angular-material-icons": "*",
+    "angular-messages": "*",
+    "browser-sync": "*",
+    "browserify": "*",
+    "gulp": "*",
+    "gulp-browserify": "*",
+    "gulp-cache-bust": "*",
+    "gulp-cachebust": "*",
+    "gulp-concat": "*",
+    "gulp-connect": "*",
+    "gulp-cssnano": "*",
+    "gulp-environments": "*",
+    "gulp-jshint": "*",
+    "gulp-less": "*",
+    "gulp-minify": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-uglify": "*",
+    "gulp-webserver": "^0.9.1",
+    "pikaday-angular": "*",
+    "preprocess": "*",
+    "vinyl-buffer": "*",
+    "vinyl-source-stream": "*"
+  },
+  "dependencies": {
+    "angular": "*",
+    "angular-animate": "*",
+    "angular-aria": "*",
+    "angular-material": "*",
+    "angular-moment": "*",
+    "angular-ui-router": "*",
+    "moment": "*"
   }
 }
