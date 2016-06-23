@@ -41,9 +41,9 @@ public class DefaultUserContextHolder implements UserContextHolder {
     }
 
     /**
-     * Check if the current user is authenticated
+     * Get an object containing information about the authenticated user
      *
-     * @return boolean indicating whether the user is authenticated
+     * @return An Authentication object
      */
     @Override
     public Authentication getAuthentication() {
@@ -67,7 +67,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      * @return collection of the authenticated users roles
      */
     @Override
-    public Collection<? extends GrantedAuthority> roles() {
+    public Collection<? extends GrantedAuthority> getRoles() {
         return getUserDetails().getAuthorities();
     }
 

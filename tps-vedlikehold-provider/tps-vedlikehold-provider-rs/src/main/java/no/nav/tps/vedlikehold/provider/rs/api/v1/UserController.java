@@ -37,7 +37,7 @@ public class UserController {
 
         /* Convert user roles to a set of strings */
         Set<String> roles = new HashSet<String>();
-        for (GrantedAuthority role :  userContextHolder.roles()) {
+        for (GrantedAuthority role :  userContextHolder.getRoles()) {
             if ( role == null ) continue;
             roles.add( role.getAuthority() );
         }

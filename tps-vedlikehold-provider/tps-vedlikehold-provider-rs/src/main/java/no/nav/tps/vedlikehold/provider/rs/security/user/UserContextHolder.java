@@ -21,7 +21,7 @@ public interface UserContextHolder {
     Authentication getAuthentication();
     Boolean isAuthenticated();
 
-    Collection<? extends GrantedAuthority> roles();
+    Collection<? extends GrantedAuthority> getRoles();
 
     void logout(HttpServletRequest request, HttpServletResponse response);
 }
