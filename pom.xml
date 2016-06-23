@@ -44,7 +44,7 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-domain</artifactId>
+                <artifactId>tps-vedlikehold-domain-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
