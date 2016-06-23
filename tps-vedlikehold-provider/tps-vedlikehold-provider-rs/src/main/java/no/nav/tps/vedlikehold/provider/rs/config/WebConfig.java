@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.config;
 
 /**
- * Created by G148232 on 22.06.2016.
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 import no.nav.tps.vedlikehold.provider.rs.api.v1.UserController;

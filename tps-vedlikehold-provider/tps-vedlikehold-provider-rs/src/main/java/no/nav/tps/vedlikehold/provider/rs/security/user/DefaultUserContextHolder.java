@@ -13,7 +13,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Service;
 
 /**
- * Created by G148232 on 22.06.2016.
+ * Implementation of the UserContextHolder interface using spring security
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 @Service
@@ -87,7 +88,6 @@ public class DefaultUserContextHolder implements UserContextHolder {
      *
      * @return User details as an LdapUserDetails object
      */
-
     private LdapUserDetails getUserDetails() {
         Object userDetails = getAuthentication().getPrincipal();
 

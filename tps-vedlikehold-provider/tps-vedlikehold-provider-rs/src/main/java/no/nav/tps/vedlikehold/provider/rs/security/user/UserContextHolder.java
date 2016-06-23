@@ -9,8 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * Created by G148232 on 22.06.2016.
+ * Abstraction of the user context for testability and reusability
+ *
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
+
 public interface UserContextHolder {
     String getDisplayName();
     String getUsername();

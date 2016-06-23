@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.domain.rs;
 import java.util.Set;
 
 /**
- * Represents a user
+ * Class representing a user
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 public class User {

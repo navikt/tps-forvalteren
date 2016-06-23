@@ -26,6 +26,12 @@ public class UserController {
     @Autowired
     public UserContextHolder userContextHolder;
 
+    /**
+     * Get an object representing the user
+     *
+     * @param session current HTTP session
+     * @return user object representing the current user
+     */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public User getUser(HttpSession session) {
 
