@@ -26,6 +26,7 @@
     "gulp-environments": "*",
     "gulp-jshint": "*",
     "gulp-less": "*",
+    "gulp-livereload": "^3.8.1",
     "gulp-minify": "*",
     "gulp-sourcemaps": "*",
     "gulp-uglify": "*",
