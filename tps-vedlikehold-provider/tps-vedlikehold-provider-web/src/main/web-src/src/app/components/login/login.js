@@ -11,26 +11,25 @@ angular.module('tps-vedlikehold.login', ['ngMessages'])
             $scope.serverError = false;
             $scope.pendingRequest = false;
 
-            // var callback = function(authResponse){
-            //     switch(authResponse.status) {
-            //         case 200:
-            //             $scope.authenticationError = false;
-            //             locationService.redirectToLoginReturnUrl();
-            //             break;
-            //         case 401:
-            //             $scope.authenticationError = true;
-            //             break;
-            //         default:
-            //             $scope.serverError = true;
-            //     }
-            //     $scope.pendingRequest = false;
-            // };
-            //
+            var callback = function(authResponse){
+                switch(authResponse.status) {
+                    case 200:
+                        $scope.authenticationError = false;
+                        locationService.redirectToLoginReturnUrl();
+                        break;
+                    case 401:
+                        $scope.authenticationError = true;
+                        break;
+                    default:
+                        $scope.serverError = true;
+                }
+                $scope.pendingRequest = false;
+            };
+
             $scope.login = function() {
                 $scope.pendingRequest = true;
                 $scope.authenticationError = false;
                 $scope.serverError = false;
-                console.log("logged in");
-                // authenticationService.authenticate($scope.credentials, callback);
+                authenticationService.authenticate($scope.credentials, callback);
             };
     }]);
