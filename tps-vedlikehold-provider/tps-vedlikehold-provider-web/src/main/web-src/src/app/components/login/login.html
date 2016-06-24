@@ -1,0 +1,106 @@
+<div ng-controller="loginCtrl", layout="column", layout-align="center center", layout-fill>
+    <!--<h1>{{title}}</h1>-->
+    <div class="loginBox md-whiteframe-z1", layout="column">
+        <md-toolbar>
+             <h2 class="md-toolbar-tools"><span ng-bind="title"></span></h2>
+        </md-toolbar>
+        <md-content layout="column" class="md-padding">
+
+            <md-input-container>
+                <label>Brukernavn</label>
+                <input type="text" ng-model="username"/>
+                <!--<input ng-model="credentials.username" name="username" type="text" ng-required="true" >-->
+                <!--<ng-messages for="loginForm.username.$error" >-->
+                    <!--<ng-message when="required" ng-show="loginForm.password.$touched">-->
+                        <!--Brukernavn er tomt-->
+                    <!--</ng-message>-->
+                <!--</ng-messages>-->
+            </md-input-container>
+            <md-input-container>
+                <label>Passord</label>
+                <input type="password" ng-model="password"/>
+                <!--<input ng-model="credentials.password" name="password" type="password" ng-required="true">-->
+                <!--<ng-messages for="loginForm.password.$error" >-->
+                    <!--<ng-message when="required" ng-show="loginForm.password.$touched">-->
+                        <!--Passord er tomt-->
+                    <!--</ng-message>-->
+                <!--</ng-messages>-->
+            </md-input-container>
+            <div layout="row" layout-align="center center" style="padding-top:20px;">
+                <md-button class="md-raised md-primary">Logg inn</md-button>
+
+                <!--
+                <div flex="flex"></div>
+                <md-button href="" md-no-ink="md-no-ink">Forgot Password</md-button>
+                -->
+            </div>
+
+        </md-content>
+    </div>
+</div>
+
+
+<!--
+<div id="login-page" ng-controller="loginCtrl">
+
+    <h1>{{title}}</h1>
+
+    <md-content>
+        <div layout="row" layout-align="center">
+            <div flex="50" flex-offset="25" flex-offset-gt-md="35" flex-gt-md="30">
+                <section>
+                    <form name="loginForm" class="" method="get" ng-submit="login()" novalidate >
+                        <div layout-gt-xs="row">
+                            <div>
+                                <md-input-container>
+                                    <label>Brukernavn</label>
+                                    <input ng-model="credentials.username" name="username" type="text" ng-required="true" >
+                                    <ng-messages for="loginForm.username.$error" >
+                                        <ng-message when="required" ng-show="loginForm.password.$touched">
+                                            Brukernavn er tomt
+                                        </ng-message>
+                                    </ng-messages>
+
+                                </md-input-container>
+                            </div>
+
+                            <div>
+                                <md-input-container>
+                                    <label>Passord</label>
+                                    <input ng-model="credentials.password" name="password" type="password" ng-required="true">
+                                    <ng-messages for="loginForm.password.$error" >
+                                        <ng-message when="required" ng-show="loginForm.password.$touched">
+                                            Passord er tomt
+                                        </ng-message>
+                                    </ng-messages>
+                                </md-input-container>
+                            </div>
+
+                            <md-input-container>
+                                <md-button class="md-raised login" name="login" type="submit" aria-label="Logg inn" ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
+                                    Logg inn
+                                </md-button>
+                            </md-input-container>
+
+                            <div class="form-error-container">
+                                <div ng-show="authenticationError">
+                                    Feil brukernavn eller passord
+                                </div>
+                                <div ng-show="serverError">
+                                    En feil oppstod
+                                </div>
+                            </div>
+
+                            <div>
+                                <md-progress-linear md-mode="indeterminate" ng-show="pendingRequest"></md-progress-linear>
+                            </div>
+
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <div flex></div>
+        </div>
+    </md-content>
+</div>
+-->
