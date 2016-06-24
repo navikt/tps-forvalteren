@@ -25,19 +25,19 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.regex("/api/v1/.*"))
                 .build()
                 .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Glossy API",
-                "TPS Vedlikeholdsklient API",
-                "Pusekatt",
-                "TOS",
+                "TPS Maintenance Client",
+                "Awesome summer intern project",
+                "0.1",
+                "https://our.tos.com",
                 new Contact("Pusekatt", "stash.devillo.no", "oyvind.grimnes@nav.no"),
-                "MIT License",
+                "MIT Licence",
                 "https://opensource.org/licenses/MIT"
         );
     }
