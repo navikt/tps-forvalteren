@@ -33,12 +33,12 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "TPS Maintenance Client",
-                "Awesome summer intern project",
-                "0.1",
+                "Glossy summer intern project",
+                "1.0.0-SNAPSHOT",
                 "https://our.tos.com",
-                new Contact("Pusekatt", "stash.devillo.no", "oyvind.grimnes@nav.no"),
-                "MIT Licence",
-                "https://opensource.org/licenses/MIT"
+                new Contact("Pusekatt", "http://stash.devillo.no/projects/FEL/repos/tps-vedlikehold/browse", "pusekatt@nav.no"),
+                "Super Strict Licence",
+                "https://opensource.org/licenses/super-strict-license"
         );
     }
 }
