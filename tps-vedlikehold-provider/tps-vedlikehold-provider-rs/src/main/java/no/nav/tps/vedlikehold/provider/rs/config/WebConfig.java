@@ -14,7 +14,8 @@ import org.springframework.boot.SpringApplication;
 @Configuration
 @ComponentScan(basePackageClasses = {
         UserController.class,
-        UserContextHolder.class
+        UserContextHolder.class,
+        SwaggerConfig.class
 })
 @EnableAutoConfiguration
 public class WebConfig {

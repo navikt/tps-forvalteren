@@ -1,7 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
@@ -35,7 +34,7 @@ public class UserController {
      */
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public User getUser(HttpSession session) {
+    public User getUser(@ApiIgnore HttpSession session) {
 
         /* Convert user roles to a set of strings */
         Set<String> roles = new HashSet<String>();
