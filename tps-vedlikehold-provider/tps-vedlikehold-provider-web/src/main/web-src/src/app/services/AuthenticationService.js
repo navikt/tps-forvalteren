@@ -16,7 +16,8 @@ angular.module('tps-vedlikehold.service')
             // Mimicking succesfull login
             var data = {
                 roller: ["ROLE_WRITE", "ROLE_READ"],
-                brukernavn: "test username",
+                brukernavn: "kjasdf9a0sfu",
+                navn: "Test User",
                 token: "sfsf89sd0f7sd87f"
             };
             sessionService.setIsAuthenticated(data.roller.indexOf("ROLE_WRITE") > -1);
@@ -53,7 +54,7 @@ angular.module('tps-vedlikehold.service')
             //     }
             // });
 
-        }
+        };
 
         self.validateToken = function(){
             self.authenticate();

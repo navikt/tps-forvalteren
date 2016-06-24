@@ -1,1 +1,26 @@
-dashboard
+<div ng-controller="dashboardCtrl" id="dashboard-page" layout="column" flex>
+    <md-toolbar class="tps-v-db-toolbar" layout="row">
+        <h1 class="md-toolbar-tools">TPS vedlikeholdsclient</h1>
+        <span flex></span>
+        <div class="user-info">
+            <span>
+                {{currentUser.brukernavn}}
+            </span>
+            <span>
+                {{currentUser.navn}}
+            </span>
+        </div>
+        <md-button ng-click="logout()">
+            Logg ut
+        </md-button>
+    </md-toolbar>
+
+    <div layout="row" flex>
+        <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
+        </md-sidenav>
+        <md-content flex id="content">
+        </md-content>
+    </div>
+</div>
+
+

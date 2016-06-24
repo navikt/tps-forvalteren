@@ -18,5 +18,5 @@ angular.module('tps-vedlikehold.service')
             } else {
                 $location.path("/").replace();
             }
-        }
+        };
     }]);
