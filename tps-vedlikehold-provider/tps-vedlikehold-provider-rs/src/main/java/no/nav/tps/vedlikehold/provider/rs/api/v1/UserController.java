@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,5 +51,10 @@ public class UserController {
                 roles,
                 session.getId()
         );
+    }
+
+    @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+    public void logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
+        userContextHolder.logout(request, response);
     }
 }
