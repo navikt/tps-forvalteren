@@ -1,8 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
-import io.swagger.annotations.ApiOperation;
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
