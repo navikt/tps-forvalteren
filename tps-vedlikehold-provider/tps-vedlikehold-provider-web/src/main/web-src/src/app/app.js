@@ -27,3 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     });
 
 }]);
+
+app.controller('LoginCtrl', function($scope) {
+    
+});

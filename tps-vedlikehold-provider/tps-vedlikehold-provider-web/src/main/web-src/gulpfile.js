@@ -23,7 +23,7 @@ var sources = {
    scriptsVendor : './src/assets/lib/*.js',
    scripts: './src/app/**/*.js',
    views : './src/**/*.html',
-   styles : './src/assets/less/**/*.less',
+   styles : './src/assets/less/*.less',
    lessMain: './src/assets/less/master.less'
 };
 
@@ -64,7 +64,7 @@ gulp.task('views', function() {
 });
 
 gulp.task('less', function() {
-   gulp.src(sources.lessMain)
+   gulp.src(sources.lessMain) //
        .pipe(sourcemaps.init())
        .pipe(less())
        .pipe(cssnano())
