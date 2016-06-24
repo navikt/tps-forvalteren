@@ -5,11 +5,13 @@ require('angular');
 require('angular-ui-router');
 require('angular-animate');
 require('angular-material');
+require('angular-messages');
 
+require('./components/login/login');
+require('./services/serviceModule');
+require('./services/locationService');
 
-//require('./components/login/login');
-
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouteProvider) {
 
@@ -27,7 +29,3 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     });
 
 }]);
-
-app.controller('LoginCtrl', function($scope) {
-    
-});
