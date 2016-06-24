@@ -53,7 +53,8 @@ public class DefaultUserContextHolderTest {
     @InjectMocks
     private DefaultUserContextHolder userContextHolder;
 
-    private Authentication authenticationMock = mock(Authentication.class);
+    @Mock
+    private Authentication authenticationMock;
 
     @Before
     public void setUp() {
