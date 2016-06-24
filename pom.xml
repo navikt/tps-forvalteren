@@ -49,6 +49,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-domain-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-provider-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -61,6 +66,13 @@
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-service</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!--LANGUAGE EXTENSIONS-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>19.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
