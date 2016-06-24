@@ -6,7 +6,11 @@ angular.module('tps-vedlikehold.service')
 
         var self = this;
 
-        var returnUrl;
+        var returnUrl = "/dashboard";
+
+        self.updateLoginReturnUrl = function(){
+            returnUrl = $location.path();
+        };
 
         self.redirectToLoginReturnUrl = function() {
             if (returnUrl) {
@@ -15,5 +19,4 @@ angular.module('tps-vedlikehold.service')
                 $location.path("/").replace();
             }
         }
-
     }]);
