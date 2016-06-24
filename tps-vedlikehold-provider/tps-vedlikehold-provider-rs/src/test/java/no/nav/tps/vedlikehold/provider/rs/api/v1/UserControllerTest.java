@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -57,7 +59,7 @@ public class UserControllerTest {
         User user = controller.getUser(httpSessionMock);
 
         assertThat(user.getRoles(), containsInAnyOrder(UserRole.READ.name(),  UserRole.WRITE.name()));
-        assertThat(user.getRoles().size(), is(ROLES.size()));
+        assertThat(user.getRoles(), hasSize(ROLES.size()));
         assertThat(user.getName(), is(DISPLAY_NAME));
         assertThat(user.getUsername(), is(USERNAME));
         assertThat(user.getToken(), is(SESSION_ID));
