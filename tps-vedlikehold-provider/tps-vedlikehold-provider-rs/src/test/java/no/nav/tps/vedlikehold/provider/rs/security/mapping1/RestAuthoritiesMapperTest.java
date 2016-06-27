@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.security.mapping;
+package no.nav.tps.vedlikehold.provider.rs.security.mapping1;
 
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.junit.Before;

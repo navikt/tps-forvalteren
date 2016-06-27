@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.provider.rs.security.config;
 
 import no.nav.tps.vedlikehold.provider.rs.security.PackageMarker;
-import no.nav.tps.vedlikehold.provider.rs.security.mapping.RestAuthoritiesMapper;
-import no.nav.tps.vedlikehold.provider.rs.security.mapping.RestUserDetailsMapper;
+import no.nav.tps.vedlikehold.provider.rs.security.mapping1.RestAuthoritiesMapper;
+import no.nav.tps.vedlikehold.provider.rs.security.mapping1.RestUserDetailsMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
