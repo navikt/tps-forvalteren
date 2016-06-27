@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.security.mapping1;
+package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
