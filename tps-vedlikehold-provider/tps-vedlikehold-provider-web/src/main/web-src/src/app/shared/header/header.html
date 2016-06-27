@@ -4,21 +4,59 @@
             <!--<a href ng-click="jumpToElement('mainContent')" tabindex="0">Hopp til innhold</a>-->
         <!--</li>-->
     <!--</ul>-->
-    <md-toolbar class="tps-v-db-toolbar" layout="row">
-        <h1 class="md-toolbar-tools">TPS vedlikeholdsklient</h1>
-        <span flex></span>
-        <div class="user-info">
-            <span>
-                {{currentUser.brukernavn}}
-            </span>
-            <span>
-                {{currentUser.navn}}
-            </span>
+
+    <md-toolbar class="tps-v-db-toolbar">
+        <div class="md-toolbar-tools">
+            <!--<md-button aria-label="Home">-->
+                <!--TPS vedlikeholdsklient-->
+            <!--</md-button>-->
+            <h2>
+                <span>TPS vedlikeholdsklient</span>
+            </h2>
+            <md-button class="md-raised md-primary md-hue-1" ng-click="console.log('Person clicked')">
+                Person
+            </md-button>
+            <span flex=""></span>
+            <div class="user-info">
+                <div class="md-body-1">{{currentUser.brukernavn}}</div>
+                <div class="md-body-2">{{currentUser.navn}}</div>
+            </div>
+            <md-button class="md-raised md-primary md-hue-1" ng-click="logout()">
+                Logg ut
+            </md-button>
+
+
         </div>
-        <md-button ng-click="logout()">
-            Logg ut
-        </md-button>
+        <!--<h1 class="md-toolbar-tools">TPS vedlikeholdsklient</h1>-->
+        <!--<span flex></span>-->
+        <!--<div class="user-info">-->
+            <!--<span>-->
+                <!--{{currentUser.brukernavn}}-->
+            <!--</span>-->
+            <!--<span>-->
+                <!--{{currentUser.navn}}-->
+            <!--</span>-->
+        <!--</div>-->
+        <!--<md-button ng-click="logout()">-->
+            <!--Logg ut-->
+        <!--</md-button>-->
     </md-toolbar>
+
+    <!--<md-toolbar class="tps-v-db-toolbar" layout="row">-->
+        <!--<h1 class="md-toolbar-tools">TPS vedlikeholdsklient</h1>-->
+        <!--<span flex></span>-->
+        <!--<div class="user-info">-->
+            <!--<span>-->
+                <!--{{currentUser.brukernavn}}-->
+            <!--</span>-->
+            <!--<span>-->
+                <!--{{currentUser.navn}}-->
+            <!--</span>-->
+        <!--</div>-->
+        <!--<md-button ng-click="logout()">-->
+            <!--Logg ut-->
+        <!--</md-button>-->
+    <!--</md-toolbar>-->
 
 
     <!--<md-toolbar class="md-primary md-hue-1">-->

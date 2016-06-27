@@ -1,27 +1,28 @@
-<!--<div id="header" ui-view="header"></div>-->
-<div ng-controller="dashboardCtrl" id="dashboard-page" layout="column" flex>
-    <!--<md-toolbar class="tps-v-db-toolbar" layout="row">-->
-        <!--<h1 class="md-toolbar-tools">TPS vedlikeholdsklient</h1>-->
-        <!--<span flex></span>-->
-        <!--<div class="user-info">-->
-            <!--<span>-->
-                <!--{{currentUser.brukernavn}}-->
-            <!--</span>-->
-            <!--<span>-->
-                <!--{{currentUser.navn}}-->
-            <!--</span>-->
-        <!--</div>-->
-        <!--<md-button ng-click="logout()">-->
-            <!--Logg ut-->
-        <!--</md-button>-->
-    <!--</md-toolbar>-->
+<!--<div ng-controller="dashboardCtrl" id="dashboard-page" layout="column" flex>-->
+    <!--&lt;!&ndash; Lage en meny paa venstre side der man skal kunne se hvilken service-rutine som er valgt.-->
+    <!--Side-meny elementer hardkodet her eller i controller? ng-repeat&ndash;&gt;-->
 
-    <div layout="row" flex>
-        <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
-        </md-sidenav>
-        <md-content flex id="content">
-        </md-content>
-    </div>
+    <!--<div layout="row" flex>-->
+        <!--<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-is-locked-open="$mdMedia('gt-sm')">-->
+            <!--<md-content>-->
+                <!--<md-list>-->
+                    <!--<md-subheader class="md-no-sticky">Servicekategori 1</md-subheader>-->
+                    <!--<md-list-item class="md-2-line">-->
+                        <!--<md-button class="" ng-click="">-->
+                            <!--Hent personopplysninger-->
+                        <!--</md-button>-->
+                    <!--</md-list-item>-->
+                    <!--&lt;!&ndash; Additional service routines &ndash;&gt;-->
+
+                <!--</md-list>-->
+            <!--</md-content>-->
+        <!--</md-sidenav>-->
+        <!--<md-content flex id="content">Main content-->
+        <!--</md-content>-->
+    <!--</div>-->
+<!--</div>-->
+<div>
+    <p>dashboard.html</p>
 </div>
 
 
