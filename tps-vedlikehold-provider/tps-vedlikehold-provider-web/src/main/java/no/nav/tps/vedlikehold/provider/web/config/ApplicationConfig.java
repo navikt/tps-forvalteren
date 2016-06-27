@@ -1,7 +1,14 @@
 package no.nav.tps.vedlikehold.provider.web.config;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
 /**
- * Created by K148233 on 27.06.2016.
+ * @author Kristian Kyvik (Visma Conuslting AS).
  */
+@Configuration
+@Import({
+        WebConfig.class
+})
 public class ApplicationConfig {
 }

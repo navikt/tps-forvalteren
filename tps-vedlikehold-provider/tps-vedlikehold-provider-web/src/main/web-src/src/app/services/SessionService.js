@@ -8,6 +8,19 @@ angular.module('tps-vedlikehold.service')
             $rootScope.authenticated = val;
         };
 
+        self.isAuthorized = function(authorizedRoles) {
+            if(!angular.isArray(authorizedRoles)){
+                authorizedRoles = [authorizedRoles];
+            }
+            angular.forEach(self.getCurrentUser().roles, function(role) {
+                if (authorizedRoles.indexOf(role) !== -1 ) {
+                    return true;
+                }
+                return false;
+            });
+            return self.getIsAuthenticated() && authorizedRoles.indexOf();
+        };
+
         self.getIsAuthenticated = function(){
             return $rootScope.authenticated;
         };
@@ -19,7 +32,7 @@ angular.module('tps-vedlikehold.service')
         self.getIsSignedIn = function(){
             return $rootScope.signedIn;
         };
-        
+
         self.setToken = function(val) {
             token = val;
         };
@@ -30,9 +43,9 @@ angular.module('tps-vedlikehold.service')
 
         self.setCurrentUser = function(user) {
             $rootScope.currentUser = {
-                brukernavn: user.brukernavn,
-                navn: user.navn,
-                roller: user.roller
+                username: user.username,
+                name: user.name,
+                roles: user.roles
             };
         };
 
