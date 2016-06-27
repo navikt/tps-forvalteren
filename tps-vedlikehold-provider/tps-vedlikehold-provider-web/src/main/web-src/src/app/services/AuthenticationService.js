@@ -12,7 +12,7 @@ angular.module('tps-vedlikehold.service')
             
             var headers = credentials ?
             {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)} : {};
-
+             
             $http.get(loginRoute, {
                 headers: headers
             })

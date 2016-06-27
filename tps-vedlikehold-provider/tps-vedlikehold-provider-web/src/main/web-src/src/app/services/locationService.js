@@ -18,5 +18,9 @@ angular.module('tps-vedlikehold.service')
             } else {
                 $location.path("/").replace();
             }
-        }
+        };
+
+        self.redirectToLoginUrl = function() {
+            $location.path("/").replace();
+        };
     }]);

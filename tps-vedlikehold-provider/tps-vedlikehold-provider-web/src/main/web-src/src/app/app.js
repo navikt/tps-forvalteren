@@ -39,4 +39,16 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
         }
     });
 
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParam, fromState, fromParam){
+        if (!sessionService.getIsAuthenticated()) {
+            if (toState.name !== "login") {
+                locationService.redirectToLoginUrl();
+            }
+        } else {
+            if (toState.name === "login") {
+                locationService.redirectToLoginReturnUrl();
+            }
+        }
+    });
+
 }]);
