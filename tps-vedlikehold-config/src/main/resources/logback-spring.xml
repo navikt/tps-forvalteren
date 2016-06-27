@@ -3,6 +3,17 @@
 
     <property name="messagePattern" value="%date [%-5level] [%X{consumerId},%X{userId},%X{callId}] %logger{1} -- %message%n"/>
 
+    <!-- Log messages to the console -->
+    <!-- (Probably shouldn't be active in production) -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${messagePattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
     <!-- Writes warnings and errors to error.log -->
     <!-- Rolls the file at midnight every day -->
     <!-- Files are deleted after 30 days -->
@@ -37,8 +48,10 @@
     <!-- %rEx yields 'caused by' first. Exceptions must be included in the message -->
     <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
         <syslogHost>localhost</syslogHost>
+
         <!-- Facility is a syslog specific categorisation. LOCAL1 shall be used for application loggers -->
         <facility>LOCAL1</facility>
+
         <!-- SuffixPattern defines the format of the syslog message -->
         <!-- A timestamp, severity, and host name is added -->
         <!-- The first word in in the patterns must be the program sending the message to syslog. This is always logback -->
@@ -63,6 +76,7 @@
     <root level="${ROOT_LOG_LEVEL:-INFO}">
         <appender-ref ref="errorFileAppender"/>
         <appender-ref ref="debugFileAppender"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>
