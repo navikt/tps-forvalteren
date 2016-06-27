@@ -11,4 +11,15 @@
 
     <artifactId>tps-vedlikehold-common-test</artifactId>
     <name>TPS Vedlikeholdsklient :: Common :: Test</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+    </dependencies>
 </project>

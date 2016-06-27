@@ -3,17 +3,6 @@
 
     <property name="messagePattern" value="%date [%-5level] [%X{consumerId},%X{userId},%X{callId}] %logger{1} -- %message%n"/>
 
-    <!-- Log messages to the console -->
-    <!-- (Probably shouldn't be active in production) -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${messagePattern}</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
-    </appender>
-
     <!-- Writes warnings and errors to error.log -->
     <!-- Rolls the file at midnight every day -->
     <!-- Files are deleted after 30 days -->
@@ -76,7 +65,6 @@
     <root level="${ROOT_LOG_LEVEL:-INFO}">
         <appender-ref ref="errorFileAppender"/>
         <appender-ref ref="debugFileAppender"/>
-        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>
