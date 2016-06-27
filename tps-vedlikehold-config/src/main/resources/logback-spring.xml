@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
 
-    <property name="APP_LOG_HOME" value="logs" />
     <property name="messagePattern" value="%date [%-5level] [%X{consumerId},%X{userId},%X{callId}] %logger{1} -- %message%n"/>
 
     <!-- Writes warnings and errors to error.log -->
