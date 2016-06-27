@@ -12,7 +12,7 @@ angular.module('tps-vedlikehold.service')
             
             var headers = credentials ?
             {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)} : {};
-             
+
             $http.get(loginRoute, {
                 headers: headers
             })
@@ -36,6 +36,10 @@ angular.module('tps-vedlikehold.service')
 
         self.validateToken = function(){
             self.authenticate();
+        };
+
+        self.isAuthorized = function() {
+            
         };
 
         self.invalidateSession = function(callback){
