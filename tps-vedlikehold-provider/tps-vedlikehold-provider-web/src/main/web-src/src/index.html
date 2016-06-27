@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang ="no" id="ng-app">
-<head>
-    <title>Home</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <title>Home</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="lib/angular-material.min.css">
-    <link rel="stylesheet" href="app.css">
-</head>
-<body ng-app="tps-vedlikehold" layout="column">
-    <md-content flex layout="row">
-        <div class="main-content" ui-view id="app" tabindex="-1" flex></div>
-    </md-content>
-</div>
-</body>
-<script type="text/javascript" src="vendor.min.js"></script>
-<script type="text/javascript" src="main.js"></script>
+        <link rel="stylesheet" href="lib/angular-material.min.css">
+        <link rel="stylesheet" href="app.css">
+    </head>
+    <body ng-app="tps-vedlikehold" layout="column">
+        <div id="header" ui-view="header"></div>
+        <md-content flex layout="row">
+            <div class="main-content" ui-view="content" id="app" tabindex="-1" flex></div>
+        </md-content>
+    </body>
+    <script type="text/javascript" src="vendor.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 </html>

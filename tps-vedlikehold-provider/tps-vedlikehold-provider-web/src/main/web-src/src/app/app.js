@@ -14,6 +14,8 @@ require('./services/sessionService');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.dashboard', 'tps-vedlikehold.service']);
 
+require('./shared/header/header');
+
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouteProvider) {
 
     $urlRouteProvider.otherwise("/");
@@ -22,11 +24,24 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
     .state('login', {
         url: "/",
-        templateUrl: "app/components/login/login.html"
+        views: {
+            'content@' : {
+                templateUrl: "app/components/login/login.html"
+            }
+        }
+
     })
     .state('dashboard', {
         url: "/dashboard",
-        templateUrl: "app/components/dashboard/dashboard.html"
+        views: {
+            'content@' : {
+                templateUrl: "app/components/dashboard/dashboard.html"
+            },
+            'header@' : {
+                templateUrl: "app/shared/header/header.html"
+            }
+        }
+
     });
 }]);
 
