@@ -31,7 +31,7 @@ gulp.task('scripts', function(){
    return gulp.src([sources.scriptsVendor])
        .pipe(sourcemaps.init())
        .pipe(concat('vendor.min.js'))
-       //  .pipe(uglify())
+       .pipe(uglify())
        .pipe(sourcemaps.write())
        .pipe(gulp.dest(folders.distRoot));
 });
@@ -51,7 +51,7 @@ gulp.task('browserify', function() {
           debug: true
        }))
        .pipe(concat('main.js'))
-       // .pipe(uglify())
+       .pipe(uglify())
        .pipe(sourcemaps.write())
        .pipe(gulp.dest(folders.distRoot))
        .pipe(gulp.dest(folders.targetRoot));
