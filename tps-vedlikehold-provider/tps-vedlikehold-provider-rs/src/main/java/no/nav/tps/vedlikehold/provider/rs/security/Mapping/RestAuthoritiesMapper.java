@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.security.mapping;
+package no.nav.tps.vedlikehold.provider.rs.security.Mapping;
 
 import com.google.common.collect.FluentIterable;
 
