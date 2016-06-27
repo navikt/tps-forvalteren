@@ -13,47 +13,26 @@ angular.module('tps-vedlikehold.service')
             var headers = credentials ?
             {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)} : {};
 
-            // Mimicking succesfull login
-            var data = {
-                roller: ["ROLE_WRITE", "ROLE_READ"],
-                brukernavn: "test username",
-                token: "sfsf89sd0f7sd87f"
-            };
-            sessionService.setIsAuthenticated(data.roller.indexOf("ROLE_WRITE") > -1);
-            sessionService.setIsSignedIn(data.brukernavn !== 'gjest');
-            sessionService.setCurrentUser(data);
-            sessionService.setToken(data.token);
-            
-            var res = {
-                data: data,
-                status: 200
-            };
+            $http.get(loginRoute, {
+                headers: headers
+            })
+            .then(function(res) {
+                sessionService.setIsAuthenticated(res.data.roller.indexOf("ROLE_WRITE") > -1);
+                sessionService.setIsSignedIn(res.data.brukernavn !== 'gjest');
+                sessionService.setCurrentUser(res.data);
+                sessionService.setToken(res.data.token);
 
-            if (callback) {
-                callback(res);
-            }
+                if (callback) {
+                    callback(res);
+                }
+            },
+            function(res) {
 
-            // $http.get(loginRoute, {
-            //     headers: headers
-            // })
-            // .then(function(res) {
-            //     sessionService.setIsAuthenticated(res.data.roller.indexOf("ROLE_WRITE") > -1);
-            //     sessionService.setIsSignedIn(res.data.brukernavn !== 'gjest');
-            //     sessionService.setCurrentUser(res.data);
-            //     sessionService.setToken(res.data.token);
-            //
-            //     if (callback) {
-            //         callback(res);
-            //     }
-            // },
-            // function(res) {
-            //
-            //     if (callback) {
-            //         callback(res);
-            //     }
-            // });
-
-        }
+                if (callback) {
+                    callback(res);
+                }
+            });
+        };
 
         self.validateToken = function(){
             self.authenticate();

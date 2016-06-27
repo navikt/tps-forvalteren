@@ -10,9 +10,9 @@ require('./services/locationService');
 require('./services/AuthenticationService');
 require('./services/sessionService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login',  'tps-vedlikehold.service']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service']);
 
-app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouteProvider) {
+app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider,  $httpProvider, $urlRouteProvider) {
 
     $urlRouteProvider.otherwise("/");
 
@@ -26,6 +26,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         url: "/dashboard",
         templateUrl: "app/components/dashboard/dashboard.html"
     });
+
+    $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
 }]);
 
 app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationService', function($rootScope, authenticationService, sessionService, locationService){
@@ -33,12 +36,6 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
     $rootScope.$on('$stateChangeSuccess', function(){
         if (!sessionService.getIsAuthenticated()) {
             authenticationService.validateToken();
-        }
-    });
-
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParam, fromState, fromParam){
-        if (toState.name === "login" && !fromState.abstract) {
-            //locationService.updateLoginReturnUrl();
         }
     });
 
