@@ -10,6 +10,10 @@ angular.module('tps-vedlikehold').controller('headerController', ['$scope', '$lo
         });
     };
 
+    $scope.testButtonClicked = function(buttonName) {
+        console.log("Clicked button: " + buttonName);
+    };
+
     /*
      * Hopper til element og setter focus. Brukes av skip navigasjon
      */

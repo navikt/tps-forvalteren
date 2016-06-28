@@ -10,14 +10,14 @@
             <!--<md-button aria-label="Home">-->
                 <!--TPS vedlikeholdsklient-->
             <!--</md-button>-->
-            <h2>
-                <span>TPS vedlikeholdsklient</span>
+            <h2 class="md-display-1">
+                TPS vedlikeholdsklient
             </h2>
-            <md-button class="md-raised md-primary md-hue-1" ng-click="console.log('Person clicked')">
+            <md-button class="md-raised md-primary md-hue-1" ng-click="testButtonClicked('Person')">
                 Person
             </md-button>
             <span flex=""></span>
-            <div class="user-info">
+            <div layout="column" class="user-info">
                 <div class="md-body-1">{{currentUser.brukernavn}}</div>
                 <div class="md-body-2">{{currentUser.navn}}</div>
             </div>
