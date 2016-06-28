@@ -18,9 +18,9 @@ import org.springframework.boot.SpringApplication;
         SwaggerConfig.class
 })
 @EnableAutoConfiguration
-public class WebConfig {
+public class ProviderRestConfig {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebConfig.class, args);
+        SpringApplication.run(ProviderRestConfig.class, args);
     }
 }

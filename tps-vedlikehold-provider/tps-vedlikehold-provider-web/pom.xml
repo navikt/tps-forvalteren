@@ -12,10 +12,16 @@
     <artifactId>tps-vedlikehold-provider-web</artifactId>
     <name>TPS Vedlikeholdsklient :: Provider :: Web</name>
 
+    <packaging>war</packaging>
+
     <dependencies>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -23,4 +29,14 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

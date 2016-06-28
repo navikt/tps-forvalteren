@@ -26,6 +26,19 @@
         <module>tps-vedlikehold-domain</module>
     </modules>
 
+    <properties>
+        <application.name>tps-vedlikehold</application.name>
+        <application-ear.version>7</application-ear.version>
+        <javaee-api.version>7</javaee-api.version>
+        <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
+        <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
+        <aura-maven-plugin.version>5.0.7</aura-maven-plugin.version>
+    </properties>
+
+    <prerequisites>
+        <maven>3.3.1</maven>
+    </prerequisites>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -97,7 +110,44 @@
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>2.4.0</version>
             </dependency>
+
+            <!-- DEPLOYMENT -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${javaee-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-provider-web</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-ear-plugin</artifactId>
+                    <version>${maven-ear-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-remote-resources-plugin</artifactId>
+                    <version>${maven-remote-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>no.nav.maven.plugins</groupId>
+                    <artifactId>aura-maven-plugin</artifactId>
+                    <version>${aura-maven-plugin.version}</version>
+                    <configuration>
+                        <apps>${application.name}:${project.version}</apps>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
