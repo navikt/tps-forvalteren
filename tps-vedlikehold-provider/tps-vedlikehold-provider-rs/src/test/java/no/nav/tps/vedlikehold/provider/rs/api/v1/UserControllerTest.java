@@ -12,14 +12,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
+
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.mockito.Mockito.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +65,16 @@ public class UserControllerTest {
         assertThat(user.getName(), is(DISPLAY_NAME));
         assertThat(user.getUsername(), is(USERNAME));
         assertThat(user.getToken(), is(SESSION_ID));
+    }
+
+    @Test
+    public void logoutCallsLogoutOnUserContextHolder() {
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpServletResponse responseMock = mock(HttpServletResponse.class);
+
+        controller.logout(requestMock, responseMock);
+
+        verify(userContextHolderMock).logout(requestMock, responseMock);
     }
 
 }
