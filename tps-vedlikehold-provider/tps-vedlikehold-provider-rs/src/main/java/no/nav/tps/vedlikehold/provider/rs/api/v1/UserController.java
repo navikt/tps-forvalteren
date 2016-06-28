@@ -4,6 +4,7 @@ import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import java.util.Set;
  */
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) //This should be handled properly
 @RequestMapping(value = "api/v1")
 public class UserController {
 

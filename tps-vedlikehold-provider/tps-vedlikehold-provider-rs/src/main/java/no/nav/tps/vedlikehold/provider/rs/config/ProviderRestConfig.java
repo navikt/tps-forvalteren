@@ -2,10 +2,9 @@ package no.nav.tps.vedlikehold.provider.rs.config;
 
 
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.UserController;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.springframework.boot.SpringApplication;
@@ -17,13 +16,13 @@ import org.springframework.boot.SpringApplication;
 @ComponentScan(basePackageClasses = {
         UserController.class,
         UserContextHolder.class,
-        SwaggerConfig.class
+        SwaggerConfig.class,
+        WebSecurityConfig.class,
+        RestSecurityConfig.class
 })
-@Import(RestSecurityConfig.class)
-@EnableAutoConfiguration
-public class WebConfig {
+public class ProviderRestConfig {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebConfig.class, args);
+        SpringApplication.run(ProviderRestConfig.class, args);
     }
 }

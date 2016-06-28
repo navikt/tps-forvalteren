@@ -3,7 +3,7 @@ angular.module('tps-vedlikehold.service')
 
         var self = this;
 
-        var routeDevPrefix = '/tps-vedlikehold';
+        var routeDevPrefix = 'http://localhost:8080';
 
         var loginRoute = routeDevPrefix+'/api/v1/user';
         var logoutRoute = routeDevPrefix+'/api/v1/user/logout';
