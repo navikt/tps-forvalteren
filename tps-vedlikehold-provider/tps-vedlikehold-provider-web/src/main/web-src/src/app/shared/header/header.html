@@ -1,101 +1,28 @@
 <div layout="row" layout-align="center center" ng-controller="headerController">
-    <!--<ul class="screen-reader-shortcut" role="menubar">-->
-        <!--<li role="menuitem">-->
-            <!--<a href ng-click="jumpToElement('mainContent')" tabindex="0">Hopp til innhold</a>-->
-        <!--</li>-->
-    <!--</ul>-->
+    <md-toolbar class="md-primary">
+        <nav role="navigation" id="navigation" tabindex="-1">
+            <div class="md-toolbar-tools">
+                <!--<div flex-gt-lg="20"></div>-->
+                <a ui-sref="dashboard" rel="home">
+                    <span>TPS vedlikeholdsklient</span>
+                </a>
+                <div flex="5"></div>
+                <md-button class="md-raised md-primary md-hue-1" ng-click="testButtonClicked('Person')">
+                    Person
+                </md-button>
 
-    <md-toolbar class="tps-v-db-toolbar">
-        <div class="md-toolbar-tools">
-            <!--<md-button aria-label="Home">-->
-                <!--TPS vedlikeholdsklient-->
-            <!--</md-button>-->
-            <h2 class="md-display-1">
-                TPS vedlikeholdsklient
-            </h2>
-            <md-button class="md-raised md-primary md-hue-1" ng-click="testButtonClicked('Person')">
-                Person
-            </md-button>
-            <span flex=""></span>
-            <div layout="column" class="user-info">
-                <div class="md-body-1">{{currentUser.brukernavn}}</div>
-                <div class="md-body-2">{{currentUser.navn}}</div>
+                <span flex></span>
+
+                <div layout="column" class="user-info">
+                    <div class="md-body-1">{{currentUser.brukernavn}}</div>
+                    <div class="md-body-2">{{currentUser.navn}}</div>
+                </div>
+                <div flex="5"></div>
+                <md-button id="logout-button" class="md-raised md-primary md-hue-1" ng-click="logout()">
+                    Logg ut
+                </md-button>
+                <!--<div flex-gt-lg="20"></div>-->
             </div>
-            <md-button class="md-raised md-primary md-hue-1" ng-click="logout()">
-                Logg ut
-            </md-button>
-
-
-        </div>
-        <!--<h1 class="md-toolbar-tools">TPS vedlikeholdsklient</h1>-->
-        <!--<span flex></span>-->
-        <!--<div class="user-info">-->
-            <!--<span>-->
-                <!--{{currentUser.brukernavn}}-->
-            <!--</span>-->
-            <!--<span>-->
-                <!--{{currentUser.navn}}-->
-            <!--</span>-->
-        <!--</div>-->
-        <!--<md-button ng-click="logout()">-->
-            <!--Logg ut-->
-        <!--</md-button>-->
+        </nav>
     </md-toolbar>
-
-    <!--<md-toolbar class="tps-v-db-toolbar" layout="row">-->
-        <!--<h1 class="md-toolbar-tools">TPS vedlikeholdsklient</h1>-->
-        <!--<span flex></span>-->
-        <!--<div class="user-info">-->
-            <!--<span>-->
-                <!--{{currentUser.brukernavn}}-->
-            <!--</span>-->
-            <!--<span>-->
-                <!--{{currentUser.navn}}-->
-            <!--</span>-->
-        <!--</div>-->
-        <!--<md-button ng-click="logout()">-->
-            <!--Logg ut-->
-        <!--</md-button>-->
-    <!--</md-toolbar>-->
-
-
-    <!--<md-toolbar class="md-primary md-hue-1">-->
-
-        <!--<nav role="navigation" id="navigation" aria-labelledby="header-tps-v" tabindex="-1">-->
-
-            <!--<span class="offscreen" id="header-tps-v">Hovedmeny</span>-->
-
-            <!--<div class="md-toolbar-tools">-->
-                <!--<div flex-gt-lg="20"></div>-->
-                <!--<a ui-sref="oversikt" rel="home">-->
-                    <!--<span>NORG2</span>-->
-                <!--</a>-->
-                <!--<div flex="5"></div>-->
-
-                <!--<md-button class=" md-primary md-hue-1" ui-sref="oversikt">-->
-                    <!--Oversikt-->
-                <!--</md-button>-->
-                <!--<md-button tabindex="0" class="md-primary md-hue-1" ui-sref="arbeidsfordeling">-->
-                    <!--Arbeidsfordelinger-->
-                <!--</md-button>-->
-
-
-                <!--<span flex></span>-->
-
-                <!--<div class="current-user-wrapper">-->
-                    <!--<div class="md-body-1">{{currentUser.brukernavn}}</div>-->
-                    <!--<div class="md-body-2">Roller: {{currentUser.roller.toString()}}</div>-->
-                <!--</div>-->
-                <!--<div flex="5"></div>-->
-
-                <!--<md-button class="md-raised md-primary md-hue-2 login" aria-label="logg inn" ui-sref="login" ng-show="!signedIn">-->
-                    <!--Logg inn-->
-                <!--</md-button>-->
-                <!--<md-button  class="md-raised md-warn logout" aria-label="logg ut" ng-href="#logout" ng-show="signedIn" ng-click="logout()">-->
-                    <!--Logg ut-->
-                <!--</md-button>-->
-                <!--<div flex-gt-lg="20"></div>-->
-            <!--</div>-->
-        <!--</nav>-->
-    <!--</md-toolbar>-->
 </div>
