@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public class RestUserDetailsMapper extends LdapUserDetailsMapper {
 
-    public static final String SURNAME_ATTRIBUTE = "sn";
+    public static final String SURNAME_ATTRIBUTE = "surname";
     public static final String GIVEN_NAME_ATTRIBUTE = "givenName";
 
     @Override

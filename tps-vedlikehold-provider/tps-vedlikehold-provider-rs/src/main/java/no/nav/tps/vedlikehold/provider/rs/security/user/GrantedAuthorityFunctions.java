@@ -16,9 +16,9 @@ public class GrantedAuthorityFunctions {
     public static Function<GrantedAuthority, String> toStringRepresentation() {
         return new Function<GrantedAuthority, String>() {
             @Override
-            public String apply(GrantedAuthority ga) {
-                if (ga != null) {
-                    return ga.getAuthority();
+            public String apply(GrantedAuthority grantedAuthority) {
+                if (grantedAuthority != null) {
+                    return grantedAuthority.getAuthority();
                 }
                 return null;
             }
@@ -31,9 +31,9 @@ public class GrantedAuthorityFunctions {
     public static Function<GrantedAuthority, UserRole> toUserRole(final Map<String, UserRole> roles) {
         return new Function<GrantedAuthority, UserRole>() {
             @Override
-            public UserRole apply(GrantedAuthority ga) {
-                if (ga != null) {
-                    return roles.get(ga.getAuthority());
+            public UserRole apply(GrantedAuthority grantedAuthority) {
+                if (grantedAuthority != null) {
+                    return roles.get(grantedAuthority.getAuthority());
                 }
                 return null;
             }

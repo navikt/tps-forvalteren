@@ -23,9 +23,9 @@ public class GrantedAuthorityFunctionsTest {
 
     @Test
     public void toStringRepresentationReturnsStringRepresentation() {
-        GrantedAuthority ga = createGa("Role");
+        GrantedAuthority grantedAuthority = createGrantedAuthority("Role");
 
-        String result = toStringRepresentation().apply(ga);
+        String result = toStringRepresentation().apply(grantedAuthority);
 
         assertThat(result, is(equalTo("Role")));
     }
@@ -45,10 +45,10 @@ public class GrantedAuthorityFunctionsTest {
         roles.put("0000-GA-NORG_Skriv_Q", ROLE_WRITE_Q);
         roles.put("0000-GA-NORG_Les_Q", ROLE_READ_Q);
 
-        UserRole resultWriteT = toUserRole(roles).apply(createGa("0000-GA-NORG_Skriv_T"));
-        UserRole resultReadT = toUserRole(roles).apply(createGa("0000-GA-NORG_Les_T"));
-        UserRole resultWriteQ = toUserRole(roles).apply(createGa("0000-GA-NORG_Skriv_Q"));
-        UserRole resultReadQ = toUserRole(roles).apply(createGa("0000-GA-NORG_Les_Q"));
+        UserRole resultWriteT = toUserRole(roles).apply(createGrantedAuthority("0000-GA-NORG_Skriv_T"));
+        UserRole resultReadT = toUserRole(roles).apply(createGrantedAuthority("0000-GA-NORG_Les_T"));
+        UserRole resultWriteQ = toUserRole(roles).apply(createGrantedAuthority("0000-GA-NORG_Skriv_Q"));
+        UserRole resultReadQ = toUserRole(roles).apply(createGrantedAuthority("0000-GA-NORG_Les_Q"));
 
         assertThat(resultWriteT, is(ROLE_WRITE_T));
         assertThat(resultReadT, is(ROLE_READ_T));
@@ -60,14 +60,14 @@ public class GrantedAuthorityFunctionsTest {
     public void toUserRoleReturnsNullWhenRoleNotInMap() {
         Map<String, UserRole> roles = singletonMap("0000-GA-NORG_Skriv_T", ROLE_WRITE_T);
 
-        UserRole result = toUserRole(roles).apply(createGa("0000-GA-NORG_Les_T"));
+        UserRole result = toUserRole(roles).apply(createGrantedAuthority("0000-GA-NORG_Les_T"));
 
         assertThat(result, is(nullValue()));
     }
 
     @Test
     public void toUserRoleReturnsNullWhenNoRoleMap() {
-        UserRole result = toUserRole(Collections.<String, UserRole>emptyMap()).apply(createGa("0000-GA-NORG_Les_T"));
+        UserRole result = toUserRole(Collections.<String, UserRole>emptyMap()).apply(createGrantedAuthority("0000-GA-NORG_Les_T"));
 
         assertThat(result, is(nullValue()));
     }
@@ -81,7 +81,7 @@ public class GrantedAuthorityFunctionsTest {
         assertThat(result, is(nullValue()));
     }
 
-    private GrantedAuthority createGa(String role) {
+    private GrantedAuthority createGrantedAuthority(String role) {
         return new SimpleGrantedAuthority(role);
     }
 }
