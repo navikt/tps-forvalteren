@@ -17,5 +17,11 @@
         <module>tps-vedlikehold-provider-rs</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
