@@ -1,4 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+# Logback
+APP_LOG_HOME_IS_UNDEFINED/
+
 ### Eclipse template
 *.pydevproject
 .metadata

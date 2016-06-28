@@ -18,6 +18,7 @@
 
     <modules>
         <module>tps-vedlikehold-consumer</module>
+        <module>tps-vedlikehold-common</module>
         <module>tps-vedlikehold-provider</module>
         <module>tps-vedlikehold-config</module>
         <module>tps-vedlikehold-service</module>
@@ -39,6 +40,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-common-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-consumer-mq</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -50,6 +56,11 @@
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-domain-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -66,6 +77,25 @@
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-service</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!--LANGUAGE EXTENSIONS-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>19.0</version>
+            </dependency>
+
+            <!-- DOCUMENTATION -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>2.4.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
