@@ -5,11 +5,14 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * System user roles
  *
- * @author Øyvind Grimnes, Visma Consulting AS
+ * @author Tobias Hansen (Visma Consulting AS).
  */
 public enum UserRole implements GrantedAuthority {
-    READ,
-    WRITE;
+
+    ROLE_READ_T,
+    ROLE_WRITE_T,
+    ROLE_READ_Q,
+    ROLE_WRITE_Q;
 
     @Override
     public String getAuthority() {

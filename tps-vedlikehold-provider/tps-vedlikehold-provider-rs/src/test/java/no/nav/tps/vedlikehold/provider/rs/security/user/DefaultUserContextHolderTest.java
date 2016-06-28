@@ -1,7 +1,8 @@
-package no.nav.tps.vedlikehold.provider.rs.security;
+package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import no.nav.tps.vedlikehold.provider.rs.security.user.DefaultUserContextHolder;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class DefaultUserContextHolderTest {
 
     private static final String USERNAME                        = "username";
     private static final String DISPLAY_NAME                    = "displayName";
-    private static final List<? extends GrantedAuthority> ROLES = Arrays.asList(UserRole.READ, UserRole.WRITE);
+    private static final List<? extends GrantedAuthority> ROLES = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T ,ROLE_READ_Q, ROLE_WRITE_Q);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -135,7 +136,7 @@ public class DefaultUserContextHolderTest {
     @Test
     public void getRolesReturnsRolesFromAuthentication() {
         doReturn(ROLES).when(userDetailsMock).getAuthorities();
-        assertThat(userContextHolder.getRoles(), containsInAnyOrder((GrantedAuthority)UserRole.READ, (GrantedAuthority) UserRole.WRITE));
+        assertThat(userContextHolder.getRoles(), containsInAnyOrder((GrantedAuthority) ROLE_READ_T, ROLE_WRITE_T, ROLE_READ_Q, ROLE_WRITE_Q));
     }
 
     @Test

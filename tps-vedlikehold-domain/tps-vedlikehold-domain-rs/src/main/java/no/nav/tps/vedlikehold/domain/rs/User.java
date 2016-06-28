@@ -14,10 +14,6 @@ public class User {
     private String token;
     private Set<String> roles;
 
-    public User() {
-        // Used by Jackson?
-    }
-
     public User(String name, String username, Set<String> roles, String token) {
         this.name = name;
         this.username = username;
