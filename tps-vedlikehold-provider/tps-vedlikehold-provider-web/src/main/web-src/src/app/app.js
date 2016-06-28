@@ -5,14 +5,14 @@ require('angular-material');
 require('angular-messages');
 
 require('./components/login/login');
-// require('./components/dashboard/dashboard');
+require('./components/dashboard/dashboard');
 
 require('./services/serviceModule');
 require('./services/locationService');
 require('./services/AuthenticationService');
 require('./services/sessionService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service']); // 'tps-vedlikehold.dashboard'
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']); // 'tps-vedlikehold.dashboard'
 
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');

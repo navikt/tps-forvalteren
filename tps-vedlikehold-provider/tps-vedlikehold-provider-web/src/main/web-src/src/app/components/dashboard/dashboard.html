@@ -1,28 +1,30 @@
-<!--<div ng-controller="dashboardCtrl" id="dashboard-page" layout="column" flex>-->
-    <!--&lt;!&ndash; Lage en meny paa venstre side der man skal kunne se hvilken service-rutine som er valgt.-->
-    <!--Side-meny elementer hardkodet her eller i controller? ng-repeat&ndash;&gt;-->
-
-    <!--<div layout="row" flex>-->
-        <!--<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-is-locked-open="$mdMedia('gt-sm')">-->
-            <!--<md-content>-->
-                <!--<md-list>-->
-                    <!--<md-subheader class="md-no-sticky">Servicekategori 1</md-subheader>-->
-                    <!--<md-list-item class="md-2-line">-->
-                        <!--<md-button class="" ng-click="">-->
-                            <!--Hent personopplysninger-->
-                        <!--</md-button>-->
-                    <!--</md-list-item>-->
-                    <!--&lt;!&ndash; Additional service routines &ndash;&gt;-->
-
-                <!--</md-list>-->
-            <!--</md-content>-->
-        <!--</md-sidenav>-->
-        <!--<md-content flex id="content">Main content-->
-        <!--</md-content>-->
-    <!--</div>-->
-<!--</div>-->
-<div>
+<div ng-controller="dashboardCtrl" layout="column" class="md-inline-form">
     <p>dashboard.html</p>
+    <md-content layout-padding>
+        <div>
+            <form name="S004-form">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Personnummer</label>
+                        <input ng-model="fNr" required>
+                    </md-input-container>
+                    <md-datepicker ng-model="myDate" md-placeholder="Oppgi dato"></md-datepicker>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Variant</label>
+                        <md-select ng-model="variant">
+                            <md-option ng-repeat="curVariant in varianter">
+                                {{curVariant}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+
+
+
+
 </div>
 
 
