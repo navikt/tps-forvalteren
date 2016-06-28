@@ -8,4 +8,5 @@
   \        /  |        '. \_/``".'  \       / \       / \      /       
    `'-...-'   `--------` '-----'     `-...-'   `-...-'   `-..-'        
 
-:: Spring Boot ${spring-boot.formatted-version} ::
+-> Spring Boot               ${spring-boot.formatted-version}
+-> TPS Vedlikeholdsklient    ${application.version}
