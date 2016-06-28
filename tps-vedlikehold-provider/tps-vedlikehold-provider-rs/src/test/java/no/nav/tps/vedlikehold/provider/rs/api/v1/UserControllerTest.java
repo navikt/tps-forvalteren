@@ -3,6 +3,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1;
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class UserControllerTest {
     private static final String DISPLAY_NAME    = "displayName";
     private static final String USERNAME        = "username";
     private static final String SESSION_ID      = "sessionID";
-    private static final List<UserRole> ROLES   = Arrays.asList(UserRole.ROLE_READ_Q, UserRole.ROLE_WRITE_Q);
+    private static final List<UserRole> ROLES   = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T,ROLE_READ_Q, ROLE_WRITE_Q);
 
     @Mock
     private HttpSession httpSessionMock;
@@ -58,7 +59,7 @@ public class UserControllerTest {
     public void getUserReturnsMappedUser() {
         User user = controller.getUser(httpSessionMock);
 
-        assertThat(user.getRoles(), containsInAnyOrder(UserRole.ROLE_READ_Q.name(),  UserRole.ROLE_WRITE_Q.name()));
+        assertThat(user.getRoles(), containsInAnyOrder(ROLE_READ_T.name(), ROLE_WRITE_T.name(), ROLE_READ_Q.name(), ROLE_WRITE_Q.name()));
         assertThat(user.getRoles(), hasSize(ROLES.size()));
         assertThat(user.getName(), is(DISPLAY_NAME));
         assertThat(user.getUsername(), is(USERNAME));
