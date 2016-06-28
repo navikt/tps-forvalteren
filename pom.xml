@@ -18,6 +18,7 @@
 
     <modules>
         <module>tps-vedlikehold-consumer</module>
+        <module>tps-vedlikehold-common</module>
         <module>tps-vedlikehold-provider</module>
         <module>tps-vedlikehold-config</module>
         <module>tps-vedlikehold-service</module>
@@ -29,7 +30,17 @@
         <dependencies>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-application-local</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-common-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
