@@ -18,10 +18,7 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
+        <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-config</artifactId>
@@ -30,6 +27,12 @@
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!--LANGUAGE EXTENSIONS-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
 
