@@ -17,8 +17,8 @@ angular.module('tps-vedlikehold.service')
                 headers: headers
             })
             .then(function(res) {
-                sessionService.setIsAuthenticated(res.data.roller.indexOf("ROLE_WRITE") > -1);
-                sessionService.setIsSignedIn(res.data.brukernavn !== 'gjest');
+                sessionService.setIsAuthenticated(true);
+                sessionService.setIsSignedIn(true);
                 sessionService.setCurrentUser(res.data);
                 sessionService.setToken(res.data.token);
 
