@@ -1,11 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
 import com.google.common.collect.FluentIterable;
-
-import static com.google.common.base.Predicates.notNull;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toUserRole;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
-
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +8,10 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+
+import static com.google.common.base.Predicates.notNull;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toUserRole;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

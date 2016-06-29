@@ -1,13 +1,13 @@
 package no.nav.tps.vedlikehold.provider.rs.config;
 
 
+import no.nav.tps.vedlikehold.provider.rs.api.v1.UserController;
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.UserController;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

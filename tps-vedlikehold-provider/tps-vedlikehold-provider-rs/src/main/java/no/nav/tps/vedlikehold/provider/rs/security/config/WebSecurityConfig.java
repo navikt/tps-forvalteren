@@ -34,8 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**")
                 .permitAll()
-                .antMatchers("/index.html") // Should access to the web module be configured in the rest module?
-                .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/user")
                 .permitAll()
                 .antMatchers("/api/**")
@@ -47,4 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
+
+
 }
