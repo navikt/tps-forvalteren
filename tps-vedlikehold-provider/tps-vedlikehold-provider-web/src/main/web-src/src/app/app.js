@@ -9,14 +9,14 @@ require('./components/dashboard/dashboard');
 
 require('./services/serviceModule');
 require('./services/locationService');
-require('./services/authenticationService');
 require('./services/sessionService');
 require('./services/utilsService');
+require('./services/authenticationService');
+
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']);
 
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
-
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']); // 'tps-vedlikehold.dashboard'
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider,  $httpProvider, $urlRouteProvider) {
 
