@@ -5,6 +5,10 @@
 
     <name>tps-vedlikehold</name>
 
+    <resources>
+        <ldap alias="ldap" mapToProperty="ldap"/>
+    </resources>
+
     <artifacts>
         <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>
     </artifacts>
