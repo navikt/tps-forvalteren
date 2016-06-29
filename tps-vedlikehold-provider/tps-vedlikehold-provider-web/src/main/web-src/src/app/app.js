@@ -7,7 +7,7 @@ require('angular-messages');
 require('./components/login/login');
 require('./services/serviceModule');
 require('./services/locationService');
-require('./services/AuthenticationService');
+require('./services/authenticationService');
 require('./services/sessionService');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service']);
