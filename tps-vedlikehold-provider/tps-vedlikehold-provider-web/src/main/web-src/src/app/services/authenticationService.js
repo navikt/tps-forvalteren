@@ -14,22 +14,22 @@ angular.module('tps-vedlikehold.service')
             $http.get(loginRoute, {
                 headers: headers
             })
-            .then(function (res) {
-                    sessionService.setIsAuthenticated(true);
-                    sessionService.setIsSignedIn(true);
-                    sessionService.setCurrentUser(res.data);
-                    sessionService.setToken(res.data.token);
+                .then(function (res) {
+                        sessionService.setIsAuthenticated(true);
+                        sessionService.setIsSignedIn(true);
+                        sessionService.setCurrentUser(res.data);
+                        sessionService.setToken(res.data.token);
 
-                    if (callback) {
-                        callback(res);
-                    }
-                },
-                function (res) {
+                        if (callback) {
+                            callback(res);
+                        }
+                    },
+                    function (res) {
 
-                    if (callback) {
-                        callback(res);
-                    }
-                });
+                        if (callback) {
+                            callback(res);
+                        }
+                    });
         };
 
         self.validateToken = function(){
