@@ -7,4 +7,4 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1;
  * @author Øyvind Grimnes, Visma Consulting AS on 29.06.2016.
  */
 
-public class ApiPackageMarker {}
+public final class ApiPackageMarker {}
