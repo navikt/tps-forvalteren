@@ -13,6 +13,7 @@
     <name>TPS Vedlikeholdsklient :: Provider :: Web</name>
 
     <dependencies>
+        <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-rs</artifactId>
