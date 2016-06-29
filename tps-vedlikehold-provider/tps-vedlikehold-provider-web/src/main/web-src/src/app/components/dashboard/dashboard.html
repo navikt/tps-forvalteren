@@ -1,30 +1,6 @@
 <div ng-controller="dashboardCtrl" layout="column" class="md-inline-form">
-    <p>dashboard.html</p>
     <md-content layout-padding>
-        <div>
-            <form name="S004-form">
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Personnummer</label>
-                        <input ng-model="fNr" required>
-                    </md-input-container>
-                    <md-datepicker ng-model="myDate" md-placeholder="Oppgi dato"></md-datepicker>
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Variant</label>
-                        <md-select ng-model="variant">
-                            <md-option ng-repeat="curVariant in varianter">
-                                {{curVariant}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-            </form>
-        </div>
     </md-content>
-
-
-
-
 </div>
 
 

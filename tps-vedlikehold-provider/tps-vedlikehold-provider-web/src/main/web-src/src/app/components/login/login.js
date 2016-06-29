@@ -1,6 +1,6 @@
 /**
- * Created by G148235 on 24.06.2016.
- */
+ * @author Frederik Gørvell (Visma Consulting AS).
+ * */
 angular.module('tps-vedlikehold.login', ['ngMessages'])
     .controller('loginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {

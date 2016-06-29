@@ -46,7 +46,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($s
                 templateUrl: "app/shared/side-navigator/side-navigator.html"
             }
         }
-
     });
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";

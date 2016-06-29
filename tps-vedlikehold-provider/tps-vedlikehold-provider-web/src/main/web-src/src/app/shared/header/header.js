@@ -1,6 +1,6 @@
 /**
- * Created by G148235 on 27.06.2016.
- */
+ * @author Frederik Gørvell (Visma Consulting AS).
+ * */
 angular.module('tps-vedlikehold').controller('headerController', ['$scope', '$location', 'authenticationService', function($scope, $location, authenticationService) {
 
     $scope.logout = function(){
@@ -8,10 +8,6 @@ angular.module('tps-vedlikehold').controller('headerController', ['$scope', '$lo
             console.log("Logging out");
             $location.path('/');
         });
-    };
-
-    $scope.testButtonClicked = function(buttonName) {
-        console.log("Clicked button: " + buttonName);
     };
 
     /*
