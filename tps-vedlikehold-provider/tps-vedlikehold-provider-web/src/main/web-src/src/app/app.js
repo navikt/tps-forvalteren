@@ -9,6 +9,8 @@ require('./services/serviceModule');
 require('./services/locationService');
 require('./services/authenticationService');
 require('./services/sessionService');
+require('./services/utilsService');
+
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service']);
 

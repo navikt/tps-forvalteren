@@ -1,8 +1,7 @@
 angular.module('tps-vedlikehold.service')
-    .service('authenticationService', ['$http', '$location', 'sessionService', function($http, $location, sessionService) {
+    .service('authenticationService', ['$http', '$location', 'sessionService', 'utilsService', function($http, $location, sessionService, utilsService) {
 
         var self = this;
-
         var routePrefix = $location.protocol() + '://' + $location.host() + ':' + $location.port();
         var loginRoute = routePrefix + '/api/v1/user';
         var logoutRoute = routePrefix + '/api/v1/user/logout';
@@ -10,7 +9,7 @@ angular.module('tps-vedlikehold.service')
         self.authenticate = function(credentials, callback) {
 
             var headers = credentials ?
-            {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)} : {};
+                utilsService.authHeaders(credentials) : {};
 
             $http.get(loginRoute, {
                 headers: headers
