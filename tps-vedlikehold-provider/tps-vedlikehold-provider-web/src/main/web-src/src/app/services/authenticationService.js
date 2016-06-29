@@ -2,9 +2,9 @@ angular.module('tps-vedlikehold.service')
     .service('authenticationService', ['$http', '$location', 'sessionService', 'utilsService', function($http, $location, sessionService, utilsService) {
 
         var self = this;
-        var routePrefix = $location.protocol() + '://' + $location.host() + ':' + $location.port();
-        var loginRoute = routePrefix + '/api/v1/user';
-        var logoutRoute = routePrefix + '/api/v1/user/logout';
+
+        var loginRoute = 'api/v1/user';
+        var logoutRoute = 'api/v1/user/logout';
 
         self.authenticate = function(credentials, callback) {
 
