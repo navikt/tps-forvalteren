@@ -26,6 +26,11 @@
         <module>tps-vedlikehold-domain</module>
     </modules>
 
+    <properties>
+        <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
+        <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <!--INTERNAL-->
@@ -101,4 +106,38 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <!-- Generate an aggregated code coverage report for all sub-modules and store it in the target folder as jacoco.exec. -->
+                        <execution>
+                            <id>generate-coverage-reports</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <append>true</append>
+                                <includes>
+                                    <include>no.nav.*</include>
+                                </includes>
+                                <destFile>${session.executionRootDirectory}/target/jacoco.exec</destFile>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

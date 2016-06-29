@@ -1,8 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,9 +7,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +20,7 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
