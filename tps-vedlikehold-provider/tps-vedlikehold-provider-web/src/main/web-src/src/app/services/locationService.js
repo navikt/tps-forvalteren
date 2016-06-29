@@ -1,5 +1,5 @@
 /**
- * Created by G148235 on 24.06.2016.
+ * @author Frederik Gørvell (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
     .service('locationService', ['$rootScope', '$location', function($rootScope, $location) {
@@ -18,5 +18,9 @@ angular.module('tps-vedlikehold.service')
             } else {
                 $location.path("/").replace();
             }
+        };
+
+        self.redirectToLoginUrl = function() {
+            $location.path("/").replace();
         };
     }]);

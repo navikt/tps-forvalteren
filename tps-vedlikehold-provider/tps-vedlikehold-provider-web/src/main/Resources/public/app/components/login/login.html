@@ -1,15 +1,12 @@
-<div ng-controller="loginCtrl", layout="column", layout-align="center center", layout-fill>
-    <!--<h1>{{title}}</h1>-->
+<div ng-controller="loginCtrl" id="login-page" layout="column" layout-align="center center" layout-fill>
     <div class="loginBox md-whiteframe-z1", layout="column">
-        <md-toolbar>
+        <md-toolbar class="tps-v-login-toolbar">
             <h2 class="md-toolbar-tools"><span ng-bind="title"></span></h2>
         </md-toolbar>
-
-        <md-content layout="column" class="md-padding">
-            <form name="loginForm" class="" method="get" ng-submit="login()" novalidate >
-                <md-input-container>
+        <md-content layout="column"  layout-align="center" class="md-padding">
+            <form name="loginForm" class="tps-v-form" method="get" ng-submit="login()" novalidate >
+                <md-input-container class="tps-v-input">
                     <label>Brukernavn</label>
-                    <!--<input type="text" ng-model="username"/>-->
                     <input ng-model="credentials.username" name="username" type="text" ng-required="true" >
                     <ng-messages for="loginForm.username.$error" >
                         <ng-message when="required" ng-show="loginForm.password.$touched">
@@ -17,9 +14,8 @@
                         </ng-message>
                     </ng-messages>
                 </md-input-container>
-                <md-input-container>
+                <md-input-container class="tps-v-input">
                     <label>Passord</label>
-                    <!--<input type="password" ng-model="password"/>-->
                     <input ng-model="credentials.password" name="password" type="password" ng-required="true">
                     <ng-messages for="loginForm.password.$error" >
                     <ng-message when="required" ng-show="loginForm.password.$touched">
@@ -27,19 +23,11 @@
                     </ng-message>
                     </ng-messages>
                 </md-input-container>
-                <md-input-container>
-                    <md-button class="md-raised login" name="login" type="submit" aria-label="Logg inn" ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
+                <md-input-container class="tps-v-btn-container">
+                    <md-button class="md-raised md-primary md-button md-ink-ripple login" name="login" type="submit" aria-label="Logg inn" ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
                         Logg inn
                     </md-button>
                 </md-input-container>
-                <!--<div layout="row" layout-align="center center" style="padding-top:20px;">-->
-                    <!--<md-button class="md-raised md-primary">Logg inn</md-button>-->
-
-                    <!--&lt;!&ndash;-->
-                    <!--<div flex="flex"></div>-->
-                    <!--<md-button href="" md-no-ink="md-no-ink">Forgot Password</md-button>-->
-                    <!--&ndash;&gt;-->
-                <!--</div>-->
                 <div class="form-error-container">
                     <div ng-show="authenticationError">
                         Feil brukernavn eller passord
@@ -48,12 +36,11 @@
                         En feil oppstod
                     </div>
                 </div>
-
                 <div>
                     <md-progress-linear md-mode="indeterminate" ng-show="pendingRequest"></md-progress-linear>
                 </div>
             </form>
-
         </md-content>
     </div>
 </div>
+

@@ -13,10 +13,13 @@
     <name>TPS Vedlikeholdsklient :: Provider :: Web</name>
 
     <dependencies>
+        <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-service</artifactId>
+            <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
+
+        <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

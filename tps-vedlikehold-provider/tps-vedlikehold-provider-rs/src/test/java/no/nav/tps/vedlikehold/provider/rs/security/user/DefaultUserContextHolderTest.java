@@ -1,7 +1,5 @@
-package no.nav.tps.vedlikehold.provider.rs.security;
+package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import no.nav.tps.vedlikehold.provider.rs.security.user.DefaultUserContextHolder;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,9 +7,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +20,7 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -39,7 +35,7 @@ public class DefaultUserContextHolderTest {
 
     private static final String USERNAME                        = "username";
     private static final String DISPLAY_NAME                    = "displayName";
-    private static final List<? extends GrantedAuthority> ROLES = Arrays.asList(UserRole.READ, UserRole.WRITE);
+    private static final List<? extends GrantedAuthority> ROLES = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T ,ROLE_READ_Q, ROLE_WRITE_Q);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -135,7 +131,7 @@ public class DefaultUserContextHolderTest {
     @Test
     public void getRolesReturnsRolesFromAuthentication() {
         doReturn(ROLES).when(userDetailsMock).getAuthorities();
-        assertThat(userContextHolder.getRoles(), containsInAnyOrder((GrantedAuthority)UserRole.READ, (GrantedAuthority) UserRole.WRITE));
+        assertThat(userContextHolder.getRoles(), containsInAnyOrder((GrantedAuthority) ROLE_READ_T, ROLE_WRITE_T, ROLE_READ_Q, ROLE_WRITE_Q));
     }
 
     @Test

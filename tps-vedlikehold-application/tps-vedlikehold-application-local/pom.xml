@@ -12,5 +12,23 @@
     <artifactId>tps-vedlikehold-application-local</artifactId>
     <name>TPS Vedlikeholdsklient :: Application :: Local</name>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-core</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-provider-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
 </project>
