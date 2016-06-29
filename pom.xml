@@ -28,8 +28,7 @@
 
     <properties>
         <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
-        <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/norg2/domain/test/**
-        </sonar.exclusions>
+        <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
     </properties>
 
     <dependencyManagement>
