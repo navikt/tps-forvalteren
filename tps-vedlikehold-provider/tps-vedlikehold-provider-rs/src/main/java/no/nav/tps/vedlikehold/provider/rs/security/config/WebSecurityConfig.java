@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/user")
+                .permitAll()
                 .antMatchers("/api/**")
                 .hasRole("READ")
                 .and().httpBasic()
@@ -43,4 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
+
+
 }
