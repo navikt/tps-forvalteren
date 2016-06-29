@@ -17,7 +17,6 @@ angular.module('tps-vedlikehold.service')
                 headers: headers
             })
             .then(function(res) {
-                console.log(res);
                 sessionService.setIsAuthenticated(true);
                 sessionService.setIsSignedIn(true);
                 sessionService.setCurrentUser(res.data);
