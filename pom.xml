@@ -33,14 +33,19 @@
         <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
         <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
         <aura-maven-plugin.version>5.0.7</aura-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
+        <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
     </properties>
+
 
     <prerequisites>
         <maven>3.3.1</maven>
     </prerequisites>
 
+
     <dependencyManagement>
         <dependencies>
+            <!--INTERNAL-->
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-application-local</artifactId>
@@ -58,17 +63,17 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-common-develop</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-consumer-mq</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-consumer-rs</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -129,6 +134,7 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!--JBoss-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-ear-plugin</artifactId>
@@ -147,7 +153,37 @@
                         <apps>${application.name}:${project.version}</apps>
                     </configuration>
                 </plugin>
+
+                <!--Sonar-->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <!-- Generate an aggregated code coverage report for all sub-modules and store it in the target folder as jacoco.exec. -->
+                        <execution>
+                            <id>generate-coverage-reports</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <append>true</append>
+                                <includes>
+                                    <include>no.nav.*</include>
+                                </includes>
+                                <destFile>${session.executionRootDirectory}/target/jacoco.exec</destFile>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 </project>

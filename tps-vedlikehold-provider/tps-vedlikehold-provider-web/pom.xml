@@ -15,10 +15,13 @@
     <packaging>war</packaging>
 
     <dependencies>
+        <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-service</artifactId>
+            <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
+
+        <!--SPRING-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-rs</artifactId>

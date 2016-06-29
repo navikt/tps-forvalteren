@@ -1,12 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import java.util.Collection;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import java.util.Collection;
 
 /**
  * Abstraction of the user context for testability and reusability

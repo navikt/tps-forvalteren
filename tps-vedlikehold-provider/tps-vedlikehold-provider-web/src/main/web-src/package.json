@@ -1,0 +1,50 @@
+{
+  "name": "tps-vedlikehold",
+  "version": "1.0.0",
+  "description": "tps-vedlikehold client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "angular": "*",
+    "angular-cookies": "*",
+    "angular-material-data-table": "*",
+    "angular-material-icons": "*",
+    "angular-messages": "*",
+    "browser-sync": "*",
+    "browserify": "*",
+    "gulp": "*",
+    "gulp-browserify": "*",
+    "gulp-cache-bust": "*",
+    "gulp-cachebust": "*",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "*",
+    "gulp-connect": "*",
+    "gulp-cssnano": "*",
+    "gulp-environments": "*",
+    "gulp-jshint": "*",
+    "gulp-less": "*",
+    "gulp-livereload": "^3.8.1",
+    "gulp-minify": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-uglify": "*",
+    "gulp-webserver": "^0.9.1",
+    "jshint": "^2.9.2",
+    "pikaday-angular": "*",
+    "preprocess": "*",
+    "vinyl-buffer": "*",
+    "vinyl-source-stream": "*"
+  },
+  "dependencies": {
+    "angular": "*",
+    "angular-animate": "*",
+    "angular-aria": "*",
+    "angular-material": "*",
+    "angular-moment": "*",
+    "angular-ui-router": "*",
+    "moment": "*"
+  }
+}
