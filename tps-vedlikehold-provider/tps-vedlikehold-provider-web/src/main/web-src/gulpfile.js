@@ -11,6 +11,7 @@ var environments = require('gulp-environments');
 var connect = require('gulp-connect');
 var sourcemaps = require('gulp-sourcemaps');
 var cssnano = require('gulp-cssnano');
+var clean = require('gulp-clean');
 var livereload = require('gulp-livereload');
 
 var folders = {
@@ -24,6 +25,10 @@ var sources = {
    views : './src/**/*.html',
    styles : './src/assets/less/*.less',
    lessMain: './src/assets/less/master.less'
+};
+
+var dests = {
+   oldFiles: ['./../resources/public/**/**/**/*_old.html', './../resources/public/**/**/**/*_old.js']
 };
 
 gulp.task('scripts', function(){
@@ -62,6 +67,11 @@ gulp.task('views', function() {
        .pipe(gulp.dest(folders.targetRoot));
 });
 
+gulp.task('clean', function() {
+    return gulp.src(dests.oldFiles)
+   .pipe(clean({force: true}));
+});
+
 gulp.task('less', function() {
    gulp.src(sources.lessMain) //
        .pipe(sourcemaps.init())
@@ -72,7 +82,6 @@ gulp.task('less', function() {
        .pipe(gulp.dest(folders.distRoot))
        .pipe(gulp.dest(folders.targetRoot))
        .pipe(livereload());
-
 });
 
 gulp.task('browser-sync', ['build'], function() {
@@ -103,7 +112,7 @@ gulp.task('copy-lib', function(){
        .pipe(gulp.dest(folders.targetRoot+'/lib'));
 });
 
-gulp.task('build',['lint', 'less', 'copy-lib', 'scripts', 'browserify', 'views']);
+gulp.task('build',['lint', 'less', 'copy-lib', 'scripts', 'browserify', 'views', 'clean']);
 
 
 gulp.task('watch', function(){

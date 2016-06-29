@@ -20,6 +20,7 @@
     "gulp-browserify": "*",
     "gulp-cache-bust": "*",
     "gulp-cachebust": "*",
+    "gulp-clean": "^0.3.2",
     "gulp-concat": "*",
     "gulp-connect": "*",
     "gulp-cssnano": "*",
