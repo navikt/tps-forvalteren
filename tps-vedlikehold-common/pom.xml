@@ -12,6 +12,7 @@
     <artifactId>tps-vedlikehold-common</artifactId>
     <packaging>pom</packaging>
     <name>TPS Vedlikeholdsklient :: Common</name>
+
     <modules>
         <module>tps-vedlikehold-common-test</module>
         <module>tps-vedlikehold-common-develop</module>
