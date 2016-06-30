@@ -8,11 +8,11 @@
         <link rel="stylesheet" href="lib/angular-material.min.css">
         <link rel="stylesheet" href="app.css">
     </head>
-    <body ng-app="tps-vedlikehold" layout="row">
-        <div id="side-navigator" ui-view="side-navigator" layout="column"></div>
-        <div layout="column" flex>
-            <div id="header" ui-view="header"></div>
-            <div class="main-content md-primary md-hue-3" ui-view="content" layout="column" tabindex="-1" flex></div>
+    <body ng-app="tps-vedlikehold" layout="column">
+        <div id="header" ui-view="header"></div>
+        <div layout="row" flex>
+            <div id="side-navigator" ui-view="side-navigator" layout="column" class="md-whiteframe-z2"></div>
+            <div class="main-content" ui-view="content" layout="column" tabindex="-1" flex ></div>
         </div>
     </body>
     <script type="text/javascript" src="vendor.min.js"></script>
