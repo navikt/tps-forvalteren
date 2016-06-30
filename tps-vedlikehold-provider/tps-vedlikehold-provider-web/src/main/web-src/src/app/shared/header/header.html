@@ -2,6 +2,9 @@
     <md-toolbar class="md-primary">
         <nav role="navigation" id="navigation" tabindex="-1">
             <div class="md-toolbar-tools">
+                <md-button ng-click="toggleSideNav('left')" class="md-icon-button" hide-gt-md aria-label="Menu">
+                    <ng-md-icon icon="menu"></ng-md-icon>
+                </md-button>
                 <a ui-sref="dashboard" rel="home">
                     <span>TPS vedlikeholdsklient</span>
                 </a>

@@ -3,6 +3,7 @@ require('angular-ui-router');
 require('angular-animate');
 require('angular-material');
 require('angular-messages');
+require('angular-material-icons');
 
 require('./components/login/login');
 require('./components/dashboard/dashboard');
@@ -13,7 +14,7 @@ require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']);
 
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
