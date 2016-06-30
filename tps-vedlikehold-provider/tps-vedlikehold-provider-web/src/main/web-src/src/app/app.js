@@ -60,11 +60,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         .accentPalette('blue', {
             'default': 'A200'
         })
-        .warnPalette('red')
         .backgroundPalette('tps-vk-grey', {
             'default': '50'
         });
-
 }]);
 
 app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationService', function($rootScope, authenticationService, sessionService, locationService){
@@ -75,7 +73,7 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
         }
 
         var authenticated = sessionService.getIsAuthenticated();
-        
+
         if (!authenticated) {
             locationService.redirectToLoginUrl();
         }
