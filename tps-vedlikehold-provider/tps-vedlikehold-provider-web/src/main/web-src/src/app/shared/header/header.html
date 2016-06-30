@@ -2,7 +2,6 @@
     <md-toolbar class="md-primary">
         <nav role="navigation" id="navigation" tabindex="-1">
             <div class="md-toolbar-tools">
-                <!--<div flex-gt-lg="20"></div>-->
                 <a ui-sref="dashboard" rel="home">
                     <span>TPS vedlikeholdsklient</span>
                 </a>
@@ -14,14 +13,13 @@
                 <span flex></span>
 
                 <div layout="column" class="user-info">
-                    <div class="md-body-1">{{currentUser.brukernavn}}</div>
-                    <div class="md-body-2">{{currentUser.navn}}</div>
+                    <div class="md-body-1">{{currentUser.username}}</div>
+                    <div class="md-body-2">{{currentUser.name}}</div>
                 </div>
                 <div flex="5"></div>
                 <md-button id="logout-button" class="md-raised md-primary md-hue-1" ng-click="logout()">
                     Logg ut
                 </md-button>
-                <!--<div flex-gt-lg="20"></div>-->
             </div>
         </nav>
     </md-toolbar>

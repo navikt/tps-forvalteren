@@ -35,7 +35,7 @@ angular.module('tps-vedlikehold.service')
         self.validateToken = function(callback){
             self.authenticate(false, callback);
         };
-        
+
         self.invalidateSession = function(callback){
             sessionService.setIsAuthenticated(false);
             sessionService.setIsSignedIn(false);
