@@ -29,6 +29,7 @@
     <properties>
         <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
+        <common-brevogarkiv.version>1.5.7</common-brevogarkiv.version>
     </properties>
 
     <dependencyManagement>
@@ -102,6 +103,13 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>2.4.0</version>
+            </dependency>
+
+            <!--SERVICES-->
+            <dependency>
+                <groupId>no.nav.brevogarkiv</groupId>
+                <artifactId>common-util-fasit</artifactId>
+                <version>${common-brevogarkiv.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
