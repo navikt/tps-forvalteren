@@ -1,33 +1,43 @@
 package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
-import com.google.common.collect.FluentIterable;
+import static com.google.common.base.Predicates.notNull;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toUserRole;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
-
-import static com.google.common.base.Predicates.notNull;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toUserRole;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
+import com.google.common.collect.FluentIterable;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
 public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
 
-    @Value("${tps.vedlikehold.security.writeroles}")
+    @Value("${tps.vedlikehold.security.t.writeroles}")
     private List<String> writeRolesT;
 
-    @Value("${tps.vedlikehold.security.writeroles}")
+    @Value("${tps.vedlikehold.security.t.readroles}")
     private List<String> readRolesT;
 
-    @Value("${tps.vedlikehold.security.writeroles}")
+    @Value("${tps.vedlikehold.security.q.writeroles}")
     private List<String> writeRolesQ;
 
-    @Value("${tps.vedlikehold.security.writeroles}")
+    @Value("${tps.vedlikehold.security.q.readroles}")
     private List<String> readRolesQ;
 
     private Map<String, UserRole> roles;

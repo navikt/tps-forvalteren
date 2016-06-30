@@ -18,6 +18,7 @@ var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-ved
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
 
+
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider,  $httpProvider, $urlRouteProvider) {
 
     $urlRouteProvider.otherwise("/");
@@ -64,6 +65,7 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
 
         if (!authenticated) {
             locationService.redirectToLoginUrl();
+
         }
     });
 

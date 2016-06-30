@@ -13,15 +13,12 @@
     <name>TPS Vedlikeholdsklient :: Application :: Local</name>
 
     <dependencies>
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-security-core</artifactId>
-            <version>RELEASE</version>
-        </dependency>
+        <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-web</artifactId>
         </dependency>
+        <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>

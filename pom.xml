@@ -33,6 +33,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--INTERNAL-->
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-application-local</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-application-local</artifactId>
@@ -50,17 +56,17 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-common-develop</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-consumer-mq</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-consumer-rs</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

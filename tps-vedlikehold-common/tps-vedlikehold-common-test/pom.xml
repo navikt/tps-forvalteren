@@ -13,6 +13,7 @@
     <name>TPS Vedlikeholdsklient :: Common :: Test</name>
 
     <dependencies>
+        <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>

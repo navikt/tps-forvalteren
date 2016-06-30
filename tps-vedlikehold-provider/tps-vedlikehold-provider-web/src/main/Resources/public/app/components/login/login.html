@@ -1,6 +1,6 @@
 <div ng-controller="loginCtrl" id="login-page" layout="column" layout-align="center center" layout-fill>
     <div class="loginBox md-whiteframe-z1", layout="column">
-        <md-toolbar class="tps-v-login-toolbar">
+        <md-toolbar class="md-default-theme tps-v-login-toolbar">
             <h2 class="md-toolbar-tools"><span ng-bind="title"></span></h2>
         </md-toolbar>
         <md-content layout="column"  layout-align="center" class="md-padding">
@@ -24,7 +24,7 @@
                     </ng-messages>
                 </md-input-container>
                 <md-input-container class="tps-v-btn-container">
-                    <md-button class="md-raised md-primary md-button md-ink-ripple login" name="login" type="submit" aria-label="Logg inn" ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
+                    <md-button class="md-raised md-primary md-button md-ink-ripple login" name="login" type="submit" ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
                         Logg inn
                     </md-button>
                 </md-input-container>

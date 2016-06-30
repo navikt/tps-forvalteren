@@ -18,6 +18,18 @@
     </modules>
 
     <dependencies>
+        <!--INTERNAL-->
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--LANGUAGE EXTENSIONS-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
