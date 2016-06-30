@@ -18,7 +18,6 @@ var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'tps-ved
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
 
-
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider,  $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
     $urlRouteProvider.otherwise("/");
@@ -32,7 +31,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 templateUrl: "app/components/login/login.html"
             }
         }
-
     })
     .state('dashboard', {
         url: "/dashboard",
@@ -52,18 +50,19 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
+    var extended_grey = $mdThemingProvider.extendPalette('grey', { '50': '#ffffff'});
+    $mdThemingProvider.definePalette('tps-vk-grey', extended_grey);
+
     $mdThemingProvider.theme('default')
         .primaryPalette('indigo', {
-            'default': '500',
-            'hue-1': '700',
-            'hue-2': '800'
+            'default': '500'
         })
         .accentPalette('blue', {
             'default': 'A200'
         })
         .warnPalette('red')
-        .backgroundPalette('grey', {
-            'default': '200'
+        .backgroundPalette('tps-vk-grey', {
+            'default': '50'
         });
 
 }]);
@@ -76,7 +75,7 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
         }
 
         var authenticated = sessionService.getIsAuthenticated();
-
+        
         if (!authenticated) {
             locationService.redirectToLoginUrl();
         }
