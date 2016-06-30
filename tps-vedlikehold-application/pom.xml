@@ -11,7 +11,9 @@
 
     <artifactId>tps-vedlikehold-application</artifactId>
     <packaging>pom</packaging>
+
     <name>TPS Vedlikeholdsklient :: Application</name>
+
     <modules>
         <module>tps-vedlikehold-application-jee</module>
         <module>tps-vedlikehold-application-local</module>
