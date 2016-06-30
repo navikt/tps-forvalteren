@@ -1,5 +1,9 @@
 package no.nav.tps.vedlikehold.consumer.rs.fasit;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.brevogarkiv.common.fasit.FasitClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 
 import javax.annotation.PostConstruct;
 import java.io.Console;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -33,6 +38,14 @@ public class FasitConfig {
             @Value("${fasit.username}") String username,
             @Value("${fasit.password}") String password) {
         return new FasitClient(BASE_URL, username, password);
+    }
+
+    @Bean
+    public Cache<String, String> getLoadingCache() {
+        return CacheBuilder.newBuilder()
+                .maximumSize(100)
+                .expireAfterWrite(10, TimeUnit.MINUTES)
+                .build();
     }
 
     public static void main(String[] args) {
