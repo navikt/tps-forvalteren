@@ -26,10 +26,7 @@ import java.io.Console;
 public class FasitConfig {
 
     @Value("${fasit.base-url}")
-    private static String BASE_URL;
-
-    @Autowired
-    FasitConsumer consumer;
+    private String BASE_URL;
 
     @Bean
     public FasitClient getFasitClient(
