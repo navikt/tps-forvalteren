@@ -46,6 +46,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($s
                 templateUrl: "app/shared/side-navigator/side-navigator.html"
             }
         }
+
     });
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -54,21 +55,15 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($s
 
 app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationService', function($rootScope, authenticationService, sessionService, locationService){
 
-    $rootScope.$on('$stateChangeSuccess', function(){
-        if (!sessionService.getIsAuthenticated()) {
-            authenticationService.validateToken();
-        }
-    });
-
     $rootScope.$on('$stateChangeStart', function(event, toState, toParam, fromState, fromParam){
-        if (!sessionService.getIsAuthenticated()) {
-            if (toState.name !== "login") {
-                locationService.redirectToLoginUrl();
-            }
-        } else {
-            if (toState.name === "login") {
-                locationService.redirectToLoginReturnUrl();
-            }
+        if (toState === 'login') {
+            return;
+        }
+
+        var authenticated = sessionService.getIsAuthenticated();
+
+        if (!authenticated) {
+            locationService.redirectToLoginUrl();
         }
     });
 
