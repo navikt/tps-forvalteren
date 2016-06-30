@@ -40,7 +40,7 @@ angular.module('tps-vedlikehold.service')
             sessionService.setIsAuthenticated(false);
             sessionService.setIsSignedIn(false);
             sessionService.setToken('');
-            $http.post(logoutRoute).then(function(){
+            $http.get(logoutRoute).then(function(){
                 self.authenticate(false, function(res){
                     sessionService.setCurrentUser(res.data);
                     if (callback) {callback(res);}

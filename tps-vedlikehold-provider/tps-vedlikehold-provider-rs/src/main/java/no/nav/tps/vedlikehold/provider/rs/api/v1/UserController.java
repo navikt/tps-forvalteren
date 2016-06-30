@@ -51,7 +51,7 @@ public class UserController {
         );
     }
 
-    @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/logout", method = RequestMethod.GET)
     public void logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
         userContextHolder.logout(request, response);
     }

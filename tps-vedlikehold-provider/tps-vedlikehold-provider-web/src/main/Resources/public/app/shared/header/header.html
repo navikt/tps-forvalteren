@@ -6,18 +6,16 @@
                     <span>TPS vedlikeholdsklient</span>
                 </a>
                 <div flex="5"></div>
-                <md-button class="md-raised md-primary md-hue-1" ng-click="testButtonClicked('Person')">
+                <md-button class="md-raised md-accent" ng-click="testButtonClicked('Person')">
                     Person
                 </md-button>
-
                 <span flex></span>
-
                 <div layout="column" class="user-info">
                     <div class="md-body-1">{{currentUser.username}}</div>
                     <div class="md-body-2">{{currentUser.name}}</div>
                 </div>
                 <div flex="5"></div>
-                <md-button id="logout-button" class="md-raised md-primary md-hue-1" ng-click="logout()">
+                <md-button id="logout-button" class="md-raised md-accent" ng-click="logout()">
                     Logg ut
                 </md-button>
             </div>

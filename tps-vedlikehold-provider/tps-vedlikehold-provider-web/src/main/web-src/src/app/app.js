@@ -19,7 +19,7 @@ require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
 
 
-app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider,  $httpProvider, $urlRouteProvider) {
+app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider,  $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
     $urlRouteProvider.otherwise("/");
 
@@ -52,6 +52,20 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($s
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
+    $mdThemingProvider.theme('default')
+        .primaryPalette('indigo', {
+            'default': '500',
+            'hue-1': '700',
+            'hue-2': '800'
+        })
+        .accentPalette('blue', {
+            'default': 'A200'
+        })
+        .warnPalette('red')
+        .backgroundPalette('grey', {
+            'default': '200'
+        });
+
 }]);
 
 app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationService', function($rootScope, authenticationService, sessionService, locationService){
@@ -65,7 +79,6 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
 
         if (!authenticated) {
             locationService.redirectToLoginUrl();
-
         }
     });
 
