@@ -1,10 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.rs.fasit;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.brevogarkiv.common.fasit.FasitClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
-import javax.annotation.PostConstruct;
-import java.io.Console;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
