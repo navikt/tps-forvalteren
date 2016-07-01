@@ -38,17 +38,4 @@ public class FasitConsumerTest {
 
     }
 
-    @Test
-    public void getApplicationCallsGetApplicationOnFasitClient() {
-        consumer.getApplication(ENVIRONMENT_DEVELOPMENT);
-        verify(fasitClientMock).getApplication( eq(ENVIRONMENT_DEVELOPMENT), anyString() );
-    }
-
-    @Test
-    public void getApplicationCallsReturnsApplicationFromFasitClient() {
-        when( fasitClientMock.getApplication( anyString(), anyString()) ).thenReturn( applicationMock );
-        FasitClient.Application application = consumer.getApplication(ENVIRONMENT_DEVELOPMENT);
-        assertThat(application, is(applicationMock));
-    }
-
 }
