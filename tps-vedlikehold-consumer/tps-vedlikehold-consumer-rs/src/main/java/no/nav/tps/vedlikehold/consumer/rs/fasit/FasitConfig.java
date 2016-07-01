@@ -41,7 +41,7 @@ public class FasitConfig {
     }
 
     @Bean
-    public Cache<String, String> getLoadingCache() {
+    public Cache<String, String> getCache() {
         return CacheBuilder.newBuilder()
                 .maximumSize(100)
                 .expireAfterWrite(10, TimeUnit.MINUTES)

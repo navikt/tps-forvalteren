@@ -31,13 +31,6 @@ public class FasitConsumer {
     @Autowired
     private Cache<String, Object> cache;
 
-    @PostConstruct
-    public void asdasd() {
-        System.out.println(getRequestQueue("u5"));
-        System.out.println(getRequestQueue("u5"));
-        System.out.println(getRequestQueue("u5"));
-        System.out.println(getRequestQueue("u5"));
-    }
 
     /* Queues */
 
@@ -52,10 +45,18 @@ public class FasitConsumer {
     private String getQueue(String alias, String environment) {
         String queue = (String) getResourceFromCache(alias, environment);
 
-        if (queue == null) {
-            queue = getApplication(environment).getQueue(alias);
-            addResourceToCache(queue, alias, environment);
+        if (queue != null) {
+            return queue;
         }
+
+        FasitClient.Application application = getApplication(environment);
+
+        if (application == null) {
+            return null;
+        }
+
+        queue = application.getQueue(alias);
+        addResourceToCache(queue, alias, environment);
 
         return queue;
     }
