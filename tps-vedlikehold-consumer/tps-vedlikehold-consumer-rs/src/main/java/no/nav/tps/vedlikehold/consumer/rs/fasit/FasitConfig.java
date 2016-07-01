@@ -26,13 +26,6 @@ public class FasitConfig {
     /* Used to autowire custom initialized objects */
     private AutowireCapableBeanFactory beanFactory;
 
-    @Bean
-    public FasitClient getFasitClient(
-            @Value("${fasit.base-url}") String baseUrl,
-            @Value("${fasit.username}") String username,
-            @Value("${fasit.password}") String password) {
-        return new FasitClient(baseUrl, username, password);
-    }
 
     /**
      * Create a FasitQueueConsumer for TPSWS and inject dependencies.
@@ -47,6 +40,14 @@ public class FasitConfig {
         beanFactory.autowireBean(consumer);
 
         return consumer;
+    }
+
+    @Bean
+    public FasitClient getFasitClient(
+            @Value("${fasit.base-url}") String baseUrl,
+            @Value("${fasit.username}") String username,
+            @Value("${fasit.password}") String password) {
+        return new FasitClient(baseUrl, username, password);
     }
 
     public static void main(String[] args) {

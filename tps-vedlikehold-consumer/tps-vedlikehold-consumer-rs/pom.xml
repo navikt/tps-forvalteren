@@ -15,8 +15,9 @@
     <dependencies>
         <!--INTERNAL-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!--SERVICES-->
