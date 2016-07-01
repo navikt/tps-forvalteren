@@ -38,4 +38,10 @@ public class FasitConsumerTest {
 
     }
 
+    @Test
+
+    public void pass() {
+
+    }
+
 }
