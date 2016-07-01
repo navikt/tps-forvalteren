@@ -11,6 +11,42 @@
 
     <artifactId>tps-vedlikehold-application-jee</artifactId>
     <name>TPS Vedlikeholdsklient :: Application :: JEE</name>
+    <packaging>ear</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-provider-web</artifactId>
+            <type>war</type>
+        </dependency>
+    </dependencies>
 
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <version>${application-ear.version}</version>
+                    <applicationName>${application.name}</applicationName>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <skinnyWars>true</skinnyWars>
+                    <archive>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                    <modules>
+                        <!-- Make sure the web artifact remains the same inside the EAR archive (instead of updating constantly with every new version.) -->
+                        <webModule>
+                            <groupId>no.nav.tps.vedlikehold</groupId>
+                            <artifactId>tps-vedlikehold-provider-web</artifactId>
+                            <contextRoot>/${application.name}</contextRoot>
+                            <bundleFileName>jee-web.war</bundleFileName>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -12,6 +12,8 @@
     <artifactId>tps-vedlikehold-provider-web</artifactId>
     <name>TPS Vedlikeholdsklient :: Provider :: Web</name>
 
+    <packaging>war</packaging>
+
     <dependencies>
         <!--INTERNAL-->
         <dependency>
@@ -26,4 +28,14 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
