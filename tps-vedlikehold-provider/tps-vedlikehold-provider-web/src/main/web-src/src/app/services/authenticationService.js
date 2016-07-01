@@ -5,7 +5,7 @@ angular.module('tps-vedlikehold.service')
 
         var loginRoute = 'api/v1/user';
         var logoutRoute = 'api/v1/user/logout';
-
+        
         self.authenticate = function(credentials, callback) {
 
             var headers = credentials ?
