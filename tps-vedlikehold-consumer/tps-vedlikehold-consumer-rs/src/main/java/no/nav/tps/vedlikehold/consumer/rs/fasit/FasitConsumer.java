@@ -1,14 +1,12 @@
 package no.nav.tps.vedlikehold.consumer.rs.fasit;
 
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.LoadingCache;
 import no.nav.brevogarkiv.common.fasit.FasitClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Connects to the TPSWS application's Fasit resources
@@ -17,16 +15,21 @@ import java.util.concurrent.ExecutionException;
  */
 @Service
 public class FasitConsumer {
-    //TODO: Could be configured in fasit/applicationproperties?
-    private static final String APPLICATION_NAME        = "tpsws";
-    private static final String MESSAGE_QUEUE_REQUEST   = "tps.endrings.melding";
-    private static final String MESSAGE_QUEUE_RESPONSE  = "tps.endrings.melding.svar";
+
+    @Value("${fasit.tpsws.application}")
+    private String application;
+
+    @Value("${fasit.tpsws.message.queue.request}")
+    private String messageQueueRequest;
+
+    @Value("${fasit.tpsws.message.queue.response}")
+    private String messageQueueResponse;
 
     @Autowired
     private FasitClient fasitClient;
 
     @Autowired
-    private Cache<String, String> cache;
+    private Cache<String, Object> cache;
 
     @PostConstruct
     public void asdasd() {
@@ -36,32 +39,47 @@ public class FasitConsumer {
         System.out.println(getRequestQueue("u5"));
     }
 
-    public FasitClient.Application getApplication(String environment) {
-        return fasitClient.getApplication(environment, APPLICATION_NAME);
-    }
+    /* Queues */
 
     public String getRequestQueue(String environment) {
-        return getQueue(MESSAGE_QUEUE_REQUEST, environment);
+        return getQueue(messageQueueRequest, environment);
     }
 
     public String getResponseQueue(String environment) {
-        return getQueue(MESSAGE_QUEUE_RESPONSE, environment);
+        return getQueue(messageQueueResponse, environment);
     }
 
-    private String getQueue(String resource, String environment) {
-        String identifier = identifier(resource, environment);
-        String queue    = cache.getIfPresent(identifier);
+    private String getQueue(String alias, String environment) {
+        String queue = (String) getResourceFromCache(alias, environment);
 
         if (queue == null) {
-            queue = getApplication(environment).getQueue(resource);
-            cache.put(identifier, queue);
+            queue = getApplication(environment).getQueue(alias);
+            addResourceToCache(queue, alias, environment);
         }
 
         return queue;
     }
 
-    private String identifier(String resource, String environment) {
-        return environment + "." + resource;
+    /* Application */
+
+    private FasitClient.Application getApplication(String environment) {
+        return fasitClient.getApplication(environment, application);
+    }
+
+    /* Cache */
+
+    private Object getResourceFromCache(String alias, String environment) {
+        String identifier = getIdentifier(alias, environment);
+        return cache.getIfPresent(identifier);
+    }
+
+    private void addResourceToCache(Object resource, String alias, String environment) {
+        String identifier = getIdentifier(alias, environment);
+        cache.put(identifier, resource);
+    }
+
+    private String getIdentifier(String alias, String environment) {
+        return environment + "." + alias;
     }
 
 }
