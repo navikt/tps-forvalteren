@@ -67,8 +67,14 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 }]);
 
 app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationService', function($rootScope, authenticationService, sessionService, locationService){
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParam, fromState, fromParam){
-        if (toState === 'login') {
+    $rootScope.$on('$stateChangeSuccess', function(event, toState){
+        if (toState.name === 'dashboard') {
+            authenticationService.authenticate(false, null);
+        }
+    });
+
+    $rootScope.$on('$stateChangeStart', function(event, toState){
+        if (toState.name === 'login') {
             return;
         }
 
