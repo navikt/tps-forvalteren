@@ -67,7 +67,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 }]);
 
 app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationService', function($rootScope, authenticationService, sessionService, locationService){
-
     $rootScope.$on('$stateChangeStart', function(event, toState, toParam, fromState, fromParam){
         if (toState === 'login') {
             return;

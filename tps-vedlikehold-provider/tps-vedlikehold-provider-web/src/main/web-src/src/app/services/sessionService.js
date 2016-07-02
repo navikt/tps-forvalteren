@@ -42,6 +42,7 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.setCurrentUser = function(user) {
+
             $rootScope.currentUser = {
                 username: user.username,
                 name: user.name,
