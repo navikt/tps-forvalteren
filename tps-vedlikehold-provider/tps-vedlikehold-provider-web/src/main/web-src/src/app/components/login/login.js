@@ -26,7 +26,7 @@ angular.module('tps-vedlikehold.login', ['ngMessages'])
                 $scope.pendingRequest = false;
             };
 
-            authenticationService.validateToken(function(authResponse) {
+            authenticationService.authenticate(false, function(authResponse) {
                 if (authResponse.status === 200) {
                     locationService.redirectToLoginReturnUrl();
                 }

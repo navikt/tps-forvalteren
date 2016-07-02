@@ -18,7 +18,6 @@ angular.module('tps-vedlikehold.service')
                         sessionService.setIsAuthenticated(true);
                         sessionService.setIsSignedIn(true);
                         sessionService.setCurrentUser(res.data);
-                        sessionService.setToken(res.data.token);
 
                         if (callback) {
                             callback(res);
@@ -32,14 +31,9 @@ angular.module('tps-vedlikehold.service')
                     });
         };
 
-        self.validateToken = function(callback){
-            self.authenticate(false, callback);
-        };
-
         self.invalidateSession = function(callback){
             sessionService.setIsAuthenticated(false);
             sessionService.setIsSignedIn(false);
-            sessionService.setToken('');
 
             $http.post(logoutRoute).then(function(){
                 self.authenticate(false, function(res){
