@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://appconfig.aura.nav.no"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
+
+    <name>tps-vedlikehold</name>
+
+    <!--Resursser applikasjonen konsumerer-->
+    <resources>
+        <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="validering.virksomhet.diskresjonskodev1"/>
+        <webservice alias="virksomhet:PipErEgenAnsatt_v1" mapToProperty="validering.virksomhet.egenansattv1"/>
+        <ldap alias="ldap" mapToProperty="ldap"/>
+    </resources>
+
+    <artifacts>
+        <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>
+    </artifacts>
+</application>
