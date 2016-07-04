@@ -1,6 +1,10 @@
 package no.nav.tps.vedlikehold.consumer.rs.fasit.queue;
 
 /**
+ * Convenience class for exposing MQ resources.
+ * Connects to the application's Fasit resources and exposes its request and response queues.
+ * Retrieved queues are cached.
+ *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 public class DefaultFasitMessageQueueConsumer extends DefaultFasitQueueConsumer implements FasitMessageQueueConsumer {

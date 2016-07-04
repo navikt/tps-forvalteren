@@ -9,13 +9,13 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * Connects to the application's Fasit resources and exposes its queues
- * Retrieved queues are cached
+ * Connects to the application's Fasit resources and exposes its queues.
+ * Retrieved queues are cached.
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public class DefaultFasitQueueConsumer {
+public class DefaultFasitQueueConsumer implements FasitQueueConsumer {
 
     @Autowired
     private FasitClient fasitClient;
@@ -55,8 +55,6 @@ public class DefaultFasitQueueConsumer {
 
         return queue;
     }
-
-    /* Application */
 
     private FasitClient.Application getApplication(String environment) {
         return fasitClient.getApplication(environment, applicationName);
