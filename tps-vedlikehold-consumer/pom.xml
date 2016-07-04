@@ -15,7 +15,7 @@
     <name>TPS Vedlikeholdsklient :: Consumer</name>
     <modules>
         <module>tps-vedlikehold-consumer-mq</module>
-        <module>tps-vedlikehold-consumer-rs</module>
+        <module>tps-vedlikehold-consumer-ws</module>
     </modules>
 
 
