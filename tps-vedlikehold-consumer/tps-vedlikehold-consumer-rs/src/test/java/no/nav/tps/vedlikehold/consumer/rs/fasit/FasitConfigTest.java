@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.rs.fasit;
 
+import no.nav.tps.vedlikehold.consumer.rs.fasit.queue.DefaultFasitMessageQueueConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,7 +26,7 @@ public class FasitConfigTest {
 
     @Test
     public void getTpswsFasitWueueConsumerAutowiresTheInstatiatedConsumer() {
-        fasitConfig.getTpswsFasitQueueConsumer();
-        verify(beanFactoryMock).autowireBean( isA(FasitQueueConsumer.class) );
+        fasitConfig.getTpswsFasitMessageQueueQueueConsumer();
+        verify(beanFactoryMock).autowireBean( isA(DefaultFasitMessageQueueConsumer.class) );
     }
 }

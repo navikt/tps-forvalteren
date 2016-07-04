@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.rs.fasit;
+package no.nav.tps.vedlikehold.consumer.rs.fasit.queue;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * Connects to the application's Fasit resources and exposes its queues
  * Retrieved queues are cached
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public class FasitQueueConsumer {
+public class DefaultFasitQueueConsumer {
 
     @Autowired
     private FasitClient fasitClient;
@@ -22,7 +23,7 @@ public class FasitQueueConsumer {
     private String applicationName;
     private Cache<String, Object> cache;
 
-    public FasitQueueConsumer( String applicationName ) {
+    public DefaultFasitQueueConsumer( String applicationName ) {
         this.applicationName = applicationName;
 
         this.cache = CacheBuilder.newBuilder()
