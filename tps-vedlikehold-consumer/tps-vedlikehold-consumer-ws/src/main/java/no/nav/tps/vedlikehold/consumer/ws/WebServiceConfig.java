@@ -1,6 +1,6 @@
-package no.nav.tps.vedlikehold.consumer.rs;
+package no.nav.tps.vedlikehold.consumer.ws;
 
-import no.nav.tps.vedlikehold.consumer.rs.fasit.FasitConfig;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -12,5 +12,5 @@ import org.springframework.context.annotation.Import;
 @Import({
         FasitConfig.class
 })
-public class RestConfig {
+public class WebServiceConfig {
 }

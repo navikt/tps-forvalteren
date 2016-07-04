@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.rs.fasit.queue;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

@@ -1,7 +1,7 @@
-package no.nav.tps.vedlikehold.consumer.rs.fasit.queue;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
 
 /**
- * Created by Øyvind Grimnes, Visma Consulting AS on 04.07.2016.
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
 public interface FasitMessageQueueConsumer {
     String getRequestQueue(String environment);

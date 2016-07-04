@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.rs.fasit.queue;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

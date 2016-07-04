@@ -1,8 +1,8 @@
-package no.nav.tps.vedlikehold.consumer.rs.fasit;
+package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import com.google.common.cache.Cache;
 import no.nav.brevogarkiv.common.fasit.FasitClient;
-import no.nav.tps.vedlikehold.consumer.rs.fasit.queue.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.DefaultFasitMessageQueueConsumer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,8 +1,8 @@
-package no.nav.tps.vedlikehold.consumer.rs.fasit;
+package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import no.nav.brevogarkiv.common.fasit.FasitClient;
-import no.nav.tps.vedlikehold.consumer.rs.fasit.queue.DefaultFasitMessageQueueConsumer;
-import no.nav.tps.vedlikehold.consumer.rs.fasit.queue.FasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
