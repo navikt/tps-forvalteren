@@ -18,9 +18,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses = {
-        FasitPackageMarker.class
-})
+@ComponentScan()
 @PropertySource("classpath:fasit.properties")
 public class FasitConfig {
 
