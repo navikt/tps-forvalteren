@@ -3,11 +3,8 @@ package no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -33,6 +30,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         } catch (PersonNotFoundException e) {
             // At en person ikke finnes i diskresjonskode er bare en funksjonell feil,
             // ikke noe som skal logges eller håndteres som en teknisk feil.
+            return true;
         } catch (Exception e) {
             throw e;
         }

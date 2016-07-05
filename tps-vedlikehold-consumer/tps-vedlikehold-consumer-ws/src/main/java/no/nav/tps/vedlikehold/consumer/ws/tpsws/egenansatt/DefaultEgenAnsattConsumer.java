@@ -4,8 +4,6 @@ import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
-import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 
