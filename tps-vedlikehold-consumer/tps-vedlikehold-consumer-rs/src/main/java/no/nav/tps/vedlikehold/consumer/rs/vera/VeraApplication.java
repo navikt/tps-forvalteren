@@ -92,5 +92,6 @@ public class VeraApplication implements Comparable<VeraApplication> {
 
     private String numberedEnv() {
         return String.format("%d%s", ENV_CLASSES.indexOf(environment.charAt(0)) * 1000, environment.substring(1));
+
     }
 }
