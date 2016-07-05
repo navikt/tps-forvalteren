@@ -1,3 +1,6 @@
+/**
+ * @author Kristian Kyvik (Visma Consulting AS).
+ */
 angular.module('tps-vedlikehold.service')
     .service('sessionService', ['$rootScope', function($rootScope) {
 

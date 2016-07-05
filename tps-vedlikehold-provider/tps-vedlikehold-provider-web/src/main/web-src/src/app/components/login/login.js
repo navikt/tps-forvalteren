@@ -1,5 +1,5 @@
 /**
- * @author Frederik Gørvell (Visma Consulting AS).
+ * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold.login', ['ngMessages'])
     .controller('loginCtrl', ['$scope', 'authenticationService', 'locationService',

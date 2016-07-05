@@ -1,5 +1,67 @@
 <div class="dashboard" ng-controller="dashboardCtrl" layout="column" class="md-primary md-hue-3" flex>
-    <md-content flex="30" class="tps-vk-top md-whiteframe-z2" >
+    <md-content flex="30" class="tps-vk-top md-whiteframe-z2">
+        <!-- temporary -->
+        <form ng-submit="submit()">
+            <div layout="row" layout-wrap>
+                <div ng-repeat="field in fields" flex="33">
+                    <!--generateField(field)-->
+                    <div ng-switch="field.type">
+                        <div ng-switch-when="text">
+                            <md-input-container>
+                                <label>{{ field.label }}</label>
+                                <input ng-model="field.value">
+                            </md-input-container>
+                        </div>
+
+                        <div ng-switch-when="date">
+                            <md-datepicker ng-model="field.value" md-placeholder="{{ field.label }}" flex-gt-sm="">
+                            </md-datepicker>
+                        </div>
+
+                        <div ng-switch-when="select">
+                            <md-input-container flex="100">
+                                <label>{{ field.label }}</label>
+                                <md-select ng-model="field.value">
+                                    <md-option ng-repeat="val in field.values" value="{{val}}">{{ val }}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div layout="row">
+                <span flex></span>
+                <md-button type="submit" class="md-raised md-accent">Send til TPS</md-button>
+            </div>
+        </form>
+        <!--<div layout-gt-sm="row">-->
+            <!--<md-input-container class="md-block" flex-gt-sm="">-->
+                <!--<label>Fødselsnummer</label>-->
+                <!--<input ng-model="request.fNr">-->
+            <!--</md-input-container>-->
+
+            <!--<md-datepicker ng-model="request.date" md-placeholder="Dato" flex-gt-sm="">-->
+            <!--</md-datepicker>-->
+
+            <!--<md-input-container class="md-block" flex-gt-sm="">-->
+                <!--<label>Variant</label>-->
+                <!--<md-select ng-model="request.variant">-->
+                    <!--<md-option value="{{variant}}" ng-repeat="variant in varianter">-->
+                        <!--{{variant}}-->
+                    <!--</md-option>-->
+                <!--</md-select>-->
+            <!--</md-input-container>-->
+        <!--</div>-->
+        <!--<div layout-gt-sm="row">-->
+            <!--<md-input-container class="md-block" flex-gt-sm="">-->
+                <!--<label>Miljø</label>-->
+                <!--<input ng-model="request.miljo">-->
+            <!--</md-input-container>-->
+            <!--<md-button id="send-to-tps-button" class="md-raised md-accent" ng-click="">-->
+                <!--Send til TPS-->
+            <!--</md-button>-->
+        <!--</div>-->
+        <!-- /temporary -->
     </md-content>
     <md-content flex="70" class="tps-vk-bottom md-whiteframe-z2" >
     </md-content>

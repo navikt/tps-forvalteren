@@ -82,9 +82,10 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
 
         var authenticated = sessionService.getIsAuthenticated();
 
-        if (!authenticated) {
-            locationService.redirectToLoginUrl();
-        }
+        // Commented out for testing reasons
+        // if (!authenticated) {
+        //     locationService.redirectToLoginUrl();
+        // }
     });
 
 }]);
