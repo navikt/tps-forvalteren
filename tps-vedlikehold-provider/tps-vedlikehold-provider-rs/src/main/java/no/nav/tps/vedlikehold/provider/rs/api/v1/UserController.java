@@ -4,6 +4,7 @@ import com.google.common.collect.FluentIterable;
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

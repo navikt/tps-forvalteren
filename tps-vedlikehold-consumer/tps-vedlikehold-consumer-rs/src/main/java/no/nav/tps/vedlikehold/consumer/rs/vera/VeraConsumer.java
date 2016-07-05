@@ -1,13 +1,13 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.inject.Inject;
 
-
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import static java.util.stream.Collectors.toList;
 
@@ -16,9 +16,15 @@ import static java.util.stream.Collectors.toList;
  */
 public class VeraConsumer {
 
-    @Inject
     private RestTemplate template;
-    public static final String GET_ENVS_URL = "http://vera.adeo.no/api/v1/deploylog?onlyLatest=true&filterUndeployed=true&application=tpsw";
+    public static final String GET_ENVS_URL = "http://vera.adeo.no/api/v1/deploylog?onlyLatest=true&filterUndeployed=true&application=tpsws";
+
+    public VeraConsumer() {
+        template = new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new MappingJackson2HttpMessageConverter());
+        template.setMessageConverters(messageConverters);
+    }
 
     public List<String> listEnvs() {
         VeraApplication[] applications = template.getForObject(GET_ENVS_URL, VeraApplication[].class);
@@ -30,4 +36,5 @@ public class VeraConsumer {
                 .map(VeraApplication::getEnvironment)
                 .collect(toList());
     }
+
 }
