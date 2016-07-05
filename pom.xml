@@ -36,6 +36,7 @@
         <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
         <common-brevogarkiv.version>1.5.7</common-brevogarkiv.version>
+        <java.version>1.8</java.version>
     </properties>
 
 
