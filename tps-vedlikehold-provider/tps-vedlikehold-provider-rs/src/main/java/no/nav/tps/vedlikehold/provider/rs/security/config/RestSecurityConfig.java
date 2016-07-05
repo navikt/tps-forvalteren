@@ -5,11 +5,11 @@ import java.util.List;
 import no.nav.tps.vedlikehold.provider.rs.security.PackageMarker;
 import no.nav.tps.vedlikehold.provider.rs.security.mapping.RestAuthoritiesMapper;
 import no.nav.tps.vedlikehold.provider.rs.security.mapping.RestUserDetailsMapper;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;

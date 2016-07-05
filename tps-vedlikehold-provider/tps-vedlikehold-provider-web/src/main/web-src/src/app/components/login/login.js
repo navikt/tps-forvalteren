@@ -1,6 +1,6 @@
 /**
- * Created by G148235 on 24.06.2016.
- */
+ * @author Frederik Gørvell (Visma Consulting AS).
+ * */
 angular.module('tps-vedlikehold.login', ['ngMessages'])
     .controller('loginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
@@ -25,6 +25,12 @@ angular.module('tps-vedlikehold.login', ['ngMessages'])
                 }
                 $scope.pendingRequest = false;
             };
+
+            authenticationService.authenticate(false, function(authResponse) {
+                if (authResponse.status === 200) {
+                    locationService.redirectToLoginReturnUrl();
+                }
+            });
 
             $scope.login = function() {
                 $scope.pendingRequest = true;
