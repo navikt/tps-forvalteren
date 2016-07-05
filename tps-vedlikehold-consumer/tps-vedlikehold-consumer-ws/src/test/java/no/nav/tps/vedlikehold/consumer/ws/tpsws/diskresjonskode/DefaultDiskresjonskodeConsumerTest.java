@@ -29,6 +29,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDiskresjonskodeConsumerTest {
 
+    public static final String DISKRESJONSKODE_NOT_FOUND_ERROR = "Ingen forekomster funnet";
+
     private static final String TEST_FNR = "11223344556";
 
     @InjectMocks
@@ -68,13 +70,6 @@ public class DefaultDiskresjonskodeConsumerTest {
         expectedException.expectMessage(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
 
         consumer.ping();
-    }
-
-
-    @Test
-    public void testTest() throws Exception {
-        DefaultDiskresjonskodeConsumer c = new DefaultDiskresjonskodeConsumer();
-//        System.out.println(c.ping());
     }
 
     @Test
