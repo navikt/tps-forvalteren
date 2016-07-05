@@ -42,9 +42,7 @@ public class DefaultDiskresjonskodeConsumerTest {
     //Test users
     private static final String TEST_FNR = "11223344556";
     private static final List<String> TEST_FNR_LIST = Arrays.asList("11223344556", "99887766554");
-    ;
     private static final List<String> EMPTY_TEST_FNR_LIST = Arrays.asList();
-    ;
 
     @InjectMocks
     private DefaultDiskresjonskodeConsumer diskresjonskodeConsumer;
@@ -132,14 +130,4 @@ public class DefaultDiskresjonskodeConsumerTest {
 
         diskresjonskodeConsumer.getDiskresjonskodeBolk(null);
     }
-
-//    @Test
-//    public void getDiskresjonskodeReturnsPersonNotFoundExceptionIfCalledWithFnrNotInDiskresjonsDatabasen() throws Exception {
-//        RuntimeException thrownException = new PersonNotFoundException("00000000000", new Throwable());
-//        when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenThrow(thrownException);
-//
-//        expectedException.expect(PersonNotFoundException.class);
-//
-//        diskresjonskodeConsumer.getDiskresjonskode(TEST_FNR);
-//    }
 }
