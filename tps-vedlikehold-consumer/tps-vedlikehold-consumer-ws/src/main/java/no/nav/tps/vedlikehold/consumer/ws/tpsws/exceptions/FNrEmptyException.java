@@ -6,6 +6,6 @@ package no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions;
 public class FNrEmptyException extends IllegalArgumentException {
 
     public FNrEmptyException() {
-        super("Metoden ble kalt med et tomt fNr");
+        super("Metoden ble kalt uten fNr");
     }
 }

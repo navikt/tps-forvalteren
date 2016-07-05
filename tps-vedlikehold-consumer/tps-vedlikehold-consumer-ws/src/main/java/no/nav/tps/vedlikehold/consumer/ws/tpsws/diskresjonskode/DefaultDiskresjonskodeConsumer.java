@@ -60,6 +60,10 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
 
     @Override
     public HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe) {
+        if (isEmpty(fNrListe)) {
+            throw new FNrEmptyException();
+        }
+
         HentDiskresjonskodeBolkRequest request = createBulkRequest(fNrListe);
 
         return diskresjonskodePortType.hentDiskresjonskodeBolk(request);
