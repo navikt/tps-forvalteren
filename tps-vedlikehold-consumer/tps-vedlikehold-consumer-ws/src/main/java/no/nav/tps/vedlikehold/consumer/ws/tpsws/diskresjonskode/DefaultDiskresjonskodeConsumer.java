@@ -1,12 +1,16 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode;
 
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 
 import javax.inject.Inject;
+
+import java.util.List;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -15,7 +19,6 @@ import static org.springframework.util.ObjectUtils.isEmpty;
  */
 public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     public static final String DISKRESJONSKODE_NOT_FOUND_ERROR = "Ingen forekomster funnet";
-    public static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -30,7 +33,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         } catch (PersonNotFoundException e) {
             // At en person ikke finnes i diskresjonskode er bare en funksjonell feil,
             // ikke noe som skal logges eller håndteres som en teknisk feil.
-            return true;
+            return true; //TODO: Bedre måte å gjøre dette på?
         } catch (Exception e) {
             throw e;
         }
@@ -55,12 +58,24 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         }
     }
 
+    @Override
+    public HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe) {
+        HentDiskresjonskodeBolkRequest request = createBulkRequest(fNrListe);
+
+        return diskresjonskodePortType.hentDiskresjonskodeBolk(request);
+    }
+
+    private HentDiskresjonskodeBolkRequest createBulkRequest(List<String> fNrListe) {
+        HentDiskresjonskodeBolkRequest request = new HentDiskresjonskodeBolkRequest();
+        request.getIdentListe().addAll(fNrListe);
+
+        return request;
+    }
+
     private HentDiskresjonskodeRequest createRequest(String fNr) {
         HentDiskresjonskodeRequest request = new HentDiskresjonskodeRequest();
         request.setIdent(fNr);
 
         return request;
     }
-
-//    TODO: HentDiskresjonskodeBolkResponse?
 }

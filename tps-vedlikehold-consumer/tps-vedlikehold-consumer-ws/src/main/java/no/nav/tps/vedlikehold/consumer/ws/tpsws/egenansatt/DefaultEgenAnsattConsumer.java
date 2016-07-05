@@ -13,7 +13,6 @@ import static org.springframework.util.ObjectUtils.isEmpty;
  * @author Tobias Hansen (Visma Consulting AS).
  */
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
-    public static final String FNR_NOT_SET_ERROR = "fNr ikke satt";
 
     // Test user
     private static final String PING_FNR = "13037999916";

@@ -4,6 +4,7 @@ import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,9 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.DISKRESJONSKODE_NOT_FOUND_ERROR;
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.THE_DATABASE_DOES_NOT_ANSWER_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -30,11 +28,13 @@ import static org.mockito.Mockito.when;
 public class DefaultDiskresjonskodeConsumerTest {
 
     public static final String DISKRESJONSKODE_NOT_FOUND_ERROR = "Ingen forekomster funnet";
+    private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
+
 
     private static final String TEST_FNR = "11223344556";
 
     @InjectMocks
-    private DefaultDiskresjonskodeConsumer consumer;
+    private DefaultDiskresjonskodeConsumer diskresjonskodeConsumer;
 
     @Mock
     private DiskresjonskodePortType diskresjonskodePortType;
@@ -43,38 +43,38 @@ public class DefaultDiskresjonskodeConsumerTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void pingReturnsTrueWhenDiskresjonskodeRespondsNormally() throws Exception {
+    public void pingReturnsTrueWhenDiskresjonskodeRespondsNormally() throws java.lang.Exception {
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenReturn(new HentDiskresjonskodeResponse());
 
-        boolean result = consumer.ping();
+        boolean result = diskresjonskodeConsumer.ping();
 
         assertThat(result, is(equalTo(true)));
     }
 
     @Test
-    public void pingReturnsTrueWhenDiskresjonskodeThrowsExceptionWithIngenForekomsterFunnetMessage() throws Exception {
-        RuntimeException thrownException = new RuntimeException(DISKRESJONSKODE_NOT_FOUND_ERROR);
+    public void pingReturnsTrueWhenDiskresjonskodeThrowsExceptionWithIngenForekomsterFunnetMessage() throws java.lang.Exception {
+        RuntimeException thrownException = new PersonNotFoundException("00000000000", new Throwable());
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenThrow(thrownException);
 
-        boolean result = consumer.ping();
+        boolean result = diskresjonskodeConsumer.ping();
 
         assertThat(result, is(equalTo(true)));
     }
 
     @Test
-    public void pingThrowsExceptionWithoutIngenForekomsterFunnetMessage() throws Exception {
+    public void pingThrowsExceptionWithoutIngenForekomsterFunnetMessage() throws java.lang.Exception {
         RuntimeException thrownException = new RuntimeException(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenThrow(thrownException);
 
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
 
-        consumer.ping();
+        diskresjonskodeConsumer.ping();
     }
 
     @Test
-    public void hentDiskresjonskodeRequestIsSentWithCorrectFNr() throws Exception {
-        consumer.getDiskresjonskode(TEST_FNR);
+    public void hentDiskresjonskodeRequestIsSentWithCorrectFNr() throws java.lang.Exception {
+        diskresjonskodeConsumer.getDiskresjonskode(TEST_FNR);
 
         ArgumentCaptor<HentDiskresjonskodeRequest> captor = ArgumentCaptor.forClass(HentDiskresjonskodeRequest.class);
         verify(diskresjonskodePortType).hentDiskresjonskode(captor.capture());
@@ -83,16 +83,16 @@ public class DefaultDiskresjonskodeConsumerTest {
     }
 
     @Test
-    public void isEgenAnsattThrowsFNrEmptyExceptionCalledWithEmptyString() throws Exception {
+    public void isEgenAnsattThrowsFNrEmptyExceptionCalledWithEmptyString() throws java.lang.Exception {
         expectedException.expect(FNrEmptyException.class);
 
-        consumer.getDiskresjonskode("");
+        diskresjonskodeConsumer.getDiskresjonskode("");
     }
 
     @Test
-    public void isEgenAnsattThrowsFNrEmptyExceptionCalledWithNull() throws Exception {
+    public void isEgenAnsattThrowsFNrEmptyExceptionCalledWithNull() throws java.lang.Exception {
         expectedException.expect(FNrEmptyException.class);
 
-        consumer.getDiskresjonskode(null);
+        diskresjonskodeConsumer.getDiskresjonskode(null);
     }
 }
