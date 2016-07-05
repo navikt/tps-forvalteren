@@ -1,7 +1,9 @@
 package no.nav.tps.vedlikehold.provider.rs.security.config;
 
 import no.nav.tps.vedlikehold.provider.rs.security.csrf.CsrfHeaderFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Value("${tps.vedlikehold.cookie.path}")
+    private String cookiePath;
 
     @Autowired
     private ActiveDirectoryLdapAuthenticationProvider authenticationProvider;
@@ -31,20 +35,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/api/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/user")
-                .permitAll()
-                .antMatchers("/api/**")
-                .hasRole("READ")
+                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                .antMatchers("/api/**").hasAnyRole("READ_T", "READ_Q")
                 .and().httpBasic()
                 .and()
                 .csrf()
                 .csrfTokenRepository(tokenRepository)
                 .and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+                .addFilterAfter(new CsrfHeaderFilter(cookiePath), CsrfFilter.class);
     }
-
-
 }

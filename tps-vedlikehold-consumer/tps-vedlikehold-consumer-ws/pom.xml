@@ -62,6 +62,17 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-ws-security</artifactId>
             </dependency>
-        </dependencies>
 
+            <!--SERVICES-->
+            <dependency>
+                <groupId>no.nav.brevogarkiv</groupId>
+                <artifactId>common-util-fasit</artifactId>
+            </dependency>
+
+            <!--SPRING-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+            </dependency>
+        </dependencies>
 </project>

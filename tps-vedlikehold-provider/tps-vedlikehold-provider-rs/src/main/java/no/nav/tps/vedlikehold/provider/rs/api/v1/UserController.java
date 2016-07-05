@@ -39,10 +39,10 @@ public class UserController {
     public User getUser(@ApiIgnore HttpSession session) {
 
         /* Convert user roles to a set of strings */
+
         Set<String> roles = FluentIterable.from( userContextHolder.getRoles() )
                 .transform( GrantedAuthorityFunctions.toStringRepresentation() )
                 .toSet();
-
         return new User(
                 userContextHolder.getDisplayName(),
                 userContextHolder.getUsername(),
@@ -50,7 +50,6 @@ public class UserController {
                 session.getId()
         );
     }
-
 
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public void logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {

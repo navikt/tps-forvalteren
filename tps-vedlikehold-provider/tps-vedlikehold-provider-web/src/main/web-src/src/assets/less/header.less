@@ -1,0 +1,44 @@
+#header {
+
+  md-toolbar {
+    .user-info {
+      text-align: right;
+    }
+
+    @media (max-width: 599px) {
+      #logout-button {
+        width: 120px;
+        padding: 12px 25px;
+        display: inline;
+      }
+
+      padding: 20px 0px;
+      border-radius: 0px;
+
+      .md-toolbar-tools{
+        display: table;
+
+        .flex-5{
+          padding: 10px;
+        }
+
+        a{
+          margin: 10px 0px;
+          text-align: left;
+          display: block;
+          text-decoration: underline;
+        }
+
+        .user-info{
+          margin: 20px 6px;
+          text-align: left !important;
+        }
+      }
+    }
+    @media (min-width: 960px) {
+      .hide-gt-md {
+        display: none;
+      }
+    }
+  }
+}
