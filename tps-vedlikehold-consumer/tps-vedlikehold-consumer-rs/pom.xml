@@ -13,6 +13,13 @@
     <name>TPS Vedlikeholdsklient :: Consumer :: RS</name>
 
     <dependencies>
+        <!--INTERNAL-->
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!--SERVICES-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

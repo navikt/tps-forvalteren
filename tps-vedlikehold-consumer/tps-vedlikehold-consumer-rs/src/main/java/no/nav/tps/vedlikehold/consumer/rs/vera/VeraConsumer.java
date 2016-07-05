@@ -15,8 +15,6 @@ import static java.util.stream.Collectors.toList;
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 public class VeraConsumer {
-    @Value("${environment.class}")
-    private String envClass;
 
     @Inject
     private RestTemplate template;
