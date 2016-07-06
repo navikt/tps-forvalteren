@@ -32,12 +32,6 @@
             <artifactId>guava</artifactId>
         </dependency>
 
-        <!--JAVA EE-->
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-
         <!--SPRING-->
         <dependency>
             <groupId>org.springframework</groupId>

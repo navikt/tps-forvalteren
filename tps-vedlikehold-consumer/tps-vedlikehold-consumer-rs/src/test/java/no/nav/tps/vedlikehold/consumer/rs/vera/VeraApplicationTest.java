@@ -43,10 +43,10 @@ public class VeraApplicationTest {
         Collections.sort(list);
 
         assertThat( "first environment is list is l", list.get(0).equals(l) );
-        assertThat( "first environment is list is p", list.get(1).equals(p) );
-        assertThat( "first environment is list is q2", list.get(2).equals(q2) );
-        assertThat( "first environment is list is q4", list.get(3).equals(q4) );
-        assertThat( "first environment is list is t3", list.get(4).equals(t3) );
+        assertThat( "second environment is list is p", list.get(1).equals(p) );
+        assertThat( "third environment is list is q2", list.get(2).equals(q2) );
+        assertThat( "fourth environment is list is q4", list.get(3).equals(q4) );
+        assertThat( "fifth environment is list is t3", list.get(4).equals(t3) );
     }
 }
 
