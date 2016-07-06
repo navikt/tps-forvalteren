@@ -19,6 +19,9 @@ var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIco
 require('./factory/requestFactory');
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
+require('./directives/textField');
+require('./directives/dateField');
+require('./directives/selectField');
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider,  $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
