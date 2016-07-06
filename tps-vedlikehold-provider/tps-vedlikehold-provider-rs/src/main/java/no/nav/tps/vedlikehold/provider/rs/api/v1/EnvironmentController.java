@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/v1")
 public class EnvironmentController {
+    private VeraConsumer veraConsumer  = new VeraConsumer();
+
     /**
      * Get an object containing a list of environments
      *
@@ -24,6 +26,6 @@ public class EnvironmentController {
 
     @RequestMapping(value = "/environment", method = RequestMethod.GET)
     public List<String> getEnvironments(@ApiIgnore HttpSession session) {
-        return new VeraConsumer().listEnvs();
+        return veraConsumer.listEnvs();
     }
 }

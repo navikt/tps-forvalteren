@@ -85,6 +85,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-consumer-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-domain-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
