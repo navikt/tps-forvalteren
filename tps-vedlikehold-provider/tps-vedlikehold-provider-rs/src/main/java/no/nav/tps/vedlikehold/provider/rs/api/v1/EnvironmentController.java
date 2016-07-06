@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
+import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,8 @@ public class EnvironmentController {
      * @return object containing list of environments
      */
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/environment", method = RequestMethod.GET)
     public List<String> getEnvironments(@ApiIgnore HttpSession session) {
+        return new VeraConsumer().listEnvs();
     }
 }
