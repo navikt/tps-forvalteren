@@ -2,14 +2,15 @@
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.dashboard', ['ngMessages'])
-    .controller('dashboardCtrl', ['$scope',
-        function($scope) {
-            $scope.fields = [
-                {label:'Fødselsnummer', type: 'text'},
-                {label:'Dato', type: 'date'},
-                {label:'Variant', type: 'select', values:['E0', 'E1', 'E2']},
-                {label:'Miljø', type: 'text'}
-            ];
+    .controller('dashboardCtrl', ['$scope', 'requestFactory',
+        function($scope, requestFactory) {
+            $scope.fields = requestFactory.getFields();
+            //     [
+            //     {label:'Fødselsnummer', type: 'text'},
+            //     {label:'Dato', type: 'date'},
+            //     {label:'Variant', type: 'select', values:['E0', 'E1', 'E2']},
+            //     {label:'Miljø', type: 'text'}
+            // ];
             
             $scope.submit = function() {
                 //

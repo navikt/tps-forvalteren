@@ -11,7 +11,7 @@
                 <md-list-item ng-repeat="serviceRoutine in serviceRoutines">
                     <md-item-text layout="row">
                         <md-button class="md-primary" ng-click="getRequestForm(serviceRoutine.code)">
-                            {{serviceRoutine.code + " - " + serviceRoutine.name}}
+                            {{ serviceRoutine.code }} - {{ serviceRoutine.name }}
                         </md-button>
                     </md-item-text>
                     <md-divider ng-if="!$last"></md-divider>

@@ -16,6 +16,7 @@ require('./services/authenticationService');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']);
 
+require('./factory/requestFactory');
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
 
