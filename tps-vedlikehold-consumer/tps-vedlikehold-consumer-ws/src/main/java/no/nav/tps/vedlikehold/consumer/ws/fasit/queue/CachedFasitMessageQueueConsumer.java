@@ -7,12 +7,12 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class DefaultFasitMessageQueueConsumer extends DefaultFasitQueueConsumer implements FasitMessageQueueConsumer {
+public class CachedFasitMessageQueueConsumer extends CachedFasitQueueConsumer implements FasitMessageQueueConsumer {
 
     private String requestQueueAlias;
     private String responseQueueAlias;
 
-    public DefaultFasitMessageQueueConsumer(String application, String requestQueueAlias, String responseQueueAlias) {
+    public CachedFasitMessageQueueConsumer(String application, String requestQueueAlias, String responseQueueAlias) {
         super(application);
 
         this.requestQueueAlias = requestQueueAlias;
