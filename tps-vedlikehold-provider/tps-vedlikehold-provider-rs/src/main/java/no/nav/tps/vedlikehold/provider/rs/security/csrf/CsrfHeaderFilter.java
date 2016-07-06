@@ -16,7 +16,15 @@ import java.io.IOException;
  *
  * @author Tobias Hansen (Visma Consulting AS).
  */
+
+
 public class CsrfHeaderFilter extends OncePerRequestFilter {
+    private String cookiePath;
+
+    public CsrfHeaderFilter(String cookiePath) {
+        super();
+        this.cookiePath = cookiePath;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -26,7 +34,7 @@ public class CsrfHeaderFilter extends OncePerRequestFilter {
             String token = csrf.getToken();
             if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                 cookie = new Cookie("XSRF-TOKEN", token);
-                cookie.setPath("/tps-vedlikehold");
+                cookie.setPath(cookiePath);
                 response.addCookie(cookie);
             }
         }

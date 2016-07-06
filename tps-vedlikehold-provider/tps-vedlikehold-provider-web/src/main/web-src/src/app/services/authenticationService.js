@@ -1,5 +1,5 @@
 angular.module('tps-vedlikehold.service')
-    .service('authenticationService', ['$http', '$location', 'sessionService', 'utilsService', function($http, $location, sessionService, utilsService) {
+    .service('authenticationService', ['$http', '$location', 'sessionService', 'utilsService', function($http, $location,  sessionService, utilsService) {
 
         var self = this;
 
@@ -14,34 +14,28 @@ angular.module('tps-vedlikehold.service')
             $http.get(loginRoute, {
                 headers: headers
             })
-            .then(function (res) {
-                    sessionService.setIsAuthenticated(true);
-                    sessionService.setIsSignedIn(true);
-                    sessionService.setCurrentUser(res.data);
-                    sessionService.setToken(res.data.token);
+                .then(function (res) {
+                        sessionService.setIsAuthenticated(true);
+                        sessionService.setIsSignedIn(true);
+                        sessionService.setCurrentUser(res.data);
 
-                    if (callback) {
-                        callback(res);
-                    }
-                },
-                function (res) {
+                        if (callback) {
+                            callback(res);
+                        }
+                    },
+                    function (res) {
 
-                    if (callback) {
-                        callback(res);
-                    }
-                });
+                        if (callback) {
+                            callback(res);
+                        }
+                    });
         };
-
-        self.validateToken = function(){
-            self.authenticate();
-        };
-
 
         self.invalidateSession = function(callback){
             sessionService.setIsAuthenticated(false);
             sessionService.setIsSignedIn(false);
-            sessionService.setToken('');
-            $http.get(logoutRoute).then(function(){
+
+            $http.post(logoutRoute).then(function(){
                 self.authenticate(false, function(res){
                     sessionService.setCurrentUser(res.data);
                     if (callback) {callback(res);}
