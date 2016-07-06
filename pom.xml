@@ -36,6 +36,7 @@
         <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
         <common-brevogarkiv.version>1.5.7</common-brevogarkiv.version>
+        <javax-jms.version>2.0</javax-jms.version>
     </properties>
 
 
@@ -127,6 +128,16 @@
                 <groupId>no.nav.brevogarkiv</groupId>
                 <artifactId>common-util-fasit</artifactId>
                 <version>${common-brevogarkiv.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.jms</groupId>
+                <artifactId>jms</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ibm</groupId>
+                <artifactId>mqjms</artifactId>
+                <version>7.1</version>
             </dependency>
             
             <!-- DEPLOYMENT -->
