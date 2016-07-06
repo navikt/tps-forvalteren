@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class VeraConsumerTest {
-    private VeraApplication[] returnedApplications;
 
     @Mock
     private RestTemplate restTemplateMock;
@@ -31,12 +30,16 @@ public class VeraConsumerTest {
     @InjectMocks
     private VeraConsumer veraConsumer = new VeraConsumer();
 
-    private VeraApplication q4 = new VeraApplication();
-    private VeraApplication t3 = new VeraApplication();
-    private VeraApplication p = new VeraApplication();
+    private VeraApplication q4;
+    private VeraApplication t3;
+    private VeraApplication p;
 
     @Before
     public void before() {
+        q4 = new VeraApplication();
+        t3 = new VeraApplication();
+         p = new VeraApplication();
+
         q4.setEnvironment("q4");
         t3.setEnvironment("t3");
         p.setEnvironment("p");
@@ -44,7 +47,7 @@ public class VeraConsumerTest {
 
     @Test
     public void veraConsumerListEnvsReturnsEmptyListIfNoEnvironmentsAreFound() {
-        returnedApplications = new VeraApplication[]{};
+        VeraApplication[] returnedApplications = new VeraApplication[]{};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
@@ -55,7 +58,7 @@ public class VeraConsumerTest {
 
     @Test
     public void veraConsumerListEnvsReturnsListWithOneEnvironment() {
-        returnedApplications = new VeraApplication[]{q4};
+        VeraApplication[] returnedApplications = new VeraApplication[]{q4};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
@@ -67,7 +70,7 @@ public class VeraConsumerTest {
 
     @Test
     public void veraConsumerListEnvsReturnsListWithAllEnvironments() {
-        returnedApplications = new VeraApplication[]{p, q4, t3};
+        VeraApplication[] returnedApplications = new VeraApplication[]{p, q4, t3};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
@@ -78,7 +81,7 @@ public class VeraConsumerTest {
 
     @Test
     public void veraConsumerListEnvsReturnsSortedListWithAllEnvironments() {
-        returnedApplications = new VeraApplication[]{q4, t3, p};
+        VeraApplication[] returnedApplications = new VeraApplication[]{q4, t3, p};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 

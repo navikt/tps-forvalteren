@@ -61,7 +61,7 @@ public class VeraApplicationTest {
     }
 
     @Test
-    public void sortingAnArrayOfVeraAPplicationsShouldOrderTheInstances() {
+    public void sortingAnArrayOfVeraApplicationsShouldOrderTheInstances() {
         List<VeraApplication> list = Lists.newArrayList();
 
         VeraApplication p = new VeraApplication();
