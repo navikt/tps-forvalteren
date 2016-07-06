@@ -16,11 +16,10 @@ import static java.util.stream.Collectors.toList;
  */
 public class VeraConsumer {
 
-    private RestTemplate template;
+    private RestTemplate template = new RestTemplate();
     public static final String GET_ENVS_URL = "http://vera.adeo.no/api/v1/deploylog?onlyLatest=true&filterUndeployed=true&application=tpsws";
 
     public VeraConsumer() {
-        template = new RestTemplate();
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
         messageConverters.add(new MappingJackson2HttpMessageConverter());
         template.setMessageConverters(messageConverters);
