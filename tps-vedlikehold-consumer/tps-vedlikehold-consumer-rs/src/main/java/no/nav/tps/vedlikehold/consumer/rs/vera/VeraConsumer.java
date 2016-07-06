@@ -36,5 +36,4 @@ public class VeraConsumer {
                 .map(VeraApplication::getEnvironment)
                 .collect(toList());
     }
-
 }
