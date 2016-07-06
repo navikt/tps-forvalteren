@@ -10,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -58,8 +59,7 @@ public class VeraConsumerTest {
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
-        List<String> response = new ArrayList<String>();
-        response.add("q4");
+        List<String> response = Arrays.asList("q4");
 
         assertThat( "array containing the q4 is returned",  veraConsumer.listEnvs().equals(response));
     }
@@ -71,10 +71,7 @@ public class VeraConsumerTest {
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
-        List<String> response = new ArrayList<String>();
-        response.add("p");
-        response.add("q4");
-        response.add("t3");
+        List<String> response = Arrays.asList("p", "q4", "t3");
 
         assertThat( "array containing all environments is returned",  veraConsumer.listEnvs().equals(response));
     }
@@ -85,10 +82,7 @@ public class VeraConsumerTest {
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
-        List<String> response = new ArrayList<String>();
-        response.add("p");
-        response.add("q4");
-        response.add("t3");
+        List<String> response =  Arrays.asList("p", "q4", "t3");
 
         assertThat( "the array returned is sorted",  veraConsumer.listEnvs().equals(response));
     }
