@@ -7,6 +7,7 @@ require('angular-material-icons');
 
 require('./components/login/login');
 require('./components/dashboard/dashboard');
+require('./components/servicerutine/servicerutine');
 
 require('./services/serviceModule');
 require('./services/locationService');
@@ -14,7 +15,7 @@ require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard', 'tps-vedlikehold.servicerutine']);
 
 require('./factory/requestFactory');
 require('./shared/header/header');
@@ -22,6 +23,7 @@ require('./shared/side-navigator/side-navigator');
 require('./directives/textField');
 require('./directives/dateField');
 require('./directives/selectField');
+// require('./directives/inputField');
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider,  $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
@@ -42,6 +44,21 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         views: {
             'content@' : {
                 templateUrl: "app/components/dashboard/dashboard.html"
+            },
+            'header@' : {
+                templateUrl: "app/shared/header/header.html"
+            },
+            'side-navigator@' : {
+                templateUrl: "app/shared/side-navigator/side-navigator.html"
+            }
+        }
+
+    })
+    .state('servicerutine', {
+        url: "/servicerutine/{serviceRutineNr}",
+        views: {
+            'content@' : {
+                templateUrl: "app/components/servicerutine/servicerutine.html"
             },
             'header@' : {
                 templateUrl: "app/shared/header/header.html"
@@ -85,11 +102,12 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
         }
 
         var authenticated = sessionService.getIsAuthenticated();
-
+        // ################################
         // Commented out for testing reasons
         // if (!authenticated) {
         //     locationService.redirectToLoginUrl();
         // }
+        // ################################
     });
 
 }]);

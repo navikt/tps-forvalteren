@@ -10,11 +10,11 @@
                 </md-list-item>
                 <md-list-item ng-repeat="serviceRoutine in serviceRoutines">
                     <md-item-text layout="row">
-                        <md-button class="md-primary" ng-click="getRequestForm(serviceRoutine.code)">
+                        <md-button class="md-primary" ng-click="getRequestForm(serviceRoutine.code)" ui-sref="servicerutine({serviceRutineNr: serviceRoutine.code})" ui-sref-active="activeMenuButton">
                             {{ serviceRoutine.code }} - {{ serviceRoutine.name }}
                         </md-button>
                     </md-item-text>
-                    <md-divider ng-if="!$last"></md-divider>
+                    <!--<md-divider ng-if="!$last"></md-divider>-->
                 </md-list-item>
             </md-list>
         </md-content>
