@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
-
 import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
 import no.nav.modig.security.ws.SystemSAMLOutInterceptor;

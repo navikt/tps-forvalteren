@@ -23,7 +23,6 @@
             <dependency>
                 <groupId>no.nav.tjenester.pip</groupId>
                 <artifactId>nav-pip-diskresjonskode-v1-tjenestespesifikasjon</artifactId>
-                <version>1.1.0</version>
                 <classifier>jaxws</classifier>
             </dependency>
 
@@ -31,7 +30,6 @@
             <dependency>
                 <groupId>no.nav.tjenester.pip</groupId>
                 <artifactId>nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon</artifactId>
-                <version>1.0.0</version>
                 <classifier>jaxws</classifier>
             </dependency>
 
@@ -48,19 +46,11 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-cxf</artifactId>
             </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-wicket</artifactId>
-            </dependency>
 
             <!--Apache CXF-->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-ws-security</artifactId>
             </dependency>
 
             <!--SERVICES-->

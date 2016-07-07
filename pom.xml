@@ -154,21 +154,11 @@
                 <artifactId>modig-cxf</artifactId>
                 <version>1.0.0</version>
             </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-wicket</artifactId>
-                <version>2.0.51</version>
-            </dependency>
 
             <!-- CXF library -->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                <version>2.7.5</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-ws-security</artifactId>
                 <version>2.7.5</version>
             </dependency>
 

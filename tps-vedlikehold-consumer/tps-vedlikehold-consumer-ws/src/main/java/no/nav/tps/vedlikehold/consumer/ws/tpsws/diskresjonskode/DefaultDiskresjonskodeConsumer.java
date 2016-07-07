@@ -7,8 +7,7 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
-
-import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     // Test user
     private static final String PING_FNR = "13037999916";
 
-    @Inject
+    @Autowired
     private DiskresjonskodePortType diskresjonskodePortType;
 
     @Override

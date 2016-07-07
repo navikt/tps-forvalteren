@@ -4,8 +4,7 @@ import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
-
-import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -17,7 +16,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     // Test user
     private static final String PING_FNR = "13037999916";
 
-    @Inject
+    @Autowired
     private PipEgenAnsattPortType port;
 
     @Override
