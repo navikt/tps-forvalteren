@@ -2,21 +2,19 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
-    .controller('servicerutineCtrl', ['$scope', 'requestFactory',
-        function($scope, requestFactory) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', 'requestFactory',
+        function($scope, $stateParams, requestFactory) {
+
+            var servicerutineKode = $stateParams.serviceRutineNr;
+            
+            //requestFactory
             $scope.miljo = {
                 values:['U', 'T', 'Q', 'P']
             };
 
             $scope.dato = new Date();
 
-            $scope.fields = requestFactory.getFields();
-            //     [
-            //     {label:'Fødselsnummer', type: 'text'},
-            //     {label:'Dato', type: 'date'},
-            //     {label:'Variant', type: 'select', values:['E0', 'E1', 'E2']},
-            //     {label:'Miljø', type: 'text'}
-            // ];
+            $scope.fields = requestFactory.getFields(servicerutineKode);
 
             $scope.submit = function() {
                 //

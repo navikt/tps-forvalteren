@@ -20,10 +20,7 @@ var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIco
 require('./factory/requestFactory');
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
-require('./directives/textField');
-require('./directives/dateField');
-require('./directives/selectField');
-// require('./directives/inputField');
+require('./directives/inputField');
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider,  $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
@@ -102,12 +99,9 @@ app.run(['$rootScope', 'authenticationService', 'sessionService', 'locationServi
         }
 
         var authenticated = sessionService.getIsAuthenticated();
-        // ################################
-        // Commented out for testing reasons
-        // if (!authenticated) {
-        //     locationService.redirectToLoginUrl();
-        // }
-        // ################################
-    });
 
+        if (authenticated == null || !authenticated) {
+            locationService.redirectToLoginUrl();
+        }
+    });
 }]);

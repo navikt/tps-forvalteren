@@ -1,33 +1,13 @@
-<div class="dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex>
+<div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex>
     <md-content flex-gt-sm="30" class="tps-vk-top md-whiteframe-z2">
         <form ng-submit="submit()">
             <div layout-gt-sm="row" layout="column" layout-wrap>
-                <!--<tps-input-field></tps-input-field>-->
-                <!--<tps-input-field content="field" ng-repeat="field in fields"></tps-input-field>-->
-
-
-
-                <div ng-repeat="field in fields" flex-gt-sm="33">
-
-                    <div ng-switch="field.type">
-                        <div ng-switch-when="text">
-                            <tps-text-field></tps-text-field>
-                        </div>
-
-                        <div ng-switch-when="date" class="dateFieldContainer">
-                            <tps-date-field></tps-date-field>
-                        </div>
-
-                        <div ng-switch-when="select">
-                            <tps-select-field ></tps-select-field>
-                        </div>
-                    </div>
-                </div>
-                <span flex="33"></span>
+                <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
+                <span flex="33"></span> <!-- -->
             </div>
             <md-divider></md-divider>
             <div layout-gt-sm="row" layout="column">
-                <!--<span flex></span>-->
+                <span flex-gt-sm></span>
                 <md-input-container>
                     <label>Miljø</label>
                     <md-select ng-model="miljo.value">
@@ -41,5 +21,3 @@
     <md-content flex-gt-sm="70" class="tps-vk-bottom md-whiteframe-z2" >
     </md-content>
 </div>
-
-

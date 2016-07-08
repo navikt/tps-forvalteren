@@ -9,11 +9,6 @@ angular.module('tps-vedlikehold')
             ];
 
         $scope.getRequestForm = function(serviceCode) {
-            console.log(serviceCode);
+            // console.log(serviceCode);
         };
-        
-        // $scope.fields = [
-        //     {label:'Fødselsnummer', type: 'text'},
-        //     {label:'Dato', type: 'datepicker'}
-        // ];
     }]);

@@ -5,7 +5,7 @@ angular.module('tps-vedlikehold').controller('headerController', ['$scope', '$lo
 
     $scope.logout = function(){
         authenticationService.invalidateSession(function(){
-            console.log("Logging out");
+            console.log("Logger ut");
             $location.path('/');
         });
     };
@@ -13,16 +13,4 @@ angular.module('tps-vedlikehold').controller('headerController', ['$scope', '$lo
     $scope.toggleSideNav = function(menuId) {
         $mdSidenav(menuId).toggle();
     };
-
-    /*
-     * Hopper til element og setter focus. Brukes av skip navigasjon
-     */
-
-    // $scope.jumpToElement = function(id){
-    //     console.log("hopp til " + id);
-    //     var elem = document.getElementById(id);
-    //     if (elem) {
-    //         elem.focus();
-    //     }
-    // };
 }]);

@@ -5,7 +5,7 @@ angular.module('tps-vedlikehold.login', ['ngMessages'])
     .controller('loginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
 
-            $scope.title = 'TPS vedlikeholdsklient';
+            $scope.title = 'TPS Vedlikeholdsklient';
 
             $scope.authenticationError = false;
             $scope.serverError = false;
