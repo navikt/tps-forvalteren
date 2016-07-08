@@ -5,6 +5,7 @@ import no.nav.modig.jaxws.handlers.MDCOutHandler;
 import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.cxf.TimeoutFeature;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
@@ -50,7 +51,7 @@ public class TpswsConsumerConfig {
     private String diskresjonskodeAddress;
 
     @Value("${validering.virksomhet.egenansattv1.url}")
-    private String egenansattAddress;
+    private String egenAnsattAddress;
 
     @Bean
     public DiskresjonskodeConsumer diskresjonskodeConsumer() {
@@ -63,8 +64,8 @@ public class TpswsConsumerConfig {
     }
 
     @Bean
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        JaxWsProxyFactoryBean factoryBean = baseJaxWsConfig();
+    public DiskresjonskodePortType getDiskresjonskodePortType() {
+        JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
         factoryBean.setWsdlURL(DISKRESJONSKODE_WSDL_URL);
         factoryBean.setServiceName(DISKRESJON_QNAME);
@@ -77,13 +78,13 @@ public class TpswsConsumerConfig {
     }
 
     @Bean
-    public PipEgenAnsattPortType createPort() {
-        JaxWsProxyFactoryBean factoryBean = baseJaxWsConfig();
+    public PipEgenAnsattPortType getPipEgenAnsattPortType() {
+        JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
         factoryBean.setWsdlURL(PIP_EGENANSATT_WSDL_URL);
         factoryBean.setServiceName(PIP_EGENANSATT_SERVICE_NAME);
         factoryBean.setEndpointName(PIP_EGENANSATT_ENDPOINT_NAME);
-        factoryBean.setAddress(egenansattAddress);
+        factoryBean.setAddress(egenAnsattAddress);
 
         factoryBean.getOutInterceptors().add(createSystemUsernameTokenOutInterceptor());
 
@@ -95,15 +96,15 @@ public class TpswsConsumerConfig {
         return port;
     }
 
-    private JaxWsProxyFactoryBean baseJaxWsConfig() {
-        JaxWsProxyFactoryBean jaxWsClient = new JaxWsProxyFactoryBean();
+    private JaxWsProxyFactoryBean createJaxWsProxyFactoryBean() {
+        JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
 
-        jaxWsClient.getFeatures().add(new WSAddressingFeature());
-        jaxWsClient.getFeatures().add(new LoggingFeature());
-        jaxWsClient.getFeatures().add(new no.nav.modig.cxf.TimeoutFeature(20000));
-        jaxWsClient.getHandlers().add(new MDCOutHandler());
+        jaxWsProxyFactoryBean.getFeatures().add(new WSAddressingFeature());
+        jaxWsProxyFactoryBean.getFeatures().add(new LoggingFeature());
+        jaxWsProxyFactoryBean.getFeatures().add(new TimeoutFeature(20000));
+        jaxWsProxyFactoryBean.getHandlers().add(new MDCOutHandler());
 
-        return jaxWsClient;
+        return jaxWsProxyFactoryBean;
     }
 
     private WSS4JOutInterceptor createSystemUsernameTokenOutInterceptor() {

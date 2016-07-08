@@ -17,7 +17,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final String PING_FNR = "13037999916";
 
     @Autowired
-    private PipEgenAnsattPortType port;
+    private PipEgenAnsattPortType pipEgenAnsattPortType;
 
     @Override
     public boolean ping() throws Exception {
@@ -37,7 +37,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
         ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fNr);
 
-        ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = port.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
+        ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
 
         return response.isEgenAnsatt();
     }

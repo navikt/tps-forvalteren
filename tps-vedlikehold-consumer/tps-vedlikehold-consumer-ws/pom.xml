@@ -42,10 +42,6 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-log-jaxws</artifactId>
             </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-cxf</artifactId>
-            </dependency>
 
             <!--Apache CXF-->
             <dependency>
