@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.RequestMapping;
