@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
@@ -24,8 +24,8 @@ public class EnvironmentController {
      * @return object containing list of environments
      */
 
-    @RequestMapping(value = "/environment", method = RequestMethod.GET)
-    public List<String> getEnvironments(@ApiIgnore HttpSession session) {
-        return veraConsumer.listEnvs();
+    @RequestMapping(value = "/environments", method = RequestMethod.GET)
+    public Set<String> getEnvironments(@ApiIgnore HttpSession session) {
+        return veraConsumer.getEnvironments("tpsws");
     }
 }

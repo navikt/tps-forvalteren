@@ -12,7 +12,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.servlet.http.HttpSession;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class EnvironmentControllerTest {
 
     private static final String SESSION_ID = "sessionID";
-    private static final List<String> ENVIRONMENTS =  Arrays.asList("p", "q4", "t3");
+    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList("p", "q4", "t3") );
 
     @Mock
     private HttpSession httpSessionMock;
@@ -38,13 +40,13 @@ public class EnvironmentControllerTest {
 
     @Before
     public void setUp() {
-        when( veraConsumerMock.listEnvs() ).thenReturn(ENVIRONMENTS);
+        when( veraConsumerMock.getEnvironments("tpsws") ).thenReturn(ENVIRONMENTS);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
 
     @Test
     public void getUserReturnsEnvironmentList() {
-        List<String> environments = controller.getEnvironments(httpSessionMock);
+        Set<String> environments = controller.getEnvironments(httpSessionMock);
         assertThat(environments, is(ENVIRONMENTS));
     }
 

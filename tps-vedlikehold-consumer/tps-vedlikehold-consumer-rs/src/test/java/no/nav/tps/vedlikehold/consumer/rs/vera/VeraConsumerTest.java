@@ -3,17 +3,16 @@ package no.nav.tps.vedlikehold.consumer.rs.vera;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -46,47 +45,32 @@ public class VeraConsumerTest {
     }
 
     @Test
-    public void veraConsumerListEnvsReturnsEmptyListIfNoEnvironmentsAreFound() {
+    public void getEnvironmentsReturnsEmptyListIfNoEnvironmentsAreFound() {
         VeraApplication[] returnedApplications = new VeraApplication[]{};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
-        List<String> response = new ArrayList<String>();
-
-        assertThat( "empty array is returned",  veraConsumer.listEnvs().equals(response));
+        assertThat(veraConsumer.getEnvironments("tpsws"), hasSize(0));
     }
 
     @Test
-    public void veraConsumerListEnvsReturnsListWithOneEnvironment() {
+    public void getEnvironmentsReturnsListWithOneEnvironment() {
         VeraApplication[] returnedApplications = new VeraApplication[]{q4};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
         List<String> response = Arrays.asList("q4");
 
-        assertThat( "array containing the q4 is returned",  veraConsumer.listEnvs().equals(response));
+        assertThat(veraConsumer.getEnvironments("tpsws"), contains("q4"));
+        assertThat(veraConsumer.getEnvironments("tpsws"), hasSize(response.size()));
     }
 
-
     @Test
-    public void veraConsumerListEnvsReturnsListWithAllEnvironments() {
+    public void getEnvironmentsReturnsListWithAllEnvironments() {
         VeraApplication[] returnedApplications = new VeraApplication[]{p, q4, t3};
 
         when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
 
-        List<String> response = Arrays.asList("p", "q4", "t3");
-
-        assertThat( "array containing all environments is returned",  veraConsumer.listEnvs().equals(response));
-    }
-
-    @Test
-    public void veraConsumerListEnvsReturnsSortedListWithAllEnvironments() {
-        VeraApplication[] returnedApplications = new VeraApplication[]{q4, t3, p};
-
-        when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
-
-        List<String> response =  Arrays.asList("p", "q4", "t3");
-
-        assertThat( "the array returned is sorted",  veraConsumer.listEnvs().equals(response));
+        assertThat(veraConsumer.getEnvironments("tpsws"), containsInAnyOrder("p", "q4", "t3"));
     }
 }
