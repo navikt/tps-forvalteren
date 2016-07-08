@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.config;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.documentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +18,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class RestProviderSwaggerConfig {
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.regex("/api/v1/.*"))
+                .paths(PathSelectors.ant("/api/v1/**"))
                 .build()
                 .apiInfo(apiInfo());
     }

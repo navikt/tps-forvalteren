@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
