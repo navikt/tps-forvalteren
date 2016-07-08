@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import no.nav.brevogarkiv.common.fasit.FasitClient;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.CachedFasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -36,7 +35,7 @@ public class FasitConfig {
         String application                  = "tpsws";
         String requestQueueAlias            = "tps.endrings.melding";
         String responseQueueAlias           = "tps.endrings.melding.svar";
-        FasitMessageQueueConsumer consumer  = new DefaultFasitMessageQueueConsumer(application, requestQueueAlias, responseQueueAlias);
+        FasitMessageQueueConsumer consumer  = new CachedFasitMessageQueueConsumer(application, requestQueueAlias, responseQueueAlias);
 
         /* Inject a FasitClient object */
         beanFactory.autowireBean(consumer);

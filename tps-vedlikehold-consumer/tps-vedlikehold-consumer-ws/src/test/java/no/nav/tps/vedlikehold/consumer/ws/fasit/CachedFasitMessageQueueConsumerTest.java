@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import com.google.common.cache.Cache;
 import no.nav.brevogarkiv.common.fasit.FasitClient;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.CachedFasitMessageQueueConsumer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultFasitMessageQueueConsumerTest {
+public class CachedFasitMessageQueueConsumerTest {
 
     private final String REQUEST_QUEUE          = "requestQueue";
     private final String RESPONSE_QUEUE         = "responseQueue";
@@ -36,7 +36,7 @@ public class DefaultFasitMessageQueueConsumerTest {
     private FasitClient.Application applicationMock;
 
     @InjectMocks
-    private DefaultFasitMessageQueueConsumer messageQueueConsumer = new DefaultFasitMessageQueueConsumer("tpsws", REQUEST_QUEUE_ALIAS, RESPONSE_QUEUE_ALIAS);
+    private CachedFasitMessageQueueConsumer messageQueueConsumer = new CachedFasitMessageQueueConsumer("tpsws", REQUEST_QUEUE_ALIAS, RESPONSE_QUEUE_ALIAS);
 
     @Before
     public void setUp() {
