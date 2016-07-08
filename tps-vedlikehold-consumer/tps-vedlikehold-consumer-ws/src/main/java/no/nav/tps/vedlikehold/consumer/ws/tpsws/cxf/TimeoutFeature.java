@@ -25,15 +25,20 @@ public class TimeoutFeature extends AbstractFeature {
 
     public void initialize(Client client, Bus bus) {
         Conduit conduit = client.getConduit();
+
         if (conduit instanceof HTTPConduit) {
+            HTTPConduit httpConduit = (HTTPConduit) conduit;
             HTTPClientPolicy policy = new HTTPClientPolicy();
+
             policy.setReceiveTimeout(receiveTimeout);
+
             if (connectionTimeout != Long.MIN_VALUE) {
                 policy.setConnectionTimeout(connectionTimeout);
             }
-            HTTPConduit httpConduit = (HTTPConduit) conduit;
+
             httpConduit.setClient(policy);
         }
+
         super.initialize(client, bus);
     }
 }
