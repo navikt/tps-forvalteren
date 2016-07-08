@@ -47,10 +47,12 @@ public class RestSecurityConfig {
     @Bean
     ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
         ActiveDirectoryLdapAuthenticationProvider provider = new ActiveDirectoryLdapAuthenticationProvider(ldapDomain, ldapUrl);
+
         provider.setAuthoritiesMapper(authoritiesMapper());
         provider.setUserDetailsContextMapper(userDetailsMapper());
         provider.setUseAuthenticationRequestCredentials(true);
         provider.setConvertSubErrorCodesToExceptions(true);
+
         return provider;
     }
 

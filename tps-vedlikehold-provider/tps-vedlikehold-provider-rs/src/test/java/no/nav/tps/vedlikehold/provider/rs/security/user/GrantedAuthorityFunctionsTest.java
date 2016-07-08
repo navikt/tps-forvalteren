@@ -40,6 +40,7 @@ public class GrantedAuthorityFunctionsTest {
     @Test
     public void toUserRolesReturnsRoleFromRoles() {
         Map<String, UserRole> roles = new HashMap<String, UserRole>();
+
         roles.put("0000-GA-NORG_Skriv_T", ROLE_WRITE_T);
         roles.put("0000-GA-NORG_Les_T", ROLE_READ_T);
         roles.put("0000-GA-NORG_Skriv_Q", ROLE_WRITE_Q);

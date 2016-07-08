@@ -45,7 +45,7 @@ public class UserController {
                 .collect(Collectors.toSet());
 
         return new User(
-                userContextHolder.getDisplayName(),
+                userContextHolder.getDistinguishedName(),
                 userContextHolder.getUsername(),
                 roles,
                 session.getId()
