@@ -19,15 +19,20 @@ public class RestUserDetailsMapper extends LdapUserDetailsMapper {
     @Override
     public LdapUserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
         LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence(ctx);
+
         essence.setUsername(username);
         essence.setAuthorities(authorities);
         essence.setDn(getDisplayName(ctx));
+
         return essence.createUserDetails();
     }
 
     private String getDisplayName(DirContextOperations ctx) {
         if (ctx.attributeExists(GIVEN_NAME_ATTRIBUTE) && ctx.attributeExists(SURNAME_ATTRIBUTE)) {
-            return ctx.getStringAttribute(GIVEN_NAME_ATTRIBUTE) + " " + ctx.getStringAttribute(SURNAME_ATTRIBUTE);
+            String givenName = ctx.getStringAttribute(GIVEN_NAME_ATTRIBUTE);
+            String surname =  ctx.getStringAttribute(SURNAME_ATTRIBUTE);
+
+            return givenName + " " + surname;
         } else {
             return ctx.getNameInNamespace();
         }
