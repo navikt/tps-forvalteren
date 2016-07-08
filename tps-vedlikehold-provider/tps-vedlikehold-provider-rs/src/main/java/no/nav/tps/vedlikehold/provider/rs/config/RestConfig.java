@@ -1,10 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.config;
 
 
-import no.nav.tps.vedlikehold.provider.rs.api.v1.ApiPackageMarker;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.UserController;
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Import;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
+@EnableAutoConfiguration
 @Configuration
 @Import({
         SwaggerConfig.class,
@@ -20,7 +22,7 @@ import org.springframework.context.annotation.Import;
         RestSecurityConfig.class
 })
 @ComponentScan(basePackageClasses = {
-        ApiPackageMarker.class
+        UserController.class
 })
 public class RestConfig {
 

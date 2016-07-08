@@ -10,6 +10,7 @@
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="validering.virksomhet.diskresjonskodev1"/>
         <webservice alias="virksomhet:PipErEgenAnsatt_v1" mapToProperty="validering.virksomhet.egenansattv1"/>
         <ldap alias="ldap" mapToProperty="ldap"/>
+        <applicationProperties alias="tps-vedlikeholdProperties"/>
     </resources>
 
     <artifacts>

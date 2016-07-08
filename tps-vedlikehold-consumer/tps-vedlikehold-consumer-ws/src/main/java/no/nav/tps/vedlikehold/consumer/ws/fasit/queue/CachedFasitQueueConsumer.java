@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public class DefaultFasitQueueConsumer implements FasitQueueConsumer {
+public class CachedFasitQueueConsumer implements FasitQueueConsumer {
 
     @Autowired
     private FasitClient fasitClient;
@@ -23,7 +23,7 @@ public class DefaultFasitQueueConsumer implements FasitQueueConsumer {
     private String applicationName;
     private Cache<String, Object> cache;
 
-    public DefaultFasitQueueConsumer( String applicationName ) {
+    public CachedFasitQueueConsumer(String applicationName ) {
         this.applicationName = applicationName;
 
         this.cache = CacheBuilder.newBuilder()
