@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.consumer.mq;
 
 
 import com.ibm.mq.jms.MQQueueConnectionFactory;
+import com.ibm.msg.client.jms.internal.JMSComponent;
 import com.ibm.msg.client.wmq.v6.base.internal.MQC;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConfig;
@@ -17,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.util.Properties;
 import com.ibm.mq.jmqi.JmqiException;
+import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter;
 
 
 /**
@@ -78,16 +80,13 @@ public class MessageQueueConfig {
             String queueManagerName = queueManager.getName();
 //            String channel          = "TPSWS." + queueManager.getName();
 
-            factory.setStringProperty(MQC.PASSWORD_PROPERTY, "admin");
-            factory.setStringProperty(MQC.USER_ID_PROPERTY, "admin");
-
             factory.setTransportType(transportType);
             factory.setQueueManager(queueManagerName);
             factory.setHostName(hostName);
             factory.setPort(port);
 //            factory.setChannel(channel);
 
-            Connection connection = factory.createConnection();
+            Connection connection = factory.createConnection("srvTpsws", "0T0YxjpFnuL2w0G");
             connection.start();
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -109,14 +108,5 @@ public class MessageQueueConfig {
             exception.printStackTrace();
             System.err.println("\n");
         }
-
-//        new Timer().schedule(
-//                new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        messageSender.sendMessage("Kommer denne frem?", "u6");
-//                    }
-//                }, 5000
-//        );
     }
 }
