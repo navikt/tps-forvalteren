@@ -10,7 +10,10 @@ import org.junit.runner.RunWith;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 
 /**
  * @author Kristian Kyvik, (Visma Consulting AS).
@@ -18,10 +21,49 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class VeraApplicationTest {
 
-    private final List<VeraApplication> list = Lists.newArrayList();
+    @Test
+    public void compareToShouldReturnEqual() {
+        VeraApplication p_1 = new VeraApplication();
+        VeraApplication p_2 = new VeraApplication();
+
+        p_1.setEnvironment("p");
+        p_2.setEnvironment("p");
+
+        int result = p_1.compareTo(p_2);
+
+        assertThat(result, is(0));
+    }
 
     @Test
-    public void veraApplicationShouldCompareTo() {
+    public void compareToShouldReturnGreaterThan() {
+        VeraApplication q2 = new VeraApplication();
+        VeraApplication t3 = new VeraApplication();
+
+        q2.setEnvironment("q2");
+        t3.setEnvironment("t3");
+
+        int result = q2.compareTo(t3);
+
+        assertThat(result, lessThan(0));
+    }
+
+    @Test
+    public void compareToShouldReturnLessThan() {
+        VeraApplication q1 = new VeraApplication();
+        VeraApplication l = new VeraApplication();
+
+        q1.setEnvironment("q1");
+        l.setEnvironment("l");
+
+        int result = q1.compareTo(l);
+
+        assertThat(result, greaterThan(0));
+    }
+
+    @Test
+    public void sortingAnArrayOfVeraApplicationsShouldOrderTheInstances() {
+        List<VeraApplication> list = Lists.newArrayList();
+
         VeraApplication p = new VeraApplication();
         VeraApplication q2 = new VeraApplication();
         VeraApplication q4 = new VeraApplication();
@@ -42,11 +84,11 @@ public class VeraApplicationTest {
 
         Collections.sort(list);
 
-        assertThat( "first environment is list is l", list.get(0).equals(l) );
-        assertThat( "second environment is list is p", list.get(1).equals(p) );
-        assertThat( "third environment is list is q2", list.get(2).equals(q2) );
-        assertThat( "fourth environment is list is q4", list.get(3).equals(q4) );
-        assertThat( "fifth environment is list is t3", list.get(4).equals(t3) );
+        assertThat( "first environment in list is l", list.get(0).equals(l) );
+        assertThat( "second environment in list is p", list.get(1).equals(p) );
+        assertThat( "third environment in list is q2", list.get(2).equals(q2) );
+        assertThat( "fourth environment in list is q4", list.get(3).equals(q4) );
+        assertThat( "fifth environment in list is t3", list.get(4).equals(t3) );
     }
 }
 
