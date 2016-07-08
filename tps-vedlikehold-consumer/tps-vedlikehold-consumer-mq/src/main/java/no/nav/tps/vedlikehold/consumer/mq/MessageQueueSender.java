@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.mq;
 
+import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,15 +24,16 @@ public class MessageQueueSender {
     ConfigurableApplicationContext context;
 
 
-    public void sendMessage(final String message) {
+    public void sendMessage(final String message, String environment) {
 
         FasitMessageQueueConsumer fasitMessageQueueConsumer = context.getBean(FasitMessageQueueConsumer.class);
-        String requestQueueName = fasitMessageQueueConsumer.getRequestQueue("u5");
-        String responseQueueName = fasitMessageQueueConsumer.getResponseQueue("u5");
+
+        FasitClient.Queue requestQueue = fasitMessageQueueConsumer.getRequestQueue(environment);
+        FasitClient.Queue responseQueue = fasitMessageQueueConsumer.getResponseQueue(environment);
 
         JmsTemplate template = context.getBean(JmsTemplate.class);
 
-        SessionCallback<TextMessage> callback = new MessageQueueSessionCallback(message, requestQueueName, responseQueueName, timeout);
+        SessionCallback<TextMessage> callback = new MessageQueueSessionCallback(message, requestQueue.getName(), responseQueue.getName(), timeout);
 
         TextMessage response = template.execute(callback);
 

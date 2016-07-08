@@ -37,11 +37,40 @@
             <artifactId>com.springsource.javax.resource</artifactId>
             <version>1.5.0</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.activemq</groupId>-->
+            <!--<artifactId>activemq-all</artifactId>-->
+            <!--<version>5.8.0</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.5.1</version>
+            <groupId>com.ibm</groupId>
+            <artifactId>mqjms</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>jmqi</artifactId>
+            <version>7.1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.disthub2</groupId>
+            <artifactId>dhbcore</artifactId>
+            <version>DH610-GOLD</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>com.ibm</groupId>-->
+            <!--<artifactId>com.ibm.mq.jmqi</artifactId>-->
+            <!--<version>7.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.ibm</groupId>-->
+            <!--<artifactId>com.ibm.mqjms</artifactId>-->
+            <!--<version>7.0</version>-->
+            <!--&lt;!&ndash;<type>jar</type>&ndash;&gt;-->
+            <!--&lt;!&ndash;<scope>compile</scope>&ndash;&gt;-->
+        <!--</dependency>-->
+
     </dependencies>
 
 </project>

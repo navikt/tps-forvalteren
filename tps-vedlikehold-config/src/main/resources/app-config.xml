@@ -7,6 +7,11 @@
 
     <resources>
         <ldap alias="ldap" mapToProperty="ldap"/>
+
+        <queueManager alias="mqGateway" jndi="jms/qcf/tpsVedlikehold/tps_qcf">
+            <queue alias="tps.endrings.melding" jndi="jms/queue/tpsVedlikehold/endringsMelding" />
+            <queue alias="tps.endrings.melding.svar" jndi="jms/queue/tpsVedlikehold/svarEndringsMelding" />
+        </queueManager>
     </resources>
 
     <artifacts>
