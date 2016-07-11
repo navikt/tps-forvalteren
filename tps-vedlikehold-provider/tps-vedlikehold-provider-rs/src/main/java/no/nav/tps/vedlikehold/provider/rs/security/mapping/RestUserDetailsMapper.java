@@ -22,12 +22,12 @@ public class RestUserDetailsMapper extends LdapUserDetailsMapper {
 
         essence.setUsername(username);
         essence.setAuthorities(authorities);
-        essence.setDn(getDisplayName(ctx));
+        essence.setDn(getDistinguishedName(ctx));
 
         return essence.createUserDetails();
     }
 
-    private String getDisplayName(DirContextOperations ctx) {
+    private String getDistinguishedName(DirContextOperations ctx) {
         if (ctx.attributeExists(GIVEN_NAME_ATTRIBUTE) && ctx.attributeExists(SURNAME_ATTRIBUTE)) {
             String givenName = ctx.getStringAttribute(GIVEN_NAME_ATTRIBUTE);
             String surname =  ctx.getStringAttribute(SURNAME_ATTRIBUTE);
