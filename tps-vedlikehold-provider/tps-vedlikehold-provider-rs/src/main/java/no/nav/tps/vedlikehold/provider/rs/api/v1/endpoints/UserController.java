@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.domain.rs.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
@@ -45,7 +45,7 @@ public class UserController {
                 .collect(Collectors.toSet());
 
         return new User(
-                userContextHolder.getDisplayName(),
+                userContextHolder.getDistinguishedName(),
                 userContextHolder.getUsername(),
                 roles,
                 session.getId()

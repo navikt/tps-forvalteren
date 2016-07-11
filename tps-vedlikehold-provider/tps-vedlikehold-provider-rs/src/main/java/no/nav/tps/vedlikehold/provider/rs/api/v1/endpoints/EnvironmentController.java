@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
 import org.springframework.web.bind.annotation.RequestMapping;

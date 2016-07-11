@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.application.local;
 
-import no.nav.tps.vedlikehold.application.local.config.LocalApplicationConfig;
 import org.springframework.boot.SpringApplication;
 
 /**

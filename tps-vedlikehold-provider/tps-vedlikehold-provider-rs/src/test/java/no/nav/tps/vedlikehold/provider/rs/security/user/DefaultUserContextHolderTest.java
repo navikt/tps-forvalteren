@@ -67,7 +67,7 @@ public class DefaultUserContextHolderTest {
     @Test
     public void getDisplayNameReturnsDisplayNameFromUserDetails() {
         when( userDetailsMock.getDn() ).thenReturn(DISPLAY_NAME);
-        assertThat(userContextHolder.getDisplayName(), is(DISPLAY_NAME));
+        assertThat(userContextHolder.getDistinguishedName(), is(DISPLAY_NAME));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class DefaultUserContextHolderTest {
         expectedException.expect(RuntimeException.class);
         //TODO: Test error message
 
-        userContextHolder.getDisplayName();
+        userContextHolder.getDistinguishedName();
     }
 
     /* getUsername() */
@@ -92,6 +92,7 @@ public class DefaultUserContextHolderTest {
     @Test
     public void getUsernameThrowsExceptionIfPrincipalIsOfWrongType() {
         Principal principalMock = mock(Principal.class);
+
         when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
 
         expectedException.expect(RuntimeException.class);
@@ -137,6 +138,7 @@ public class DefaultUserContextHolderTest {
     @Test
     public void getRolesThrowsExceptionIfPrincipalIsOfWrongType() {
         Principal principalMock = mock(Principal.class);
+
         when( authenticationMock.getPrincipal() ).thenReturn( principalMock );
 
         expectedException.expect(RuntimeException.class);
@@ -159,10 +161,10 @@ public class DefaultUserContextHolderTest {
 
     @Test
     public void logoutDoesNothingIfNotAuthenticated() {
-        when(authenticationMock.isAuthenticated()).thenReturn(false);
-
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         HttpServletResponse responseMock = mock(HttpServletResponse.class);
+
+        when(authenticationMock.isAuthenticated()).thenReturn(false);
 
         userContextHolder.logout(requestMock, responseMock);
 
