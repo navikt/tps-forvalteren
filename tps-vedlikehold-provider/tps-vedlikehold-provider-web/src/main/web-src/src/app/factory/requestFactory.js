@@ -2,9 +2,27 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold')
-    .factory('requestFactory', ['$http', '$q', function($http, $q) {
-        var urlBase = '';
+    .factory('requestFactory', ['$http', function($http) {
+        var urlBase = 'api/v1/service';
+        var urlBaseEnv = 'api/v1/environments';
         var requestFactory = {};
+
+        // requestFactory.getFields = function(servicerutineKode) {
+        //     return $http({method: 'GET', url:urlBase+'/'+servicerutineKode});
+        // };
+        //
+        // requestFactory.getResponse = function(servicerutineKode, formData) {
+        //     return $http({method: 'GET', url:urlBase+'/'+servicerutineKode, params:formData}); // not correct url yet
+        // };
+        //
+        // requestFactory.getMiljo = function() {
+        //     return $http({method: 'GET', url:urlBaseEnv});
+        // };
+
+
+
+
+
 
         //temporary values
         var fields = [

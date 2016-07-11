@@ -100,11 +100,11 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
 
-        if (authenticated) { return; }
-        else {
-            event.preventDefault();
-            locationService.redirectToLoginUrl();
-        }
+        // if (authenticated) { return; }
+        // else {
+        //     event.preventDefault();
+        //     locationService.redirectToLoginUrl();
+        // }
 
     });
 }]);
