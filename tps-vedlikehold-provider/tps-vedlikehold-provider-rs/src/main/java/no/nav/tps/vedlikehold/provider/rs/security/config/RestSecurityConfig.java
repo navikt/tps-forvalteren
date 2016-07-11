@@ -45,6 +45,11 @@ public class RestSecurityConfig {
     }
 
     @Bean
+    RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
+    }
+
+    @Bean
     ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
         ActiveDirectoryLdapAuthenticationProvider provider = new ActiveDirectoryLdapAuthenticationProvider(ldapDomain, ldapUrl);
         provider.setAuthoritiesMapper(authoritiesMapper());
