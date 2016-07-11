@@ -2,9 +2,12 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.ResourceElement;
+import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
+import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,20 +15,13 @@ import java.util.concurrent.TimeUnit;
  * Created by Øyvind Grimnes, Visma Consulting AS on 07.07.2016.
  */
 public class FasitClient {
-    public static final int DEFAULT_CACHETIME = 600;
-    protected FasitRestClient restClient;
-    private final String baseUrl;
-    private final String username;
-    private final String password;
-    private int cachetime = 600;
+
+    private FasitRestClient restClient;
 
     private Cache<String, ResourceElement> cache;
 
-    public FasitClient(String baseUrl, String username, String password) {
-        this.baseUrl = baseUrl;
-        this.username = username;
-        this.password = password;
 
+    public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
 
         this.cache = CacheBuilder.newBuilder()
@@ -34,7 +30,9 @@ public class FasitClient {
                 .build();
     }
 
-    public Queue findQueue(String alias, String applicationName, String environment) {
+    /* Queues */
+
+    private Queue findQueue(String alias, String applicationName, String environment) {
         ResourceElement resource = this.findResource(alias, applicationName, environment, ResourceTypeDO.Queue);
 
         String name = resource.getPropertyString("queueName");
@@ -43,7 +41,7 @@ public class FasitClient {
         return new Queue(name, manager);
     }
 
-    public QueueManager findQueueManager(String alias, String applicationName, String environment) {
+    private QueueManager findQueueManager(String alias, String applicationName, String environment) {
         ResourceElement resource = this.findResource(alias, applicationName, environment, ResourceTypeDO.QueueManager);
 
         String name     = resource.getPropertyString("name");
@@ -53,17 +51,44 @@ public class FasitClient {
         return new QueueManager(name, hostname, port);
     }
 
-    public ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
+    private ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
         ResourceElement resource = getFromCache(alias, applicationName, environment, type);
 
         if (resource != null) {
             return resource;
         }
 
-        resource = this.restClient.getResource(environment, alias, type, FasitUtils.domainFor(environment),applicationName);
+        DomainDO domain = FasitUtils.domainFor(environment);
+
+        resource = this.restClient.getResource(environment, alias, type, domain, applicationName);
+
         addToCache(resource, alias, applicationName, environment, type);
 
         return resource;
+    }
+
+    /* Application */
+
+    public Application getApplication(String name, String environment) {
+        return new Application(name, environment);
+    }
+
+    public class Application {
+        String environment;
+        String name;
+
+        private Application(String name, String environment) {
+            this.name = name;
+            this.environment = environment;
+        }
+
+        public QueueManager getQueueManager(String alias) {
+            return FasitClient.this.findQueueManager(alias, name, environment);
+        }
+
+        public Queue getQueue(String alias) {
+            return FasitClient.this.findQueue(alias, name, environment);
+        }
     }
 
     /* Cache */
@@ -80,73 +105,5 @@ public class FasitClient {
 
     private String getIdentifier(String alias, String applicationName, String environment, ResourceTypeDO type) {
         return environment + "." + applicationName + "." + alias + "." + type.name();
-    }
-
-
-
-    public Application getApplication(String name, String environment) {
-        return new Application(name, environment);
-    }
-
-
-
-    public class Application {
-        String environment;
-        String name;
-
-        public Application(String name, String environment) {
-            this.name = name;
-            this.environment = environment;
-        }
-
-        public QueueManager getQueueManager(String alias) {
-            return FasitClient.this.findQueueManager(alias, name, environment);
-        }
-
-        public Queue getQueue(String alias) {
-            return FasitClient.this.findQueue(alias, name, environment);
-        }
-    }
-
-    public class Queue {
-        private String name;
-        private String manager;
-
-        public Queue(String name, String manager) {
-            this.name = name;
-            this.manager = manager;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getManager() {
-            return manager;
-        }
-    }
-
-    public class QueueManager {
-        private String name;
-        private String hostname;
-        private String port;
-
-        public QueueManager(String name, String hostname, String port) {
-            this.name = name;
-            this.hostname = hostname;
-            this.port = port;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getHostname() {
-            return hostname;
-        }
-
-        public String getPort() {
-            return port;
-        }
     }
 }

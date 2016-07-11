@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.mq;
 
-import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
@@ -28,8 +28,8 @@ public class MessageQueueSender {
 
         FasitMessageQueueConsumer fasitMessageQueueConsumer = context.getBean(FasitMessageQueueConsumer.class);
 
-        FasitClient.Queue requestQueue = fasitMessageQueueConsumer.getRequestQueue(environment);
-        FasitClient.Queue responseQueue = fasitMessageQueueConsumer.getResponseQueue(environment);
+        Queue requestQueue = fasitMessageQueueConsumer.getRequestQueue(environment);
+        Queue responseQueue = fasitMessageQueueConsumer.getResponseQueue(environment);
 
         JmsTemplate template = context.getBean(JmsTemplate.class);
 

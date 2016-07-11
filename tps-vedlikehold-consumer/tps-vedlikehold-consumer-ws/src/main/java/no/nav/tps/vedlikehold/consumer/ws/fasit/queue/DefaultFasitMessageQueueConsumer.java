@@ -1,6 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
 
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
+import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
+import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -26,17 +28,17 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
     }
 
     @Override
-    public FasitClient.Queue getRequestQueue(String environment) {
+    public Queue getRequestQueue(String environment) {
         return getQueue(requestQueueAlias, environment);
     }
 
     @Override
-    public FasitClient.Queue getResponseQueue(String environment) {
+    public Queue getResponseQueue(String environment) {
         return getQueue(responseQueueAlias, environment);
     }
 
     @Override
-    public FasitClient.Queue getQueue(String alias, String environment) {
+    public Queue getQueue(String alias, String environment) {
         FasitClient.Application application = getApplication(environment);
 
         /* The application does not exist in the environment */
@@ -51,7 +53,7 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
         return fasitClient.getApplication(applicationName, environment);
     }
 
-    public FasitClient.QueueManager getQueueManager(String alias, String environment) {
+    public QueueManager getQueueManager(String alias, String environment) {
         FasitClient.Application application = getApplication(environment);
 
         /* The application does not exist in the environment */

@@ -7,6 +7,7 @@ import com.ibm.msg.client.wmq.v6.base.internal.MQC;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConfig;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -70,7 +71,7 @@ public class MessageQueueConfig {
         try {
             String queueName = fasitMessageQueueConsumer.getRequestQueue("u5").getName();
 
-            FasitClient.QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager("mqGateway", "u5");
+            QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager("mqGateway", "u5");
 
             MQQueueConnectionFactory factory = new MQQueueConnectionFactory();
 

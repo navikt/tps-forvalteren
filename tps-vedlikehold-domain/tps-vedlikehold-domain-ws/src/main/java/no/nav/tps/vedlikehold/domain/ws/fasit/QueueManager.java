@@ -1,13 +1,19 @@
-package no.nav.tps.vedlikehold.domain.rs;
+package no.nav.tps.vedlikehold.domain.ws.fasit;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class QueueManager {
 
+public class QueueManager {
     private String name;
     private String hostname;
     private String port;
+
+    public QueueManager(String name, String hostname, String port) {
+        this.name = name;
+        this.hostname = hostname;
+        this.port = port;
+    }
 
     public String getName() {
         return name;
@@ -19,17 +25,5 @@ public class QueueManager {
 
     public String getPort() {
         return port;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPort(String port) {
-        this.port = port;
     }
 }
