@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.jms.annotation.EnableJms;
 
@@ -20,6 +21,7 @@ import javax.jms.*;
 import java.util.Properties;
 import com.ibm.mq.jmqi.JmqiException;
 import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter;
+import org.springframework.jms.core.JmsTemplate;
 
 
 /**
@@ -42,25 +44,27 @@ public class MessageQueueConfig {
     @Autowired
     FasitMessageQueueConsumer fasitMessageQueueConsumer;
 
-//    @Bean
-//    public JmsTemplate jmsTemplate() {
-//        JmsTemplate template = new JmsTemplate(connectionFactory());
-//
-//        return template;
-//    }
+    @Bean
+    public JmsTemplate jmsTemplate() {
+        JmsTemplate template = new JmsTemplate(connectionFactory());
 
-//    @Bean
-//    public ConnectionFactory connectionFactory() {
-//
-//        FasitClient.QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager("mqGateway", "u5");
-//        String host = "tcp://" + queueManager.getHostname() + ":" + queueManager.getPort() + "?wireFormat.maxInactivityDuration=30000";
-//
-//        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(host);
-//
-//        // Noe mer her? Channel-en feiler
-//
-//        return factory;
-//    }
+        return template;
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        QueueManager manager = fasitMessageQueueConsumer.getQueueManager("mqGateway", "u1");
+
+        try {
+            return MessageQueueConnectionFactoryFactory.connectionFactory(manager);
+        } catch (JMSException exception) {
+            System.err.println("\n" + exception.getMessage());
+            exception.printStackTrace();
+            System.err.println("\n");
+        }
+
+        return null;
+    }
 
     public static void main(String args[]) {
         SpringApplication.run(MessageQueueConfig.class);
@@ -69,30 +73,14 @@ public class MessageQueueConfig {
     @PostConstruct
     public void run() {
         try {
-            String queueName = fasitMessageQueueConsumer.getRequestQueue("u5").getName();
+            ConnectionFactory factory = connectionFactory();
 
-            QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager("mqGateway", "u5");
-
-            MQQueueConnectionFactory factory = new MQQueueConnectionFactory();
-
-            Integer transportType   = 1;
-            String hostName         = queueManager.getHostname();
-            Integer port            = Integer.parseInt(queueManager.getPort());
-            String queueManagerName = queueManager.getName();
-//            String channel          = "TPSWS." + queueManager.getName();
-
-            factory.setTransportType(transportType);
-            factory.setQueueManager(queueManagerName);
-            factory.setHostName(hostName);
-            factory.setPort(port);
-//            factory.setChannel(channel);
-
-            Connection connection = factory.createConnection("srvTpsws", "0T0YxjpFnuL2w0G");
+            Connection connection = factory.createConnection("srvappserver", "");
             connection.start();
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-            Destination destination = session.createQueue(fasitMessageQueueConsumer.getRequestQueue("u1").getName());
+            Destination destination = session.createQueue("QA.T4_HEND.SAKSBEHANDLING");
 
             MessageProducer producer = session.createProducer(destination);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);

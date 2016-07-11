@@ -12,8 +12,9 @@ import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Øyvind Grimnes, Visma Consulting AS on 07.07.2016.
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
+
 public class FasitClient {
 
     private FasitRestClient restClient;
@@ -24,10 +25,13 @@ public class FasitClient {
     public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
 
+        /* Use a custom cache */
         this.cache = CacheBuilder.newBuilder()
-                .maximumSize(100)
-                .expireAfterWrite(10, TimeUnit.MINUTES)
-                .build();
+                                 .maximumSize(100)
+                                 .expireAfterWrite(10, TimeUnit.MINUTES)
+                                 .build();
+
+        this.restClient.useCache(false);                                                // The rest client's cache is never updated
     }
 
     /* Queues */

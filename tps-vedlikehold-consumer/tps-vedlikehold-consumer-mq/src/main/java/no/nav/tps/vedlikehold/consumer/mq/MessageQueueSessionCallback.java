@@ -27,8 +27,6 @@ public class MessageQueueSessionCallback implements SessionCallback<TextMessage>
         Queue requestQueue = session.createQueue(requestQueueName);
         Queue responseQueue = session.createQueue(responseQueueName);
 
-
-
         /* Send message */
         MessageProducer producer = session.createProducer(requestQueue);
 
