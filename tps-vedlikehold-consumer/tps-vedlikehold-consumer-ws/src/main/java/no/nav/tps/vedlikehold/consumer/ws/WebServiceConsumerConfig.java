@@ -14,5 +14,5 @@ import org.springframework.context.annotation.Import;
         FasitConfig.class,
         TpswsConsumerConfig.class
 })
-public class WebServiceConfig {
+public class WebServiceConsumerConfig {
 }

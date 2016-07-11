@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.application.local.config;
+package no.nav.tps.vedlikehold.application.local;
 
 import no.nav.tps.vedlikehold.provider.web.config.ApplicationServletInitializer;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

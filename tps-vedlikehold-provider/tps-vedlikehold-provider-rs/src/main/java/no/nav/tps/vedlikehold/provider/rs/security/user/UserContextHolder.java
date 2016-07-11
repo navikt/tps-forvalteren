@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 
 public interface UserContextHolder {
-    String getDisplayName();
+    String getDistinguishedName();
     String getUsername();
 
     Authentication getAuthentication();

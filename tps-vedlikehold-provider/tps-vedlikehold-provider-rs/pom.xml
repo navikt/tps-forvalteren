@@ -12,6 +12,7 @@
     <artifactId>tps-vedlikehold-provider-rs</artifactId>
     <name>TPS Vedlikeholdsklient :: Provider :: RS</name>
 
+
     <dependencies>
         <!--INTERNAL-->
         <dependency>

@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
 
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.EnvironmentController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -47,6 +47,7 @@ public class EnvironmentControllerTest {
     @Test
     public void getUserReturnsEnvironmentList() {
         Set<String> environments = controller.getEnvironments(httpSessionMock);
+
         assertThat(environments, is(ENVIRONMENTS));
     }
 

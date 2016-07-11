@@ -1,7 +1,8 @@
-package no.nav.tps.vedlikehold.provider.rs.config;
+package no.nav.tps.vedlikehold.provider.rs;
 
 
-import no.nav.tps.vedlikehold.provider.rs.api.v1.UserController;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.UserController;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
@@ -24,9 +25,9 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackageClasses = {
         UserController.class
 })
-public class RestConfig {
+public class RestProviderConfig {
 
     public static void main(String[] args) {
-        SpringApplication.run(RestConfig.class, args);
+        SpringApplication.run(RestProviderConfig.class, args);
     }
 }
