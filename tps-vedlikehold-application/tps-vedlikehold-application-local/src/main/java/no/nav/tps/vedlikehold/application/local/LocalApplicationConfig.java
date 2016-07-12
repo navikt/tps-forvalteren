@@ -12,5 +12,4 @@ import org.springframework.context.annotation.Import;
 @EnableAutoConfiguration
 @Import(ApplicationServletInitializer.class)
 public class LocalApplicationConfig {
-
 }

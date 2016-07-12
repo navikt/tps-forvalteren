@@ -28,6 +28,7 @@
 
     <properties>
         <application.name>tps-vedlikehold</application.name>
+        <application.version>${project.version}</application.version>
         <java.version>1.8</java.version>
         <application-ear.version>7</application-ear.version>
         <javaee-api.version>7</javaee-api.version>
