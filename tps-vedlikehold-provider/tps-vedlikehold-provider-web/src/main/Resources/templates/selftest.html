@@ -4,23 +4,49 @@
 <head>
     <title>TPS-Vedlikehold Selftest</title>
     <meta charset="UTF-8"/>
+
+    <link data-th-href="@{/webjars/bootstrap/__${bootstrapVersion}__/css/bootstrap.min.css}" rel="stylesheet"/>
 </head>
 
 <body>
-    <div>
-        <h1>TPS-Vedlikehold Selftest</h1>
-        <div>
-            <div>
-                <table>
+    <div class="container">
+        <h1 data-th-text="${applicationName} + ' ' + #{selftest}">>TPS-Vedlikehold Selftest</h1>
+
+        <div class="row">
+            <div class="col-xs-5">
+                <table class="table table-bordered">
                     <tbody>
                     <tr data-th-each="property : ${applicationProperties}">
                         <th scope="row" data-th-text="#{${property.name}}">Applikasjonsparameter</th>
                         <td data-th-text="${property.value}">Parameterverdi</td>
                     </tr>
+                    <!--<tr>-->
+                        <!--<th scope="row" data-th-text="#{selftest.application.status}">Status</th>-->
+                        <!--<td data-th-text="${aggregateStatus}">N/A</td>-->
+                    <!--</tr>-->
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <!--<table class="table">-->
+            <!--<thead>-->
+            <!--<tr>-->
+                <!--<th data-th-text="#{selftest.overview.status}">Status</th>-->
+                <!--<th data-th-text="#{selftest.overview.name}">Navn</th>-->
+                <!--<th data-th-text="#{selftest.overview.responseTime}">Responstid (ms)</th>-->
+                <!--<th data-th-text="#{selftest.overview.errorMessage}">Feilmelding</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr data-th-each="selftestResult : ${selftestResults}">-->
+                <!--<td data-th-text="${selftestResult.status}"></td>-->
+                <!--<td data-th-text="${selftestResult.name}"></td>-->
+                <!--<td data-th-text="${selftestResult.responseTime}"></td>-->
+                <!--<td data-th-text="${selftestResult.errorMessage}"></td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
     </div>
 </body>
 </html>
