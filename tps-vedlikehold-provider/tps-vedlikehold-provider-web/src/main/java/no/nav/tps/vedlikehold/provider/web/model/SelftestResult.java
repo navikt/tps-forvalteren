@@ -1,7 +1,7 @@
-package no.nav.tps.vedlikehold.provider.web.selftest.model;
+package no.nav.tps.vedlikehold.provider.web.model;
 
-import static no.nav.tps.vedlikehold.provider.web.selftest.model.SelftestResult.Status.FEILET;
-import static no.nav.tps.vedlikehold.provider.web.selftest.model.SelftestResult.Status.OK;
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.OK;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

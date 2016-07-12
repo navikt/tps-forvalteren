@@ -1,10 +1,10 @@
-package no.nav.tps.vedlikehold.provider.web.selftest.model;
-
-import static no.nav.tps.vedlikehold.provider.web.selftest.model.SelftestResult.Status.FEILET;
-import static no.nav.tps.vedlikehold.provider.web.selftest.model.SelftestResult.Status.OK;
+package no.nav.tps.vedlikehold.provider.web.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.OK;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

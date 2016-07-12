@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web;
 
-import no.nav.tps.vedlikehold.provider.web.selftest.model.ApplicationProperty;
+import no.nav.tps.vedlikehold.provider.web.model.ApplicationProperty;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

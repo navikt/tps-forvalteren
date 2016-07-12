@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.web.selftest.model;
+package no.nav.tps.vedlikehold.provider.web.model;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

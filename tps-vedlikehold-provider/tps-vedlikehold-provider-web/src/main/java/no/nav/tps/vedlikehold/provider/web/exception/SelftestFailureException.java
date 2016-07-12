@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.web.selftest.exception;
+package no.nav.tps.vedlikehold.provider.web.exception;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
