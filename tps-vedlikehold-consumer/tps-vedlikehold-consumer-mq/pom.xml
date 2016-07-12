@@ -12,5 +12,4 @@
     <artifactId>tps-vedlikehold-consumer-mq</artifactId>
     <name>TPS Vedlikeholdsklient :: Consumer :: MQ</name>
 
-
 </project>

@@ -12,6 +12,7 @@
     <artifactId>tps-vedlikehold-provider-rs</artifactId>
     <name>TPS Vedlikeholdsklient :: Provider :: RS</name>
 
+
     <dependencies>
         <!--INTERNAL-->
         <dependency>
@@ -21,6 +22,10 @@
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-domain-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-rs</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
