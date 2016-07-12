@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.service.config;
 
+import no.nav.tps.vedlikehold.service.services.DefaultGetTpsServiceRutinerService;
 import no.nav.tps.vedlikehold.service.services.GetTpsServiceRutinerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,7 +21,7 @@ public class ServiceConfig {
 
     @Bean
     GetTpsServiceRutinerService getTpsServiceRutinerService() {
-        return new GetTpsServiceRutinerService();
+        return new DefaultGetTpsServiceRutinerService();
     }
 
     public static void main(String[] args) {
