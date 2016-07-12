@@ -32,8 +32,6 @@ public class SelftestController {
     }
 
     private List<ApplicationProperty> collectApplicationProperties() {
-        System.out.println(applicationName);
-        System.out.println(applicationVersion);
 
         return asList(
                 new ApplicationProperty("selftest.application.name", applicationName),
