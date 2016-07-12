@@ -10,8 +10,8 @@
                 <span flex-gt-sm></span>
                 <md-input-container>
                     <label>Miljø</label>
-                    <md-select ng-model="miljo">
-                        <md-option ng-repeat="val in miljoer" value="{{val}}">{{ val }}</md-option>
+                    <md-select ng-model="environment">
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-button type="submit" class="md-raised md-accent">Send til TPS</md-button>

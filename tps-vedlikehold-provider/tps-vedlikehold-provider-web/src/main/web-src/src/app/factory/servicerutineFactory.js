@@ -9,7 +9,7 @@ angular.module('tps-vedlikehold')
         var servicerutineFieldsTemplate = ['fnr', 'aksjonsDato', 'fremtidigFelt'];
 
         servicerutineFactory.servicerutiner = {};
-        servicerutineFactory.miljoer = {};
+        servicerutineFactory.environments = {};
 
         servicerutineFactory.fetchServicerutiner = function() {
             // $http({method: 'GET', url:urlBase}).then(function(res){
@@ -34,10 +34,10 @@ angular.module('tps-vedlikehold')
             return ret;
         };
         
-        servicerutineFactory.getServicerutineAttributes = function(servicerutineKode) {
+        servicerutineFactory.getServicerutineAttributes = function(servicerutineCode) {
             //
             var filter = [];
-            angular.forEach(servicerutineFactory.servicerutiner[servicerutineKode].attributes, function(value, key) {
+            angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].attributes, function(value, key) {
                 this.push(key);
             }, filter);
 
@@ -50,25 +50,25 @@ angular.module('tps-vedlikehold')
             return ret;
         };
         
-        servicerutineFactory.getServicerutineAksjonskoder = function(servicerutineKode) {
-            return servicerutineFactory.servicerutiner[servicerutineKode].aksjonsKode;
+        servicerutineFactory.getServicerutineAksjonskoder = function(servicerutineCode) {
+            return servicerutineFactory.servicerutiner[servicerutineCode].aksjonsKode;
         };
 
-        servicerutineFactory.getResponse = function(servicerutineKode, formData) {
-            return $http({method: 'GET', url:urlBase+'/'+servicerutineKode, params:formData}); // not correct url yet
+        servicerutineFactory.getResponse = function(servicerutineCode, formData) {
+            return $http({method: 'GET', url:urlBase+'/'+servicerutineCode, params:formData}); // not correct url yet
         };
 
-        servicerutineFactory.fetchMiljoer = function() {
+        servicerutineFactory.fetchEnvironments = function() {
             $http({method: 'GET', url:urlBaseEnv}).then(function(res){
-                    servicerutineFactory.miljoer = res.data;
+                    servicerutineFactory.environments = res.data;
                     return true; //?
                 }, function(error){
                     return false;
                 });
         };
 
-        servicerutineFactory.getMiljoer = function() {
-            return servicerutineFactory.miljoer;
+        servicerutineFactory.getEnvironments = function() {
+            return servicerutineFactory.environments;
         };
 
         return servicerutineFactory;

@@ -8,23 +8,18 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             $scope.formData = {
                 fnr:''
             };
-
-            // var servicerutineKode = $stateParams.servicerutineKode;
             
-            //requestFactory
-            // $scope.miljo = {
-            //     values:['U', 'T', 'Q', 'P']
-            // };
-            
-            $scope.formData.dato = new Date();
+            $scope.environment = ''; // 
 
-            // $scope.fields = requestFactory.getFields(servicerutineKode);
+            // var servicerutineCode = $stateParams.servicerutineCode;
+            
+            $scope.formData.aksjonsDato = new Date();
 
             $scope.submit = function() {
                 console.log("Send til tps pressed med fnr:\n" +
                     $scope.formData.fnr);
 
-                // requestFactory.getResponse(servicerutineKode, $scope.formData).then(function(res){
+                // requestFactory.getResponse(servicerutineCode, $scope.formData).then(function(res){
                 //     //something
                 // }, function(error){
                 //     //something else
@@ -32,34 +27,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             };
 
             function init() {
-                $scope.fields = servicerutineFactory.getServicerutineAttributes($stateParams.servicerutineKode);
+                $scope.fields = servicerutineFactory.getServicerutineAttributes($stateParams.servicerutineCode);
                 $scope.fields.push('aksjonskode');
-                $scope.aksjonskoder = servicerutineFactory.getServicerutineAksjonskoder($stateParams.servicerutineKode);
-                $scope.miljoer = servicerutineFactory.getMiljoer();
-                // console.log('hallo2?');
-                // console.log($scope.aksjonskoder);
-                // angular.forEach($scope.aksjonskoder, function(value, key, obj) {
-                //     console.log(value);
-                // });
+                $scope.aksjonskoder = servicerutineFactory.getServicerutineAksjonskoder($stateParams.servicerutineCode);
+                $scope.environments = servicerutineFactory.getEnvironments();
             }
             init();
-            
-            // function init() {
-            //     requestFactory.getFields($stateParams.servicerutineKode).then(function(res){
-            //         $scope.fields = res.data; //?
-            //     }, function (error) {
-            //         //did not get fields from api
-            //     });
-            //
-            //     requestFactory.getMiljo().then(function(res){
-            //         $scope.miljo = res.data;
-            //     }, function(error){
-            //         //did not get miljo from api
-            //     });
-            //
-            //     $scope.formData.dato = new Date();
-            // }
-            // init();
-            
-
         }]);

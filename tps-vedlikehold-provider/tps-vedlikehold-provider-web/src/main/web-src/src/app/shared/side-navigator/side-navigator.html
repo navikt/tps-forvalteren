@@ -8,19 +8,10 @@
                     </md-item-text>
                     <md-divider></md-divider>
                 </md-list-item>
-                <!--<md-list-item ng-repeat="serviceRoutine in serviceRoutines" class="servicerutine-list-item">-->
-                    <!--<md-item-text layout="row" class="servicerutine-item-text">-->
-                        <!--<md-button class="md-primary servicerutine-button" ng-click="getRequestForm(serviceRoutine.code)"-->
-                                   <!--ui-sref="servicerutine({servicerutineNr: serviceRoutine.code})"-->
-                                   <!--ui-sref-active="activeMenuButton" tabindex="1">-->
-                            <!--{{ serviceRoutine.code }} - {{ serviceRoutine.name }}-->
-                        <!--</md-button>-->
-                    <!--</md-item-text>-->
-                <!--</md-list-item>-->
                 <md-list-item ng-repeat="servicerutine in servicerutiner" class="servicerutine-list-item">
                     <md-item-text layout="row" class="servicerutine-item-text">
                         <md-button class="md-primary servicerutine-button" ng-click="getRequestForm(servicerutine.code)"
-                                   ui-sref="servicerutine({servicerutineKode: servicerutine.code})"
+                                   ui-sref="servicerutine({servicerutineCode: servicerutine.code})"
                                    ui-sref-active="activeMenuButton" tabindex="1">
                             {{ servicerutine.name }}
                         </md-button>
