@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tpsPersonData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <tpsServiceRutine>
+        <serviceRutinenavn th:text="${serviceName}" required="required" />
+        <fnr th:text="${fnr}" />
+        <aksjonsDato th:text="${date}"/>
+        <aksjonsKode th:text="${aksjonskode}"/>
+        <aksjonsKode2 th:text="${aksjonskode2}"/>
+    </tpsServiceRutine>
+</tpsPersonData>

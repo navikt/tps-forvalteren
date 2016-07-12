@@ -49,6 +49,25 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+        </dependency>
+
+        <!--TEMP-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring3</artifactId>
+            <version>2.0.16</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
+//        WebServiceConsumerConfig.class,
         WebProviderConfig.class,
         RestProviderConfig.class
 })
 public class ApplicationConfig {
+
 }
