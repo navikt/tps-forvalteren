@@ -8,12 +8,12 @@ angular.module('tps-vedlikehold').directive('tpsInputField', function(){
     return {
         restrict: 'E',
         replace: true,
-        scope: {
-            fieldData: '='
-        },
+        scope: true,//{
+            //fieldData: '='
+        //},
         link: function(scope, element, attrs) {
             scope.getTemplateUrl = function () {
-                var type = scope.fieldData.type || 'text';
+                var type = scope.fieldData || 'error';
                 return templatesPath + '' + type + '' + templateSuffix;
             };
         },
