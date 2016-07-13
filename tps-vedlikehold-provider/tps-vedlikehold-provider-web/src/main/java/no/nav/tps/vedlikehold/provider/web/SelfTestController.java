@@ -30,7 +30,7 @@ import no.nav.tps.vedlikehold.provider.web.model.ApplicationProperty;
  * @author Kristian Kyvik (Visma Consulting).
  */
 @Controller
-public class SelftestController {
+public class SelfTestController {
 
     @Value("${application.descriptiveName:MISSING_DESCRIPTIVE_APPLICATION_NAME}")
     private String descriptiveApplicationName;
