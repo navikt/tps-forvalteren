@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.config;
 
-import no.nav.tps.vedlikehold.service.services.DefaultGetTpsServiceRutinerService;
-import no.nav.tps.vedlikehold.service.services.GetTpsServiceRutinerService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.DefaultGetTpsServiceRutinerService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutinerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +11,12 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
-
 @EnableAutoConfiguration
 @Configuration
 @ComponentScan(basePackageClasses = {
         GetTpsServiceRutinerService.class
 })
-public class ServiceConfig {
+public class ServiceJavaConfig {
 
     @Bean
     GetTpsServiceRutinerService getTpsServiceRutinerService() {
@@ -25,6 +24,6 @@ public class ServiceConfig {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ServiceConfig.class, args);
+        SpringApplication.run(ServiceJavaConfig.class, args);
     }
 }

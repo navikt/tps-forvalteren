@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.services;
+package no.nav.tps.vedlikehold.service.command.servicerutiner;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -12,7 +12,6 @@ import java.io.InputStream;
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
-
 @Service
 public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerService{
 

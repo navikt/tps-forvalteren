@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.services;
+package no.nav.tps.vedlikehold.service.command.servicerutiner;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

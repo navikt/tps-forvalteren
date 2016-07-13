@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.ServiceController;
-import no.nav.tps.vedlikehold.service.services.GetTpsServiceRutinerService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutinerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
