@@ -13,6 +13,7 @@ import no.nav.tps.vedlikehold.service.command.config.CommandConfig;
 @Configuration
 @EnableScheduling
 @Import(CommandConfig.class)
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+//s@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ServiceConfig {
 }
+

@@ -7,17 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import static java.util.Arrays.asList;
-
-import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTEST_EXCEPTION_MESSAGE_KEY;
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
@@ -25,6 +20,11 @@ import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
 import no.nav.tps.vedlikehold.provider.web.exception.SelftestFailureException;
 import no.nav.tps.vedlikehold.provider.web.model.AggregateSelftestResult;
 import no.nav.tps.vedlikehold.provider.web.model.ApplicationProperty;
+
+import static java.util.Arrays.asList;
+import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
+import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTEST_EXCEPTION_MESSAGE_KEY;
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
 
 /**
  * @author Kristian Kyvik (Visma Consulting).
@@ -45,12 +45,12 @@ public class SelfTestController {
     private String bootstrapVersion;
 
     @Autowired
-    @Qualifier(value = "egenAnsattSelftest")
-    private Selftest egenAnsattSelftest;
-
-    @Autowired
     @Qualifier(value = "diskresjonskodeSelftest")
     private Selftest diskresjonskodeSelftest;
+
+    @Autowired
+    @Qualifier(value = "egenAnsattSelftest")
+    private Selftest egenAnsattSelftest;
 
     @Autowired
     private MessageProvider messageProvider;
