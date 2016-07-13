@@ -44,7 +44,7 @@ public abstract class SubSystemSelftest implements Selftest {
      * @return {@code true} If the check completed without any problems. {@code false} if the check encountered
      * an unexpected and unknown error.
      */
-    protected abstract boolean performCheck();
+    protected abstract boolean performCheck() throws Exception;
 
     private SelftestResult performSelftest() {
         try {

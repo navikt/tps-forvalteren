@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web.selftest;
 
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
-
+import no.nav.tps.vedlikehold.service.command.tpsws.PingEgenAnsatt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,19 +8,19 @@ import org.springframework.stereotype.Component;
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 @Component
-public class TpswsSelftest extends SubSystemSelftest {
+public class EgenAnsattSelftest extends SubSystemSelftest {
 
     @Autowired
-    private DefaultEgenAnsattConsumer egenAnsattConsumer;
+    private PingEgenAnsatt pingEgenAnsatt;
 
     @Override
     protected String getSubSystemName() {
-        return "TPSWS";
+        return "TPSWS - EgenAnsatt";
     }
 
     @Override
-    protected boolean performCheck() {
-        pingEgenAnsattConsumer.ping();
+    protected boolean performCheck() throws Exception {
+        pingEgenAnsatt.execute();
         return true;
     }
 }

@@ -12,4 +12,17 @@
     <artifactId>tps-vedlikehold-service-java</artifactId>
     <name>TPS Vedlikeholdsklient :: Service :: Java</name>
 
+    <dependencies>
+        <!--INTERNAL-->
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+        </dependency>
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
