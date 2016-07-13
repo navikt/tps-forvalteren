@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tps-vedlikehold-common-test</artifactId>
-    <packaging>pom</packaging>
     <name>TPS Vedlikeholdsklient :: Common :: Test</name>
 
     <dependencies>
