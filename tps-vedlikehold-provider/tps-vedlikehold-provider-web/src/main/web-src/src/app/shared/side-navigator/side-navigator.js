@@ -6,6 +6,7 @@ angular.module('tps-vedlikehold')
         
         function init() {
             if(servicerutineFactory.fetchServicerutiner()) { //HVOR BURDE DETTE KALLET GJØRES?
+                // IKKE HER HVERTFALL
                 //success, data in servicerutineFactory
                 $scope.servicerutiner = servicerutineFactory.getServicerutineNames();
             }
