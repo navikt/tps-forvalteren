@@ -5,6 +5,7 @@ import no.nav.modig.jaxws.handlers.MDCOutHandler;
 import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.PackageMarker;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.cxf.TimeoutFeature;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
@@ -21,6 +22,7 @@ import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.security.auth.callback.Callback;
@@ -38,6 +40,9 @@ import java.util.Map;
  * @author Tobias Hansen (Visma Consulting AS).
  */
 @Configuration
+@ComponentScan(basePackageClasses = {
+        PackageMarker.class
+})
 public class TpswsConsumerConfig {
     private final String DISKRESJONSKODE_WSDL_URL = "wsdl/Diskresjonskode.wsdl";
 
@@ -64,7 +69,7 @@ public class TpswsConsumerConfig {
     }
 
     @Bean
-    public DiskresjonskodePortType getDiskresjonskodePortType() {
+    public DiskresjonskodePortType diskresjonskodePortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
         factoryBean.setWsdlURL(DISKRESJONSKODE_WSDL_URL);
@@ -72,13 +77,13 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
+//        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }
 
     @Bean
-    public PipEgenAnsattPortType getPipEgenAnsattPortType() {
+    public PipEgenAnsattPortType pipEgenAnsattPortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
         factoryBean.setWsdlURL(PIP_EGENANSATT_WSDL_URL);

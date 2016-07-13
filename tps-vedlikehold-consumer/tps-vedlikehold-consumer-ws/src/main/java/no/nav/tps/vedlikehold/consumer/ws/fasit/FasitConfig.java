@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 @Configuration
-@EnableAutoConfiguration
 @ComponentScan()
 public class FasitConfig {
 
