@@ -45,12 +45,12 @@ public class SelfTestController {
     private String bootstrapVersion;
 
     @Autowired
-    @Qualifier(value = "repositorySelftest")
+    @Qualifier(value = "egenAnsattSelftest")
     private Selftest egenAnsattSelftest;
 
     @Autowired
-    @Qualifier(value = "fellesKodeverkSelftest")
-    private Selftest DiskresjonskodeSelftest;
+    @Qualifier(value = "diskresjonskodeSelftest")
+    private Selftest diskresjonskodeSelftest;
 
     @Autowired
     private MessageProvider messageProvider;
@@ -97,7 +97,7 @@ public class SelfTestController {
 
     private List<SelftestResult> collectSelftestResults() {
         return Collections.unmodifiableList(asList(
-                DiskresjonskodeSelftest.perform(),
+                diskresjonskodeSelftest.perform(),
                 egenAnsattSelftest.perform()
         ));
     }
