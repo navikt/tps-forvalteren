@@ -15,6 +15,6 @@ angular.module('tps-vedlikehold').directive('tpsResponseForm', function(){
                 return templatesPath + '' + type + '' + templateSuffix;
             };
         },
-        template: '<div class="tps-response-form" ng-include="getTemplateUrl()"></div>'
+        template: '<div class="tps-response-form md-padding" ng-include="getTemplateUrl()"></div>'
     };
 });
