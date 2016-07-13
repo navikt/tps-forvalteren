@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackageClasses = {
         GetTpsServiceRutinerService.class
 })
-public class ServiceJavaConfig {
+public class ServiceConfig {
 
     @Bean
     GetTpsServiceRutinerService getTpsServiceRutinerService() {
@@ -24,6 +24,6 @@ public class ServiceJavaConfig {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ServiceJavaConfig.class, args);
+        SpringApplication.run(ServiceConfig.class, args);
     }
 }
