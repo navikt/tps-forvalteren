@@ -21,7 +21,7 @@ public class TpswsSelftest extends SubSystemSelftest {
 
     @Override
     protected boolean performCheck() {
-        pingEgenAnsattConsumer.ping();
+//        pingEgenAnsattConsumer.ping();
         return true;
     }
 }

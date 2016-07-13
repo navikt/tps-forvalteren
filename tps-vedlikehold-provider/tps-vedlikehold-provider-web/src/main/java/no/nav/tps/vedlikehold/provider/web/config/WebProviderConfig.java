@@ -1,5 +1,5 @@
 package no.nav.tps.vedlikehold.provider.web.config;
-import no.nav.tps.vedlikehold.provider.web.SelftestController;
+import no.nav.tps.vedlikehold.provider.web.SelfTestController;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:global.properties")
 public class WebProviderConfig {
     @Bean
-    SelftestController selftestController() {
-        return new SelftestController();
+    SelfTestController selftestController() {
+        return new SelfTestController();
     }
 }
