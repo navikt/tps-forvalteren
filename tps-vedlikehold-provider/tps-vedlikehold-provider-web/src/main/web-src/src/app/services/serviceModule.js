@@ -1,4 +1,4 @@
 /**
- * Created by G148235 on 24.06.2016.
- */
+ * @author Frederik de Lichtenberg (Visma Consulting AS).
+ * */
 angular.module('tps-vedlikehold.service', []);
