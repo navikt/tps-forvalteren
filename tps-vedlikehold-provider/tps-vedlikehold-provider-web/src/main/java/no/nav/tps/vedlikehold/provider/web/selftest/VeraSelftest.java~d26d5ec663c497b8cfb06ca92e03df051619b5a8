@@ -1,0 +1,26 @@
+package no.nav.tps.vedlikehold.provider.web.selftest;
+
+import no.nav.aura.appconfig.*;
+import no.nav.tps.vedlikehold.service.command.vera.PingVera;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Tobias Hansen (Visma Consulting AS).
+ */
+@Component
+public class VeraSelftest extends SubSystemSelftest {
+
+    @Autowired
+    PingVera pingVera;
+
+    @Override
+    protected String getSubSystemName() {
+        return "Vera";
+    }
+
+    @Override
+    protected boolean performCheck() {
+        return false;
+    }
+}
