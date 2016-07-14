@@ -6,6 +6,7 @@ import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -97,8 +98,10 @@ public class DefaultMessageQueueServiceTest {
     public void usesConnectionToCreateNewSession() throws JMSException {
         messageQueueService.sendMessage(REQUEST_MESSAGE);
 
-        verify(connectionMock).start();
-        verify(connectionMock).createSession(eq(false), eq(Session.AUTO_ACKNOWLEDGE));
+        InOrder inOrder = inOrder(connectionMock);
+
+        inOrder.verify(connectionMock).start();
+        inOrder.verify(connectionMock).createSession(eq(false), eq(Session.AUTO_ACKNOWLEDGE));
     }
 
     @Test
@@ -127,8 +130,10 @@ public class DefaultMessageQueueServiceTest {
     public void connectionIsClosedAfterMessageIsReceived() throws JMSException {
         messageQueueService.sendMessage(REQUEST_MESSAGE);
 
-        verify(consumerMock).receive(anyLong());
-        verify(connectionMock).close();
+        InOrder inOrder = inOrder(consumerMock, connectionMock);
+
+        inOrder.verify(consumerMock).receive(anyLong());
+        inOrder.verify(connectionMock).close();
     }
 
     @Test
