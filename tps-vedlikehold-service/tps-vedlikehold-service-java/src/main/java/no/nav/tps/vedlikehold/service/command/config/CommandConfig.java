@@ -25,10 +25,5 @@ public class CommandConfig {
     DefaultEgenAnsattConsumer defaultEgenAnsattConsumer() {
         return new DefaultEgenAnsattConsumer();
     }
-
-    @Bean
-    VeraConsumer veraConsumer() {
-        return new VeraConsumer();
-    }
 }
 

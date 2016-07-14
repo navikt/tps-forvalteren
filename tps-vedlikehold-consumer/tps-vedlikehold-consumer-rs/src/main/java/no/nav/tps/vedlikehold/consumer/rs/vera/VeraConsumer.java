@@ -14,6 +14,8 @@ import static java.util.stream.Collectors.toSet;
  */
 public class VeraConsumer {
 
+    private static final String PING_VERA = "tpws";
+
     private enum Service {
         DEPLOYLOG("deploylog");
 
@@ -82,9 +84,9 @@ public class VeraConsumer {
                                .collect(toSet());
     }
 
-    public boolean ping(String environment) throws Exception{
+    public boolean ping() throws Exception{
         try {
-            this.getEnvironments(environment);
+            this.getEnvironments(PING_VERA);
         } catch (Exception e) {
             throw e;
         }
