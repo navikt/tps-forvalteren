@@ -1,0 +1,66 @@
+package no.nav.tps.vedlikehold.consumer.mq.strategies;
+
+import com.ibm.mq.jms.MQConnectionFactory;
+import com.ibm.mq.jms.MQQueue;
+import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
+import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.jms.*;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
+/**
+ * @author Øyvind Grimnes, Visma Consulting AS
+ */
+
+@RunWith(MockitoJUnitRunner.class)
+public class QueueManagerConnectionFactoryStrategyTest {
+
+    private static final String QUEUE_MANAGER_NAME            = "queueManagerName";
+    private static final String QUEUE_MANAGER_HOST_NAME       = "queueManagerHostName";
+    private static final String QUEUE_MANAGER_PORT            = "1234";
+    private static final String QUEUE_MANAGER_CHANNEL         = "T4_SAKOGBEHANDLING";
+    private static final Integer QUEUE_MANAGER_TRANSPORT_TYPE = 1;
+
+    @Mock
+    private QueueManager queueManagerMock;
+
+    @InjectMocks
+    private QueueManagerConnectionFactoryStrategy connectionFactoryStrategy;
+
+    @Before
+    public void setUp() {
+        when(queueManagerMock.getHostname()).thenReturn(QUEUE_MANAGER_HOST_NAME);
+        when(queueManagerMock.getName()).thenReturn(QUEUE_MANAGER_NAME);
+        when(queueManagerMock.getPort()).thenReturn(QUEUE_MANAGER_PORT);
+    }
+
+
+    @Test
+    public void getsValuesFromTheQueueManager() {
+        connectionFactoryStrategy.getName();
+        connectionFactoryStrategy.getHostName();
+        connectionFactoryStrategy.getPort();
+
+        verify(queueManagerMock).getName();
+        verify(queueManagerMock).getHostname();
+        verify(queueManagerMock).getPort();
+    }
+
+    @Test
+    public void returnsCorrectValues() {
+        assertThat(connectionFactoryStrategy.getName(), is(QUEUE_MANAGER_NAME));
+        assertThat(connectionFactoryStrategy.getPort(), is(Integer.parseInt(QUEUE_MANAGER_PORT)));
+        assertThat(connectionFactoryStrategy.getHostName(), is(QUEUE_MANAGER_HOST_NAME));
+        assertThat(connectionFactoryStrategy.getTransportType(), is(QUEUE_MANAGER_TRANSPORT_TYPE));
+        assertThat(connectionFactoryStrategy.getChannelName(), is(QUEUE_MANAGER_CHANNEL));
+    }
+}

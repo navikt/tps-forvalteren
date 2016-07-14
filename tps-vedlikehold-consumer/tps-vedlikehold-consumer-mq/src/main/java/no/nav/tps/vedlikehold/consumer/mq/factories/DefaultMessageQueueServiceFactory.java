@@ -1,6 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import no.nav.tps.vedlikehold.consumer.mq.services.DefaultMessageQueueService;
+import no.nav.tps.vedlikehold.consumer.mq.strategies.ConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.strategies.QueueManagerConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
@@ -25,7 +27,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     private FasitMessageQueueConsumer fasitMessageQueueConsumer;
 
     @Autowired
-    private QueueManagerConnectionFactoryFactory connectionFactoryFactory;
+    private ConnectionFactoryFactory connectionFactoryFactory;
 
     /**
      * Instantiates a new MessageQueueService in the specified environment
@@ -39,7 +41,9 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
         Queue responseQueue       = fasitMessageQueueConsumer.getResponseQueue(environment);
 
-        ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(queueManager);
+        ConnectionFactoryStrategy connectionFactoryStrategy = new QueueManagerConnectionFactoryStrategy(queueManager);
+
+        ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryStrategy);
 
         return new DefaultMessageQueueService(
                 requestQueue.getName(),

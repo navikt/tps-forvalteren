@@ -2,6 +2,8 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import com.google.common.cache.Cache;
 import com.ibm.mq.jms.MQConnectionFactory;
+import no.nav.tps.vedlikehold.consumer.mq.strategies.ConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.strategies.QueueManagerConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +34,9 @@ public class CachedConnectionFactoryFactoryTest {
     @Mock
     private Cache<String, ConnectionFactory> cacheMock;
 
-    private QueueManager queueManager = new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT);
+    private ConnectionFactoryStrategy strategy = new QueueManagerConnectionFactoryStrategy(
+            new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT)
+    );
 
     @InjectMocks
     private CachedConnectionFactoryFactory connectionFactoryFactory;
@@ -43,7 +47,7 @@ public class CachedConnectionFactoryFactoryTest {
 
         when(cacheMock.getIfPresent(anyString())).thenReturn(connectionFactory);
 
-        ConnectionFactory result = connectionFactoryFactory.createConnectionFactory(queueManager);
+        ConnectionFactory result = connectionFactoryFactory.createConnectionFactory(strategy);
 
         assertThat(result, equalTo(connectionFactory));
 
@@ -54,19 +58,19 @@ public class CachedConnectionFactoryFactoryTest {
     public void connectionFactoryIsAddedToCacheIfNotPresent() throws JMSException {
         when(cacheMock.getIfPresent(anyString())).thenReturn(null);
 
-        connectionFactoryFactory.createConnectionFactory(queueManager);
+        connectionFactoryFactory.createConnectionFactory(strategy);
 
         verify(cacheMock).put(anyString(), any());
     }
 
     @Test
     public void connectionFactoryContainsCorrectProperties() throws JMSException {
-        MQConnectionFactory connectionFactory = (MQConnectionFactory) connectionFactoryFactory.createConnectionFactory(queueManager);
+        MQConnectionFactory connectionFactory = (MQConnectionFactory) connectionFactoryFactory.createConnectionFactory(strategy);
 
-        assertThat(connectionFactory.getHostName(), is(QUEUE_MANAGER_HOST_NAME));
-        assertThat(connectionFactory.getQueueManager(), is(QUEUE_MANAGER_NAME));
-        assertThat(connectionFactory.getPort(), is(Integer.parseInt(QUEUE_MANAGER_PORT)));
-        assertThat(connectionFactory.getTransportType(), is(1));
-        assertThat(connectionFactory.getChannel(), is("T4_SAKOGBEHANDLING"));                   //TODO: Update when this becomes dynamic
+        assertThat(connectionFactory.getHostName(), is(strategy.getHostName()));
+        assertThat(connectionFactory.getQueueManager(), is(strategy.getName()));
+        assertThat(connectionFactory.getPort(), is(strategy.getPort()));
+        assertThat(connectionFactory.getTransportType(), is(strategy.getTransportType()));
+        assertThat(connectionFactory.getChannel(), is(strategy.getChannelName()));
     }
 }
