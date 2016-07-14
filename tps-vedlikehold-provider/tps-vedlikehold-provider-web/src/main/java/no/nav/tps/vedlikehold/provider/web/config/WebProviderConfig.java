@@ -5,6 +5,8 @@ import no.nav.tps.vedlikehold.provider.web.SelftestController;
 import no.nav.tps.vedlikehold.provider.web.selftest.DiskresjonskodeSelftest;
 import no.nav.tps.vedlikehold.provider.web.selftest.EgenAnsattSelftest;
 import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
+import no.nav.tps.vedlikehold.provider.web.selftest.VeraSelftest;
+import no.nav.tps.vedlikehold.service.command.vera.PingVera;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +32,16 @@ public class WebProviderConfig {
     @Bean(name = "diskresjonskodeSelftest")
     Selftest diskresjonskodeSelftest() {
         return new DiskresjonskodeSelftest();
+    }
+
+    @Bean(name = "veraSelftest")
+    Selftest veraSelftest() {
+        return new VeraSelftest();
+    }
+
+    @Bean
+    PingVera pingVera() {
+        return new PingVera();
     }
 
     @Bean
