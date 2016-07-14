@@ -2,11 +2,9 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import no.nav.aura.envconfig.client.DomainDO;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
 
 
 /**

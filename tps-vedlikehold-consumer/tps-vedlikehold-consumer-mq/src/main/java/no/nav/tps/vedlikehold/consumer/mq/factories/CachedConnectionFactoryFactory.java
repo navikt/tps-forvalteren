@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * A connection factory factory maintaining an internal cache of connection factories.
- * This avoid instantiating new factories for every request, and improves performance.
+ * This avoids instantiating new factories for every request, and improves performance.
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */

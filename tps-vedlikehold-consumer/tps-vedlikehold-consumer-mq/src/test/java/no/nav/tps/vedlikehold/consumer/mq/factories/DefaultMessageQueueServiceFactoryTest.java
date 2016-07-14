@@ -1,7 +1,5 @@
-package no.nav.tps.vedlikehold.consumer.mq;
+package no.nav.tps.vedlikehold.consumer.mq.factories;
 
-import no.nav.tps.vedlikehold.consumer.mq.factories.DefaultMessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.mq.factories.QueueManagerConnectionFactoryFactory;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;

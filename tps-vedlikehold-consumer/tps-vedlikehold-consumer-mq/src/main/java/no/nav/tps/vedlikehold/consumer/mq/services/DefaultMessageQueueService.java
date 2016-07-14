@@ -9,7 +9,7 @@ import javax.jms.*;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public class DefaultMessageQueueService {
+public class DefaultMessageQueueService implements MessageQueueService {
 
     private static final String MESSAGE_QUEUE_USERNAME  = "srvappserver";
     private static final String MESSAGE_QUEUE_PASSWORD  = "";
@@ -38,10 +38,10 @@ public class DefaultMessageQueueService {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         /* Prepare destinations */
-        Destination requestDestination  =  session.createQueue( requestQueueName );
+        Destination requestDestination  = session.createQueue( requestQueueName );
         Destination responseDestination = session.createQueue(responseQueueName);
 
-        ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
+        ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //FIXME: This method should be provider independent
 
         /* Prepare request message */
         TextMessage requestMessage = session.createTextMessage(requestMessageContent);

@@ -43,7 +43,7 @@ public class FasitClient {
     private Queue findQueue(String alias, String applicationName, String environment) {
         ResourceElement resource = this.findResource(alias, applicationName, environment, ResourceTypeDO.Queue);
 
-        String name = resource.getPropertyString("queueName");
+        String name    = resource.getPropertyString("queueName");
         String manager = resource.getPropertyString("queueManager");
 
         return new Queue(name, manager);
@@ -108,7 +108,7 @@ public class FasitClient {
         String name;
 
         private Application(String name, String environment) {
-            this.name = name;
+            this.name        = name;
             this.environment = environment;
         }
 

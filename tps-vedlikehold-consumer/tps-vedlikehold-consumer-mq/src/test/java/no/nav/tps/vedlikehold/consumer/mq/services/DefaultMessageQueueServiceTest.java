@@ -1,9 +1,8 @@
-package no.nav.tps.vedlikehold.consumer.mq;
+package no.nav.tps.vedlikehold.consumer.mq.services;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
-import no.nav.tps.vedlikehold.consumer.mq.services.DefaultMessageQueueService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
 /**
- * Quite thorough testing, but there is a lot to keep in during the message exchange
+ * Quite thorough testing, but there is a lot to keep in mind during the message exchange
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
