@@ -57,11 +57,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-application-local</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -104,12 +99,6 @@
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-provider-web</artifactId>
                 <version>${project.version}</version>
-                <type>war</type>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-provider-web</artifactId>
-                <version>${project.version}</version>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
@@ -118,15 +107,20 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!--Nav Diskresjonstjeneste-->
+            <!--SPRING-->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-ldap</artifactId>
+                <version>4.0.4.RELEASE</version>
+            </dependency>
+
+            <!--SERVICES-->
             <dependency>
                 <groupId>no.nav.tjenester.pip</groupId>
                 <artifactId>nav-pip-diskresjonskode-v1-tjenestespesifikasjon</artifactId>
                 <version>1.1.0</version>
                 <classifier>jaxws</classifier>
             </dependency>
-
-            <!--Nav EgenAnsatt-tjeneste -->
             <dependency>
                 <groupId>no.nav.tjenester.pip</groupId>
                 <artifactId>nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon</artifactId>
@@ -134,18 +128,12 @@
                 <classifier>jaxws</classifier>
             </dependency>
 
+
             <!--LANGUAGE EXTENSIONS-->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>19.0</version>
-            </dependency>
-
-            <!--SERVICES-->
-            <dependency>
-                <groupId>no.nav.brevogarkiv</groupId>
-                <artifactId>common-util-fasit</artifactId>
-                <version>${common-brevogarkiv.version}</version>
             </dependency>
 
             <!-- MODIG -->
@@ -179,23 +167,6 @@
                 <version>2.4.0</version>
             </dependency>
 
-            <!--SERVICES-->
-            <dependency>
-                <groupId>no.nav.brevogarkiv</groupId>
-                <artifactId>common-util-fasit</artifactId>
-                <version>${common-brevogarkiv.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.jms</groupId>
-                <artifactId>jms</artifactId>
-                <version>1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ibm</groupId>
-                <artifactId>mqjms</artifactId>
-                <version>7.1</version>
-            </dependency>
-
             <!-- DEPLOYMENT -->
             <dependency>
                 <groupId>javax</groupId>
@@ -219,6 +190,16 @@
                 <groupId>com.ibm.disthub2</groupId>
                 <artifactId>dhbcore</artifactId>
                 <version>DH610-GOLD</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.jms</groupId>
+                <artifactId>jms</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ibm</groupId>
+                <artifactId>mqjms</artifactId>
+                <version>7.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
