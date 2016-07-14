@@ -13,7 +13,7 @@
         </filter>
     </appender>
 
-    <root level="DEBUG">
+    <root level="${ROOT_LOG_LEVEL:-INFO}">
         <appender-ref ref="STDOUT"/>
     </root>
 

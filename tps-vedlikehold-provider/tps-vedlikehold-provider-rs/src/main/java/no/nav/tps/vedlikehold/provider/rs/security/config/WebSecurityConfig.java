@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.security.config;
 
 import no.nav.tps.vedlikehold.provider.rs.security.csrf.CsrfHeaderFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -28,6 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CsrfTokenRepository tokenRepository;
 
+    @Autowired
+    private RestAuthenticationEntryPoint authentificationEntryPoint;
+
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
         builder.authenticationProvider(authenticationProvider);
@@ -45,5 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(tokenRepository)
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(cookiePath), CsrfFilter.class);
+
+        http.exceptionHandling().authenticationEntryPoint(authentificationEntryPoint);
     }
 }

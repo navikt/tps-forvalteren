@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class CachedQueueManagerConnectionFactoryFactoryTest {
+public class CachedConnectionFactoryFactoryTest {
 
     private static final String QUEUE_MANAGER_NAME      = "queueManagerName";
     private static final String QUEUE_MANAGER_HOST_NAME = "queueManagerHostName";

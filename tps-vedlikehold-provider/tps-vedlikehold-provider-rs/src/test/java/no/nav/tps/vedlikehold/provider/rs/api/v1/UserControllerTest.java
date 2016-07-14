@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
 import no.nav.tps.vedlikehold.domain.rs.User;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.UserController;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.junit.Before;
@@ -30,10 +31,10 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
-    private static final String DISPLAY_NAME    = "displayName";
-    private static final String USERNAME        = "username";
-    private static final String SESSION_ID      = "sessionID";
-    private static final List<UserRole> ROLES   = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T,ROLE_READ_Q, ROLE_WRITE_Q);
+    private static final String DISTINGUISHED_NAME  = "distinguishedName";
+    private static final String USERNAME            = "username";
+    private static final String SESSION_ID          = "sessionID";
+    private static final List<UserRole> ROLES       = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T,ROLE_READ_Q, ROLE_WRITE_Q);
 
     @Mock
     private HttpSession httpSessionMock;
@@ -48,7 +49,7 @@ public class UserControllerTest {
     public void setUp() {
         doReturn(ROLES).when(userContextHolderMock).getRoles();
         when( userContextHolderMock.getUsername() ).thenReturn(USERNAME);
-        when( userContextHolderMock.getDisplayName() ).thenReturn(DISPLAY_NAME);
+        when( userContextHolderMock.getDistinguishedName() ).thenReturn(DISTINGUISHED_NAME);
 
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
@@ -59,7 +60,7 @@ public class UserControllerTest {
 
         assertThat(user.getRoles(), containsInAnyOrder(ROLE_READ_T.name(), ROLE_WRITE_T.name(), ROLE_READ_Q.name(), ROLE_WRITE_Q.name()));
         assertThat(user.getRoles(), hasSize(ROLES.size()));
-        assertThat(user.getName(), is(DISPLAY_NAME));
+        assertThat(user.getName(), is(DISTINGUISHED_NAME));
         assertThat(user.getUsername(), is(USERNAME));
         assertThat(user.getToken(), is(SESSION_ID));
     }
