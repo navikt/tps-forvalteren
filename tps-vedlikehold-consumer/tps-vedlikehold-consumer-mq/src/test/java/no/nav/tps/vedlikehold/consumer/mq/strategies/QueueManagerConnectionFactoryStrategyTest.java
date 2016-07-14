@@ -1,22 +1,17 @@
 package no.nav.tps.vedlikehold.consumer.mq.strategies;
 
-import com.ibm.mq.jms.MQConnectionFactory;
-import com.ibm.mq.jms.MQQueue;
-import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.*;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
