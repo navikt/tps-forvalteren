@@ -1,4 +1,5 @@
 package no.nav.tps.vedlikehold.provider.web.config;
+import no.nav.tps.vedlikehold.common.java.message.DefaultMessageProvider;
 import no.nav.tps.vedlikehold.provider.web.SelfTestController;
 
 import no.nav.tps.vedlikehold.provider.web.selftest.DiskresjonskodeSelftest;
@@ -29,5 +30,10 @@ public class WebProviderConfig {
     @Bean(name = "diskresjonskodeSelftest")
     Selftest diskresjonskodeSelftest() {
         return new DiskresjonskodeSelftest();
+    }
+
+    @Bean
+    DefaultMessageProvider defaultMessageProvider() {
+        return new DefaultMessageProvider();
     }
 }

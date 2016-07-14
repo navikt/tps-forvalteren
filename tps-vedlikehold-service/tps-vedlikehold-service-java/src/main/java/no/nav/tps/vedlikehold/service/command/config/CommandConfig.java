@@ -7,6 +7,7 @@ import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.ws.wsdl.wsdl11.provider.DefaultMessagesProvider;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
