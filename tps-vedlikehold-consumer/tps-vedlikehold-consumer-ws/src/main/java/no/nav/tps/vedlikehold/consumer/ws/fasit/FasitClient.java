@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class FasitClient {
 
-    private static final long CACHE_MAX_SIZE = 100;
-    private static final long CACHE_MINUTES_TO_LIVE = 100;
+    private static final long CACHE_MAX_SIZE        = 100;
+    private static final long CACHE_MINUTES_TO_LIVE = 30;
 
     private FasitRestClient restClient;
 

@@ -12,4 +12,4 @@ import org.springframework.context.annotation.Import;
 @Import({
         FasitConfig.class
 })
-public class WebServiceConfig {}
+public class WebServiceConsumerConfig {}

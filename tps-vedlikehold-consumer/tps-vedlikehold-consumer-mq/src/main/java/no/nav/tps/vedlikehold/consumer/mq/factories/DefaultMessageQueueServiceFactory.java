@@ -17,7 +17,7 @@ import javax.jms.JMSException;
  */
 
 @Component
-public class DefaultMessageQueueServiceFactory {
+public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
     private static final String MESSAGE_QUEUE_MANAGER_ALIAS = "mqGateway";
 

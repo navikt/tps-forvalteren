@@ -4,14 +4,16 @@ import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.DefaultFasitMessageQueueC
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-@SpringBootApplication
+@Configuration
+@ComponentScan
 public class FasitConfig {
 
     @Autowired
