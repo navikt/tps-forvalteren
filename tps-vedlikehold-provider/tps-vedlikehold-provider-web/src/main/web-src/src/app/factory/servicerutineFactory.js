@@ -10,6 +10,7 @@ angular.module('tps-vedlikehold')
 
         servicerutineFactory.servicerutiner = {};
         servicerutineFactory.environments = {};
+        // servicerutineFactory.servicerutineCodes = [];
 
         servicerutineFactory.fetchServicerutiner = function() {
             console.log('fetchServicerutiner');
@@ -25,8 +26,26 @@ angular.module('tps-vedlikehold')
             // res.data = {"tpsPersonData":{"S004":{"attributes":{"aksjonsDato":"2001-01-01","fnr":12345678901},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["A0","A2","B0","B2","C0","D0","E0"]},"S322":{"attributes":{"aksjonsDato":"2001-01-01","fnr":12345678901},"internNavn":"S322 alt servicerutine","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["A0","A2","B0","B2","C0","D0","E0"]}}};
             res.data = {"tpsPersonData":{"S004":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}, "S322":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S322 ALT serv rut","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}}};
             servicerutineFactory.servicerutiner = res.data.tpsPersonData;
+            // setServicerutineCodes();
             return true;
         };
+        
+        servicerutineFactory.getServicerutiner = function() {
+            return servicerutineFactory.servicerutiner;
+        };
+        
+        // function setServicerutineCodes() {
+        //     var ret = [];
+        //     angular.forEach(servicerutineFactory.servicerutiner, function(value, key) {
+        //         console.log('in servicerutineFactory, key: ' + key);
+        //         this.push(key);
+        //     }, ret);
+        //     servicerutineFactory.servicerutineCodes = ret;
+        // }
+        //
+        // servicerutineFactory.getServicerutineCodes = function () {
+        //     return servicerutineFactory.servicerutineCodes;
+        // };
 
         servicerutineFactory.getServicerutineNames = function() {
             var ret = [];
@@ -37,11 +56,13 @@ angular.module('tps-vedlikehold')
         };
         
         servicerutineFactory.getServicerutineAttributes = function(servicerutineCode) {
-            //
+            // vil ha feltene fra servicerutineFieldsTemplate i den rekkefølgen
+            // kunne nok vært gjort på en bedre måte
             var filter = [];
             angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].requiredAttributes, function(value, key) {
                 this.push(key);
             }, filter);
+
             angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].optionalAttributes, function(value, key) {
                 this.push(key);
             }, filter);

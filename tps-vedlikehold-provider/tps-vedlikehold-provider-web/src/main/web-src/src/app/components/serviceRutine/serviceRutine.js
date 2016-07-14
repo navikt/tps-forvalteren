@@ -10,6 +10,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             $scope.servicerutineCode = $stateParams.servicerutineCode;
             $scope.responseReceived = true;
             $scope.required = {};
+            $scope.isValidServicerutineCode = false;
             var requiredAttributes = {};
             
             $scope.formData = {
@@ -55,16 +56,34 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             $scope.isRequired = function(type) {
                 return (type in requiredAttributes);
             };
-
-            function init() {
+            
+            function getServicerutineAttributes() {
                 $scope.fields = servicerutineFactory.getServicerutineAttributes($stateParams.servicerutineCode);
                 $scope.fields.push('aksjonskode');
+            }
+            
+            function setIsValidRutineserviceCode() {
+                // $scope.validServicerutineCode = servicerutineFactory.getServicerutineCodes().includes($stateParams.servicerutineCode);
+                $scope.isValidServicerutineCode = ($stateParams.servicerutineCode in servicerutineFactory.getServicerutiner());
+            }
+
+            function init() {
+                console.log('serviceRutine.js init()');
+                setIsValidRutineserviceCode();
+                
+                //bedre måte å gjøre dette på?
+                if (!$scope.isValidServicerutineCode) {
+                    return;
+                }
+                getServicerutineAttributes();
                 requiredAttributes = servicerutineFactory.getServicerutineRequiredAttributes($stateParams.servicerutineCode);
                 // console.log(requiredAttributes);
                 // setRequiresAttributes();
                 $scope.aksjonskoder = servicerutineFactory.getServicerutineAksjonskoder($stateParams.servicerutineCode).sort();
                 // $scope.formData.aksjonskode = $scope.aksjonskoder[0];
                 $scope.environments = servicerutineFactory.getEnvironments().sort();
+
+                console.log($scope.isValidServicerutineCode);
             }
             init();
 

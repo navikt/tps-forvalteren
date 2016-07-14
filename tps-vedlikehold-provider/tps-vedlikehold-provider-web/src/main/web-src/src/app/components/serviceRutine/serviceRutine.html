@@ -1,33 +1,38 @@
-<div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding>
-    <md-content flex-gt-sm="25" class="tps-vk-top md-whiteframe-z2" layout-padding>
-        <form ng-submit="submit()">
-            <div layout-gt-sm="row" layout="column" layout-wrap>
-                <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
-                <span flex="33"></span> <!-- -->
-            </div>
-            <!--<span flex></span>-->
-            <md-divider></md-divider>
-            <div class="submit-container" layout-gt-sm="row" layout="column" layout-align="end end">
-                <!--<span flex-gt-sm></span>-->
+<div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+    <div ng-show="isValidServicerutineCode" layout="column" flex>
+        <md-content flex-gt-sm="20" class="tps-vk-top md-whiteframe-z2" layout-padding>
+            <form ng-submit="submit()">
+                <div layout-gt-sm="row" layout="column" layout-wrap>
+                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
+                    <span flex="33"></span> <!-- -->
+                </div>
+                <!--<span flex></span>-->
+                <md-divider></md-divider>
+                <div class="submit-container" layout-gt-sm="row" layout="column" layout-align="end end">
+                    <!--<span flex-gt-sm></span>-->
 
-                <md-input-container>
-                    <label>Miljø</label>
-                    <md-select ng-model="environment">
-                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
-                    </md-select>
-                </md-input-container>
-                <md-button type="submit" class="md-raised md-accent">Send til TPS</md-button>
-            </div>
-        </form>
-    </md-content>
-    <md-content flex-gt-sm="75" class="tps-vk-bottom md-whiteframe-z2">
-        <md-tabs ng-show="responseReceived" md-dynamic-height md-border-bottom>
-            <md-tab label="Resultat">
-                <tps-response-form servicerutineCode="servicerutineCode"></tps-response-form>
-            </md-tab>
-            <md-tab label="XML">
+                    <md-input-container>
+                        <label>Miljø</label>
+                        <md-select ng-model="environment">
+                            <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-button type="submit" class="md-raised md-accent">Send til TPS</md-button>
+                </div>
+            </form>
+        </md-content>
+        <md-content flex-gt-sm="80" class="tps-vk-bottom md-whiteframe-z2">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Resultat">
+                    <tps-response-form servicerutine-code="servicerutineCode"></tps-response-form>
+                </md-tab>
+                <md-tab label="XML">
 
-            </md-tab>
-        </md-tabs>
-    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+    <div ng-show="!isValidServicerutineCode">
+        <h2>Velg en servicerutine i menyen til venstre</h2>
+    </div>
 </div>

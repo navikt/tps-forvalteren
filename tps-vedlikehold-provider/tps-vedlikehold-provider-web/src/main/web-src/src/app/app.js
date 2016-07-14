@@ -53,26 +53,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         }
 
     })
-    .state('servicerutine', {
-        url: "/servicerutine/{servicerutineCode}",
-        views: {
-            'content@' : {
-                templateUrl: "app/components/servicerutine/servicerutine.html"
-            },
-            'header@' : {
-                templateUrl: "app/shared/header/header.html"
-            },
-            'side-navigator@' : {
-                templateUrl: "app/shared/side-navigator/side-navigator.html"
-            }
-        }
-
-    });
     // .state('servicerutine', {
-    //     url: "/servicerutine",
-    //     params: {
-    //         servicerutineCode: null
-    //     },
+    //     url: "/servicerutine/{servicerutineCode}",
     //     views: {
     //         'content@' : {
     //             templateUrl: "app/components/servicerutine/servicerutine.html"
@@ -86,6 +68,29 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
     //     }
     //
     // });
+    .state('servicerutine', {
+        url: "/servicerutine",
+        params: {
+            servicerutineCode: null
+        },
+        views: {
+            'content@' : {
+                templateUrl: "app/components/servicerutine/servicerutine.html"
+            },
+            'header@' : {
+                templateUrl: "app/shared/header/header.html"
+            },
+            'side-navigator@' : {
+                templateUrl: "app/shared/side-navigator/side-navigator.html"
+            }
+        }
+        // ,
+        // onEnter: function($state, $stateParams, $cookies) {
+        //     if (!$stateParams.servicerutineCode) {
+        //
+        //     }
+        // }
+    });
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
