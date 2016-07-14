@@ -1,5 +1,7 @@
 package no.nav.tps.vedlikehold.provider.web;
 
+import no.nav.tps.vedlikehold.provider.web.selftest.DiskresjonskodeSelftest;
+import no.nav.tps.vedlikehold.provider.web.selftest.EgenAnsattSelftest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,15 +54,16 @@ public class SelfTestController {
     @Qualifier(value = "egenAnsattSelftest")
     private Selftest egenAnsattSelftest;
 
-    @Autowired
-    private MessageProvider messageProvider;
+//    @Autowired
+//    private MessageProvider messageProvider;
 
     @RequestMapping("/internal/selftest")
     public String selftest(@RequestParam(value = "status", required = false) String status, Model model) {
         List<SelftestResult> selftestResults = collectSelftestResults();
 
         if (status != null && containsFailures(selftestResults)) {
-            String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
+            //String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
+            String message = "";
             throw new SelftestFailureException(message);
         } else {
             model.addAttribute("applicationProperties", collectApplicationProperties());

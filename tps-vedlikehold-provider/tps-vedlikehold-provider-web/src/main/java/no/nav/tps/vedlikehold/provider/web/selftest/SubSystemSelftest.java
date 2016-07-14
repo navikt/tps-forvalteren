@@ -12,8 +12,8 @@ import org.springframework.util.StopWatch;
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 public abstract class SubSystemSelftest implements Selftest {
-    @Autowired
-    private MessageProvider messageProvider;
+    //@Autowired
+    //private MessageProvider messageProvider;
 
     @Override
     public final SelftestResult perform() {
@@ -61,7 +61,8 @@ public abstract class SubSystemSelftest implements Selftest {
     }
 
     private SelftestResult createSelftestResultForUnknownError() {
-        String errorMessage = messageProvider.get(SELFTEST_UNKNOWN_ERROR_KEY);
+        //String errorMessage = messageProvider.get(SELFTEST_UNKNOWN_ERROR_KEY);
+        String errorMessage = "";
         return new SelftestResult(getSubSystemName(), errorMessage);
     }
 
