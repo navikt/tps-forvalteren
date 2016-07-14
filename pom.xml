@@ -96,11 +96,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-domain-ws</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-provider-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
