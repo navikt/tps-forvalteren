@@ -34,6 +34,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-service-java</artifactId>
         </dependency>
 

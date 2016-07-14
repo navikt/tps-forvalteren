@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Import;
 /**
  * Created by Øyvind Grimnes, Visma Consulting AS on 29.06.2016.
  */
-
 @Configuration
 @Import({
         FasitConfig.class,
