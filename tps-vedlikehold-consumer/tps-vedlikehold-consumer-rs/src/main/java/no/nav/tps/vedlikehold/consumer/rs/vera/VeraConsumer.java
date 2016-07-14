@@ -9,7 +9,6 @@ import java.util.*;
 
 import static java.util.stream.Collectors.toSet;
 
-
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
  */
@@ -82,4 +81,14 @@ public class VeraConsumer {
                                .map(VeraApplication::getEnvironment)
                                .collect(toSet());
     }
+
+    public boolean ping(String environment) throws Exception{
+        try {
+            this.getEnvironments(environment);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
+
 }

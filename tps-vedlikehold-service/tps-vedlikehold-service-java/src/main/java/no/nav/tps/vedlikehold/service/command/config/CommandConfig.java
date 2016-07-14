@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.config;
 
+import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
 import no.nav.tps.vedlikehold.service.command.Command;
@@ -23,6 +24,11 @@ public class CommandConfig {
     @Bean
     DefaultEgenAnsattConsumer defaultEgenAnsattConsumer() {
         return new DefaultEgenAnsattConsumer();
+    }
+
+    @Bean
+    VeraConsumer veraConsumer() {
+        return new VeraConsumer();
     }
 }
 
