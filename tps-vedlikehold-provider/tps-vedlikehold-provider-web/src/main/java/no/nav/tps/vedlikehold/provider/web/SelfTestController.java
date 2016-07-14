@@ -32,7 +32,7 @@ import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FE
  * @author Kristian Kyvik (Visma Consulting).
  */
 @Controller
-public class SelfTestController {
+public class SelftestController {
 
     @Value("${application.descriptiveName:MISSING_DESCRIPTIVE_APPLICATION_NAME}")
     private String descriptiveApplicationName;

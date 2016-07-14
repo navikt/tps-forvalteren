@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web.config;
 import no.nav.tps.vedlikehold.common.java.message.DefaultMessageProvider;
-import no.nav.tps.vedlikehold.provider.web.SelfTestController;
+import no.nav.tps.vedlikehold.provider.web.SelftestController;
 
 import no.nav.tps.vedlikehold.provider.web.selftest.DiskresjonskodeSelftest;
 import no.nav.tps.vedlikehold.provider.web.selftest.EgenAnsattSelftest;
@@ -18,8 +18,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:global.properties")
 public class WebProviderConfig {
     @Bean
-    SelfTestController selftestController() {
-        return new SelfTestController();
+    SelftestController selftestController() {
+        return new SelftestController();
     }
 
     @Bean(name = "egenAnsattSelftest")
