@@ -35,14 +35,14 @@ public class EgenAnsattSelftestTest {
     }
 
     @Test
-    public void callsPingCommandWhenSelftestIsPerformed() throws Exception{
+    public void callsPingCommandWhenSelftestIsPerformed() throws Exception {
         selftest.perform();
 
         verify(pingDiskresjonskodeMock).execute();
     }
 
     @Test
-    public void returnsTrueWhenSelftestIsPerformed() {
+    public void returnsTrueWhenSelftestIsPerformed() throws Exception {
         boolean result = selftest.performCheck();
 
         assertThat(result, is(true));

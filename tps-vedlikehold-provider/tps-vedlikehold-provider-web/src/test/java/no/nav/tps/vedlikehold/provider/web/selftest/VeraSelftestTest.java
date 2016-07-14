@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web.selftest;
 
-import no.nav.tps.vedlikehold.service.command.tpsws.PingDiskresjonskode;
+import no.nav.tps.vedlikehold.service.command.vera.PingVera;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,13 +17,13 @@ import static org.springframework.util.StringUtils.isEmpty;
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 @RunWith(MockitoJUnitRunner.class)
-public class DiskresjonskodeSelftestTest {
+public class VeraSelftestTest {
 
     @InjectMocks
-    private DiskresjonskodeSelftest selftest;
+    private VeraSelftest selftest;
 
     @Mock
-    private PingDiskresjonskode pingDiskresjonskodeMock;
+    private PingVera pingVeraMock;
 
     @Test
     public void subSystemNameIsSet() {
@@ -37,12 +37,13 @@ public class DiskresjonskodeSelftestTest {
     public void callsPingCommandWhenSelftestIsPerformed() throws Exception {
         selftest.perform();
 
-        verify(pingDiskresjonskodeMock).execute();
+        verify(pingVeraMock).execute();
     }
 
     @Test
-    public void returnsTrueWhenSelftestIsPerformed()  throws Exception {
+    public void returnsTrueWhenSelftestIsPerformed() throws Exception {
         boolean result = selftest.performCheck();
+
         assertThat(result, is(true));
     }
 }

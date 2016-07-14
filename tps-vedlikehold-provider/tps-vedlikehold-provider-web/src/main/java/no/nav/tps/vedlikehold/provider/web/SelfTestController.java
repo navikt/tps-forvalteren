@@ -63,6 +63,7 @@ public class SelftestController {
 
     @RequestMapping("/internal/selftest")
     public String selftest(@RequestParam(value = "status", required = false) String status, Model model) {
+
         List<SelftestResult> selftestResults = collectSelftestResults();
 
         if (status != null && containsFailures(selftestResults)) {
@@ -102,6 +103,7 @@ public class SelftestController {
     }
 
     private List<SelftestResult> collectSelftestResults() {
+
         return Collections.unmodifiableList(asList(
                 diskresjonskodeSelftest.perform(),
                 egenAnsattSelftest.perform(),
@@ -127,7 +129,6 @@ public class SelftestController {
                 failedSubSystemNames.add(result.getName());
             }
         }
-
         return collectionToCommaDelimitedString(failedSubSystemNames);
     }
 

@@ -50,6 +50,9 @@ public class SelftestControllerTest {
     @Mock(name = "egenansattSelftest")
     private Selftest egenansattSelftest;
 
+    @Mock(name = "veraSelftest")
+    private Selftest veraSelftest;
+
     @Mock
     private MessageProvider messageProviderMock;
 
@@ -60,6 +63,9 @@ public class SelftestControllerTest {
 
         SelftestResult egenansattResults = new SelftestResult("TPSWS Egen Ansatt");
         when(egenansattSelftest.perform()).thenReturn(egenansattResults);
+
+        SelftestResult veraResults = new SelftestResult("Vera");
+        when(veraSelftest.perform()).thenReturn(veraResults);
     }
 
     @Test
@@ -82,6 +88,18 @@ public class SelftestControllerTest {
 
         expectedException.expect(SelftestFailureException.class);
         expectedException.expectMessage("The following sub-systems are down: Egen Ansatt");
+
+        controller.selftest("status", modelMock);
+    }
+
+    @Test
+    public void throwsExceptionWithMessageFromMessageProviderWhenVeraFailedAndStatusIsRequested() throws Exception {
+        SelftestResult veraTestResult = new SelftestResult("Vera", "Vera is down");
+        when(veraSelftest.perform()).thenReturn(veraTestResult);
+        when(messageProviderMock.get(anyString(), eq("Vera"))).thenReturn("The following sub-systems are down: Vera");
+
+        expectedException.expect(SelftestFailureException.class);
+        expectedException.expectMessage("The following sub-systems are down: Vera");
 
         controller.selftest("status", modelMock);
     }
@@ -111,13 +129,27 @@ public class SelftestControllerTest {
     }
 
     @Test
-    public void throwsExceptionWithMessageFromMessageProviderWhenDiskresjonskodeAndEgenAnsattFailedAndStatusIsRequested() throws Exception {
+    public void setsAggregateStatusToFeiletWhenVeraFailedAndStatusIsNotRequested() throws Exception {
+        SelftestResult veraTestResult = new SelftestResult("Vera", "Vera is down");
+        when(veraSelftest.perform()).thenReturn(veraTestResult);
+
+        controller.selftest(null, modelMock);
+
+        ArgumentCaptor<SelftestResult.Status> statusCaptor = ArgumentCaptor.forClass(SelftestResult.Status.class);
+        verify(modelMock, atLeastOnce()).addAttribute(anyString(), statusCaptor.capture());
+        assertThat(statusCaptor.getAllValues().contains(FEILET), is(true));
+    }
+
+    @Test
+    public void throwsExceptionWithMessageFromMessageProviderWhenDiskresjonskodeAndEgenAnsattandVeraFailedAndStatusIsRequested() throws Exception {
         when(diskresjonskodeSelftest.perform()).thenReturn(new SelftestResult("Diskresjonskode", "TPSWS - Diskresjonskode is down"));
         when(egenansattSelftest.perform()).thenReturn(new SelftestResult("Egen Ansatt", "Egen Ansatt is down"));
-        when(messageProviderMock.get(anyString(), eq("Diskresjonskode,Egen Ansatt"))).thenReturn("The following sub-systems are down: Diskresjonskode,Egen Ansatt");
+        when(veraSelftest.perform()).thenReturn(new SelftestResult("Vera", "Vera is down"));
+
+        when(messageProviderMock.get(anyString(), eq("Diskresjonskode,Egen Ansatt,Vera"))).thenReturn("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera");
 
         expectedException.expect(SelftestFailureException.class);
-        expectedException.expectMessage("The following sub-systems are down: Diskresjonskode,Egen Ansatt");
+        expectedException.expectMessage("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera");
 
         controller.selftest("status", modelMock);
     }
