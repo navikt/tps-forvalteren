@@ -1,7 +1,15 @@
 .servicerutine-dashboard {
-  padding: 10px;
+  //padding: 10px;
+
   .tps-vk-top {
     margin-bottom: 10px;
+    //position: relative;
+    //
+    //.submit-container {
+    //  position: absolute;
+    //  bottom: 0;
+    //  right: 0;
+    //}
 
     .md-datepicker-input-container {
       margin-top: 26px;
@@ -21,20 +29,50 @@
 
   .tps-vk-bottom {
     //padding: 10px;
+
+    .tps-long-response {
+      //background-color: #00AA00;
+      width: 200px;
+
+      //.output-label {
+      //  width: 200px;
+      //}
+
+      .output-data {
+        width: 200px;
+      }
+    }
+
+    .tps-short-response {
+      width: 100px;
+
+      //.output-label {
+      //  width: 100px;
+      //}
+
+      .output-data {
+        width: 100px;
+      }
+    }
+
     .tps-output-field {
       position: relative;
       min-height: 40px;
-      margin: 10px 10px 10px 10px;
+      margin: 8px;
+      border-bottom: 1px solid rgb(224,224,224);
 
       .output-label {
-        font-size: 13px;
+        font-size: 12px;
+        white-space: pre;
+        word-wrap: normal;
       }
+
       .output-data {
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 250px;
-        border-bottom: 1px solid rgb(224,224,224);
+        //min-width: 100px;
+        //border-bottom: 1px solid rgb(224,224,224);
       }
     }
   }

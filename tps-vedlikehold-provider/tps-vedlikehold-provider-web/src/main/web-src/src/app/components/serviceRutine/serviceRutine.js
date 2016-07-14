@@ -14,7 +14,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             
             $scope.formData = {
                 fnr:'',
-                aksjonskode: 'B0'
+                aksjonskode: 'A0'
             };
             
             $scope.environment = ''; // 

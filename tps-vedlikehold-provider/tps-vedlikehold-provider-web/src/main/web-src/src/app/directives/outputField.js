@@ -8,12 +8,16 @@ angular.module('tps-vedlikehold').directive('tpsOutputField', function(){
         replace: true,
         scope: {
             fieldData: '=',
-            label: '@'
+            label: '@',
+            flexSize: '@',
+            styleClass: '@'
         },
         template:
-        '<div class="tps-output-field" layout="column" flex="33">' +
+        '<div class="tps-output-field {{ styleClass }}" layout="column" >' +
         '<span class="output-label">{{ label }}</span>' +
         '<span class="output-data">{{ fieldData }}</span>' +
         '</div>'
+        // flex="{{ flexSize }}"
+        // '<md-input-container flex="33"><label>{{ label }}</label><input readonly ng-model="fieldData"/></md-input-container>'
     };
 });

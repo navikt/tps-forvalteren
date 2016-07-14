@@ -14,7 +14,7 @@ angular.module('tps-vedlikehold')
         servicerutineFactory.fetchServicerutiner = function() {
             console.log('fetchServicerutiner');
             // $http({method: 'GET', url:urlBase}).then(function(res){
-            //     servicerutineFactory.servicerutiner = res.data;
+            //     servicerutineFactory.servicerutiner = res.data.tpsPersonData;
             //     return true; //?
             // }, function(error){
             //     return false;

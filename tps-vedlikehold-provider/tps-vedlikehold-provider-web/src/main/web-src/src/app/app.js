@@ -68,6 +68,24 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         }
 
     });
+    // .state('servicerutine', {
+    //     url: "/servicerutine",
+    //     params: {
+    //         servicerutineCode: null
+    //     },
+    //     views: {
+    //         'content@' : {
+    //             templateUrl: "app/components/servicerutine/servicerutine.html"
+    //         },
+    //         'header@' : {
+    //             templateUrl: "app/shared/header/header.html"
+    //         },
+    //         'side-navigator@' : {
+    //             templateUrl: "app/shared/side-navigator/side-navigator.html"
+    //         }
+    //     }
+    //
+    // });
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
