@@ -1,7 +1,7 @@
 /**
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
-angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
+angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
     .controller('servicerutineCtrl', ['$scope', '$stateParams', 'servicerutineFactory',
         function($scope, $stateParams, servicerutineFactory) {
 

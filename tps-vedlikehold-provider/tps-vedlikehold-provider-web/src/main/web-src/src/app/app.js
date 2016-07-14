@@ -4,6 +4,7 @@ require('angular-animate');
 require('angular-material');
 require('angular-messages');
 require('angular-material-icons');
+require('angular-highlightjs');
 
 require('./components/login/login');
 require('./components/dashboard/dashboard');
@@ -24,7 +25,7 @@ require('./directives/inputField');
 require('./directives/outputField');
 require('./directives/responseForm');
 
-app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider,  $httpProvider, $urlRouteProvider, $mdThemingProvider) {
+app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
     $urlRouteProvider.otherwise("/");
 
