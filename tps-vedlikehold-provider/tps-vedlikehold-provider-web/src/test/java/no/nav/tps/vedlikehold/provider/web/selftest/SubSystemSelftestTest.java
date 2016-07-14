@@ -1,8 +1,7 @@
-package no.nav.tps.vedlikehold.web.selftest;
+package no.nav.tps.vedlikehold.provider.web.selftest;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
-import no.nav.tps.vedlikehold.provider.web.selftest.SubSystemSelftest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

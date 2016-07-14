@@ -1,6 +1,5 @@
-package no.nav.tps.vedlikehold.web.model;
+package no.nav.tps.vedlikehold.provider.web.model;
 
-import no.nav.tps.vedlikehold.provider.web.model.ApplicationProperty;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

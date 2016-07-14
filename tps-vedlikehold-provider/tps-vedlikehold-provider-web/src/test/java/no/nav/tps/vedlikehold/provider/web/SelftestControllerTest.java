@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.web;
+package no.nav.tps.vedlikehold.provider.web;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -26,7 +26,6 @@ import no.nav.tps.vedlikehold.provider.web.exception.SelftestFailureException;
 import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
 import no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status;
 import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
-import no.nav.tps.vedlikehold.provider.web.SelftestController;
 
 import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
 

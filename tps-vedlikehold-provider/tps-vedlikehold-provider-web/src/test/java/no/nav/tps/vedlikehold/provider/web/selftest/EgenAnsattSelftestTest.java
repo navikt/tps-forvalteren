@@ -1,7 +1,5 @@
-package no.nav.tps.vedlikehold.web.selftest;
+package no.nav.tps.vedlikehold.provider.web.selftest;
 
-import no.nav.tps.vedlikehold.provider.web.selftest.DiskresjonskodeSelftest;
-import no.nav.tps.vedlikehold.service.command.tpsws.PingDiskresjonskode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,11 +12,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.springframework.util.StringUtils.isEmpty;
 
+import no.nav.tps.vedlikehold.service.command.tpsws.PingDiskresjonskode;
+
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 @RunWith(MockitoJUnitRunner.class)
-public class DiskresjonskodeSelftestTest {
+public class EgenAnsattSelftestTest {
 
     @InjectMocks
     private DiskresjonskodeSelftest selftest;
@@ -44,6 +44,8 @@ public class DiskresjonskodeSelftestTest {
     @Test
     public void returnsTrueWhenSelftestIsPerformed() {
         boolean result = selftest.performCheck();
+
         assertThat(result, is(true));
     }
+
 }
