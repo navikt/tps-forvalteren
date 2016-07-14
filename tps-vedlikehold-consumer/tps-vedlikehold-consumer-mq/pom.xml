@@ -18,31 +18,23 @@
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-consumer-ws</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jms</artifactId>
-        </dependency>
+
+        <!--JMS AND MQ-->
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>jms</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.resource</groupId>
-            <artifactId>com.springsource.javax.resource</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.activemq</groupId>-->
-            <!--<artifactId>activemq-all</artifactId>-->
-            <!--<version>5.8.0</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>com.ibm</groupId>
             <artifactId>mqjms</artifactId>
@@ -50,27 +42,11 @@
         <dependency>
             <groupId>com.ibm.mq</groupId>
             <artifactId>jmqi</artifactId>
-            <version>7.1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.disthub2</groupId>
             <artifactId>dhbcore</artifactId>
-            <version>DH610-GOLD</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>com.ibm</groupId>-->
-            <!--<artifactId>com.ibm.mq.jmqi</artifactId>-->
-            <!--<version>7.0</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.ibm</groupId>-->
-            <!--<artifactId>com.ibm.mqjms</artifactId>-->
-            <!--<version>7.0</version>-->
-            <!--&lt;!&ndash;<type>jar</type>&ndash;&gt;-->
-            <!--&lt;!&ndash;<scope>compile</scope>&ndash;&gt;-->
-        <!--</dependency>-->
-
     </dependencies>
 
 </project>

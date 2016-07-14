@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.queues;
 
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
@@ -40,27 +40,15 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
     @Override
     public Queue getQueue(String alias, String environment) {
         FasitClient.Application application = getApplication(environment);
-
-        /* The application does not exist in the environment */
-        if (application == null) {
-            return null;
-        }
-
         return application.getQueue(alias);
-    }
-
-    private FasitClient.Application getApplication(String environment) {
-        return fasitClient.getApplication(applicationName, environment);
     }
 
     public QueueManager getQueueManager(String alias, String environment) {
         FasitClient.Application application = getApplication(environment);
-
-        /* The application does not exist in the environment */
-        if (application == null) {
-            return null;
-        }
-
         return application.getQueueManager(alias);
+    }
+
+    private FasitClient.Application getApplication(String environment) {
+        return fasitClient.getApplication(applicationName, environment);
     }
 }

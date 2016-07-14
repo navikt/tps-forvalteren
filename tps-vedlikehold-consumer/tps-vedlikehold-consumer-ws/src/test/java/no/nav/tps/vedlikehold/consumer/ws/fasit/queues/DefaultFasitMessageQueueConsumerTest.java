@@ -1,7 +1,7 @@
-package no.nav.tps.vedlikehold.consumer.ws.fasit;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.queues;
 
 import com.google.common.cache.Cache;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,9 @@ public class DefaultFasitMessageQueueConsumerTest {
 
     private final String REQUEST_QUEUE_ALIAS    = "requestQueueAlias";
     private final String RESPONSE_QUEUE_ALIAS   = "responseQueueAlias";
-    private final String ENVIRONMENT            = "env";
+    private final String QUEUE_MANAGER_ALIAS    = "queueManager";
+    private final String ENVIRONMENT            = "environment";
+    private final String APPLICATION            = "application";
 
     @Mock
     private FasitClient fasitClientMock;
@@ -33,14 +35,12 @@ public class DefaultFasitMessageQueueConsumerTest {
     private FasitClient.Application applicationMock;
 
     @InjectMocks
-    private DefaultFasitMessageQueueConsumer messageQueueConsumer = new DefaultFasitMessageQueueConsumer("tpsws", REQUEST_QUEUE_ALIAS, RESPONSE_QUEUE_ALIAS);
+    private DefaultFasitMessageQueueConsumer messageQueueConsumer = new DefaultFasitMessageQueueConsumer(APPLICATION, REQUEST_QUEUE_ALIAS, RESPONSE_QUEUE_ALIAS);
 
     @Before
     public void setUp() {
         when( fasitClientMock.getApplication(anyString(), anyString()) ).thenReturn(applicationMock);
     }
-
-    /* Request queue */
 
     @Test
     public void getRequestQueueGetsQueueUsingTheRequestQueueAlias() {
@@ -49,8 +49,6 @@ public class DefaultFasitMessageQueueConsumerTest {
         verify(applicationMock).getQueue(REQUEST_QUEUE_ALIAS);
     }
 
-    /* Response queue */
-
     @Test
     public void getResponseQueueGetsQueueUsingTheResponseQueueAlias() {
         messageQueueConsumer.getResponseQueue(ENVIRONMENT);
@@ -58,4 +56,9 @@ public class DefaultFasitMessageQueueConsumerTest {
         verify(applicationMock).getQueue(RESPONSE_QUEUE_ALIAS);
     }
 
+    @Test
+    public void getQueueManagerRetrievesManagerFromTheApplication() {
+        messageQueueConsumer.getQueueManager(QUEUE_MANAGER_ALIAS, ENVIRONMENT);
+        verify(applicationMock).getQueueManager(QUEUE_MANAGER_ALIAS);
+    }
 }

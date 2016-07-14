@@ -1,10 +1,9 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.DefaultFasitMessageQueueConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -28,7 +27,7 @@ public class FasitConfig {
     @Bean
     public FasitMessageQueueConsumer getTpswsFasitMessageQueueQueueConsumer() {
         String application                  = "tpsws";
-        String requestQueueAlias            = "tps.endrings.melding";
+        String requestQueueAlias            = "TPS_FORESPORSEL_XML_O";
         String responseQueueAlias           = "tps.endrings.melding.svar";
         FasitMessageQueueConsumer consumer  = new DefaultFasitMessageQueueConsumer(application, requestQueueAlias, responseQueueAlias);
 
@@ -40,15 +39,10 @@ public class FasitConfig {
 
     @Bean
     public FasitClient getFasitClient() {
-        String baseUrl = "https://fasit.adeo.no/conf/";
-        String username="admin";
-        String password="admin";
+        String baseUrl  = "https://fasit.adeo.no/conf/";
+        String username ="admin";
+        String password ="admin";
 
         return new FasitClient(baseUrl, username, password);
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(FasitConfig.class, args);
-    }
-
 }

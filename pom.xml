@@ -37,6 +37,7 @@
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
         <common-brevogarkiv.version>1.5.7</common-brevogarkiv.version>
         <javax-jms.version>2.0</javax-jms.version>
+        <java.version>1.8</java.version>
     </properties>
 
 
@@ -163,6 +164,17 @@
                 <type>war</type>
             </dependency>
 
+            <!--JMS AND MQ-->
+            <dependency>
+                <groupId>com.ibm.mq</groupId>
+                <artifactId>jmqi</artifactId>
+                <version>7.1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ibm.disthub2</groupId>
+                <artifactId>dhbcore</artifactId>
+                <version>DH610-GOLD</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -17,6 +17,9 @@ import java.util.concurrent.TimeUnit;
 
 public class FasitClient {
 
+    private static final long CACHE_MAX_SIZE = 100;
+    private static final long CACHE_MINUTES_TO_LIVE = 100;
+
     private FasitRestClient restClient;
 
     private Cache<String, ResourceElement> cache;
@@ -27,14 +30,15 @@ public class FasitClient {
 
         /* Use a custom cache */
         this.cache = CacheBuilder.newBuilder()
-                                 .maximumSize(100)
-                                 .expireAfterWrite(10, TimeUnit.MINUTES)
+                                 .maximumSize(CACHE_MAX_SIZE)
+                                 .expireAfterWrite(CACHE_MINUTES_TO_LIVE, TimeUnit.MINUTES)
                                  .build();
 
-        this.restClient.useCache(false);                                                // The rest client's cache is never updated
+        this.restClient.useCache(false);                                // The rest client's cache is never updated
     }
 
     /* Queues */
+    //TODO: Automatic mapping from ResourceElement to object
 
     private Queue findQueue(String alias, String applicationName, String environment) {
         ResourceElement resource = this.findResource(alias, applicationName, environment, ResourceTypeDO.Queue);
@@ -62,7 +66,7 @@ public class FasitClient {
             return resource;
         }
 
-        DomainDO domain = FasitUtils.domainFor(environment);
+        DomainDO domain = FasitUtilities.domainFor(environment);
 
         resource = this.restClient.getResource(environment, alias, type, domain, applicationName);
 
@@ -71,12 +75,34 @@ public class FasitClient {
         return resource;
     }
 
+    /* Cache */
+
+    private ResourceElement getFromCache(String alias, String applicationName, String environment, ResourceTypeDO type) {
+        String identifier = getIdentifier(alias, applicationName, environment, type);
+        return cache.getIfPresent(identifier);
+    }
+
+    private void addToCache(ResourceElement resource, String alias, String applicationName, String environment, ResourceTypeDO type) {
+        String identifier = getIdentifier(alias, applicationName, environment, type);
+        cache.put(identifier, resource);
+    }
+
+    private String getIdentifier(String alias, String applicationName, String environment, ResourceTypeDO type) {
+        return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
+    }
+
     /* Application */
 
     public Application getApplication(String name, String environment) {
         return new Application(name, environment);
     }
 
+    /**
+     *  A convenience type used to keep track of the environment and application of interest
+     *  Helps reduce the size of method calls, and reduces the need for local variables
+     *
+     *  Used to access the FasitClient's internal methods
+     */
     public class Application {
         String environment;
         String name;
@@ -93,21 +119,5 @@ public class FasitClient {
         public Queue getQueue(String alias) {
             return FasitClient.this.findQueue(alias, name, environment);
         }
-    }
-
-    /* Cache */
-
-    private ResourceElement getFromCache(String alias, String applicationName, String environment, ResourceTypeDO type) {
-        String identifier = getIdentifier(alias, applicationName, environment, type);
-        return cache.getIfPresent(identifier);
-    }
-
-    private void addToCache(ResourceElement resource, String alias, String applicationName, String environment, ResourceTypeDO type) {
-        String identifier = getIdentifier(alias, applicationName, environment, type);
-        cache.put(identifier, resource);
-    }
-
-    private String getIdentifier(String alias, String applicationName, String environment, ResourceTypeDO type) {
-        return environment + "." + applicationName + "." + alias + "." + type.name();
     }
 }

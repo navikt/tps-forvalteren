@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.ws.fasit.queue;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.queues;
 
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 

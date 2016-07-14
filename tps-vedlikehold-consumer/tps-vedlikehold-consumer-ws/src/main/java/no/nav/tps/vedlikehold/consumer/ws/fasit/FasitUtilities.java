@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import no.nav.aura.envconfig.client.DomainDO;
 
-public class FasitUtils {
+public class FasitUtilities {
 
     public static DomainDO domainFor(String environment) {
         switch(environment.charAt(0)) {
