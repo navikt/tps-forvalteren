@@ -1,13 +1,9 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
-import no.nav.brevogarkiv.common.fasit.FasitClient;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.CachedFasitMessageQueueConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queue.FasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.DefaultFasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
+
 @Configuration
-@EnableAutoConfiguration
-@ComponentScan()
+@ComponentScan
 public class FasitConfig {
 
     @Autowired
@@ -33,9 +29,9 @@ public class FasitConfig {
     @Bean
     public FasitMessageQueueConsumer getTpswsFasitMessageQueueQueueConsumer() {
         String application                  = "tpsws";
-        String requestQueueAlias            = "tps.endrings.melding";
+        String requestQueueAlias            = "TPS_FORESPORSEL_XML_O";
         String responseQueueAlias           = "tps.endrings.melding.svar";
-        FasitMessageQueueConsumer consumer  = new CachedFasitMessageQueueConsumer(application, requestQueueAlias, responseQueueAlias);
+        FasitMessageQueueConsumer consumer  = new DefaultFasitMessageQueueConsumer(application, requestQueueAlias, responseQueueAlias);
 
         /* Inject a FasitClient object */
         beanFactory.autowireBean(consumer);
@@ -44,15 +40,11 @@ public class FasitConfig {
     }
 
     @Bean
-    public FasitClient getFasitClient(
-            @Value("${fasit.base-url}") String baseUrl,
-            @Value("${fasit.username}") String username,
-            @Value("${fasit.password}") String password) {
+    public FasitClient getFasitClient() {
+        String baseUrl  = "https://fasit.adeo.no/conf/";
+        String username ="admin";
+        String password ="admin";
+
         return new FasitClient(baseUrl, username, password);
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(FasitConfig.class, args);
-    }
-
 }

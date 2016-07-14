@@ -12,4 +12,40 @@
     <artifactId>tps-vedlikehold-consumer-mq</artifactId>
     <name>TPS Vedlikeholdsklient :: Consumer :: MQ</name>
 
+    <dependencies>
+        <!--INTERNAL-->
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--JMS AND MQ-->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>mqjms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>jmqi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.disthub2</groupId>
+            <artifactId>dhbcore</artifactId>
+        </dependency>
+    </dependencies>
 </project>
