@@ -12,7 +12,9 @@ angular.module('tps-vedlikehold').directive('tpsInputField', function(){
         link: function(scope, element, attrs) {
             scope.getTemplateUrl = function () {
                 var type = scope.fieldData;// || 'error';
-                return templatesPath + '' + type + '' + templateSuffix;
+                if (type) {
+                    return templatesPath + '' + type + '' + templateSuffix;
+                }
             };
         },
         template: '<div class="tps-input-field" ng-include="getTemplateUrl()"></div>'

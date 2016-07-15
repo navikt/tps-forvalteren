@@ -12,7 +12,9 @@ angular.module('tps-vedlikehold').directive('tpsResponseForm', function(){
         link: function(scope, element, attrs) {
             scope.getTemplateUrl = function () {
                 var type = scope.servicerutineCode;// || 'error';
-                return templatesPath + '' + type + '' + templateSuffix;
+                if (type) {
+                    return templatesPath + '' + type + '' + templateSuffix;
+                }
             };
         },
         template: '<div class="tps-response-form md-padding" ng-include="getTemplateUrl()"></div>'
