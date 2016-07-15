@@ -24,6 +24,10 @@ public class FasitClient {
 
     private Cache<String, ResourceElement> cache;
 
+    private static final String PING_ENVIRONMENT = "t4";
+    private static final String PING_ALIAS = "mqGateway";
+    private static final ResourceTypeDO PING_TYPE = ResourceTypeDO.QueueManager;
+    private static final String PING_APPLICATION_NAME = "tpsws";
 
     public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
@@ -89,6 +93,16 @@ public class FasitClient {
 
     private String getIdentifier(String alias, String applicationName, String environment, ResourceTypeDO type) {
         return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
+    }
+
+    public boolean ping() throws Exception {
+        try {
+            DomainDO domain = FasitUtilities.domainFor(PING_ENVIRONMENT);
+            this.restClient.getResource(PING_ENVIRONMENT, PING_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
     }
 
     /* Application */

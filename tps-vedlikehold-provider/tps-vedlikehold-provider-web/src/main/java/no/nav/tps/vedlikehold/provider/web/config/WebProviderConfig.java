@@ -2,10 +2,8 @@ package no.nav.tps.vedlikehold.provider.web.config;
 import no.nav.tps.vedlikehold.common.java.message.DefaultMessageProvider;
 import no.nav.tps.vedlikehold.provider.web.SelftestController;
 
-import no.nav.tps.vedlikehold.provider.web.selftest.DiskresjonskodeSelftest;
-import no.nav.tps.vedlikehold.provider.web.selftest.EgenAnsattSelftest;
-import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
-import no.nav.tps.vedlikehold.provider.web.selftest.VeraSelftest;
+import no.nav.tps.vedlikehold.provider.web.selftest.*;
+import no.nav.tps.vedlikehold.service.command.fasit.PingFasit;
 import no.nav.tps.vedlikehold.service.command.vera.PingVera;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -39,9 +37,19 @@ public class WebProviderConfig {
         return new VeraSelftest();
     }
 
+    @Bean(name = "fasitSelftest")
+    Selftest fasitSelftest() {
+        return new FasitSelftest();
+    }
+
     @Bean
     PingVera pingVera() {
         return new PingVera();
+    }
+
+    @Bean
+    PingFasit pingFasit() {
+        return new PingFasit();
     }
 
     @Bean

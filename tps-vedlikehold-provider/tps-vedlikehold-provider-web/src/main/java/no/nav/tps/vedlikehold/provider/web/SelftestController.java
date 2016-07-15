@@ -59,6 +59,10 @@ public class SelftestController {
     private Selftest veraSelftest;
 
     @Autowired
+    @Qualifier(value = "fasitSelftest")
+    private Selftest fasitSelftest;
+
+    @Autowired
     private MessageProvider messageProvider;
 
     @RequestMapping("/internal/selftest")
@@ -107,7 +111,8 @@ public class SelftestController {
         return Collections.unmodifiableList(asList(
                 diskresjonskodeSelftest.perform(),
                 egenAnsattSelftest.perform(),
-                veraSelftest.perform()
+                veraSelftest.perform(),
+                fasitSelftest.perform()
         ));
     }
 
