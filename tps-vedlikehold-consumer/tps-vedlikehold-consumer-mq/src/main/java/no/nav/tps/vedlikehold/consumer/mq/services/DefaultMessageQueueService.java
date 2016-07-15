@@ -15,6 +15,8 @@ public class DefaultMessageQueueService implements MessageQueueService {
     private static final String MESSAGE_QUEUE_PASSWORD  = "";
     private static final long DEFAULT_TIMEOUT           = 5000;
 
+    private static final String PING_MESSAGE            = "ping message";
+
     private String requestQueueName;
     private String responseQueueName;
     private ConnectionFactory connectionFactory;
@@ -62,5 +64,14 @@ public class DefaultMessageQueueService implements MessageQueueService {
         connection.close();
 
         return responseMessage.getText();
+    }
+
+    public boolean ping() throws JMSException {
+        try {
+            this.sendMessage(PING_MESSAGE);
+        } catch (JMSException e) {
+            throw e;
+        }
+        return true;
     }
 }

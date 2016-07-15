@@ -63,6 +63,10 @@ public class SelftestController {
     private Selftest fasitSelftest;
 
     @Autowired
+    @Qualifier(value = "mqSelftest")
+    private Selftest mqSelftest;
+
+    @Autowired
     private MessageProvider messageProvider;
 
     @RequestMapping("/internal/selftest")
@@ -112,7 +116,8 @@ public class SelftestController {
                 diskresjonskodeSelftest.perform(),
                 egenAnsattSelftest.perform(),
                 veraSelftest.perform(),
-                fasitSelftest.perform()
+                fasitSelftest.perform(),
+                mqSelftest.perform()
         ));
     }
 
