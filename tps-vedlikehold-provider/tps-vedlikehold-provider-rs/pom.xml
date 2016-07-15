@@ -17,15 +17,15 @@
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-domain-rs</artifactId>
+            <artifactId>tps-vedlikehold-domain-service</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-consumer-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-service-java</artifactId>
         </dependency>
 
         <!--SPRING-->
@@ -65,10 +65,15 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring3</artifactId>
-            <version>2.0.16</version>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>jackson-xml-databind</artifactId>
+            <version>0.6.2</version>
         </dependency>
     </dependencies>
 

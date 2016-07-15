@@ -10,7 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tps-vedlikehold-service</artifactId>
+    <packaging>pom</packaging>
+
     <name>TPS Vedlikeholdsklient :: Service</name>
+    <modules>
+        <module>tps-vedlikehold-service-java</module>
+    </modules>
 
     <dependencies>
         <dependency>

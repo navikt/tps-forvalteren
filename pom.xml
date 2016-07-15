@@ -62,6 +62,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-service-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-common-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -83,6 +88,11 @@
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-domain-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-domain-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
