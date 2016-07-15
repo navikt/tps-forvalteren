@@ -6,12 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Created by Øyvind Grimnes, Visma Consulting AS on 29.06.2016.
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
 @Configuration
 @Import({
         FasitConfig.class,
         TpswsConsumerConfig.class
 })
-public class WebServiceConsumerConfig {
-}
+public class WebServiceConsumerConfig {}
