@@ -2,8 +2,8 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', 'servicerutineFactory',
-        function($scope, $stateParams, servicerutineFactory) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', 'servicerutineFactory', 'utilsService',
+        function($scope, $stateParams, servicerutineFactory, utilsService) {
 
             var tpsReturnedObject = {};
 
@@ -18,7 +18,12 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             var requiredAttributes = {};
             
             $scope.formData = {};
-            $scope.environment = ''; // 
+            $scope.environment = ''; //
+
+            //objects that contain non-unique properties
+            var nonUniquePropertiesContainer = {
+                'S004': ['tlfPrivat', 'tlfJobb', 'tlfMobil']
+            };
             
 
             $scope.submit = function() {
@@ -83,40 +88,40 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                                 "utvandretTil": " ",
                                 "datoUtvandret": " ",
                                 "giroInfo": {
-                                "giroNummer": " ",
+                                    "giroNummer": " ",
                                     "giroTidspunktReg": " ",
                                     "giroSystem": " ",
                                     "giroSaksbehandler": " "
                                 },
                                 "tlfPrivat": {
                                     "tlfNummer": " ",
-                                        "tlfTidspunktReg": " ",
-                                        "tlfSystem": " ",
-                                        "tlfSaksbehandler": " "
+                                    "tlfTidspunktReg": " ",
+                                    "tlfSystem": " ",
+                                    "tlfSaksbehandler": " "
                                 },
                                 "tlfJobb": {
                                     "tlfNummer": " ",
-                                        "tlfTidspunktReg": " ",
-                                        "tlfSystem": " ",
-                                        "tlfSaksbehandler": " "
+                                    "tlfTidspunktReg": " ",
+                                    "tlfSystem": " ",
+                                    "tlfSaksbehandler": " "
                                 },
                                 "tlfMobil": {
                                     "tlfNummer": " ",
-                                        "tlfTidspunktReg": " ",
-                                        "tlfSystem": " ",
-                                        "tlfSaksbehandler": " "
+                                    "tlfTidspunktReg": " ",
+                                    "tlfSystem": " ",
+                                    "tlfSaksbehandler": " "
                                 },
                                 "epost": {
                                     "epostAdresse": " ",
-                                        "epostTidspunktReg": " ",
-                                        "epostSystem": " ",
-                                        "epostSaksbehandler": " "
+                                    "epostTidspunktReg": " ",
+                                    "epostSystem": " ",
+                                    "epostSaksbehandler": " "
                                 }
                             }
                         }
                     }
                 };
-                
+
                 //#####################
                 //sjekk for statuskode på svar
                 $scope.responseReceived = true;
@@ -125,12 +130,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
 
                 // tpsReturnedObject = angular.fromJson(res.data.object);
                 tpsReturnedObject = res.data.data;
-                console.log(tpsReturnedObject);
                 $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                $scope.personData = tpsReturnedObject.tpsSvar.personDataS004;
-
-                // $scope.resultForm = res.data.object;
-                // console.log($scope.personData);
+                $scope.personData = utilsService.flattenObject(tpsReturnedObject.tpsSvar.personDataS004,
+                    nonUniquePropertiesContainer[$stateParams.servicerutineCode]);
             };
 
             $scope.isRequired = function(type) {
@@ -143,7 +145,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             }
             
             function setIsValidRutineserviceCode() {
-                // $scope.validServicerutineCode = servicerutineFactory.getServicerutineCodes().includes($stateParams.servicerutineCode);
                 $scope.isValidServicerutineCode = ($stateParams.servicerutineCode in servicerutineFactory.getServicerutiner());
             }
             
@@ -168,10 +169,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             }
 
             function init() {
-                // console.log('serviceRutine.js init()');
                 setIsValidRutineserviceCode();
                 
-                //bedre måte å gjøre dette på?
+                //better way to do this?
                 if (!$scope.isValidServicerutineCode) {
                     return;
                 }

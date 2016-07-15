@@ -24,16 +24,16 @@
         <!--<span flex="40"></span>-->
     </div>
     <div layout-gt-xs="row" layout="column">
-        <tps-output-field field-data="personData.postAdresse1" label="Post Adresse 1" flex-size="20" style-class="tps-long-response"></tps-output-field>
-        <tps-output-field field-data="personData.postAdresse2" label="Post Adresse 2" flex-size="20" style-class="tps-long-response"></tps-output-field>
-        <tps-output-field field-data="personData.postAdresse3" label="Post Adresse 3" flex-size="20" style-class="tps-long-response"></tps-output-field>
-    </div>
-    <div layout-gt-xs="row" layout="column">
         <tps-output-field field-data="personData.postnr" label="Postnr" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <tps-output-field field-data="personData.boPoststed" label="Poststed" flex-size="20" style-class="tps-long-response"></tps-output-field>
         <tps-output-field field-data="personData.datoDo" label="Dødsdato" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <tps-output-field field-data="personData.datoUmyndiggjort" label="Dato Umyndig" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <!--<span flex="40"></span>-->
+    </div>
+    <div layout-gt-xs="row" layout="column">
+        <tps-output-field field-data="personData.postAdresse1" label="Post Adresse 1" flex-size="20" style-class="tps-long-response"></tps-output-field>
+        <tps-output-field field-data="personData.postAdresse2" label="Post Adresse 2" flex-size="20" style-class="tps-long-response"></tps-output-field>
+        <tps-output-field field-data="personData.postAdresse3" label="Post Adresse 3" flex-size="20" style-class="tps-long-response"></tps-output-field>
     </div>
     <!--<md-divider></md-divider>-->
     <div layout-gt-xs="row" layout="column">
@@ -67,8 +67,10 @@
         <tps-output-field field-data="personData.tlfPrivat.tlfNummer" label="Tlf privat" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <tps-output-field field-data="personData.tlfJobb.tlfNummer" label="Tlf jobb" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <tps-output-field field-data="personData.tlfMobil.tlfNummer" label="Tlf mobil" flex-size="10" style-class="tps-short-response"></tps-output-field>
-        <tps-output-field field-data="personData.epost.epostAdresse" label="E-postadr" flex-size="10" style-class="tps-short-response"></tps-output-field>
-        <tps-output-field field-data="personData.giroInfo.giroNummer" label="Gironr" flex-size="10" style-class="tps-short-response"></tps-output-field>
+        <!--<tps-output-field field-data="personData.epost.epostAdresse" label="E-postadr" flex-size="10" style-class="tps-short-response"></tps-output-field>-->
+        <!--<tps-output-field field-data="personData.giroInfo.giroNummer" label="Gironr" flex-size="10" style-class="tps-short-response"></tps-output-field>-->
+        <tps-output-field field-data="personData.epostAdresse" label="E-postadr" flex-size="10" style-class="tps-short-response"></tps-output-field>
+        <tps-output-field field-data="personData.giroNummer" label="Gironr" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <tps-output-field field-data="personData.kodeFodeland" label="KodeFødeLand" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <tps-output-field field-data="personData.fodeland" label="Fødeland" flex-size="10" style-class="tps-short-response"></tps-output-field>
         <!--<span flex="30"></span>-->
