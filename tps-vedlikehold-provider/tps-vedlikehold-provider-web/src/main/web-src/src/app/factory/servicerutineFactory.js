@@ -7,10 +7,12 @@ angular.module('tps-vedlikehold')
         var urlBaseEnv = 'api/v1/environments';
         var servicerutineFactory = {};
         var servicerutineFieldsTemplate = ['fnr', 'aksjonsDato', 'fremtidigFelt'];
+        var nonUniquePropertiesContainer = {
+            'S004': ['tlfPrivat', 'tlfJobb', 'tlfMobil']
+        };
 
         servicerutineFactory.servicerutiner = {};
         servicerutineFactory.environments = {};
-        // servicerutineFactory.servicerutineCodes = [];
 
         servicerutineFactory.fetchServicerutiner = function() {
             // console.log('fetchServicerutiner');
@@ -26,26 +28,12 @@ angular.module('tps-vedlikehold')
             // res.data = {"tpsPersonData":{"S004":{"attributes":{"aksjonsDato":"2001-01-01","fnr":12345678901},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["A0","A2","B0","B2","C0","D0","E0"]},"S322":{"attributes":{"aksjonsDato":"2001-01-01","fnr":12345678901},"internNavn":"S322 alt servicerutine","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["A0","A2","B0","B2","C0","D0","E0"]}}};
             res.data = {"tpsPersonData":{"S004":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}, "S322":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S322 ALT serv rut","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}}};
             servicerutineFactory.servicerutiner = res.data.tpsPersonData;
-            // setServicerutineCodes();
             return true;
         };
         
         servicerutineFactory.getServicerutiner = function() {
             return servicerutineFactory.servicerutiner;
         };
-        
-        // function setServicerutineCodes() {
-        //     var ret = [];
-        //     angular.forEach(servicerutineFactory.servicerutiner, function(value, key) {
-        //         console.log('in servicerutineFactory, key: ' + key);
-        //         this.push(key);
-        //     }, ret);
-        //     servicerutineFactory.servicerutineCodes = ret;
-        // }
-        //
-        // servicerutineFactory.getServicerutineCodes = function () {
-        //     return servicerutineFactory.servicerutineCodes;
-        // };
 
         servicerutineFactory.getServicerutineNames = function() {
             var ret = [];
@@ -69,7 +57,7 @@ angular.module('tps-vedlikehold')
 
             var ret = [];
             for (var i=0; i<servicerutineFieldsTemplate.length; i++) {
-                if (filter.indexOf(servicerutineFieldsTemplate[i]) !== -1) {
+                if (filter.indexOf(servicerutineFieldsTemplate[i]) > -1) {
                     ret.push(servicerutineFieldsTemplate[i]);
                 }
             }
@@ -102,6 +90,10 @@ angular.module('tps-vedlikehold')
 
         servicerutineFactory.getEnvironments = function() {
             return servicerutineFactory.environments;
+        };
+        
+        servicerutineFactory.getNonUniqueProperties = function(servicerutineCode) {
+            return nonUniquePropertiesContainer[servicerutineCode];
         };
 
         return servicerutineFactory;

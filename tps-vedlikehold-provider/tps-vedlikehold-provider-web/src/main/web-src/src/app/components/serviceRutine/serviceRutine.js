@@ -21,9 +21,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             $scope.environment = ''; //
 
             //objects that contain non-unique properties
-            var nonUniquePropertiesContainer = {
-                'S004': ['tlfPrivat', 'tlfJobb', 'tlfMobil']
-            };
+            var nonUniqueProperties = [];
             
 
             $scope.submit = function() {
@@ -131,8 +129,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                 // tpsReturnedObject = angular.fromJson(res.data.object);
                 tpsReturnedObject = res.data.data;
                 $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                $scope.personData = utilsService.flattenObject(tpsReturnedObject.tpsSvar.personDataS004,
-                    nonUniquePropertiesContainer[$stateParams.servicerutineCode]);
+                $scope.personData = utilsService.flattenObject(tpsReturnedObject.tpsSvar.personDataS004, nonUniqueProperties);
             };
 
             $scope.isRequired = function(type) {
@@ -159,6 +156,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             function getEnvironments() {
                 $scope.environments = servicerutineFactory.getEnvironments().sort();
             }
+
+            function getNonUniqueProperties() {
+                nonUniqueProperties = servicerutineFactory.getNonUniqueProperties($stateParams.servicerutineCode);
+            }
             
             function initFormData() {
                 $scope.formData = {
@@ -180,6 +181,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                 getServicerutineRequiredAttributes();
                 getServicerutineAksjonskoder();
                 getEnvironments();
+                getNonUniqueProperties();
                 initFormData();
             }
 
