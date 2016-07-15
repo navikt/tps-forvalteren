@@ -1,12 +1,14 @@
 /**
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
-angular.module('tps-vedlikehold').controller('headerController', ['$scope', '$location', 'authenticationService', '$mdSidenav', function($scope, $location, authenticationService, $mdSidenav) {
+angular.module('tps-vedlikehold')
+    .controller('headerController', ['$scope', 'authenticationService', 'locationService', '$mdSidenav',
+        function($scope, authenticationService, locationService, $mdSidenav) {
 
     $scope.logout = function(){
         authenticationService.invalidateSession(function(){
             console.log("Logger ut");
-            $location.path('/');
+            locationService.redirectToLoginState();
         });
     };
 

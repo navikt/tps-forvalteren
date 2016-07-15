@@ -6,7 +6,6 @@ require('angular-messages');
 require('angular-material-icons');
 
 require('./components/login/login');
-require('./components/dashboard/dashboard');
 require('./components/servicerutine/servicerutine');
 
 require('./services/serviceModule');
@@ -15,7 +14,7 @@ require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard', 'tps-vedlikehold.servicerutine']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
 
 require('./factory/servicerutineFactory');
 require('./shared/header/header');
@@ -31,45 +30,15 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
     $stateProvider
 
     .state('login', {
-        url: "/",
+        url: "/login",
         views: {
             'content@' : {
                 templateUrl: "app/components/login/login.html"
             }
         }
     })
-    .state('dashboard', {
-        url: "/dashboard",
-        views: {
-            'content@' : {
-                templateUrl: "app/components/dashboard/dashboard.html"
-            },
-            'header@' : {
-                templateUrl: "app/shared/header/header.html"
-            },
-            'side-navigator@' : {
-                templateUrl: "app/shared/side-navigator/side-navigator.html"
-            }
-        }
-
-    })
-    // .state('servicerutine', {
-    //     url: "/servicerutine/{servicerutineCode}",
-    //     views: {
-    //         'content@' : {
-    //             templateUrl: "app/components/servicerutine/servicerutine.html"
-    //         },
-    //         'header@' : {
-    //             templateUrl: "app/shared/header/header.html"
-    //         },
-    //         'side-navigator@' : {
-    //             templateUrl: "app/shared/side-navigator/side-navigator.html"
-    //         }
-    //     }
-    //
-    // });
     .state('servicerutine', {
-        url: "/servicerutine",
+        url: "/",
         params: {
             servicerutineCode: null
         },
@@ -125,11 +94,11 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
 
-        // if (authenticated) { return; }
-        // else {
-        //     event.preventDefault();
-        //     locationService.redirectToLoginUrl();
-        // }
+        if (authenticated) { return; }
+        else {
+            event.preventDefault();
+            locationService.redirectToLoginState();
+        }
 
     });
 }]);

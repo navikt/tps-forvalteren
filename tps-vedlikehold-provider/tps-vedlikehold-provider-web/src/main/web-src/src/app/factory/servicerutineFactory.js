@@ -13,7 +13,7 @@ angular.module('tps-vedlikehold')
         // servicerutineFactory.servicerutineCodes = [];
 
         servicerutineFactory.fetchServicerutiner = function() {
-            console.log('fetchServicerutiner');
+            // console.log('fetchServicerutiner');
             // $http({method: 'GET', url:urlBase}).then(function(res){
             //     servicerutineFactory.servicerutiner = res.data.tpsPersonData;
             //     return true; //?

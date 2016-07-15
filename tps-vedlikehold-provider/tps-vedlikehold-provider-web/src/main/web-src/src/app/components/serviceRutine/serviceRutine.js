@@ -8,21 +8,18 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             var tpsReturnedObject = {};
 
             $scope.servicerutineCode = $stateParams.servicerutineCode;
-            $scope.responseReceived = true;
+            
+            //
+            $scope.responseReceived = true;//
+            //
+            
             $scope.required = {};
             $scope.isValidServicerutineCode = false;
             var requiredAttributes = {};
             
-            $scope.formData = {
-                fnr:'',
-                aksjonskode: 'A0'
-            };
-            
+            $scope.formData = {};
             $scope.environment = ''; // 
-
-            // var servicerutineCode = $stateParams.servicerutineCode;
             
-            $scope.formData.aksjonsDato = new Date();
 
             $scope.submit = function() {
                 console.log("Send til tps pressed med fnr:\n" +
@@ -32,8 +29,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                 //     //something
                 //     $scope.xmlForm = res.data.xml;
                 //     $scope.resultForm = res.data.object;
+                //     $scope.responseReceived = true;
                 // }, function(error){
                 //     //something else
+                //     $scope.responseReceived = false;
                 // });
                 var res = {};
                 res.data = {
@@ -66,24 +65,42 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                 // $scope.validServicerutineCode = servicerutineFactory.getServicerutineCodes().includes($stateParams.servicerutineCode);
                 $scope.isValidServicerutineCode = ($stateParams.servicerutineCode in servicerutineFactory.getServicerutiner());
             }
+            
+            function getServicerutineRequiredAttributes() {
+                requiredAttributes = servicerutineFactory.getServicerutineRequiredAttributes($stateParams.servicerutineCode);
+            }
+            
+            function getServicerutineAksjonskoder() {
+                $scope.aksjonskoder = servicerutineFactory.getServicerutineAksjonskoder($stateParams.servicerutineCode).sort();
+            }
+            
+            function getEnvironments() {
+                $scope.environments = servicerutineFactory.getEnvironments().sort();
+            }
+            
+            function initFormData() {
+                $scope.formData = {
+                    fnr:'',
+                    aksjonskode: 'A0',
+                    aksjonsDato: new Date()
+                };
+            }
 
             function init() {
-                console.log('serviceRutine.js init()');
+                // console.log('serviceRutine.js init()');
                 setIsValidRutineserviceCode();
                 
                 //bedre måte å gjøre dette på?
                 if (!$scope.isValidServicerutineCode) {
                     return;
                 }
+                
                 getServicerutineAttributes();
-                requiredAttributes = servicerutineFactory.getServicerutineRequiredAttributes($stateParams.servicerutineCode);
-                // console.log(requiredAttributes);
-                // setRequiresAttributes();
-                $scope.aksjonskoder = servicerutineFactory.getServicerutineAksjonskoder($stateParams.servicerutineCode).sort();
-                // $scope.formData.aksjonskode = $scope.aksjonskoder[0];
-                $scope.environments = servicerutineFactory.getEnvironments().sort();
-
-                console.log($scope.isValidServicerutineCode);
+                getServicerutineRequiredAttributes();
+                getServicerutineAksjonskoder();
+                getEnvironments();
+                initFormData();
+                
             }
             init();
 
