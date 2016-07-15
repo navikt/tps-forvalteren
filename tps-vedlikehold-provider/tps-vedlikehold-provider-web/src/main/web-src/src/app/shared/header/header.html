@@ -2,22 +2,25 @@
     <md-toolbar class="md-primary">
         <nav role="navigation" id="navigation" tabindex="-1">
             <div class="md-toolbar-tools">
-                <md-button ng-click="toggleSideNav('left')" class="md-icon-button" hide-gt-md aria-label="Menu">
-                    <ng-md-icon icon="menu"></ng-md-icon>
-                </md-button>
-                <a ui-sref="servicerutine({servicerutineCode: null})" rel="home">
-                    <span>TPS Vedlikeholdsklient</span>
-                </a>
-                <div flex="5"></div>
+                <div layout="row" layout-align="start center">
+                    <md-button ng-click="toggleSideNav('left')" class="md-icon-button" hide-gt-md aria-label="Menu">
+                        <!--show-xs show-sm show-md hide-->
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <a ui-sref="servicerutine({servicerutineCode: null})" rel="home">
+                        <span>TPS Vedlikeholdsklient</span>
+                    </a>
+                </div>
+                <div flex-gt-xs="5"></div>
                 <md-button class="md-raised md-accent">
                     Person
                 </md-button>
-                <span flex></span>
+                <span flex-gt-xs></span>
                 <div layout="column" class="user-info">
                     <div class="md-body-1">{{currentUser.username}}</div>
                     <div class="md-body-2">{{currentUser.name}}</div>
                 </div>
-                <div flex="5"></div>
+                <div flex-gt-xs="5"></div>
                 <md-button id="logout-button" class="md-raised md-accent" ng-click="logout()">
                     Logg ut
                 </md-button>

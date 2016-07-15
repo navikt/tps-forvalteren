@@ -32,26 +32,26 @@
 
     .tps-long-response {
       //background-color: #00AA00;
-      width: 200px;
+      width: 260px;
 
       //.output-label {
       //  width: 200px;
       //}
 
       .output-data {
-        width: 200px;
+        width: 100%;
       }
     }
 
     .tps-short-response {
-      width: 100px;
+      width: 130px;
 
       //.output-label {
       //  width: 100px;
       //}
 
       .output-data {
-        width: 100px;
+        width: 100%;
       }
     }
 
@@ -60,6 +60,10 @@
       min-height: 40px;
       margin: 8px;
       border-bottom: 1px solid rgb(224,224,224);
+
+      input {
+        border: 0;
+      }
 
       .output-label {
         font-size: 12px;
@@ -71,8 +75,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        //min-width: 100px;
-        //border-bottom: 1px solid rgb(224,224,224);
+        text-overflow: ellipsis;
       }
     }
   }

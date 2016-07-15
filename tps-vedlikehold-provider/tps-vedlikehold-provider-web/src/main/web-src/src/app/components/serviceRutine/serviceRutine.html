@@ -1,14 +1,14 @@
 <div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
     <div ng-show="isValidServicerutineCode" layout="column" flex>
-        <md-content flex-gt-sm="20" class="tps-vk-top md-whiteframe-z2" layout-padding>
+        <md-content flex-gt-xs="20" class="tps-vk-top md-whiteframe-z2" layout-padding>
             <form ng-submit="submit()">
-                <div layout-gt-sm="row" layout="column" layout-wrap>
+                <div layout-gt-xs="row" layout="column" layout-wrap>
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
                     <span flex="33"></span> <!-- -->
                 </div>
                 <!--<span flex></span>-->
                 <md-divider></md-divider>
-                <div class="submit-container" layout-gt-sm="row" layout="column" layout-align="end end">
+                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align="end end">
                     <!--<span flex-gt-sm></span>-->
 
                     <md-input-container>
@@ -21,7 +21,7 @@
                 </div>
             </form>
         </md-content>
-        <md-content flex-gt-sm="80" class="tps-vk-bottom md-whiteframe-z2">
+        <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Resultat">
                     <tps-response-form servicerutine-code="servicerutineCode"></tps-response-form>

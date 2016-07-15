@@ -99,6 +99,5 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
             event.preventDefault();
             locationService.redirectToLoginState();
         }
-
     });
 }]);
