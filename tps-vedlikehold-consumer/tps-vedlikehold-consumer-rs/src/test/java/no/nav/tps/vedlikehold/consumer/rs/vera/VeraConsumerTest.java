@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class VeraConsumerTest {
 
-    private static final String VERA_DOES_NOT_ANSWER_ERROR = "Vera svarer ikke";
+    private static final String VERA_DOES_NOT_ANSWER_ERROR = "Vera does not answer";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

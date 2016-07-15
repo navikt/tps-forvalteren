@@ -34,7 +34,7 @@ public class DefaultMessageQueueServiceTest {
     private static final String REQUEST_MESSAGE  = "This is a test request";
     private static final String RESPONSE_MESSAGE = "This is a test response";
 
-    private static final String MQ_DOES_NOT_ANSWER_ERROR = "MQ svarer ikke";
+    private static final String MQ_DOES_NOT_ANSWER_ERROR = "MQ does not answer";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

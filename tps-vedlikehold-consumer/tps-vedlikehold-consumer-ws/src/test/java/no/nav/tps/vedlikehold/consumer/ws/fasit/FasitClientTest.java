@@ -41,7 +41,7 @@ public class FasitClientTest {
     private static final String QUEUE_ALIAS = "queueAlias";
     private static final String QUEUE_NAME  = "queueName";
 
-    private static final String FASIT_DOES_NOT_ANSWER_ERROR = "Fasit svarer ikke";
+    private static final String FASIT_DOES_NOT_ANSWER_ERROR = "Fasit does not answer";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
