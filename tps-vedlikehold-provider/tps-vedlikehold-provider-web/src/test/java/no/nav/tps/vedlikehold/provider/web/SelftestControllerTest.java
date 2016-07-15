@@ -56,6 +56,9 @@ public class SelftestControllerTest {
     @Mock(name = "fasitSelftest")
     private Selftest fasitSelftest;
 
+    @Mock(name = "mqSelftest")
+    private Selftest mqSelftest;
+
     @Mock
     private MessageProvider messageProviderMock;
 
@@ -72,6 +75,9 @@ public class SelftestControllerTest {
 
         SelftestResult fasitResults = new SelftestResult("Fasit");
         when(fasitSelftest.perform()).thenReturn(fasitResults);
+
+        SelftestResult mqResults = new SelftestResult("Mq");
+        when(mqSelftest.perform()).thenReturn(mqResults);
     }
 
     @Test
@@ -112,12 +118,24 @@ public class SelftestControllerTest {
 
     @Test
     public void throwsExceptionWithMessageFromMessageProviderWhenFasitFailedAndStatusIsRequested() throws Exception {
-        SelftestResult veraTestResult = new SelftestResult("Fasit", "Fasit is down");
-        when(veraSelftest.perform()).thenReturn(veraTestResult);
+        SelftestResult fasitTestResult = new SelftestResult("Fasit", "Fasit is down");
+        when(fasitSelftest.perform()).thenReturn(fasitTestResult);
         when(messageProviderMock.get(anyString(), eq("Fasit"))).thenReturn("The following sub-systems are down: Fasit");
 
         expectedException.expect(SelftestFailureException.class);
         expectedException.expectMessage("The following sub-systems are down: Fasit");
+
+        controller.selftest("status", modelMock);
+    }
+
+    @Test
+    public void throwsExceptionWithMessageFromMessageProviderWhenMqFailedAndStatusIsRequested() throws Exception {
+        SelftestResult mqTestResult = new SelftestResult("Mq", "Mq is down");
+        when(mqSelftest.perform()).thenReturn(mqTestResult);
+        when(messageProviderMock.get(anyString(), eq("Mq"))).thenReturn("The following sub-systems are down: Mq");
+
+        expectedException.expect(SelftestFailureException.class);
+        expectedException.expectMessage("The following sub-systems are down: Mq");
 
         controller.selftest("status", modelMock);
     }
@@ -171,17 +189,31 @@ public class SelftestControllerTest {
     }
 
     @Test
+    public void setsAggregateStatusToFeiletWhenMqFailedAndStatusIsNotRequested() throws Exception {
+        SelftestResult mqTestResult = new SelftestResult("Mq", "Mq is down");
+        when(fasitSelftest.perform()).thenReturn(mqTestResult);
+
+        controller.selftest(null, modelMock);
+
+        ArgumentCaptor<SelftestResult.Status> statusCaptor = ArgumentCaptor.forClass(SelftestResult.Status.class);
+        verify(modelMock, atLeastOnce()).addAttribute(anyString(), statusCaptor.capture());
+        assertThat(statusCaptor.getAllValues().contains(FEILET), is(true));
+    }
+
+    @Test
     public void throwsExceptionWithMessageFromMessageProviderWhenDiskresjonskodeAndEgenAnsattandVeraFailedAndStatusIsRequested() throws Exception {
         when(diskresjonskodeSelftest.perform()).thenReturn(new SelftestResult("Diskresjonskode", "TPSWS - Diskresjonskode is down"));
         when(egenansattSelftest.perform()).thenReturn(new SelftestResult("Egen Ansatt", "TPSWS - Egen Ansatt is down"));
         when(veraSelftest.perform()).thenReturn(new SelftestResult("Vera", "Vera is down"));
         when(fasitSelftest.perform()).thenReturn(new SelftestResult("Fasit", "Fasit is down"));
+        when(mqSelftest.perform()).thenReturn(new SelftestResult("Mq", "Mq is down"));
 
 
-        when(messageProviderMock.get(anyString(), eq("Diskresjonskode,Egen Ansatt,Vera,Fasit"))).thenReturn("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit");
+
+        when(messageProviderMock.get(anyString(), eq("Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq"))).thenReturn("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq");
 
         expectedException.expect(SelftestFailureException.class);
-        expectedException.expectMessage("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit");
+        expectedException.expectMessage("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq");
 
         controller.selftest("status", modelMock);
     }

@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.provider.web.selftest;
 
-import no.nav.tps.vedlikehold.service.command.tpsws.PingEgenAnsatt;
+import no.nav.tps.vedlikehold.service.command.mq.PingMq;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,13 +18,13 @@ import static org.springframework.util.StringUtils.isEmpty;
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 @RunWith(MockitoJUnitRunner.class)
-public class EgenAnsattSelftestTest {
+public class MqSelftestTest {
 
     @InjectMocks
-    private EgenAnsattSelftest selftest;
+    private MqSelftest selftest;
 
     @Mock
-    private PingEgenAnsatt pingEgenAnsattMock;
+    private PingMq pingMqMock;
 
     @Test
     public void subSystemNameIsSet() {
@@ -37,7 +38,7 @@ public class EgenAnsattSelftestTest {
     public void callsPingCommandWhenSelftestIsPerformed() throws Exception {
         selftest.perform();
 
-        verify(pingEgenAnsattMock).execute();
+        verify(pingMqMock).execute();
     }
 
     @Test
