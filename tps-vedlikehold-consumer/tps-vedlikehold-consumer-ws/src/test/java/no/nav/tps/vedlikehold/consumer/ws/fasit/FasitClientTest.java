@@ -129,7 +129,7 @@ public class FasitClientTest {
     }
 
     @Test
-    public void pingThrowsExceptionWhenIsFasitThrowsException() throws Exception {
+    public void pingThrowsExceptionWhenFasitThrowsException() throws Exception {
 
         RuntimeException thrownException = new RuntimeException(FASIT_DOES_NOT_ANSWER_ERROR);
 
