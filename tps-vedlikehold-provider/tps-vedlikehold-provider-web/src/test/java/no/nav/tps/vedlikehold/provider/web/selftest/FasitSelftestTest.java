@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web.selftest;
 
+import no.nav.tps.vedlikehold.service.command.fasit.PingFasit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,19 +13,17 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.springframework.util.StringUtils.isEmpty;
 
-import no.nav.tps.vedlikehold.service.command.tpsws.PingDiskresjonskode;
-
 /**
- * @author Kristian Kyvik (Visma Consulting AS).
+ * @author Kristian Kyvik (Visma Consulting).
  */
 @RunWith(MockitoJUnitRunner.class)
-public class EgenAnsattSelftestTest {
+public class FasitSelftestTest {
 
     @InjectMocks
-    private EgenAnsattSelftest selftest;
+    private FasitSelftest selftest;
 
     @Mock
-    private PingDiskresjonskode pingEgenAnsattMock;
+    private PingFasit pingFasitMock;
 
     @Test
     public void subSystemNameIsSet() {
@@ -38,7 +37,7 @@ public class EgenAnsattSelftestTest {
     public void callsPingCommandWhenSelftestIsPerformed() throws Exception {
         selftest.perform();
 
-        verify(pingEgenAnsattMock).execute();
+        verify(pingFasitMock).execute();
     }
 
     @Test
