@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
- */
+\ */
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
@@ -37,4 +37,3 @@ public class CommandConfig {
         return defaultMessageQueueService;
     }
 }
-

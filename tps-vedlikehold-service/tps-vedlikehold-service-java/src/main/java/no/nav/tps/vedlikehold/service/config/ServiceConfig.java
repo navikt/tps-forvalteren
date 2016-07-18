@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.service.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -13,7 +12,6 @@ import no.nav.tps.vedlikehold.service.command.config.CommandConfig;
 @Configuration
 @EnableScheduling
 @Import(CommandConfig.class)
-//s@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ServiceConfig {
 }
 

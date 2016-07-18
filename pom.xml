@@ -119,6 +119,11 @@
                 <artifactId>tps-vedlikehold-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-service-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!--SPRING-->
             <dependency>
@@ -173,6 +178,20 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxws</artifactId>
                 <version>2.7.5</version>
+            </dependency>
+
+            <!-- Apache Commons IO -->
+            <dependency>
+                <groupId>org.apache.directory.studio</groupId>
+                <artifactId>org.apache.commons.io</artifactId>
+                <version>2.4</version>
+            </dependency>
+
+            <!-- JSON -->
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20140107</version>
             </dependency>
 
             <!-- DOCUMENTATION -->
