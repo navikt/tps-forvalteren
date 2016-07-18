@@ -18,10 +18,8 @@ public class EgenAnsattAuthorisationServiceStrategy implements AuthorisationServ
 
     @Override
     public Boolean userIsAuthorisedToReadPerson(User user, String fnr) {
-        return true;                                                            //FIXME: Remove this when TPSWS is working
+        Boolean isEgenAnsatt = egenAnsattConsumer.isEgenAnsatt(fnr);
 
-//        Boolean isEgenAnsatt = egenAnsattConsumer.isEgenAnsatt(fnr);
-//
-//        return !isEgenAnsatt || user.getRoles().contains(ROLE_READ_EGENANSATT);
+        return !isEgenAnsatt || user.getRoles().contains(ROLE_READ_EGENANSATT);
     }
 }
