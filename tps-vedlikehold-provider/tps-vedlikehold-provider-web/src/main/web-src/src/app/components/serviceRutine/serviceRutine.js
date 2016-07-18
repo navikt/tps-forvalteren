@@ -25,8 +25,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
             
 
             $scope.submit = function() {
-                console.log("Send til tps pressed med fnr:\n" +
-                    $scope.formData.fnr + ' ' + $scope.formData.aksjonskode);
+                console.log("Send til tps pressed med data:\n" +
+                    $scope.formData.fnr + '\n' + $scope.formData.aksjonsDato + '\n' + $scope.formData.aksjonskode + '\n' + $scope.environment);
 
                 // requestFactory.getResponse(servicerutineCode, $scope.formData).then(function(res){
                 //     //something
@@ -136,8 +136,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                 return (type in requiredAttributes);
             };
             
-            function getServicerutineAttributes() {
-                $scope.fields = servicerutineFactory.getServicerutineAttributes($stateParams.servicerutineCode);
+            function getServicerutineAttributesNames() {
+                $scope.fields = servicerutineFactory.getServicerutineAttributesNames($stateParams.servicerutineCode);
                 $scope.fields.push('aksjonskode');
             }
             
@@ -145,8 +145,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                 $scope.isValidServicerutineCode = ($stateParams.servicerutineCode in servicerutineFactory.getServicerutiner());
             }
             
-            function getServicerutineRequiredAttributes() {
-                requiredAttributes = servicerutineFactory.getServicerutineRequiredAttributes($stateParams.servicerutineCode);
+            function getServicerutineRequiredAttributesNames() {
+                requiredAttributes = servicerutineFactory.getServicerutineRequiredAttributesNames($stateParams.servicerutineCode);
             }
             
             function getServicerutineAksjonskoder() {
@@ -177,8 +177,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages'])
                     return;
                 }
                 
-                getServicerutineAttributes();
-                getServicerutineRequiredAttributes();
+                getServicerutineAttributesNames();
+                getServicerutineRequiredAttributesNames();
                 getServicerutineAksjonskoder();
                 getEnvironments();
                 getNonUniqueProperties();

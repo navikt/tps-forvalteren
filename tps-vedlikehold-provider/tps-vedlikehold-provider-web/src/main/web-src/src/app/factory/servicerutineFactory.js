@@ -26,7 +26,8 @@ angular.module('tps-vedlikehold')
             // TEST VALUES
             var res = {};
             // res.data = {"tpsPersonData":{"S004":{"attributes":{"aksjonsDato":"2001-01-01","fnr":12345678901},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["A0","A2","B0","B2","C0","D0","E0"]},"S322":{"attributes":{"aksjonsDato":"2001-01-01","fnr":12345678901},"internNavn":"S322 alt servicerutine","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["A0","A2","B0","B2","C0","D0","E0"]}}};
-            res.data = {"tpsPersonData":{"S004":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}, "S322":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S322 ALT serv rut","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}}};
+            // res.data = {"tpsPersonData":{"S004":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}, "S322":{"requiredAttributes":{"fnr":12345678901},"optionalAttributes":{"aksjonsDato":"2001-01-01"},"internNavn":"S322 ALT serv rut","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O","aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]}}};
+            res.data = {"tpsPersonData":{"S004":{"aksjonsKodes":{"aksjonsKode":["E0","A0","A2","B0","B2","C0","D0"]},"attributes":{"attribute":[{"use":"required","name":"fnr","type":"xs:string"},{"use":"optional","name":"aksjonsDato","type":"xs:date"}]},"internNavn":"S004 hentPerson","serviceRutinenavn":"FS03-FDNUMMER-PERSDATA-O"}}};
             servicerutineFactory.servicerutiner = res.data.tpsPersonData;
             return true;
         };
@@ -43,16 +44,12 @@ angular.module('tps-vedlikehold')
             return ret;
         };
         
-        servicerutineFactory.getServicerutineAttributes = function(servicerutineCode) {
-            // vil ha feltene fra servicerutineFieldsTemplate i den rekkefølgen
+        servicerutineFactory.getServicerutineAttributesNames = function(servicerutineCode) {
+            // vil ha feltene fra servicerutineFieldsTemplate i bestemt rekkefølge
             // kunne nok vært gjort på en bedre måte
             var filter = [];
-            angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].requiredAttributes, function(value, key) {
-                this.push(key);
-            }, filter);
-
-            angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].optionalAttributes, function(value, key) {
-                this.push(key);
+            angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].attributes.attribute, function(value, key) {
+                this.push(value.name);
             }, filter);
 
             var ret = [];
@@ -64,12 +61,19 @@ angular.module('tps-vedlikehold')
             return ret;
         };
         
-        servicerutineFactory.getServicerutineRequiredAttributes = function(servicerutineCode) {
-            return servicerutineFactory.servicerutiner[servicerutineCode].requiredAttributes;
+        servicerutineFactory.getServicerutineRequiredAttributesNames = function(servicerutineCode) {
+            // return servicerutineFactory.servicerutiner[servicerutineCode].requiredAttributes;
+            var ret = [];
+            angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].attributes.attribute, function(value, key) {
+                if (value.use === "required") {
+                    this.push(value.name);
+                }
+            }, ret);
+            return ret;
         };
         
         servicerutineFactory.getServicerutineAksjonskoder = function(servicerutineCode) {
-            return servicerutineFactory.servicerutiner[servicerutineCode].aksjonsKode;
+            return servicerutineFactory.servicerutiner[servicerutineCode].aksjonsKodes.aksjonsKode;
         };
 
         servicerutineFactory.getResponse = function(servicerutineCode, formData) {
