@@ -2,8 +2,8 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', 'servicerutineFactory',
-        function($scope, $stateParams, servicerutineFactory) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', 'utilsService', 'servicerutineFactory',
+        function($scope, $stateParams, utilsService, servicerutineFactory) {
 
             var tpsReturnedObject = {};
 
@@ -42,9 +42,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 //#####################
                 //sjekk for statuskode på svar
                 $scope.responseReceived = true;
-                
-                $scope.xmlForm = res.data.xml;
-                console.log($scope.xmlForm);
+
+                $scope.xmlForm = utilsService.formatXml(res.data.xml);
+
                 tpsReturnedObject = angular.fromJson(res.data.object);
                 $scope.svarStatus = tpsReturnedObject.tpsPersonData.tpsSvar.svarStatus;
                 $scope.personData = tpsReturnedObject.tpsPersonData.tpsSvar.personDataS004;

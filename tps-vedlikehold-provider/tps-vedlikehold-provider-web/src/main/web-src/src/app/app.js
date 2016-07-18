@@ -16,7 +16,8 @@ require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.dashboard', 'tps-vedlikehold.servicerutine']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 
+    'tps-vedlikehold.service', 'tps-vedlikehold.dashboard', 'tps-vedlikehold.servicerutine']);
 
 require('./factory/servicerutineFactory');
 require('./shared/header/header');
@@ -25,7 +26,8 @@ require('./directives/inputField');
 require('./directives/outputField');
 require('./directives/responseForm');
 
-app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
+app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', 
+    function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
     $urlRouteProvider.otherwise("/");
 
