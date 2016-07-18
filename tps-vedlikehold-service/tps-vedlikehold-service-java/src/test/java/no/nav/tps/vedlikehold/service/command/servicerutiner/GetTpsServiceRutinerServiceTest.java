@@ -1,36 +1,30 @@
 package no.nav.tps.vedlikehold.service.command.servicerutiner;
 
+import no.nav.tps.vedlikehold.service.command.config.CommandConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(CommandConfig.class)
 public class GetTpsServiceRutinerServiceTest {
 
-    private static final String SERVICES = "SERVICES";
-
-    @Mock
+    @Autowired
     GetTpsServiceRutinerService getTpsServiceRutinerService;
 
-    @Before
-    public void setUp() {
-        when(getTpsServiceRutinerService.getTpsServiceRutiner()).thenReturn(SERVICES);
-    }
-
     @Test
-    public void getTpsServiceRutinerReturnsServices() {
-        String services = getTpsServiceRutinerService.getTpsServiceRutiner();
+    public void getTpsServiceRutinerServiceReturnsString() {
+        Object services = getTpsServiceRutinerService.exectue();
 
-        assertThat(services, is(equalTo(SERVICES)));
+        assertThat(services instanceof String, is(true));
     }
 }

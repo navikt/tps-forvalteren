@@ -17,7 +17,7 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
     private final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
 
-    public String getTpsServiceRutiner() {
+    public String exectue() {
 
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);

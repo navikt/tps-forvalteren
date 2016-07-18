@@ -27,6 +27,6 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.GET)
     public String getTpsServiceRutiner() {
 
-        return getTpsServiceRutinerService.getTpsServiceRutiner();
+        return getTpsServiceRutinerService.exectue();
     }
 }

@@ -33,7 +33,7 @@ public class ServiceControllerTest {
 
     @Before
     public void setUp() {
-        when(getTpsServiceRutinerService.getTpsServiceRutiner()).thenReturn(SERVICES);
+        when(getTpsServiceRutinerService.exectue()).thenReturn(SERVICES);
     }
 
     @Test
@@ -47,6 +47,6 @@ public class ServiceControllerTest {
     public void getTpsServiceRutinerCallsgetTpsServiceRutinerOnGetTpsServiceRutinerService() {
         serviceController.getTpsServiceRutiner();
 
-        verify(getTpsServiceRutinerService).getTpsServiceRutiner();
+        verify(getTpsServiceRutinerService).exectue();
     }
 }
