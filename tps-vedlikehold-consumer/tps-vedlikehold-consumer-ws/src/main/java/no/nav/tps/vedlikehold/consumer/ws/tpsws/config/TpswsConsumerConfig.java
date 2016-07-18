@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
-import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.PackageMarker;
@@ -82,7 +81,7 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
+//        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }

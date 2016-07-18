@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-config</artifactId>
+            <artifactId>tps-vedlikehold-domain-ws</artifactId>
         </dependency>
 
         <!--Nav Diskresjonstjeneste-->
@@ -56,8 +56,9 @@
 
         <!--SERVICES-->
         <dependency>
-            <groupId>no.nav.brevogarkiv</groupId>
-            <artifactId>common-util-fasit</artifactId>
+            <groupId>no.nav.aura.fasit</groupId>
+            <artifactId>fasit-client-api</artifactId>
+            <version>5.6.4</version>
         </dependency>
 
         <!--SPRING-->
@@ -66,10 +67,17 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--LANGUAGE EXTENSIONS-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
         <!-- DEPLOYMENT -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
         </dependency>
     </dependencies>
+
 </project>

@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.config;
 
 import no.nav.tps.vedlikehold.consumer.rs.config.RestConsumerConfig;
-import no.nav.tps.vedlikehold.consumer.ws.WebServiceConsumerConfig;
+import no.nav.tps.vedlikehold.consumer.ws.config.WebServiceConsumerConfig;
 import no.nav.tps.vedlikehold.service.command.config.CommandConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

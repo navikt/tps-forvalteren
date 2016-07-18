@@ -1,5 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs;
-
+package no.nav.tps.vedlikehold.provider.rs.config;
 
 import no.nav.tps.vedlikehold.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.UserController;
