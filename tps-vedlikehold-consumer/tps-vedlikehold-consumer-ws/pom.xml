@@ -19,6 +19,10 @@
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-domain-ws</artifactId>
+        </dependency>
 
         <!--Nav Diskresjonstjeneste-->
         <dependency>
@@ -52,14 +56,21 @@
 
         <!--SERVICES-->
         <dependency>
-            <groupId>no.nav.brevogarkiv</groupId>
-            <artifactId>common-util-fasit</artifactId>
+            <groupId>no.nav.aura.fasit</groupId>
+            <artifactId>fasit-client-api</artifactId>
+            <version>5.6.4</version>
         </dependency>
 
         <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--LANGUAGE EXTENSIONS-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
 </project>

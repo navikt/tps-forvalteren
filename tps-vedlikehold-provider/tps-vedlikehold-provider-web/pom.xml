@@ -20,6 +20,14 @@
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+        </dependency>
 
         <!--SPRING-->
         <dependency>

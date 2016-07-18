@@ -1,12 +1,12 @@
-package no.nav.tps.vedlikehold.consumer.ws;
+package no.nav.tps.vedlikehold.consumer.ws.config;
 
-import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConfig;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConfig;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.config.TpswsConsumerConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Created by Øyvind Grimnes, Visma Consulting AS on 29.06.2016.
+ * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 @Configuration
@@ -14,5 +14,4 @@ import org.springframework.context.annotation.Import;
         FasitConfig.class,
         TpswsConsumerConfig.class
 })
-public class WebServiceConsumerConfig {
-}
+public class WebServiceConsumerConfig {}
