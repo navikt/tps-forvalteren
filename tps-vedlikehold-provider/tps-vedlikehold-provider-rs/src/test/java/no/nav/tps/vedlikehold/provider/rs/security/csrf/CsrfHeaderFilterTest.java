@@ -62,11 +62,13 @@ public class CsrfHeaderFilterTest {
 
     @Test
     public void shouldNotAddCookieToResponseIfCsrfTokenIsNotNullAndCookieIsNotNullAndTokenIsNotNullAndTokenEqualsCookie() throws ServletException, IOException {
-        when(request.getAttribute(CsrfToken.class.getName())).thenReturn(new DefaultCsrfToken("header", "parameter", "X-CSRF"));
         Cookie cookie = new Cookie("XSRF-TOKEN", "X-CSRF");
         cookie.setPath(PATH);
+
         Cookie[] cookies = {cookie};
+
         when(request.getCookies()).thenReturn(cookies);
+        when(request.getAttribute(CsrfToken.class.getName())).thenReturn(new DefaultCsrfToken("header", "parameter", "X-CSRF"));
 
         csrfHeaderFilter.doFilterInternal(request, response, filterChain);
 
@@ -78,10 +80,12 @@ public class CsrfHeaderFilterTest {
 
     @Test
     public void shouldAddCookieToResponseWhenCSRFTokenIsNotNullAndCookieIsNotNullAndTokenNotNullAndTokenNotEqualToCookie() throws ServletException, IOException {
-        when(request.getAttribute(CsrfToken.class.getName())).thenReturn(new DefaultCsrfToken("header", "parameter", "X-CSRF"));
         Cookie cookie = new Cookie("XSRF-TOKEN", "X-CSRF-1");
         cookie.setPath(PATH);
+
         Cookie[] cookies = {cookie};
+
+        when(request.getAttribute(CsrfToken.class.getName())).thenReturn(new DefaultCsrfToken("header", "parameter", "X-CSRF"));
         when(request.getCookies()).thenReturn(cookies);
 
         csrfHeaderFilter.doFilterInternal(request, response, filterChain);
