@@ -12,5 +12,4 @@ import org.springframework.context.annotation.Import;
 @EnableAutoConfiguration
 @Import(ApplicationConfig.class)
 public class ApplicationServletInitializer extends SpringBootServletInitializer {
-
 }

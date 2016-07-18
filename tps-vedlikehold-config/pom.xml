@@ -11,4 +11,29 @@
 
     <artifactId>tps-vedlikehold-config</artifactId>
     <name>TPS Vedlikeholdsklient :: Config</name>
+
+    <dependencies>
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
 </project>

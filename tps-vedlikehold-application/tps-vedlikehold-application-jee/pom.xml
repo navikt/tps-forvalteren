@@ -11,7 +11,9 @@
 
     <artifactId>tps-vedlikehold-application-jee</artifactId>
     <name>TPS Vedlikeholdsklient :: Application :: JEE</name>
+
     <packaging>ear</packaging>
+
     <dependencies>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
@@ -49,4 +51,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

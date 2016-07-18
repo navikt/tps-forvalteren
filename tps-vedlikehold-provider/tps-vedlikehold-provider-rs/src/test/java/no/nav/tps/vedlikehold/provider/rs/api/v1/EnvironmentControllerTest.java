@@ -1,8 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1;
 
-import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
-
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.EnvironmentController;
+import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpSession;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,14 +31,14 @@ public class EnvironmentControllerTest {
     private HttpSession httpSessionMock;
 
     @Mock
-    private VeraConsumer veraConsumerMock;
+    public GetEnvironments getEnvironments;
 
     @InjectMocks
     private EnvironmentController controller;
 
     @Before
     public void setUp() {
-        when( veraConsumerMock.getEnvironments("tpsws") ).thenReturn(ENVIRONMENTS);
+        when( getEnvironments.execute("tpsws") ).thenReturn(ENVIRONMENTS);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
 

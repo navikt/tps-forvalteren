@@ -1,16 +1,19 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt;
 
+import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
+@Component
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
     // Test user
@@ -36,8 +39,9 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         }
 
         ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fNr);
-
+        MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
         ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
+        MDCOperations.remove(MDCOperations.MDC_CALL_ID);
 
         return response.isEgenAnsatt();
     }

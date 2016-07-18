@@ -1,15 +1,11 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
-import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
+import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.PackageMarker;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.cxf.TimeoutFeature;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.interceptor.StaxOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -52,20 +48,30 @@ public class TpswsConsumerConfig {
     private static final QName PIP_EGENANSATT_ENDPOINT_NAME = new QName("http://nav.no/tjeneste/pip/pipEgenAnsatt/v1/", "PipEgenAnsatt_v1");
 
     @Value("${validering.virksomhet.diskresjonskodev1.url}")
+//    private String diskresjonskodeAddress = "https://service-gw-t4.test.local";
     private String diskresjonskodeAddress;
 
     @Value("${validering.virksomhet.egenansattv1.url}")
+//    private String egenAnsattAddress = "https://service-gw-t4.test.local";
     private String egenAnsattAddress;
 
-    @Bean
-    public DiskresjonskodeConsumer diskresjonskodeConsumer() {
-        return new DefaultDiskresjonskodeConsumer();
-    }
+    @Value("${no.nav.modig.security.systemuser.username}")
+//    private String egenAnsattAddress = "https://service-gw-t4.test.local";
+    private String modigUername;
 
-    @Bean
-    public EgenAnsattConsumer egenAnsattConsumer() {
-        return new DefaultEgenAnsattConsumer();
-    }
+    @Value("${no.nav.modig.security.systemuser.password}")
+//    private String egenAnsattAddress = "https://service-gw-t4.test.local";
+    private String modigPassword;
+
+//    @Bean
+//    public static DiskresjonskodeConsumer diskresjonskodeConsumer() {
+//        return new DefaultDiskresjonskodeConsumer();
+//    }
+//
+//    @Bean
+//    public EgenAnsattConsumer egenAnsattConsumer() {
+//        return new DefaultEgenAnsattConsumer();
+//    }
 
     @Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
@@ -76,7 +82,7 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-//        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
+        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }
@@ -115,12 +121,14 @@ public class TpswsConsumerConfig {
         Map<String, Object> properties = new HashMap<String, Object>();
 
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-        properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));
+//        properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));
+        properties.put(WSHandlerConstants.USER, modigUername);
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, new CallbackHandler() {
             @Override
             public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-                String password = System.getProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD);
+//                String password = System.getProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD);
+                String password = modigPassword;
 
                 WSPasswordCallback passwordCallback = (WSPasswordCallback) callbacks[0];
                 passwordCallback.setPassword(password);

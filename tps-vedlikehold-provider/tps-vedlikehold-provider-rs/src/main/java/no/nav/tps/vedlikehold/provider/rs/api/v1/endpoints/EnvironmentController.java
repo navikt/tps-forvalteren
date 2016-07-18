@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
+import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +18,7 @@ import java.util.Set;
 public class EnvironmentController {
 
     @Autowired
-    public VeraConsumer veraConsumer;
+    public GetEnvironments getEnvironments;
 
     /**
      * Get an object containing a list of environments
@@ -29,6 +29,6 @@ public class EnvironmentController {
 
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Set<String> getEnvironments(@ApiIgnore HttpSession session) {
-        return veraConsumer.getEnvironments("tpsws");
+        return getEnvironments.execute("tpsws");
     }
 }

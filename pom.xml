@@ -14,6 +14,7 @@
     <artifactId>tps-vedlikehold</artifactId>
     <name>TPS Vedlikeholdsklient</name>
     <version>1.0.0-SNAPSHOT</version>
+
     <packaging>pom</packaging>
 
     <modules>
@@ -30,7 +31,7 @@
         <application.name>tps-vedlikehold</application.name>
         <java.version>1.8</java.version>
         <application-ear.version>7</application-ear.version>
-        <javaee-api.version>7</javaee-api.version>
+        <javaee-api.version>7.0</javaee-api.version>
         <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
         <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
         <aura-maven-plugin.version>5.0.7</aura-maven-plugin.version>
@@ -111,6 +112,11 @@
                 <artifactId>tps-vedlikehold-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-service-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!--Nav Diskresjonstjeneste-->
             <dependency>
@@ -152,6 +158,11 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-log-jaxws</artifactId>
                 <version>1.1.3</version>
+              </dependency>
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-testcertificates</artifactId>
+                <version>1.2.0</version>
             </dependency>
 
             <!-- CXF library -->

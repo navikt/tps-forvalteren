@@ -27,7 +27,7 @@ public class VeraConsumerTest {
     private RestTemplate restTemplateMock;
 
     @InjectMocks
-    private VeraConsumer veraConsumer = new VeraConsumer();
+    private VeraConsumer veraConsumer = new DefaultVeraConsumer();
 
     private VeraApplication q4;
     private VeraApplication t3;
@@ -37,7 +37,7 @@ public class VeraConsumerTest {
     public void before() {
         q4 = new VeraApplication();
         t3 = new VeraApplication();
-         p = new VeraApplication();
+        p = new VeraApplication();
 
         q4.setEnvironment("q4");
         t3.setEnvironment("t3");
@@ -48,7 +48,7 @@ public class VeraConsumerTest {
     public void getEnvironmentsReturnsEmptyListIfNoEnvironmentsAreFound() {
         VeraApplication[] returnedApplications = new VeraApplication[]{};
 
-        when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
+        when(restTemplateMock.getForObject(anyString(), anyObject())).thenReturn(returnedApplications);
 
         assertThat(veraConsumer.getEnvironments("tpsws"), hasSize(0));
     }
@@ -57,7 +57,7 @@ public class VeraConsumerTest {
     public void getEnvironmentsReturnsListWithOneEnvironment() {
         VeraApplication[] returnedApplications = new VeraApplication[]{q4};
 
-        when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
+        when(restTemplateMock.getForObject(anyString(), anyObject())).thenReturn(returnedApplications);
 
         List<String> response = Arrays.asList("q4");
 
@@ -69,7 +69,7 @@ public class VeraConsumerTest {
     public void getEnvironmentsReturnsListWithAllEnvironments() {
         VeraApplication[] returnedApplications = new VeraApplication[]{p, q4, t3};
 
-        when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
+        when(restTemplateMock.getForObject(anyString(), anyObject())).thenReturn(returnedApplications);
 
         assertThat(veraConsumer.getEnvironments("tpsws"), containsInAnyOrder("p", "q4", "t3"));
     }
