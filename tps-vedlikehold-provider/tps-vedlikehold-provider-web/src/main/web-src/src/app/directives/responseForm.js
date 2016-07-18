@@ -11,7 +11,7 @@ angular.module('tps-vedlikehold').directive('tpsResponseForm', function(){
         scope: true,
         link: function(scope, element, attrs) {
             scope.getTemplateUrl = function () {
-                var type = scope.servicerutineCode;// || 'error';
+                var type = scope.servicerutineCode;
                 if (type) {
                     return templatesPath + '' + type + '' + templateSuffix;
                 }

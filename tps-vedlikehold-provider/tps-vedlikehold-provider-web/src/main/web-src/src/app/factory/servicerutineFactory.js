@@ -107,7 +107,7 @@ angular.module('tps-vedlikehold')
             }, ret);
             return ret;
         };
-        
+
         servicerutineFactory.getServicerutineAttributesNames = function(servicerutineCode) {
             // want the fields from servicerutineFieldsTemplate in a certain order
             // could be done in a better way
@@ -124,7 +124,7 @@ angular.module('tps-vedlikehold')
             }
             return ret;
         };
-        
+
         servicerutineFactory.getServicerutineRequiredAttributesNames = function(servicerutineCode) {
             var ret = [];
             angular.forEach(servicerutineFactory.servicerutiner[servicerutineCode].attributes.attribute, function(value, key) {

@@ -4,6 +4,7 @@ require('angular-animate');
 require('angular-material');
 require('angular-messages');
 require('angular-material-icons');
+require('angular-highlightjs');
 
 require('./components/login/login');
 require('./components/servicerutine/servicerutine');
@@ -14,7 +15,9 @@ require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 
+    'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
+
 
 require('./factory/servicerutineFactory');
 require('./shared/header/header');
@@ -22,6 +25,7 @@ require('./shared/side-navigator/side-navigator');
 require('./directives/inputField');
 require('./directives/outputField');
 require('./directives/responseForm');
+
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
     function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
@@ -88,7 +92,7 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
         }
 
         var authenticated = sessionService.getIsAuthenticated();
-
+        
         if (authenticated) { return; }
         else {
             event.preventDefault();
