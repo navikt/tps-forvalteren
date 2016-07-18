@@ -1,5 +1,6 @@
-package no.nav.tps.vedlikehold.consumer.ws.fasit;
+package no.nav.tps.vedlikehold.consumer.ws.fasit.config;
 
+import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.DefaultFasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackageClasses = {
+        FasitClient.class
+})
 public class FasitConfig {
 
     @Autowired
