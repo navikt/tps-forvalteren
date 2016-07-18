@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.java.servicerutine;
+package no.nav.tps.vedlikehold.service.command.servicerutiner;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
