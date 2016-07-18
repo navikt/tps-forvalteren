@@ -10,12 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tps-vedlikehold-service-java</artifactId>
+    <name>TPS Vedlikeholdsklient :: Service :: Java</name>
+
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>jackson-xml-databind</artifactId>
-            <version>0.6.2</version>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>

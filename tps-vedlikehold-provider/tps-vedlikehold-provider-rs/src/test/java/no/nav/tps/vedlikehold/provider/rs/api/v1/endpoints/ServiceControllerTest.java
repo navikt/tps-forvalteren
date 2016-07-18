@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Mockito.*;

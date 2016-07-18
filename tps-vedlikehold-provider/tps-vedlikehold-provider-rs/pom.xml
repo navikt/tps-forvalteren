@@ -27,6 +27,10 @@
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-service-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+        </dependency>
 
         <!--SPRING-->
         <dependency>
@@ -50,21 +54,6 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml</groupId>
-            <artifactId>jackson-xml-databind</artifactId>
-            <version>0.6.2</version>
         </dependency>
     </dependencies>
 
