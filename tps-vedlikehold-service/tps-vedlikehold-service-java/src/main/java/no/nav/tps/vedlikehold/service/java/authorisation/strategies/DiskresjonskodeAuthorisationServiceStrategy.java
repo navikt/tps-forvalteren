@@ -19,19 +19,21 @@ public class DiskresjonskodeAuthorisationServiceStrategy implements Authorisatio
 
     @Override
     public Boolean userIsAuthorisedToReadPerson(User user, String fnr) {
-        String diskresjonskode;
+        return true;                                                            //FIXME: Remove this when TPSWS is working
 
-        try {
-            diskresjonskode = diskresjonskodeConsumer.getDiskresjonskode(fnr).getDiskresjonskode();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return false;
-        }
-
-        if (diskresjonskode.equals("6")) {
-            return user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_6);
-        }
-
-        return !diskresjonskode.equals("7") || user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_7);
+//        String diskresjonskode;
+//
+//        try {
+//            diskresjonskode = diskresjonskodeConsumer.getDiskresjonskode(fnr).getDiskresjonskode();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            return false;
+//        }
+//
+//        if (diskresjonskode.equals("6")) {
+//            return user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_6);
+//        }
+//
+//        return !diskresjonskode.equals("7") || user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_7);
     }
 }

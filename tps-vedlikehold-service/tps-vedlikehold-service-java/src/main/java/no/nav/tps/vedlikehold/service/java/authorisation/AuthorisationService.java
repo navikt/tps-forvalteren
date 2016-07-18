@@ -21,8 +21,8 @@ import java.util.List;
 @Service
 public class AuthorisationService {
 
-    /* TODO: Remove mock when TPSWS is up and running */
 //    @Autowired
+    /* FIXME: Remove these mock when TPSWS is up and running */
     private DiskresjonskodeConsumer diskresjonskodeConsumer = new DiskresjonskodeConsumer() {
         @Override
         public boolean ping() throws Exception {
@@ -32,19 +32,16 @@ public class AuthorisationService {
         @Override
         public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) throws Exception {
             HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
-
-            response.setDiskresjonskode(fNr.substring(0, 1));
-
+            response.setDiskresjonskode("1");
             return response;
         }
 
         @Override
         public HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe) {
-            return new HentDiskresjonskodeBolkResponse();
+            return null;
         }
     };
 
-    /* TODO: Remove mock when TPSWS is up and running */
 //    @Autowired
     private EgenAnsattConsumer egenAnsattConsumer = new EgenAnsattConsumer() {
         @Override

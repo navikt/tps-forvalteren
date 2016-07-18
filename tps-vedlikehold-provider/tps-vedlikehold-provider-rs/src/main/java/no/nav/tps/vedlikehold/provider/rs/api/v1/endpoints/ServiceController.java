@@ -6,7 +6,7 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedExce
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.java.authorisation.AuthorisationService;
-import no.nav.tps.vedlikehold.service.java.service.rutine.ServiceRutineService;
+import no.nav.tps.vedlikehold.service.java.service.rutine.GetTpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.java.user.DefaultUserFactory;
 import no.nav.tps.vedlikehold.service.java.user.UserFactory;
 import no.nav.tps.vedlikehold.service.java.user.UserFactoryStrategy;
@@ -29,7 +29,7 @@ public class ServiceController {
     UserContextHolder userContextHolder;
 
     @Autowired
-    ServiceRutineService serviceRutineService;
+    GetTpsServiceRutineService getTpsServiceRutineService;
 
     @Autowired
     AuthorisationService authorisationService;
@@ -38,11 +38,11 @@ public class ServiceController {
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
     public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
                                             @RequestParam String environment,
-                                            @ApiIgnore @RequestParam Map<String, ?> parameters,
+                                            @ApiIgnore @RequestParam Map<String, Object> parameters,
                                             @PathVariable("serviceRutinenavn") String serviceRutineName) throws Exception {
 
         /* Verify authorisation */
-        /* TODO: Authorisation must probably be updated when more service rutines are supported */
+        /* TODO: Authorisation needs to be updated when more service rutines are supported (when fnr is not provided) */
         UserFactory userFactory      = new DefaultUserFactory();
         UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
 
@@ -54,6 +54,6 @@ public class ServiceController {
         }
 
         /* Get results from TPS */
-        return serviceRutineService.getResponseForServiceRutine(serviceRutineName, parameters, environment);
+        return getTpsServiceRutineService.execute(serviceRutineName, parameters, environment);
     }
 }

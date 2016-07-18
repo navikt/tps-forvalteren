@@ -45,7 +45,7 @@ public class EnvironmentControllerTest {
     }
 
     @Test
-    public void getUserReturnsEnvironmentList() {
+    public void getEnvironmentsReturnsEnvironmentList() {
         Set<String> environments = controller.getEnvironments(httpSessionMock);
 
         assertThat(environments, is(ENVIRONMENTS));

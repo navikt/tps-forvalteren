@@ -4,7 +4,7 @@ import no.nav.tps.vedlikehold.domain.service.User;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.java.authorisation.AuthorisationService;
-import no.nav.tps.vedlikehold.service.java.service.rutine.ServiceRutineService;
+import no.nav.tps.vedlikehold.service.java.service.rutine.DefaultGetTpsServiceRutineService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +29,13 @@ public class ServiceControllerTest {
     UserContextHolder userContextHolderMock;
 
     @Mock
-    ServiceRutineService serviceRutineServiceMock;
+    DefaultGetTpsServiceRutineService defaultGetTpsServiceRutineServiceMock;
 
     @Mock
     AuthorisationService authorisationServiceMock;
 
     @Mock
-    Map<String, String> parametersMock;
+    Map<String, Object> parametersMock;
 
     @InjectMocks
     ServiceController serviceController;
@@ -51,10 +51,10 @@ public class ServiceControllerTest {
 
         serviceController.getService(mock(HttpSession.class), "environment", parametersMock, "serviceRutineName");
 
-        InOrder inOrder = inOrder(serviceRutineServiceMock, authorisationServiceMock);
+        InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, authorisationServiceMock);
 
         inOrder.verify(authorisationServiceMock).userIsAuthorisedToReadPerson(any(User.class), anyString());
-        inOrder.verify(serviceRutineServiceMock).getResponseForServiceRutine(anyString(), eq(parametersMock), anyString());
+        inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), eq(parametersMock), anyString());
     }
 
     @Test(expected = HttpUnauthorisedException.class)
@@ -64,7 +64,7 @@ public class ServiceControllerTest {
         serviceController.getService(mock(HttpSession.class), "environment", parametersMock, "serviceRutineName");
 
         verify(authorisationServiceMock).userIsAuthorisedToReadPerson(any(User.class), anyString());
-        verify(serviceRutineServiceMock, never()).getResponseForServiceRutine(anyString(), eq(parametersMock), anyString());
+        verify(defaultGetTpsServiceRutineServiceMock, never()).execute(anyString(), eq(parametersMock), anyString());
     }
 
     @Test
@@ -72,6 +72,6 @@ public class ServiceControllerTest {
         serviceController.getService(mock(HttpSession.class), "environment", mock(Map.class), "serviceRutineName");
 
         verify(authorisationServiceMock, never()).userIsAuthorisedToReadPerson(any(User.class), anyString());
-        verify(serviceRutineServiceMock).getResponseForServiceRutine(anyString(), anyMap(), anyString());
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), anyMap(), anyString());
     }
 }

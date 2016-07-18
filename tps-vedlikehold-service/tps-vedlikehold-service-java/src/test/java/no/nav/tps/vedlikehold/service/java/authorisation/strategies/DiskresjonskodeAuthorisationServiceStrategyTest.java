@@ -14,11 +14,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static javafx.scene.input.KeyCode.T;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  *  @author Øyvind Grimnes, Visma Consulting AS
