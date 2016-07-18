@@ -26,7 +26,6 @@ angular.module('tps-vedlikehold.service')
                         } else {
                             ret[x] = flatObject[x];
                         }
-
                     }
                 } else {
                     ret[i] = ob[i];
@@ -36,16 +35,15 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.formatXml = function (xml) {
-            var reg = /(>)\s*(<)(\/*)/g; // updated Mar 30, 2015
+            var reg = /(>)\s*(<)(\/*)/g;
             var wsexp = / *(.*) +\n/g;
             var contexp = /(<.+>)(.+\n)/g;
             xml = xml.replace(reg, '$1\n$2$3').replace(wsexp, '$1\n').replace(contexp, '$1\n$2');
-            var pad = 0;
             var formatted = '';
             var lines = xml.split('\n');
             var indent = 0;
             var lastType = 'other';
-            // 4 types of tags - single, closing, opening, other (text, doctype, comment) - 4*4 = 16 transitions 
+
             var transitions = {
                 'single->single': 0,
                 'single->closing': -1,

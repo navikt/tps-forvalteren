@@ -10,7 +10,6 @@ angular.module('tps-vedlikehold.service')
         var logoutRoute = 'api/v1/user/logout';
 
         self.authenticate = function(credentials, callback) {
-
             var headers = credentials ?
                 utilsService.authHeaders(credentials) : {};
 
@@ -27,7 +26,6 @@ angular.module('tps-vedlikehold.service')
                         }
                     },
                     function (res) {
-
                         if (callback) {
                             callback(res);
                         }

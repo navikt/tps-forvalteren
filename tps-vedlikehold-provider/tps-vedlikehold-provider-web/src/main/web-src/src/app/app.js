@@ -18,7 +18,6 @@ require('./services/authenticationService');
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 
     'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
 
-
 require('./factory/servicerutineFactory');
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
@@ -93,10 +92,10 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
         
-        // if (authenticated) { return; }
-        // else {
-        //     event.preventDefault();
-        //     locationService.redirectToLoginState();
-        // }   
+        if (authenticated) { return; }
+        else {
+            event.preventDefault();
+            locationService.redirectToLoginState();
+        }
     });
 }]);
