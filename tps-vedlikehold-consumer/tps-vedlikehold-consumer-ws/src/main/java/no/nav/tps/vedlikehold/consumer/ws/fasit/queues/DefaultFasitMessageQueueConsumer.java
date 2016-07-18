@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-@Service
 public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsumer {
 
     @Autowired
