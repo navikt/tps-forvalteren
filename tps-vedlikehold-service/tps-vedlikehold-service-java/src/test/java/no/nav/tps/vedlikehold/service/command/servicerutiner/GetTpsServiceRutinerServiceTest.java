@@ -10,14 +10,8 @@ import static org.hamcrest.Matchers.is;
  * @author Tobias Hansen (Visma Consulting AS).
  */
 public class GetTpsServiceRutinerServiceTest {
-    
+
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
-
-    @Before
-    public void setup() {
-        getTpsServiceRutinerService = new DefaultGetTpsServiceRutinerService();
-    }
-
 
     @Before
     public void setup() {
