@@ -2,7 +2,6 @@ package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
 import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
-import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.cxf.TimeoutFeature;
