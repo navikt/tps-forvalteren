@@ -2,8 +2,8 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import com.google.common.cache.Cache;
 import com.ibm.mq.jms.MQConnectionFactory;
-import no.nav.tps.vedlikehold.consumer.mq.strategies.ConnectionFactoryStrategy;
-import no.nav.tps.vedlikehold.consumer.mq.strategies.QueueManagerConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;

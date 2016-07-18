@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.mq.strategies;
+package no.nav.tps.vedlikehold.consumer.mq.factories.strategies;
 
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 

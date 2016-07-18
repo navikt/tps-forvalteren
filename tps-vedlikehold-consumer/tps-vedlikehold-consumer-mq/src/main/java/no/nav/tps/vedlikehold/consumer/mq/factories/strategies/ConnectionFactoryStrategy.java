@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.mq.strategies;
+package no.nav.tps.vedlikehold.consumer.mq.factories.strategies;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
