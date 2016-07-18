@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
+import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConfig;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.DefaultFasitMessageQueueConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
