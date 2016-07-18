@@ -16,11 +16,8 @@
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-common-develop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-web</artifactId>
+            <classifier>classes</classifier>
         </dependency>
 
         <!--SPRING-->

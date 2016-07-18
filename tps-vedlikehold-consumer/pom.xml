@@ -16,7 +16,6 @@
     <modules>
         <module>tps-vedlikehold-consumer-mq</module>
         <module>tps-vedlikehold-consumer-ws</module>
+        <module>tps-vedlikehold-consumer-rs</module>
     </modules>
-
-
 </project>
