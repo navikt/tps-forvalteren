@@ -1,14 +1,12 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
 import com.google.common.collect.Lists;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

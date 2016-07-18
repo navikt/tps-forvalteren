@@ -1,10 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.domain.service.User;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.User;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutinerService;
 import no.nav.tps.vedlikehold.service.java.authorisation.AuthorisationService;
 import no.nav.tps.vedlikehold.service.java.service.rutine.GetTpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.java.user.DefaultUserFactory;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
+ * @author Tobias Hansen, Visma Consulting AS
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
@@ -26,14 +28,15 @@ import java.util.Map;
 public class ServiceController {
 
     @Autowired
-    UserContextHolder userContextHolder;
+    private UserContextHolder userContextHolder;
 
     @Autowired
-    GetTpsServiceRutineService getTpsServiceRutineService;
+    private GetTpsServiceRutineService getTpsServiceRutineService;
 
     @Autowired
-    AuthorisationService authorisationService;
+    private AuthorisationService authorisationService;
 
+    private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
     public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
@@ -43,10 +46,10 @@ public class ServiceController {
 
         /* Verify authorisation */
         /* TODO: Authorisation needs to be updated when more service rutines are supported (when fnr is not provided) */
-        UserFactory userFactory      = new DefaultUserFactory();
+        UserFactory userFactory = new DefaultUserFactory();
         UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
 
-        User user  = userFactory.createUser(strategy);
+        User user = userFactory.createUser(strategy);
         String fnr = (String) parameters.get("fnr");
 
         if (fnr != null && !authorisationService.userIsAuthorisedToReadPerson(user, fnr)) {
@@ -55,5 +58,18 @@ public class ServiceController {
 
         /* Get results from TPS */
         return getTpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+    }
+
+
+    /**
+     * Get an JSONObject containing all implemented ServiceRutiner
+     * and their allowed input attriubtes
+     *
+     * @return JSONObject as String containing metadata about all ServiceRutiner
+     */
+
+    @RequestMapping(value = "/service", method = RequestMethod.GET)
+    public String getTpsServiceRutiner() {
+        return getTpsServiceRutinerService.exectue();
     }
 }

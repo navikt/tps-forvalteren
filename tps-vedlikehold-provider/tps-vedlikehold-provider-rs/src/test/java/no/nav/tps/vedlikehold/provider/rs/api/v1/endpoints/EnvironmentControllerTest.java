@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
-
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.EnvironmentController;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpSession;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
