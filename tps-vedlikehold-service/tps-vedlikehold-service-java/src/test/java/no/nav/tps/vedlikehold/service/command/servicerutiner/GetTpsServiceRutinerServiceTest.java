@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.servicerutiner;
 
 import no.nav.tps.vedlikehold.service.command.config.CommandConfig;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

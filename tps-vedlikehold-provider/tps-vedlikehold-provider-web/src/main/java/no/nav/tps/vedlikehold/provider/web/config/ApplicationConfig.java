@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web.config;
 
-import no.nav.tps.vedlikehold.provider.rs.RestProviderConfig;
+import no.nav.tps.vedlikehold.provider.rs.config.RestProviderConfig;
 import no.nav.tps.vedlikehold.service.config.ServiceConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
