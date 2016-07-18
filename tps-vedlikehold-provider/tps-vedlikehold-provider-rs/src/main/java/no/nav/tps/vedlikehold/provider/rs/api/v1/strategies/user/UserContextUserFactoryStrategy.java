@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user;
 
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.java.user.UserFactoryStrategy;
+import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.servlet.http.HttpSession;

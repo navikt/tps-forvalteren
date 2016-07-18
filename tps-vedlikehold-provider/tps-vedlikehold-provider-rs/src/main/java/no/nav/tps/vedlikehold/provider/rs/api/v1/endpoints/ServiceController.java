@@ -6,11 +6,11 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedExce
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutinerService;
-import no.nav.tps.vedlikehold.service.java.authorisation.AuthorisationService;
-import no.nav.tps.vedlikehold.service.java.service.rutine.GetTpsServiceRutineService;
-import no.nav.tps.vedlikehold.service.java.user.DefaultUserFactory;
-import no.nav.tps.vedlikehold.service.java.user.UserFactory;
-import no.nav.tps.vedlikehold.service.java.user.UserFactoryStrategy;
+import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
+import no.nav.tps.vedlikehold.service.command.user.UserFactory;
+import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -36,6 +36,7 @@ public class ServiceController {
     @Autowired
     private AuthorisationService authorisationService;
 
+    @Autowired
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)

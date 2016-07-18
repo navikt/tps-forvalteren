@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.java.service.rutine.factories;
+package no.nav.tps.vedlikehold.service.command.servicerutiner.factories;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

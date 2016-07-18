@@ -9,5 +9,4 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
-public class CommandConfig {
-}
+public class CommandConfig {}

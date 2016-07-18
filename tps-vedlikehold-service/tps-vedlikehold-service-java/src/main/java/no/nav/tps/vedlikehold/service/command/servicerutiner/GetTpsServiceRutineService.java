@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.java.service.rutine;
+package no.nav.tps.vedlikehold.service.command.servicerutiner;
 
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
 

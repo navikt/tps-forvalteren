@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.java.user;
+package no.nav.tps.vedlikehold.service.command.user;
 
 import java.util.Set;
 

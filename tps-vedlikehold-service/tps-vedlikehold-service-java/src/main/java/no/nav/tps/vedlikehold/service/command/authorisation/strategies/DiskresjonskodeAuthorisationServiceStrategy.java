@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.java.authorisation.strategies;
+package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.domain.service.User;

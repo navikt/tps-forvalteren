@@ -60,7 +60,7 @@ public class CachedConnectionFactoryFactoryTest {
 
         connectionFactoryFactory.createConnectionFactory(strategy);
 
-        verify(cacheMock).put(anyString(), any());
+        verify(cacheMock).put(anyString(), (ConnectionFactory) any());
     }
 
     @Test

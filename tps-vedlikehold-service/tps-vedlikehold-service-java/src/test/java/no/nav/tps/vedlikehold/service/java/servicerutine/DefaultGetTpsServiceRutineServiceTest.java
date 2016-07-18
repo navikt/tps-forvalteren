@@ -1,11 +1,12 @@
-package no.nav.tps.vedlikehold.service.java.service.rutine;
+package no.nav.tps.vedlikehold.service.java.servicerutine;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.service.java.service.rutine.factories.DefaultServiceRutineMessageFactoryStrategy;
-import no.nav.tps.vedlikehold.service.java.service.rutine.factories.ServiceRutineMessageFactory;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.DefaultGetTpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.ServiceRutineMessageFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
