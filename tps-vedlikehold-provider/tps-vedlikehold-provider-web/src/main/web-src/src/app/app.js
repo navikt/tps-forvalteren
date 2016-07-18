@@ -23,7 +23,8 @@ require('./directives/inputField');
 require('./directives/outputField');
 require('./directives/responseForm');
 
-app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider', function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
+app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
+    function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
     $urlRouteProvider.otherwise("/");
 
@@ -53,12 +54,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 templateUrl: "app/shared/side-navigator/side-navigator.html"
             }
         }
-        // ,
-        // onEnter: function($state, $stateParams, $cookies) {
-        //     if (!$stateParams.servicerutineCode) {
-        //
-        //     }
-        // }
     });
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -94,10 +89,10 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
 
-        // if (authenticated) { return; }
-        // else {
-        //     event.preventDefault();
-        //     locationService.redirectToLoginState();
-        // }
+        if (authenticated) { return; }
+        else {
+            event.preventDefault();
+            locationService.redirectToLoginState();
+        }
     });
 }]);
