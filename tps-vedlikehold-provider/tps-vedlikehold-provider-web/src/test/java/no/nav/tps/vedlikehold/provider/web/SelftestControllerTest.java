@@ -11,15 +11,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ui.Model;
 
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.provider.web.exception.SelftestFailureException;
@@ -28,6 +26,7 @@ import no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status;
 import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
 
 import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
@@ -79,6 +78,7 @@ public class SelftestControllerTest {
         SelftestResult mqResults = new SelftestResult("Mq");
         when(mqSelftest.perform()).thenReturn(mqResults);
     }
+
 
     @Test
     public void throwsExceptionWithMessageFromMessageProviderWhenDiskresjonskodeFailedAndStatusIsRequested() throws Exception {
@@ -219,7 +219,7 @@ public class SelftestControllerTest {
     }
 
     @Test
-    public void returnsSelftestPageWhenNoSubSystemsFailAndStatusIsRequested() {
+    public void returnsSelftestPageWhenNoSubSystemsFailAndStatusIsRequested() throws Exception{
         String result = controller.selftest("status", modelMock);
 
         assertThat(result, is(equalTo("selftest")));

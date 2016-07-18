@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -72,15 +73,17 @@ public class SelftestController {
     private MessageProvider messageProvider;
 
     @RequestMapping(value = "/internal/selftest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public  @ResponseBody String rew(@RequestParam(value = "status", required = false) String status, Model model) throws Exception {
+    public ResponseEntity<String> jsonSelftest(@RequestParam(value = "status", required = false) String status, Model model) throws Exception {
 
         List<SelftestResult> selftestResults = collectSelftestResults();
         JsonSelftest jsonSelftest = new JsonSelftest();
+        HttpStatus responseStatus = HttpStatus.OK;
 
         if (status != null && containsFailures(selftestResults)) {
             String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
             throw new SelftestFailureException(message);
         } else {
+
             ObjectMapper mapper = new ObjectMapper();
 
             jsonSelftest.setApplicationName(descriptiveApplicationName);
@@ -89,14 +92,22 @@ public class SelftestController {
             jsonSelftest.setAggregate_status(aggregateSelftestResults(selftestResults));
             jsonSelftest.setChecks(selftestResults);
 
-            return mapper.writeValueAsString(jsonSelftest);
+            String jsonResponse = mapper.writeValueAsString(jsonSelftest);
+
+
+            if (FEILET.equals(jsonSelftest.getAggregate_status())) {
+                responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+
+            return new ResponseEntity<String>(jsonResponse, responseStatus);
         }
     }
 
-    @RequestMapping(value = "/internal/selftest", produces = "text/html")
+    @RequestMapping(value = "/internal/selftest", produces = MediaType.TEXT_HTML_VALUE)
     public String selftest(@RequestParam(value = "status", required = false) String status, Model model) {
 
         List<SelftestResult> selftestResults = collectSelftestResults();
+        System.out.println(selftestResults);
 
     if (status != null && containsFailures(selftestResults)) {
         String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
