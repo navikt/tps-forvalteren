@@ -13,9 +13,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             $scope.responseReceived = true;//
             //
             
-            $scope.required = {};
+            // $scope.required = {};
             $scope.isValidServicerutineCode = false;
-            var requiredAttributes = {};
+            var requiredAttributes = [];
             
             $scope.formData = {};
             $scope.environment = ''; //
@@ -133,7 +133,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             };
 
             $scope.isRequired = function(type) {
-                return (type in requiredAttributes);
+                return (requiredAttributes.indexOf(type) > -1);
             };
             
             function getServicerutineAttributesNames() {
