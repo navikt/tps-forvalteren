@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <tpsPersonData>
-    <S004>
+    <FS03-FDNUMMER-PERSDATA-O>
         <internNavn>S004 hentPerson</internNavn>
-        <serviceRutinenavn>FS03-FDNUMMER-PERSDATA-O</serviceRutinenavn>
 
         <attributes>
             <attribute name="fnr" use="required" type="xs:string" />
-            <attribute name="dato" use="optional" type="xs:date" />
+            <attribute name="aksjonsDato" use="optional" type="xs:date" />
         </attributes>
 
         <aksjonsKodes>
@@ -18,5 +17,5 @@
             <aksjonsKode>C0</aksjonsKode>
             <aksjonsKode>D0</aksjonsKode>
         </aksjonsKodes>
-    </S004>
+    </FS03-FDNUMMER-PERSDATA-O>
 </tpsPersonData>
