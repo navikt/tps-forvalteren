@@ -89,13 +89,13 @@ public class SelftestController {
             jsonSelftest.setApplicationName(descriptiveApplicationName);
             jsonSelftest.setApplicationVersion(applicationVersion);
             jsonSelftest.setTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-            jsonSelftest.setAggregate_status(aggregateSelftestResults(selftestResults));
+            jsonSelftest.setAggregateStatus(aggregateSelftestResults(selftestResults));
             jsonSelftest.setChecks(selftestResults);
 
             String jsonResponse = mapper.writeValueAsString(jsonSelftest);
 
 
-            if (FEILET.equals(jsonSelftest.getAggregate_status())) {
+            if (FEILET.equals(jsonSelftest.getAggregateStatus())) {
                 responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             }
 

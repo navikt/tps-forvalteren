@@ -141,7 +141,7 @@ public class FasitClientTest {
 
         boolean result = fasitClient.ping();
 
-        assertThat(result, is(eq(false)));
+        assertThat(result, is(false));
     }
 
 }

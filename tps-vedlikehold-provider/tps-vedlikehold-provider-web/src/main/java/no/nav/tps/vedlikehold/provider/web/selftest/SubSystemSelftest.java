@@ -5,6 +5,7 @@ import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTEST_UNKNOWN_ERROR_KEY;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 

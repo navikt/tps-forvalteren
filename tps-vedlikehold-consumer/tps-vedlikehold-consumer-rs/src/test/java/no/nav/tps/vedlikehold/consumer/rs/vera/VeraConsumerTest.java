@@ -104,6 +104,6 @@ public class VeraConsumerTest {
 
         boolean result = veraConsumer.ping();
 
-        assertThat(result, is(eq(false)));
+        assertThat(result, is(false));
     }
 }

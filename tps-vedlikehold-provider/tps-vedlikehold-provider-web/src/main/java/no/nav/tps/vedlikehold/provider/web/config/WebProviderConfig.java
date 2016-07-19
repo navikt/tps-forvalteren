@@ -8,6 +8,7 @@ import no.nav.tps.vedlikehold.service.command.mq.PingMq;
 import no.nav.tps.vedlikehold.service.command.vera.PingVera;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -17,55 +18,12 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @EnableConfigurationProperties
 @PropertySource("classpath:global.properties")
+@ComponentScan(basePackageClasses = {
+        Selftest.class
+})
 public class WebProviderConfig {
     @Bean
     SelftestController selftestController() {
         return new SelftestController();
-    }
-
-    @Bean(name = "egenAnsattSelftest")
-    Selftest egenAnsattselftest() {
-        return new EgenAnsattSelftest();
-    }
-
-    @Bean(name = "diskresjonskodeSelftest")
-    Selftest diskresjonskodeSelftest() {
-        return new DiskresjonskodeSelftest();
-    }
-
-    @Bean(name = "veraSelftest")
-    Selftest veraSelftest() {
-        return new VeraSelftest();
-    }
-
-    @Bean(name = "fasitSelftest")
-    Selftest fasitSelftest() {
-        return new FasitSelftest();
-    }
-
-    @Bean(name = "mqSelftest")
-    Selftest mqSelftest() {
-        return new MqSelftest();
-    }
-
-    //TODO: check if they can be instantiated in common config
-    @Bean
-    PingVera pingVera() {
-        return new PingVera();
-    }
-
-    @Bean
-    PingFasit pingFasit() {
-        return new PingFasit();
-    }
-
-    @Bean
-    PingMq pingMq() {
-        return new PingMq();
-    }
-
-    @Bean
-    DefaultMessageProvider defaultMessageProvider() {
-        return new DefaultMessageProvider();
     }
 }

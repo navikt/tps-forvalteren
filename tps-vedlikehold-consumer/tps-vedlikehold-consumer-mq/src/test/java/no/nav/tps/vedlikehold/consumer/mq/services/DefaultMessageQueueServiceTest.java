@@ -183,6 +183,6 @@ public class DefaultMessageQueueServiceTest {
 
         boolean result = messageQueueService.ping();
 
-        assertThat(result, is(eq(false)));
+        assertThat(result, is(false));
     }
 }

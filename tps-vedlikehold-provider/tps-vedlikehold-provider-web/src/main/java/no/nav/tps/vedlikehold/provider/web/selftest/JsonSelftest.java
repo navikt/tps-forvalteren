@@ -1,17 +1,19 @@
 package no.nav.tps.vedlikehold.provider.web.selftest;
 
 import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
  */
+@Component
 public class JsonSelftest {
     private String applicationName;
     private String applicationVersion;
     private String timestamp;
-    private  SelftestResult.Status aggregate_status;
+    private  SelftestResult.Status aggregateStatus;
     private List<SelftestResult> checks;
 
     public String getApplicationName() {
@@ -38,12 +40,12 @@ public class JsonSelftest {
         this.timestamp = timestamp;
     }
 
-    public SelftestResult.Status getAggregate_status() {
-        return aggregate_status;
+    public SelftestResult.Status getAggregateStatus() {
+        return aggregateStatus;
     }
 
-    public void setAggregate_status( SelftestResult.Status aggregate_status) {
-        this.aggregate_status = aggregate_status;
+    public void setAggregateStatus( SelftestResult.Status aggregateStatus) {
+        this.aggregateStatus = aggregateStatus;
     }
 
     public List<SelftestResult> getChecks() {

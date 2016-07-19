@@ -58,16 +58,6 @@ public class TpswsConsumerConfig {
     private String egenAnsattAddress;
 
     @Bean
-    public DiskresjonskodeConsumer diskresjonskodeConsumer() {
-        return new DefaultDiskresjonskodeConsumer();
-    }
-
-    @Bean
-    public EgenAnsattConsumer egenAnsattConsumer() {
-        return new DefaultEgenAnsattConsumer();
-    }
-
-    @Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
