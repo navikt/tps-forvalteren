@@ -18,13 +18,13 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>tps-vedlikehold-consumer</module>
-        <module>tps-vedlikehold-common</module>
-        <module>tps-vedlikehold-provider</module>
-        <module>tps-vedlikehold-config</module>
-        <module>tps-vedlikehold-service</module>
         <module>tps-vedlikehold-application</module>
+        <module>tps-vedlikehold-common</module>
+        <module>tps-vedlikehold-config</module>
+        <module>tps-vedlikehold-consumer</module>
         <module>tps-vedlikehold-domain</module>
+        <module>tps-vedlikehold-provider</module>
+        <module>tps-vedlikehold-service</module>
     </modules>
 
     <properties>
@@ -316,4 +316,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>

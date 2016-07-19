@@ -16,11 +16,12 @@
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-domain-service</artifactId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-rs</artifactId>
+            <artifactId>tps-vedlikehold-domain-service</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>

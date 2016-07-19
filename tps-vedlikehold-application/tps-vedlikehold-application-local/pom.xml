@@ -20,12 +20,6 @@
             <classifier>classes</classifier>
         </dependency>
 
-        <!-- MODIG -->
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-testcertificates</artifactId>
-        </dependency>
-
         <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,6 +28,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- MODIG -->
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-testcertificates</artifactId>
         </dependency>
     </dependencies>
 

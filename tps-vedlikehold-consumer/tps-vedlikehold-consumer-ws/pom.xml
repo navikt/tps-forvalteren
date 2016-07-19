@@ -24,6 +24,12 @@
             <artifactId>tps-vedlikehold-domain-ws</artifactId>
         </dependency>
 
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!--Nav Diskresjonstjeneste-->
         <dependency>
             <groupId>no.nav.tjenester.pip</groupId>
@@ -59,12 +65,6 @@
             <groupId>no.nav.aura.fasit</groupId>
             <artifactId>fasit-client-api</artifactId>
             <version>5.6.4</version>
-        </dependency>
-
-        <!--SPRING-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!--LANGUAGE EXTENSIONS-->

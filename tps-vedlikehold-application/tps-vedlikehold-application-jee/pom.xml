@@ -15,6 +15,7 @@
     <packaging>ear</packaging>
 
     <dependencies>
+        <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-web</artifactId>

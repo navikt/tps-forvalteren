@@ -15,8 +15,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>tps-vedlikehold-common-test</module>
         <module>tps-vedlikehold-common-java</module>
+        <module>tps-vedlikehold-common-test</module>
     </modules>
 
 </project>
