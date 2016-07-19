@@ -66,12 +66,9 @@ public class DefaultMessageQueueService implements MessageQueueService {
         return responseMessage.getText();
     }
 
-    public boolean ping() throws Exception {
-        try {
-            this.sendMessage(PING_MESSAGE);
-        } catch (JMSException e) {
-            throw e;
-        }
+    public boolean ping() throws JMSException {
+        this.sendMessage(PING_MESSAGE);
         return true;
+    }
     }
 }
