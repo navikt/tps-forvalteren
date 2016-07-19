@@ -44,7 +44,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
     .state('servicerutine', {
         url: "/",
         params: {
-            servicerutineCode: null
+            serviceRutinenavn: null
         },
         views: {
             'content@' : {

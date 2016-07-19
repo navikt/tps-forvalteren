@@ -1,5 +1,6 @@
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
+ * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
     .service('utilsService', [function(){
@@ -9,7 +10,20 @@ angular.module('tps-vedlikehold.service')
         self.authHeaders = function(credentials) {
             return {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)};
         };
-        
+
+        self.formatDate = function(dateObj) {
+            function pad(num) {
+                if (num < 10) {
+                    return '0' + num;
+                }
+                return num;
+            }
+
+            return dateObj.getFullYear() +
+                    '-' + pad(dateObj.getMonth() + 1) +
+                    '-' + pad(dateObj.getDate());
+        };
+
         self.flattenObject = function(ob, nonUniques) {
             var ret = {};
             
@@ -65,9 +79,9 @@ angular.module('tps-vedlikehold.service')
 
             for (var i = 0; i < lines.length; i++) {
                 var ln = lines[i];
-                var single = Boolean(ln.match(/<.+\/>/)); // is this line a single tag? ex. <br />
-                var closing = Boolean(ln.match(/<\/.+>/)); // is this a closing tag? ex. </a>
-                var opening = Boolean(ln.match(/<[^!].*>/)); // is this even a tag (that's not <!something>)
+                var single = Boolean(ln.match(/<.+\/>/));
+                var closing = Boolean(ln.match(/<\/.+>/));
+                var opening = Boolean(ln.match(/<[^!].*>/));
                 var type = single ? 'single' : closing ? 'closing' : opening ? 'opening' : 'other';
                 var fromTo = lastType + '->' + type;
                 lastType = type;
@@ -78,7 +92,7 @@ angular.module('tps-vedlikehold.service')
                     padding += '\t';
                 }
                 if (fromTo == 'opening->closing')
-                    formatted = formatted.substr(0, formatted.length - 1) + ln + '\n'; // substr removes line break (\n) from prev loop
+                    formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
                 else
                     formatted += padding + ln + '\n';
             }

@@ -4,9 +4,12 @@
 angular.module('tps-vedlikehold')
     .controller('navigatorCtrl', ['$scope', '$mdDialog', 'servicerutineFactory', function($scope, $mdDialog, servicerutineFactory) {
         var displayingErrorMessage = false;
+
+        $scope.getServicerutineInternNavn = function(serviceRutinenavn) {
+            return servicerutineFactory.getServicerutineInternNavn(serviceRutinenavn);
+        };
         
         function showAlertApiError(msg) {
-            console.log('showAlertApiError');
             if (!displayingErrorMessage) {
                 displayingErrorMessage = true;
                 var confirm = $mdDialog.confirm()
@@ -32,7 +35,7 @@ angular.module('tps-vedlikehold')
                     showAlertApiError('servicerutiner');
                 });
             }
-            $scope.servicerutiner = servicerutineFactory.getServicerutineNames();
+            $scope.servicerutiner = servicerutineFactory.getServiceRutinenavn();
         }
 
         function getFromServerEnvironments() {
