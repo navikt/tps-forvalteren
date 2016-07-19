@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,9 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "api/v1")
 public class EnvironmentController {
-    private VeraConsumer veraConsumer  = new VeraConsumer();
+
+    @Autowired
+    public VeraConsumer veraConsumer;
 
     /**
      * Get an object containing a list of environments

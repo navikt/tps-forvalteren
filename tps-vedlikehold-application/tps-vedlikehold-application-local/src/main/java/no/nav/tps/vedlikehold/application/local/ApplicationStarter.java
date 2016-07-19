@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 public class ApplicationStarter {
 
     public static void main(String[] args) {
-
         SpringApplication.run(LocalApplicationConfig.class, args);
+
     }
 }

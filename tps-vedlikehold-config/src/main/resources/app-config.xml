@@ -5,6 +5,11 @@
 
     <name>tps-vedlikehold</name>
 
+    <selftest>
+        <path>tps-vedlikehold/internal/selftest?status</path>
+        <humanReadablePath>tps-vedlikehold/internal/selftest</humanReadablePath>
+    </selftest>
+
     <!--Consumed resources-->
     <resources>
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="validering.virksomhet.diskresjonskodev1"/>

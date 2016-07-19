@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.command;
 
 /**
- * @author Tobias Hansen (Visma Consulting AS).
+ * @author Kristian Kyvik (Visma Consulting AS).
  */
 public interface Command {
 }
