@@ -46,14 +46,13 @@ public class ServiceController {
                                             @PathVariable("serviceRutinenavn") String serviceRutineName) throws Exception {
 
         /* Verify authorisation */
-        /* TODO: Authorisation needs to be updated when more service rutines are supported (when fnr is not provided) */
         UserFactory userFactory = new DefaultUserFactory();
         UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
 
         User user = userFactory.createUser(strategy);
         String fnr = (String) parameters.get("fnr");
 
-        if (fnr != null && !authorisationService.userIsAuthorisedToReadPerson(user, fnr)) {
+        if (fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment)) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 

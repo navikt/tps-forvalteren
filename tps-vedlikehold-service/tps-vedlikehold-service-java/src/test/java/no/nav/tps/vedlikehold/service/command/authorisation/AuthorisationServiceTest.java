@@ -28,7 +28,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorisationServiceTest {
 
-    private static final String FNR = "12345678910";
+    private static final String FNR         = "12345678910";
+    private static final String ENVIRONMENT = "t1";
+
 
     @Mock
     private User userMock;
@@ -89,7 +91,7 @@ public class AuthorisationServiceTest {
 
     @Test
     public void userIsAuthorisedOverloadUsesBothDiskresjonskodeAndEgenAnsatt() throws Exception {
-        authorisationService.userIsAuthorisedToReadPerson(userMock, FNR);
+        authorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
 
         verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
         verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));

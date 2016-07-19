@@ -47,23 +47,25 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceAuthorisesTheUserBeforeContactingTps() throws Exception {
-        when(authorisationServiceMock.userIsAuthorisedToReadPerson(any(User.class), anyString())).thenReturn(true);
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+                .thenReturn(true);
 
         serviceController.getService(mock(HttpSession.class), "environment", parametersMock, "serviceRutineName");
 
         InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, authorisationServiceMock);
 
-        inOrder.verify(authorisationServiceMock).userIsAuthorisedToReadPerson(any(User.class), anyString());
+        inOrder.verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
         inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), eq(parametersMock), anyString());
     }
 
     @Test(expected = HttpUnauthorisedException.class)
     public void getServiceDeniesAccessIfUserIsUnauthorised() throws Exception {
-        when(authorisationServiceMock.userIsAuthorisedToReadPerson(any(User.class), anyString())).thenReturn(false);
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+                .thenReturn(false);
 
         serviceController.getService(mock(HttpSession.class), "environment", parametersMock, "serviceRutineName");
 
-        verify(authorisationServiceMock).userIsAuthorisedToReadPerson(any(User.class), anyString());
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
         verify(defaultGetTpsServiceRutineServiceMock, never()).execute(anyString(), eq(parametersMock), anyString());
     }
 
@@ -71,7 +73,7 @@ public class ServiceControllerTest {
     public void getServiceAllowsAccessIfNoFnrIsProvided() throws Exception {
         serviceController.getService(mock(HttpSession.class), "environment", mock(Map.class), "serviceRutineName");
 
-        verify(authorisationServiceMock, never()).userIsAuthorisedToReadPerson(any(User.class), anyString());
+        verify(authorisationServiceMock, never()).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
         verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), anyMap(), anyString());
     }
 }

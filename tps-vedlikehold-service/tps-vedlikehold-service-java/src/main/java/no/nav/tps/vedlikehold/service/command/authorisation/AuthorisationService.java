@@ -8,6 +8,7 @@ import no.nav.tps.vedlikehold.domain.service.User;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.AuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
+import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadEnvironmentAuthorisationServiceStrategy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -61,9 +62,10 @@ public class AuthorisationService {
      *
      * @param user user trying to access a person's data
      * @param fnr fnr of the person to be accessed
+     * @param environment environment in which to contact TPS
      * @return boolean indicating whether the user is authorised
      */
-    public Boolean userIsAuthorisedToReadPerson(User user, String fnr) {
+    public Boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment) {
 
         /* Diskresjonskode */
         DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeStrategy = new DiskresjonskodeAuthorisationServiceStrategy();
@@ -79,7 +81,18 @@ public class AuthorisationService {
         egenAnsattStrategy.setUser(user);
         egenAnsattStrategy.setFnr(fnr);
 
-        List<AuthorisationServiceStrategy> strategies = Arrays.asList(diskresjonskodeStrategy, egenAnsattStrategy);
+        /* Read environment */
+        ReadEnvironmentAuthorisationServiceStrategy readEnvironmentStrategy = new ReadEnvironmentAuthorisationServiceStrategy();
+
+        readEnvironmentStrategy.setUser(user);
+        readEnvironmentStrategy.setEnvironment(environment);
+
+
+        List<AuthorisationServiceStrategy> strategies = Arrays.asList(
+                diskresjonskodeStrategy,
+                egenAnsattStrategy,
+                readEnvironmentStrategy
+        );
 
         return isAuthorised(strategies);
     }
