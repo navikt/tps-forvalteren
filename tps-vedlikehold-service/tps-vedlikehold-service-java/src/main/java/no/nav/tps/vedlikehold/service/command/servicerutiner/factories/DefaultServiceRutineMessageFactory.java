@@ -18,6 +18,7 @@ public class DefaultServiceRutineMessageFactory implements ServiceRutineMessageF
     private static final String XML_PROPERTIES_POSTFIX = "</tpsServiceRutine></tpsPersonData>";
 
     //TODO: This can probably be achieved using Jackson
+    @Override
     public String createMessage(ServiceRutineMessageFactoryStrategy strategy) {
         StringBuilder stringBuilder = new StringBuilder();
 

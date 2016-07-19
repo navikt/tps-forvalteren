@@ -20,7 +20,7 @@ import java.util.Map;
  */
 
 @Service
-public class DefaultGetTpsServiceRutineService implements GetTpsServiceRutineService {
+public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
@@ -30,7 +30,7 @@ public class DefaultGetTpsServiceRutineService implements GetTpsServiceRutineSer
     private ServiceRutineMessageFactory serviceRutineMessageFactory;
 
 
-    public DefaultGetTpsServiceRutineService() {
+    public DefaultTpsServiceRutineService() {
         this.xmlMapper = new XmlMapper();
         this.serviceRutineMessageFactory = new DefaultServiceRutineMessageFactory();
     }
@@ -45,6 +45,8 @@ public class DefaultGetTpsServiceRutineService implements GetTpsServiceRutineSer
      * @return an object wrapping the raw XML response, and the XML represented by an object
      * @throws Exception failed to send the message
      */
+
+    @Override
     public ServiceRutineResponse execute(String serviceRutine,
                                          Map<String, Object> parameters,
                                          String environment) {

@@ -58,7 +58,7 @@ public class FasitClientTest {
         queueManagerResourceElement.addProperty( new PropertyElement("hostname", QUEUE_MANAGER_HOST_NAME));
         queueManagerResourceElement.addProperty( new PropertyElement("port", QUEUE_MANAGER_PORT));
 
-        when(restClientMock.getResource(anyString(), eq(QUEUE_MANAGER_ALIAS), eq(ResourceTypeDO.QueueManager), (DomainDO) any(), anyString())).thenReturn(queueManagerResourceElement);
+        when(restClientMock.getResource(anyString(), eq(QUEUE_MANAGER_ALIAS), eq(ResourceTypeDO.QueueManager), any(), anyString())).thenReturn(queueManagerResourceElement);
 
 
         ResourceElement queueResourceElement = new ResourceElement(ResourceTypeDO.Queue, QUEUE_ALIAS);
@@ -66,7 +66,7 @@ public class FasitClientTest {
         queueResourceElement.addProperty( new PropertyElement("queueName", QUEUE_NAME));
         queueResourceElement.addProperty( new PropertyElement("queueManager", QUEUE_MANAGER_NAME));
 
-        when(restClientMock.getResource(anyString(), eq(QUEUE_ALIAS), eq(ResourceTypeDO.Queue), (DomainDO) any(), anyString())).thenReturn(queueResourceElement);
+        when(restClientMock.getResource(anyString(), eq(QUEUE_ALIAS), eq(ResourceTypeDO.Queue), any(), anyString())).thenReturn(queueResourceElement);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class FasitClientTest {
         fasitClient.getApplication(APPLICATION, ENVIRONMENT)
                    .getQueue(QUEUE_ALIAS);
 
-        verify(cacheMock).put(anyString(), (ResourceElement) any());
+        verify(cacheMock).put(anyString(), any());
     }
 
     @Test
@@ -108,8 +108,8 @@ public class FasitClientTest {
         fasitClient.getApplication(APPLICATION, ENVIRONMENT)
                    .getQueue(QUEUE_ALIAS);
 
-        verify(cacheMock, never()).put(anyString(), (ResourceElement) any());
-        verify(restClientMock, never()).getResource(anyString(), anyString(), (ResourceTypeDO) any(), (DomainDO) any(), anyString());
+        verify(cacheMock, never()).put(anyString(), any());
+        verify(restClientMock, never()).getResource(anyString(), anyString(), any(), any(), anyString());
     }
 
 }

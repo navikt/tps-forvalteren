@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public interface GetTpsServiceRutineService {
+public interface TpsServiceRutineService {
      ServiceRutineResponse execute(
             String serviceRutine,
             Map<String, Object> parameters,

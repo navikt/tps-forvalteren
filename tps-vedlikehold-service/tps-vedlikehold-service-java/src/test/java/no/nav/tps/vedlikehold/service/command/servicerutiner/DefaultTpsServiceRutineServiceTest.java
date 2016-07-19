@@ -4,7 +4,6 @@ import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.DefaultGetTpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
 import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.ServiceRutineMessageFactory;
 import org.junit.Before;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultGetTpsServiceRutineServiceTest {
+public class DefaultTpsServiceRutineServiceTest {
 
     private static final String SERVICE_RUTINE_NAME = "TpsServiceRutineMessage";
     private static final String ENVIRONMENT         = "environment";
@@ -53,7 +52,7 @@ public class DefaultGetTpsServiceRutineServiceTest {
     private Object responseObjectMock;
 
     @InjectMocks
-    private DefaultGetTpsServiceRutineService defaultGetTpsServiceRutineService;
+    private DefaultTpsServiceRutineService defaultGetTpsServiceRutineService;
 
 
     @Before

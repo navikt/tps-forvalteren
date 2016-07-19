@@ -7,7 +7,7 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUser
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutinerService;
 import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.GetTpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.TpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
@@ -31,7 +31,7 @@ public class ServiceController {
     private UserContextHolder userContextHolder;
 
     @Autowired
-    private GetTpsServiceRutineService getTpsServiceRutineService;
+    private TpsServiceRutineService tpsServiceRutineService;
 
     @Autowired
     private AuthorisationService authorisationService;
@@ -58,7 +58,7 @@ public class ServiceController {
         }
 
         /* Get results from TPS */
-        return getTpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+        return tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
     }
 
 

@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.is;
 public class GetTpsServiceRutinerServiceTest {
 
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
-    
+
     @Before
     public void setup() {
         getTpsServiceRutinerService = new DefaultGetTpsServiceRutinerService();

@@ -4,7 +4,7 @@ import no.nav.tps.vedlikehold.domain.service.User;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.DefaultGetTpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.servicerutiner.DefaultTpsServiceRutineService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class ServiceControllerTest {
     UserContextHolder userContextHolderMock;
 
     @Mock
-    DefaultGetTpsServiceRutineService defaultGetTpsServiceRutineServiceMock;
+    DefaultTpsServiceRutineService defaultGetTpsServiceRutineServiceMock;
 
     @Mock
     AuthorisationService authorisationServiceMock;
