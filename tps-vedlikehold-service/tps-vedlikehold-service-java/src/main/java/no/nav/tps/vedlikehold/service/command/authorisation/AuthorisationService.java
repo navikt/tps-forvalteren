@@ -9,12 +9,10 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.Authorisa
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadEnvironmentAuthorisationServiceStrategy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -22,6 +20,12 @@ import java.util.List;
 
 @Service
 public class AuthorisationService {
+
+    @Value("${tps.vedlikehold.security.t.readroles}")
+    private List<String> readRolesT;
+
+    @Value("${tps.vedlikehold.security.q.readroles}")
+    private List<String> readRolesQ;
 
 //    @Autowired
     /* FIXME: Remove these mock when TPSWS is up and running */
@@ -86,6 +90,8 @@ public class AuthorisationService {
 
         readEnvironmentStrategy.setUser(user);
         readEnvironmentStrategy.setEnvironment(environment);
+        readEnvironmentStrategy.setReadQRoles( new HashSet<>(readRolesQ) );
+        readEnvironmentStrategy.setReadTRoles( new HashSet<>(readRolesT) );
 
 
         List<AuthorisationServiceStrategy> strategies = Arrays.asList(

@@ -24,13 +24,15 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ReadEnvironmentAuthorisationServiceStrategyTest {
 
-    private static final String ROLE_READ_U = "0000-GA-NORG_Skriv";
-    private static final String ROLE_READ_T = "0000-GA-NORG_Skriv";
-    private static final String ROLE_READ_Q = "0000-GA-NORG_Skriv";
+    private static final String ROLE_READ_U = "readURoles";
+    private static final String ROLE_READ_T = "readTRoles";
+    private static final String ROLE_READ_Q = "readQRoles";
+    private static final String ROLE_READ_P = "readPRoles";
 
     private static final String ENVIRONMENT_U = "u2";
     private static final String ENVIRONMENT_T = "t4";
     private static final String ENVIRONMENT_Q = "q1";
+    private static final String ENVIRONMENT_P = "p";
 
     @Mock
     private User userMock;
@@ -41,6 +43,11 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
     @Before
     public void setUp() {
         readEnvironmentStrategy.setEnvironment(ENVIRONMENT_U);
+
+        readEnvironmentStrategy.setReadTRoles(newSet(ROLE_READ_T));
+        readEnvironmentStrategy.setReadURoles(newSet(ROLE_READ_U));
+        readEnvironmentStrategy.setReadQRoles(newSet(ROLE_READ_Q));
+        readEnvironmentStrategy.setReadPRoles(newSet(ROLE_READ_P));
     }
 
     @Test
@@ -110,6 +117,28 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
     }
 
     @Test
+    public void userIsAuthorisedInPIfItHasReadPRole() {
+        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_P);
+
+        when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_P) );
+
+        Boolean result = readEnvironmentStrategy.isAuthorised();
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    public void userIsNotAuthorisedInPIfItDoesNotHaveReadPRole() {
+        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_P);
+
+        when(userMock.getRoles()).thenReturn( newSet() );
+
+        Boolean result = readEnvironmentStrategy.isAuthorised();
+
+        assertThat(result, is(false));
+    }
+
+    @Test
     public void userIsNotAuthorisedIfEnvironmentDoesNotExist() {
         readEnvironmentStrategy.setEnvironment("!-");
 
@@ -130,6 +159,8 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
 
         assertThat(result, is(false));
     }
+
+
 
     private <T> Set<T> newSet(T... strings) {
         return new HashSet<T>(
