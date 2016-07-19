@@ -70,5 +70,4 @@ public class DefaultMessageQueueService implements MessageQueueService {
         this.sendMessage(PING_MESSAGE);
         return true;
     }
-    }
 }
