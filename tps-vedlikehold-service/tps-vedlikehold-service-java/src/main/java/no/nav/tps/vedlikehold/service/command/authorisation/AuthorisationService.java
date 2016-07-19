@@ -11,6 +11,7 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsat
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -63,27 +64,37 @@ public class AuthorisationService {
      * @return boolean indicating whether the user is authorised
      */
     public Boolean userIsAuthorisedToReadPerson(User user, String fnr) {
-        Collection<AuthorisationServiceStrategy> strategies = new ArrayList<>();
 
-        strategies.add( new DiskresjonskodeAuthorisationServiceStrategy(diskresjonskodeConsumer) );
-        strategies.add( new EgenAnsattAuthorisationServiceStrategy(egenAnsattConsumer) );
+        /* Diskresjonskode */
+        DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeStrategy = new DiskresjonskodeAuthorisationServiceStrategy();
 
-        return userIsAuthorisedToReadPerson(user, fnr, strategies);
+        diskresjonskodeStrategy.setDiskresjonskodeConsumer(diskresjonskodeConsumer);
+        diskresjonskodeStrategy.setUser(user);
+        diskresjonskodeStrategy.setFnr(fnr);
+
+        /* Egen ansatt */
+        EgenAnsattAuthorisationServiceStrategy egenAnsattStrategy = new EgenAnsattAuthorisationServiceStrategy();
+
+        egenAnsattStrategy.setEgenAnsattConsumer(egenAnsattConsumer);
+        egenAnsattStrategy.setUser(user);
+        egenAnsattStrategy.setFnr(fnr);
+
+        List<AuthorisationServiceStrategy> strategies = Arrays.asList(diskresjonskodeStrategy, egenAnsattStrategy);
+
+        return isAuthorised(strategies);
     }
 
     /**
      * Authorises the user based on an arbitrary collection of strategies.
      * Should make adding additional authorisation procedures easy as pie.
      *
-     * @param user user trying to access a person's data
-     * @param fnr fnr of the person to be accessed
      * @param strategies authorisation strategies used to authorise the user
      * @return boolean indicating whether the user is authorised
      */
-    public Boolean userIsAuthorisedToReadPerson(User user, String fnr, Collection<AuthorisationServiceStrategy> strategies) {
+    public Boolean isAuthorised(Collection<AuthorisationServiceStrategy> strategies) {
 
         for (AuthorisationServiceStrategy strategy : strategies) {
-            if (!strategy.userIsAuthorisedToReadPerson(user, fnr)) {
+            if (!strategy.isAuthorised()) {
                 return false;
             }
         }

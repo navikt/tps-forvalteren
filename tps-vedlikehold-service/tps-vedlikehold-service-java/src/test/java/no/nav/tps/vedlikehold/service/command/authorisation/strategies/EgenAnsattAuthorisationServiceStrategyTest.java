@@ -39,7 +39,9 @@ public class EgenAnsattAuthorisationServiceStrategyTest {
 
     @Before
     public void setUp() {
-
+        egenAnsattAuthorisationStrategy.setEgenAnsattConsumer(egenAnsattConsumerMock);
+        egenAnsattAuthorisationStrategy.setFnr(FNR);
+        egenAnsattAuthorisationStrategy.setUser(userMock);
     }
 
 
@@ -48,7 +50,7 @@ public class EgenAnsattAuthorisationServiceStrategyTest {
         when(egenAnsattConsumerMock.isEgenAnsatt(FNR)).thenReturn(true);
         when(userMock.getRoles()).thenReturn(newSet());
 
-        Boolean result = egenAnsattAuthorisationStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = egenAnsattAuthorisationStrategy.isAuthorised();
 
         assertThat(result, is(false));
     }
@@ -58,7 +60,7 @@ public class EgenAnsattAuthorisationServiceStrategyTest {
         when(egenAnsattConsumerMock.isEgenAnsatt(FNR)).thenReturn(true);
         when(userMock.getRoles()).thenReturn(newSet(ROLE_READ_EGENANSATT));
 
-        Boolean result = egenAnsattAuthorisationStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = egenAnsattAuthorisationStrategy.isAuthorised();
 
         assertThat(result, is(true));
     }
@@ -68,7 +70,7 @@ public class EgenAnsattAuthorisationServiceStrategyTest {
         when(egenAnsattConsumerMock.isEgenAnsatt(FNR)).thenReturn(false);
         when(userMock.getRoles()).thenReturn(newSet(ROLE_READ_EGENANSATT));
 
-        Boolean result = egenAnsattAuthorisationStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = egenAnsattAuthorisationStrategy.isAuthorised();
 
         assertThat(result, is(true));
     }
@@ -78,7 +80,7 @@ public class EgenAnsattAuthorisationServiceStrategyTest {
         when(egenAnsattConsumerMock.isEgenAnsatt(FNR)).thenReturn(false);
         when(userMock.getRoles()).thenReturn(newSet());
 
-        Boolean result = egenAnsattAuthorisationStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = egenAnsattAuthorisationStrategy.isAuthorised();
 
         assertThat(result, is(true));
     }

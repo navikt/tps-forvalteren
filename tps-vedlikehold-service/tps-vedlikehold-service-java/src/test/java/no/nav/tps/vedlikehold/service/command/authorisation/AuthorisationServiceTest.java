@@ -54,8 +54,8 @@ public class AuthorisationServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        when( diskresjonskodeAuthorisationStrategy.userIsAuthorisedToReadPerson(any(User.class), anyString()) ).thenReturn(true);
-        when( egenAnsattAuthorisationStrategy.userIsAuthorisedToReadPerson(any(User.class), anyString()) ).thenReturn(true);
+        when( diskresjonskodeAuthorisationStrategy.isAuthorised()).thenReturn(true);
+        when( egenAnsattAuthorisationStrategy.isAuthorised() ).thenReturn(true);
 
         when(diskresjonskodeConsumerMock.getDiskresjonskode(eq(FNR))).thenReturn(hentDiskresjonskodeResponseMock);
         when(hentDiskresjonskodeResponseMock.getDiskresjonskode()).thenReturn("1");
@@ -63,14 +63,14 @@ public class AuthorisationServiceTest {
 
     @Test
     public void userIsUnauthorisedIfAnyStrategyReturnsFalse()  {
-        when( egenAnsattAuthorisationStrategy.userIsAuthorisedToReadPerson(any(User.class), anyString()) ).thenReturn(false);
+        when( egenAnsattAuthorisationStrategy.isAuthorised() ).thenReturn(false);
 
         Collection<AuthorisationServiceStrategy> strategies = Arrays.asList(
                 diskresjonskodeAuthorisationStrategy,
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = authorisationService.userIsAuthorisedToReadPerson(userMock, FNR, strategies);
+        Boolean result = authorisationService.isAuthorised(strategies);
 
         assertThat(result, is(false));
     }
@@ -82,7 +82,7 @@ public class AuthorisationServiceTest {
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = authorisationService.userIsAuthorisedToReadPerson(userMock, FNR, strategies);
+        Boolean result = authorisationService.isAuthorised(strategies);
 
         assertThat(result, is(true));
     }

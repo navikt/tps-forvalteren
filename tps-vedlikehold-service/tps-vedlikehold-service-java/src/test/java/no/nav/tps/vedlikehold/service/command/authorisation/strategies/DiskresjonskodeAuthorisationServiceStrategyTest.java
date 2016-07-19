@@ -41,10 +41,14 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
     private User userMock;
 
     @InjectMocks
-    private DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeStrategy = new DiskresjonskodeAuthorisationServiceStrategy(null);
+    private DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeStrategy;
 
     @Before
     public void setUp() throws Exception {
+        diskresjonskodeStrategy.setDiskresjonskodeConsumer(diskresjonskodeConsumerMock);
+        diskresjonskodeStrategy.setUser(userMock);
+        diskresjonskodeStrategy.setFnr(FNR);
+
         when( diskresjonskodeConsumerMock.getDiskresjonskode(anyString()) ).thenReturn(hentDiskresjonskodeResponse);
 
         when( hentDiskresjonskodeResponse.getDiskresjonskode() ).thenReturn("0");
@@ -54,7 +58,7 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
     public void userIsNotAuthorisedIfExceptionIsThrown() throws Exception {
         when(diskresjonskodeConsumerMock.getDiskresjonskode(anyString())).thenThrow(new RuntimeException());
 
-        Boolean result = diskresjonskodeStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = diskresjonskodeStrategy.isAuthorised();
 
         assertThat(result, is(false));
     }
@@ -64,7 +68,7 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("6");
         when(userMock.getRoles()).thenReturn(newSet());
 
-        Boolean result = diskresjonskodeStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = diskresjonskodeStrategy.isAuthorised();
 
         assertThat(result, is(false));
     }
@@ -74,7 +78,7 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("6");
         when(userMock.getRoles()).thenReturn(newSet(ROLE_READ_DISKRESJONSKODE_6));
 
-        Boolean result = diskresjonskodeStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = diskresjonskodeStrategy.isAuthorised();
 
         assertThat(result, is(true));
     }
@@ -84,7 +88,7 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("7");
         when(userMock.getRoles()).thenReturn(newSet());
 
-        Boolean result = diskresjonskodeStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = diskresjonskodeStrategy.isAuthorised();
 
         assertThat(result, is(false));
     }
@@ -94,7 +98,7 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("7");
         when(userMock.getRoles()).thenReturn(newSet(ROLE_READ_DISKRESJONSKODE_7));
 
-        Boolean result = diskresjonskodeStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = diskresjonskodeStrategy.isAuthorised();
 
         assertThat(result, is(true));
     }
@@ -104,7 +108,7 @@ public class DiskresjonskodeAuthorisationServiceStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("2");
         when(userMock.getRoles()).thenReturn(newSet());
 
-        Boolean result = diskresjonskodeStrategy.userIsAuthorisedToReadPerson(userMock, FNR);
+        Boolean result = diskresjonskodeStrategy.isAuthorised();
 
         assertThat(result, is(true));
     }
