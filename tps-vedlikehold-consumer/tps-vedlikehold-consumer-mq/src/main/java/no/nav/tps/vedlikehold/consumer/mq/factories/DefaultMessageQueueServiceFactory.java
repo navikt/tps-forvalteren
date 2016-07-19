@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import no.nav.tps.vedlikehold.consumer.mq.services.DefaultMessageQueueService;
-import no.nav.tps.vedlikehold.consumer.mq.strategies.ConnectionFactoryStrategy;
-import no.nav.tps.vedlikehold.consumer.mq.strategies.QueueManagerConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
@@ -37,6 +37,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
      * @throws JMSException
      */
     public DefaultMessageQueueService createMessageQueueService(String environment) throws JMSException {
+
         QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(MESSAGE_QUEUE_MANAGER_ALIAS, environment);
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
         Queue responseQueue       = fasitMessageQueueConsumer.getResponseQueue(environment);

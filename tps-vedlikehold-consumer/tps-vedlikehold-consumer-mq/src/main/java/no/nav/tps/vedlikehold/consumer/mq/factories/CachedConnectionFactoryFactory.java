@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
-import no.nav.tps.vedlikehold.consumer.mq.strategies.ConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.jms.ConnectionFactory;

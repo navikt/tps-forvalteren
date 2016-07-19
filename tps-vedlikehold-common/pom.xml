@@ -16,6 +16,7 @@
 
     <modules>
         <module>tps-vedlikehold-common-test</module>
+        <module>tps-vedlikehold-common-java</module>
     </modules>
 
 </project>

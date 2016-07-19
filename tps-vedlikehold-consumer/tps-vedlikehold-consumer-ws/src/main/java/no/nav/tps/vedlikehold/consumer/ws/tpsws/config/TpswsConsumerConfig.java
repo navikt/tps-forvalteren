@@ -81,7 +81,8 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-//        factoryBean.getOutInterceptors().add(new SystemSAMLOutInterceptor());
+//        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
+//        factoryBean.getOutInterceptors().add(samlOutInterceptor);
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }

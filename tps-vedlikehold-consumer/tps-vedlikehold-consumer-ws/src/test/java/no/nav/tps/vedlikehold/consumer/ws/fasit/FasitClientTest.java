@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import com.google.common.cache.Cache;
+import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.PropertyElement;
@@ -8,7 +9,9 @@ import no.nav.aura.envconfig.client.rest.ResourceElement;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +42,10 @@ public class FasitClientTest {
     private static final String QUEUE_ALIAS = "queueAlias";
     private static final String QUEUE_NAME  = "queueName";
 
+    private static final String FASIT_DOES_NOT_ANSWER_ERROR = "Fasit does not answer";
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private FasitRestClient restClientMock;
@@ -109,6 +116,33 @@ public class FasitClientTest {
 
         verify(cacheMock, never()).put(anyString(), any());
         verify(restClientMock, never()).getResource(anyString(), anyString(), any(), any(), anyString());
+    }
+
+    @Test
+    public void pingReturnsTrueWhenFasitRespondsNormally() throws Exception {
+        ResourceElement queueResourceElement = new ResourceElement(ResourceTypeDO.Queue, QUEUE_ALIAS);
+
+        when(restClientMock.getResource(anyString(), anyString(), any(), any(), anyString())).thenReturn(queueResourceElement);
+
+        boolean result = fasitClient.ping();
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    public void pingThrowsExceptionWhenFasitThrowsException() throws Exception {
+
+        RuntimeException thrownException = new RuntimeException(FASIT_DOES_NOT_ANSWER_ERROR);
+
+        when(restClientMock.getResource(anyString(), anyString(), any(), any(), anyString())).thenThrow(thrownException);
+
+
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage(FASIT_DOES_NOT_ANSWER_ERROR);
+
+        boolean result = fasitClient.ping();
+
+        assertThat(result, is(false));
     }
 
 }

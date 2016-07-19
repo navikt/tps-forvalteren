@@ -12,5 +12,4 @@ import org.springframework.context.annotation.Import;
         VeraConsumerConfig.class
 })
 public class RestConsumerConfig {
-
 }
