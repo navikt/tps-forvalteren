@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Import;
         WebProviderConfig.class,
         RestProviderConfig.class,
         ServiceConfig.class
-        })
+})
 public class ApplicationConfig {
+
 }

@@ -21,6 +21,8 @@ import org.springframework.context.annotation.Import;
         WebSecurityConfig.class,
         RestSecurityConfig.class
 })
+
+
 @ComponentScan(basePackageClasses = {
         UserController.class
 })

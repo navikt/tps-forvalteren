@@ -12,12 +12,22 @@
     <artifactId>tps-vedlikehold-service-java</artifactId>
     <name>TPS Vedlikeholdsklient :: Service :: Java</name>
 
+    <packaging>jar</packaging>
+
     <dependencies>
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-domain-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
         </dependency>
 
         <!-- SPRING -->
@@ -30,6 +40,10 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>jackson-xml-databind</artifactId>
         </dependency>
 
         <!-- Apache Commons IO -->

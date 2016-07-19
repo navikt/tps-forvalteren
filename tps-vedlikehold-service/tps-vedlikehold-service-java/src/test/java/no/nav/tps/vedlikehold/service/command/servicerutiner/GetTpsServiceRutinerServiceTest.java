@@ -18,7 +18,6 @@ public class GetTpsServiceRutinerServiceTest {
         getTpsServiceRutinerService = new DefaultGetTpsServiceRutinerService();
     }
 
-
     @Test
     public void getTpsServiceRutinerServiceReturnsString() {
         Object services = getTpsServiceRutinerService.exectue();
