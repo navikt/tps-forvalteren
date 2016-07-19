@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import com.google.common.cache.Cache;
+import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.PropertyElement;

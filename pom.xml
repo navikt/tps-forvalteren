@@ -65,6 +65,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-service-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-common-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -100,6 +105,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-domain-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-domain-ws</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -117,11 +127,6 @@
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-service-java</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -144,6 +149,13 @@
                 <artifactId>nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon</artifactId>
                 <version>1.0.0</version>
                 <classifier>jaxws</classifier>
+            </dependency>
+
+            <!-- PARSERS -->
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>jackson-xml-databind</artifactId>
+                <version>0.6.2</version>
             </dependency>
 
 
