@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
+import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.PackageMarker;
@@ -62,16 +63,6 @@ public class TpswsConsumerConfig {
 //    private String egenAnsattAddress = "https://service-gw-t4.test.local";
     private String modigPassword;
 
-//    @Bean
-//    public static DiskresjonskodeConsumer diskresjonskodeConsumer() {
-//        return new DefaultDiskresjonskodeConsumer();
-//    }
-//
-//    @Bean
-//    public EgenAnsattConsumer egenAnsattConsumer() {
-//        return new DefaultEgenAnsattConsumer();
-//    }
-
     @Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
@@ -81,8 +72,8 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-//        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
-//        factoryBean.getOutInterceptors().add(samlOutInterceptor);
+        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
+        factoryBean.getOutInterceptors().add(samlOutInterceptor);
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }
