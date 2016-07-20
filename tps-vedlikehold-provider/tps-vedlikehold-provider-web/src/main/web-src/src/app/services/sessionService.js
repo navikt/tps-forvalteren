@@ -10,19 +10,6 @@ angular.module('tps-vedlikehold.service')
             $rootScope.authenticated = val;
         };
 
-        self.isAuthorized = function(authorizedRoles) {
-            if(!angular.isArray(authorizedRoles)){
-                authorizedRoles = [authorizedRoles];
-            }
-            angular.forEach(self.getCurrentUser().roles, function(role) {
-                if (authorizedRoles.indexOf(role) !== -1 ) {
-                    return true;
-                }
-                return false;
-            });
-            return self.getIsAuthenticated() && authorizedRoles.indexOf();
-        };
-
         self.getIsAuthenticated = function(){
             return $rootScope.authenticated;
         };
@@ -46,5 +33,4 @@ angular.module('tps-vedlikehold.service')
         self.getCurrentUser = function(){
             return $rootScope.currentUser;
         };
-
     }]);

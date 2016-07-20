@@ -16,20 +16,19 @@ angular.module('tps-vedlikehold.service')
             $http.get(loginRoute, {
                 headers: headers
             })
-                .then(function (res) {
-                        sessionService.setIsAuthenticated(true);
-                        sessionService.setIsSignedIn(true);
-                        sessionService.setCurrentUser(res.data);
+            .then(function (res) {
+                sessionService.setIsAuthenticated(true);
+                sessionService.setIsSignedIn(true);
+                sessionService.setCurrentUser(res.data);
 
-                        if (callback) {
-                            callback(res);
-                        }
-                    },
-                    function (res) {
-                        if (callback) {
-                            callback(res);
-                        }
-                    });
+                if (callback) {
+                    callback(res);
+                }
+            }, function (res) {
+                if (callback) {
+                    callback(res);
+                }
+            });
         };
 
         self.invalidateSession = function(callback){

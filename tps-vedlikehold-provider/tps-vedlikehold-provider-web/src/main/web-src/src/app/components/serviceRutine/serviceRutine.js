@@ -29,6 +29,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                         nonUniqueProperties);
                 }, function(error) {
                     // cyclic?
+                    console.log(error);
                     showAlertTPSError();
                 });
 
