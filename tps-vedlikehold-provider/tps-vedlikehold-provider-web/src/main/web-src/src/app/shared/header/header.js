@@ -7,7 +7,6 @@ angular.module('tps-vedlikehold')
 
     $scope.logout = function(){
         authenticationService.invalidateSession(function(){
-            console.log("Logger ut");
             locationService.redirectToLoginState();
         });
     };

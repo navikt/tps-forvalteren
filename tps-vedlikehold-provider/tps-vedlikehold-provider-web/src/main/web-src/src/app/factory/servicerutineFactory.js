@@ -33,45 +33,6 @@ angular.module('tps-vedlikehold')
         
         var isSetServicerutiner = false;
         var isSetEnvironments = false;
-
-        //######################################################################
-        //FOR TESTING
-        // var res = {};
-        // res.data = {
-        //     "tpsPersonData": {
-        //         "FS03-FDNUMMER-PERSDATA-O": {
-        //             "aksjonsKodes":
-        //                 {"aksjonsKode": ["E0", "A0", "A2", "B0", "B2", "C0", "D0"]},
-        //             "attributes": {
-        //                 "attribute": [
-        //                     {"use": "required", "name": "fnr", "type": "xs:string"},
-        //                     {"use": "optional", "name": "aksjonsDato", "type": "xs:date"}
-        //                 ]
-        //             },
-        //             "internNavn": "S004 hentPerson"
-        //         }
-        //         // ,
-        //         // "S322": {
-        //         //     "aksjonsKodes":
-        //         //     {"aksjonsKode": ["E0", "A0", "A2", "B0", "B2", "C0", "D0"]},
-        //         //     "attributes": {
-        //         //         "attribute": [
-        //         //             {"use": "required", "name": "fnr", "type": "xs:string"},
-        //         //             {"use": "optional", "name": "aksjonsDato", "type": "xs:date"}
-        //         //         ]
-        //         //     },
-        //         //     "internNavn": "S322 Test"
-        //         // }
-        //     }
-        // };
-        // servicerutineFactory.servicerutiner = res.data.tpsPersonData;
-        // isSetServicerutiner = true;
-        //######################################################################
-        //FOR TESTING
-        // servicerutineFactory.environments = ["t4", "t5", "t6", "t7", "t8", "t9", "t10", "t12", "t11", "q0",
-        //     "q1", "u5", "u6", "q2", "q3", "o1", "q4", "q5", "q6", "q7", "q8", "qx", "q9", "p", "t0", "t1", "t2", "t3"];
-        // isSetEnvironments = true;
-        //######################################################################
         
         servicerutineFactory.isSetServicerutiner = function () {
             return isSetServicerutiner;
@@ -81,13 +42,13 @@ angular.module('tps-vedlikehold')
             return isSetEnvironments;
         };
         
-        // servicerutineFactory.getFromServerServicerutiner = function () {
-        //     return $http({method: 'GET', url: urlBase});
-        // };
-        //
-        // servicerutineFactory.getFromServerEnvironments = function () {
-        //     return $http({method: 'GET', url: urlBaseEnv});
-        // };
+        servicerutineFactory.getFromServerServicerutiner = function () {
+            return $http({method: 'GET', url: urlBase});
+        };
+
+        servicerutineFactory.getFromServerEnvironments = function () {
+            return $http({method: 'GET', url: urlBaseEnv});
+        };
         
         servicerutineFactory.setServicerutiner = function(data) {
             servicerutineFactory.servicerutiner = data.tpsPersonData;

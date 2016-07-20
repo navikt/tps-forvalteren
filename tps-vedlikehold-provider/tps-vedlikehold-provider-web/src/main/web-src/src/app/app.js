@@ -48,22 +48,15 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             serviceRutinenavn: null
         },
         views: {
-            'content@' : {
+            'content@': {
                 templateUrl: "app/components/servicerutine/servicerutine.html"
             },
-            'header@' : {
+            'header@': {
                 templateUrl: "app/shared/header/header.html"
             },
-            'side-navigator@' : {
+            'side-navigator@': {
                 templateUrl: "app/shared/side-navigator/side-navigator.html"
             }
-        },
-        resolve: {
-            testy: function(){
-                return {value: "hello"};
-            }
-            // servicerutinePromise: "serverService.getFromServerServicerutiner()",
-            // environmentPromise: "serverService.getFromServerEnvironments()"
         }
     });
 
@@ -92,10 +85,10 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
         
-        // if (authenticated) { return; }
-        // else {
-        //     event.preventDefault();
-        //     locationService.redirectToLoginState();
-        // }
+        if (authenticated) { return; }
+        else {
+            event.preventDefault();
+            locationService.redirectToLoginState();
+        }
     });
 }]);
