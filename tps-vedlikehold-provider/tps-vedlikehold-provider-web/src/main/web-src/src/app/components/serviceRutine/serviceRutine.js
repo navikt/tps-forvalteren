@@ -2,17 +2,12 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', 'utilsService', 'servicerutineFactory',
-        function($scope, $stateParams, utilsService, servicerutineFactory) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'servicerutineFactory',
+        function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory) {
 
             var tpsReturnedObject = {};
 
-            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
-            
-            //
-            $scope.responseReceived = true;//
-            //
-            
+            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;            
             $scope.isValidServiceRutinenavn = false;
             $scope.formData = {};
 
@@ -25,7 +20,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 var params = createParams($scope.formData);
 
                 servicerutineFactory.getResponse($scope.serviceRutinenavn, params).then(function(res) {
-                    $scope.responseReceived = true;
                     $scope.xmlForm = utilsService.formatXml(res.data.xml);
                     tpsReturnedObject = res.data.data;
                     $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
@@ -34,8 +28,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                         .tpsSvar[servicerutineFactory.getServicerutineReturnedDataLabel($scope.serviceRutinenavn)],
                         nonUniqueProperties);
                 }, function(error) {
-                    //TODO
-                    $scope.responseReceived = false;
+                    // cyclic?
+                    showAlertTPSError();
                 });
 
                 //######################################################################
@@ -138,6 +132,18 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             $scope.isRequired = function(type) {
                 return (requiredAttributes.indexOf(type) > -1);
             };
+
+            function showAlertTPSError() {
+                var confirm = $mdDialog.confirm()
+                    .title('Serverfeil')
+                    .textContent('Fikk ikke hentet informasjon om TPS fra server. Vil du prøve igjen?')
+                    .ariaLabel('Feil ved henting av data fra TPS')
+                    .ok('Prøv igjen')
+                    .cancel('Avbryt');
+                $mdDialog.show(confirm).then(function () {
+                    $scope.submit();
+                });
+            }
 
             function createParams(formData) {
                 var params = {};

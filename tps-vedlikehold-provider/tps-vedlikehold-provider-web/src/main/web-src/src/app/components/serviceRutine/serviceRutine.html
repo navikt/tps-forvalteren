@@ -4,12 +4,10 @@
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
-                    <span flex="33"></span> <!-- -->
+                    <span flex="33"></span>
                 </div>
-                <!--<span flex></span>-->
                 <md-divider></md-divider>
                 <div class="submit-container" layout-gt-xs="row" layout="column" layout-align="end end">
-                    <!--<span flex-gt-sm></span>-->
                     <md-input-container>
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
