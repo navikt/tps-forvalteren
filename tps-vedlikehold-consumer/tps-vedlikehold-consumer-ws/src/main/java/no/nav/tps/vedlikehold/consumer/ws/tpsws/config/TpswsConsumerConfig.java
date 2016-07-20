@@ -48,19 +48,15 @@ public class TpswsConsumerConfig {
     private static final QName PIP_EGENANSATT_ENDPOINT_NAME = new QName("http://nav.no/tjeneste/pip/pipEgenAnsatt/v1/", "PipEgenAnsatt_v1");
 
     @Value("${validering.virksomhet.diskresjonskodev1.url}")
-//    private String diskresjonskodeAddress = "https://service-gw-t4.test.local";
     private String diskresjonskodeAddress;
 
     @Value("${validering.virksomhet.egenansattv1.url}")
-//    private String egenAnsattAddress = "https://service-gw-t4.test.local";
     private String egenAnsattAddress;
 
     @Value("${no.nav.modig.security.systemuser.username}")
-//    private String egenAnsattAddress = "https://service-gw-t4.test.local";
     private String modigUername;
 
     @Value("${no.nav.modig.security.systemuser.password}")
-//    private String egenAnsattAddress = "https://service-gw-t4.test.local";
     private String modigPassword;
 
     @Bean
@@ -72,8 +68,9 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
-        factoryBean.getOutInterceptors().add(samlOutInterceptor);
+//        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
+//        factoryBean.getOutInterceptors().add(samlOutInterceptor);
+        factoryBean.getOutInterceptors().add(createSystemUsernameTokenOutInterceptor());
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }
