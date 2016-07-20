@@ -15,5 +15,7 @@
 
     <modules>
         <module>tps-vedlikehold-domain-rs</module>
+        <module>tps-vedlikehold-domain-ws</module>
+        <module>tps-vedlikehold-domain-service</module>
     </modules>
 </project>
