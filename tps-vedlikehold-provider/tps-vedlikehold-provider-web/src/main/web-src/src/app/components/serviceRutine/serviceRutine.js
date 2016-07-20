@@ -133,7 +133,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 tpsReturnedObject = res.data.data;
                 $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
                 $scope.personData = utilsService.flattenObject(tpsReturnedObject.tpsSvar.personDataS004, nonUniqueProperties);
-                console.log($scope.personData);
             };
 
             $scope.isRequired = function(type) {
