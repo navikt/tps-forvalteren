@@ -4,40 +4,46 @@
 
   .tps-vk-top {
     margin-bottom: 10px;
-    //position: relative;
-    //
-    //.submit-container {
-    //  position: absolute;
-    //  bottom: 0;
-    //  right: 0;
-    //}
+    background-color: white;
+    padding: 10px 35px 8px;
 
-    .md-datepicker-input-container {
-      margin-top: 26px;
-      width: 250px;
+    .tps-input-input-container {
+      margin: 8px 0;
     }
 
-    md-input-container {
-      margin-bottom: 0;
-      width: 250px;
+    md-datepicker {
+      padding-top: 5px;
+      .md-datepicker-input-container {
+        width: 75%;
+      }
     }
 
-    .md-datepicker-button {
-      margin: 0;
-      padding: 0;
+    .tps-vk-submit-btn {
+      margin-left: 20%;
     }
+
   }
 
   .tps-vk-bottom {
-    //padding: 10px;
+
+    .tps-response-form {
+      padding: 28px 35px 8px;
+      .tps-output-input-container {
+        margin: 3px 0;
+        padding: 2px 3px;
+
+        .tps-output-input, .tps-output-label {
+          border-color: rgba(0,0,0,0.12);
+          color: rgba(0,0,0,0.54);
+          &.filled {
+            border-color: rgb(63,81,181);
+          }
+        }
+      }
+    }
 
     .tps-long-response {
-      //background-color: #00AA00;
       width: 260px;
-
-      //.output-label {
-      //  width: 200px;
-      //}
 
       .output-data {
         width: 100%;

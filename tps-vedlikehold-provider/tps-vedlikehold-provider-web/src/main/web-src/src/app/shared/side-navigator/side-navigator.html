@@ -2,12 +2,14 @@
     <md-sidenav md-component-id="left" class="md-sidenav-left" md-is-locked-open="$mdMedia('gt-md')">
         <md-content>
             <md-list class="side-navigator-list" layout="column" layout-align="start start">
-                <md-list-item>
-                    <md-item-text layout="row">
+
+                <md-list-item class="servicerutine-header-list-item">
+                    <md-item-text layout="row" class="servicerutine-item-text">
                         <h3>Servicekategori 1</h3>
                     </md-item-text>
                     <md-divider></md-divider>
                 </md-list-item>
+
                 <md-list-item ng-repeat="serviceRutinenavn in servicerutiner" class="servicerutine-list-item">
                     <md-item-text layout="row" class="servicerutine-item-text">
                         <md-button class="md-primary servicerutine-button" ng-click="getRequestForm(serviceRutinenavn)"
@@ -16,6 +18,7 @@
                             {{ getServicerutineInternNavn(serviceRutinenavn) }}
                         </md-button>
                     </md-item-text>
+                    <md-divider></md-divider>
                 </md-list-item>
             </md-list>
         </md-content>

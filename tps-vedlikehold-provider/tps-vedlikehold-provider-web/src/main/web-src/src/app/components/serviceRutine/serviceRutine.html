@@ -1,25 +1,34 @@
 <div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
     <div ng-show="isValidServiceRutinenavn" layout="column" flex>
-        <md-content flex-gt-xs="20" class="tps-vk-top md-whiteframe-z2" layout-padding>
+        <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
-                    <span flex="33"></span> <!-- -->
+                    <md-input-container class="tps-input-input-container" flex-gt-sm>
+                        <label>Fødselsnummer</label>
+                        <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
+                    </md-input-container>
+                    <md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-sm></md-datepicker>
+                    <md-input-container flex-gt-sm class="tps-input-input-container" >
+                        <md-select ng-model="formData.aksjonsKode" placeholder="Aksjonskode">
+                            <md-option ng-repeat="val in aksjonsKoder" ng-value="val">{{ val }}</md-option>
+                        </md-select>
+                    </md-input-container>
                 </div>
-                <!--<span flex></span>-->
-                <md-divider></md-divider>
-                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align="end end">
+                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
                     <!--<span flex-gt-sm></span>-->
-                    <md-input-container>
+                    <md-input-container flex-gt-sm  class="tps-input-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-button type="submit" class="md-raised md-accent">Send til TPS</md-button>
+                    <md-input-container flex-gt-sm class="tps-input-input-container" >
+                        <md-button type="submit" class="md-raised md-accent tps-vk-submit-btn">Send til TPS</md-button>
+                    </md-input-container>
+                    <span flex-gt-sm></span>
                 </div>
             </form>
-        </md-content>
+        </div>
         <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Resultat">
