@@ -11,13 +11,13 @@
                 </md-list-item>
 
                 <md-list-item ng-repeat="serviceRutinenavn in servicerutiner" class="servicerutine-list-item">
-                    <md-item-text layout="row" class="servicerutine-item-text">
-                        <md-button class="md-primary servicerutine-button" ng-click="getRequestForm(serviceRutinenavn)"
+                    <!--<md-item-text layout="row" class="servicerutine-item-text">-->
+                        <md-button md-ripple-container class="md-primary servicerutine-button" ng-click="getRequestForm(serviceRutinenavn)"
                                    ui-sref="servicerutine({serviceRutinenavn: serviceRutinenavn})"
                                    ui-sref-active="activeMenuButton" tabindex="1">
                             {{ getServicerutineInternNavn(serviceRutinenavn) }}
                         </md-button>
-                    </md-item-text>
+                    <!--</md-item-text>-->
                     <md-divider></md-divider>
                 </md-list-item>
             </md-list>
