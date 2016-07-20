@@ -9,10 +9,39 @@
       margin: 8px 0;
     }
 
-    md-datepicker {
+    //md-datepicker {
+    //  padding-top: 5px;
+    //  .md-datepicker-input-container {
+    //    width: 75%;
+    //  }
+    //
+    //  //@media(max-width: 959px) {
+    //  //  width: auto;
+    //  //}
+    //}
+    .date-picker-container {
+      margin-left: -15px;
+      position: relative;
+      min-height: 60px;
       padding-top: 5px;
+
+      label {
+        position: absolute;
+        top: -10px;
+        left: 50px;
+        color: rgba(0, 0, 0, 0.541176);
+        font-size: 12px;
+      }
+
       .md-datepicker-input-container {
-        width: 75%;
+        margin-left: 0;
+      }
+
+      md-datepicker {
+        padding-top: 5px;
+        .md-datepicker-input-container {
+          width: 75%;
+        }
       }
     }
 

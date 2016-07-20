@@ -4,16 +4,16 @@
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
                     <!--<tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm></tps-input-field>-->
-                    <md-input-container class="tps-input-input-container" flex-gt-sm>
+                    <md-input-container class="tps-input-input-container" flex-gt-xs>
                         <label>Fødselsnummer</label>
                         <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
                     </md-input-container>
-                    <!--<div class="date-picker-container" flex-gt-sm>-->
-                        <!--<label>Dato</label>-->
-                        <!--<md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>-->
-                    <!--</div>-->
-                    <md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-sm></md-datepicker>
-                    <md-input-container flex-gt-sm class="tps-input-input-container" >
+                    <!--<md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-xs></md-datepicker>-->
+                    <div class="date-picker-container" flex-gt-xs>
+                        <label>Dato</label>
+                        <md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>
+                    </div>
+                    <md-input-container class="tps-input-input-container" flex-gt-xs>
                         <label>Aksjonskode</label>
                         <md-select ng-model="formData.aksjonsKode" placeholder="Aksjonskode">
                             <md-option ng-repeat="val in aksjonsKoder" ng-value="val">{{ val }}</md-option>
@@ -21,16 +21,16 @@
                     </md-input-container>
                 </div>
                 <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
-                    <md-input-container flex-gt-sm  class="tps-input-input-container">
+                    <md-input-container flex-gt-xs class="tps-input-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex-gt-sm class="tps-input-input-container" >
+                    <md-input-container flex-gt-xs class="tps-input-input-container" >
                         <md-button type="submit" class="md-raised md-accent tps-vk-submit-btn">Send til TPS</md-button>
                     </md-input-container>
-                    <span flex-gt-sm></span>
+                    <span flex-gt-xs></span>
                 </div>
             </form>
         </div>
