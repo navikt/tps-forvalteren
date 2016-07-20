@@ -37,6 +37,6 @@ public class QueueManagerConnectionFactoryStrategy implements ConnectionFactoryS
 
     @Override
     public String getChannelName() {
-        return environment.toUpperCase() + "_TPSWS";                            //TODO: Make dynamic [PKJAG-2685]
+        return environment.toUpperCase() + "_TPSWS";                            //TODO: This should probably be more dynamic
     }
 }
