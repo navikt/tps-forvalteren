@@ -18,8 +18,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
-;
-
 /**
  *  @author Øyvind Grimnes, Visma Consulting AS
  */

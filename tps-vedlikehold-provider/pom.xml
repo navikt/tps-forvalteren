@@ -10,11 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tps-vedlikehold-provider</artifactId>
-    <packaging>pom</packaging>
     <name>TPS Vedlikeholdsklient :: Provider</name>
+
+    <packaging>pom</packaging>
+
     <modules>
-        <module>tps-vedlikehold-provider-web</module>
         <module>tps-vedlikehold-provider-rs</module>
+        <module>tps-vedlikehold-provider-web</module>
     </modules>
 
     <dependencies>
@@ -22,11 +24,6 @@
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-common-test</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!--LANGUAGE EXTENSIONS-->

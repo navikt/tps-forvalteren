@@ -4,7 +4,9 @@ import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
@@ -32,6 +34,10 @@ public class DefaultMessageQueueServiceTest {
     private static final String REQUEST_MESSAGE  = "This is a test request";
     private static final String RESPONSE_MESSAGE = "This is a test response";
 
+    private static final String MQ_DOES_NOT_ANSWER_ERROR = "MQ does not answer";
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private MQConnectionFactory connectionFactoryMock;
@@ -155,5 +161,28 @@ public class DefaultMessageQueueServiceTest {
         messageQueueService.sendMessage(REQUEST_MESSAGE);
 
         verify(textMessageMock).setJMSReplyTo(eq(responseQueueMock));
+    }
+
+    @Test
+    public void pingReturnsTrueWhenMqRespondsNormally() throws Exception {
+
+        boolean result = messageQueueService.ping();
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    public void pingThrowsExceptionWhenMqThrowsException() throws Exception {
+
+        RuntimeException thrownException = new RuntimeException(MQ_DOES_NOT_ANSWER_ERROR);
+
+        when(connectionMock.createSession(anyBoolean(), anyInt())).thenThrow(thrownException);
+
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage(MQ_DOES_NOT_ANSWER_ERROR);
+
+        boolean result = messageQueueService.ping();
+
+        assertThat(result, is(false));
     }
 }

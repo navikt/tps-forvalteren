@@ -5,6 +5,11 @@
 
     <name>tps-vedlikehold</name>
 
+    <selftest>
+        <path>tps-vedlikehold/internal/selftest?status</path>
+        <humanReadablePath>tps-vedlikehold/internal/selftest</humanReadablePath>
+    </selftest>
+
     <!--Consumed resources-->
     <resources>
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="validering.virksomhet.diskresjonskodev1"/>
@@ -13,6 +18,12 @@
 
         <applicationProperties alias="tps-vedlikeholdProperties"/>
     </resources>
+
+    <security serviceUserResourceAlias="srvtps-vedlikehold">
+        <logins>
+            <saml/>
+        </logins>
+    </security>
 
     <artifacts>
         <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>

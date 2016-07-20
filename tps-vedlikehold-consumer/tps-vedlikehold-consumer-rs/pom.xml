@@ -20,6 +20,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!--SERVICES-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -31,11 +37,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
-        <!--SPRING-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
     </dependencies>
+
 </project>

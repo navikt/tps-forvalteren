@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
+import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,14 +30,14 @@ public class EnvironmentControllerTest {
     private HttpSession httpSessionMock;
 
     @Mock
-    private VeraConsumer veraConsumerMock;
+    public GetEnvironments getEnvironments;
 
     @InjectMocks
     private EnvironmentController controller;
 
     @Before
     public void setUp() {
-        when( veraConsumerMock.getEnvironments("tpsws") ).thenReturn(ENVIRONMENTS);
+        when( getEnvironments.execute("tpsws") ).thenReturn(ENVIRONMENTS);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
 

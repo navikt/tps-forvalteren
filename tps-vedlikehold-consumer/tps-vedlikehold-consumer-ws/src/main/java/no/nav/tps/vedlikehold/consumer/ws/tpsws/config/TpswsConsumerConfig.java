@@ -1,14 +1,11 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
-import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
+import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.PackageMarker;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.cxf.TimeoutFeature;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.interceptor.StaxOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -20,6 +17,7 @@ import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.security.auth.callback.Callback;
@@ -37,6 +35,9 @@ import java.util.Map;
  * @author Tobias Hansen (Visma Consulting AS).
  */
 @Configuration
+@ComponentScan(basePackageClasses = {
+        PackageMarker.class
+})
 public class TpswsConsumerConfig {
     private final String DISKRESJONSKODE_WSDL_URL = "wsdl/Diskresjonskode.wsdl";
 
@@ -52,18 +53,14 @@ public class TpswsConsumerConfig {
     @Value("${validering.virksomhet.egenansattv1.url}")
     private String egenAnsattAddress;
 
-    @Bean
-    public DiskresjonskodeConsumer diskresjonskodeConsumer() {
-        return new DefaultDiskresjonskodeConsumer();
-    }
+    @Value("${no.nav.modig.security.systemuser.username}")
+    private String modigUername;
+
+    @Value("${no.nav.modig.security.systemuser.password}")
+    private String modigPassword;
 
     @Bean
-    public EgenAnsattConsumer egenAnsattConsumer() {
-        return new DefaultEgenAnsattConsumer();
-    }
-
-    @Bean
-    public DiskresjonskodePortType getDiskresjonskodePortType() {
+    public DiskresjonskodePortType diskresjonskodePortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
         factoryBean.setWsdlURL(DISKRESJONSKODE_WSDL_URL);
@@ -73,12 +70,13 @@ public class TpswsConsumerConfig {
 
 //        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
 //        factoryBean.getOutInterceptors().add(samlOutInterceptor);
+        factoryBean.getOutInterceptors().add(createSystemUsernameTokenOutInterceptor());
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }
 
     @Bean
-    public PipEgenAnsattPortType getPipEgenAnsattPortType() {
+    public PipEgenAnsattPortType pipEgenAnsattPortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
 
         factoryBean.setWsdlURL(PIP_EGENANSATT_WSDL_URL);
@@ -111,12 +109,14 @@ public class TpswsConsumerConfig {
         Map<String, Object> properties = new HashMap<String, Object>();
 
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-        properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));
+//        properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));
+        properties.put(WSHandlerConstants.USER, modigUername);
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, new CallbackHandler() {
             @Override
             public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-                String password = System.getProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD);
+//                String password = System.getProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD);
+                String password = modigPassword;
 
                 WSPasswordCallback passwordCallback = (WSPasswordCallback) callbacks[0];
                 passwordCallback.setPassword(password);

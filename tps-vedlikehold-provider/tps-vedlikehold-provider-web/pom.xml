@@ -18,15 +18,20 @@
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+            <artifactId>tps-vedlikehold-service-java</artifactId>
         </dependency>
 
         <!--SPRING-->
@@ -34,10 +39,62 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+
+        <!--SERVICES-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!--WEBJARS-->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
+        <resources>
+            <!-- Enable filtering on global.properties so we can automatically inject dependency versions in web templates. -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>global.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>global.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
         <plugins>
+            <plugin>
+                <!-- Imports messages.properties from tps-vedlikehold-common-java module -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <configuration>
+                    <resourceBundles>
+                        <resourceBundle>no.nav.tps.vedlikehold:tps-vedlikehold-common-java:${project.version}</resourceBundle>
+                    </resourceBundles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
@@ -46,4 +103,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
