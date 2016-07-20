@@ -12,7 +12,6 @@ import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.ldap.userdetails.Person;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.EnvironmentController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
