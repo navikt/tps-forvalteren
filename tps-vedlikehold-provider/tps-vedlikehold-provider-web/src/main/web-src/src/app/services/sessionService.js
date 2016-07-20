@@ -1,3 +1,6 @@
+/**
+ * @author Kristian Kyvik (Visma Consulting AS).
+ */
 angular.module('tps-vedlikehold.service')
     .service('sessionService', ['$rootScope', function($rootScope) {
 
@@ -5,19 +8,6 @@ angular.module('tps-vedlikehold.service')
 
         self.setIsAuthenticated = function(val){
             $rootScope.authenticated = val;
-        };
-
-        self.isAuthorized = function(authorizedRoles) {
-            if(!angular.isArray(authorizedRoles)){
-                authorizedRoles = [authorizedRoles];
-            }
-            angular.forEach(self.getCurrentUser().roles, function(role) {
-                if (authorizedRoles.indexOf(role) !== -1 ) {
-                    return true;
-                }
-                return false;
-            });
-            return self.getIsAuthenticated() && authorizedRoles.indexOf();
         };
 
         self.getIsAuthenticated = function(){
@@ -33,7 +23,6 @@ angular.module('tps-vedlikehold.service')
         };
         
         self.setCurrentUser = function(user) {
-
             $rootScope.currentUser = {
                 username: user.username,
                 name: user.name,
@@ -44,5 +33,4 @@ angular.module('tps-vedlikehold.service')
         self.getCurrentUser = function(){
             return $rootScope.currentUser;
         };
-
     }]);

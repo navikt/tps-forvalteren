@@ -1,0 +1,52 @@
+<div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+    <div ng-show="isValidServiceRutinenavn" layout="column" flex>
+        <div class="tps-vk-top md-whiteframe-z2">
+            <form name="requestForm" ng-submit="requestForm.$valid && submit()">
+                <div layout-gt-xs="row" layout="column" layout-wrap>
+                    <!--<tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm></tps-input-field>-->
+                    <md-input-container class="tps-input-input-container" flex-gt-xs>
+                        <label>Fødselsnummer</label>
+                        <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
+                    </md-input-container>
+                    <!--<md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-xs></md-datepicker>-->
+                    <div class="date-picker-container" flex-gt-xs>
+                        <label>Dato</label>
+                        <md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>
+                    </div>
+                    <md-input-container class="tps-input-input-container" flex-gt-xs>
+                        <label>Aksjonskode</label>
+                        <md-select ng-model="formData.aksjonsKode" placeholder="Aksjonskode">
+                            <md-option ng-repeat="val in aksjonsKoder" ng-value="val">{{ val }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
+                    <md-input-container flex-gt-xs class="tps-input-input-container">
+                        <label>Miljø</label>
+                        <md-select ng-model="formData.environment" required>
+                            <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex-gt-xs class="tps-input-input-container" >
+                        <md-button type="submit" class="md-raised md-accent tps-vk-submit-btn">Send til TPS</md-button>
+                    </md-input-container>
+                    <span flex-gt-xs></span>
+                </div>
+            </form>
+        </div>
+        <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Resultat">
+                    <tps-response-form service-rutinenavn="serviceRutinenavn"></tps-response-form>
+                </md-tab>
+                <md-tab label="XML">
+                    <div hljs hljs-source="xmlForm" hljs-language="xml" layout-padding>
+                    </div>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+    <div ng-show="!isValidServiceRutinenavn"  layout="column" flex>
+        <ng-include src="'app/components/servicerutine/welcome.html'"></ng-include>
+    </div>
+</div>

@@ -1,22 +1,17 @@
 /**
- * @author Frederik Gørvell (Visma Consulting AS).
+ * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('locationService', ['$rootScope', '$location', function($rootScope, $location) {
+    .service('locationService', ['$rootScope', '$state', function($rootScope, $state) {
 
         var self = this;
+        var returnState = 'servicerutine';
 
-        var returnUrl = "/dashboard";
-
-        self.updateLoginReturnUrl = function(){
-            returnUrl = $location.path();
+        self.redirectToLoginReturnState = function() {
+            $state.go(returnState);
         };
 
-        self.redirectToLoginReturnUrl = function() {
-            $location.path(returnUrl).replace();
-        };
-
-        self.redirectToLoginUrl = function() {
-            $location.path("/").replace();
+        self.redirectToLoginState = function() {
+            $state.go('login');
         };
     }]);

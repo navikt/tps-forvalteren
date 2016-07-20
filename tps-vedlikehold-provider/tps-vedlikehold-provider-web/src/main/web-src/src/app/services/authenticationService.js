@@ -1,3 +1,6 @@
+/**
+ * @author Kristian Kyvik (Visma Consulting AS).
+ */
 angular.module('tps-vedlikehold.service')
     .service('authenticationService', ['$http', '$location', 'sessionService', 'utilsService', function($http, $location,  sessionService, utilsService) {
 
@@ -7,28 +10,25 @@ angular.module('tps-vedlikehold.service')
         var logoutRoute = 'api/v1/user/logout';
 
         self.authenticate = function(credentials, callback) {
-
             var headers = credentials ?
                 utilsService.authHeaders(credentials) : {};
 
             $http.get(loginRoute, {
                 headers: headers
             })
-                .then(function (res) {
-                        sessionService.setIsAuthenticated(true);
-                        sessionService.setIsSignedIn(true);
-                        sessionService.setCurrentUser(res.data);
+            .then(function (res) {
+                sessionService.setIsAuthenticated(true);
+                sessionService.setIsSignedIn(true);
+                sessionService.setCurrentUser(res.data);
 
-                        if (callback) {
-                            callback(res);
-                        }
-                    },
-                    function (res) {
-
-                        if (callback) {
-                            callback(res);
-                        }
-                    });
+                if (callback) {
+                    callback(res);
+                }
+            }, function (res) {
+                if (callback) {
+                    callback(res);
+                }
+            });
         };
 
         self.invalidateSession = function(callback){

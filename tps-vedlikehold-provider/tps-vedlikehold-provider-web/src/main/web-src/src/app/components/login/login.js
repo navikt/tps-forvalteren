@@ -1,11 +1,11 @@
 /**
- * @author Frederik Gørvell (Visma Consulting AS).
+ * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold.login', ['ngMessages'])
     .controller('loginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
 
-            $scope.title = 'TPS vedlikeholdsklient';
+            $scope.title = 'TPS Vedlikeholdsklient';
 
             $scope.authenticationError = false;
             $scope.serverError = false;
@@ -15,7 +15,7 @@ angular.module('tps-vedlikehold.login', ['ngMessages'])
                 switch(authResponse.status) {
                     case 200:
                         $scope.authenticationError = false;
-                        locationService.redirectToLoginReturnUrl();
+                        locationService.redirectToLoginReturnState();
                         break;
                     case 401:
                         $scope.authenticationError = true;
@@ -28,7 +28,7 @@ angular.module('tps-vedlikehold.login', ['ngMessages'])
 
             authenticationService.authenticate(false, function(authResponse) {
                 if (authResponse.status === 200) {
-                    locationService.redirectToLoginReturnUrl();
+                    locationService.redirectToLoginReturnState();
                 }
             });
 
