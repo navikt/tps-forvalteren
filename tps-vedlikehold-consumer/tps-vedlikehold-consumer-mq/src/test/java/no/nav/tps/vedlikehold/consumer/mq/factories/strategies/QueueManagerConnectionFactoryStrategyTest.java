@@ -22,8 +22,9 @@ public class QueueManagerConnectionFactoryStrategyTest {
     private static final String QUEUE_MANAGER_NAME            = "queueManagerName";
     private static final String QUEUE_MANAGER_HOST_NAME       = "queueManagerHostName";
     private static final String QUEUE_MANAGER_PORT            = "1234";
-    private static final String QUEUE_MANAGER_CHANNEL         = "T4_SAKOGBEHANDLING";
     private static final Integer QUEUE_MANAGER_TRANSPORT_TYPE = 1;
+
+    private static final String ENVIRONMENT = "t3";
 
     @Mock
     private QueueManager queueManagerMock;
@@ -33,6 +34,8 @@ public class QueueManagerConnectionFactoryStrategyTest {
 
     @Before
     public void setUp() {
+        connectionFactoryStrategy = new QueueManagerConnectionFactoryStrategy(queueManagerMock, ENVIRONMENT);
+
         when(queueManagerMock.getHostname()).thenReturn(QUEUE_MANAGER_HOST_NAME);
         when(queueManagerMock.getName()).thenReturn(QUEUE_MANAGER_NAME);
         when(queueManagerMock.getPort()).thenReturn(QUEUE_MANAGER_PORT);
@@ -56,6 +59,6 @@ public class QueueManagerConnectionFactoryStrategyTest {
         assertThat(connectionFactoryStrategy.getPort(), is(Integer.parseInt(QUEUE_MANAGER_PORT)));
         assertThat(connectionFactoryStrategy.getHostName(), is(QUEUE_MANAGER_HOST_NAME));
         assertThat(connectionFactoryStrategy.getTransportType(), is(QUEUE_MANAGER_TRANSPORT_TYPE));
-        assertThat(connectionFactoryStrategy.getChannelName(), is(QUEUE_MANAGER_CHANNEL));
+        assertThat(connectionFactoryStrategy.getChannelName(), is(ENVIRONMENT.toUpperCase() + "_TPSWS"));
     }
 }

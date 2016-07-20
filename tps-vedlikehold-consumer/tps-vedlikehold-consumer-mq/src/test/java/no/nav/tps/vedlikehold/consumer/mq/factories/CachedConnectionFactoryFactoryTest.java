@@ -35,7 +35,8 @@ public class CachedConnectionFactoryFactoryTest {
     private Cache<String, ConnectionFactory> cacheMock;
 
     private ConnectionFactoryStrategy strategy = new QueueManagerConnectionFactoryStrategy(
-            new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT)
+            new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT),
+            "environment"
     );
 
     @InjectMocks

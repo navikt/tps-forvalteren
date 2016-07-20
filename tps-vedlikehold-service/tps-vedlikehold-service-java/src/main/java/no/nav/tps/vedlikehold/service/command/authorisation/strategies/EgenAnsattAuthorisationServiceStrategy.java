@@ -22,26 +22,15 @@ public class EgenAnsattAuthorisationServiceStrategy implements AuthorisationServ
         return !isEgenAnsatt || user.getRoles().contains(ROLE_READ_EGENANSATT);
     }
 
-    /* Getters and setters */
-
-    public User getUser() {
-        return user;
-    }
+    /* Setters */
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public String getFnr() {
-        return fnr;
-    }
 
     public void setFnr(String fnr) {
         this.fnr = fnr;
-    }
-
-    public EgenAnsattConsumer getEgenAnsattConsumer() {
-        return egenAnsattConsumer;
     }
 
     public void setEgenAnsattConsumer(EgenAnsattConsumer egenAnsattConsumer) {

@@ -11,7 +11,7 @@ angular.module('tps-vedlikehold.service')
             $http({method: 'GET', url: urlBase}).then(function (res) {
                 servicerutineFactory.setServicerutiner(res.data);
             }, function (error) {
-                // servicerutineFactory.setServerError();
+                // git.setServerError();
             });
         };
         
