@@ -19,6 +19,7 @@
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

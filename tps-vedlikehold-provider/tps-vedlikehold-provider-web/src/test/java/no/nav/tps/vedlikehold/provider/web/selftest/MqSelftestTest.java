@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.provider.web.selftest;
 
 import no.nav.tps.vedlikehold.service.command.mq.PingMq;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -18,16 +18,8 @@
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-rs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
@@ -35,11 +27,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-mq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
+            <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
@@ -69,8 +57,6 @@
             <artifactId>bootstrap</artifactId>
         </dependency>
     </dependencies>
-
-
 
     <build>
         <resources>
@@ -117,4 +103,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

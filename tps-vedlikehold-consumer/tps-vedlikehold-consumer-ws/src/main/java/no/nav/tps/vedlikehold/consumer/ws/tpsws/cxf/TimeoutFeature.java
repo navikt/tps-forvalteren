@@ -23,6 +23,7 @@ public class TimeoutFeature extends AbstractFeature {
         this.connectionTimeout = connectionTimeout;
     }
 
+    @Override
     public void initialize(Client client, Bus bus) {
         Conduit conduit = client.getConduit();
 

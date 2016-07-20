@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tpsws;
 
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PingEgenAnsatt implements Command {
     @Autowired
-    private DefaultEgenAnsattConsumer consumer;
+    private EgenAnsattConsumer consumer;
 
     public void execute() throws Exception {
         consumer.ping();

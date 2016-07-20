@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tpsws;
 
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer;
-
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class PingEgenAnsattTest {
     @Mock
-    private DefaultEgenAnsattConsumer consumerMock;
+    private EgenAnsattConsumer consumerMock;
 
     @InjectMocks
     private PingEgenAnsatt command;

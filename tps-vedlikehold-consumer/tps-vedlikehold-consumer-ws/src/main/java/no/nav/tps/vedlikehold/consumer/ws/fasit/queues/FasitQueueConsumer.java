@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit.queues;
 
-
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 

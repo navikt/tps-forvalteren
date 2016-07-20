@@ -9,9 +9,9 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
-
 import java.util.Locale;
+
+import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

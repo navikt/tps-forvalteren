@@ -3,11 +3,10 @@ package no.nav.tps.vedlikehold.provider.web.model;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
 import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.OK;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
