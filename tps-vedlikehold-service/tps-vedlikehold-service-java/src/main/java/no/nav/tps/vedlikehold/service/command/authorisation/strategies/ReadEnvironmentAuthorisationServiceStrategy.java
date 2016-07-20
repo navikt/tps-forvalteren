@@ -1,11 +1,11 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
 import no.nav.tps.vedlikehold.domain.service.User;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -25,8 +25,7 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
     private Set<String> readQRoles;
     private Set<String> readPRoles;
 
-
-
+    
     @Override
     public Boolean isAuthorised() {
         Set<String> userRoles       = new HashSet<>(user.getRoles());           // retainAll() should not modify the users objects roles
@@ -55,7 +54,7 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
     }
 
     public void setEnvironment(String environment) {
-        if (environment == null || environment.isEmpty()) {
+        if (isEmpty(environment)) {
             this.environment = "";
             return;
         }

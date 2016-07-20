@@ -18,6 +18,8 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 /**
  * @author Tobias Hansen, Visma Consulting AS
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -77,7 +79,7 @@ public class ServiceController {
     /* Environments in U are mapped to T4 */
     /* TODO: This could be handled more gracefully */
     private String mappedEnvironment(String environment) {
-        if (environment == null || environment.isEmpty()) {
+        if (isEmpty(environment)) {
             return environment;
         }
 
