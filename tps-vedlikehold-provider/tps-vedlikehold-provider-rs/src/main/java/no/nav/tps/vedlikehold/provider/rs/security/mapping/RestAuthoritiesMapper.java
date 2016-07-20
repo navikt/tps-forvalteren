@@ -32,7 +32,7 @@ public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
 
     @PostConstruct
     public void postConstruct() {
-        Map<String, UserRole> roleMap = new HashMap<String, UserRole>();
+        Map<String, UserRole> roleMap = new HashMap<>();
 
         roleMap.putAll(mapRolesFromADToCommonUserRole(writeRolesT, ROLE_WRITE_T));
         roleMap.putAll(mapRolesFromADToCommonUserRole(readRolesT, ROLE_READ_T));
@@ -43,7 +43,7 @@ public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
     }
 
     private Map<String, UserRole> mapRolesFromADToCommonUserRole(List<String> rolesList, UserRole commonUserRole) {
-        Map<String, UserRole> roleMap = new HashMap<String, UserRole>();
+        Map<String, UserRole> roleMap = new HashMap<>();
 
         for (String role : rolesList) {
             roleMap.put(role, commonUserRole);

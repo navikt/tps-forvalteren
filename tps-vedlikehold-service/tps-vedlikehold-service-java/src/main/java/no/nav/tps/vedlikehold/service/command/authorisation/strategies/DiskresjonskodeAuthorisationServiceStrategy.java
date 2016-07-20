@@ -34,26 +34,14 @@ public class DiskresjonskodeAuthorisationServiceStrategy implements Authorisatio
         return !diskresjonskode.equals("7") || user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_7);
     }
 
-    /* Getters and setters */
-
-    public DiskresjonskodeConsumer getDiskresjonskodeConsumer() {
-        return diskresjonskodeConsumer;
-    }
+    /* Setters */
 
     public void setDiskresjonskodeConsumer(DiskresjonskodeConsumer diskresjonskodeConsumer) {
         this.diskresjonskodeConsumer = diskresjonskodeConsumer;
     }
 
-    public User getUser() {
-        return user;
-    }
-
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getFnr() {
-        return fnr;
     }
 
     public void setFnr(String fnr) {

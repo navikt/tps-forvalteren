@@ -13,9 +13,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -28,7 +28,8 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorisationServiceTest {
 
-    private static final String FNR = "12345678910";
+    private static final String FNR         = "12345678910";
+    private static final String ENVIRONMENT = "t1";
 
     @Mock
     private User userMock;
@@ -88,13 +89,33 @@ public class AuthorisationServiceTest {
     }
 
     @Test
-    public void userIsAuthorisedOverloadUsesBothDiskresjonskodeAndEgenAnsatt() throws Exception {
-        authorisationService.userIsAuthorisedToReadPerson(userMock, FNR);
+    public void userIsAuthorisedOverloadUsesDiskresjonskodeEgenAnsattAndEnvironmentAuthorisation() throws Exception {
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesT",
+                new ArrayList<>(Arrays.asList("readTRole")));
+
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesQ",
+                new ArrayList<>());
+
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesU",
+                new ArrayList<>());
+
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesP",
+                new ArrayList<>());
+
+        when(userMock.getRoles()).thenReturn(new HashSet<>(Arrays.asList("readTRole")));
+
+        authorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
 
         verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
         verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));
     }
-
-
 
 }

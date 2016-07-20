@@ -4,6 +4,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.jms.ConnectionFactory;
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CachedConnectionFactoryFactory.class);
 
     private static final long CACHE_HOURS_TO_LIVE = 12;
 
@@ -62,6 +66,13 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
         String queueManagerName = strategy.getName();
         String channel          = strategy.getChannelName();
 
+        LOGGER.info( String.format("Creating connection factory '%s@%s:%d' on channel '%s' using transport type '%d'",
+                queueManagerName,
+                hostName,
+                port,
+                channel,
+                transportType) );
+
         factory.setTransportType(transportType);
         factory.setQueueManager(queueManagerName);
         factory.setHostName(hostName);
@@ -82,6 +93,6 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
     }
 
     private String getIdentifier(ConnectionFactoryStrategy strategy) {
-        return String.format("%s.%s.%s", strategy.getHostName(), strategy.getPort(), strategy.getName());
+        return String.format("%s@%s:%d %s %d", strategy.getName(), strategy.getHostName(), strategy.getPort(), strategy.getChannelName(), strategy.getTransportType());
     }
 }
