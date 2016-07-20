@@ -4,7 +4,8 @@ import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
 import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
+import static org.springframework.util.StringUtils.isEmpty;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -20,7 +21,7 @@ public class PingTps implements Command {
     public void execute() throws Exception {
         String response = consumer.sendMessage(PING_MESSAGE);
 
-        if (StringUtils.isEmpty(response) || !response.contains("TPS OK") ) {
+        if (isEmpty(response) || !response.contains("TPS OK") ) {
             throw new RuntimeException();
         }
     }
