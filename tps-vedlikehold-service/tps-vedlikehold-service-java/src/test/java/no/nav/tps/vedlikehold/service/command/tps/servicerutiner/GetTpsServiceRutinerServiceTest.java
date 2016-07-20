@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.command.servicerutiner;
+package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import org.junit.Before;
 import org.junit.Test;

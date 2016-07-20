@@ -14,6 +14,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
 import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
@@ -55,6 +57,9 @@ public class SelftestControllerTest {
     @Mock(name = "mqSelftest")
     private Selftest mqSelftest;
 
+    @Mock(name = "tpsSelftest")
+    private Selftest tpsSelftest;
+
     @Mock
     private MessageProvider messageProviderMock;
 
@@ -74,6 +79,9 @@ public class SelftestControllerTest {
 
         SelftestResult mqResults = new SelftestResult("Mq");
         when(mqSelftest.perform()).thenReturn(mqResults);
+
+        SelftestResult tpsResults = new SelftestResult("Tps");
+        when(tpsSelftest.perform()).thenReturn(tpsResults);
     }
 
 
@@ -186,6 +194,18 @@ public class SelftestControllerTest {
     }
 
     @Test
+    public void setsAggregateStatusToFeiletWhenTpsFailedAndStatusIsNotRequested() throws Exception {
+        SelftestResult mqTestResult = new SelftestResult("Tps", "Tps is down");
+        when(tpsSelftest.perform()).thenReturn(mqTestResult);
+
+        controller.selftest(null, modelMock);
+
+        ArgumentCaptor<SelftestResult.Status> statusCaptor = ArgumentCaptor.forClass(SelftestResult.Status.class);
+        verify(modelMock, atLeastOnce()).addAttribute(anyString(), statusCaptor.capture());
+        assertThat(statusCaptor.getAllValues().contains(FEILET), is(true));
+    }
+
+    @Test
     public void setsAggregateStatusToFeiletWhenMqFailedAndStatusIsNotRequested() throws Exception {
         SelftestResult mqTestResult = new SelftestResult("Mq", "Mq is down");
         when(fasitSelftest.perform()).thenReturn(mqTestResult);
@@ -204,13 +224,14 @@ public class SelftestControllerTest {
         when(veraSelftest.perform()).thenReturn(new SelftestResult("Vera", "Vera is down"));
         when(fasitSelftest.perform()).thenReturn(new SelftestResult("Fasit", "Fasit is down"));
         when(mqSelftest.perform()).thenReturn(new SelftestResult("Mq", "Mq is down"));
+        when(tpsSelftest.perform()).thenReturn(new SelftestResult("Tps", "Tps is down"));
 
 
 
-        when(messageProviderMock.get(anyString(), eq("Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq"))).thenReturn("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq");
+        when(messageProviderMock.get(anyString(), eq("Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq,Tps"))).thenReturn("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq,Tps");
 
         expectedException.expect(SelftestFailureException.class);
-        expectedException.expectMessage("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq");
+        expectedException.expectMessage("The following sub-systems are down: Diskresjonskode,Egen Ansatt,Vera,Fasit,Mq,Tps");
 
         controller.selftest("status", modelMock);
     }
@@ -238,5 +259,33 @@ public class SelftestControllerTest {
         verify(modelMock).addAttribute(eq("applicationProperties"), anyList());
         verify(modelMock).addAttribute(eq("aggregateStatus"), anyString());
         verify(modelMock).addAttribute(eq("selftestResults"), anyList());
+    }
+
+    @Test
+    public void returnsInternalServerErrorIfAggregateStatusIsFeilet() throws Exception {
+        when(tpsSelftest.perform()).thenReturn(new SelftestResult("Tps", "Tps is down"));
+
+        ResponseEntity<String> response = controller.jsonSelftest(null);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    @Test
+    public void returnsOkIfAggregateStatusIsNotFeilet() throws Exception {
+        ResponseEntity<String> response = controller.jsonSelftest(null);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test(expected = SelftestFailureException.class)
+    public void throwsExceptionIfStatusIsNotNullAndResultsContainsFeilet() throws Exception {
+        when(tpsSelftest.perform()).thenReturn(new SelftestResult("Tps", "Tps is down"));
+
+        controller.jsonSelftest("not null");
+    }
+
+    @Test
+    public void doesNotThrowExceptionIfStatusIsNotNullAndResultsDoesNotContainFeilet() throws Exception {
+        controller.jsonSelftest("not null");
     }
 }

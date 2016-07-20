@@ -1,13 +1,13 @@
-package no.nav.tps.vedlikehold.service.command.servicerutiner;
+package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.DefaultServiceRutineMessageFactory;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.ServiceRutineMessageFactory;
-import no.nav.tps.vedlikehold.service.command.servicerutiner.factories.ServiceRutineMessageFactoryStrategy;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactory;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactory;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactoryStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

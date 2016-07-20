@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.command.servicerutiner;
+package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -13,7 +13,7 @@ import java.io.InputStream;
  * @author Tobias Hansen (Visma Consulting AS).
  */
 @Service
-public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerService{
+public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerService {
 
     private final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
 

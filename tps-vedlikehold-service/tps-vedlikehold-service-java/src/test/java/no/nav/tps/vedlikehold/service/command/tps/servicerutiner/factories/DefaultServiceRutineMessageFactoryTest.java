@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.command.servicerutiner.factories;
+package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories;
 
 import org.hamcrest.core.StringEndsWith;
 import org.hamcrest.core.StringStartsWith;

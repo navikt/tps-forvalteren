@@ -70,39 +70,48 @@ public class SelftestController {
     private Selftest mqSelftest;
 
     @Autowired
+    @Qualifier(value = "tpsSelftest")
+    private Selftest tpsSelftest;
+
+    @Autowired
     private MessageProvider messageProvider;
 
+
+    /**
+     * Get the results from selftest as a JSON object
+     */
     @RequestMapping(value = "/internal/selftest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> jsonSelftest(@RequestParam(value = "status", required = false) String status, Model model) throws Exception {
+    public ResponseEntity<String> jsonSelftest(@RequestParam(value = "status", required = false) String status) throws Exception {
 
         List<SelftestResult> selftestResults = collectSelftestResults();
-        JsonSelftest jsonSelftest = new JsonSelftest();
-        HttpStatus responseStatus = HttpStatus.OK;
+        JsonSelftest jsonSelftest            = new JsonSelftest();
+        HttpStatus responseStatus            = HttpStatus.OK;
 
         if (status != null && containsFailures(selftestResults)) {
             String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
             throw new SelftestFailureException(message);
-        } else {
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            jsonSelftest.setApplicationName(descriptiveApplicationName);
-            jsonSelftest.setApplicationVersion(applicationVersion);
-            jsonSelftest.setTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-            jsonSelftest.setAggregateStatus(aggregateSelftestResults(selftestResults));
-            jsonSelftest.setChecks(selftestResults);
-
-            String jsonResponse = mapper.writeValueAsString(jsonSelftest);
-
-
-            if (FEILET.equals(jsonSelftest.getAggregateStatus())) {
-                responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
-
-            return new ResponseEntity<String>(jsonResponse, responseStatus);
         }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        jsonSelftest.setApplicationName(descriptiveApplicationName);
+        jsonSelftest.setApplicationVersion(applicationVersion);
+        jsonSelftest.setTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+        jsonSelftest.setAggregateStatus(aggregateSelftestResults(selftestResults));
+        jsonSelftest.setChecks(selftestResults);
+
+        String jsonResponse = mapper.writeValueAsString(jsonSelftest);
+
+        if (FEILET.equals(jsonSelftest.getAggregateStatus())) {
+            responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(jsonResponse, responseStatus);
     }
 
+    /**
+     *  Get the selftest HTML page
+     */
     @RequestMapping(value = "/internal/selftest", produces = MediaType.TEXT_HTML_VALUE)
     public String selftest(@RequestParam(value = "status", required = false) String status, Model model) {
 
@@ -152,7 +161,8 @@ public class SelftestController {
                 egenAnsattSelftest.perform(),
                 veraSelftest.perform(),
                 fasitSelftest.perform(),
-                mqSelftest.perform()
+                mqSelftest.perform(),
+                tpsSelftest.perform()
         ));
     }
 

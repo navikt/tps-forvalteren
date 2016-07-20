@@ -63,7 +63,7 @@ public class DefaultMessageQueueService implements MessageQueueService {
         producer.send(requestMessage);
 
         /* Wait for response */
-        String attributes        = String.format("JMSCorrelationID='%s'", requestMessage.getJMSMessageID());
+        String attributes = String.format("JMSCorrelationID='%s'", requestMessage.getJMSMessageID());
 
         MessageConsumer consumer = session.createConsumer(responseDestination, attributes);
 
