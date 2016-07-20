@@ -51,7 +51,7 @@ public class ServiceController {
 
         User user                = userFactory.createUser(strategy);
         String fnr               = (String) parameters.get("fnr");
-        String mappedEnvironment = mappedEnvironment(environment);                         // Environments in U are mapped to T4
+        String mappedEnvironment = mappedEnvironment(environment);                         // Environments in U are mapped to t4
 
         if (fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, mappedEnvironment)) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);

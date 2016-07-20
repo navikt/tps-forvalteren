@@ -41,7 +41,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
         Queue responseQueue       = fasitMessageQueueConsumer.getResponseQueue(environment);
 
-        ConnectionFactoryStrategy connectionFactoryStrategy = new QueueManagerConnectionFactoryStrategy(queueManager);
+        ConnectionFactoryStrategy connectionFactoryStrategy = new QueueManagerConnectionFactoryStrategy(queueManager, environment);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryStrategy);
 

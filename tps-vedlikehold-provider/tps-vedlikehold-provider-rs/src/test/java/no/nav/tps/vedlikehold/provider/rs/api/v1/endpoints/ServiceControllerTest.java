@@ -12,6 +12,7 @@ import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.ldap.userdetails.Person;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -75,5 +76,39 @@ public class ServiceControllerTest {
 
         verify(authorisationServiceMock, never()).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
         verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), anyMap(), anyString());
+    }
+
+    @Test
+    public void environmentsInUAreMappedToT4() throws Exception {
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+                .thenReturn(true);
+
+        serviceController.getService(mock(HttpSession.class), "u1", parametersMock, "serviceRutineName");
+
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq("t4"));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq("t4"));
+    }
+
+    @Test
+    public void environmentsNotInUAreNotMapped() throws Exception {
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+                .thenReturn(true);
+
+        serviceController.getService(mock(HttpSession.class), "t1", parametersMock, "serviceRutineName");
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq("t1"));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq("t1"));
+
+        serviceController.getService(mock(HttpSession.class), "q1", parametersMock, "serviceRutineName");
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq("q1"));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq("q1"));
+
+        serviceController.getService(mock(HttpSession.class), "p1", parametersMock, "serviceRutineName");
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq("p1"));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq("p1"));
+
+        serviceController.getService(mock(HttpSession.class), "", parametersMock, "serviceRutineName");
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq(""));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq(""));
+
     }
 }

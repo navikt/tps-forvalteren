@@ -8,9 +8,11 @@ import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 public class QueueManagerConnectionFactoryStrategy implements ConnectionFactoryStrategy {
 
     private QueueManager queueManager;
+    private String environment;
 
-    public QueueManagerConnectionFactoryStrategy(QueueManager queueManager) {
+    public QueueManagerConnectionFactoryStrategy(QueueManager queueManager, String environment) {
         this.queueManager = queueManager;
+        this.environment = environment;
     }
 
     @Override
@@ -35,6 +37,6 @@ public class QueueManagerConnectionFactoryStrategy implements ConnectionFactoryS
 
     @Override
     public String getChannelName() {
-        return "T4_SAKOGBEHANDLING";                            //TODO: Make dynamic [PKJAG-2685]
+        return environment.toUpperCase() + "_TPSWS";                            //TODO: Make dynamic [PKJAG-2685]
     }
 }
