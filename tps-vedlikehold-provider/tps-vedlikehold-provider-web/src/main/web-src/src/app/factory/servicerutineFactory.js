@@ -81,13 +81,13 @@ angular.module('tps-vedlikehold')
             return isSetEnvironments;
         };
         
-        servicerutineFactory.getFromServerServicerutiner = function () {
-            return $http({method: 'GET', url: urlBase});
-        };
-
-        servicerutineFactory.getFromServerEnvironments = function () {
-            return $http({method: 'GET', url: urlBaseEnv});
-        };
+        // servicerutineFactory.getFromServerServicerutiner = function () {
+        //     return $http({method: 'GET', url: urlBase});
+        // };
+        //
+        // servicerutineFactory.getFromServerEnvironments = function () {
+        //     return $http({method: 'GET', url: urlBaseEnv});
+        // };
         
         servicerutineFactory.setServicerutiner = function(data) {
             servicerutineFactory.servicerutiner = data.tpsPersonData;

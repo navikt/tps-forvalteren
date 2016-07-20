@@ -14,6 +14,7 @@ require('./services/locationService');
 require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
+require('./services/serverService');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 
     'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
@@ -56,6 +57,13 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             'side-navigator@' : {
                 templateUrl: "app/shared/side-navigator/side-navigator.html"
             }
+        },
+        resolve: {
+            testy: function(){
+                return {value: "hello"};
+            }
+            // servicerutinePromise: "serverService.getFromServerServicerutiner()",
+            // environmentPromise: "serverService.getFromServerEnvironments()"
         }
     });
 
@@ -84,10 +92,10 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
         
-        if (authenticated) { return; }
-        else {
-            event.preventDefault();
-            locationService.redirectToLoginState();
-        }
+        // if (authenticated) { return; }
+        // else {
+        //     event.preventDefault();
+        //     locationService.redirectToLoginState();
+        // }
     });
 }]);
