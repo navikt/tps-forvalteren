@@ -1,10 +1,10 @@
-package no.nav.tps.vedlikehold.provider.web.model;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models;
 
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.OK;
+import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.FEILET;
+import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.OK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

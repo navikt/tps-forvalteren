@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.web.model;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models;
 
 import org.junit.Test;
 

@@ -1,10 +1,11 @@
-package no.nav.tps.vedlikehold.provider.web;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.provider.web.exception.SelftestFailureException;
-import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
-import no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status;
-import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exception.SelftestFailureException;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.SelftestController;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.Selftest;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
+import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.FEILET;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
