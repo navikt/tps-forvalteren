@@ -27,6 +27,12 @@ public class AuthorisationService {
     @Value("${tps.vedlikehold.security.q.readroles}")
     private List<String> readRolesQ;
 
+    @Value("${tps.vedlikehold.security.u.readroles}")
+    private List<String> readRolesU;
+
+    @Value("${tps.vedlikehold.security.p.readroles}")
+    private List<String> readRolesP;
+
 //    @Autowired
     /* FIXME: Remove these mock when TPSWS is up and running */
     private DiskresjonskodeConsumer diskresjonskodeConsumer = new DiskresjonskodeConsumer() {
@@ -92,6 +98,8 @@ public class AuthorisationService {
         readEnvironmentStrategy.setEnvironment(environment);
         readEnvironmentStrategy.setReadQRoles( new HashSet<>(readRolesQ) );
         readEnvironmentStrategy.setReadTRoles( new HashSet<>(readRolesT) );
+        readEnvironmentStrategy.setReadURoles( new HashSet<>(readRolesU) );
+        readEnvironmentStrategy.setReadPRoles( new HashSet<>(readRolesP) );
 
 
         List<AuthorisationServiceStrategy> strategies = Arrays.asList(

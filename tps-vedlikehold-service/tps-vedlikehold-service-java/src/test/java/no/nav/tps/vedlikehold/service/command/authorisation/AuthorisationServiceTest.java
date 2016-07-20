@@ -100,6 +100,16 @@ public class AuthorisationServiceTest {
                 "readRolesQ",
                 new ArrayList<>());
 
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesU",
+                new ArrayList<>());
+
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesP",
+                new ArrayList<>());
+
         when(userMock.getRoles()).thenReturn(new HashSet<>(Arrays.asList("readTRole")));
 
         authorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
@@ -107,7 +117,5 @@ public class AuthorisationServiceTest {
         verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
         verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));
     }
-
-
 
 }

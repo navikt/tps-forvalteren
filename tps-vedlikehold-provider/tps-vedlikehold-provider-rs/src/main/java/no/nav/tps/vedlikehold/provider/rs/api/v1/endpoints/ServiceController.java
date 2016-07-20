@@ -46,24 +46,25 @@ public class ServiceController {
                                             @PathVariable("serviceRutinenavn") String serviceRutineName) throws Exception {
 
         /* Verify authorisation */
-        UserFactory userFactory = new DefaultUserFactory();
+        UserFactory userFactory      = new DefaultUserFactory();
         UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
 
-        User user = userFactory.createUser(strategy);
-        String fnr = (String) parameters.get("fnr");
+        User user                = userFactory.createUser(strategy);
+        String fnr               = (String) parameters.get("fnr");
+        String mappedEnvironment = mappedEnvironment(environment);                         // Environments in U are mapped to T4
 
-        if (fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment)) {
+        if (fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, mappedEnvironment)) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 
         /* Get results from TPS */
-        return tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+        return tpsServiceRutineService.execute(serviceRutineName, parameters, mappedEnvironment);
     }
 
 
     /**
      * Get an JSONObject containing all implemented ServiceRutiner
-     * and their allowed input attriubtes
+     * and their allowed input attributes
      *
      * @return JSONObject as String containing metadata about all ServiceRutiner
      */
@@ -71,5 +72,19 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.GET)
     public String getTpsServiceRutiner() {
         return getTpsServiceRutinerService.exectue();
+    }
+
+    /* Environments in U are mapped to T4 */
+    /* TODO: This could be handled more gracefully */
+    private String mappedEnvironment(String environment) {
+        if (environment == null || environment.isEmpty()) {
+            return environment;
+        }
+
+        if (environment.charAt(0) == 'u') {
+            return "t4";
+        }
+
+        return environment;
     }
 }
