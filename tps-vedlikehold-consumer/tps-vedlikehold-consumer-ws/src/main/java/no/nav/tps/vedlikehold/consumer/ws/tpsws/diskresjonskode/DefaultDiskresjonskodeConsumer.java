@@ -56,10 +56,10 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
 
         try {
             MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
-            HentDiskresjonskodeResponse respons = diskresjonskodePortType.hentDiskresjonskode(request);
+            HentDiskresjonskodeResponse response = diskresjonskodePortType.hentDiskresjonskode(request);
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
 
-            return respons;
+            return response;
         } catch (Exception e) {
             if (DISKRESJONSKODE_NOT_FOUND_ERROR.equals(e.getMessage())) {
                 throw new PersonNotFoundException(fNr, e);

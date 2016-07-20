@@ -10,12 +10,6 @@ import org.springframework.context.annotation.Import;
  * @author Kristian Kyvik (Visma Conuslting AS).
  */
 @Configuration
-@Import({
-        WebProviderConfig.class,
-        RestProviderConfig.class,
-        ServiceConfig.class,
-        CommonConfig.class
-})
+@Import(WebProviderConfig.class)
 public class ApplicationConfig {
-
 }

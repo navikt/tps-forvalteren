@@ -13,9 +13,9 @@ import java.util.Set;
 public class GetEnvironments {
 
     @Autowired
-    VeraConsumer veraConsumer;
+    private VeraConsumer veraConsumer;
 
-    public Set<String> execute(String application){
+    public Set<String> execute(String application) {
         return veraConsumer.getEnvironments(application);
     }
 }

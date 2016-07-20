@@ -11,6 +11,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toSet;
 
 /**
+ * @author Kristian Kyvik (Visma Consulting AS).
  * @author Tobias Hansen (Visma Consulting AS).
  */
 @Component
