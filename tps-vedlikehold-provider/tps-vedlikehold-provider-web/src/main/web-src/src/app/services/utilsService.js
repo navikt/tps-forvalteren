@@ -74,7 +74,7 @@ angular.module('tps-vedlikehold.service')
                     var single = Boolean(ln.match(/<.+\/>/));
                     var closing = Boolean(ln.match(/<\/.+>/));
                     var opening = Boolean(ln.match(/<[^!].*>/));
-                    var type = single ? 'single' : closing ? 'closing' : opening ? 'opening' : 'other';
+                    var type = single ? 'single' : (closing ? 'closing' : (opening ? 'opening' : 'other'));
                     var fromTo = lastType + '->' + type;
                     lastType = type;
                     var padding = '';
