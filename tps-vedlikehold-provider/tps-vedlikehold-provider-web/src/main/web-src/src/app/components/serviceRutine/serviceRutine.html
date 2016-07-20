@@ -1,36 +1,55 @@
 <div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
     <div ng-show="isValidServiceRutinenavn" layout="column" flex>
-        <md-content flex-gt-xs="20" class="tps-vk-top md-whiteframe-z2" layout-padding>
+        <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm="33"></tps-input-field>
-                    <span flex="33"></span>
+                    <!--<tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm></tps-input-field>-->
+                    <md-input-container class="tps-input-input-container" flex-gt-sm>
+                        <label>Fødselsnummer</label>
+                        <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
+                    </md-input-container>
+                    <!--<div class="date-picker-container" flex-gt-sm>-->
+                        <!--<label>Dato</label>-->
+                        <!--<md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>-->
+                    <!--</div>-->
+                    <md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-sm></md-datepicker>
+                    <md-input-container flex-gt-sm class="tps-input-input-container" >
+                        <label>Aksjonskode</label>
+                        <md-select ng-model="formData.aksjonsKode" placeholder="Aksjonskode">
+                            <md-option ng-repeat="val in aksjonsKoder" ng-value="val">{{ val }}</md-option>
+                        </md-select>
+                    </md-input-container>
                 </div>
-                <md-divider></md-divider>
-                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align="end end">
-                    <md-input-container>
+                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
+                    <md-input-container flex-gt-sm  class="tps-input-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-button type="submit" class="md-raised md-accent">Send til TPS</md-button>
+                    <md-input-container flex-gt-sm class="tps-input-input-container" >
+                        <md-button type="submit" class="md-raised md-accent tps-vk-submit-btn">Send til TPS</md-button>
+                    </md-input-container>
+                    <span flex-gt-sm></span>
                 </div>
             </form>
-        </md-content>
+        </div>
         <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Resultat">
                     <tps-response-form service-rutinenavn="serviceRutinenavn"></tps-response-form>
                 </md-tab>
                 <md-tab label="XML">
-                    <div hljs hljs-source="xmlForm" language="XML" layout-padding>
+                    <div hljs hljs-source="xmlForm" hljs-language="xml" layout-padding>
                     </div>
                 </md-tab>
             </md-tabs>
         </md-content>
     </div>
-    <div ng-show="!isValidServiceRutinenavn">
-        <h2>Velg en servicerutine i menyen til venstre</h2>
+    <div ng-show="!isValidServiceRutinenavn"  layout="column" flex>
+        <md-content class="tps-vk-top md-whiteframe-z2">
+            <h1 class="md-title">Velkommen til ny TPS Vedlikeholdsklient!</h1>
+            <p>Velg en servicerutine i menyen til venstre</p>
+        </md-content>
     </div>
 </div>

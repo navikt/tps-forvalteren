@@ -75,6 +75,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         .backgroundPalette('tps-vk-grey', {
             'default': '50'
         });
+        
 }]);
 
 app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService', function($rootScope, $state, authenticationService, sessionService, locationService){

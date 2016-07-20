@@ -6,8 +6,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
         function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory) {
 
             var tpsReturnedObject = {};
-
-            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;            
+            
+            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             $scope.isValidServiceRutinenavn = false;
             $scope.formData = {};
 
