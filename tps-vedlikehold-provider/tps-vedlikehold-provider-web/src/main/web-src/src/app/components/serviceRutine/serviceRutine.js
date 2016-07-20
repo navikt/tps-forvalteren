@@ -160,7 +160,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 $scope.fields.push('aksjonsKode');
             }
             
-            function setIsValidRutineserviceCode() {
+            function setIsValidServiceRutinenavn() {
                 $scope.isValidServiceRutinenavn = ($scope.serviceRutinenavn in servicerutineFactory.getServicerutiner());
             }
             
@@ -190,7 +190,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             }
 
             function init() {
-                setIsValidRutineserviceCode();
+                setIsValidServiceRutinenavn();
                 
                 //better way to do this?
                 if (!$scope.isValidServiceRutinenavn) {
