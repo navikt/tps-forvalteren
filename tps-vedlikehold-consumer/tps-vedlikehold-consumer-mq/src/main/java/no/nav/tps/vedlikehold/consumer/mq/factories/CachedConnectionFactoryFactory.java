@@ -66,7 +66,7 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
         String queueManagerName = strategy.getName();
         String channel          = strategy.getChannelName();
 
-        LOGGER.debug( String.format("Creating connection factory '%s@%s:%d' on channel '%s' using transport type '%d'",
+        LOGGER.info( String.format("Creating connection factory '%s@%s:%d' on channel '%s' using transport type '%d'",
                 queueManagerName,
                 hostName,
                 port,

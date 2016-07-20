@@ -35,7 +35,7 @@ public class DefaultMessageQueueService implements MessageQueueService {
 
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
         /* Initiate session */
-        LOGGER.debug("Create connection with username '" + MESSAGE_QUEUE_USERNAME + "' and password '" + MESSAGE_QUEUE_PASSWORD + "'");
+        LOGGER.info("Create MQ connection with username '" + MESSAGE_QUEUE_USERNAME + "' and password '" + MESSAGE_QUEUE_PASSWORD + "'");
         Connection connection = connectionFactory.createConnection(MESSAGE_QUEUE_USERNAME, MESSAGE_QUEUE_PASSWORD);
 
         connection.start();
