@@ -9,10 +9,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
 
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             
-            //
             $scope.responseReceived = true;//
-            //
-            
+                        
             $scope.isValidServiceRutinenavn = false;
             $scope.formData = {};
 

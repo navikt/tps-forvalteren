@@ -20,7 +20,7 @@ angular.module('tps-vedlikehold')
                     .cancel('Avbryt');
                 $mdDialog.show(confirm).then(function () {
                     getFromServerServicerutiner();
-                    getFromServerEnvironments()
+                    getFromServerEnvironments();
                 }).finally(function(){
                     displayingErrorMessage = false;
                 });
