@@ -5,7 +5,7 @@
   .tps-vk-top {
     margin-bottom: 10px;
     background-color: white;
-    padding: 10px 35px 8px;
+    padding: 25px 35px 8px;
 
     .tps-input-input-container {
       margin: 8px 0;
@@ -36,7 +36,10 @@
           border-color: rgba(0,0,0,0.12);
           color: rgba(0,0,0,0.54);
           &.filled {
-            border-color: rgb(63,81,181);
+            border-color: @tps-vk-background-primary;
+          }
+          &.empty {
+            border-color: @tps-vk-background-accent;
           }
         }
       }
