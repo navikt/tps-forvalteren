@@ -1,5 +1,10 @@
 package no.nav.tps.vedlikehold.provider.web;
 
+import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
+import no.nav.tps.vedlikehold.provider.web.exception.SelftestFailureException;
+import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
+import no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status;
+import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,21 +16,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ui.Model;
 
-
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-
-import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.provider.web.exception.SelftestFailureException;
-import no.nav.tps.vedlikehold.provider.web.model.SelftestResult;
-import no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status;
-import no.nav.tps.vedlikehold.provider.web.selftest.Selftest;
-
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
 import static org.mockito.Mockito.*;
 
 /**

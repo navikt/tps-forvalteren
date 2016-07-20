@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.application.local;
 
+import no.nav.modig.testcertificates.TestCertificates;
 import org.springframework.boot.SpringApplication;
 
 /**
@@ -8,7 +9,8 @@ import org.springframework.boot.SpringApplication;
 public class ApplicationStarter {
 
     public static void main(String[] args) {
-        SpringApplication.run(LocalApplicationConfig.class, args);
+        TestCertificates.setupKeyAndTrustStore();
 
+        SpringApplication.run(LocalApplicationConfig.class, args);
     }
 }

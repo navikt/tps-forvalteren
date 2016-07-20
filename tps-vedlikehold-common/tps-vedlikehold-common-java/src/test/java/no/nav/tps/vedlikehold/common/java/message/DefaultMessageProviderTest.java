@@ -2,12 +2,12 @@ package no.nav.tps.vedlikehold.common.java.message;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
+import no.nav.tps.vedlikehold.common.test.util.LoggerTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -16,21 +16,15 @@ import java.util.Locale;
 
 import static ch.qos.logback.classic.Level.ERROR;
 import static ch.qos.logback.classic.Level.WARN;
-import static org.hamcrest.CoreMatchers.both;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
+import static no.nav.tps.vedlikehold.common.test.util.LoggerTestUtils.hasLevelEqualTo;
+import static no.nav.tps.vedlikehold.common.test.util.LoggerTestUtils.hasMessageContaining;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import no.nav.tps.vedlikehold.common.test.util.LoggerTestUtils;
-import static  no.nav.tps.vedlikehold.common.test.util.LoggerTestUtils.hasLevelEqualTo;
-import static no.nav.tps.vedlikehold.common.test.util.LoggerTestUtils.hasMessageContaining;
-
-import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
 
 
 /**

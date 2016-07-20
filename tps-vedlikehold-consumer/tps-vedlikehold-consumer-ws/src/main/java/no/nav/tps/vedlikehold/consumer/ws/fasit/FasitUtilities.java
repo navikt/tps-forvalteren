@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
-
 import no.nav.aura.envconfig.client.DomainDO;
 
 public class FasitUtilities {

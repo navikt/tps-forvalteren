@@ -10,7 +10,6 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.Diskresjo
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;

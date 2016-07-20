@@ -8,15 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTEST_UNKNOWN_ERROR_KEY;
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
+import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.OK;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.number.OrderingComparison.greaterThan;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
-
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.FEILET;
-import static no.nav.tps.vedlikehold.provider.web.model.SelftestResult.Status.OK;
-import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTEST_UNKNOWN_ERROR_KEY;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

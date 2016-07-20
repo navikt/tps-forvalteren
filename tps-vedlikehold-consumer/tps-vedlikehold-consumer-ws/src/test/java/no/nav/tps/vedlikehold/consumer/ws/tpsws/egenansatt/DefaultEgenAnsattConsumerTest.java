@@ -4,6 +4,7 @@ import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -12,6 +13,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.xml.soap.Node;
+import javax.xml.soap.SOAPFault;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,6 +31,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultEgenAnsattConsumerTest {
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
+    private static final String PERSON_NOT_FOUND_ERROR = "PERSON IKKE FUNNET";
+    private static final String SOAP_Fault_Error = "Soap error";
     private static final String TEST_FNR = "11223344556";
 
     @InjectMocks
@@ -33,6 +40,9 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Mock
     private PipEgenAnsattPortType egenAnsattPortType;
+
+    @Mock
+    SOAPFaultException soapFaultException;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -59,12 +69,13 @@ public class DefaultEgenAnsattConsumerTest {
 
         boolean result = egenAnsattConsumer.ping();
 
-        assertThat(result, is(equalTo(true)));
+        assertThat(result, is(true));
     }
 
     @Test
     public void pingThrowsExceptionWhenIsEgenAnsattThrowsException() throws Exception {
         RuntimeException thrownException = new RuntimeException(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
+
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
                 any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(thrownException);
@@ -76,7 +87,33 @@ public class DefaultEgenAnsattConsumerTest {
     }
 
     @Test
-    public void hentDiskresjonskodeRequestIsSentWithCorrectFNr() throws java.lang.Exception {
+    public void pingReturnsTrueWhenIsEgenAnsattThrowsPersonNotFoundException() throws Exception {
+        when(soapFaultException.getMessage()).thenReturn(PERSON_NOT_FOUND_ERROR);
+
+        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
+                any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+                .thenThrow(soapFaultException);
+
+        boolean result = egenAnsattConsumer.ping();
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    public void pingThrowsExceptionWhenIsEgenAnsattThrowsSOAPFaultExceptionNotContainingPersonIkkeFunnet() throws Exception {
+        when(soapFaultException.getMessage()).thenReturn(SOAP_Fault_Error);
+
+        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
+                any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+                .thenThrow(soapFaultException);
+
+        expectedException.expect(SOAPFaultException.class);
+
+        boolean result = egenAnsattConsumer.ping();
+    }
+
+    @Test
+    public void hentDiskresjonskodeRequestIsSentWithCorrectFNr() throws Exception {
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
                 any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenReturn(new ErEgenAnsattEllerIFamilieMedEgenAnsattResponse());

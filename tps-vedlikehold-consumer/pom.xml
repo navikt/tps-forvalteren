@@ -11,11 +11,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tps-vedlikehold-consumer</artifactId>
-    <packaging>pom</packaging>
     <name>TPS Vedlikeholdsklient :: Consumer</name>
+
+    <packaging>pom</packaging>
+
     <modules>
         <module>tps-vedlikehold-consumer-mq</module>
-        <module>tps-vedlikehold-consumer-ws</module>
         <module>tps-vedlikehold-consumer-rs</module>
+        <module>tps-vedlikehold-consumer-ws</module>
     </modules>
+
 </project>

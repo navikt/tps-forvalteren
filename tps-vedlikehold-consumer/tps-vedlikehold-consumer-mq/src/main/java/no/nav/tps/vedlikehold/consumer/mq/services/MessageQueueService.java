@@ -8,4 +8,6 @@ import javax.jms.JMSException;
 public interface MessageQueueService {
     String sendMessage(String requestMessageContent) throws JMSException;
     String sendMessage(String requestMessageContent, long timeout) throws JMSException;
+
+    boolean ping() throws JMSException;
 }

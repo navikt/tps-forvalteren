@@ -19,6 +19,12 @@
         <applicationProperties alias="tps-vedlikeholdProperties"/>
     </resources>
 
+    <security serviceUserResourceAlias="srvtps-vedlikehold">
+        <logins>
+            <saml/>
+        </logins>
+    </security>
+
     <artifacts>
         <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>
     </artifacts>
