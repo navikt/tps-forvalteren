@@ -5,6 +5,7 @@ require('angular-material');
 require('angular-messages');
 require('angular-material-icons');
 require('angular-highlightjs');
+require('angular-moment');
 
 require('./components/login/login');
 require('./components/servicerutine/servicerutine');
@@ -16,7 +17,7 @@ require('./services/utilsService');
 require('./services/authenticationService');
 require('./services/serverService');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'tps-vedlikehold.login', 
+var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
     'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
 
 require('./factory/servicerutineFactory');

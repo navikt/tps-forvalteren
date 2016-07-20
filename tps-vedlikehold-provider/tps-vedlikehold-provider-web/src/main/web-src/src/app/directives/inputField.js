@@ -18,8 +18,5 @@ angular.module('tps-vedlikehold').directive('tpsInputField', function(){
             };
         },
         template: '<div class="tps-input-field" ng-include="getTemplateUrl()" flex-gt-sm></div>'
-        // templateUrl: function(elem, attr) {
-        //     return templatesPath + '' + attr.fieldData.type + '' + templateSuffix;
-        // }
     };
 });

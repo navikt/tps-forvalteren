@@ -3,7 +3,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('utilsService', [function(){
+    .service('utilsService', ['moment', function(moment){
 
         var self = this;
 
@@ -12,16 +12,7 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.formatDate = function(dateObj) {
-            function pad(num) {
-                if (num < 10) {
-                    return '0' + num;
-                }
-                return num;
-            }
-
-            return dateObj.getFullYear() +
-                    '-' + pad(dateObj.getMonth() + 1) +
-                    '-' + pad(dateObj.getDate());
+            return moment(dateObj).format('YYYY-MM-DD');
         };
 
         self.flattenObject = function(ob, nonUniques) {
