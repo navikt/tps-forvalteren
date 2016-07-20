@@ -1,8 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.vera;
 
-import no.nav.tps.vedlikehold.service.command.Command;
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
-
+import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

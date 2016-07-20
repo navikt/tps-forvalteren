@@ -15,7 +15,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -33,7 +34,7 @@ public class VeraConsumerTest {
     private RestTemplate restTemplateMock;
 
     @InjectMocks
-    private VeraConsumer veraConsumer = new VeraConsumer();
+    private VeraConsumer veraConsumer = new DefaultVeraConsumer();
 
     private VeraApplication q4;
     private VeraApplication t3;

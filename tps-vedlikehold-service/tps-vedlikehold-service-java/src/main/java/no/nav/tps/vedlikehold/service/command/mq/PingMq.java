@@ -1,9 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.mq;
 
-import no.nav.tps.vedlikehold.consumer.mq.services.DefaultMessageQueueService;
 import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
 import no.nav.tps.vedlikehold.service.command.Command;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

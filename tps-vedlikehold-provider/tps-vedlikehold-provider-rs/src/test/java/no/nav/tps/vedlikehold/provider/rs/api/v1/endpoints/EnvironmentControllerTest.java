@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.EnvironmentController;
 import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
