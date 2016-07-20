@@ -24,7 +24,7 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.Selftest;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exception.SelftestFailureException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.AggregateSelftestResult;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.ApplicationProperty;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.JsonSelftest;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.JsonSelftest;
 
 import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
 import static java.util.Arrays.asList;
