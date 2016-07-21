@@ -25,7 +25,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     tpsReturnedObject = res.data.data;
 
                     var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                    var message = "Status: " + svarStatus.returStatus + " Retur Melding: " +  svarStatus.returMelding + " Utfyllende Melding: " +  svarStatus.utfyllendeMelding;
+                    var message = "Status: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
                     $scope.svarStatus = message;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
@@ -116,7 +116,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             function init() {
                 setIsValidServiceRutinenavn();
                 
-                //better way to do this?
                 if (!$scope.isValidServiceRutinenavn) {
                     return;
                 }
