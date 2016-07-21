@@ -15,6 +15,10 @@ angular.module('tps-vedlikehold.service')
             return moment(dateObj).format('YYYY-MM-DD');
         };
 
+        self.isInFuture = function(dateObj) {
+            return moment().diff(dateObj) < 0;
+        };
+
         self.flattenObject = function(ob, nonUniques) {
             var ret = {};
             

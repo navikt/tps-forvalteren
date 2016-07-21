@@ -54,14 +54,16 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             function createParams(formData) {
                 var params = {};
                 params.fnr = formData.fnr;
-
-                var aksjonsDato = formData.aksjonsDato ? formData.aksjonsDato : new Date();
-                params.aksjonsDato = utilsService.formatDate(aksjonsDato);
-                
+                params.aksjonsDato = checkDate(formData.aksjonsDato);
                 params.aksjonsKode = formData.aksjonsKode.charAt(0);
                 params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
                 params.environment = formData.environment;
                 return params;
+            }
+
+            function checkDate(asksjonDato) {
+                var aksjonsDato = !asksjonDato || utilsService.isInFuture(asksjonDato) ? new Date() : aksjonsDato;
+                return utilsService.formatDate(aksjonsDato);
             }
             
             function getServicerutineAttributesNames() {
