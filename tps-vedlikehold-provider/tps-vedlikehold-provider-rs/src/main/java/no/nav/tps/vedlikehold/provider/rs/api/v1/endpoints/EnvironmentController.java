@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping(value = "api/v1")
-public class EnvironmentController {
+public class EnvironmentController extends BaseController {
 
     @Autowired
     public GetEnvironments getEnvironments;

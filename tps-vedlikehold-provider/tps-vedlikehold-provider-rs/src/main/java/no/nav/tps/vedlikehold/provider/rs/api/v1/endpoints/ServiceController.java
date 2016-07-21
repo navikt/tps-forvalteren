@@ -27,10 +27,9 @@ import java.util.Map;
  * @author Tobias Hansen, Visma Consulting AS
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-
 @RestController
 @RequestMapping(value = "api/v1")
-public class ServiceController {
+public class ServiceController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
 
@@ -81,7 +80,11 @@ public class ServiceController {
         }
 
         try {
-            return tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+            ServiceRutineResponse response = tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+
+            loggSporing(environment, serviceRutineName, fnr);
+
+            return response;
         } catch (Exception exception) {
             LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
                     serviceRutineName,
