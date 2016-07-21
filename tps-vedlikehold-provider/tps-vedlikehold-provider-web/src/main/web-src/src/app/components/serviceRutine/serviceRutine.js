@@ -2,8 +2,8 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog',  '$http', 'utilsService', 'servicerutineFactory', 'formConfig',
-        function($scope, $stateParams, $mdDialog, $http, utilsService, servicerutineFactory, formConfig) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$mdToast', 'utilsService', 'servicerutineFactory', 'formConfig',
+        function($scope, $stateParams, $mdDialog, $mdToast, utilsService, servicerutineFactory, formConfig) {
 
             var tpsReturnedObject = {};
             
@@ -13,7 +13,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             $scope.formConfig = formConfig;
 
             var nonUniqueProperties = [];
-
             var requiredAttributes = [];
 
             $scope.submit = function() {
@@ -22,6 +21,13 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 servicerutineFactory.getResponse($scope.serviceRutinenavn, params).then(function(res) {
                     $scope.xmlForm = utilsService.formatXml(res.data.xml);
                     tpsReturnedObject = res.data.data;
+
+                    var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
+                    var toast = $mdToast.simple().content("Status: " + svarStatus.returStatus + " Retur Melding: " +  svarStatus.returMelding + " Utfyllende Melding: " +  svarStatus.utfyllendeMelding );
+
+                    $mdToast.show(toast);
+
+
                     $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
