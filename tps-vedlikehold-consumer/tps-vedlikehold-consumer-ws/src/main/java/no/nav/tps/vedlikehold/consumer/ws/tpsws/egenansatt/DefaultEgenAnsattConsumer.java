@@ -5,7 +5,6 @@ import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 import org.apache.cxf.common.i18n.Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +31,9 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
     @Override
     public boolean ping() throws Exception {
-        try {
-            isEgenAnsatt(PING_FNR);
-            return true;
-        } catch (PersonNotFoundException e) {
-            return true;
-        }
+        isEgenAnsatt(PING_FNR);
+
+        return true;
     }
 
     @Override
@@ -57,10 +53,16 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         } catch (SOAPFaultException exception) {
 
             if (exception.getMessage().contains("PERSON IKKE FUNNET")) {
-                throw new PersonNotFoundException(fNr, exception);
+                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: Person not found");
+
+                return false;
+            } else if (exception.getMessage().contains("FØDSELSNUMMER INNGITT ER UGYLDIG")) {
+                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: Invalid Fnr");
+
+                return false;
             }
 
-            LOGGER.error("Is egen ansatt failed with exception: {}", exception.toString());
+            LOGGER.error("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
             throw exception;
         }
