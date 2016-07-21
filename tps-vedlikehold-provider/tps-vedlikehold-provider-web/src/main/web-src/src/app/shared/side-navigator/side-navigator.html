@@ -10,9 +10,9 @@
                 </md-list-item>
 
                 <md-list-item ng-repeat="serviceRutinenavn in serviceRutinenavns" class="servicerutine-list-item">
-                        <md-button md-ripple-container class="md-primary servicerutine-button" ng-click="getRequestForm(serviceRutinenavn)"
+                        <md-button md-ripple-container class="md-primary servicerutine-button"
                                    ui-sref="servicerutine({serviceRutinenavn: serviceRutinenavn})"
-                                   ui-sref-active="activeMenuButton" tabindex="1">
+                                   ui-sref-active="activeMenuButton" tabindex="0">
                             {{ getServicerutineInternNavn(serviceRutinenavn) }}
                         </md-button>
                     <md-divider></md-divider>

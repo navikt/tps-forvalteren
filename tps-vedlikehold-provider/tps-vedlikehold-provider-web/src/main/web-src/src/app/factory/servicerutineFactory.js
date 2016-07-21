@@ -44,13 +44,46 @@ angular.module('tps-vedlikehold')
         };
 
         servicerutineFactory.loadFromServerServicerutiner = function() {
-            return $http({method: 'GET', url: urlBase}).then(function(res) {
-                servicerutineFactory.servicerutiner = res.data.tpsPersonData;
-                isSetServicerutiner = true;
-                return servicerutineFactory.servicerutiner;
-            }, function(error) {
-                return null;
-            });
+            var res = {};
+            res.data = {
+                "tpsPersonData": {
+                    "FS03-FDNUMMER-PERSDATA-O": {
+                        "aksjonsKodes":
+                            {"aksjonsKode": ["E0", "A0", "A2", "B0", "B2", "C0", "D0"]},
+                        "attributes": {
+                            "attribute": [
+                                {"use": "required", "name": "fnr", "type": "xs:string"},
+                                {"use": "optional", "name": "aksjonsDato", "type": "xs:date"}
+                            ]
+                        },
+                        "internNavn": "S004 hentPerson"
+                    }
+                    ,
+                    "S322": {
+                        "aksjonsKodes":
+                            {"aksjonsKode": ["E0", "A0", "A2", "B0", "B2", "C0", "D0"]},
+                        "attributes": {
+                            "attribute": [
+                                {"use": "required", "name": "fnr", "type": "xs:string"},
+                                {"use": "optional", "name": "aksjonsDato", "type": "xs:date"}
+                            ]
+                        },
+                        "internNavn": "S322 Test"
+                    }
+                }
+            };
+            servicerutineFactory.servicerutiner = res.data.tpsPersonData;
+            isSetServicerutiner = true;
+            return servicerutineFactory.servicerutiner;
+
+            //##############################################################
+            // return $http({method: 'GET', url: urlBase}).then(function(res) {
+            //     servicerutineFactory.servicerutiner = res.data.tpsPersonData;
+            //     isSetServicerutiner = true;
+            //     return servicerutineFactory.servicerutiner;
+            // }, function(error) {
+            //     return null;
+            // });
         };
 
         servicerutineFactory.loadFromServerEnvironments = function() {

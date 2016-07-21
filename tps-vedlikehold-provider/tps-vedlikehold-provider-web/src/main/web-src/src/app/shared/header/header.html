@@ -6,12 +6,12 @@
                     <md-button ng-click="toggleSideNav('left')" class="md-icon-button" hide-gt-md aria-label="Menu">
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
-                    <a ui-sref="servicerutine({serviceRutinenavn: null})" rel="home">
+                    <a ui-sref="servicerutine({serviceRutinenavn: null})" rel="home" tabindex="-1">
                         <span>TPS Vedlikeholdsklient</span>
                     </a>
                 </div>
                 <div flex-gt-xs="5"></div>
-                <md-button class="md-raised md-accent">
+                <md-button class="md-raised md-accent" tabindex="-1">
                     Person
                 </md-button>
                 <span flex-gt-xs></span>
@@ -20,7 +20,7 @@
                     <div class="md-body-2">{{currentUser.name}}</div>
                 </div>
                 <div flex-gt-xs="5"></div>
-                <md-button id="logout-button" class="md-raised md-accent" ng-click="logout()">
+                <md-button id="logout-button" class="md-raised md-accent" ng-click="logout()" tabindex="-1">
                     Logg ut
                 </md-button>
             </div>

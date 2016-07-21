@@ -28,7 +28,6 @@ require('./directives/inputField');
 require('./directives/outputField');
 require('./directives/responseForm');
 
-
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
     function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
