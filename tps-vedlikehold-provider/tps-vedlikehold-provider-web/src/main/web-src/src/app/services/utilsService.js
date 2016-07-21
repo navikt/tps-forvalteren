@@ -12,7 +12,8 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.formatDate = function(dateObj) {
-            return moment(dateObj).format('YYYY-MM-DD');
+            var date = dateObj ? moment(dateObj).format('YYYY-MM-DD') : null;
+            return date;
         };
 
         self.isInFuture = function(dateObj) {
