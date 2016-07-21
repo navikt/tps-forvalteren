@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<tpsPersonData>
-    <FS03-FDNUMMER-PERSDATA-O>
-        <internNavn>S004 hentPerson</internNavn>
+<serviceRutines>
+    <serviceRutine>
+        <name>FS03-FDNUMMER-PERSDATA-O</name>
+
+        <internalName>S004 hentPerson</internalName>
 
         <attributes>
             <attribute name="fnr" use="required" type="xs:string" />
@@ -17,12 +19,17 @@
             <aksjonsKode>C0</aksjonsKode>
             <aksjonsKode>D0</aksjonsKode>
         </aksjonsKodes>
-    </FS03-FDNUMMER-PERSDATA-O>
+    </serviceRutine>
 
-    <FS03-OTILGANG-TILSRTPS-O>
-        <internNavn>S000 tilgang til TPS</internNavn>
+    <serviceRutine>
+        <name>FS03-OTILGANG-TILSRTPS-O</name>
+
+        <internalName>S000 tilgang til TPS</internalName>
 
         <attributes />
-        <aksjonsKodes />
-    </FS03-OTILGANG-TILSRTPS-O>
-</tpsPersonData>
+
+        <aksjonsKodes>
+            <aksjonsKode>A0</aksjonsKode>
+        </aksjonsKodes>
+    </serviceRutine>
+</serviceRutines>

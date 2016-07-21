@@ -1,7 +1,8 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -99,7 +101,7 @@ public class ServiceController {
      */
 
     @RequestMapping(value = "/service", method = RequestMethod.GET)
-    public String getTpsServiceRutiner() {
+    public Collection<TpsServiceRutine> getTpsServiceRutiner() {
         return getTpsServiceRutinerService.exectue();
     }
 }

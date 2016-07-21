@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
-import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 
 import java.util.HashSet;
 import java.util.Set;

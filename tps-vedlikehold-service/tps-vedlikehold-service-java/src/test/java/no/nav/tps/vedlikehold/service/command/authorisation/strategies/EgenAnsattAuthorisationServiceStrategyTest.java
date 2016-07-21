@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

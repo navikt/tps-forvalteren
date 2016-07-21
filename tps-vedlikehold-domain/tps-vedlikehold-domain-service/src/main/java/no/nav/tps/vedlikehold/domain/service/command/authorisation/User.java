@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.domain.service;
+package no.nav.tps.vedlikehold.domain.service.command.authorisation;
 
 import java.util.Set;
 

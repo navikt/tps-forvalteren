@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.user;
 
-import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import org.springframework.stereotype.Component;
 
 /**
