@@ -9,8 +9,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             $scope.isValidServiceRutinenavn = false;
+
             $scope.formData = {};
             $scope.formConfig = formConfig;
+            $scope.onlyNumbers = /^\d+$/;
 
             var nonUniqueProperties = [];
             var requiredAttributes = [];
@@ -31,8 +33,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                         nonUniqueProperties);
 
                 }, function(error) {
-                    // cyclic?
-                    // console.log(error);
                     showAlertTPSError();
                 });
             };

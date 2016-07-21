@@ -6,7 +6,7 @@
                     <!--<tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm></tps-input-field>-->
                     <md-input-container class="tps-input-input-container" flex-gt-xs>
                         <label>Fødselsnummer</label>
-                        <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
+                        <input ng-required="isRequired('fnr')" md-maxlength="11" ng-pattern="onlyNumbers" ng-model="formData.fnr"/>
                     </md-input-container>
                     <div class="date-picker-container" flex-gt-xs>
                         <label>Dato</label>
