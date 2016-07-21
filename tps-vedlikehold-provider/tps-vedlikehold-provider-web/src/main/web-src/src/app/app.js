@@ -10,6 +10,7 @@ require('angular-moment');
 require('./components/login/login');
 require('./components/servicerutine/servicerutine');
 
+
 require('./services/serviceModule');
 require('./services/locationService');
 require('./services/sessionService');
@@ -26,6 +27,9 @@ require('./shared/side-navigator/side-navigator');
 require('./directives/inputField');
 require('./directives/outputField');
 require('./directives/responseForm');
+
+require('./settings/formConfig');
+
 
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
@@ -87,10 +91,10 @@ app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'loc
 
         var authenticated = sessionService.getIsAuthenticated();
         
-        if (authenticated) { return; }
-        else {
-            event.preventDefault();
-            locationService.redirectToLoginState();
-        }
+        // if (authenticated) { return; }
+        // else {
+        //     event.preventDefault();
+        //     locationService.redirectToLoginState();
+        // }
     });
 }]);

@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold').directive('tpsResponseForm', function(){
-    var templatesPath = 'app/components/servicerutine/responseTemplates/';
+    var templatesPath = 'app/components/servicerutine/responsetemplates/';
     var templateSuffix = '-responseTemplate.html';
 
     return {

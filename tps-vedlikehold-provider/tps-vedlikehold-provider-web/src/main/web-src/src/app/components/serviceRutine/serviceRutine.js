@@ -2,22 +2,16 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog',  '$http', 'utilsService', 'servicerutineFactory',
-        function($scope, $stateParams, $mdDialog, $http, utilsService, servicerutineFactory) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog',  '$http', 'utilsService', 'servicerutineFactory', 'formConfig',
+        function($scope, $stateParams, $mdDialog, $http, utilsService, servicerutineFactory, formConfig) {
 
             var tpsReturnedObject = {};
             
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             $scope.isValidServiceRutinenavn = false;
             $scope.formData = {};
-            $scope.formConfig = null;
-            $http.get('/app/components/servicerutine/config.json').success(function(data) {
-                $scope.formConfig = data;
-                console.log(data);
-            });
+            $scope.formConfig = formConfig;
 
-
-            //objects that contain non-unique properties
             var nonUniqueProperties = [];
 
             var requiredAttributes = [];
@@ -33,6 +27,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
                         .tpsSvar[servicerutineFactory.getServicerutineReturnedDataLabel($scope.serviceRutinenavn)],
                         nonUniqueProperties);
+
                 }, function(error) {
                     // cyclic?
                     // console.log(error);
@@ -80,9 +75,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             }
             
             function getServicerutineAksjonsKoder() {
-                $scope.aksjonsKoder = servicerutineFactory.getServiceruti
-
-                neAksjonsKoder($scope.serviceRutinenavn).sort();
+                $scope.aksjonsKoder = servicerutineFactory.getServicerutineAksjonsKoder($scope.serviceRutinenavn).sort();
             }
             
             function getEnvironments() {
