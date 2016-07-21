@@ -38,4 +38,18 @@ public class HttpExceptionControllerTest {
         assertThat(exceptionInformation.getTimestamp(), greaterThanOrEqualTo(new Date().getTime()-200));
     }
 
+    @Test
+    public void internalServerErrorReturnsCorrectInformation() {
+        HttpException httpException = new HttpInternalServerErrorException(EXCEPTION_MESSAGE, EXCEPTION_PATH);
+
+        ExceptionInformation exceptionInformation = exceptionController.internalServerError(httpException);
+
+        assertThat(exceptionInformation.getError(), is(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
+        assertThat(exceptionInformation.getStatus(), is(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        assertThat(exceptionInformation.getPath(), is(EXCEPTION_PATH));
+        assertThat(exceptionInformation.getMessage(), is(EXCEPTION_MESSAGE));
+        assertThat(exceptionInformation.getTimestamp(), lessThanOrEqualTo(new Date().getTime()));
+        assertThat(exceptionInformation.getTimestamp(), greaterThanOrEqualTo(new Date().getTime()-200));
+    }
+
 }

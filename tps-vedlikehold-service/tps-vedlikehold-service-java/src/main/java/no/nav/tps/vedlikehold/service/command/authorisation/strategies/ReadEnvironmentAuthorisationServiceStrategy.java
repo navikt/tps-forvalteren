@@ -16,6 +16,7 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
     private static final String ENVIRONMENT_T = "t";
     private static final String ENVIRONMENT_Q = "q";
     private static final String ENVIRONMENT_P = "p";
+    private static final String ENVIRONMENT_O = "o";
 
     private User user;
     private String environment;
@@ -24,6 +25,7 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
     private Set<String> readTRoles;
     private Set<String> readQRoles;
     private Set<String> readPRoles;
+    private Set<String> readORoles;
 
     
     @Override
@@ -39,6 +41,8 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
             authorisedRoles = readQRoles;
         } else if (environment.equals(ENVIRONMENT_P)) {
             authorisedRoles = readPRoles;
+        } else if (environment.equals(ENVIRONMENT_O)) {
+            authorisedRoles = readORoles;
         }
 
         /* Retain all roles present in both authorised roles, and the users roles */
@@ -76,5 +80,9 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
 
     public void setReadQRoles(Set<String> readQRoles) {
         this.readQRoles = readQRoles;
+    }
+
+    public void setReadORoles(Set<String> readORoles) {
+        this.readORoles = readORoles;
     }
 }

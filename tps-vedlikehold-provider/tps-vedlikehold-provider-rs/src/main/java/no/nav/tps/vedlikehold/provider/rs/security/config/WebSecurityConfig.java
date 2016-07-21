@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                .antMatchers("/api/**").hasAnyRole("READ_T", "READ_Q")
+                .antMatchers("/api/**").hasAnyRole("READ_U", "READ_T", "READ_Q", "READ_P", "READ_O")
                 .and().httpBasic()
                 .and()
                 .csrf()

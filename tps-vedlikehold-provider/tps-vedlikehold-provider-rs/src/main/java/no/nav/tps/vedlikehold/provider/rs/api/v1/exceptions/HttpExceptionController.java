@@ -12,8 +12,6 @@ import java.util.Date;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-//TODO: Log exceptions
-
 @ControllerAdvice
 public class HttpExceptionController {
 
@@ -22,6 +20,13 @@ public class HttpExceptionController {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     ExceptionInformation unauthorisedAccess(HttpException exception) {
         return informationForException(exception, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({HttpInternalServerErrorException.class})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    ExceptionInformation internalServerError(HttpException exception) {
+        return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ExceptionInformation informationForException(HttpException exception, HttpStatus status) {

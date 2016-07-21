@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.config;
 
 import no.nav.tps.vedlikehold.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.UserController;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpExceptionController;
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
 import no.nav.tps.vedlikehold.service.config.ServiceConfig;
@@ -21,7 +22,8 @@ import org.springframework.context.annotation.Import;
         RestSecurityConfig.class,
 })
 @ComponentScan(basePackageClasses = {
-        UserController.class
+        UserController.class,
+        HttpExceptionController.class
 })
 public class RestProviderConfig {
 }

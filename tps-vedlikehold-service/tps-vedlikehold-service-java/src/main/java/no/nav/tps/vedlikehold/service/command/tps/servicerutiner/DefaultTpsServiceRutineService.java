@@ -1,13 +1,15 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.XmlMapper;
+import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactory;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactory;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactoryStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ import java.util.Map;
 
 @Service
 public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTpsServiceRutineService.class);
 
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
@@ -49,7 +53,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     @Override
     public ServiceRutineResponse execute(String serviceRutine,
                                          Map<String, Object> parameters,
-                                         String environment) {
+                                         String environment) throws IOException, JMSException {
 
         ServiceRutineMessageFactoryStrategy messageFactoryStrategy = new DefaultServiceRutineMessageFactoryStrategy(serviceRutine, parameters);
 
@@ -60,17 +64,19 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
         Object responseData = null;
 
         try {
-            MessageQueueService messageQueueService = messageQueueServiceFactory.createMessageQueueService(environment);
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(environment);
 
-            responseMessage = messageQueueService.sendMessage(requestMessage);
+            responseMessage = messageQueueConsumer.sendMessage(requestMessage);
 
             responseData = xmlMapper.readValue(responseMessage, Map.class);
         } catch (IOException exception) {
-            responseMessage = exception.getMessage();
-            exception.printStackTrace();                                                //TODO: Log exceptions
+            LOGGER.error("Failed to convert TPS response XML to an object with exception: {}", exception.toString());
+
+            throw exception;
         } catch (JMSException exception) {
-            responseData = exception.getMessage();
-            exception.printStackTrace();                                                //TODO: Log exceptions
+            LOGGER.error("Failed to connect to MQ with exception: {}", exception.toString());
+
+            throw exception;
         }
 
         /* Populate a response object and return */

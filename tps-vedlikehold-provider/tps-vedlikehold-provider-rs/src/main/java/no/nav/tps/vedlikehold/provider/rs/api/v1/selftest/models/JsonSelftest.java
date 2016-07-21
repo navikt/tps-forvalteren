@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models;
 
-import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
