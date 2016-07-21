@@ -2,6 +2,8 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.selftest;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 
@@ -12,6 +14,9 @@ import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTE
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 public abstract class SubSystemSelftest implements Selftest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubSystemSelftest.class);
+
     @Autowired
     private MessageProvider messageProvider;
 
@@ -49,14 +54,22 @@ public abstract class SubSystemSelftest implements Selftest {
     private SelftestResult performSelftest() {
 
         try {
-            boolean selftestSucceeded = performCheck();
+            Boolean selftestSucceeded = performCheck();
+
+            SelftestResult result;
 
             if (selftestSucceeded) {
-                return new SelftestResult(getSubSystemName());
+                result = new SelftestResult(getSubSystemName());
             } else {
-                return createSelftestResultForUnknownError();
+                result = createSelftestResultForUnknownError();
+
+                LOGGER.error("Selftest of '{}' failed with an unknown error: {}", getSubSystemName(), result.getErrorMessage());
             }
+
+            return result;
         } catch (Exception exception) {
+            LOGGER.error("Selftest og '{}' failed with exception: {}", exception.toString());
+
             return createSelftestResultForException(exception);
         }
     }

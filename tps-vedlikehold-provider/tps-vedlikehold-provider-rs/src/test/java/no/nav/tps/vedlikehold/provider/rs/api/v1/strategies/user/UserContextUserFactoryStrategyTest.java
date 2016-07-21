@@ -49,7 +49,7 @@ public class UserContextUserFactoryStrategyTest {
     @Before
     public void setUp() {
         doReturn(ROLES).when(userContextHolderMock).getRoles();
-        when(userContextHolderMock.getDistinguishedName()).thenReturn(DISTINGUISHED_NAME);
+        when(userContextHolderMock.getDisplayName()).thenReturn(DISTINGUISHED_NAME);
         when(userContextHolderMock.getUsername()).thenReturn(USERNAME);
 
         when(httpSessionMock.getId()).thenReturn(TOKEN);
@@ -89,7 +89,7 @@ public class UserContextUserFactoryStrategyTest {
 
         assertThat(result, is(DISTINGUISHED_NAME));
 
-        verify(userContextHolderMock).getDistinguishedName();
+        verify(userContextHolderMock).getDisplayName();
     }
 
     @Test

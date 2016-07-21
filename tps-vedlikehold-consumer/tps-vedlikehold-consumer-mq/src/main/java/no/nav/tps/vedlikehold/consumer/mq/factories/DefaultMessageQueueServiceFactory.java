@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
+import no.nav.tps.vedlikehold.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryStrategy;
-import no.nav.tps.vedlikehold.consumer.mq.services.DefaultMessageQueueService;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
@@ -30,13 +30,13 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     private ConnectionFactoryFactory connectionFactoryFactory;
 
     /**
-     * Instantiates a new MessageQueueService in the specified environment
+     * Instantiates a new MessageQueueConsumer in the specified environment
      *
      * @param environment in which the messages will be exchanged
-     * @return A MessageQueueService providing communication with an MQ in the specified environment
+     * @return A MessageQueueConsumer providing communication with an MQ in the specified environment
      * @throws JMSException
      */
-    public DefaultMessageQueueService createMessageQueueService(String environment) throws JMSException {
+    public DefaultMessageQueueConsumer createMessageQueueService(String environment) throws JMSException {
 
         QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(MESSAGE_QUEUE_MANAGER_ALIAS, environment);
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
@@ -46,7 +46,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryStrategy);
 
-        return new DefaultMessageQueueService(
+        return new DefaultMessageQueueConsumer(
                 requestQueue.getName(),
                 responseQueue.getName(),
                 connectionFactory

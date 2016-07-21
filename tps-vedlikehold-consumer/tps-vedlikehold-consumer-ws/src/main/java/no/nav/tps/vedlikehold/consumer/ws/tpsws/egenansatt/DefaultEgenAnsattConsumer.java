@@ -7,6 +7,8 @@ import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieM
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 import org.apache.cxf.common.i18n.Exception;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,8 @@ import static org.springframework.util.ObjectUtils.isEmpty;
  */
 @Component
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -50,12 +54,15 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         try {
             response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
-        } catch (SOAPFaultException e) {
-            if (e.getMessage().contains("PERSON IKKE FUNNET")) {
-                throw new PersonNotFoundException(fNr, e);
-            } else {
-                throw e;
+        } catch (SOAPFaultException exception) {
+
+            if (exception.getMessage().contains("PERSON IKKE FUNNET")) {
+                throw new PersonNotFoundException(fNr, exception);
             }
+
+            LOGGER.error("Is egen ansatt failed with exception: {}", exception.toString());
+
+            throw exception;
         }
 
         return response.isEgenAnsatt();

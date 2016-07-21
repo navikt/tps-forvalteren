@@ -28,6 +28,24 @@ public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
     @Value("${tps.vedlikehold.security.q.readroles}")
     private List<String> readRolesQ;
 
+    @Value("${tps.vedlikehold.security.u.writeroles}")
+    private List<String> writeRolesU;
+
+    @Value("${tps.vedlikehold.security.u.readroles}")
+    private List<String> readRolesU;
+
+    @Value("${tps.vedlikehold.security.p.writeroles}")
+    private List<String> writeRolesP;
+
+    @Value("${tps.vedlikehold.security.p.readroles}")
+    private List<String> readRolesP;
+
+    @Value("${tps.vedlikehold.security.o.writeroles}")
+    private List<String> writeRolesO;
+
+    @Value("${tps.vedlikehold.security.o.readroles}")
+    private List<String> readRolesO;
+
     private Map<String, UserRole> roles;
 
     @PostConstruct
@@ -38,6 +56,12 @@ public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
         roleMap.putAll(mapRolesFromADToCommonUserRole(readRolesT, ROLE_READ_T));
         roleMap.putAll(mapRolesFromADToCommonUserRole(writeRolesQ, ROLE_WRITE_Q));
         roleMap.putAll(mapRolesFromADToCommonUserRole(readRolesQ, ROLE_READ_Q));
+        roleMap.putAll(mapRolesFromADToCommonUserRole(writeRolesU, ROLE_WRITE_U));
+        roleMap.putAll(mapRolesFromADToCommonUserRole(readRolesU, ROLE_READ_U));
+        roleMap.putAll(mapRolesFromADToCommonUserRole(writeRolesP, ROLE_WRITE_P));
+        roleMap.putAll(mapRolesFromADToCommonUserRole(readRolesP, ROLE_READ_P));
+        roleMap.putAll(mapRolesFromADToCommonUserRole(writeRolesO, ROLE_WRITE_O));
+        roleMap.putAll(mapRolesFromADToCommonUserRole(readRolesO, ROLE_READ_O));
 
         roles = Collections.unmodifiableMap(roleMap);
     }

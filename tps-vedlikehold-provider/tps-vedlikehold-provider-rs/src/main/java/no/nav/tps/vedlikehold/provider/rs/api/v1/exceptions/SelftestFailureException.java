@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.exception;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

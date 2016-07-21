@@ -26,11 +26,13 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RestUserDetailsMapperTest {
+
+    private static final String DISPLAY_NAME_ATTRIBUTE = "displayname";
+
     private static final GrantedAuthority ROLE = UserRole.ROLE_READ_Q;
     private static final Set<GrantedAuthority> ROLES = newHashSet(ROLE);
     private static final String USERNAME = "username";
-    private static final String SURNAME = "surname";
-    private static final String GIVEN_NAME = "givenName";
+    private static final String DISPLAY_NAME = "Display name";
     private static final String NAME_IN_NAMESPACE = "nameInNamespace";
 
     @Mock
@@ -41,11 +43,9 @@ public class RestUserDetailsMapperTest {
 
     @Before
     public void before() {
-        when(dcaMock.attributeExists(RestUserDetailsMapper.SURNAME_ATTRIBUTE)).thenReturn(true);
-        when(dcaMock.attributeExists(RestUserDetailsMapper.GIVEN_NAME_ATTRIBUTE)).thenReturn(true);
+        when(dcaMock.attributeExists(DISPLAY_NAME_ATTRIBUTE)).thenReturn(true);
 
-        when(dcaMock.getStringAttribute(RestUserDetailsMapper.SURNAME_ATTRIBUTE)).thenReturn(SURNAME);
-        when(dcaMock.getStringAttribute(RestUserDetailsMapper.GIVEN_NAME_ATTRIBUTE)).thenReturn(GIVEN_NAME);
+        when(dcaMock.getStringAttribute(DISPLAY_NAME_ATTRIBUTE)).thenReturn(DISPLAY_NAME);
         when(dcaMock.getNameInNamespace()).thenReturn(NAME_IN_NAMESPACE);
         when(dcaMock.getDn()).thenReturn(mock(Name.class));
     }
@@ -56,12 +56,12 @@ public class RestUserDetailsMapperTest {
 
         assertThat(userDetails.getAuthorities(), contains(ROLE));
         assertThat(userDetails.getUsername(), is(USERNAME));
-        assertThat(userDetails.getDn(), is(GIVEN_NAME + " " + SURNAME));
+        assertThat(userDetails.getDn(), is(DISPLAY_NAME));
     }
 
     @Test
     public void mapUserFromContextUsingNameInNamespaceWhenMissingGivenName() {
-        when(dcaMock.attributeExists(RestUserDetailsMapper.GIVEN_NAME_ATTRIBUTE)).thenReturn(false);
+        when(dcaMock.attributeExists(DISPLAY_NAME_ATTRIBUTE)).thenReturn(false);
 
         LdapUserDetails userDetails = mapper.mapUserFromContext(dcaMock, USERNAME, ROLES);
 
@@ -72,7 +72,7 @@ public class RestUserDetailsMapperTest {
 
     @Test
     public void mapUserFromContextUsingNameInNamespaceWhenMissingSurname() {
-        when(dcaMock.attributeExists(RestUserDetailsMapper.SURNAME_ATTRIBUTE)).thenReturn(false);
+        when(dcaMock.attributeExists(DISPLAY_NAME_ATTRIBUTE)).thenReturn(false);
 
         LdapUserDetails userDetails = mapper.mapUserFromContext(dcaMock, USERNAME, ROLES);
 

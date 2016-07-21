@@ -9,6 +9,7 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.Authorisa
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadEnvironmentAuthorisationServiceStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class AuthorisationService {
     @Value("${tps.vedlikehold.security.p.readroles}")
     private List<String> readRolesP;
 
+    @Value("${tps.vedlikehold.security.o.readroles}")
+    private List<String> readRolesO;
+
 //    @Autowired
     /* FIXME: Remove these mock when TPSWS is up and running */
     private DiskresjonskodeConsumer diskresjonskodeConsumer = new DiskresjonskodeConsumer() {
@@ -57,18 +61,8 @@ public class AuthorisationService {
         }
     };
 
-//    @Autowired
-    private EgenAnsattConsumer egenAnsattConsumer = new EgenAnsattConsumer() {
-        @Override
-        public boolean ping() throws Exception {
-            return true;
-        }
-
-        @Override
-        public boolean isEgenAnsatt(String fnr) {
-            return false;
-        }
-    };
+    @Autowired
+    private EgenAnsattConsumer egenAnsattConsumer;
 
     /**
      * Convenience method authorising the user based on 'diskresjonskode' and 'egen ansatt'.
@@ -103,6 +97,7 @@ public class AuthorisationService {
         readEnvironmentStrategy.setReadTRoles( new HashSet<>(readRolesT) );
         readEnvironmentStrategy.setReadURoles( new HashSet<>(readRolesU) );
         readEnvironmentStrategy.setReadPRoles( new HashSet<>(readRolesP) );
+        readEnvironmentStrategy.setReadORoles( new HashSet<>(readRolesO) );
 
 
         List<AuthorisationServiceStrategy> strategies = Arrays.asList(
