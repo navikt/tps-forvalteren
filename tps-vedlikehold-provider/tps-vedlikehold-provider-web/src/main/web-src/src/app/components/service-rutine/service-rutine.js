@@ -73,13 +73,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 var params = {};
                 params.fnr = formData.fnr;
                 params.aksjonsDato = checkDate(formData.aksjonsDato);
-                if (formData.aksjonsKode) {
-                    params.aksjonsKode = formData.aksjonsKode.charAt(0);
-                    params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
-                } else {
-                    params.aksjonsKode = 0;
-                    params.aksjonsKode2 = 0;
-                }
+
+                var aksjonsKode = formData.aksjonsKode;
+                params.aksjonsKode = aksjonsKode ?  formData.aksjonsKode.charAt(0) : 0;
+                params.aksjonsKode2 = aksjonsKode ?  formData.aksjonsKode.charAt(1) : 1;
 
                 params.environment = formData.environment;
                 return params;
