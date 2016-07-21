@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultMessageQueueServiceFactoryTest {
+public class DefaultMessageQueueConsumerFactoryTest {
 
     private static final String ENVIRONMENT = "environment";
 

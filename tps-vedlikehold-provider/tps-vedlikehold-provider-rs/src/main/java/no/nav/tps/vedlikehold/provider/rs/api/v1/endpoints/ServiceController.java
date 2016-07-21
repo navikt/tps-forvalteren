@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
@@ -11,14 +12,14 @@ import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutin
 import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
-
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Tobias Hansen, Visma Consulting AS
@@ -28,6 +29,8 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @RestController
 @RequestMapping(value = "api/v1")
 public class ServiceController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -41,26 +44,50 @@ public class ServiceController {
     @Autowired
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
+
+    /**
+     * Execute any TPS service rutine.
+     * The necessary parameters can be found in the documentation of the various servicerutines.
+     *
+     * @param session           current session
+     * @param environment       environment in which to contact TPS
+     * @param fnr               fnr of the person to retrieve
+     * @param parameters        map with all URL parameters
+     * @param serviceRutineName name of the servicerutine to be executed
+     *
+     * @return                  object containing the raw XML response from TPS, and a JSON object based on the XML
+     *
+     * @throws HttpUnauthorisedException        if the user is unauthorised to access the requested data, or an
+     * @throws HttpInternalServerErrorException an exception was thrown during execution
+     */
+
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
     public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
                                             @RequestParam String environment,
-                                            @ApiIgnore @RequestParam Map<String, Object> parameters,
-                                            @PathVariable("serviceRutinenavn") String serviceRutineName) throws Exception {
+                                            @RequestParam String fnr,
+                                            @RequestParam Map<String, Object> parameters,
+                                            @PathVariable("serviceRutinenavn") String serviceRutineName) throws HttpUnauthorisedException, HttpInternalServerErrorException {
 
-        /* Verify authorisation */
+        /* Authorise user based on requested data, and the environment */
         UserFactory userFactory      = new DefaultUserFactory();
         UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
 
-        User user                = userFactory.createUser(strategy);
-        String fnr               = (String) parameters.get("fnr");
-        String mappedEnvironment = mappedEnvironment(environment);                         // Environments in U are mapped to t4
+        User user = userFactory.createUser(strategy);
 
-        if (fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, mappedEnvironment)) {
+        if ( !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment) ) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 
-        /* Get results from TPS */
-        return tpsServiceRutineService.execute(serviceRutineName, parameters, mappedEnvironment);
+        try {
+            return tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+        } catch (Exception exception) {
+            LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
+                    serviceRutineName,
+                    environment,
+                    exception.toString());
+
+            throw new HttpInternalServerErrorException(exception.getMessage(), "api/v1/service");
+        }
     }
 
 
@@ -74,19 +101,5 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.GET)
     public String getTpsServiceRutiner() {
         return getTpsServiceRutinerService.exectue();
-    }
-
-    /* Environments in U are mapped to T4 */
-    /* TODO: This could be handled more gracefully */
-    private String mappedEnvironment(String environment) {
-        if (isEmpty(environment)) {
-            return environment;
-        }
-
-        if (environment.charAt(0) == 'u') {
-            return "t4";
-        }
-
-        return environment;
     }
 }

@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.mq.services;
+package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.mq.jms.MQQueue;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultMessageQueueServiceTest {
+public class DefaultMessageQueueConsumerTest {
 
     private static final String REQUEST_QUEUE_NAME  = "requestQueueName";
     private static final String RESPONSE_QUEUE_NAME = "responseQueueName";
@@ -64,7 +64,7 @@ public class DefaultMessageQueueServiceTest {
     private TextMessage textMessageMock;
 
     @InjectMocks
-    private DefaultMessageQueueService messageQueueService = new DefaultMessageQueueService(REQUEST_QUEUE_NAME, RESPONSE_QUEUE_NAME, null);
+    private DefaultMessageQueueConsumer messageQueueService = new DefaultMessageQueueConsumer(REQUEST_QUEUE_NAME, RESPONSE_QUEUE_NAME, null);
 
 
     @Before
