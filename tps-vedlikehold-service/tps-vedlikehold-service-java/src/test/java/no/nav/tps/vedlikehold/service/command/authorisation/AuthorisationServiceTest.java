@@ -113,6 +113,11 @@ public class AuthorisationServiceTest {
                 "readRolesP",
                 new ArrayList<>());
 
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesO",
+                new ArrayList<>());
+
         when(userMock.getRoles()).thenReturn(new HashSet<>(Arrays.asList("readTRole")));
 
         authorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
