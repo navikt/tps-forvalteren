@@ -2,6 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
+<<<<<<< HEAD
     .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$mdToast', 'utilsService', 'servicerutineFactory', 'formConfig',
         function($scope, $stateParams, $mdDialog, $mdToast, utilsService, servicerutineFactory, formConfig) {
 
@@ -10,12 +11,29 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             $scope.isValidServiceRutinenavn = false;
 
+=======
+    .controller('servicerutineController', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'servicerutineFactory', 'environmentsPromise',
+        function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory, environmentsPromise) {
+            
+            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
+>>>>>>> 30300e0cdad3762881440c1ac10fe47dec4e1dc7
             $scope.formData = {};
             $scope.formConfig = formConfig;
             $scope.onlyNumbers = /^\d+$/;
 
+<<<<<<< HEAD
             var nonUniqueProperties = [];
+=======
+            var tpsReturnedObject = {};
+            var nonUniqueProperties = []; //objects that contain non-unique properties
+>>>>>>> 30300e0cdad3762881440c1ac10fe47dec4e1dc7
             var requiredAttributes = [];
+            var isValidServiceRutinenavn = false;
+            var apiError = true;
+
+            $scope.loadServicerutineTemplate = function () {
+                return isValidServiceRutinenavn && !apiError;
+            };
 
             $scope.submit = function() {
                 var params = createParams($scope.formData);
@@ -46,23 +64,42 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             };
 
             function showAlertTPSError() {
-                var confirm = $mdDialog.confirm()
-                    .title('Serverfeil')
-                    .textContent('Fikk ikke hentet informasjon om TPS fra server. Vil du prøve igjen?')
-                    .ariaLabel('Feil ved henting av data fra TPS')
-                    .ok('Prøv igjen')
-                    .cancel('Avbryt');
-                $mdDialog.show(confirm).then(function () {
-                    $scope.submit();
-                });
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title('Serverfeil')
+                        .textContent('Fikk ikke hentet informasjon om TPS fra server.')
+                        .ariaLabel('Feil ved henting av data fra TPS')
+                        .ok('OK')
+                );
+            }
+
+            function showAlertApiError() {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title('Serverfeil')
+                        .textContent('Fikk ikke hentet informasjon om miljøer fra server.')
+                        .ariaLabel('Feil ved henting av miljøer')
+                        .ok('OK')
+                );
             }
 
             function createParams(formData) {
                 var params = {};
                 params.fnr = formData.fnr;
+<<<<<<< HEAD
                 params.aksjonsDato = checkDate(formData.aksjonsDato);
                 params.aksjonsKode = formData.aksjonsKode.charAt(0);
                 params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
+=======
+                params.aksjonsDato = utilsService.formatDate(formData.aksjonsDato);
+                if (formData.aksjonsKode) {
+                    params.aksjonsKode = formData.aksjonsKode.charAt(0);
+                    params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
+                } else {
+                    params.aksjonsKode = 0;
+                    params.aksjonsKode2 = 0;
+                }
+>>>>>>> 30300e0cdad3762881440c1ac10fe47dec4e1dc7
                 params.environment = formData.environment;
                 return params;
             }
@@ -85,7 +122,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             }
             
             function setIsValidServiceRutinenavn() {
-                $scope.isValidServiceRutinenavn = ($scope.serviceRutinenavn in servicerutineFactory.getServicerutiner());
+                isValidServiceRutinenavn = ($scope.serviceRutinenavn in servicerutineFactory.getServicerutiner());
             }
             
             function getServicerutineRequiredAttributesNames() {
@@ -94,10 +131,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             
             function getServicerutineAksjonsKoder() {
                 $scope.aksjonsKoder = servicerutineFactory.getServicerutineAksjonsKoder($scope.serviceRutinenavn).sort();
-            }
-            
-            function getEnvironments() {
-                $scope.environments = servicerutineFactory.getEnvironments().sort();
             }
 
             function getNonUniqueProperties() {
@@ -116,14 +149,32 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             function init() {
                 setIsValidServiceRutinenavn();
                 
+<<<<<<< HEAD
                 if (!$scope.isValidServiceRutinenavn) {
+=======
+                //better way to do this?
+                if (!isValidServiceRutinenavn) {
+>>>>>>> 30300e0cdad3762881440c1ac10fe47dec4e1dc7
                     return;
                 }
-                
+
+                if (environmentsPromise) {
+                    $scope.environments = servicerutineFactory.getEnvironments().sort();
+                    apiError = false;
+                } else {
+                    apiError = true;
+                    showAlertApiError();
+                    return;
+                }
+
+                if (!servicerutineFactory.isSetServicerutiner()) {
+                    apiError = true;
+                    return;
+                }
+
                 getServicerutineAttributesNames();
                 getServicerutineRequiredAttributesNames();
                 getServicerutineAksjonsKoder();
-                getEnvironments();
                 getNonUniqueProperties();
                 initRequestForm();
             }
