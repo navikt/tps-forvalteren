@@ -61,9 +61,15 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 return params;
             }
 
-            function checkDate(asksjonDato) {
-                var aksjonsDato = !asksjonDato || utilsService.isInFuture(asksjonDato) ? new Date() : aksjonsDato;
-                return utilsService.formatDate(aksjonsDato);
+            function checkDate(aksjonsDato) {
+                var dato = aksjonsDato;
+
+                if (!aksjonsDato || utilsService.isInFuture(aksjonsDato)) {
+                    dato = new Date();
+                    $scope.formData.aksjonsDato = dato;
+                }
+
+                return utilsService.formatDate(dato);
             }
             
             function getServicerutineAttributesNames() {
