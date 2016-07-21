@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <serviceRutines>
-    <serviceRutine>
-        <name>FS03-FDNUMMER-PERSDATA-O</name>
-
-        <internalName>S004 hentPerson</internalName>
-
+    <serviceRutine name="FS03-FDNUMMER-PERSDATA-O" internalName="S004 hentPerson">
         <attributes>
             <attribute name="fnr" use="required" type="xs:string" />
             <attribute name="aksjonsDato" use="optional" type="xs:date" />
         </attributes>
-
         <aksjonsKodes>
             <aksjonsKode>E0</aksjonsKode>
             <aksjonsKode>A0</aksjonsKode>
@@ -21,13 +16,7 @@
         </aksjonsKodes>
     </serviceRutine>
 
-    <serviceRutine>
-        <name>FS03-OTILGANG-TILSRTPS-O</name>
-
-        <internalName>S000 tilgang til TPS</internalName>
-
-        <attributes />
-
+    <serviceRutine name="FS03-OTILGANG-TILSRTPS-O" internalName="S000 tilgang til TPS">
         <aksjonsKodes>
             <aksjonsKode>A0</aksjonsKode>
         </aksjonsKodes>

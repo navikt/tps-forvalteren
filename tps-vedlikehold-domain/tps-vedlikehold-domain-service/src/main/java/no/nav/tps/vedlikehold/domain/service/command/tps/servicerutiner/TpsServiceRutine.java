@@ -9,10 +9,10 @@ import java.util.List;
  */
 public class TpsServiceRutine {
 
-    @JacksonXmlProperty
+    @JacksonXmlProperty(isAttribute = true)
     private String name;
 
-    @JacksonXmlProperty
+    @JacksonXmlProperty(isAttribute = true)
     private String internalName;
 
     @JacksonXmlProperty
