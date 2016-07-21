@@ -18,4 +18,11 @@
             <aksjonsKode>D0</aksjonsKode>
         </aksjonsKodes>
     </FS03-FDNUMMER-PERSDATA-O>
+
+    <FS03-OTILGANG-TILSRTPS-O>
+        <internNavn>S000 tilgang til TPS</internNavn>
+
+        <attributes />
+        <aksjonsKodes />
+    </FS03-OTILGANG-TILSRTPS-O>
 </tpsPersonData>
