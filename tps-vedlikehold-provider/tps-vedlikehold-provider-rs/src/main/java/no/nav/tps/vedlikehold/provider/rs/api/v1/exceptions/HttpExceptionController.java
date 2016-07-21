@@ -24,6 +24,13 @@ public class HttpExceptionController {
         return informationForException(exception, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler({HttpInternalServerErrorException.class})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    ExceptionInformation internalServerError(HttpException exception) {
+        return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ExceptionInformation informationForException(HttpException exception, HttpStatus status) {
         return ExceptionInformation.create()
                 .setError( status.getReasonPhrase() )

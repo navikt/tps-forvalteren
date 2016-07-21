@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
+import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ public class PingTpsTest {
 
 
     @Mock
-    private MessageQueueService consumerMock;
+    private MessageQueueConsumer consumerMock;
 
     @InjectMocks
     private PingTps command;

@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
+import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueConsumer;
 
 import javax.jms.JMSException;
 
@@ -8,5 +8,5 @@ import javax.jms.JMSException;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 public interface MessageQueueServiceFactory {
-    MessageQueueService createMessageQueueService(String environment) throws JMSException;
+    MessageQueueConsumer createMessageQueueService(String environment) throws JMSException;
 }

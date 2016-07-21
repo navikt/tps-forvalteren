@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.config;
 
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueService;
+import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +19,8 @@ public class CommandConfig {
     MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Bean
-    MessageQueueService defaultMessageQueueService() throws Exception {
-        MessageQueueService defaultMessageQueueService = messageQueueServiceFactory.createMessageQueueService("t4");
-        return defaultMessageQueueService;
+    MessageQueueConsumer defaultMessageQueueService() throws Exception {
+        MessageQueueConsumer defaultMessageQueueConsumer = messageQueueServiceFactory.createMessageQueueService("t4");
+        return defaultMessageQueueConsumer;
     }
 }

@@ -40,9 +40,11 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
             // ikke noe som skal logges eller håndteres som en teknisk feil.
             return true; //TODO: Bedre måte å gjøre dette på?
         } catch (Exception e) {
-            LOGGER.warn("Ping mot diskresjonskode feilet med følgende exception", e);
+            LOGGER.warn("Pinging diskresjonskode failed with exception: {}", e);
+
             throw e;
         }
+
         return true;
     }
 
@@ -60,12 +62,12 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
 
             return response;
-        } catch (Exception e) {
-            if (DISKRESJONSKODE_NOT_FOUND_ERROR.equals(e.getMessage())) {
-                throw new PersonNotFoundException(fNr, e);
+        } catch (Exception exception) {
+            if ( exception.getMessage().equals(DISKRESJONSKODE_NOT_FOUND_ERROR) ) {
+                throw new PersonNotFoundException(fNr, exception);
             }
 
-            throw e;
+            throw exception;
         }
     }
 

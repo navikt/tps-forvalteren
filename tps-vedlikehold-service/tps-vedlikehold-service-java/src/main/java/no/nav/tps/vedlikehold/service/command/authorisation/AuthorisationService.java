@@ -101,7 +101,7 @@ public class AuthorisationService {
         readEnvironmentStrategy.setEnvironment(environment);
         readEnvironmentStrategy.setReadQRoles( new HashSet<>(readRolesQ) );
         readEnvironmentStrategy.setReadTRoles( new HashSet<>(readRolesT) );
-        readEnvironmentStrategy.setReadURoles( new HashSet<>(readRolesU) );
+        readEnvironmentStrategy.setReadURoles( new HashSet<>(readRolesT) ); // U is mapped to T
         readEnvironmentStrategy.setReadPRoles( new HashSet<>(readRolesP) );
 
 

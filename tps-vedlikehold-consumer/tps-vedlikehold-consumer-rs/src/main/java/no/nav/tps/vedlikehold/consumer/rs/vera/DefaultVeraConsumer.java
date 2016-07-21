@@ -1,5 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,8 @@ import static java.util.stream.Collectors.toSet;
  */
 @Component
 public class DefaultVeraConsumer implements VeraConsumer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVeraConsumer.class);
 
     private static final String PING_VERA = "tpws";
     public static final String BASE_URL = "http://vera.adeo.no/api/v1";
@@ -91,8 +95,10 @@ public class DefaultVeraConsumer implements VeraConsumer {
     public boolean ping() throws Exception {
         try {
             this.getEnvironments(PING_VERA);
-        } catch (Exception e) {
-            throw e;
+        } catch (Exception exception) {
+            LOGGER.warn("An error was encountered while pinging Vera: {}", exception.getMessage());
+
+            throw exception;
         }
         return true;
     }

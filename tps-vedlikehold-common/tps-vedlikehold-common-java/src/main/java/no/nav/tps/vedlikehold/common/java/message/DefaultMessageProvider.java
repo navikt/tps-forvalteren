@@ -46,7 +46,7 @@ public class DefaultMessageProvider implements MessageProvider {
             String[] messageKeyAsArray = { messageKey };
             LOGGER.warn(messageSource.getMessage(UNKNOWN_MESSAGE_KEY, messageKeyAsArray, locale));
         } catch (NoSuchMessageException exception) {
-            LOGGER.error("Klarer ikke finne standardmeldingen, '{}', i messages.properties", UNKNOWN_MESSAGE_KEY);
+            LOGGER.error("Unable find the standard message, '{}', in messages.properties", UNKNOWN_MESSAGE_KEY);
         }
     }
 }

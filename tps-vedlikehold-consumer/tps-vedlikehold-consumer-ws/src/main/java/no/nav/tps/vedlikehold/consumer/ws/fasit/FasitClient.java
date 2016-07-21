@@ -8,6 +8,8 @@ import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.ResourceElement;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +18,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class FasitClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FasitClient.class);
 
     private static final long CACHE_MAX_SIZE        = 100;
     private static final long CACHE_MINUTES_TO_LIVE = 30;
@@ -98,9 +102,12 @@ public class FasitClient {
     public boolean ping() throws Exception {
         try {
             DomainDO domain = FasitUtilities.domainFor(PING_ENVIRONMENT);
+
             this.restClient.getResource(PING_ENVIRONMENT, PING_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
-        } catch (Exception e) {
-            throw e;
+        } catch (Exception exception) {
+            LOGGER.warn("Pinging Fasit failed with exception: {}", exception);
+
+            throw exception;
         }
         return true;
     }
