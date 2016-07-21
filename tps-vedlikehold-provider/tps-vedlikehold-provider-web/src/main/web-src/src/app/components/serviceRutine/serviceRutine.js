@@ -54,7 +54,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             function createParams(formData) {
                 var params = {};
                 params.fnr = formData.fnr;
-                params.aksjonsDato = utilsService.formatDate(formData.aksjonsDato);
+
+                var aksjonsDato = formData.aksjonsDato ? formData.aksjonsDato : new Date();
+                params.aksjonsDato = utilsService.formatDate(aksjonsDato);
+                
                 params.aksjonsKode = formData.aksjonsKode.charAt(0);
                 params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
                 params.environment = formData.environment;
