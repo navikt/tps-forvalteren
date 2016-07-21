@@ -8,7 +8,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.Arrays;
+
 
 import static java.util.stream.Collectors.toSet;
 
@@ -41,7 +47,7 @@ public class DefaultVeraConsumer implements VeraConsumer {
 
 
     public DefaultVeraConsumer() {
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         messageConverters.add(new MappingJackson2HttpMessageConverter());
         template.setMessageConverters(messageConverters);
     }

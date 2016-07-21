@@ -5,7 +5,15 @@ import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jms.*;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Session;
+import javax.jms.Destination;
+import javax.jms.TextMessage;
+import javax.jms.MessageProducer;
+import javax.jms.MessageConsumer;
+
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -16,7 +24,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageQueueConsumer.class);
 
     private static final String MESSAGE_QUEUE_USERNAME  = "srvappserver";
-    private static final String MESSAGE_QUEUE_PASSWORD  = "";
+
     private static final long DEFAULT_TIMEOUT           = 5000;
 
     private static final String PING_MESSAGE            = "ping message";
@@ -31,14 +39,16 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         this.connectionFactory = connectionFactory;
     }
 
+    @Override
     public String sendMessage(String requestMessageContent) throws JMSException {
         return sendMessage(requestMessageContent, DEFAULT_TIMEOUT);
     }
 
+    @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
         /* Initiate session */
         LOGGER.debug("Creating MQ connection");
-        Connection connection = connectionFactory.createConnection(MESSAGE_QUEUE_USERNAME, MESSAGE_QUEUE_PASSWORD);
+        Connection connection = connectionFactory.createConnection(MESSAGE_QUEUE_USERNAME, "");
 
         connection.start();
 
@@ -76,6 +86,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         return responseMessage.getText();
     }
 
+    @Override
     public boolean ping() throws JMSException {
         this.sendMessage(PING_MESSAGE);
         return true;

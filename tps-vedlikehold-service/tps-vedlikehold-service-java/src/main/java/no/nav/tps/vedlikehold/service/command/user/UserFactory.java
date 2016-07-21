@@ -5,6 +5,7 @@ import no.nav.tps.vedlikehold.domain.service.User;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
+@FunctionalInterface
 public interface UserFactory {
     User createUser(UserFactoryStrategy strategy);
 }

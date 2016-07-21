@@ -18,7 +18,7 @@ import java.util.Set;
 public class EnvironmentController {
 
     @Autowired
-    public GetEnvironments getEnvironments;
+    public GetEnvironments getEnvironmentsCommand;
 
     /**
      * Get an object containing a list of environments
@@ -29,6 +29,6 @@ public class EnvironmentController {
 
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Set<String> getEnvironments(@ApiIgnore HttpSession session) {
-        return getEnvironments.execute("tpsws");
+        return getEnvironmentsCommand.execute("tpsws");
     }
 }

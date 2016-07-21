@@ -40,7 +40,7 @@ public class AuthorisationService {
     @Value("${tps.vedlikehold.security.o.readroles}")
     private List<String> readRolesO;
 
-//    @Autowired
+    // @Autowired
     /* FIXME: Remove these mock when TPSWS is up and running */
     private DiskresjonskodeConsumer diskresjonskodeConsumer = new DiskresjonskodeConsumer() {
         @Override

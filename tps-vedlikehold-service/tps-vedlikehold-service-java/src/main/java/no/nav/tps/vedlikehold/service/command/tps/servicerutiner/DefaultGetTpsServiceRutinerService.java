@@ -19,19 +19,19 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGetTpsServiceRutinerService.class);
 
-    private final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
+    private static final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
 
     @Override
     public String exectue() {
 
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);
 
             String servicesAsXML = IOUtils.toString(inputStream);
 
-            JSONObject servicesAsJSON = XML.toJSONObject(servicesAsXML);
+            JSONObject servicesAsJson = XML.toJSONObject(servicesAsXML);
 
-            return servicesAsJSON.toString();
+            return servicesAsJson.toString();
         } catch (JSONException exception) {
             LOGGER.error("Failed to convert services XML to a JSON object with exception: {}", exception.toString());
         } catch (IOException exception) {

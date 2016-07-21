@@ -86,8 +86,19 @@ public class VeraApplication implements Comparable<VeraApplication> {
     }
 
     @Override
-    public int compareTo(VeraApplication veraApp) {
-        return numberedEnv().compareTo(veraApp.numberedEnv());
+    public boolean equals(Object obj) {
+        if ( !(obj instanceof VeraApplication) ) {
+            return false;
+        }
+
+        VeraApplication veraApplication = (VeraApplication) obj;
+
+        return numberedEnv().equals(veraApplication.numberedEnv());
+    }
+
+    @Override
+    public int compareTo(VeraApplication veraApplication) {
+        return numberedEnv().compareTo(veraApplication.numberedEnv());
     }
 
     private String numberedEnv() {

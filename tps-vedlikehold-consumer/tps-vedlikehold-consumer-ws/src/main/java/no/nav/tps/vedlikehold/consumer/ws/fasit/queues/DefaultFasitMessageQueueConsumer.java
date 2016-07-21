@@ -44,6 +44,7 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
         return application.getQueue(alias);
     }
 
+    @Override
     public QueueManager getQueueManager(String alias, String environment) {
         FasitClient.Application application = getApplication(environment);
         return application.getQueueManager(alias);

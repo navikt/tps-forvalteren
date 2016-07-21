@@ -6,6 +6,6 @@ package no.nav.tps.vedlikehold.consumer.ws.tpsws;
  *
  * @author Tobias Hansen (Visma Consulting AS).
  */
-public final class PackageMarker {
+public interface PackageMarker {
     // Empty marker class
 }
