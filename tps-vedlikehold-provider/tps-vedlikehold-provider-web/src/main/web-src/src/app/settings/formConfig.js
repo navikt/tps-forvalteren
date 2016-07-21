@@ -237,8 +237,8 @@ angular.module('tps-vedlikehold').constant('formConfig',
                     flex: 20
                 },
                 {
-                    fieldData: "kodeFodeland",
-                    label: "KodeFødeLand",
+                    fieldData: "Kode Fodeland",
+                    label: "Kode FødeLand",
                     flex: 10
                 },
                 {

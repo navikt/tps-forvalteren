@@ -8,7 +8,6 @@
                         <label>Fødselsnummer</label>
                         <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
                     </md-input-container>
-                    <!--<md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-xs></md-datepicker>-->
                     <div class="date-picker-container" flex-gt-xs>
                         <label>Dato</label>
                         <md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>
@@ -34,7 +33,7 @@
                 </div>
             </form>
         </div>
-        <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
+        <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
             <md-tabs md-border-bottom class="tps-scrollable-tabs">
                 <md-tab label="Resultat">
                     <tps-response-form service-rutinenavn="serviceRutinenavn"></tps-response-form>
@@ -44,6 +43,12 @@
                     </div>
                 </md-tab>
             </md-tabs>
+
+        </md-content>
+        <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="center center">
+            <div class="tps-vk-status" flex>
+                {{svarStatus}}
+            </div>
         </md-content>
     </div>
     <div ng-show="!isValidServiceRutinenavn"  layout="column" flex>

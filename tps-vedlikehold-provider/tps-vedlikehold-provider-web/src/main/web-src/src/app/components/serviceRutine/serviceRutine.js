@@ -23,12 +23,8 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     tpsReturnedObject = res.data.data;
 
                     var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                    var toast = $mdToast.simple().content("Status: " + svarStatus.returStatus + " Retur Melding: " +  svarStatus.returMelding + " Utfyllende Melding: " +  svarStatus.utfyllendeMelding );
-
-                    $mdToast.show(toast);
-
-
-                    $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
+                    var message = "Status: " + svarStatus.returStatus + " Retur Melding: " +  svarStatus.returMelding + " Utfyllende Melding: " +  svarStatus.utfyllendeMelding;
+                    $scope.svarStatus = message;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
                         .tpsSvar[servicerutineFactory.getServicerutineReturnedDataLabel($scope.serviceRutinenavn)],
@@ -39,6 +35,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     // console.log(error);
                     showAlertTPSError();
                 });
+            };
+
+            $scope.hideToast = function() {
+                toast.hide();
             };
 
             $scope.isRequired = function(type) {
