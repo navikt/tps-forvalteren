@@ -138,7 +138,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 }
 
                 if (environmentsPromise) {
-                    $scope.environments = servicerutineFactory.getEnvironments().sort();
+                    $scope.environments = utilsService.sortEnvironments(servicerutineFactory.getEnvironments());
                     apiError = false;
                 } else {
                     apiError = true;

@@ -20,6 +20,23 @@ angular.module('tps-vedlikehold.service')
             return moment().diff(dateObj) < 0;
         };
 
+        self.sortEnvironments = function(env) {
+            if (env.length < 2) { return env; }
+            return env.sort(function(a, b) {
+                if (a.charAt(0) !== b.charAt(0)) {
+                    return a.localeCompare(b);
+                }
+
+                var aSubstrInt = parseInt(a.substr(1));
+                var bSubstrInt = parseInt(b.substr(1));
+
+                if (isNaN(aSubstrInt) || isNaN(bSubstrInt)) {
+                    return a.substr(1).localeCompare(b.substr(1));
+                }
+                return aSubstrInt - bSubstrInt;
+            });
+        };
+
         self.flattenObject = function(ob, nonUniques) {
             var ret = {};
             
