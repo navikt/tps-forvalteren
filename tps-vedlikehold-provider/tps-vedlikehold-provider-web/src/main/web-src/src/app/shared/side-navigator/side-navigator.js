@@ -5,8 +5,8 @@ angular.module('tps-vedlikehold')
     .controller('navigatorController', ['$scope', '$mdDialog', 'servicerutineFactory', 'servicerutinerPromise', 
         function($scope, $mdDialog, servicerutineFactory, servicerutinerPromise) {
 
-        $scope.getServicerutineInternNavn = function(serviceRutinenavn) {
-            return servicerutineFactory.getServicerutineInternNavn(serviceRutinenavn);
+        $scope.getServicerutineInternalName = function(serviceRutinenavn) {
+            return servicerutineFactory.getServicerutineInternalName(serviceRutinenavn);
         };
             
         function showAlertApiError() {

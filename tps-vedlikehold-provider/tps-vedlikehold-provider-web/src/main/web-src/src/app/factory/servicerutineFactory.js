@@ -122,7 +122,7 @@ angular.module('tps-vedlikehold')
             return ret;
         };
         
-        servicerutineFactory.getServicerutineInternNavn = function(serviceRutinenavn) {
+        servicerutineFactory.getServicerutineInternalName = function(serviceRutinenavn) {
             return servicerutineFactory.servicerutiner[serviceRutinenavn].internalName;
         };
 
