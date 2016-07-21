@@ -3,7 +3,6 @@
         <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <!--<tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm></tps-input-field>-->
                     <md-input-container class="tps-input-input-container" flex-gt-xs>
                         <label>Fødselsnummer</label>
                         <input ng-required="isRequired('fnr')" md-maxlength="11" ng-pattern="onlyNumbers" ng-model="formData.fnr"/>
@@ -43,7 +42,6 @@
                     </div>
                 </md-tab>
             </md-tabs>
-
         </md-content>
         <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="center center">
             <div class="tps-vk-status" flex>
@@ -52,6 +50,6 @@
         </md-content>
     </div>
     <div ng-show="!loadServicerutineTemplate()"  layout="column" flex>
-        <ng-include src="'app/components/servicerutine/welcome.html'"></ng-include>
+        <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
     </div>
 </div>

@@ -4,6 +4,8 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.io.InputStream;
  */
 @Service
 public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGetTpsServiceRutinerService.class);
 
     private final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
 
@@ -28,10 +32,10 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
             JSONObject servicesAsJSON = XML.toJSONObject(servicesAsXML);
 
             return servicesAsJSON.toString();
-        } catch (JSONException e) {
-            e.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (JSONException exception) {
+            LOGGER.error("Failed to convert services XML to a JSON object with exception: {}", exception.toString());
+        } catch (IOException exception) {
+            LOGGER.error("Failed to read file '{}' with exception: {}", SERVICE_RUTINER_FILE_PATH, exception.toString());
         }
 
         return null;

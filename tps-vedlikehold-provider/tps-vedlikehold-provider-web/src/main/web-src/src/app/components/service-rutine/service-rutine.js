@@ -7,8 +7,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
         function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory, formConfig, environmentsPromise) {
 
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
-            //$scope.isValidServiceRutinenavn = false;
-
             $scope.formData = {};
             $scope.formConfig = formConfig;
             $scope.onlyNumbers = /^\d+$/;

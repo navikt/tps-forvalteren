@@ -15,7 +15,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -108,6 +111,11 @@ public class AuthorisationServiceTest {
         ReflectionTestUtils.setField(
                 authorisationService,
                 "readRolesP",
+                new ArrayList<>());
+
+        ReflectionTestUtils.setField(
+                authorisationService,
+                "readRolesO",
                 new ArrayList<>());
 
         when(userMock.getRoles()).thenReturn(new HashSet<>(Arrays.asList("readTRole")));

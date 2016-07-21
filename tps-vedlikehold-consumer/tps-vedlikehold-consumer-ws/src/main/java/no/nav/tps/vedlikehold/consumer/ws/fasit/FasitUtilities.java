@@ -8,6 +8,7 @@ public class FasitUtilities {
         switch(environment.charAt(0)) {
             case 'p':
                 return DomainDO.Adeo;
+            case 'o':
             case 'q':
                 return DomainDO.PreProd;
             case 't':
