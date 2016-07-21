@@ -2,14 +2,20 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'servicerutineFactory',
-        function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory) {
+    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog',  '$http', 'utilsService', 'servicerutineFactory',
+        function($scope, $stateParams, $mdDialog, $http, utilsService, servicerutineFactory) {
 
             var tpsReturnedObject = {};
             
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             $scope.isValidServiceRutinenavn = false;
             $scope.formData = {};
+            $scope.formConfig = null;
+            $http.get('/app/components/servicerutine/config.json').success(function(data) {
+                $scope.formConfig = data;
+                console.log(data);
+            });
+
 
             //objects that contain non-unique properties
             var nonUniqueProperties = [];
@@ -74,7 +80,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             }
             
             function getServicerutineAksjonsKoder() {
-                $scope.aksjonsKoder = servicerutineFactory.getServicerutineAksjonsKoder($scope.serviceRutinenavn).sort();
+                $scope.aksjonsKoder = servicerutineFactory.getServiceruti
+
+                neAksjonsKoder($scope.serviceRutinenavn).sort();
             }
             
             function getEnvironments() {
