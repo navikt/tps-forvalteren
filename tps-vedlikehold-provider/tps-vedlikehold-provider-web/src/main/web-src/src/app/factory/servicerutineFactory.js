@@ -45,34 +45,48 @@ angular.module('tps-vedlikehold')
 
         servicerutineFactory.loadFromServerServicerutiner = function() {
             var res = {};
-            res.data = {
-                "tpsPersonData": {
-                    "FS03-FDNUMMER-PERSDATA-O": {
-                        "aksjonsKodes":
-                            {"aksjonsKode": ["E0", "A0", "A2", "B0", "B2", "C0", "D0"]},
-                        "attributes": {
-                            "attribute": [
-                                {"use": "required", "name": "fnr", "type": "xs:string"},
-                                {"use": "optional", "name": "aksjonsDato", "type": "xs:date"}
-                            ]
+            res.data = [
+                {
+                    "name": "FS03-FDNUMMER-PERSDATA-O",
+                    "internalName": "S004 hentPerson",
+                    "aksjonsKodes": [
+                        "E0",
+                        "A0",
+                        "A2",
+                        "B0",
+                        "B2",
+                        "C0",
+                        "D0"
+                    ],
+                    "attributes": [
+                        {
+                            "name": "fnr",
+                            "type": "xs:string",
+                            "use": "required"
                         },
-                        "internNavn": "S004 hentPerson"
-                    }
-                    ,
-                    "S322": {
-                        "aksjonsKodes":
-                            {"aksjonsKode": ["E0", "A0", "A2", "B0", "B2", "C0", "D0"]},
-                        "attributes": {
-                            "attribute": [
-                                {"use": "required", "name": "fnr", "type": "xs:string"},
-                                {"use": "optional", "name": "aksjonsDato", "type": "xs:date"}
-                            ]
-                        },
-                        "internNavn": "S322 Test"
-                    }
+                        {
+                            "name": "aksjonsDato",
+                            "type": "xs:date",
+                            "use": "optional"
+                        }
+                    ]
+                },
+                {
+                    "name": "FS03-OTILGANG-TILSRTPS-O",
+                    "internalName": "S000 tilgang til TPS",
+                    "aksjonsKodes": [
+                        "A0"
+                    ],
+                    "attributes": null
                 }
-            };
-            servicerutineFactory.servicerutiner = res.data.tpsPersonData;
+            ];
+
+            // servicerutineFactory.servicerutiner = res.data;
+            var servicerutineList = res.data;
+            servicerutineFactory.servicerutiner = {};
+            for (var i = 0; i < servicerutineList.length; i++) {
+                servicerutineFactory.servicerutiner[servicerutineList[i].name] = servicerutineList[i];
+            }
             isSetServicerutiner = true;
             return servicerutineFactory.servicerutiner;
 
@@ -109,38 +123,44 @@ angular.module('tps-vedlikehold')
         };
         
         servicerutineFactory.getServicerutineInternNavn = function(serviceRutinenavn) {
-            return servicerutineFactory.servicerutiner[serviceRutinenavn].internNavn;
+            return servicerutineFactory.servicerutiner[serviceRutinenavn].internalName;
         };
 
         servicerutineFactory.getServicerutineAttributesNames = function(serviceRutinenavn) {
             // want the fields from servicerutineFieldsTemplate in a certain order
             // could be done in a better way
-            var filter = [];
-            angular.forEach(servicerutineFactory.servicerutiner[serviceRutinenavn].attributes.attribute, function(value, key) {
-                this.push(value.name);
-            }, filter);
+            if (servicerutineFactory.servicerutiner[serviceRutinenavn].attributes) {
+                var filter = [];
+                angular.forEach(servicerutineFactory.servicerutiner[serviceRutinenavn].attributes, function (value, key) {
+                    this.push(value.name);
+                }, filter);
 
-            var ret = [];
-            for (var i=0; i<servicerutineFieldsTemplate[serviceRutinenavn].length; i++) {
-                if (filter.indexOf(servicerutineFieldsTemplate[serviceRutinenavn][i]) > -1) {
-                    ret.push(servicerutineFieldsTemplate[serviceRutinenavn][i]);
+                var ret = [];
+                for (var i = 0; i < servicerutineFieldsTemplate[serviceRutinenavn].length; i++) {
+                    if (filter.indexOf(servicerutineFieldsTemplate[serviceRutinenavn][i]) > -1) {
+                        ret.push(servicerutineFieldsTemplate[serviceRutinenavn][i]);
+                    }
                 }
+                return ret;
             }
-            return ret;
+            return [];
         };
 
         servicerutineFactory.getServicerutineRequiredAttributesNames = function(serviceRutinenavn) {
-            var ret = [];
-            angular.forEach(servicerutineFactory.servicerutiner[serviceRutinenavn].attributes.attribute, function(value, key) {
-                if (value.use === "required") {
-                    this.push(value.name);
-                }
-            }, ret);
-            return ret;
+            if (servicerutineFactory.servicerutiner[serviceRutinenavn].attributes) {
+                var ret = [];
+                angular.forEach(servicerutineFactory.servicerutiner[serviceRutinenavn].attributes, function (value, key) {
+                    if (value.use === "required") {
+                        this.push(value.name);
+                    }
+                }, ret);
+                return ret;
+            }
+            return [];
         };
         
         servicerutineFactory.getServicerutineAksjonsKoder = function(serviceRutinenavn) {
-            return servicerutineFactory.servicerutiner[serviceRutinenavn].aksjonsKodes.aksjonsKode;
+            return servicerutineFactory.servicerutiner[serviceRutinenavn].aksjonsKodes;
         };
 
         servicerutineFactory.getResponse = function(serviceRutinenavn, params) {
