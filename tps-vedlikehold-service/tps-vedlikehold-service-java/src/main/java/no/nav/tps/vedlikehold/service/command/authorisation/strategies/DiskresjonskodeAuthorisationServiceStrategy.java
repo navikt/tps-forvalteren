@@ -27,7 +27,8 @@ public class DiskresjonskodeAuthorisationServiceStrategy implements Authorisatio
         try {
             diskresjonskode = diskresjonskodeConsumer.getDiskresjonskode(fnr).getDiskresjonskode();
         } catch (Exception exception) {
-            LOGGER.error("Authorisation denied. Failed to get diskresjonskode with error: {}", exception.getMessage());
+            LOGGER.warn("Authorisation denied. Failed to get diskresjonskode with exception: {}", exception);
+
             return false;
         }
 

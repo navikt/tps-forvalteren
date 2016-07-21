@@ -68,7 +68,7 @@ public abstract class SubSystemSelftest implements Selftest {
 
             return result;
         } catch (Exception exception) {
-            LOGGER.error("Selftest og '{}' failed with error: {}", exception.getMessage());
+            LOGGER.error("Selftest og '{}' failed with exception: {}", exception);
 
             return createSelftestResultForException(exception);
         }

@@ -70,11 +70,11 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
             responseData = xmlMapper.readValue(responseMessage, Map.class);
         } catch (IOException exception) {
-            LOGGER.error("Failed to convert TPS response XML to an object: {}", exception.getMessage());
+            LOGGER.error("Failed to convert TPS response XML to an object with exception: {}", exception);
 
             throw exception;
         } catch (JMSException exception) {
-            LOGGER.error("Failed to connect to MQ: {}", exception.getMessage());
+            LOGGER.error("Failed to connect to MQ with exception: {}", exception);
 
             throw exception;
         }

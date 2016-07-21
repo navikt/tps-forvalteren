@@ -96,7 +96,7 @@ public class DefaultVeraConsumer implements VeraConsumer {
         try {
             this.getEnvironments(PING_VERA);
         } catch (Exception exception) {
-            LOGGER.warn("An error was encountered while pinging Vera: {}", exception.getMessage());
+            LOGGER.warn("An exceptin was encountered while pinging Vera: {}", exception);
 
             throw exception;
         }
