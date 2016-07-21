@@ -37,7 +37,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
         /* Initiate session */
-        LOGGER.info("Createing MQ connection with username '" + MESSAGE_QUEUE_USERNAME + "' and password '" + MESSAGE_QUEUE_PASSWORD + "'");
+        LOGGER.debug("Creating MQ connection");
         Connection connection = connectionFactory.createConnection(MESSAGE_QUEUE_USERNAME, MESSAGE_QUEUE_PASSWORD);
 
         connection.start();
@@ -45,10 +45,10 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         /* Prepare destinations */
-        LOGGER.info("Creating queue: " + requestQueueName);
+        LOGGER.debug("Creating queue: " + requestQueueName);
         Destination requestDestination  = session.createQueue( requestQueueName );
 
-        LOGGER.info("Creating queue: " + responseQueueName);
+        LOGGER.debug("Creating queue: " + responseQueueName);
         Destination responseDestination = session.createQueue(responseQueueName);
 
         ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //FIXME: This method should be provider independent
@@ -68,7 +68,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         MessageConsumer consumer = session.createConsumer(responseDestination, attributes);
 
         TextMessage responseMessage = (TextMessage) consumer.receive(timeout);
-        LOGGER.info("Received message: " + responseMessage);
+        LOGGER.debug("Received message: " + responseMessage);
 
         /* Close the queues, the session, and the connection */
         connection.close();

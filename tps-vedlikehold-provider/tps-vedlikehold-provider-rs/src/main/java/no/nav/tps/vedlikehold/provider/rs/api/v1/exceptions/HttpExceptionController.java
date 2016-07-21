@@ -12,8 +12,6 @@ import java.util.Date;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-//TODO: Log exceptions
-
 @ControllerAdvice
 public class HttpExceptionController {
 
