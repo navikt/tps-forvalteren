@@ -48,7 +48,7 @@ public class UserControllerTest {
     public void setUp() {
         doReturn(ROLES).when(userContextHolderMock).getRoles();
         when( userContextHolderMock.getUsername() ).thenReturn(USERNAME);
-        when( userContextHolderMock.getDistinguishedName() ).thenReturn(DISTINGUISHED_NAME);
+        when( userContextHolderMock.getDisplayName() ).thenReturn(DISTINGUISHED_NAME);
 
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }

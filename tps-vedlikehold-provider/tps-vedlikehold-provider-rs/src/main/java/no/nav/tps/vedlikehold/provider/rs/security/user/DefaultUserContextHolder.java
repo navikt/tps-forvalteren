@@ -27,7 +27,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
      */
 
     @Override
-    public String getDistinguishedName() {
+    public String getDisplayName() {
         return getUserDetails().getDn();
     }
 

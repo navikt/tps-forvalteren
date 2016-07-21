@@ -13,8 +13,7 @@ import java.util.Collection;
  */
 public class RestUserDetailsMapper extends LdapUserDetailsMapper {
 
-    public static final String SURNAME_ATTRIBUTE = "surname";
-    public static final String GIVEN_NAME_ATTRIBUTE = "givenName";
+    private static final String DISPLAY_NAME_ATTRIBUTE = "displayname";
 
     @Override
     public LdapUserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
@@ -28,11 +27,8 @@ public class RestUserDetailsMapper extends LdapUserDetailsMapper {
     }
 
     private String getDistinguishedName(DirContextOperations ctx) {
-        if (ctx.attributeExists(GIVEN_NAME_ATTRIBUTE) && ctx.attributeExists(SURNAME_ATTRIBUTE)) {
-            String givenName = ctx.getStringAttribute(GIVEN_NAME_ATTRIBUTE);
-            String surname =  ctx.getStringAttribute(SURNAME_ATTRIBUTE);
-
-            return givenName + " " + surname;
+        if (ctx.attributeExists(DISPLAY_NAME_ATTRIBUTE)) {
+            return ctx.getStringAttribute(DISPLAY_NAME_ATTRIBUTE);
         } else {
             return ctx.getNameInNamespace();
         }
