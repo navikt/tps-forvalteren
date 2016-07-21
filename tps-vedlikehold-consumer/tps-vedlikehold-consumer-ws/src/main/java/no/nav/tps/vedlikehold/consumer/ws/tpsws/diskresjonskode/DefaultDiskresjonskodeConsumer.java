@@ -39,10 +39,10 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
             // At en person ikke finnes i diskresjonskode er bare en funksjonell feil,
             // ikke noe som skal logges eller håndteres som en teknisk feil.
             return true; //TODO: Bedre måte å gjøre dette på?
-        } catch (Exception e) {
-            LOGGER.warn("Pinging diskresjonskode failed with exception: {}", e);
+        } catch (Exception environment) {
+            LOGGER.warn("Pinging diskresjonskode failed with exception: {}", environment.toString());
 
-            throw e;
+            throw environment;
         }
 
         return true;

@@ -49,9 +49,9 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         Destination requestDestination  = session.createQueue( requestQueueName );
 
         LOGGER.debug("Creating queue: {}", responseQueueName);
-        Destination responseDestination = session.createQueue(responseQueueName); //"QA.D8_412.SFE_ENDRINGSMELDING_REPLY"
+        Destination responseDestination = session.createQueue(responseQueueName);
 
-        ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //FIXME: This method should be provider independent
+        ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
 
         /* Prepare request message */
         TextMessage requestMessage = session.createTextMessage(requestMessageContent);

@@ -105,7 +105,7 @@ public class FasitClient {
 
             this.restClient.getResource(PING_ENVIRONMENT, PING_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
         } catch (Exception exception) {
-            LOGGER.warn("Pinging Fasit failed with exception: {}", exception);
+            LOGGER.warn("Pinging Fasit failed with exception: {}", exception.toString());
 
             throw exception;
         }

@@ -9,6 +9,7 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.Authorisa
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadEnvironmentAuthorisationServiceStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -60,18 +61,8 @@ public class AuthorisationService {
         }
     };
 
-//    @Autowired
-    private EgenAnsattConsumer egenAnsattConsumer = new EgenAnsattConsumer() {
-        @Override
-        public boolean ping() throws Exception {
-            return true;
-        }
-
-        @Override
-        public boolean isEgenAnsatt(String fnr) {
-            return false;
-        }
-    };
+    @Autowired
+    private EgenAnsattConsumer egenAnsattConsumer;
 
     /**
      * Convenience method authorising the user based on 'diskresjonskode' and 'egen ansatt'.
