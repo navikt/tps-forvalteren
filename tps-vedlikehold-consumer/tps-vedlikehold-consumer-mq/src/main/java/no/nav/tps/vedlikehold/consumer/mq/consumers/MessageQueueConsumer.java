@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.mq.services;
+package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import javax.jms.JMSException;
 

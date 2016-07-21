@@ -81,10 +81,10 @@ public class ServiceController {
         try {
             return tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
         } catch (Exception exception) {
-            LOGGER.error("Failed to execute '{}' in environment '{}'  for user '{}' with exception: {}",
+            LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
                     serviceRutineName,
                     environment,
-                    exception);
+                    exception.toString());
 
             throw new HttpInternalServerErrorException(exception.getMessage(), "api/v1/service");
         }

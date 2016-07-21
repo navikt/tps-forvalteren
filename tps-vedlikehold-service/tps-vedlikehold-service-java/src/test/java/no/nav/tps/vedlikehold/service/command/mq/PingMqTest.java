@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.mq;
 
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

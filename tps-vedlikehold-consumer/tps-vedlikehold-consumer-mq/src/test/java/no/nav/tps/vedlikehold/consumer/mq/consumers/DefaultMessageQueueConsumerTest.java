@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.mq.services;
+package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.mq.jms.MQQueue;

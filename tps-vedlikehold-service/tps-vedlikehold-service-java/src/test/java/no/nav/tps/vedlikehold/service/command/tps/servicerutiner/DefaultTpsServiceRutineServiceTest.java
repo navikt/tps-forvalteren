@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactory;

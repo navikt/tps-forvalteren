@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.consumer.mq.services;
+package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
@@ -45,11 +45,11 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         /* Prepare destinations */
-        LOGGER.debug("Creating queue: " + requestQueueName);
+        LOGGER.debug("Creating queue: {}", requestQueueName);
         Destination requestDestination  = session.createQueue( requestQueueName );
 
-        LOGGER.debug("Creating queue: " + responseQueueName);
-        Destination responseDestination = session.createQueue(responseQueueName);
+        LOGGER.debug("Creating queue: {}", responseQueueName);
+        Destination responseDestination = session.createQueue(responseQueueName); //"QA.D8_412.SFE_ENDRINGSMELDING_REPLY"
 
         ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //FIXME: This method should be provider independent
 
@@ -59,7 +59,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 
         requestMessage.setJMSReplyTo(responseDestination);
 
-        LOGGER.debug("Sending message: " + requestMessage);
+        LOGGER.debug("Sending message: {}", requestMessage);
         producer.send(requestMessage);
 
         /* Wait for response */
@@ -68,7 +68,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         MessageConsumer consumer = session.createConsumer(responseDestination, attributes);
 
         TextMessage responseMessage = (TextMessage) consumer.receive(timeout);
-        LOGGER.debug("Received message: " + responseMessage);
+        LOGGER.debug("Received message: {}", responseMessage);
 
         /* Close the queues, the session, and the connection */
         connection.close();

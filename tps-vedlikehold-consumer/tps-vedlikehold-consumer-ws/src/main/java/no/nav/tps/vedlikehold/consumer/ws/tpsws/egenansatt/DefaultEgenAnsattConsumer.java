@@ -60,7 +60,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
                 throw new PersonNotFoundException(fNr, exception);
             }
 
-            LOGGER.error("Is egen ansatt failed with exception: {}", exception);
+            LOGGER.error("Is egen ansatt failed with exception: {}", exception.toString());
 
             throw exception;
         }

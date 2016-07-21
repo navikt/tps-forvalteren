@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.mq.services.MessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactory;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
@@ -70,11 +70,11 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
             responseData = xmlMapper.readValue(responseMessage, Map.class);
         } catch (IOException exception) {
-            LOGGER.error("Failed to convert TPS response XML to an object with exception: {}", exception);
+            LOGGER.error("Failed to convert TPS response XML to an object with exception: {}", exception.toString());
 
             throw exception;
         } catch (JMSException exception) {
-            LOGGER.error("Failed to connect to MQ with exception: {}", exception);
+            LOGGER.error("Failed to connect to MQ with exception: {}", exception.toString());
 
             throw exception;
         }

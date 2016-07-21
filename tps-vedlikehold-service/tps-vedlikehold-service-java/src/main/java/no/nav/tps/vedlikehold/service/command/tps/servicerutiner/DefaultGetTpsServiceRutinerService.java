@@ -33,9 +33,9 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
             return servicesAsJSON.toString();
         } catch (JSONException exception) {
-            LOGGER.error("Failed to convert services XML to a JSON object with exception: {}", exception);
+            LOGGER.error("Failed to convert services XML to a JSON object with exception: {}", exception.toString());
         } catch (IOException exception) {
-            LOGGER.error("Failed to read file '{}' with exception: {}", SERVICE_RUTINER_FILE_PATH, exception);
+            LOGGER.error("Failed to read file '{}' with exception: {}", SERVICE_RUTINER_FILE_PATH, exception.toString());
         }
 
         return null;
