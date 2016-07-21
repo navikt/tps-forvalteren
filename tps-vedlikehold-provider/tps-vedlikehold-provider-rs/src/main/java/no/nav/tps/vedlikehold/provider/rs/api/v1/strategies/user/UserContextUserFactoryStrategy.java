@@ -42,6 +42,6 @@ public class UserContextUserFactoryStrategy implements UserFactoryStrategy {
 
     @Override
     public String getDistinguishedName() {
-        return userContextHolder.getDistinguishedName();
+        return userContextHolder.getDisplayName();
     }
 }

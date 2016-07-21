@@ -67,7 +67,7 @@ public class DefaultUserContextHolderTest {
     @Test
     public void getDisplayNameReturnsDisplayNameFromUserDetails() {
         when( userDetailsMock.getDn() ).thenReturn(DISPLAY_NAME);
-        assertThat(userContextHolder.getDistinguishedName(), is(DISPLAY_NAME));
+        assertThat(userContextHolder.getDisplayName(), is(DISPLAY_NAME));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class DefaultUserContextHolderTest {
         expectedException.expect(RuntimeException.class);
         //TODO: Test error message
 
-        userContextHolder.getDistinguishedName();
+        userContextHolder.getDisplayName();
     }
 
     /* getUsername() */
