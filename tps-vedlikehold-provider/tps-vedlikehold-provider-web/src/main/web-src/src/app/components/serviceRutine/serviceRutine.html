@@ -35,12 +35,12 @@
             </form>
         </div>
         <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
-            <md-tabs md-dynamic-height md-border-bottom>
+            <md-tabs md-border-bottom class="md-primary tps-scrollable-tabs">
                 <md-tab label="Resultat">
                     <tps-response-form service-rutinenavn="serviceRutinenavn"></tps-response-form>
                 </md-tab>
                 <md-tab label="XML">
-                    <div hljs hljs-source="xmlForm" hljs-language="xml" layout-padding>
+                    <div class="tps-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
                     </div>
                 </md-tab>
             </md-tabs>
