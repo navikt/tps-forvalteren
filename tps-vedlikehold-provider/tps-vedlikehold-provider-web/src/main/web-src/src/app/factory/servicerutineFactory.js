@@ -34,6 +34,12 @@ angular.module('tps-vedlikehold')
         var isSetServicerutiner = false;
         var isSetEnvironments = false;
         
+        // var serverError = false;
+        //
+        // servicerutineFactory.setServerError = function() {
+        //     serverError = true;
+        // };
+        
         servicerutineFactory.isSetServicerutiner = function () {
             return isSetServicerutiner;
         };

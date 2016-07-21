@@ -2,7 +2,9 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold')
-    .controller('navigatorCtrl', ['$scope', '$mdDialog', 'servicerutineFactory', function($scope, $mdDialog, servicerutineFactory) {
+    .controller('navigatorCtrl', ['$scope', '$mdDialog', 'servicerutineFactory', function($scope, $mdDialog, servicerutineFactory, simpleObj) {
+        console.log(simpleObj.value);
+
         var displayingErrorMessage = false;
 
         $scope.getServicerutineInternNavn = function(serviceRutinenavn) {

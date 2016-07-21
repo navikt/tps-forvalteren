@@ -59,6 +59,12 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 templateUrl: "app/shared/side-navigator/side-navigator.html"
             }
         }
+        ,
+        resolve: {
+            simpleObj: function() {
+                return {value: 'simple!'};
+            }
+        }
     });
 
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -79,11 +85,17 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         
 }]);
 
-app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService', function($rootScope, $state, authenticationService, sessionService, locationService){
+app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService', 'serverService', 
+    function($rootScope, $state, authenticationService, sessionService, locationService, serverService){
     $rootScope.$on('$stateChangeStart', function(event, toState){
         if (toState.name === 'login') {
             return;
         }
+        
+        // if (toState.name === 'servicerutine') {
+        //     serverService.getFromServerServicerutiner();
+        //     serverService.getFromServerEnvironments();
+        // }
 
         var authenticated = sessionService.getIsAuthenticated();
         
