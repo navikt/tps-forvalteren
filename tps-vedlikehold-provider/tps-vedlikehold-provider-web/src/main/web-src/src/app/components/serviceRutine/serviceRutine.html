@@ -1,5 +1,5 @@
-<div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
-    <div ng-show="isValidServiceRutinenavn" layout="column" flex>
+<div class="servicerutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+    <div ng-show="loadServicerutineTemplate()" layout="column" flex>
         <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
@@ -46,7 +46,7 @@
             </md-tabs>
         </md-content>
     </div>
-    <div ng-show="!isValidServiceRutinenavn"  layout="column" flex>
+    <div ng-show="!loadServicerutineTemplate()"  layout="column" flex>
         <ng-include src="'app/components/servicerutine/welcome.html'"></ng-include>
     </div>
 </div>

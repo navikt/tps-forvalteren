@@ -15,7 +15,8 @@ require('./services/locationService');
 require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
-require('./services/serverService');
+require('./services/serverServicerutineService');
+require('./services/serverEnvironmentService');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
     'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
@@ -39,7 +40,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         url: "/login",
         views: {
             'content@' : {
-                templateUrl: "app/components/login/login.html"
+                templateUrl: "app/components/login/login.html",
+                controller: 'loginController'
             }
         }
     })
@@ -48,21 +50,22 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         params: {
             serviceRutinenavn: null
         },
+        resolve: {
+            servicerutinerPromise: "serverServicerutineService",
+            environmentsPromise: "serverEnvironmentService"
+        },
         views: {
             'content@': {
-                templateUrl: "app/components/servicerutine/servicerutine.html"
+                templateUrl: "app/components/servicerutine/servicerutine.html",
+                controller: 'servicerutineController'
             },
             'header@': {
-                templateUrl: "app/shared/header/header.html"
+                templateUrl: "app/shared/header/header.html",
+                controller: 'headerController'
             },
             'side-navigator@': {
-                templateUrl: "app/shared/side-navigator/side-navigator.html"
-            }
-        }
-        ,
-        resolve: {
-            simpleObj: function() {
-                return {value: 'simple!'};
+                templateUrl: "app/shared/side-navigator/side-navigator.html",
+                controller: 'navigatorController'
             }
         }
     });
@@ -85,17 +88,17 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         
 }]);
 
-app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService', 'serverService', 
-    function($rootScope, $state, authenticationService, sessionService, locationService, serverService){
+app.factory('CONSTANTS', function() {
+    return { data: { name: "some name", number: "some number"} };
+});
+
+app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService',
+    function($rootScope, $state, authenticationService, sessionService, locationService){
+        
     $rootScope.$on('$stateChangeStart', function(event, toState){
         if (toState.name === 'login') {
             return;
         }
-        
-        // if (toState.name === 'servicerutine') {
-        //     serverService.getFromServerServicerutiner();
-        //     serverService.getFromServerEnvironments();
-        // }
 
         var authenticated = sessionService.getIsAuthenticated();
         

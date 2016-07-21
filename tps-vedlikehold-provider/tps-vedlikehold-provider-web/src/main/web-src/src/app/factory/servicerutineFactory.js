@@ -3,6 +3,7 @@
  * */
 angular.module('tps-vedlikehold')
     .factory('servicerutineFactory', ['$http', function($http) {
+
         var servicerutineFactory = {};
         
         var urlBase = 'api/v1/service';
@@ -34,12 +35,6 @@ angular.module('tps-vedlikehold')
         var isSetServicerutiner = false;
         var isSetEnvironments = false;
         
-        // var serverError = false;
-        //
-        // servicerutineFactory.setServerError = function() {
-        //     serverError = true;
-        // };
-        
         servicerutineFactory.isSetServicerutiner = function () {
             return isSetServicerutiner;
         };
@@ -47,30 +42,32 @@ angular.module('tps-vedlikehold')
         servicerutineFactory.isSetEnvironments = function () {
             return isSetEnvironments;
         };
-        
-        servicerutineFactory.getFromServerServicerutiner = function () {
-            return $http({method: 'GET', url: urlBase});
+
+        servicerutineFactory.loadFromServerServicerutiner = function() {
+            return $http({method: 'GET', url: urlBase}).then(function(res) {
+                servicerutineFactory.servicerutiner = res.data.tpsPersonData;
+                isSetServicerutiner = true;
+                return servicerutineFactory.servicerutiner;
+            }, function(error) {
+                return null;
+            });
         };
 
-        servicerutineFactory.getFromServerEnvironments = function () {
-            return $http({method: 'GET', url: urlBaseEnv});
-        };
-        
-        servicerutineFactory.setServicerutiner = function(data) {
-            servicerutineFactory.servicerutiner = data.tpsPersonData;
-            isSetServicerutiner = true;
-        };
-
-        servicerutineFactory.setEnvironments = function(data) {
-            servicerutineFactory.environments = data;
-            isSetEnvironments = true;
+        servicerutineFactory.loadFromServerEnvironments = function() {
+            return $http({method: 'GET', url: urlBaseEnv}).then(function(res) {
+                servicerutineFactory.environments = res.data;
+                isSetEnvironments = true;
+                return servicerutineFactory.environments;
+            }, function(error) {
+                return null;
+            });
         };
         
         servicerutineFactory.getServicerutiner = function() {
             return servicerutineFactory.servicerutiner;
         };
 
-        servicerutineFactory.getServiceRutinenavn = function() {
+        servicerutineFactory.getServiceRutinenavns = function() {
             var ret = [];
             angular.forEach(servicerutineFactory.servicerutiner, function(value, key) {
                 this.push(key);
