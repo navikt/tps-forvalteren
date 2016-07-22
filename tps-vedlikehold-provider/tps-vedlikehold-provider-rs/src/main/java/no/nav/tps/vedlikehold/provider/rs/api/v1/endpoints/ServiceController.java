@@ -6,6 +6,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServi
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
+import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
@@ -27,7 +28,6 @@ import java.util.Map;
  * @author Tobias Hansen, Visma Consulting AS
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-
 @RestController
 @RequestMapping(value = "api/v1")
 public class ServiceController {
@@ -81,7 +81,11 @@ public class ServiceController {
         }
 
         try {
-            return tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+            ServiceRutineResponse response = tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+
+            Sporingslogger.log(environment, serviceRutineName, fnr);
+
+            return response;
         } catch (Exception exception) {
             LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
                     serviceRutineName,
