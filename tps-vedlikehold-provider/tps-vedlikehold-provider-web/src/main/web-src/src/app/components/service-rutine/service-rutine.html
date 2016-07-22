@@ -35,7 +35,8 @@
         <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
             <md-tabs md-border-bottom class="tps-scrollable-tabs">
                 <md-tab label="Resultat">
-                    <tps-response-form service-rutinenavn="serviceRutinenavn"></tps-response-form>
+                    <div ng-include="'app/components/service-rutine/response.html'" class="tps-response-form md-padding">
+                    </div>
                 </md-tab>
                 <md-tab label="XML">
                     <div class="tps-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">

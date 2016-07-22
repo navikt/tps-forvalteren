@@ -44,60 +44,21 @@ angular.module('tps-vedlikehold')
         };
 
         servicerutineFactory.loadFromServerServicerutiner = function() {
-            var res = {};
-            res.data = [
-                {
-                    "name": "FS03-FDNUMMER-PERSDATA-O",
-                    "internalName": "S004 hentPerson",
-                    "aksjonsKodes": [
-                        "E0",
-                        "A0",
-                        "A2",
-                        "B0",
-                        "B2",
-                        "C0",
-                        "D0"
-                    ],
-                    "attributes": [
-                        {
-                            "name": "fnr",
-                            "type": "xs:string",
-                            "use": "required"
-                        },
-                        {
-                            "name": "aksjonsDato",
-                            "type": "xs:date",
-                            "use": "optional"
-                        }
-                    ]
-                },
-                {
-                    "name": "FS03-OTILGANG-TILSRTPS-O",
-                    "internalName": "S000 tilgang til TPS",
-                    "aksjonsKodes": [
-                        "A0"
-                    ],
-                    "attributes": null
+            return $http({method: 'GET', url: urlBase}).then(function(res) {
+                if (res.data) {
+                    var servicerutineList = res.data;
+                    servicerutineFactory.servicerutiner = {};
+                    for (var i = 0; i < servicerutineList.length; i++) {
+                        servicerutineFactory.servicerutiner[servicerutineList[i].name] = servicerutineList[i];
+                    }
+                    isSetServicerutiner = true;
+                    return servicerutineFactory.servicerutiner;
+                } else {
+                    return null;
                 }
-            ];
-
-            // servicerutineFactory.servicerutiner = res.data;
-            var servicerutineList = res.data;
-            servicerutineFactory.servicerutiner = {};
-            for (var i = 0; i < servicerutineList.length; i++) {
-                servicerutineFactory.servicerutiner[servicerutineList[i].name] = servicerutineList[i];
-            }
-            isSetServicerutiner = true;
-            return servicerutineFactory.servicerutiner;
-
-            //##############################################################
-            // return $http({method: 'GET', url: urlBase}).then(function(res) {
-            //     servicerutineFactory.servicerutiner = res.data.tpsPersonData;
-            //     isSetServicerutiner = true;
-            //     return servicerutineFactory.servicerutiner;
-            // }, function(error) {
-            //     return null;
-            // });
+            }, function(error) {
+                return null;
+            });
         };
 
         servicerutineFactory.loadFromServerEnvironments = function() {
