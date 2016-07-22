@@ -1,4 +1,4 @@
-<md-input-container class="tps-input-input-container" flex-gt-sm>
+<md-input-container class="tps-input-input-container" flex>
     <label>Fødselsnummer</label>
-    <input ng-required="isRequired('fnr')" ng-model="formData.fnr" tabindex="1"/>
+    <input ng-required="isRequired('fnr')" md-maxlength="11" ng-pattern="onlyNumbers" ng-model="formData.fnr"/>
 </md-input-container>
