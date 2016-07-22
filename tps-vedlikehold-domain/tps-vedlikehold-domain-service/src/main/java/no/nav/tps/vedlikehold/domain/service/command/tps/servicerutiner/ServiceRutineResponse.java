@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.domain.service;
+package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

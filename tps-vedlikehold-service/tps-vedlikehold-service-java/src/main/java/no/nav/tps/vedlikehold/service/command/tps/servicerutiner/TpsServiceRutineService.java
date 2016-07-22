@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
-import no.nav.tps.vedlikehold.domain.service.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
 
 import java.util.Map;
 

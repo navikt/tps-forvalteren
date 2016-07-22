@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.junit.Before;

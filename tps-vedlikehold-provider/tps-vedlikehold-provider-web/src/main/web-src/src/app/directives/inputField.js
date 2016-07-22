@@ -2,6 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold').directive('tpsInputField', function(){
+
     var templatesPath = 'app/components/service-rutine/inputfields/';
     var templateSuffix = 'Input.html';
 

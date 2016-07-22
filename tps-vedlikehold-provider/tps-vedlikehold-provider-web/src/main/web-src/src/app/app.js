@@ -15,17 +15,21 @@ require('./services/locationService');
 require('./services/sessionService');
 require('./services/utilsService');
 require('./services/authenticationService');
-require('./services/serverService');
+require('./services/serverServicerutineService');
+require('./services/serverEnvironmentService');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
     'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
 
 require('./factory/servicerutineFactory');
+
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
+
 require('./directives/inputField');
 require('./directives/outputField');
-require('./directives/responseForm');
+
+require('./settings/formConfig');
 
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
@@ -39,7 +43,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         url: "/login",
         views: {
             'content@' : {
-                templateUrl: "app/components/login/login.html"
+                templateUrl: "app/components/login/login.html",
+                controller: 'loginController'
             }
         }
     })
@@ -48,15 +53,23 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         params: {
             serviceRutinenavn: null
         },
+        resolve: {
+            servicerutinerPromise: "serverServicerutineService",
+            environmentsPromise: "serverEnvironmentService"
+        },
         views: {
             'content@': {
-                templateUrl: "app/components/service-rutine/service-rutine.html"
+                templateUrl: "app/components/service-rutine/service-rutine.html",
+                controller: 'servicerutineController'
+
             },
             'header@': {
-                templateUrl: "app/shared/header/header.html"
+                templateUrl: "app/shared/header/header.html",
+                controller: 'headerController'
             },
             'side-navigator@': {
-                templateUrl: "app/shared/side-navigator/side-navigator.html"
+                templateUrl: "app/shared/side-navigator/side-navigator.html",
+                controller: 'navigatorController'
             }
         }
     });
@@ -79,7 +92,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         
 }]);
 
-app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService', function($rootScope, $state, authenticationService, sessionService, locationService){
+app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService',
+    function($rootScope, $state, authenticationService, sessionService, locationService){
+        
     $rootScope.$on('$stateChangeStart', function(event, toState){
         if (toState.name === 'login') {
             return;
