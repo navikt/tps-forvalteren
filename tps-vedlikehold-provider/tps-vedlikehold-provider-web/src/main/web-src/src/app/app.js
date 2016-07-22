@@ -8,7 +8,7 @@ require('angular-highlightjs');
 require('angular-moment');
 
 require('./components/login/login');
-require('./components/servicerutine/servicerutine');
+require('./components/service-rutine/service-rutine');
 
 require('./services/serviceModule');
 require('./services/locationService');
@@ -50,7 +50,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         },
         views: {
             'content@': {
-                templateUrl: "app/components/servicerutine/servicerutine.html"
+                templateUrl: "app/components/service-rutine/service-rutine.html"
             },
             'header@': {
                 templateUrl: "app/shared/header/header.html"
