@@ -40,26 +40,8 @@ public class AuthorisationService {
     @Value("${tps.vedlikehold.security.o.readroles}")
     private List<String> readRolesO;
 
-//    @Autowired
-    /* FIXME: Remove these mock when TPSWS is up and running */
-    private DiskresjonskodeConsumer diskresjonskodeConsumer = new DiskresjonskodeConsumer() {
-        @Override
-        public boolean ping() throws Exception {
-            return true;
-        }
-
-        @Override
-        public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) throws Exception {
-            HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
-            response.setDiskresjonskode("1");
-            return response;
-        }
-
-        @Override
-        public HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe) {
-            return null;
-        }
-    };
+    @Autowired
+    private DiskresjonskodeConsumer diskresjonskodeConsumer;
 
     @Autowired
     private EgenAnsattConsumer egenAnsattConsumer;
