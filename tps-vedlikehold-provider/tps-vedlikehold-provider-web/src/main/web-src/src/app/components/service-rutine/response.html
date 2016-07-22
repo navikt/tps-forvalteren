@@ -1,5 +1,5 @@
 <div layout="column">
-    <div layout-gt-xs="row" layout="column" ng-repeat="row in formConfig.rows">
+    <div layout-gt-xs="row" layout="column" ng-repeat="row in formConfig[serviceRutinenavn].rows">
         <tps-output-field  ng-repeat="field in row" field-model="personData[field.fieldData]" label="{{field.label}}" flex="{{field.flex}}">
         </tps-output-field>
     </div>

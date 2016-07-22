@@ -22,11 +22,12 @@ var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIco
     'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
 
 require('./factory/servicerutineFactory');
+
 require('./shared/header/header');
 require('./shared/side-navigator/side-navigator');
+
 require('./directives/inputField');
 require('./directives/outputField');
-require('./directives/responseForm');
 
 require('./settings/formConfig');
 
