@@ -29,8 +29,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     tpsReturnedObject = res.data.data;
 
                     var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                    var message = "Status: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
+                    var message = "STATUS: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
                     $scope.svarStatus = message;
+                    $scope.returStatus = svarStatus.returStatus;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
                         .tpsSvar[servicerutineFactory.getServicerutineReturnedDataLabel($scope.serviceRutinenavn)],

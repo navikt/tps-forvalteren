@@ -44,8 +44,11 @@
             </md-tabs>
         </md-content>
         <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="center center">
-            <div class="tps-vk-status" flex>
-                {{svarStatus}}
+            <div class="tps-vk-status" flex ng-show="svarStatus">
+                <ng-md-icon class="status-icon" ng-class="returStatus == '00' ? 'succes' : 'error'" icon="fiber_manual_record"></ng-md-icon>
+                <div class="status-message">
+                    {{svarStatus}}
+                </div>
             </div>
         </md-content>
     </div>

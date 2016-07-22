@@ -124,5 +124,23 @@
   .tps-vk-status {
     font-size: 12px;
     color: rgba(0,0,0,.54);
+
+    .status-message, .status-icon {
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .status-icon {
+      &.error {
+        svg {
+          fill: red;
+        }
+      }
+      &.succes {
+        svg {
+          fill: green;
+        }
+      }
+    }
   }
 }
