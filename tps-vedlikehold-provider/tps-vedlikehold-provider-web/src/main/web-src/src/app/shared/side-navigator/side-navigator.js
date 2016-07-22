@@ -2,56 +2,29 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold')
-    .controller('navigatorCtrl', ['$scope', '$mdDialog', 'servicerutineFactory', function($scope, $mdDialog, servicerutineFactory) {
-        var displayingErrorMessage = false;
+    .controller('navigatorController', ['$scope', '$mdDialog', 'servicerutineFactory', 'servicerutinerPromise', 
+        function($scope, $mdDialog, servicerutineFactory, servicerutinerPromise) {
 
-        $scope.getServicerutineInternNavn = function(serviceRutinenavn) {
-            return servicerutineFactory.getServicerutineInternNavn(serviceRutinenavn);
+        $scope.getServicerutineInternalName = function(serviceRutinenavn) {
+            return servicerutineFactory.getServicerutineInternalName(serviceRutinenavn);
         };
-        
-        function showAlertApiError(msg) {
-            if (!displayingErrorMessage) {
-                displayingErrorMessage = true;
-                var confirm = $mdDialog.confirm()
+            
+        function showAlertApiError() {
+            $mdDialog.show(
+                $mdDialog.alert()
                     .title('Serverfeil')
-                    .textContent('Fikk ikke hentet informasjon om ' + msg + ' fra server. Vil du prøve igjen?')
-                    .ariaLabel('Feil ved henting av ' + msg)
-                    .ok('Prøv igjen')
-                    .cancel('Avbryt');
-                $mdDialog.show(confirm).then(function () {
-                    getFromServerServicerutiner();
-                    getFromServerEnvironments();
-                }).finally(function(){
-                    displayingErrorMessage = false;
-                });
-            }
-        }
-
-        function getFromServerServicerutiner() {
-            if (!servicerutineFactory.isSetServicerutiner()) {
-                servicerutineFactory.getFromServerServicerutiner().then(function (res) {
-                    servicerutineFactory.setServicerutiner(res.data);
-                    $scope.servicerutiner = servicerutineFactory.getServiceRutinenavn();
-                }, function (error) {
-                    showAlertApiError('servicerutiner');
-                });
-            }
-            $scope.servicerutiner = servicerutineFactory.getServiceRutinenavn();
-        }
-
-        function getFromServerEnvironments() {
-            if (!servicerutineFactory.isSetEnvironments()) {
-                servicerutineFactory.getFromServerEnvironments().then(function (res) {
-                    servicerutineFactory.setEnvironments(res.data);
-                }, function (error) {
-                    showAlertApiError('miljøer');
-                });
-            }
+                    .textContent('Fikk ikke hentet informasjon om servicerutiner fra server.')
+                    .ariaLabel('Feil ved henting av servicerutiner')
+                    .ok('OK')
+            );
         }
         
         function init() {
-            getFromServerServicerutiner();
-            getFromServerEnvironments();
+            if (servicerutinerPromise) {
+                $scope.serviceRutinenavns = servicerutineFactory.getServiceRutinenavns();
+            } else {
+                showAlertApiError();
+            }
         }
         
         init();

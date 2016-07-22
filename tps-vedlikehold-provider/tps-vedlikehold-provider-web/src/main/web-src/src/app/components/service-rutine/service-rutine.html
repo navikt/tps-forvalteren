@@ -1,14 +1,12 @@
-<div class="servicerutine-dashboard" ng-controller="servicerutineCtrl" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
-    <div ng-show="isValidServiceRutinenavn" layout="column" flex>
+<div class="servicerutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+    <div ng-show="loadServicerutineTemplate()" layout="column" flex>
         <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <!--<tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" flex-gt-sm></tps-input-field>-->
                     <md-input-container class="tps-input-input-container" flex-gt-xs>
                         <label>Fødselsnummer</label>
-                        <input ng-required="isRequired('fnr')" ng-model="formData.fnr"/>
+                        <input ng-required="isRequired('fnr')" md-maxlength="11" ng-pattern="onlyNumbers" ng-model="formData.fnr"/>
                     </md-input-container>
-                    <!--<md-datepicker ng-model="formData.aksjonsDato" md-placeholder="Dato" flex-gt-xs></md-datepicker>-->
                     <div class="date-picker-container" flex-gt-xs>
                         <label>Dato</label>
                         <md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>
@@ -34,19 +32,28 @@
                 </div>
             </form>
         </div>
-        <md-content flex-gt-xs="80" class="tps-vk-bottom md-whiteframe-z2">
-            <md-tabs md-dynamic-height md-border-bottom>
+        <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
+            <md-tabs md-border-bottom class="tps-scrollable-tabs">
                 <md-tab label="Resultat">
-                    <tps-response-form service-rutinenavn="serviceRutinenavn"></tps-response-form>
+                    <div ng-include="'app/components/service-rutine/response.html'" class="tps-response-form md-padding">
+                    </div>
                 </md-tab>
                 <md-tab label="XML">
-                    <div hljs hljs-source="xmlForm" hljs-language="xml" layout-padding>
+                    <div class="tps-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
                     </div>
                 </md-tab>
             </md-tabs>
         </md-content>
+        <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="center center">
+            <div class="tps-vk-status" flex ng-show="svarStatus">
+                <ng-md-icon class="status-icon" ng-class="returStatus == '00' ? 'succes' : 'error'" icon="fiber_manual_record"></ng-md-icon>
+                <div class="status-message">
+                    {{svarStatus}}
+                </div>
+            </div>
+        </md-content>
     </div>
-    <div ng-show="!isValidServiceRutinenavn"  layout="column" flex>
+    <div ng-show="!loadServicerutineTemplate()"  layout="column" flex>
         <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
     </div>
 </div>
