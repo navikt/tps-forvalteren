@@ -7,6 +7,7 @@ import javax.jms.JMSException;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
+@FunctionalInterface
 public interface MessageQueueServiceFactory {
     MessageQueueConsumer createMessageQueueService(String environment) throws JMSException;
 }

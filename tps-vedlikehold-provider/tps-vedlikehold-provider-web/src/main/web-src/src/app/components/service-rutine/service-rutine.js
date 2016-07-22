@@ -41,7 +41,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
 
                 }, function(error) {
                     $scope.loading = false;
-                    showAlertTPSError();
+                    showAlertTPSError(error);
                 });
             };
 
@@ -54,12 +54,26 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 return (requiredAttributes.indexOf(type) > -1);
             };
 
-            function showAlertTPSError() {
+            function showAlertTPSError(error) {
+                var errorMessages = {
+                    401: {
+                        title: 'Ikke autorisert',
+                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                    },
+                    500: {
+                        title: 'Serverfeil',
+                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
+                        ariaLabel: 'Feil ved henting av data fra TPS'
+                    }
+                };
+
+                var errorObj = error.status == 401 ? errorMessages[401] : errorMessages[500];
                 $mdDialog.show(
                     $mdDialog.alert()
-                        .title('Serverfeil')
-                        .textContent('Fikk ikke hentet informasjon om TPS fra server.')
-                        .ariaLabel('Feil ved henting av data fra TPS')
+                        .title(errorObj.title)
+                        .textContent(errorObj.text)
+                        .ariaLabel(errorObj.ariaLabel)
                         .ok('OK')
                 );
             }

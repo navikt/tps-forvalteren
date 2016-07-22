@@ -25,7 +25,7 @@ public class EnvironmentController {
     private static final Set<String> supportedEnvironments = new HashSet<>(Arrays.asList("u", "t"));
 
     @Autowired
-    public GetEnvironments getEnvironments;
+    public GetEnvironments getEnvironmentsCommand;
 
     /**
      * Get an object containing a list of environments
@@ -35,7 +35,7 @@ public class EnvironmentController {
 
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Set<String> getEnvironments() {
-        return getEnvironments.execute("tpsws").stream()
+        return getEnvironmentsCommand.execute("tpsws").stream()
                 .filter(environment -> {
                     String prefix = environment.substring(0, 1).toLowerCase();
 

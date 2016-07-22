@@ -15,10 +15,14 @@ public class TimeoutFeature extends AbstractFeature {
     private long connectionTimeout = Long.MIN_VALUE;
 
     public TimeoutFeature(long receiveTimeout) {
+        super();
+
         this.receiveTimeout = receiveTimeout;
     }
 
     public TimeoutFeature(long receiveTimeout, long connectionTimeout) {
+        super();
+        
         this.receiveTimeout = receiveTimeout;
         this.connectionTimeout = connectionTimeout;
     }
