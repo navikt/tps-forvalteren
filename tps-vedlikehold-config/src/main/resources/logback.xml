@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
 
-    <property name="messagePattern" value="%date [%-5level] [%X{userId}] %logger{1} -- %message%n"/>
+    <property name="messagePattern" value="%date [%-5level] [%X{consumerId},%X{userId},%X{callId}] %logger{1} -- %message%n"/>
 
     <!-- Writes warnings and errors to error.log -->
     <!-- Rolls the file at midnight every day -->
@@ -58,7 +58,7 @@
     <appender name="sporingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${APP_LOG_HOME}/sporing.log</file>
         <encoder>
-            <pattern>%date - [%X{userId}] - %message%n</pattern>
+            <pattern>%date - [%X{consumerId},%X{userId},%X{callId}] - %message%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
