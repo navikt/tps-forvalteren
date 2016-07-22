@@ -13,7 +13,7 @@
                         </md-select>
                     </md-input-container>
                     <md-input-container flex-gt-xs flex="66"class="tps-input-input-container tps-vk-form-btns" layout-align="center center">
-                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn">Send til TPS</md-button>
+                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"  ng-disabled="requestForm.$invalid || !requestForm.$dirty || loading">Send til TPS</md-button>
                         <md-button class="md-fab  md-accent tps-vk-refresh-btn" type="button" ng-transclude="" aria-label="Fjern responsdata." ng-click="clearResponseForm()">
                             <ng-md-icon icon="delete_sweep" aria-label="Fjern responsdata."></ng-md-icon>
                             <md-tooltip md-direction="top" class="tooltip-btn">
