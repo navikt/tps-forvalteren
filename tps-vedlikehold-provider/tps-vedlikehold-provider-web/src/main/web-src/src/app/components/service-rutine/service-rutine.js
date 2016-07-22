@@ -2,19 +2,24 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
-    .controller('servicerutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'servicerutineFactory',
-        function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory) {
+
+    .controller('servicerutineController', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'servicerutineFactory', 'formConfig', 'environmentsPromise',
+        function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory, formConfig, environmentsPromise) {
+
+            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
+            $scope.formData = {};
+            $scope.formConfig = formConfig;
+            $scope.onlyNumbers = /^\d+$/;
 
             var tpsReturnedObject = {};
-            
-            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
-            $scope.isValidServiceRutinenavn = false;
-            $scope.formData = {};
-
-            //objects that contain non-unique properties
-            var nonUniqueProperties = [];
-
+            var nonUniqueProperties = []; //objects that contain non-unique properties
             var requiredAttributes = [];
+            var isValidServiceRutinenavn = false;
+            var apiError = true;
+
+            $scope.loadServicerutineTemplate = function () {
+                return isValidServiceRutinenavn && !apiError;
+            };
 
             $scope.submit = function() {
                 var params = createParams($scope.formData);
@@ -22,16 +27,23 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 servicerutineFactory.getResponse($scope.serviceRutinenavn, params).then(function(res) {
                     $scope.xmlForm = utilsService.formatXml(res.data.xml);
                     tpsReturnedObject = res.data.data;
-                    $scope.svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
+
+                    var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
+                    var message = "STATUS: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
+                    $scope.svarStatus = message;
+                    $scope.returStatus = svarStatus.returStatus;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
                         .tpsSvar[servicerutineFactory.getServicerutineReturnedDataLabel($scope.serviceRutinenavn)],
                         nonUniqueProperties);
+
                 }, function(error) {
-                    // cyclic?
-                    // console.log(error);
                     showAlertTPSError();
                 });
+            };
+
+            $scope.hideToast = function() {
+                toast.hide();
             };
 
             $scope.isRequired = function(type) {
@@ -39,25 +51,48 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             };
 
             function showAlertTPSError() {
-                var confirm = $mdDialog.confirm()
-                    .title('Serverfeil')
-                    .textContent('Fikk ikke hentet informasjon om TPS fra server. Vil du prøve igjen?')
-                    .ariaLabel('Feil ved henting av data fra TPS')
-                    .ok('Prøv igjen')
-                    .cancel('Avbryt');
-                $mdDialog.show(confirm).then(function () {
-                    $scope.submit();
-                });
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title('Serverfeil')
+                        .textContent('Fikk ikke hentet informasjon om TPS fra server.')
+                        .ariaLabel('Feil ved henting av data fra TPS')
+                        .ok('OK')
+                );
+            }
+
+            function showAlertApiError() {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title('Serverfeil')
+                        .textContent('Fikk ikke hentet informasjon om miljøer fra server.')
+                        .ariaLabel('Feil ved henting av miljøer')
+                        .ok('OK')
+                );
             }
 
             function createParams(formData) {
                 var params = {};
                 params.fnr = formData.fnr;
-                params.aksjonsDato = utilsService.formatDate(formData.aksjonsDato);
-                params.aksjonsKode = formData.aksjonsKode.charAt(0);
-                params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
+                params.aksjonsDato = checkDate(formData.aksjonsDato);
+
+                var aksjonsKode = formData.aksjonsKode;
+                params.aksjonsKode = aksjonsKode ?  formData.aksjonsKode.charAt(0) : 0;
+                params.aksjonsKode2 = aksjonsKode ?  formData.aksjonsKode.charAt(1) : 1;
+
                 params.environment = formData.environment;
                 return params;
+            }
+
+            function checkDate(aksjonsDato) {
+                var dato = aksjonsDato;
+                var inFuture = utilsService.isInFuture(aksjonsDato);
+
+                if (!aksjonsDato || inFuture) {
+                    var today = new Date();
+                    $scope.formData.aksjonsDato = today;
+                    dato = !aksjonsDato ? null : today;
+                }
+                return utilsService.formatDate(dato);
             }
             
             function getServicerutineAttributesNames() {
@@ -66,7 +101,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             }
             
             function setIsValidServiceRutinenavn() {
-                $scope.isValidServiceRutinenavn = ($scope.serviceRutinenavn in servicerutineFactory.getServicerutiner());
+                isValidServiceRutinenavn = ($scope.serviceRutinenavn in servicerutineFactory.getServicerutiner());
             }
             
             function getServicerutineRequiredAttributesNames() {
@@ -75,10 +110,6 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             
             function getServicerutineAksjonsKoder() {
                 $scope.aksjonsKoder = servicerutineFactory.getServicerutineAksjonsKoder($scope.serviceRutinenavn).sort();
-            }
-            
-            function getEnvironments() {
-                $scope.environments = servicerutineFactory.getEnvironments().sort();
             }
 
             function getNonUniqueProperties() {
@@ -96,16 +127,29 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
 
             function init() {
                 setIsValidServiceRutinenavn();
-                
+
                 //better way to do this?
-                if (!$scope.isValidServiceRutinenavn) {
+                if (!isValidServiceRutinenavn) {
                     return;
                 }
-                
+
+                if (environmentsPromise) {
+                    $scope.environments = utilsService.sortEnvironments(servicerutineFactory.getEnvironments());
+                    apiError = false;
+                } else {
+                    apiError = true;
+                    showAlertApiError();
+                    return;
+                }
+
+                if (!servicerutineFactory.isSetServicerutiner()) {
+                    apiError = true;
+                    return;
+                }
+
                 getServicerutineAttributesNames();
                 getServicerutineRequiredAttributesNames();
                 getServicerutineAksjonsKoder();
-                getEnvironments();
                 getNonUniqueProperties();
                 initRequestForm();
             }

@@ -7,17 +7,15 @@ angular.module('tps-vedlikehold').directive('tpsOutputField', function(){
         restrict: 'E',
         replace: true,
         scope: {
-            fieldData: '=',
-            label: '@',
-            flexSize: '@',
-            styleClass: '@'
+            fieldModel: '=',
+            label: '@'
         },
         template:
         '<div layout="column">' +
-            '<md-input-container class="tps-output-input-container md-input-focused" >' +
+        '<md-input-container class="tps-output-input-container md-input-focused" >' +
             '<label class="tps-output-label">{{ label }}</label>' +
-            '<input class="tps-output-input" ng-class="{filled : fieldData.trim().length, empty : fieldData.trim().length == 0}" type="text" ng-model="fieldData" readonly/>' +
-            '</md-input-container>' +
+            '<input class="tps-output-input" ng-class="{filled : fieldModel.trim().length, empty : fieldModel.trim().length == 0}" type="text" ng-model="fieldModel" readonly/>' +
+        '</md-input-container>' +
         '</div>'
     };
 });
