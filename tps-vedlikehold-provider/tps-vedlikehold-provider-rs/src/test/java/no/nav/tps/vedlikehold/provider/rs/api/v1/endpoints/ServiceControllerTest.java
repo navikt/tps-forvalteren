@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.domain.service.User;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
@@ -17,6 +18,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.JMSException;
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -31,7 +34,8 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceControllerTest {
 
-    private static final String SERVICES            = "SERVICES";
+    private static final List<TpsServiceRutine> SERVICES = mock(List.class);
+
     private static final String FNR                 = "12345678910";
     private static final String SERVICE_RUTINE_NAME = "serviceRutineName";
     
@@ -100,7 +104,7 @@ public class ServiceControllerTest {
 
     @Test
     public void getTpsServiceRutinerReturnsServices() {
-        String services = serviceController.getTpsServiceRutiner();
+        Collection<TpsServiceRutine> services = serviceController.getTpsServiceRutiner();
 
         assertThat(services, is(equalTo(SERVICES)));
     }

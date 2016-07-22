@@ -11,5 +11,11 @@
 
     <artifactId>tps-vedlikehold-domain-service</artifactId>
     <name>TPS Vedlikeholdsklient :: Domain :: Service</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>jackson-xml-databind</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

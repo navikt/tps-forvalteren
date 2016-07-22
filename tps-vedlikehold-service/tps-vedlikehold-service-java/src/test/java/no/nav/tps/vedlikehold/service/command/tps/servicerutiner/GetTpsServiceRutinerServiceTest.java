@@ -3,6 +3,8 @@ package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collection;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -19,9 +21,9 @@ public class GetTpsServiceRutinerServiceTest {
     }
 
     @Test
-    public void getTpsServiceRutinerServiceReturnsString() {
+    public void getTpsServiceRutinerServiceReturnsACollectionOfTpsServiceRutines() {
         Object services = getTpsServiceRutinerService.exectue();
 
-        assertThat(services instanceof String, is(true));
+        assertThat(services instanceof Collection, is(true));
     }
 }

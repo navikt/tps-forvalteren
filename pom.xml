@@ -205,11 +205,11 @@
                 <version>2.4</version>
             </dependency>
 
-            <!-- JSON -->
+            <!-- JSON / XML -->
             <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>20140107</version>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>jackson-xml-databind</artifactId>
+                <version>0.6.2</version>
             </dependency>
 
             <!-- DOCUMENTATION -->
