@@ -6,16 +6,22 @@
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"></tps-input-field>
                 </div>
                 <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
-                    <md-input-container flex-gt-xs class="tps-input-input-container">
+                    <md-input-container flex-gt-xs flex="33" class="tps-input-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex-gt-xs class="tps-input-input-container" >
-                        <md-button type="submit" class="md-raised md-accent tps-vk-submit-btn">Send til TPS</md-button>
+                    <md-input-container flex-gt-xs flex="66"class="tps-input-input-container tps-vk-form-btns" layout-align="center center">
+                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn">Send til TPS</md-button>
+                        <md-button class="md-fab  md-accent tps-vk-refresh-btn" type="button" ng-transclude="" aria-label="Fjern responsdata." ng-click="clearResponseForm()">
+                            <ng-md-icon icon="delete_sweep" aria-label="Fjern responsdata."></ng-md-icon>
+                            <md-tooltip md-direction="top" class="tooltip-btn">
+                                <span>Fjern responsdata</span>
+                            </md-tooltip>
+                            <div class="md-ripple-container"></div>
+                        </md-button>
                     </md-input-container>
-                    <span flex-gt-xs></span>
                 </div>
             </form>
         </div>
