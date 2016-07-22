@@ -29,6 +29,8 @@ import static org.mockito.Mockito.when;
 public class DefaultEgenAnsattConsumerTest {
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
     private static final String PERSON_NOT_FOUND_ERROR = "PERSON IKKE FUNNET";
+    private static final String FNR_INVALID_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    private static final String FNR_NOT_SET_ERROR = "FNR MÅ FYLLES UT";
     private static final String SOAP_Fault_Error = "Soap error";
     private static final String TEST_FNR = "11223344556";
 
@@ -45,17 +47,34 @@ public class DefaultEgenAnsattConsumerTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void isEgenAnsattThrowsFNrEmptyExceptionCalledWithEmptyString(){
-        expectedException.expect(FNrEmptyException.class);
+    public void isEgenAnsattReturnsFalseWhenCalledWithEmptyString(){
+        when(soapFaultException.getMessage()).thenReturn(FNR_NOT_SET_ERROR);
+        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
+                any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+                .thenThrow(soapFaultException);
 
-        egenAnsattConsumer.isEgenAnsatt("");
+        boolean result = egenAnsattConsumer.isEgenAnsatt("");
+
+        assertThat(result, is(false));
     }
 
     @Test
-    public void isEgenAnsattThrowsFNrEmptyExceptionCalledWithNull(){
-        expectedException.expect(FNrEmptyException.class);
+    public void isEgenAnsattReturnsFalseWhenCalledWithNull(){
+        boolean result = egenAnsattConsumer.isEgenAnsatt(null);
 
-        egenAnsattConsumer.isEgenAnsatt(null);
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void isEgenAnsattReturnsFalseWhenCalledWithInvalidFnr(){
+        when(soapFaultException.getMessage()).thenReturn(FNR_INVALID_ERROR);
+        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
+                any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+                .thenThrow(soapFaultException);
+
+        boolean result = egenAnsattConsumer.isEgenAnsatt("-1");
+
+        assertThat(result, is(false));
     }
 
     @Test
@@ -86,7 +105,6 @@ public class DefaultEgenAnsattConsumerTest {
     @Test
     public void pingReturnsTrueWhenIsEgenAnsattThrowsPersonNotFoundException() throws Exception {
         when(soapFaultException.getMessage()).thenReturn(PERSON_NOT_FOUND_ERROR);
-
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
                 any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
@@ -99,14 +117,13 @@ public class DefaultEgenAnsattConsumerTest {
     @Test
     public void pingThrowsExceptionWhenIsEgenAnsattThrowsSOAPFaultExceptionNotContainingPersonIkkeFunnet() throws Exception {
         when(soapFaultException.getMessage()).thenReturn(SOAP_Fault_Error);
-
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt((ErEgenAnsattEllerIFamilieMedEgenAnsattRequest)
                 any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
         expectedException.expect(SOAPFaultException.class);
 
-        boolean result = egenAnsattConsumer.ping();
+        egenAnsattConsumer.ping();
     }
 
     @Test

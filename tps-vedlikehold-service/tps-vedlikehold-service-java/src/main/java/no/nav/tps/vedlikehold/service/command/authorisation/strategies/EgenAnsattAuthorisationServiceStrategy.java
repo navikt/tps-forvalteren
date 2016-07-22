@@ -8,7 +8,7 @@ import no.nav.tps.vedlikehold.domain.service.User;
  */
 public class EgenAnsattAuthorisationServiceStrategy implements AuthorisationServiceStrategy {
 
-    private static final String ROLE_READ_EGENANSATT = "0000-GA-PIP_EGENANSATT";
+    private static final String ROLE_READ_EGENANSATT = "0000-GA-GOSYS_UTVIDET";
 
     private User user;
     private String fnr;

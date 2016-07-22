@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class EgenAnsattAuthorisationServiceStrategyTest {
 
     private static final String FNR                  = "12345678910";
-    private static final String ROLE_READ_EGENANSATT = "0000-GA-PIP_EGENANSATT";
+    private static final String ROLE_READ_EGENANSATT = "0000-GA-GOSYS_UTVIDET";
 
     @Mock
     EgenAnsattConsumer egenAnsattConsumerMock;

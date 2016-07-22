@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
+import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.PackageMarker;
@@ -67,9 +68,8 @@ public class TpswsConsumerConfig {
         factoryBean.setEndpointName(DISKRESJON_QNAME);
         factoryBean.setAddress(diskresjonskodeAddress);
 
-//        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
-//        factoryBean.getOutInterceptors().add(samlOutInterceptor);
-        factoryBean.getOutInterceptors().add(createSystemUsernameTokenOutInterceptor());
+        SystemSAMLOutInterceptor samlOutInterceptor = new SystemSAMLOutInterceptor();
+        factoryBean.getOutInterceptors().add(samlOutInterceptor);
 
         return factoryBean.create(DiskresjonskodePortType.class);
     }
@@ -108,13 +108,11 @@ public class TpswsConsumerConfig {
         Map<String, Object> properties = new HashMap<String, Object>();
 
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-//        properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));
         properties.put(WSHandlerConstants.USER, modigUername);
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, new CallbackHandler() {
             @Override
             public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-//                String password = System.getProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD);
                 String password = modigPassword;
 
                 WSPasswordCallback passwordCallback = (WSPasswordCallback) callbacks[0];
