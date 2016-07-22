@@ -43,7 +43,7 @@ public class EnvironmentControllerTest {
 
     @Test
     public void getEnvironmentsReturnsEnvironmentList() {
-        Set<String> environments = controller.getEnvironments(httpSessionMock);
+        Set<String> environments = controller.getEnvironments();
 
         assertThat(environments, is(ENVIRONMENTS));
     }
