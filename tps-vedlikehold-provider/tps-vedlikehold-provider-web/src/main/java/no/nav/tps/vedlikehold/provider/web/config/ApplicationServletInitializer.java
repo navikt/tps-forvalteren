@@ -27,6 +27,7 @@ public class ApplicationServletInitializer extends SpringBootServletInitializer 
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/internal/*");
             }
+
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(mdcInterceptor);

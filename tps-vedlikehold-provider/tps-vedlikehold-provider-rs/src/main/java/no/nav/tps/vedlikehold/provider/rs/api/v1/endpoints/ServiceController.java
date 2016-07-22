@@ -6,6 +6,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServi
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
+import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "api/v1")
-public class ServiceController extends BaseController {
+public class ServiceController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
 
@@ -82,7 +83,7 @@ public class ServiceController extends BaseController {
         try {
             ServiceRutineResponse response = tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
 
-            loggSporing(environment, serviceRutineName, fnr);
+            Sporingslogger.log(environment, serviceRutineName, fnr);
 
             return response;
         } catch (Exception exception) {

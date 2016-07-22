@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping(value = "api/v1")
-public class UserController extends BaseController {
+public class UserController {
 
     @Autowired
     public UserContextHolder userContextHolder;

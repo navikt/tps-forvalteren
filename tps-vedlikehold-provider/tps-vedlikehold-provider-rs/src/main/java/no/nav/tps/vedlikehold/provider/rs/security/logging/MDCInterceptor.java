@@ -23,7 +23,11 @@ public class MDCInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        MDC.put(USER_ID_ATTRIBUTE_NAME, userContextHolder.getUsername());
+        try {
+            MDC.put(USER_ID_ATTRIBUTE_NAME, userContextHolder.getUsername());
+        } catch (RuntimeException exception){
+            return true;                            // Exception is thrown if this is accessed before the user context is configured
+        }
 
         return true;
     }

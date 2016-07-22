@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
+package no.nav.tps.vedlikehold.provider.rs.security.logging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,11 +6,10 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-
-public class BaseController {
+public class Sporingslogger {
     private static final Logger SPORINGSLOGGER = LoggerFactory.getLogger("no.nav.tps.vedlikehold.provider.rs.Sporingslogger");
 
-    protected void loggSporing(String environment, String serviceRutine, String fnr) {
+    public static void log(String environment, String serviceRutine, String fnr) {
         SPORINGSLOGGER.info("personnummer: {}, serviceRutine: {}, environment: {}",
                 fnr,
                 serviceRutine,
