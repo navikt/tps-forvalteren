@@ -14,7 +14,7 @@ public class MqSelftest extends SubSystemSelftest {
 
     @Override
     protected String getSubSystemName() {
-        return "Mq";
+        return "MQ";
     }
 
     @Override

@@ -32,11 +32,11 @@ public class DiskresjonskodeAuthorisationServiceStrategy implements Authorisatio
             return false;
         }
 
-        if (diskresjonskode.equals("6")) {
+        if ("6".equals(diskresjonskode)) {
             return user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_6);
         }
 
-        return !diskresjonskode.equals("7") || user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_7);
+        return !"7".equals(diskresjonskode) || user.getRoles().contains(ROLE_READ_DISKRESJONSKODE_7);
     }
 
     /* Setters */

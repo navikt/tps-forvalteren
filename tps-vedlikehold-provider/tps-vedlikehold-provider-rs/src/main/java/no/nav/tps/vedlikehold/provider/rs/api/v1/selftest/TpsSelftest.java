@@ -14,7 +14,7 @@ public class TpsSelftest extends SubSystemSelftest {
 
     @Override
     protected String getSubSystemName() {
-        return "Tps";
+        return "TPS";
     }
 
     @Override

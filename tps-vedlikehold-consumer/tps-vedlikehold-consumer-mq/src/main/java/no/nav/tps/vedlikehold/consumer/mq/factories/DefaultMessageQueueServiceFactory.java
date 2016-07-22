@@ -36,6 +36,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
      * @return A MessageQueueConsumer providing communication with an MQ in the specified environment
      * @throws JMSException
      */
+    @Override
     public DefaultMessageQueueConsumer createMessageQueueService(String environment) throws JMSException {
 
         QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(MESSAGE_QUEUE_MANAGER_ALIAS, environment);

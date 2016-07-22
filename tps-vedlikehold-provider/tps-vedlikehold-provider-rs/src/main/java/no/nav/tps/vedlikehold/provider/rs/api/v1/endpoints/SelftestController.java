@@ -118,20 +118,19 @@ public class SelftestController {
     public String selftest(@RequestParam(value = "status", required = false) String status, Model model) {
 
         List<SelftestResult> selftestResults = collectSelftestResults();
-        System.out.println(selftestResults);
 
-    if (status != null && containsFailures(selftestResults)) {
-        String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
-        throw new SelftestFailureException(message);
-    } else {
-        model.addAttribute("applicationProperties", collectApplicationProperties());
-        model.addAttribute("applicationName", descriptiveApplicationName);
-        model.addAttribute("bootstrapVersion", bootstrapVersion);
-        model.addAttribute("aggregateStatus", aggregateSelftestResults(selftestResults));
-        model.addAttribute("selftestResults", selftestResults);
-        return "selftest";
+        if (status != null && containsFailures(selftestResults)) {
+            String message = messageProvider.get(SELFTEST_EXCEPTION_MESSAGE_KEY, mergeFailedSubSystemNames(selftestResults));
+            throw new SelftestFailureException(message);
+        } else {
+            model.addAttribute("applicationProperties", collectApplicationProperties());
+            model.addAttribute("applicationName", descriptiveApplicationName);
+            model.addAttribute("bootstrapVersion", bootstrapVersion);
+            model.addAttribute("aggregateStatus", aggregateSelftestResults(selftestResults));
+            model.addAttribute("selftestResults", selftestResults);
+            return "selftest";
+        }
     }
-}
 
     private List<ApplicationProperty> collectApplicationProperties() {
 
