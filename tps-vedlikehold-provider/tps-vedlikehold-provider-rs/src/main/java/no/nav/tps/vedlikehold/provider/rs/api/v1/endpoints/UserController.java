@@ -21,7 +21,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-
 @RestController
 @RequestMapping(value = "api/v1")
 public class UserController {

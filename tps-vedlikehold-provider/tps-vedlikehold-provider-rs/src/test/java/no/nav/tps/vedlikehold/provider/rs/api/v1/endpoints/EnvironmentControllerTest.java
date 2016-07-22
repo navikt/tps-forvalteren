@@ -15,6 +15,7 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.when;
 
 /**
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class EnvironmentControllerTest {
 
     private static final String SESSION_ID = "sessionID";
-    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList("p", "q4", "t3") );
+    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList("p", "q4", "t3", "u1") );
 
     @Mock
     private HttpSession httpSessionMock;
@@ -42,10 +43,10 @@ public class EnvironmentControllerTest {
     }
 
     @Test
-    public void getEnvironmentsReturnsEnvironmentList() {
-        Set<String> environments = controller.getEnvironments(httpSessionMock);
+    public void getEnvironmentsReturnsOnlySupportedEnvironments() {
+        Set<String> environments = controller.getEnvironments();
 
-        assertThat(environments, is(ENVIRONMENTS));
+        assertThat(environments, containsInAnyOrder("t3", "u1"));
     }
 
 }

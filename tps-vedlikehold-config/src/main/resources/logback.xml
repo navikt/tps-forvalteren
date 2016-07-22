@@ -54,9 +54,29 @@
         </filter>
     </appender>
 
+    <!-- Sporingslogging -->
+    <appender name="sporingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${APP_LOG_HOME}/sporing.log</file>
+        <encoder>
+            <pattern>%date - [%X{consumerId},%X{userId},%X{callId}] - %message%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${APP_LOG_HOME}/sporing.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
     <!-- Altering log levels for specific loggers to suppress irrelevant warnings and errors in our log files. -->
     <logger name="org.apache.cxf.ws.addressing.ContextUtils" level="ERROR"/>
     <logger name="org.apache.cxf.phase.PhaseInterceptorChain" level="ERROR"/>
+
+    <logger name="no.nav.tps.vedlikehold.provider.rs.Sporingslogger" level="INFO" additivity="false">
+        <appender-ref ref="sporingAppender"/>
+    </logger>
 
     <logger name="no.nav" level="${ROOT_LOG_LEVEL:-WARN}">
         <appender-ref ref="SYSLOG"/>

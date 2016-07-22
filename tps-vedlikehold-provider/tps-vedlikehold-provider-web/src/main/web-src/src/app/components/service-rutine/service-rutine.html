@@ -3,20 +3,7 @@
         <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <md-input-container class="tps-input-input-container" flex-gt-xs>
-                        <label>Fødselsnummer</label>
-                        <input ng-required="isRequired('fnr')" md-maxlength="11" ng-pattern="onlyNumbers" ng-model="formData.fnr"/>
-                    </md-input-container>
-                    <div class="date-picker-container" flex-gt-xs>
-                        <label>Dato</label>
-                        <md-datepicker ng-model="formData.aksjonsDato"></md-datepicker>
-                    </div>
-                    <md-input-container class="tps-input-input-container" flex-gt-xs>
-                        <label>Aksjonskode</label>
-                        <md-select ng-model="formData.aksjonsKode" placeholder="Aksjonskode">
-                            <md-option ng-repeat="val in aksjonsKoder" ng-value="val">{{ val }}</md-option>
-                        </md-select>
-                    </md-input-container>
+                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"></tps-input-field>
                 </div>
                 <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
                     <md-input-container flex-gt-xs class="tps-input-input-container">

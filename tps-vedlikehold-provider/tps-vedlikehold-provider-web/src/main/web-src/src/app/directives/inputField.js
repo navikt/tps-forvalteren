@@ -1,23 +1,27 @@
 /**
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
-angular.module('tps-vedlikehold').directive('tpsInputField', function(){
+angular.module('tps-vedlikehold').directive('tpsInputField', ['$templateRequest', '$compile', 
+    function($templateRequest, $compile){
 
     var templatesPath = 'app/components/service-rutine/inputfields/';
     var templateSuffix = 'Input.html';
 
+    var getTemplateUrl = function(type) {
+        return templatesPath + '' + type + '' + templateSuffix;
+    };
+
+    var linker = function(scope, element, attrs) {
+        $templateRequest(getTemplateUrl(scope.fieldData)).then(function(html) {
+            var template = angular.element(html);
+            element.replaceWith(template);
+            $compile(template)(scope);
+        });
+    };
+
     return {
         restrict: 'E',
-        replace: true,
         scope: true,
-        link: function(scope, element, attrs) {
-            scope.getTemplateUrl = function () {
-                var type = scope.fieldData;
-                if (type) {
-                    return templatesPath + '' + type + '' + templateSuffix;
-                }
-            };
-        },
-        template: '<div class="tps-input-field" ng-include="getTemplateUrl()" flex-gt-sm></div>'
+        link: linker
     };
-});
+}]);
