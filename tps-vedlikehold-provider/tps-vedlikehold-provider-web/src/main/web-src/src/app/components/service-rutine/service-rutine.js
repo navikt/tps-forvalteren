@@ -42,8 +42,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 });
             };
 
-            $scope.hideToast = function() {
-                toast.hide();
+            $scope.clearResponseForm = function() {
+                $scope.personData = {};
+                $scope.svarStatus = null;
             };
 
             $scope.isRequired = function(type) {

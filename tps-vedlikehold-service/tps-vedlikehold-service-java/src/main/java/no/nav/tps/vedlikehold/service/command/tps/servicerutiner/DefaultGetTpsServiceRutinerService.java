@@ -24,14 +24,19 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
     private static final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
 
+    private XmlMapper xmlMapper;
+
+    public DefaultGetTpsServiceRutinerService() {
+        xmlMapper = new XmlMapper();
+
+        xmlMapper.enable(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    }
+
     @Override
     public Collection<TpsServiceRutine> exectue() {
 
         try {
-            XmlMapper xmlMapper = new XmlMapper();
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);
-
-            xmlMapper.enable(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);
 
             TpsServiceRutine[] serviceRutinesArray = xmlMapper.readValue(inputStream, TpsServiceRutine[].class);
 

@@ -4,8 +4,6 @@ import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 import org.apache.cxf.common.i18n.Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.ws.soap.SOAPFaultException;
-
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
@@ -32,21 +28,20 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
     @Override
     public boolean ping() throws Exception {
-        try {
-            isEgenAnsatt(PING_FNR);
-            return true;
-        } catch (PersonNotFoundException e) {
-            return true;
-        }
+        isEgenAnsatt(PING_FNR);
+
+        return true;
     }
 
     @Override
-    public boolean isEgenAnsatt(String fNr) {
-        if (isEmpty(fNr)) {
-            throw new FNrEmptyException();
+    public boolean isEgenAnsatt(String fnr) {
+        if (fnr == null) {
+            LOGGER.info("isEgenAnsatt called with Fnr == null");
+
+            return false;
         }
 
-        ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fNr);
+        ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response;
@@ -55,12 +50,20 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
             response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
         } catch (SOAPFaultException exception) {
-
             if (exception.getMessage().contains("PERSON IKKE FUNNET")) {
-                throw new PersonNotFoundException(fNr, exception);
-            }
+                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
-            LOGGER.error("Is egen ansatt failed with exception: {}", exception.toString());
+                return false;
+            } else if (exception.getMessage().contains("FØDSELSNUMMER INNGITT ER UGYLDIG")) {
+                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
+
+                return false;
+            } else if (exception.getMessage().contains("FNR MÅ FYLLES UT")) {
+                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
+
+                return false;
+            }
+            LOGGER.error("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
             throw exception;
         }
@@ -68,9 +71,9 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         return response.isEgenAnsatt();
     }
 
-    private ErEgenAnsattEllerIFamilieMedEgenAnsattRequest createRequest(String fNr) {
+    private ErEgenAnsattEllerIFamilieMedEgenAnsattRequest createRequest(String fnr) {
         ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = new ErEgenAnsattEllerIFamilieMedEgenAnsattRequest();
-        request.setIdent(fNr);
+        request.setIdent(fnr);
 
         return request;
     }
