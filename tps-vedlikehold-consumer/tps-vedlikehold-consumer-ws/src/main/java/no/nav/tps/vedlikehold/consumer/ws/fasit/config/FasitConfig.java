@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.APPLICATION_NAME;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.BASE_URL;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.PASSWORD;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.QUEUE_MANAGER_ALIAS;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.REQUEST_QUEUE_ALIAS;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.RESPONSE_QUEUE_ALIAS;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.FasitConstants.USERNAME;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.APPLICATION_NAME;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.BASE_URL;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.PASSWORD;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.REQUEST_QUEUE_ALIAS;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.RESPONSE_QUEUE_ALIAS;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.USERNAME;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
