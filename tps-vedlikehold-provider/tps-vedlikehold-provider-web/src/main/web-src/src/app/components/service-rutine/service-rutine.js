@@ -45,6 +45,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             $scope.clearResponseForm = function() {
                 $scope.personData = {};
                 $scope.svarStatus = null;
+                $scope.xmlForm = null;
             };
 
             $scope.isRequired = function(type) {
