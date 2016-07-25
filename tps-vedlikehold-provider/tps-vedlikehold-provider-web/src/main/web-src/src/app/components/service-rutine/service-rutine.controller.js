@@ -103,8 +103,9 @@ angular.module('tps-vedlikehold.service-rutine')
                 return utilsService.formatDate(dato);
             }
             
-            function getServiceRutineAttributesNames() {
+            function getServiceRutineInputFieldName() {
                 $scope.fields = serviceRutineFactory.getServiceRutineAttributesNames($scope.serviceRutineName);
+
                 if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutineName)) {
                     $scope.fields.push('aksjonsKode');
                 }
@@ -170,7 +171,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     return;
                 }
 
-                getServiceRutineAttributesNames();
+                getServiceRutineInputFieldName();
                 getServiceRutineRequiredAttributesNames();
                 getServiceRutineAksjonsKodes();
                 getNonUniqueProperties();
