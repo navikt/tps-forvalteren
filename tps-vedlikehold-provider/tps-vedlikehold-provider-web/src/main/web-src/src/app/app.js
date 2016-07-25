@@ -32,7 +32,7 @@ require('./shared/side-navigator/side-navigator.controller');
 require('./directives/input-field.directive');
 require('./directives/output-field.directive');
 
-require('./settings/form.config');
+require('./settings/response-form.config');
 
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
