@@ -17,8 +17,11 @@ import javax.xml.ws.soap.SOAPFaultException;
  */
 @Component
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
+
+    public static final String PERSON_NOT_FOUND_ERROR = "PERSON IKKE FUNNET";
+    public static final String INVALID_FNR_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    public static final String EMPTY_FNR_ERROR        = "FNR MÅ FYLLES UT";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -28,8 +31,13 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
     @Override
     public boolean ping() throws Exception {
-        isEgenAnsatt(PING_FNR);
+        try {
+            isEgenAnsatt(PING_FNR);
+        } catch (java.lang.Exception environment) {
+            LOGGER.warn("Pinging egenAnsatt failed with exception: {}", environment.toString());
 
+            throw environment;
+        }
         return true;
     }
 
@@ -42,9 +50,9 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         }
 
         ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
-        MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
-
         ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response;
+
+        MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         try {
             response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
@@ -52,9 +60,9 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         } catch (SOAPFaultException exception) {
             LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
-            Boolean personNotFound = exception.getMessage().contains("PERSON IKKE FUNNET");
-            Boolean invalidFnr     = exception.getMessage().contains("FØDSELSNUMMER INNGITT ER UGYLDIG");
-            Boolean emptyFnr       = exception.getMessage().contains("FNR MÅ FYLLES UT");
+            Boolean personNotFound = exception.getMessage().contains(PERSON_NOT_FOUND_ERROR);
+            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_ERROR);
+            Boolean emptyFnr       = exception.getMessage().contains(EMPTY_FNR_ERROR);
 
             if (personNotFound || invalidFnr || emptyFnr) {
                 return false;

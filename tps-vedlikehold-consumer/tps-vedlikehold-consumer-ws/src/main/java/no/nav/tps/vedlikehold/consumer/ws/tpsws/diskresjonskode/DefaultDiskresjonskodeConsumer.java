@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -23,7 +24,9 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Component
 public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDiskresjonskodeConsumer.class);
-    public static final String DISKRESJONSKODE_NOT_FOUND_ERROR = "Ingen forekomster funnet";
+
+    public static final String NO_MATCHES_FOUND_ERROR = "Ingen forekomster funnet";
+    public static final String INVALID_FNR_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -35,10 +38,6 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     public boolean ping() throws Exception {
         try {
             getDiskresjonskode(PING_FNR);
-        } catch (PersonNotFoundException e) {
-            // At en person ikke finnes i diskresjonskode er bare en funksjonell feil,
-            // ikke noe som skal logges eller håndteres som en teknisk feil.
-            return true;
         } catch (Exception environment) {
             LOGGER.warn("Pinging diskresjonskode failed with exception: {}", environment.toString());
 
@@ -50,21 +49,27 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
 
     @Override
     public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) throws Exception {
-        if (isEmpty(fNr)) {
-            throw new FNrEmptyException();
-        }
-
         HentDiskresjonskodeRequest request = createRequest(fNr);
+        HentDiskresjonskodeResponse response;
+
+        MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         try {
-            MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
-            HentDiskresjonskodeResponse response = diskresjonskodePortType.hentDiskresjonskode(request);
+            response = diskresjonskodePortType.hentDiskresjonskode(request);
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
 
             return response;
-        } catch (Exception exception) {
-            if ( DISKRESJONSKODE_NOT_FOUND_ERROR.equals(exception.getMessage()) ) {
-                throw new PersonNotFoundException(fNr, exception);
+        } catch (SOAPFaultException exception) {
+            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
+
+            Boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_ERROR);
+            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_ERROR);
+
+            if (noMatchesFound || invalidFnr) {
+                response = new HentDiskresjonskodeResponse();
+                response.setDiskresjonskode("");
+
+                return response;
             }
 
             throw exception;
@@ -73,10 +78,6 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
 
     @Override
     public HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe) {
-        if (isEmpty(fNrListe)) {
-            throw new FNrEmptyException();
-        }
-
         HentDiskresjonskodeBolkRequest request = createBulkRequest(fNrListe);
 
         return diskresjonskodePortType.hentDiskresjonskodeBolk(request);
