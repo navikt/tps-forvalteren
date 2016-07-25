@@ -15,14 +15,14 @@ import java.util.Date;
 @ControllerAdvice
 public class HttpExceptionController {
 
-    @ExceptionHandler({HttpUnauthorisedException.class})
+    @ExceptionHandler(HttpUnauthorisedException.class)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     ExceptionInformation unauthorisedAccess(HttpException exception) {
         return informationForException(exception, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({HttpInternalServerErrorException.class})
+    @ExceptionHandler(HttpInternalServerErrorException.class)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     ExceptionInformation internalServerError(HttpException exception) {

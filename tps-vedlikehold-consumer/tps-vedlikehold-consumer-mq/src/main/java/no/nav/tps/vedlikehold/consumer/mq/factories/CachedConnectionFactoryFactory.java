@@ -35,7 +35,7 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
                 .build();
     }
 
-
+    @Override
     public ConnectionFactory createConnectionFactory(ConnectionFactoryStrategy strategy) throws JMSException {
         ConnectionFactory factory = getFactoryForManagerFromCache(strategy);
 

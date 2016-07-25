@@ -63,7 +63,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
 
             return response;
         } catch (Exception exception) {
-            if ( exception.getMessage().equals(DISKRESJONSKODE_NOT_FOUND_ERROR) ) {
+            if ( DISKRESJONSKODE_NOT_FOUND_ERROR.equals(exception.getMessage()) ) {
                 throw new PersonNotFoundException(fNr, exception);
             }
 

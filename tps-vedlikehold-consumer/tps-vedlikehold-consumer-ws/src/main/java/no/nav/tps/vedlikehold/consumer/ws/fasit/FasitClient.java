@@ -45,29 +45,8 @@ public class FasitClient {
         this.restClient.useCache(false);                                // The rest client's cache is never updated
     }
 
-    /* Queues */
-    //TODO: Automatic mapping from ResourceElement to object
 
-    private Queue findQueue(String alias, String applicationName, String environment) {
-        ResourceElement resource = this.findResource(alias, applicationName, environment, ResourceTypeDO.Queue);
-
-        String name    = resource.getPropertyString("queueName");
-        String manager = resource.getPropertyString("queueManager");
-
-        return new Queue(name, manager);
-    }
-
-    private QueueManager findQueueManager(String alias, String applicationName, String environment) {
-        ResourceElement resource = this.findResource(alias, applicationName, environment, ResourceTypeDO.QueueManager);
-
-        String name     = resource.getPropertyString("name");
-        String hostname = resource.getPropertyString("hostname");
-        String port     = resource.getPropertyString("port");
-
-        return new QueueManager(name, hostname, port);
-    }
-
-    private ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
+    public ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
         ResourceElement resource = getFromCache(alias, applicationName, environment, type);
 
         if (resource != null) {
@@ -128,17 +107,29 @@ public class FasitClient {
         String environment;
         String name;
 
-        private Application(String name, String environment) {
+        protected Application(String name, String environment) {
             this.name        = name;
             this.environment = environment;
         }
 
         public QueueManager getQueueManager(String alias) {
-            return FasitClient.this.findQueueManager(alias, name, environment);
+            ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.QueueManager);
+
+            String managerName = resource.getPropertyString("name");
+            String hostname    = resource.getPropertyString("hostname");
+            String port        = resource.getPropertyString("port");
+
+            return new QueueManager(managerName, hostname, port);
         }
 
         public Queue getQueue(String alias) {
-            return FasitClient.this.findQueue(alias, name, environment);
+            ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.Queue);
+
+            String queueName = resource.getPropertyString("queueName");
+            String manager   = resource.getPropertyString("queueManager");
+
+            return new Queue(queueName, manager);
         }
+
     }
 }

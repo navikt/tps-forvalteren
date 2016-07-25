@@ -1,8 +1,10 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
+
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
@@ -17,7 +19,11 @@ import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
@@ -68,7 +74,7 @@ public class ServiceController {
                                             @RequestParam String environment,
                                             @RequestParam String fnr,
                                             @RequestParam Map<String, Object> parameters,
-                                            @PathVariable("serviceRutinenavn") String serviceRutineName) throws HttpUnauthorisedException, HttpInternalServerErrorException {
+                                            @PathVariable("serviceRutinenavn") String serviceRutineName) throws HttpException {
 
         /* Authorise user based on requested data, and the environment */
         UserFactory userFactory      = new DefaultUserFactory();
@@ -80,6 +86,7 @@ public class ServiceController {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 
+        /* Send request to TPS */
         try {
             ServiceRutineResponse response = tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
 
@@ -92,7 +99,7 @@ public class ServiceController {
                     environment,
                     exception.toString());
 
-            throw new HttpInternalServerErrorException(exception.getMessage(), "api/v1/service");
+            throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
 

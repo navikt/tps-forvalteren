@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static java.util.Collections.emptyList;
+
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
@@ -22,16 +24,21 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGetTpsServiceRutinerService.class);
 
-    private final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
+    private static final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
+
+    private XmlMapper xmlMapper;
+
+    public DefaultGetTpsServiceRutinerService() {
+        xmlMapper = new XmlMapper();
+
+        xmlMapper.enable(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    }
 
     @Override
     public Collection<TpsServiceRutine> exectue() {
 
         try {
-            XmlMapper xmlMapper = new XmlMapper();
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);
-
-            xmlMapper.enable(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(SERVICE_RUTINER_FILE_PATH);
 
             TpsServiceRutine[] serviceRutinesArray = xmlMapper.readValue(inputStream, TpsServiceRutine[].class);
 
@@ -42,6 +49,6 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
             LOGGER.error("Failed to read file '{}' with exception: {}", SERVICE_RUTINER_FILE_PATH, exception.toString());
         }
 
-        return null;
+        return emptyList();
     }
 }

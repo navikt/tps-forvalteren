@@ -6,6 +6,7 @@ angular.module('tps-vedlikehold.service-rutine')
         function($scope, $stateParams, $mdDialog, utilsService, serviceRutineFactory, formConfig, environmentsPromise) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
+            $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
             $scope.formConfig = formConfig;
@@ -23,14 +24,16 @@ angular.module('tps-vedlikehold.service-rutine')
 
             $scope.submit = function() {
                 var params = createParams($scope.formData);
+                $scope.loading = true;
 
                 serviceRutineFactory.getResponse($scope.serviceRutineName, params).then(function(res) {
+                    $scope.loading = false;
                     $scope.xmlForm = utilsService.formatXml(res.data.xml);
+
                     tpsReturnedObject = res.data.data;
 
                     var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                    var message = "STATUS: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
-                    $scope.svarStatus = message;
+                    $scope.svarStatus = "STATUS: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
                     $scope.returStatus = svarStatus.returStatus;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
@@ -38,25 +41,41 @@ angular.module('tps-vedlikehold.service-rutine')
                         nonUniqueProperties);
 
                 }, function(error) {
-                    showAlertTPSError();
+                    $scope.loading = false;
+                    showAlertTPSError(error);
                 });
             };
 
             $scope.clearResponseForm = function() {
                 $scope.personData = {};
                 $scope.svarStatus = null;
+                $scope.xmlForm = null;
             };
 
             $scope.isRequired = function(type) {
                 return (requiredAttributes.indexOf(type) > -1);
             };
 
-            function showAlertTPSError() {
+            function showAlertTPSError(error) {
+                var errorMessages = {
+                    401: {
+                        title: 'Ikke autorisert',
+                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                    },
+                    500: {
+                        title: 'Serverfeil',
+                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
+                        ariaLabel: 'Feil ved henting av data fra TPS'
+                    }
+                };
+
+                var errorObj = error.status == 401 ? errorMessages[401] : errorMessages[500];
                 $mdDialog.show(
                     $mdDialog.alert()
-                        .title('Serverfeil')
-                        .textContent('Fikk ikke hentet informasjon om TPS fra server.')
-                        .ariaLabel('Feil ved henting av data fra TPS')
+                        .title(errorObj.title)
+                        .textContent(errorObj.text)
+                        .ariaLabel(errorObj.ariaLabel)
                         .ok('OK')
                 );
             }

@@ -37,7 +37,7 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
     private User userMock;
 
     @InjectMocks
-    ReadEnvironmentAuthorisationServiceStrategy readEnvironmentStrategy;
+    private ReadEnvironmentAuthorisationServiceStrategy readEnvironmentStrategy;
 
     @Before
     public void setUp() {

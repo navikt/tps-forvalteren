@@ -4,6 +4,7 @@
     margin-bottom: 10px;
     background-color: white;
     padding: 25px 35px 8px;
+    position: relative;
 
     .tps-vk-input-container {
       margin: 8px 0;
@@ -14,28 +15,34 @@
     }
 
     .tps-vk-date-picker-container {
-      margin-left: -15px;
       position: relative;
       min-height: 60px;
       padding-top: 5px;
 
       label {
         position: absolute;
-        top: -10px;
-        left: 50px;
+        top: -5px;
+        left: 29px;
         color: rgba(0, 0, 0, 0.541176);
         font-size: 12px;
       }
 
-      .md-datepicker-input-container {
-        margin-left: 0;
-      }
-
       md-datepicker {
-        padding-top: 5px;
+
+        .md-datepicker-button {
+          padding-left: 0;
+          margin-left: 0;
+          .md-datepicker-calendar-icon {
+            margin-left: -6px;
+          }
+        }
 
         .md-datepicker-input-container {
-          width: 75%;
+          margin-left: 0;
+          position: absolute;
+          top: 16px;
+          right: 6px;
+          left: 35px;
         }
       }
     }
@@ -57,6 +64,13 @@
           fill: white;
         }
       }
+    }
+
+    md-progress-linear {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
     }
   }
 
@@ -86,9 +100,8 @@
         .tps-vk-output-label {
           border-color: rgba(0,0,0,0.12);
           color: rgba(0,0,0,0.54);
-          &.filled {
-            background-color: rgb(250, 255, 189);
-          }
+
+          &.filled,
           &.empty {
             background-color: rgb(250, 255, 189);
           }
@@ -102,6 +115,7 @@
   padding: 0 33px;
   text-align: right;
   border-top: 1px solid rgba(0,0,0,.12);
+  min-height: 30px;
 
   .tps-vk-status {
     font-size: 12px;
