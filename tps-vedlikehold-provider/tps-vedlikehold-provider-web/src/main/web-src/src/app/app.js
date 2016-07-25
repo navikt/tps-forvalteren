@@ -51,19 +51,19 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             }
         }
     })
-    .state('servicerutine', {
+    .state('serviceRutine', {
         url: "/",
         params: {
             serviceRutinenavn: null
         },
         resolve: {
-            servicerutinerPromise: "serverServicerutineService",
+            serviceRutinesPromise: "serverServiceRutineService",
             environmentsPromise: "serverEnvironmentService"
         },
         views: {
             'content@': {
                 templateUrl: "app/components/service-rutine/service-rutine.html",
-                controller: 'ServicerutineCtrl'
+                controller: 'ServiceRutineCtrl'
 
             },
             'header@': {

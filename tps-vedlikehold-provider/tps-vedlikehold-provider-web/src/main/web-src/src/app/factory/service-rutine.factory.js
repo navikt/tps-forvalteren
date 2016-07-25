@@ -10,15 +10,15 @@ angular.module('tps-vedlikehold')
         var urlBaseEnv = 'api/v1/environments';
 
         // ####################################
-        // extend for additional serviceRutiner
+        // extend for additional serviceRutines
 
         // order of input fields
-        var servicerutineFieldsTemplate = {
+        var serviceRutineFieldsTemplate = {
             'FS03-FDNUMMER-PERSDATA-O': ['fnr', 'aksjonsDato']
         };
 
         // name on data object returned by tps
-        var servicerutineReturnedDataLabel = {
+        var serviceRutineReturnedDataLabel = {
             'FS03-FDNUMMER-PERSDATA-O': 'personDataS004'
         };
 
@@ -29,31 +29,31 @@ angular.module('tps-vedlikehold')
         };
         // ####################################
 
-        var servicerutiner = {};
+        var serviceRutines = {};
         var environments = [];
         
-        var isSetServicerutiner = false;
+        var isSetServiceRutines = false;
         var isSetEnvironments = false;
 
-        serviceRutineFactory.isSetServicerutiner = function () {
-            return isSetServicerutiner;
+        serviceRutineFactory.isSetServiceRutines = function () {
+            return isSetServiceRutines;
         };
 
         serviceRutineFactory.isSetEnvironments = function () {
             return isSetEnvironments;
         };
 
-        serviceRutineFactory.loadFromServerServicerutiner = function() {
+        serviceRutineFactory.loadFromServerServiceRutines = function() {
             return $http({method: 'GET', url: urlBase}).then(function(res) {
                 if (res.data) {
-                    var servicerutineList = res.data;
+                    var serviceRutineList = res.data;
 
-                    for (var i = 0; i < servicerutineList.length; i++) {
-                        servicerutiner[servicerutineList[i].name] = servicerutineList[i];
+                    for (var i = 0; i < serviceRutineList.length; i++) {
+                        serviceRutines[serviceRutineList[i].name] = serviceRutineList[i];
                     }
 
-                    isSetServicerutiner = true;
-                    return servicerutiner;
+                    isSetServiceRutines = true;
+                    return serviceRutines;
                 } else {
                     return null;
                 }
@@ -72,35 +72,35 @@ angular.module('tps-vedlikehold')
             });
         };
 
-        serviceRutineFactory.getServicerutiner = function() {
-            return servicerutiner;
+        serviceRutineFactory.getServiceRutines = function() {
+            return serviceRutines;
         };
 
         serviceRutineFactory.getServiceRutinenavns = function() {
             var ret = [];
-            angular.forEach(servicerutiner, function(value, key) {
+            angular.forEach(serviceRutines, function(value, key) {
                 this.push(key);
             }, ret);
             return ret;
         };
 
-        serviceRutineFactory.getServicerutineInternalName = function(serviceRutinenavn) {
-            return servicerutiner[serviceRutinenavn].internalName;
+        serviceRutineFactory.getServiceRutineInternalName = function(serviceRutinenavn) {
+            return serviceRutines[serviceRutinenavn].internalName;
         };
 
-        serviceRutineFactory.getServicerutineAttributesNames = function(serviceRutinenavn) {
-            // want the fields from servicerutineFieldsTemplate in a certain order
+        serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutinenavn) {
+            // want the fields from serviceRutineFieldsTemplate in a certain order
             // could be done in a better way
             var ret = [];
-            if (servicerutiner[serviceRutinenavn].attributes) {
+            if (serviceRutines[serviceRutinenavn].attributes) {
                 var filter = [];
-                angular.forEach(servicerutiner[serviceRutinenavn].attributes, function (value, key) {
+                angular.forEach(serviceRutines[serviceRutinenavn].attributes, function (value, key) {
                     this.push(value.name);
                 }, filter);
 
-                for (var i = 0; i < servicerutineFieldsTemplate[serviceRutinenavn].length; i++) {
-                    if (filter.indexOf(servicerutineFieldsTemplate[serviceRutinenavn][i]) > -1) {
-                        ret.push(servicerutineFieldsTemplate[serviceRutinenavn][i]);
+                for (var i = 0; i < serviceRutineFieldsTemplate[serviceRutinenavn].length; i++) {
+                    if (filter.indexOf(serviceRutineFieldsTemplate[serviceRutinenavn][i]) > -1) {
+                        ret.push(serviceRutineFieldsTemplate[serviceRutinenavn][i]);
                     }
                 }
                 return ret;
@@ -108,10 +108,10 @@ angular.module('tps-vedlikehold')
             return ret;
         };
 
-        serviceRutineFactory.getServicerutineRequiredAttributesNames = function(serviceRutinenavn) {
+        serviceRutineFactory.getServiceRutineRequiredAttributesNames = function(serviceRutinenavn) {
             var ret = [];
-            if (servicerutiner[serviceRutinenavn].attributes) {
-                angular.forEach(servicerutiner[serviceRutinenavn].attributes, function (value, key) {
+            if (serviceRutines[serviceRutinenavn].attributes) {
+                angular.forEach(serviceRutines[serviceRutinenavn].attributes, function (value, key) {
                     if (value.use === "required") {
                         this.push(value.name);
                     }
@@ -121,7 +121,7 @@ angular.module('tps-vedlikehold')
         };
 
         serviceRutineFactory.hasAksjonsKodes = function(serviceRutinenavn) {
-            var aksjonsKodes = servicerutiner[serviceRutinenavn].aksjonsKodes;
+            var aksjonsKodes = serviceRutines[serviceRutinenavn].aksjonsKodes;
             if (aksjonsKodes) {
                 if (aksjonsKodes.length > 0) {
                     return true;
@@ -130,8 +130,8 @@ angular.module('tps-vedlikehold')
             return false;
         };
 
-        serviceRutineFactory.getServicerutineAksjonsKodes = function(serviceRutinenavn) {
-            return servicerutiner[serviceRutinenavn].aksjonsKodes;
+        serviceRutineFactory.getServiceRutineAksjonsKodes = function(serviceRutinenavn) {
+            return serviceRutines[serviceRutinenavn].aksjonsKodes;
         };
 
         serviceRutineFactory.getResponse = function(serviceRutinenavn, params) {
@@ -146,8 +146,8 @@ angular.module('tps-vedlikehold')
             return nonUniquePropertiesContainer[serviceRutinenavn];
         };
 
-        serviceRutineFactory.getServicerutineReturnedDataLabel = function(serviceRutinenavn) {
-            return servicerutineReturnedDataLabel[serviceRutinenavn];
+        serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutinenavn) {
+            return serviceRutineReturnedDataLabel[serviceRutinenavn];
         };
 
         return serviceRutineFactory;

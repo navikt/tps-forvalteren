@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service-rutine')
-    .controller('ServicerutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'serviceRutineFactory', 'formConfig', 'environmentsPromise',
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'serviceRutineFactory', 'formConfig', 'environmentsPromise',
         function($scope, $stateParams, $mdDialog, utilsService, serviceRutineFactory, formConfig, environmentsPromise) {
 
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
@@ -17,7 +17,7 @@ angular.module('tps-vedlikehold.service-rutine')
             var isValidServiceRutinenavn = false;
             var apiError = true;
 
-            $scope.loadServicerutineTemplate = function () {
+            $scope.loadServiceRutineTemplate = function () {
                 return isValidServiceRutinenavn && !apiError;
             };
 
@@ -34,7 +34,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.returStatus = svarStatus.returStatus;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
-                        .tpsSvar[serviceRutineFactory.getServicerutineReturnedDataLabel($scope.serviceRutinenavn)],
+                        .tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutinenavn)],
                         nonUniqueProperties);
 
                 }, function(error) {
@@ -103,24 +103,24 @@ angular.module('tps-vedlikehold.service-rutine')
                 return utilsService.formatDate(dato);
             }
             
-            function getServicerutineAttributesNames() {
-                $scope.fields = serviceRutineFactory.getServicerutineAttributesNames($scope.serviceRutinenavn);
+            function getServiceRutineAttributesNames() {
+                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNames($scope.serviceRutinenavn);
                 if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
                     $scope.fields.push('aksjonsKode');
                 }
             }
             
             function setIsValidServiceRutinenavn() {
-                isValidServiceRutinenavn = ($scope.serviceRutinenavn in serviceRutineFactory.getServicerutiner());
+                isValidServiceRutinenavn = ($scope.serviceRutinenavn in serviceRutineFactory.getServiceRutines());
             }
             
-            function getServicerutineRequiredAttributesNames() {
-                requiredAttributes = serviceRutineFactory.getServicerutineRequiredAttributesNames($scope.serviceRutinenavn);
+            function getServiceRutineRequiredAttributesNames() {
+                requiredAttributes = serviceRutineFactory.getServiceRutineRequiredAttributesNames($scope.serviceRutinenavn);
             }
             
-            function getServicerutineAksjonsKodes() {
+            function getServiceRutineAksjonsKodes() {
                 if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
-                    $scope.aksjonsKodes = serviceRutineFactory.getServicerutineAksjonsKodes($scope.serviceRutinenavn).sort();
+                    $scope.aksjonsKodes = serviceRutineFactory.getServiceRutineAksjonsKodes($scope.serviceRutinenavn).sort();
                 }
             }
 
@@ -165,14 +165,14 @@ angular.module('tps-vedlikehold.service-rutine')
                     return;
                 }
 
-                if (!serviceRutineFactory.isSetServicerutiner()) {
+                if (!serviceRutineFactory.isSetServiceRutines()) {
                     apiError = true;
                     return;
                 }
 
-                getServicerutineAttributesNames();
-                getServicerutineRequiredAttributesNames();
-                getServicerutineAksjonsKodes();
+                getServiceRutineAttributesNames();
+                getServiceRutineRequiredAttributesNames();
+                getServiceRutineAksjonsKodes();
                 getNonUniqueProperties();
                 initRequestForm();
             }

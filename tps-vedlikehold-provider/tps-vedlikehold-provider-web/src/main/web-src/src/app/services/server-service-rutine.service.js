@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('serverServicerutineService', ['serviceRutineFactory', function(serviceRutineFactory) {
+    .service('serverServiceRutineService', ['serviceRutineFactory', function(serviceRutineFactory) {
     
-    return serviceRutineFactory.loadFromServerServicerutiner();
+    return serviceRutineFactory.loadFromServerServiceRutines();
     }]);
