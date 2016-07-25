@@ -33,12 +33,14 @@ public class EnvironmentController {
 
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Set<String> getEnvironments() {
-        return getEnvironmentsCommand.execute("tpsws").stream()
-                .filter(environment -> {
-                    String prefix = environment.substring(0, 1).toLowerCase();
+        Set<String> environments = getEnvironmentsCommand.execute("tpsws");
 
-                    return !isEmpty(environment) && supportedEnvironments.contains(prefix);
-                })
-                .collect(toSet());
+        return EnvironmentsFilter.create()
+                .include("u*")
+                .include("t*")
+                .exception("t7")
+                .exception("u5")    // The queue defined in Fasit does not exist
+                .exception("u6")
+                .filter(environments);
     }
 }

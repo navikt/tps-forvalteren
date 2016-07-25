@@ -36,7 +36,7 @@ public class DefaultFasitMessageQueueConsumerTest {
     private FasitClient.Application applicationMock;
 
     @InjectMocks
-    private DefaultFasitMessageQueueConsumer messageQueueConsumer = new DefaultFasitMessageQueueConsumer(APPLICATION, REQUEST_QUEUE_ALIAS, RESPONSE_QUEUE_ALIAS);
+    private DefaultFasitMessageQueueConsumer messageQueueConsumer = new DefaultFasitMessageQueueConsumer(APPLICATION, REQUEST_QUEUE_ALIAS, RESPONSE_QUEUE_ALIAS, QUEUE_MANAGER_ALIAS);
 
     @Before
     public void setUp() {
@@ -59,7 +59,7 @@ public class DefaultFasitMessageQueueConsumerTest {
 
     @Test
     public void getQueueManagerRetrievesManagerFromTheApplication() {
-        messageQueueConsumer.getQueueManager(QUEUE_MANAGER_ALIAS, ENVIRONMENT);
+        messageQueueConsumer.getQueueManager(ENVIRONMENT);
         verify(applicationMock).getQueueManager(QUEUE_MANAGER_ALIAS);
     }
 }
