@@ -14,9 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.xml.ws.soap.SOAPFaultException;
 
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.INVALID_FNR_ERROR;
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.PERSON_NOT_FOUND_ERROR;
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.EMPTY_FNR_ERROR;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

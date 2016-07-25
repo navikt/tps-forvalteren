@@ -6,8 +6,6 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequ
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.PersonNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
-
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
