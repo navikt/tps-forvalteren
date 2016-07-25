@@ -1,11 +1,13 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import static java.util.Collections.singletonMap;
 import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toStringRepresentation;
 import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toUserRole;

@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
-import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -8,6 +7,9 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.*;
+
 import static java.util.stream.Collectors.toSet;
 
 /**

@@ -1,13 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
 import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
@@ -27,6 +19,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Configuration class for the TPSWS Consumer module

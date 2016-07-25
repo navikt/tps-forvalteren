@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode;
 
-import java.util.List;
 import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
@@ -13,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**

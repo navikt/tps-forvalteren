@@ -1,7 +1,8 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories;
 
-import java.util.Map;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * Generates a service rutine request message from the provided service rutine name and parameters.

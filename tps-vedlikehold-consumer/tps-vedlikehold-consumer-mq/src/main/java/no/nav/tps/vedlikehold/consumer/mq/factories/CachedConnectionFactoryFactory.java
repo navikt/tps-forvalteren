@@ -3,13 +3,14 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
-import java.util.concurrent.TimeUnit;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import java.util.concurrent.TimeUnit;
 
 
 /**

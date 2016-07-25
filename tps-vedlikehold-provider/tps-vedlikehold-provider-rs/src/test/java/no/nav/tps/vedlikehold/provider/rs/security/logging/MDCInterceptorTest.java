@@ -1,7 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.security.logging;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +7,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;

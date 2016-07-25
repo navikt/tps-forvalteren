@@ -4,6 +4,7 @@ import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import static org.springframework.util.StringUtils.isEmpty;
 
 /**

@@ -1,9 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import javax.servlet.http.HttpSession;
 import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +7,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.when;

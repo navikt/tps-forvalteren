@@ -1,8 +1,5 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +7,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;

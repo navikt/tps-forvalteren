@@ -1,13 +1,15 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static java.util.stream.Collectors.toSet;
 import static org.springframework.util.StringUtils.isEmpty;
 

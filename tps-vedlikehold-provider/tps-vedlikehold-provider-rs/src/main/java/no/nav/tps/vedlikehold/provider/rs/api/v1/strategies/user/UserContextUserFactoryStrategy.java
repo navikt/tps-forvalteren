@@ -1,10 +1,12 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user;
 
-import java.util.Set;
-import javax.servlet.http.HttpSession;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
 import org.springframework.security.core.GrantedAuthority;
+
+import javax.servlet.http.HttpSession;
+import java.util.Set;
+
 import static java.util.stream.Collectors.toSet;
 
 /**

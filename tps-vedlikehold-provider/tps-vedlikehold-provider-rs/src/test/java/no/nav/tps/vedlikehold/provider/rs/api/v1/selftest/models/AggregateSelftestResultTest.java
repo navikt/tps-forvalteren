@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models;
 
 import org.junit.Test;
+
 import static java.util.Arrays.asList;
 import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.FEILET;
 import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.OK;

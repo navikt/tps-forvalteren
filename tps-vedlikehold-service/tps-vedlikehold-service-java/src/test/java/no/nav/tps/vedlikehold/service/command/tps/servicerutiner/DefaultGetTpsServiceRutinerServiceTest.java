@@ -3,9 +3,6 @@ package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.xml.XmlMapper;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;

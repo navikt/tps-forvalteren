@@ -1,9 +1,5 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
@@ -14,6 +10,11 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadEnvir
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
-import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
@@ -11,6 +10,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.jms.JMSException;
+
 import static org.mockito.Mockito.*;
 
 

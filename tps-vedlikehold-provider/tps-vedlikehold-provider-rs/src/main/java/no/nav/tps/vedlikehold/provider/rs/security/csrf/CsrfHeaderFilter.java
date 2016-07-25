@@ -1,14 +1,15 @@
 package no.nav.tps.vedlikehold.provider.rs.security.csrf;
 
-import java.io.IOException;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.WebUtils;
+import java.io.IOException;
 
 /**
  * Filter for handling: Cross-Site Request Forgery (CSRF) token used by AngularJs
