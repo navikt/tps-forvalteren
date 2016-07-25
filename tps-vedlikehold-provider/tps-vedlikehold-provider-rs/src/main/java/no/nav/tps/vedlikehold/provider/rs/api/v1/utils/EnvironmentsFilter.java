@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.utils;
 
 import org.springframework.util.AntPathMatcher;
 
@@ -23,7 +23,6 @@ public class EnvironmentsFilter {
 
     /** Include all environments matching the ant pattern */
     public EnvironmentsFilter include(String pattern) {
-        if (!matcher.isPattern(pattern))
         includePatterns.add(pattern);
 
         return this;
