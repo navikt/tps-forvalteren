@@ -49,12 +49,11 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         }
 
         ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
-        ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response;
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         try {
-            response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
+            ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
 
             return response.isEgenAnsatt();
         } catch (SOAPFaultException exception) {
