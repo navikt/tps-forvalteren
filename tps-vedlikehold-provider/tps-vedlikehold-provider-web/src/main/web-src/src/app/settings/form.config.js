@@ -1,4 +1,6 @@
-angular.module('tps-vedlikehold').constant('formConfig',
+angular.module('tps-vedlikehold')
+    .constant('formConfig',
+        
     {
         'FS03-FDNUMMER-PERSDATA-O': {
             rows: [

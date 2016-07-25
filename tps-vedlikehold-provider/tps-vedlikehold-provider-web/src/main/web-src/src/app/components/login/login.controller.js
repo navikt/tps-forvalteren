@@ -1,8 +1,8 @@
 /**
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
-angular.module('tps-vedlikehold.login', ['ngMessages'])
-    .controller('loginController', ['$scope', 'authenticationService', 'locationService',
+angular.module('tps-vedlikehold.login')
+    .controller('LoginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
 
             $scope.title = 'TPS Vedlikeholdsklient';
