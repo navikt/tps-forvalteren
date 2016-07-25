@@ -1,5 +1,5 @@
 angular.module('tps-vedlikehold')
-    .constant('formConfig',
+    .constant('responseFormConfig',
         
     {
         'FS03-FDNUMMER-PERSDATA-O': {

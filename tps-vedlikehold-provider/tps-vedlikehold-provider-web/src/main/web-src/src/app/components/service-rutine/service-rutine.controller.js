@@ -2,14 +2,14 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service-rutine')
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'serviceRutineFactory', 'formConfig', 'environmentsPromise',
-        function($scope, $stateParams, $mdDialog, utilsService, serviceRutineFactory, formConfig, environmentsPromise) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'serviceRutineFactory', 'responseFormConfig', 'environmentsPromise',
+        function($scope, $stateParams, $mdDialog, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
-            $scope.formConfig = formConfig;
+            $scope.responseFormConfig = responseFormConfig;
             $scope.onlyNumbers = /^\d+$/;
 
             var tpsReturnedObject = {};
