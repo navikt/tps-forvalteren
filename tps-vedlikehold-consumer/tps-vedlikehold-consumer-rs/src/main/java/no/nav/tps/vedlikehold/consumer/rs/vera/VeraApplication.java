@@ -1,23 +1,23 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.collect.Lists;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class VeraApplication implements Comparable<VeraApplication> {
-    private static final List<Character> ENV_CLASSES = Lists.newArrayList('p', 'q', 't', 'u');
+public class VeraApplication {
 
     private String application;
     private String environment;
     private String version;
     private String deployer;
-    private String deployed_timestamp;
-    private String replaced_timestamp;
+
+    @JsonProperty("deployed_timestamp")
+    private String deployedTimestamp;
+
+    @JsonProperty("replaced_timestamp")
+    private String replacedTimestamp;
+
     private String environmentClass;
     private String id;
 
@@ -53,20 +53,20 @@ public class VeraApplication implements Comparable<VeraApplication> {
         this.deployer = deployer;
     }
 
-    public String getDeployed_timestamp() {
-        return deployed_timestamp;
+    public String getDeployedTimestamp() {
+        return deployedTimestamp;
     }
 
-    public void setDeployed_timestamp(String deployed_timestamp) {
-        this.deployed_timestamp = deployed_timestamp;
+    public void setDeployedTimestamp(String deployedTimestamp) {
+        this.deployedTimestamp = deployedTimestamp;
     }
 
-    public String getReplaced_timestamp() {
-        return replaced_timestamp;
+    public String getReplacedTimestamp() {
+        return replacedTimestamp;
     }
 
-    public void setReplaced_timestamp(String replaced_timestamp) {
-        this.replaced_timestamp = replaced_timestamp;
+    public void setReplacedTimestamp(String replacedTimestamp) {
+        this.replacedTimestamp = replacedTimestamp;
     }
 
     public String getEnvironmentClass() {
@@ -83,26 +83,5 @@ public class VeraApplication implements Comparable<VeraApplication> {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if ( !(obj instanceof VeraApplication) ) {
-            return false;
-        }
-
-        VeraApplication veraApplication = (VeraApplication) obj;
-
-        return numberedEnv().equals(veraApplication.numberedEnv());
-    }
-
-    @Override
-    public int compareTo(VeraApplication veraApplication) {
-        return numberedEnv().compareTo(veraApplication.numberedEnv());
-    }
-
-    private String numberedEnv() {
-        return String.format("%d%s", ENV_CLASSES.indexOf(environment.charAt(0)) * 1000, environment.substring(1));
-
     }
 }

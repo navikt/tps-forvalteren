@@ -46,7 +46,7 @@ public class FasitClient {
     }
 
 
-    private ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
+    public ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
         ResourceElement resource = getFromCache(alias, applicationName, environment, type);
 
         if (resource != null) {
@@ -55,7 +55,7 @@ public class FasitClient {
 
         DomainDO domain = FasitUtilities.domainFor(environment);
 
-        resource = FasitClient.this.restClient.getResource(environment, alias, type, domain, applicationName);
+        resource = this.restClient.getResource(environment, alias, type, domain, applicationName);
 
         addToCache(resource, alias, applicationName, environment, type);
 
@@ -107,7 +107,7 @@ public class FasitClient {
         String environment;
         String name;
 
-        public Application(String name, String environment) {
+        protected Application(String name, String environment) {
             this.name        = name;
             this.environment = environment;
         }
@@ -115,20 +115,20 @@ public class FasitClient {
         public QueueManager getQueueManager(String alias) {
             ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.QueueManager);
 
-            String name     = resource.getPropertyString("name");
-            String hostname = resource.getPropertyString("hostname");
-            String port     = resource.getPropertyString("port");
+            String managerName = resource.getPropertyString("name");
+            String hostname    = resource.getPropertyString("hostname");
+            String port        = resource.getPropertyString("port");
 
-            return new QueueManager(name, hostname, port);
+            return new QueueManager(managerName, hostname, port);
         }
 
         public Queue getQueue(String alias) {
             ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.Queue);
 
-            String name    = resource.getPropertyString("queueName");
-            String manager = resource.getPropertyString("queueManager");
+            String queueName = resource.getPropertyString("queueName");
+            String manager   = resource.getPropertyString("queueManager");
 
-            return new Queue(name, manager);
+            return new Queue(queueName, manager);
         }
 
     }

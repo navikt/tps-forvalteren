@@ -6,16 +6,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
 import javax.annotation.PostConstruct;
-
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 import java.util.Objects;
 
 import static java.util.stream.Collectors.toSet;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_O;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_P;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_U;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_O;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_P;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_U;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

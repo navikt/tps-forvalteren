@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static java.util.Collections.emptyList;
+
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
@@ -47,6 +49,6 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
             LOGGER.error("Failed to read file '{}' with exception: {}", SERVICE_RUTINER_FILE_PATH, exception.toString());
         }
 
-        return null;
+        return emptyList();
     }
 }

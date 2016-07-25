@@ -14,11 +14,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

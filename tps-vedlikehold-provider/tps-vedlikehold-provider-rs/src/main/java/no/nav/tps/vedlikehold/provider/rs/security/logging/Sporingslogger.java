@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 public class Sporingslogger {
-    private static final Logger SPORINGSLOGGER = LoggerFactory.getLogger("no.nav.tps.vedlikehold.provider.rs.Sporingslogger");
+
+    private static final String NAME = "no.nav.tps.vedlikehold.provider.rs.Sporingslogger";
+    private static final Logger LOGGER = LoggerFactory.getLogger(NAME);
 
     public static void log(String environment, String serviceRutine, String fnr) {
-        SPORINGSLOGGER.info("personnummer: {}, serviceRutine: {}, environment: {}",
+        LOGGER.info("personnummer: {}, serviceRutine: {}, environment: {}",
                 fnr,
                 serviceRutine,
                 environment);

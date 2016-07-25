@@ -85,7 +85,8 @@ public class EgenAnsattAuthorisationServiceStrategyTest {
         assertThat(result, is(true));
     }
 
-    private <T> Set<T> newSet(T... strings) {
+    @SafeVarargs
+    private final <T> Set<T> newSet(T... strings) {
         return new HashSet<T>(
                 Arrays.asList(strings)
         );

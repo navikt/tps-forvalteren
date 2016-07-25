@@ -11,8 +11,13 @@ import java.util.Map;
 import static java.util.Collections.singletonMap;
 import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toStringRepresentation;
 import static no.nav.tps.vedlikehold.provider.rs.security.user.GrantedAuthorityFunctions.toUserRole;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
-import static org.hamcrest.CoreMatchers.*;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
