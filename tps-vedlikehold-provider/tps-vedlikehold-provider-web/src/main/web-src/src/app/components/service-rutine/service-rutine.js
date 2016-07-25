@@ -7,6 +7,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
         function($scope, $stateParams, $mdDialog, utilsService, servicerutineFactory, formConfig, environmentsPromise) {
 
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
+            $scope.loading = false;
             $scope.formData = {};
             $scope.formConfig = formConfig;
             $scope.onlyNumbers = /^\d+$/;
@@ -23,8 +24,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
 
             $scope.submit = function() {
                 var params = createParams($scope.formData);
-
+                $scope.loading = true;
                 servicerutineFactory.getResponse($scope.serviceRutinenavn, params).then(function(res) {
+                    $scope.loading = false;
                     $scope.xmlForm = utilsService.formatXml(res.data.xml);
                     tpsReturnedObject = res.data.data;
 
@@ -38,6 +40,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                         nonUniqueProperties);
 
                 }, function(error) {
+                    $scope.loading = false;
                     showAlertTPSError(error);
                 });
             };
