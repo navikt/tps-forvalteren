@@ -69,6 +69,16 @@
         </rollingPolicy>
     </appender>
 
+    <!-- Log messages to the console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${messagePattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
 
     <!-- Altering log levels for specific loggers to suppress irrelevant warnings and errors in our log files. -->
     <logger name="org.apache.cxf.ws.addressing.ContextUtils" level="ERROR"/>
@@ -78,9 +88,14 @@
         <appender-ref ref="sporingAppender"/>
     </logger>
 
+
     <logger name="no.nav" level="${ROOT_LOG_LEVEL:-WARN}">
         <appender-ref ref="SYSLOG"/>
     </logger>
+
+    <root level="${ROOT_LOG_LEVEL:-DEBUG}">
+        <appender-ref ref="STDOUT"/>
+    </root>
 
     <root level="${ROOT_LOG_LEVEL:-INFO}">
         <appender-ref ref="errorFileAppender"/>
