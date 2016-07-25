@@ -22,7 +22,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDiskresjonskodeConsumer.class);
 
     public static final String NO_MATCHES_FOUND_ERROR = "Ingen forekomster funnet";
-    public static final String INVALID_FNR_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    public static final String INVALID_FNR_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     // Test user
     private static final String PING_FNR = "13037999916";
