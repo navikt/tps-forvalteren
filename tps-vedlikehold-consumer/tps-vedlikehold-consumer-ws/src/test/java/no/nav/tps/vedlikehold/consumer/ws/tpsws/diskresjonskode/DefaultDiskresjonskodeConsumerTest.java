@@ -17,8 +17,8 @@ import javax.xml.ws.soap.SOAPFaultException;
 import java.util.Arrays;
 import java.util.List;
 
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.NO_MATCHES_FOUND_ERROR;
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.INVALID_FNR_ERROR;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.INVALID_FNR_TPSWS_ERROR;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.NO_MATCHES_FOUND_TPSWS_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -64,6 +64,7 @@ public class DefaultDiskresjonskodeConsumerTest {
     @Test
     public void pingThrowsExceptionWhenGetDiskresjonskodeThrowsException() throws Exception {
         RuntimeException thrownException = new RuntimeException(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
+
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenThrow(thrownException);
 
         expectedException.expect(RuntimeException.class);
@@ -105,7 +106,7 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     @Test
     public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsInvalidFnrError() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_TPSWS_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(
                 any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
@@ -117,7 +118,7 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     @Test
     public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsNoMatchFoundError() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(NO_MATCHES_FOUND_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(NO_MATCHES_FOUND_TPSWS_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
 

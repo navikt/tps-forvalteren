@@ -4,7 +4,6 @@ import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
-import org.apache.cxf.common.i18n.Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,9 @@ import javax.xml.ws.soap.SOAPFaultException;
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
 
-    public static final String PERSON_NOT_FOUND_ERROR = "PERSON IKKE FUNNET";
-    public static final String INVALID_FNR_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
-    public static final String EMPTY_FNR_ERROR        = "FNR MÅ FYLLES UT";
+    public static final String PERSON_NOT_FOUND_TPSWS_ERROR = "PERSON IKKE FUNNET";
+    public static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    public static final String EMPTY_FNR_TPSWS_ERROR        = "FNR MÅ FYLLES UT";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -33,7 +32,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     public boolean ping() throws Exception {
         try {
             isEgenAnsatt(PING_FNR);
-        } catch (java.lang.Exception environment) {
+        } catch (Exception environment) {
             LOGGER.warn("Pinging egenAnsatt failed with exception: {}", environment.toString());
 
             throw environment;
@@ -56,19 +55,20 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
         try {
             response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
-            MDCOperations.remove(MDCOperations.MDC_CALL_ID);
-        } catch (SOAPFaultException exception) {
-            LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
+        } catch (SOAPFaultException environment) {
+            LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", environment.toString());
 
-            Boolean personNotFound = exception.getMessage().contains(PERSON_NOT_FOUND_ERROR);
-            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_ERROR);
-            Boolean emptyFnr       = exception.getMessage().contains(EMPTY_FNR_ERROR);
+            Boolean personNotFound = environment.getMessage().contains(PERSON_NOT_FOUND_TPSWS_ERROR);
+            Boolean invalidFnr     = environment.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            Boolean emptyFnr       = environment.getMessage().contains(EMPTY_FNR_TPSWS_ERROR);
 
             if (personNotFound || invalidFnr || emptyFnr) {
                 return false;
             }
 
-            throw exception;
+            throw environment;
+        } finally {
+            MDCOperations.remove(MDCOperations.MDC_CALL_ID);
         }
 
         return response.isEgenAnsatt();

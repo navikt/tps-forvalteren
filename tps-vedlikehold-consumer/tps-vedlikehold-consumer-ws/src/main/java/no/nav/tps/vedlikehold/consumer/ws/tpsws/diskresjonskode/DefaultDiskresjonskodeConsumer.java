@@ -21,8 +21,8 @@ import java.util.List;
 public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDiskresjonskodeConsumer.class);
 
-    public static final String NO_MATCHES_FOUND_ERROR = "Ingen forekomster funnet";
-    public static final String INVALID_FNR_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    public static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
+    public static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -52,14 +52,13 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
 
         try {
             response = diskresjonskodePortType.hentDiskresjonskode(request);
-            MDCOperations.remove(MDCOperations.MDC_CALL_ID);
 
             return response;
-        } catch (SOAPFaultException exception) {
-            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
+        } catch (SOAPFaultException environment) {
+            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", environment.toString());
 
-            Boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_ERROR);
-            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_ERROR);
+            Boolean noMatchesFound = environment.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
+            Boolean invalidFnr = environment.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
 
             if (noMatchesFound || invalidFnr) {
                 response = new HentDiskresjonskodeResponse();
@@ -68,7 +67,9 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
                 return response;
             }
 
-            throw exception;
+            throw environment;
+        } finally {
+            MDCOperations.remove(MDCOperations.MDC_CALL_ID);
         }
     }
 

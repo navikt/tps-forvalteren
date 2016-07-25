@@ -14,7 +14,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.xml.ws.soap.SOAPFaultException;
 
-import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.*;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.EMPTY_FNR_TPSWS_ERROR;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.INVALID_FNR_TPSWS_ERROR;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.DefaultEgenAnsattConsumer.PERSON_NOT_FOUND_TPSWS_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,7 +29,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultEgenAnsattConsumerTest {
-    private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
+    private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Database connection error";
     private static final String SOAP_Fault_Error                   = "Soap error";
     private static final String TEST_FNR                           = "11223344556";
 
@@ -45,7 +47,7 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void isEgenAnsattReturnsFalseWhenCalledWithEmptyString() {
-        when(soapFaultException.getMessage()).thenReturn(EMPTY_FNR_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(EMPTY_FNR_TPSWS_ERROR);
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
@@ -63,7 +65,7 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void isEgenAnsattReturnsFalseWhenCalledWithInvalidFnr() {
-        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_TPSWS_ERROR);
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
@@ -97,7 +99,7 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void pingReturnsTrueWhenIsEgenAnsattThrowsPersonNotFoundException() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(PERSON_NOT_FOUND_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(PERSON_NOT_FOUND_TPSWS_ERROR);
         when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
