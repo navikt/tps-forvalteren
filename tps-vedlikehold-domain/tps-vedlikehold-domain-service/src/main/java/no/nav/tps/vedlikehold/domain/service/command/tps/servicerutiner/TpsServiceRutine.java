@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlProperty;
-
 import java.util.List;
 
 /**

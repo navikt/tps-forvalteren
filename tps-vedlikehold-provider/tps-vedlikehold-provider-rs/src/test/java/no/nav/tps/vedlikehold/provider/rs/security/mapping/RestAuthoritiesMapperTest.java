@@ -1,5 +1,8 @@
 package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,11 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;

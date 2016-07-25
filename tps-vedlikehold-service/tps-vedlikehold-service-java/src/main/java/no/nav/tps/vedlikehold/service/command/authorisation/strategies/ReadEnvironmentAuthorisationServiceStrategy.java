@@ -1,10 +1,8 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-
 import java.util.HashSet;
 import java.util.Set;
-
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**

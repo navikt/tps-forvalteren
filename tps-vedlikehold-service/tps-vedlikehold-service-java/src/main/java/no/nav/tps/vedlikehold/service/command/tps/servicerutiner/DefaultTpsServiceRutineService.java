@@ -1,6 +1,9 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.XmlMapper;
+import java.io.IOException;
+import java.util.Map;
+import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
@@ -12,10 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.jms.JMSException;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

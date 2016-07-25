@@ -3,17 +3,15 @@ package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.xml.XmlMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collection;
-
 import static java.util.Collections.emptyList;
 
 /**

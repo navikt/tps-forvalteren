@@ -1,9 +1,8 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
 import com.google.common.base.Function;
-import org.springframework.security.core.GrantedAuthority;
-
 import java.util.Map;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

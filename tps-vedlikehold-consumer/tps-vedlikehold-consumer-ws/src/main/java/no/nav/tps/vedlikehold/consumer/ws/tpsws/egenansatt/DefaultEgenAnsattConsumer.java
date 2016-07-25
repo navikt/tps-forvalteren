@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt;
 
+import javax.xml.ws.soap.SOAPFaultException;
 import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
@@ -9,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

@@ -1,8 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
-import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
-
 import javax.jms.JMSException;
+import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

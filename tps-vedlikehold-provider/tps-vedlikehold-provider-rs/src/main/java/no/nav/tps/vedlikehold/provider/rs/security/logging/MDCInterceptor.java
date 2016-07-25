@@ -1,14 +1,13 @@
 package no.nav.tps.vedlikehold.provider.rs.security.logging;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

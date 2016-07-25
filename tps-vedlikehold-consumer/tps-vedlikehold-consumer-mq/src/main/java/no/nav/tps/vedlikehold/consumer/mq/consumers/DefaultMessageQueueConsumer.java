@@ -2,17 +2,9 @@ package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
+import javax.jms.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.jms.Destination;
-import javax.jms.TextMessage;
-import javax.jms.MessageProducer;
-import javax.jms.MessageConsumer;
 
 
 /**

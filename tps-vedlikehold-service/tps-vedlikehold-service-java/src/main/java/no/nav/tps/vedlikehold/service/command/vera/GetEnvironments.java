@@ -1,10 +1,9 @@
 package no.nav.tps.vedlikehold.service.command.vera;
 
+import java.util.Set;
 import no.nav.tps.vedlikehold.consumer.rs.vera.VeraConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

@@ -1,5 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryStrategy;
@@ -8,9 +10,6 @@ import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
 
 /**
  * Consumes information from Fasit and produces MessageQueueServices

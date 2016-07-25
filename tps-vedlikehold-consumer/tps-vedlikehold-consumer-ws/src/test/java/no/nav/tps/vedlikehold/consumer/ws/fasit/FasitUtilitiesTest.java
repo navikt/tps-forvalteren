@@ -2,7 +2,6 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
 import no.nav.aura.envconfig.client.DomainDO;
 import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 

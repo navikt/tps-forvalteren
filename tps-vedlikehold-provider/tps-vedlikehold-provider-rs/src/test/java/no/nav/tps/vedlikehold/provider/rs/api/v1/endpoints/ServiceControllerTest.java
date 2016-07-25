@@ -1,5 +1,10 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import javax.jms.JMSException;
+import javax.servlet.http.HttpSession;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
@@ -15,13 +20,6 @@ import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.jms.JMSException;
-import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

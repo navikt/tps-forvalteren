@@ -2,6 +2,8 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import com.google.common.cache.Cache;
 import com.ibm.mq.jms.MQConnectionFactory;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryStrategy;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
@@ -10,10 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;

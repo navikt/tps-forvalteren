@@ -1,5 +1,9 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Set;
+import javax.servlet.http.HttpSession;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,12 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
-
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
-
 import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

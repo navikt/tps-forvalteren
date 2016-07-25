@@ -1,8 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

@@ -1,12 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
+import java.util.Collection;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
-
-import java.util.Collection;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).

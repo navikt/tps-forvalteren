@@ -1,5 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
+import java.util.Set;
+import javax.naming.Name;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,10 +12,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
-
-import javax.naming.Name;
-import java.util.Set;
-
 import static com.google.common.collect.Sets.newHashSet;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
