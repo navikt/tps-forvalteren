@@ -76,7 +76,7 @@ angular.module('tps-vedlikehold')
             return serviceRutines;
         };
 
-        serviceRutineFactory.getServiceRutinenavns = function() {
+        serviceRutineFactory.getServiceRutineNames = function() {
             var ret = [];
             angular.forEach(serviceRutines, function(value, key) {
                 this.push(key);
@@ -84,23 +84,23 @@ angular.module('tps-vedlikehold')
             return ret;
         };
 
-        serviceRutineFactory.getServiceRutineInternalName = function(serviceRutinenavn) {
-            return serviceRutines[serviceRutinenavn].internalName;
+        serviceRutineFactory.getServiceRutineInternalName = function(serviceRutineName) {
+            return serviceRutines[serviceRutineName].internalName;
         };
 
-        serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutinenavn) {
+        serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
             // could be done in a better way
             var ret = [];
-            if (serviceRutines[serviceRutinenavn].attributes) {
+            if (serviceRutines[serviceRutineName].attributes) {
                 var filter = [];
-                angular.forEach(serviceRutines[serviceRutinenavn].attributes, function (value, key) {
+                angular.forEach(serviceRutines[serviceRutineName].attributes, function (value, key) {
                     this.push(value.name);
                 }, filter);
 
-                for (var i = 0; i < serviceRutineFieldsTemplate[serviceRutinenavn].length; i++) {
-                    if (filter.indexOf(serviceRutineFieldsTemplate[serviceRutinenavn][i]) > -1) {
-                        ret.push(serviceRutineFieldsTemplate[serviceRutinenavn][i]);
+                for (var i = 0; i < serviceRutineFieldsTemplate[serviceRutineName].length; i++) {
+                    if (filter.indexOf(serviceRutineFieldsTemplate[serviceRutineName][i]) > -1) {
+                        ret.push(serviceRutineFieldsTemplate[serviceRutineName][i]);
                     }
                 }
                 return ret;
@@ -108,10 +108,10 @@ angular.module('tps-vedlikehold')
             return ret;
         };
 
-        serviceRutineFactory.getServiceRutineRequiredAttributesNames = function(serviceRutinenavn) {
+        serviceRutineFactory.getServiceRutineRequiredAttributesNames = function(serviceRutineName) {
             var ret = [];
-            if (serviceRutines[serviceRutinenavn].attributes) {
-                angular.forEach(serviceRutines[serviceRutinenavn].attributes, function (value, key) {
+            if (serviceRutines[serviceRutineName].attributes) {
+                angular.forEach(serviceRutines[serviceRutineName].attributes, function (value, key) {
                     if (value.use === "required") {
                         this.push(value.name);
                     }
@@ -120,8 +120,8 @@ angular.module('tps-vedlikehold')
             return ret;
         };
 
-        serviceRutineFactory.hasAksjonsKodes = function(serviceRutinenavn) {
-            var aksjonsKodes = serviceRutines[serviceRutinenavn].aksjonsKodes;
+        serviceRutineFactory.hasAksjonsKodes = function(serviceRutineName) {
+            var aksjonsKodes = serviceRutines[serviceRutineName].aksjonsKodes;
             if (aksjonsKodes) {
                 if (aksjonsKodes.length > 0) {
                     return true;
@@ -130,24 +130,24 @@ angular.module('tps-vedlikehold')
             return false;
         };
 
-        serviceRutineFactory.getServiceRutineAksjonsKodes = function(serviceRutinenavn) {
-            return serviceRutines[serviceRutinenavn].aksjonsKodes;
+        serviceRutineFactory.getServiceRutineAksjonsKodes = function(serviceRutineName) {
+            return serviceRutines[serviceRutineName].aksjonsKodes;
         };
 
-        serviceRutineFactory.getResponse = function(serviceRutinenavn, params) {
-            return $http({method: 'GET', url:urlBase+'/'+serviceRutinenavn, params:params});
+        serviceRutineFactory.getResponse = function(serviceRutineName, params) {
+            return $http({method: 'GET', url:urlBase + '/' + serviceRutineName, params:params});
         };
 
         serviceRutineFactory.getEnvironments = function() {
             return environments;
         };
 
-        serviceRutineFactory.getNonUniqueProperties = function(serviceRutinenavn) {
-            return nonUniquePropertiesContainer[serviceRutinenavn];
+        serviceRutineFactory.getNonUniqueProperties = function(serviceRutineName) {
+            return nonUniquePropertiesContainer[serviceRutineName];
         };
 
-        serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutinenavn) {
-            return serviceRutineReturnedDataLabel[serviceRutinenavn];
+        serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutineName) {
+            return serviceRutineReturnedDataLabel[serviceRutineName];
         };
 
         return serviceRutineFactory;

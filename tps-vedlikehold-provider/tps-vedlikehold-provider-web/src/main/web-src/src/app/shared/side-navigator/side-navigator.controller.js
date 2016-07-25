@@ -5,8 +5,8 @@ angular.module('tps-vedlikehold')
     .controller('SideNavigatorCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'serviceRutinesPromise',
         function($scope, $mdDialog, serviceRutineFactory, serviceRutinesPromise) {
 
-        $scope.getServiceRutineInternalName = function(serviceRutinenavn) {
-            return serviceRutineFactory.getServiceRutineInternalName(serviceRutinenavn);
+        $scope.getServiceRutineInternalName = function(serviceRutineName) {
+            return serviceRutineFactory.getServiceRutineInternalName(serviceRutineName);
         };
             
         function showAlertApiError() {
@@ -21,7 +21,7 @@ angular.module('tps-vedlikehold')
         
         function init() {
             if (serviceRutinesPromise) {
-                $scope.serviceRutinenavns = serviceRutineFactory.getServiceRutinenavns();
+                $scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
             } else {
                 showAlertApiError();
             }

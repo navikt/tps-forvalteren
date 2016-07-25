@@ -5,7 +5,7 @@ angular.module('tps-vedlikehold.service-rutine')
     .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'serviceRutineFactory', 'formConfig', 'environmentsPromise',
         function($scope, $stateParams, $mdDialog, utilsService, serviceRutineFactory, formConfig, environmentsPromise) {
 
-            $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
+            $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.formData = {};
             $scope.fields = [];
             $scope.formConfig = formConfig;
@@ -14,17 +14,17 @@ angular.module('tps-vedlikehold.service-rutine')
             var tpsReturnedObject = {};
             var nonUniqueProperties = []; //objects that contain non-unique properties
             var requiredAttributes = [];
-            var isValidServiceRutinenavn = false;
+            var isValidServiceRutineName = false;
             var apiError = true;
 
             $scope.loadServiceRutineTemplate = function () {
-                return isValidServiceRutinenavn && !apiError;
+                return isValidServiceRutineName && !apiError;
             };
 
             $scope.submit = function() {
                 var params = createParams($scope.formData);
 
-                serviceRutineFactory.getResponse($scope.serviceRutinenavn, params).then(function(res) {
+                serviceRutineFactory.getResponse($scope.serviceRutineName, params).then(function(res) {
                     $scope.xmlForm = utilsService.formatXml(res.data.xml);
                     tpsReturnedObject = res.data.data;
 
@@ -34,7 +34,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.returStatus = svarStatus.returStatus;
 
                     $scope.personData = utilsService.flattenObject(tpsReturnedObject
-                        .tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutinenavn)],
+                        .tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutineName)],
                         nonUniqueProperties);
 
                 }, function(error) {
@@ -104,28 +104,28 @@ angular.module('tps-vedlikehold.service-rutine')
             }
             
             function getServiceRutineAttributesNames() {
-                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNames($scope.serviceRutinenavn);
-                if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
+                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNames($scope.serviceRutineName);
+                if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutineName)) {
                     $scope.fields.push('aksjonsKode');
                 }
             }
             
-            function setIsValidServiceRutinenavn() {
-                isValidServiceRutinenavn = ($scope.serviceRutinenavn in serviceRutineFactory.getServiceRutines());
+            function setIsValidServiceRutineName() {
+                isValidServiceRutineName = ($scope.serviceRutineName in serviceRutineFactory.getServiceRutines());
             }
             
             function getServiceRutineRequiredAttributesNames() {
-                requiredAttributes = serviceRutineFactory.getServiceRutineRequiredAttributesNames($scope.serviceRutinenavn);
+                requiredAttributes = serviceRutineFactory.getServiceRutineRequiredAttributesNames($scope.serviceRutineName);
             }
             
             function getServiceRutineAksjonsKodes() {
-                if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
-                    $scope.aksjonsKodes = serviceRutineFactory.getServiceRutineAksjonsKodes($scope.serviceRutinenavn).sort();
+                if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutineName)) {
+                    $scope.aksjonsKodes = serviceRutineFactory.getServiceRutineAksjonsKodes($scope.serviceRutineName).sort();
                 }
             }
 
             function getNonUniqueProperties() {
-                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutinenavn);
+                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutineName);
             }
             
             function initRequestForm() {
@@ -149,10 +149,10 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             function init() {
-                setIsValidServiceRutinenavn();
+                setIsValidServiceRutineName();
 
                 //better way to do this?
-                if (!isValidServiceRutinenavn) {
+                if (!isValidServiceRutineName) {
                     return;
                 }
 
