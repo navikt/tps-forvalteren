@@ -1,11 +1,11 @@
-.service-rutine-dashboard {
+.tps-vk-service-rutine-dashboard {
 
   .tps-vk-top {
     margin-bottom: 10px;
     background-color: white;
     padding: 25px 35px 8px;
 
-    .tps-input-input-container {
+    .tps-vk-input-container {
       margin: 8px 0;
 
       label {
@@ -13,7 +13,7 @@
       }
     }
 
-    .date-picker-container {
+    .tps-vk-date-picker-container {
       margin-left: -15px;
       position: relative;
       min-height: 60px;
@@ -33,6 +33,7 @@
 
       md-datepicker {
         padding-top: 5px;
+
         .md-datepicker-input-container {
           width: 75%;
         }
@@ -41,6 +42,7 @@
 
     .tps-vk-form-btns {
       text-align: center;
+
       @media (min-width: 600px) {
         text-align: right;
       }
@@ -48,6 +50,7 @@
       .tps-vk-refresh-btn {
         width: 40px;
         height: 40px;
+
         svg {
           width: 30px;
           height: 40px;
@@ -58,10 +61,12 @@
   }
 
   .tps-vk-bottom {
-    .tps-scrollable-tabs {
+
+    .tps-vk-scrollable-tabs {
       height: 100%;
     }
-    .tps-xml-panel {
+
+    .tps-vk-xml-panel {
       pre {
         margin: 0;
       }
@@ -70,90 +75,52 @@
       }
     }
 
-    .tps-response-form {
+    .tps-vk-response-form {
       padding: 28px 35px 0;
-      .tps-output-input-container {
+
+      .tps-vk-output-input-container {
         margin: 3px 0;
         padding: 2px 3px;
 
-        .tps-output-input, .tps-output-label {
+        .tps-vk-output-input,
+        .tps-vk-output-label {
           border-color: rgba(0,0,0,0.12);
           color: rgba(0,0,0,0.54);
           &.filled {
-            //border-color: @tps-vk-background-primary;
             background-color: rgb(250, 255, 189);
           }
           &.empty {
-            //border-color: @tps-vk-background-warn;
-            //border-color: @tps-vk-background-accent;
             background-color: rgb(250, 255, 189);
           }
         }
-      }
-    }
-
-    .tps-long-response {
-      width: 260px;
-
-      .output-data {
-        width: 100%;
-      }
-    }
-
-    .tps-short-response {
-      width: 130px;
-
-      .output-data {
-        width: 100%;
-      }
-    }
-
-    .tps-output-field {
-      position: relative;
-      min-height: 40px;
-      margin: 8px;
-      border-bottom: 1px solid rgb(224,224,224);
-
-      input {
-        border: 0;
-      }
-
-      .output-label {
-        font-size: 12px;
-        white-space: pre;
-        word-wrap: normal;
-      }
-
-      .output-data {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        text-overflow: ellipsis;
       }
     }
   }
 }
 
 .tps-vk-status-container {
-  padding: 0px 33px;
+  padding: 0 33px;
   text-align: right;
   border-top: 1px solid rgba(0,0,0,.12);
+
   .tps-vk-status {
     font-size: 12px;
     color: rgba(0,0,0,.54);
 
-    .status-message, .status-icon {
+    .tps-vk-status-message,
+    .tps-vk-status-icon {
       height: 100%;
       display: inline-block;
       vertical-align: middle;
     }
-    .status-icon {
+
+    .tps-vk-status-icon {
       &.error {
         svg {
           fill: red;
         }
       }
-      &.succes {
+      &.success {
         svg {
           fill: green;
         }

@@ -13,9 +13,9 @@ angular.module('tps-vedlikehold')
         },
         template:
         '<div layout="column">' +
-        '<md-input-container class="tps-output-input-container md-input-focused" >' +
-            '<label class="tps-output-label">{{ label }}</label>' +
-            '<input class="tps-output-input" ng-class="{filled : fieldModel.trim().length, empty : fieldModel.trim().length == 0}" ' +
+        '<md-input-container class="tps-vk-output-input-container md-input-focused" >' +
+            '<label class="tps-vk-output-label">{{ label }}</label>' +
+            '<input class="tps-vk-output-input" ng-class="{filled : fieldModel.trim().length, empty : fieldModel.trim().length == 0}" ' +
                 'type="text" ng-model="fieldModel" readonly tabindex="-1"/>' +
         '</md-input-container>' +
         '</div>'

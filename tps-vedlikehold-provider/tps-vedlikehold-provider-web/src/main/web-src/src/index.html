@@ -11,9 +11,9 @@
     </head>
     <body ng-app="tps-vedlikehold" layout="column">
         <div id="header" ui-view="header"></div>
-        <div id="content-wrapper" layout="row" class="content-wrapper" flex>
-            <div id="side-navigator" ui-view="side-navigator" layout="column"></div>
-            <div class="main-content" ui-view="content" layout="column" flex></div>
+        <div id="tps-vk-content-wrapper" layout="row" flex>
+            <div id="tps-vk-side-navigator" ui-view="side-navigator" layout="column"></div>
+            <div id="tps-vk-main-content" ui-view="content" layout="column" flex></div>
         </div>
     </body>
     <script type="text/javascript" src="vendor.min.js"></script>
