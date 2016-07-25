@@ -1,11 +1,11 @@
-<div id="login-page" class="md-background" layout="column" layout-align="center center" layout-fill>
-    <div class="loginBox md-whiteframe-z2" layout="column">
-        <md-toolbar class="smd-default tps-v-login-toolbar">
+<div id="tps-vk-login-page" class="md-background" layout="column" layout-align="center center" layout-fill>
+    <div class="tps-vk-login-box md-whiteframe-z2" layout="column">
+        <md-toolbar class="tps-vk-login-toolbar">
             <h2 class="md-toolbar-tools"><span ng-bind="title"></span></h2>
         </md-toolbar>
         <md-content layout="column"  layout-align="center" class="md-padding">
-            <form name="loginForm" class="tps-v-form" method="get" ng-submit="login()" novalidate >
-                <md-input-container class="tps-v-input">
+            <form name="loginForm" class="tps-vk-form" method="get" ng-submit="login()" novalidate >
+                <md-input-container class="tps-vk-input">
                     <label>Brukernavn</label>
                     <input ng-model="credentials.username" name="username" type="text" ng-required="true" >
                     <ng-messages for="loginForm.username.$error" >
@@ -14,7 +14,7 @@
                         </ng-message>
                     </ng-messages>
                 </md-input-container>
-                <md-input-container class="tps-v-input">
+                <md-input-container class="tps-vk-input">
                     <label>Passord</label>
                     <input ng-model="credentials.password" name="password" type="password" ng-required="true">
                     <ng-messages for="loginForm.password.$error" >
@@ -23,8 +23,9 @@
                         </ng-message>
                     </ng-messages>
                 </md-input-container>
-                <md-input-container class="tps-v-btn-container">
-                    <md-button class="md-raised md-primary md-button md-ink-ripple login" name="login" type="submit" ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
+                <md-input-container class="tps-vk-btn-container">
+                    <md-button class="md-raised md-primary md-button md-ink-ripple" name="login" type="submit"
+                               ng-disabled="loginForm.$invalid || !loginForm.$dirty || pendingRequest">
                         Logg inn
                     </md-button>
                 </md-input-container>

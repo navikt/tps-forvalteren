@@ -1,22 +1,24 @@
-<div class="servicerutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
-    <div ng-show="loadServicerutineTemplate()" layout="column" flex>
+<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+    <div ng-show="loadServiceRutineTemplate()" layout="column" flex>
         <div class="tps-vk-top md-whiteframe-z2">
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"></tps-input-field>
                 </div>
-                <div class="submit-container" layout-gt-xs="row" layout="column" layout-align>
-                    <md-input-container flex-gt-xs flex="33" class="tps-input-input-container">
+                <div class="tps-vk-submit-container" layout-gt-xs="row" layout="column" layout-align>
+                    <md-input-container flex-gt-xs flex="33" class="tps-vk-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex-gt-xs flex="66"class="tps-input-input-container tps-vk-form-btns" layout-align="center center">
-                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"  ng-disabled="requestForm.$invalid || !requestForm.$dirty || loading">Send til TPS</md-button>
+                    <md-input-container flex-gt-xs flex="66" class="tps-vk-input-input-container tps-vk-form-btns" layout-align="center center">
+                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-disabled="requestForm.$invalid || loading">
+                            Send til TPS
+                        </md-button>
                         <md-button class="md-fab  md-accent tps-vk-refresh-btn" type="button" ng-transclude="" aria-label="Fjern responsdata." ng-click="clearResponseForm()">
                             <ng-md-icon icon="delete_sweep" aria-label="Fjern responsdata."></ng-md-icon>
-                            <md-tooltip md-direction="top" class="tooltip-btn">
+                            <md-tooltip md-direction="top">
                                 <span>Fjern responsdata</span>
                             </md-tooltip>
                             <div class="md-ripple-container"></div>
@@ -26,29 +28,28 @@
             </form>
             <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
         </div>
-
         <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
-            <md-tabs md-border-bottom class="tps-scrollable-tabs">
+            <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
                 <md-tab label="Resultat">
-                    <div ng-include="'app/components/service-rutine/response.html'" class="tps-response-form md-padding">
+                    <div ng-include="'app/components/service-rutine/response.html'" class="tps-vk-response-form md-padding">
                     </div>
                 </md-tab>
                 <md-tab label="XML">
-                    <div class="tps-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
+                    <div class="tps-vk-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
                     </div>
                 </md-tab>
             </md-tabs>
         </md-content>
         <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="center center">
             <div class="tps-vk-status" flex ng-show="svarStatus">
-                <ng-md-icon class="status-icon" ng-class="returStatus == '00' ? 'succes' : 'error'" icon="fiber_manual_record"></ng-md-icon>
-                <div class="status-message">
+                <ng-md-icon class="tps-vk-status-icon" ng-class="returStatus == '00' ? 'success' : 'error'" icon="fiber_manual_record"></ng-md-icon>
+                <div class="tps-vk-status-message">
                     {{svarStatus}}
                 </div>
             </div>
         </md-content>
     </div>
-    <div ng-show="!loadServicerutineTemplate()"  layout="column" flex>
+    <div ng-show="!loadServiceRutineTemplate()"  layout="column" flex>
         <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
     </div>
 </div>
