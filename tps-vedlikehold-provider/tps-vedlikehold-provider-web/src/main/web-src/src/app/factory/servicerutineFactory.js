@@ -77,11 +77,12 @@ angular.module('tps-vedlikehold')
         };
 
         servicerutineFactory.getServiceRutinenavns = function() {
-            var ret = [];
+            var serviceRutineNames = [];
+            
             angular.forEach(servicerutiner, function(value, key) {
                 this.push(key);
-            }, ret);
-            return ret;
+            }, serviceRutineNames);
+            return serviceRutineNames;
         };
         
         servicerutineFactory.getServicerutineInternalName = function(serviceRutinenavn) {
@@ -91,43 +92,42 @@ angular.module('tps-vedlikehold')
         servicerutineFactory.getServicerutineAttributesNames = function(serviceRutinenavn) {
             // want the fields from servicerutineFieldsTemplate in a certain order
             // could be done in a better way
-            var ret = [];
+            var serviceRutineAttributeNames = [];
+            
             if (servicerutiner[serviceRutinenavn].attributes) {
                 var filter = [];
+                
                 angular.forEach(servicerutiner[serviceRutinenavn].attributes, function (value, key) {
                     this.push(value.name);
                 }, filter);
 
                 for (var i = 0; i < servicerutineFieldsTemplate[serviceRutinenavn].length; i++) {
                     if (filter.indexOf(servicerutineFieldsTemplate[serviceRutinenavn][i]) > -1) {
-                        ret.push(servicerutineFieldsTemplate[serviceRutinenavn][i]);
+                        serviceRutineAttributeNames.push(servicerutineFieldsTemplate[serviceRutinenavn][i]);
                     }
                 }
-                return ret;
+                return serviceRutineAttributeNames;
             }
-            return ret;
+            return serviceRutineAttributeNames;
         };
 
         servicerutineFactory.getServicerutineRequiredAttributesNames = function(serviceRutinenavn) {
-            var ret = [];
+            var serviceRutineRequiredAttributesNames = [];
+            
             if (servicerutiner[serviceRutinenavn].attributes) {
                 angular.forEach(servicerutiner[serviceRutinenavn].attributes, function (value, key) {
                     if (value.use === "required") {
                         this.push(value.name);
                     }
-                }, ret);
+                }, serviceRutineRequiredAttributesNames);
             }
-            return ret;
+            return serviceRutineRequiredAttributesNames;
         };
 
         servicerutineFactory.hasAksjonsKodes = function(serviceRutinenavn) {
             var aksjonsKodes = servicerutiner[serviceRutinenavn].aksjonsKodes;
-            if (aksjonsKodes) {
-                if (aksjonsKodes.length > 0) {
-                    return true;
-                }
-            }
-            return false;
+            
+            return aksjonsKodes && aksjonsKodes.length;
         };
         
         servicerutineFactory.getServicerutineAksjonsKodes = function(serviceRutinenavn) {

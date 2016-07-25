@@ -104,8 +104,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 return utilsService.formatDate(dato);
             }
             
-            function getServicerutineAttributesNames() {
+            function getServicerutineInputFieldNames() {
                 $scope.fields = servicerutineFactory.getServicerutineAttributesNames($scope.serviceRutinenavn);
+
                 if (servicerutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
                     $scope.fields.push('aksjonsKode');
                 }
@@ -171,7 +172,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     return;
                 }
 
-                getServicerutineAttributesNames();
+                getServicerutineInputFieldNames();
                 getServicerutineRequiredAttributesNames();
                 getServicerutineAksjonsKodes();
                 getNonUniqueProperties();
