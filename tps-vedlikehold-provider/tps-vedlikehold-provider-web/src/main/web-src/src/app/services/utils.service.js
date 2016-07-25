@@ -12,8 +12,7 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.formatDate = function(dateObj) {
-            var date = dateObj ? moment(dateObj).format('YYYY-MM-DD') : null;
-            return date;
+            return dateObj ? moment(dateObj).format('YYYY-MM-DD') : null;
         };
 
         self.isInFuture = function(dateObj) {
@@ -38,7 +37,7 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.flattenObject = function(ob, nonUniques) {
-            var ret = {};
+            var finalFlatOb = {};
             
             for (var i in ob) {
                 if (!ob.hasOwnProperty(i)) continue;
@@ -49,16 +48,16 @@ angular.module('tps-vedlikehold.service')
                         if (!flatObject.hasOwnProperty(x)) continue;
 
                         if (nonUniques.indexOf(i) > -1) {
-                            ret[i + '_' + x] = flatObject[x];
+                            finalFlatOb[i + '_' + x] = flatObject[x];
                         } else {
-                            ret[x] = flatObject[x];
+                            finalFlatOb[x] = flatObject[x];
                         }
                     }
                 } else {
-                    ret[i] = ob[i];
+                    finalFlatOb[i] = ob[i];
                 }
             }
-            return ret;
+            return finalFlatOb;
         };
 
         self.formatXml = function (xml) {

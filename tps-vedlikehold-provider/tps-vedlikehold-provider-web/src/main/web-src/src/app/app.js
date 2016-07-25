@@ -33,6 +33,7 @@ require('./directives/input-field.directive');
 require('./directives/output-field.directive');
 
 require('./settings/response-form.config');
+require('./settings/service-rutine.config');
 
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',

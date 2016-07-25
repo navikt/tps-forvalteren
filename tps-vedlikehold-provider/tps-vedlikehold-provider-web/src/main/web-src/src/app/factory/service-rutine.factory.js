@@ -2,32 +2,12 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold')
-    .factory('serviceRutineFactory', ['$http', function($http) {
+    .factory('serviceRutineFactory', ['$http', 'serviceRutineConfig', function($http, serviceRutineConfig) {
 
         var serviceRutineFactory = {};
         
         var urlBase = 'api/v1/service';
         var urlBaseEnv = 'api/v1/environments';
-
-        // ####################################
-        // extend for additional serviceRutines
-
-        // order of input fields
-        var serviceRutineFieldsTemplate = {
-            'FS03-FDNUMMER-PERSDATA-O': ['fnr', 'aksjonsDato']
-        };
-
-        // name on data object returned by tps
-        var serviceRutineReturnedDataLabel = {
-            'FS03-FDNUMMER-PERSDATA-O': 'personDataS004'
-        };
-
-        // objects in response with non-unique fields
-        // used to flatten object without creating duplicates/removing fields
-        var nonUniquePropertiesContainer = {
-            'FS03-FDNUMMER-PERSDATA-O': ['tlfPrivat', 'tlfJobb', 'tlfMobil']
-        };
-        // ####################################
 
         var serviceRutines = {};
         var environments = [];
@@ -91,7 +71,7 @@ angular.module('tps-vedlikehold')
 
         serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
-            // could be done in a better way
+            // could probably be done in a better way
             var serviceRutineAttributesNames = [];
 
             if (serviceRutines[serviceRutineName].attributes) {
@@ -101,9 +81,11 @@ angular.module('tps-vedlikehold')
                     this.push(value.name);
                 }, filter);
 
-                for (var i = 0; i < serviceRutineFieldsTemplate[serviceRutineName].length; i++) {
-                    if (filter.indexOf(serviceRutineFieldsTemplate[serviceRutineName][i]) > -1) {
-                        serviceRutineAttributesNames.push(serviceRutineFieldsTemplate[serviceRutineName][i]);
+                var serviceRutineFieldsTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsTemplate;
+
+                for (var i = 0; i < serviceRutineFieldsTemplate.length; i++) {
+                    if (filter.indexOf(serviceRutineFieldsTemplate[i]) > -1) {
+                        serviceRutineAttributesNames.push(serviceRutineFieldsTemplate[i]);
                     }
                 }
                 return serviceRutineAttributesNames;
@@ -143,11 +125,11 @@ angular.module('tps-vedlikehold')
         };
 
         serviceRutineFactory.getNonUniqueProperties = function(serviceRutineName) {
-            return nonUniquePropertiesContainer[serviceRutineName];
+            return serviceRutineConfig[serviceRutineName].nonUniquePropertiesContainer;
         };
 
         serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutineName) {
-            return serviceRutineReturnedDataLabel[serviceRutineName];
+            return serviceRutineConfig[serviceRutineName].serviceRutineReturnedDataLabel;
         };
 
         return serviceRutineFactory;
