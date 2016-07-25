@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
+import no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,9 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.PASSWORD;
+import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.USERNAME;
+
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -22,8 +26,6 @@ import javax.jms.TextMessage;
 public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageQueueConsumer.class);
-
-    private static final String MESSAGE_QUEUE_USERNAME  = "srvappserver";
 
     private static final long DEFAULT_TIMEOUT           = 5000;
 
@@ -48,7 +50,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
         /* Initiate session */
         LOGGER.debug("Creating MQ connection");
-        Connection connection = connectionFactory.createConnection(MESSAGE_QUEUE_USERNAME, "");
+        Connection connection = connectionFactory.createConnection(USERNAME, PASSWORD);
 
         connection.start();
 

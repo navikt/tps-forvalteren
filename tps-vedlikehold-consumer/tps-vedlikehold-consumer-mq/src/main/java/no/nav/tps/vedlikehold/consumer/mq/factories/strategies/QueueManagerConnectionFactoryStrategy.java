@@ -2,6 +2,8 @@ package no.nav.tps.vedlikehold.consumer.mq.factories.strategies;
 
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 
+import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
+
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
@@ -37,6 +39,6 @@ public class QueueManagerConnectionFactoryStrategy implements ConnectionFactoryS
 
     @Override
     public String getChannelName() {
-        return environment.toUpperCase() + "_TPSWS";
+        return environment.toUpperCase() + CHANNEL_POSTFIX;
     }
 }

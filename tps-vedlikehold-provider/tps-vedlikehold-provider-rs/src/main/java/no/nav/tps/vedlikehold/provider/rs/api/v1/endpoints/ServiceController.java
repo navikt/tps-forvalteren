@@ -72,7 +72,6 @@ public class ServiceController {
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
     public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
                                             @RequestParam String environment,
-                                            @RequestParam String fnr,
                                             @RequestParam Map<String, Object> parameters,
                                             @PathVariable("serviceRutinenavn") String serviceRutineName) throws HttpException {
 
@@ -82,7 +81,8 @@ public class ServiceController {
 
         User user = userFactory.createUser(strategy);
 
-        if ( !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment) ) {
+        String fnr = (String) parameters.get("fnr");
+        if ( fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment) ) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 

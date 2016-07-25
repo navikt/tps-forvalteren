@@ -24,20 +24,20 @@ import static org.mockito.Mockito.when;
 public class EnvironmentControllerTest {
 
     private static final String SESSION_ID = "sessionID";
-    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList("p", "q4", "t3", "u1") );
+    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList("u1", "t4", "p", "q4", "t3", "u5", "u6", "t7") );
 
     @Mock
     private HttpSession httpSessionMock;
 
     @Mock
-    public GetEnvironments getEnvironments;
+    public GetEnvironments getEnvironmentsCommandMock;
 
     @InjectMocks
     private EnvironmentController controller;
 
     @Before
     public void setUp() {
-        when( getEnvironments.execute("tpsws") ).thenReturn(ENVIRONMENTS);
+        when( getEnvironmentsCommandMock.execute("tpsws") ).thenReturn(ENVIRONMENTS);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
 
@@ -45,7 +45,7 @@ public class EnvironmentControllerTest {
     public void getEnvironmentsReturnsOnlySupportedEnvironments() {
         Set<String> environments = controller.getEnvironments();
 
-        assertThat(environments, containsInAnyOrder("t3", "u1"));
+        assertThat(environments, containsInAnyOrder("t3", "u1", "t4", "u5", "u6"));
     }
 
 }

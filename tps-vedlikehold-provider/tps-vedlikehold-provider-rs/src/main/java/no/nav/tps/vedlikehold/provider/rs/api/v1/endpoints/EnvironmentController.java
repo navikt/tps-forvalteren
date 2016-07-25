@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
+import no.nav.tps.vedlikehold.provider.rs.api.v1.utils.EnvironmentsFilter;
 import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
-import static org.springframework.util.StringUtils.isEmpty;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
@@ -33,12 +31,12 @@ public class EnvironmentController {
 
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Set<String> getEnvironments() {
-        return getEnvironmentsCommand.execute("tpsws").stream()
-                .filter(environment -> {
-                    String prefix = environment.substring(0, 1).toLowerCase();
+        Set<String> environments = getEnvironmentsCommand.execute("tpsws");
 
-                    return !isEmpty(environment) && supportedEnvironments.contains(prefix);
-                })
-                .collect(toSet());
+        return EnvironmentsFilter.create()
+                .include("u*")
+                .include("t*")
+                .exception("t7")                // The queue manager channel for this env does not exist
+                .filter(environments);
     }
 }

@@ -9,6 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.APPLICATION_NAME;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.BASE_URL;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.PASSWORD;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.REQUEST_QUEUE_ALIAS;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.RESPONSE_QUEUE_ALIAS;
+import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.USERNAME;
+
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
@@ -31,10 +39,12 @@ public class FasitConfig {
      */
     @Bean
     public FasitMessageQueueConsumer getTpswsFasitMessageQueueQueueConsumer() {
-        String application                  = "tpsws";
-        String requestQueueAlias            = "TPS_FORESPORSEL_XML_O";
-        String responseQueueAlias           = "tps.endrings.melding.svar";
-        FasitMessageQueueConsumer consumer  = new DefaultFasitMessageQueueConsumer(application, requestQueueAlias, responseQueueAlias);
+        FasitMessageQueueConsumer consumer  = new DefaultFasitMessageQueueConsumer(
+                APPLICATION_NAME,
+                REQUEST_QUEUE_ALIAS,
+                RESPONSE_QUEUE_ALIAS,
+                QUEUE_MANAGER_ALIAS
+        );
 
         /* Inject a FasitClient object */
         beanFactory.autowireBean(consumer);
@@ -44,10 +54,10 @@ public class FasitConfig {
 
     @Bean
     public FasitClient getFasitClient() {
-        String baseUrl  = "https://fasit.adeo.no/conf/";
-        String username ="admin";
-        String password ="admin";
-
-        return new FasitClient(baseUrl, username, password);
+        return new FasitClient(
+                BASE_URL,
+                USERNAME,
+                PASSWORD
+        );
     }
 }

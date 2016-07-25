@@ -50,7 +50,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
     public void retrievesInformationFromFasit() throws JMSException {
         serviceFactory.createMessageQueueService(ENVIRONMENT);
 
-        verify(fasitMessageQueueConsumerMock).getQueueManager(anyString(), eq(ENVIRONMENT));
+        verify(fasitMessageQueueConsumerMock).getQueueManager(eq(ENVIRONMENT));
         verify(fasitMessageQueueConsumerMock).getRequestQueue(eq(ENVIRONMENT));
         verify(fasitMessageQueueConsumerMock).getResponseQueue(eq(ENVIRONMENT));
     }

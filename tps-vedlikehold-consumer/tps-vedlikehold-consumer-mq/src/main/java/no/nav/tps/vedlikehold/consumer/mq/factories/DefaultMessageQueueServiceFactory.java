@@ -21,11 +21,10 @@ import javax.jms.JMSException;
 @Component
 public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
-    private static final String MESSAGE_QUEUE_MANAGER_ALIAS = "mqGateway";
-
     @Autowired
     private FasitMessageQueueConsumer fasitMessageQueueConsumer;
 
+    // TODO: There should not be any dependencies between consumers
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
 
@@ -39,7 +38,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     @Override
     public DefaultMessageQueueConsumer createMessageQueueService(String environment) throws JMSException {
 
-        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(MESSAGE_QUEUE_MANAGER_ALIAS, environment);
+        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(environment);
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
         Queue responseQueue       = fasitMessageQueueConsumer.getResponseQueue(environment);
 
