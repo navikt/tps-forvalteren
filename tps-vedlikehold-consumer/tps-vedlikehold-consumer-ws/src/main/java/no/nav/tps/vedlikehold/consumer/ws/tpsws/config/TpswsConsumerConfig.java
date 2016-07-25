@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.config;
 
+import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.jaxws.handlers.MDCOutHandler;
 import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
@@ -53,12 +54,6 @@ public class TpswsConsumerConfig {
     @Value("${validering.virksomhet.egenansattv1.url}")
     private String egenAnsattAddress;
 
-    @Value("${no.nav.modig.security.systemuser.username}")
-    private String modigUername;
-
-    @Value("${no.nav.modig.security.systemuser.password}")
-    private String modigPassword;
-
     @Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
@@ -108,12 +103,12 @@ public class TpswsConsumerConfig {
         Map<String, Object> properties = new HashMap<String, Object>();
 
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-        properties.put(WSHandlerConstants.USER, modigUername);
+        properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, new CallbackHandler() {
             @Override
             public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-                String password = modigPassword;
+                String password = System.getProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD);
 
                 WSPasswordCallback passwordCallback = (WSPasswordCallback) callbacks[0];
                 passwordCallback.setPassword(password);
