@@ -9,6 +9,7 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             $scope.serviceRutinenavn = $stateParams.serviceRutinenavn;
             $scope.loading = false;
             $scope.formData = {};
+            $scope.fields = [];
             $scope.formConfig = formConfig;
             $scope.onlyNumbers = /^\d+$/;
 
@@ -91,14 +92,21 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
 
             function createParams(formData) {
                 var params = {};
-                params.fnr = formData.fnr;
-                params.aksjonsDato = checkDate(formData.aksjonsDato);
-
-                var aksjonsKode = formData.aksjonsKode;
-                params.aksjonsKode = aksjonsKode ?  formData.aksjonsKode.charAt(0) : 0;
-                params.aksjonsKode2 = aksjonsKode ?  formData.aksjonsKode.charAt(1) : 1;
-
-                params.environment = formData.environment;
+                for (var key in formData) {
+                    if (formData.hasOwnProperty(key)) {
+                        switch(key) {
+                            case 'aksjonsDato':
+                                params.aksjonsDato = checkDate(formData.aksjonsDato);
+                                break;
+                            case 'aksjonsKode':
+                                params.aksjonsKode = formData.aksjonsKode.charAt(0);
+                                params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
+                                break;
+                            default:
+                                params[key] = formData[key];
+                        }
+                    }
+                }
                 return params;
             }
 
@@ -114,9 +122,12 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 return utilsService.formatDate(dato);
             }
             
-            function getServicerutineAttributesNames() {
+            function getServicerutineInputFieldNames() {
                 $scope.fields = servicerutineFactory.getServicerutineAttributesNames($scope.serviceRutinenavn);
-                $scope.fields.push('aksjonsKode');
+
+                if (servicerutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
+                    $scope.fields.push('aksjonsKode');
+                }
             }
             
             function setIsValidServiceRutinenavn() {
@@ -127,8 +138,10 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                 requiredAttributes = servicerutineFactory.getServicerutineRequiredAttributesNames($scope.serviceRutinenavn);
             }
             
-            function getServicerutineAksjonsKoder() {
-                $scope.aksjonsKoder = servicerutineFactory.getServicerutineAksjonsKoder($scope.serviceRutinenavn).sort();
+            function getServicerutineAksjonsKodes() {
+                if (servicerutineFactory.hasAksjonsKodes($scope.serviceRutinenavn)) {
+                    $scope.aksjonsKodes = servicerutineFactory.getServicerutineAksjonsKodes($scope.serviceRutinenavn).sort();
+                }
             }
 
             function getNonUniqueProperties() {
@@ -136,12 +149,23 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
             }
             
             function initRequestForm() {
-                $scope.formData = {
-                    fnr: '',
-                    aksjonsDato: new Date(),
-                    aksjonsKode: $scope.aksjonsKoder[0],
-                    environment: $scope.environments[0]
-                };
+                for (var i = 0; i < $scope.fields.length; i++) {
+                    var attribute = $scope.fields[i];
+                    switch(attribute) {
+                        case 'fnr': 
+                            $scope.formData.fnr = '';
+                            break;
+                        case 'aksjonsDato':
+                            $scope.formData.aksjonsDato = new Date();
+                            break;
+                        case 'aksjonsKode':
+                            $scope.formData.aksjonsKode = $scope.aksjonsKodes[0];
+                            break;
+                        default:
+                            $scope.formData[attribute] = ''; //
+                    }
+                }
+                $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
 
             function init() {
@@ -166,9 +190,9 @@ angular.module('tps-vedlikehold.servicerutine', ['ngMessages', 'hljs'])
                     return;
                 }
 
-                getServicerutineAttributesNames();
+                getServicerutineInputFieldNames();
                 getServicerutineRequiredAttributesNames();
-                getServicerutineAksjonsKoder();
+                getServicerutineAksjonsKodes();
                 getNonUniqueProperties();
                 initRequestForm();
             }
