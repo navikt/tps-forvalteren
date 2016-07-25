@@ -36,9 +36,7 @@ public class EnvironmentController {
         return EnvironmentsFilter.create()
                 .include("u*")
                 .include("t*")
-                .exception("t7")
-                .exception("u5")    // The queue defined in Fasit does not exist
-                .exception("u6")
+                .exception("t7")                // The queue manager channel for this env does not exist
                 .filter(environments);
     }
 }

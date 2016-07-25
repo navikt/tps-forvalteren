@@ -45,7 +45,7 @@ public class EnvironmentControllerTest {
     public void getEnvironmentsReturnsOnlySupportedEnvironments() {
         Set<String> environments = controller.getEnvironments();
 
-        assertThat(environments, containsInAnyOrder("t3", "u1", "t4"));
+        assertThat(environments, containsInAnyOrder("t3", "u1", "t4", "u5", "u6"));
     }
 
 }
