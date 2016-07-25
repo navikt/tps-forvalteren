@@ -34,10 +34,10 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     public boolean ping() throws Exception {
         try {
             getDiskresjonskode(PING_FNR);
-        } catch (Exception environment) {
-            LOGGER.warn("Pinging diskresjonskode failed with exception: {}", environment.toString());
+        } catch (Exception exception) {
+            LOGGER.warn("Pinging diskresjonskode failed with exception: {}", exception.toString());
 
-            throw environment;
+            throw exception;
         }
 
         return true;
@@ -46,28 +46,26 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     @Override
     public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) throws Exception {
         HentDiskresjonskodeRequest request = createRequest(fNr);
-        HentDiskresjonskodeResponse response;
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         try {
-            response = diskresjonskodePortType.hentDiskresjonskode(request);
+            return diskresjonskodePortType.hentDiskresjonskode(request);
+        } catch (SOAPFaultException exception) {
+            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
 
-            return response;
-        } catch (SOAPFaultException environment) {
-            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", environment.toString());
-
-            Boolean noMatchesFound = environment.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
-            Boolean invalidFnr = environment.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            Boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
+            Boolean invalidFnr = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
 
             if (noMatchesFound || invalidFnr) {
-                response = new HentDiskresjonskodeResponse();
+                HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
+
                 response.setDiskresjonskode("");
 
                 return response;
             }
 
-            throw environment;
+            throw exception;
         } finally {
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
         }
