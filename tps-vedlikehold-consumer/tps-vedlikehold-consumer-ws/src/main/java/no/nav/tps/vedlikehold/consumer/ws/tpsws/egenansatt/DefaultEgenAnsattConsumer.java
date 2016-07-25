@@ -50,20 +50,15 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
             response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
         } catch (SOAPFaultException exception) {
-            if (exception.getMessage().contains("PERSON IKKE FUNNET")) {
-                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
+            LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
-                return false;
-            } else if (exception.getMessage().contains("FØDSELSNUMMER INNGITT ER UGYLDIG")) {
-                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
+            Boolean personNotFound = exception.getMessage().contains("PERSON IKKE FUNNET");
+            Boolean invalidFnr     = exception.getMessage().contains("FØDSELSNUMMER INNGITT ER UGYLDIG");
+            Boolean emptyFnr       = exception.getMessage().contains("FNR MÅ FYLLES UT");
 
-                return false;
-            } else if (exception.getMessage().contains("FNR MÅ FYLLES UT")) {
-                LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
-
+            if (personNotFound || invalidFnr || emptyFnr) {
                 return false;
             }
-            LOGGER.error("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
             throw exception;
         }

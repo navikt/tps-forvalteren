@@ -8,9 +8,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

@@ -33,15 +33,15 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
         Set<String> userRoles       = new HashSet<>(user.getRoles());           // retainAll() should not modify the users objects roles
         Set<String> authorisedRoles = new HashSet<>();
 
-        if (environment.equals(ENVIRONMENT_U)) {
+        if (ENVIRONMENT_U.equals(environment)) {
             authorisedRoles = readURoles;
-        } else if (environment.equals(ENVIRONMENT_T)) {
+        } else if (ENVIRONMENT_T.equals(environment)) {
             authorisedRoles = readTRoles;
-        } else if (environment.equals(ENVIRONMENT_Q)) {
+        } else if (ENVIRONMENT_Q.equals(environment)) {
             authorisedRoles = readQRoles;
-        } else if (environment.equals(ENVIRONMENT_P)) {
+        } else if (ENVIRONMENT_P.equals(environment)) {
             authorisedRoles = readPRoles;
-        } else if (environment.equals(ENVIRONMENT_O)) {
+        } else if (ENVIRONMENT_O.equals(environment)) {
             authorisedRoles = readORoles;
         }
 
