@@ -55,7 +55,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
             LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
 
             Boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
-            Boolean invalidFnr = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
 
             if (noMatchesFound || invalidFnr) {
                 HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();

@@ -19,8 +19,8 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
 
     public static final String PERSON_NOT_FOUND_TPSWS_ERROR = "PERSON IKKE FUNNET";
-    public static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
-    public static final String EMPTY_FNR_TPSWS_ERROR = "FNR MÅ FYLLES UT";
+    public static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    public static final String EMPTY_FNR_TPSWS_ERROR        = "FNR MÅ FYLLES UT";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -61,8 +61,8 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
             LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
             Boolean personNotFound = exception.getMessage().contains(PERSON_NOT_FOUND_TPSWS_ERROR);
-            Boolean invalidFnr = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
-            Boolean emptyFnr = exception.getMessage().contains(EMPTY_FNR_TPSWS_ERROR);
+            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            Boolean emptyFnr       = exception.getMessage().contains(EMPTY_FNR_TPSWS_ERROR);
 
             if (personNotFound || invalidFnr || emptyFnr) {
                 return false;
