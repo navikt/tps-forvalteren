@@ -21,20 +21,23 @@
 
       label {
         position: absolute;
-        top: -10px;
+        top: -5px;
         left: 50px;
         color: rgba(0, 0, 0, 0.541176);
         font-size: 12px;
       }
 
-      .md-datepicker-input-container {
-        margin-left: 0;
-      }
-
       md-datepicker {
         padding-top: 5px;
+        .md-datepicker-button {
+          padding-right: 0;
+          margin-right: 0;
+        }
         .md-datepicker-input-container {
-          width: 75%;
+          position: absolute;
+          right: 6px;
+          left: 38px;
+          top: 16px;
         }
       }
     }
