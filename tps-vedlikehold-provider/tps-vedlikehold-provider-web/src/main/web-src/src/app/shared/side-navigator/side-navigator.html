@@ -2,13 +2,6 @@
     <md-sidenav md-component-id="left" class="md-sidenav-left" md-is-locked-open="$mdMedia('gt-md')">
         <md-content>
             <md-list class="tps-vk-side-navigator-list" layout="column" layout-align="start start">
-                <md-list-item class="tps-vk-service-rutine-header-list-item">
-                    <md-item-text layout="row" class="tps-vk-service-rutine-item-text">
-                        <h3>Servicekategori 1</h3>
-                    </md-item-text>
-                    <md-divider></md-divider>
-                </md-list-item>
-
                 <md-list-item ng-repeat="serviceRutineName in serviceRutineNames" class="tps-vk-service-rutine-list-item">
                         <md-button md-ripple-container class="md-primary tps-vk-service-rutine-button"
                                    ui-sref="serviceRutine({serviceRutineName: serviceRutineName})"
