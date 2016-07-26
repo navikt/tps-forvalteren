@@ -24,7 +24,7 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGetTpsServiceRutinerService.class);
 
-    private static final String SERVICE_RUTINER_FILE_PATH = "ServiceRutiner.xml";
+    private static final String SERVICE_RUTINER_FILE_PATH = "ServiceRutines.xml";
 
     private XmlMapper xmlMapper;
 

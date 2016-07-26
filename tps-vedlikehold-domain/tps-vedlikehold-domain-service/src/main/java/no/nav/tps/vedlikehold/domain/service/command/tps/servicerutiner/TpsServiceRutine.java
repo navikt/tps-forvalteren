@@ -16,23 +16,16 @@ public class TpsServiceRutine {
     private String internalName;
 
     @JacksonXmlProperty
-    private List<String> aksjonsKodes;
-
-    @JacksonXmlProperty
-    private List<TpsServiceRutineAttribute> attributes;
+    private List<TpsServiceRutineParameter> parameters;
 
     /* Setters */
 
-    public void setAttributes(List<TpsServiceRutineAttribute> attributes) {
-        this.attributes = attributes;
+    public void setParameters(List<TpsServiceRutineParameter> parameters) {
+        this.parameters = parameters;
     }
 
     public void setInternalName(String internalName) {
         this.internalName = internalName;
-    }
-
-    public void setAksjonsKodes(List<String> aksjonsKodes) {
-        this.aksjonsKodes = aksjonsKodes;
     }
 
     public void setName(String name) {
@@ -49,11 +42,7 @@ public class TpsServiceRutine {
         return internalName;
     }
 
-    public List<String> getAksjonsKodes() {
-        return aksjonsKodes;
-    }
-
-    public List<TpsServiceRutineAttribute> getAttributes() {
-        return attributes;
+    public List<TpsServiceRutineParameter> getParameters() {
+        return parameters;
     }
 }
