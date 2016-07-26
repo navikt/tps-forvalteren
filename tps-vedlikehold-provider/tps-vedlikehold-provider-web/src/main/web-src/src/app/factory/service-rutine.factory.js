@@ -70,27 +70,31 @@ angular.module('tps-vedlikehold')
         };
 
         serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutineName) {
-            // want the fields from serviceRutineFieldsTemplate in a certain order
-            // could probably be done in a better way
             var serviceRutineAttributesNames = [];
 
-            if (serviceRutines[serviceRutineName].attributes) {
-                var filter = [];
+            angular.forEach(serviceRutines[serviceRutineName].attributes, function (value, key) {
+                this.push(value.name);
+            }, serviceRutineAttributesNames);
 
-                angular.forEach(serviceRutines[serviceRutineName].attributes, function (value, key) {
-                    this.push(value.name);
-                }, filter);
-
-                var serviceRutineFieldsTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsTemplate;
-
-                for (var i = 0; i < serviceRutineFieldsTemplate.length; i++) {
-                    if (filter.indexOf(serviceRutineFieldsTemplate[i]) > -1) {
-                        serviceRutineAttributesNames.push(serviceRutineFieldsTemplate[i]);
-                    }
-                }
-                return serviceRutineAttributesNames;
-            }
             return serviceRutineAttributesNames;
+        };
+
+        serviceRutineFactory.getServiceRutineAttributesNamesInOrder = function(serviceRutineName) {
+            // want the fields from serviceRutineFieldsTemplate in a certain order
+            // could probably be done in a better way
+            var serviceRutineAttributesNamesInOrder = [];
+            var restServiceRutineAttributesNames = serviceRutineFactory.getServiceRutineAttributesNames(serviceRutineName);
+            var serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
+
+            for (var i = 0; i < serviceRutineFieldsOrderTemplate.length; i++) {
+                var index = restServiceRutineAttributesNames.indexOf(serviceRutineFieldsOrderTemplate[i]);
+
+                if (index > -1) {
+                    serviceRutineAttributesNamesInOrder.push(serviceRutineFieldsOrderTemplate[i]);
+                    restServiceRutineAttributesNames.splice(index, 1);
+                }
+            }
+            return serviceRutineAttributesNamesInOrder.concat(restServiceRutineAttributesNames);
         };
 
         serviceRutineFactory.getServiceRutineRequiredAttributesNames = function(serviceRutineName) {

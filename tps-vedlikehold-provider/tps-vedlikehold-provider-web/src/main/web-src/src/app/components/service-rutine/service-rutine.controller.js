@@ -123,7 +123,7 @@ angular.module('tps-vedlikehold.service-rutine')
             }
             
             function getServiceRutineInputFieldName() {
-                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNames($scope.serviceRutineName);
+                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNamesInOrder($scope.serviceRutineName);
 
                 if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutineName)) {
                     $scope.fields.push('aksjonsKode');
