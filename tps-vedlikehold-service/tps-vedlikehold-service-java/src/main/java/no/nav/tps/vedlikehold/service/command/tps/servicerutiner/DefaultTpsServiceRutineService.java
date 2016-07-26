@@ -41,13 +41,16 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
 
     /**
-     * Send a request to TPS using asynchronous MQs
+     * Send a request to TPS using asynchronous message queues
      *
      * @param serviceRutine name of the service rutine to be executed
      * @param parameters parameters needed to run the service rutine (as defined in document GR.8.1.1-0071)
      * @param environment the environment in which to contact TPS
+     *
      * @return an object wrapping the raw XML response, and the XML represented by an object
-     * @throws Exception failed to send the message
+     *
+     * @throws JMSException failed to send the message
+     * @throws IOException failed to convert the response XML to an object
      */
 
     @Override
@@ -59,16 +62,15 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
         String requestMessage = serviceRutineMessageFactory.createMessage(messageFactoryStrategy);
 
-        /* Prepare the serialized and raw response */
-        String responseMessage = null;
-        Object responseData = null;
-
         try {
+            /* Send message to TPS and handle the received data */
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(environment);
 
-            responseMessage = messageQueueConsumer.sendMessage(requestMessage);
+            String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 
-            responseData = xmlMapper.readValue(responseMessage, Map.class);
+            Object responseData = xmlMapper.readValue(responseXml, Map.class);
+
+            return new ServiceRutineResponse(responseXml, responseData);
         } catch (IOException exception) {
             LOGGER.error("Failed to convert TPS response XML to an object with exception: {}", exception.toString());
 
@@ -78,13 +80,5 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
             throw exception;
         }
-
-        /* Populate a response object and return */
-        ServiceRutineResponse response = new ServiceRutineResponse();
-
-        response.setXml(responseMessage);
-        response.setData(responseData);
-
-        return response;
     }
 }
