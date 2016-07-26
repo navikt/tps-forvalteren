@@ -69,45 +69,45 @@ angular.module('tps-vedlikehold')
             return serviceRutines[serviceRutineName].internalName;
         };
 
-        serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutineName) {
-            var serviceRutineAttributesNames = [];
+        serviceRutineFactory.getServiceRutineParametersNames = function(serviceRutineName) {
+            var serviceRutineParametersNames = [];
 
             angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
                 this.push(value.name);
-            }, serviceRutineAttributesNames);
+            }, serviceRutineParametersNames);
 
-            return serviceRutineAttributesNames;
+            return serviceRutineParametersNames;
         };
 
-        serviceRutineFactory.getServiceRutineAttributesNamesInOrder = function(serviceRutineName) {
+        serviceRutineFactory.getServiceRutineParametersNamesInOrder = function(serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
             // could probably be done in a better way
-            var serviceRutineAttributesNamesInOrder = [];
-            var restServiceRutineAttributesNames = serviceRutineFactory.getServiceRutineAttributesNames(serviceRutineName);
+            var serviceRutineParametersNamesInOrder = [];
+            var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
             var serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
 
             angular.forEach(serviceRutineFieldsOrderTemplate, function (value, key) {
-                var index = restServiceRutineAttributesNames.indexOf(value);
+                var index = restServiceRutineParametersNames.indexOf(value);
 
                 if (index > -1) {
-                    serviceRutineAttributesNamesInOrder.push(value);
-                    restServiceRutineAttributesNames.splice(index, 1);
+                    serviceRutineParametersNamesInOrder.push(value);
+                    restServiceRutineParametersNames.splice(index, 1);
                 }
             });
 
-            return serviceRutineAttributesNamesInOrder.concat(restServiceRutineAttributesNames);
+            return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
 
-        serviceRutineFactory.getServiceRutineRequiredAttributesNames = function(serviceRutineName) {
-            var serviceRutineRequiredAttributesNames = [];
+        serviceRutineFactory.getServiceRutineRequiredParametersNames = function(serviceRutineName) {
+            var serviceRutineRequiredParametersNames = [];
 
             angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
                 if (value.use === "required") {
                     this.push(value.name);
                 }
-            }, serviceRutineRequiredAttributesNames);
+            }, serviceRutineRequiredParametersNames);
 
-            return serviceRutineRequiredAttributesNames;
+            return serviceRutineRequiredParametersNames;
         };
 
         serviceRutineFactory.getSelectValues = function (serviceRutineName) {
