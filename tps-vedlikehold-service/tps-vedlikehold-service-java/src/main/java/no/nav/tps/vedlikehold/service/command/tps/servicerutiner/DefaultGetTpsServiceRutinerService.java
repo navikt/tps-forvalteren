@@ -42,6 +42,8 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
 
             TpsServiceRutine[] serviceRutinesArray = xmlMapper.readValue(inputStream, TpsServiceRutine[].class);
 
+            inputStream.close();
+
             return Arrays.asList(serviceRutinesArray);
         } catch (JsonParseException | JsonMappingException exception) {
             LOGGER.error("Failed to map service rutines XML to a TpsServiceRutine object with exception: {}", exception.toString());
