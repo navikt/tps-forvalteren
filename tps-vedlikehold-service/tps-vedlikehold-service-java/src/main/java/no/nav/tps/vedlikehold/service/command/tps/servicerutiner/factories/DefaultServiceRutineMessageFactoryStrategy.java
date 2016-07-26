@@ -22,8 +22,8 @@ public class DefaultServiceRutineMessageFactoryStrategy implements ServiceRutine
         String aksjonskode = (String) this.parameters.get("aksjonsKode");
 
         if (!isEmpty(aksjonskode)) {
-            parameters.put("aksjonsKode", aksjonskode.substring(0,1));
-            parameters.put("aksjonsKode2", aksjonskode.substring(1));
+            this.parameters.put("aksjonsKode", aksjonskode.substring(0,1));
+            this.parameters.put("aksjonsKode2", aksjonskode.substring(1));
         }
     }
 
