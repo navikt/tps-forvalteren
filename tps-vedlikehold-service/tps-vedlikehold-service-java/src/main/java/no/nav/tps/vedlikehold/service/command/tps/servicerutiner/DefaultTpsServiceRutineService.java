@@ -29,15 +29,8 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
-    private XmlMapper xmlMapper;
-
-    private ServiceRutineMessageFactory serviceRutineMessageFactory;
-
-
-    public DefaultTpsServiceRutineService() {
-        this.xmlMapper = new XmlMapper();
-        this.serviceRutineMessageFactory = new DefaultServiceRutineMessageFactory();
-    }
+    private XmlMapper xmlMapper                                     = new XmlMapper();
+    private ServiceRutineMessageFactory serviceRutineMessageFactory = new DefaultServiceRutineMessageFactory();
 
 
     /**

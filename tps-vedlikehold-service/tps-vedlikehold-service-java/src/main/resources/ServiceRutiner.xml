@@ -16,5 +16,5 @@
         </aksjonsKodes>
     </serviceRutine>
 
-    <serviceRutine name="FS03-OTILGANG-TILSRTPS-O" internalName="S000 tilgang til TPS" />
+    <serviceRutine name="FS03-OTILGANG-TILSRTPS-O" internalName="S000 tilgangTilTps" />
 </serviceRutines>
