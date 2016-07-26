@@ -5,14 +5,16 @@ import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
 
 /**
+ * Provides information needed when creating a queue connection factory
+ *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class QueueManagerConnectionFactoryStrategy implements ConnectionFactoryStrategy {
+public class QueueManagerConnectionFactoryFactoryStrategy implements ConnectionFactoryFactoryStrategy {
 
     private QueueManager queueManager;
     private String environment;
 
-    public QueueManagerConnectionFactoryStrategy(QueueManager queueManager, String environment) {
+    public QueueManagerConnectionFactoryFactoryStrategy(QueueManager queueManager, String environment) {
         this.queueManager = queueManager;
         this.environment = environment;
     }

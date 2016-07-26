@@ -2,8 +2,8 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import com.google.common.cache.Cache;
 import com.ibm.mq.jms.MQConnectionFactory;
-import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
-import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ public class CachedConnectionFactoryFactoryTest {
     @Mock
     private Cache<String, ConnectionFactory> cacheMock;
 
-    private ConnectionFactoryStrategy strategy = new QueueManagerConnectionFactoryStrategy(
+    private ConnectionFactoryFactoryStrategy strategy = new QueueManagerConnectionFactoryFactoryStrategy(
             new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT),
             "environment"
     );

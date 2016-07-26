@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class QueueManagerConnectionFactoryStrategyTest {
+public class QueueManagerConnectionFactoryFactoryStrategyTest {
 
     private static final String QUEUE_MANAGER_NAME            = "queueManagerName";
     private static final String QUEUE_MANAGER_HOST_NAME       = "queueManagerHostName";
@@ -30,11 +30,11 @@ public class QueueManagerConnectionFactoryStrategyTest {
     private QueueManager queueManagerMock;
 
     @InjectMocks
-    private QueueManagerConnectionFactoryStrategy connectionFactoryStrategy;
+    private QueueManagerConnectionFactoryFactoryStrategy connectionFactoryStrategy;
 
     @Before
     public void setUp() {
-        connectionFactoryStrategy = new QueueManagerConnectionFactoryStrategy(queueManagerMock, ENVIRONMENT);
+        connectionFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManagerMock, ENVIRONMENT);
 
         when(queueManagerMock.getHostname()).thenReturn(QUEUE_MANAGER_HOST_NAME);
         when(queueManagerMock.getName()).thenReturn(QUEUE_MANAGER_NAME);

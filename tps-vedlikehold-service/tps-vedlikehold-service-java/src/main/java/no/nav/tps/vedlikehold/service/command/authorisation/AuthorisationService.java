@@ -73,11 +73,12 @@ public class AuthorisationService {
 
         readEnvironmentStrategy.setUser(user);
         readEnvironmentStrategy.setEnvironment(environment);
-        readEnvironmentStrategy.setReadQRoles( new HashSet<>(readRolesQ) );
-        readEnvironmentStrategy.setReadTRoles( new HashSet<>(readRolesT) );
-        readEnvironmentStrategy.setReadURoles( new HashSet<>(readRolesU) );
-        readEnvironmentStrategy.setReadPRoles( new HashSet<>(readRolesP) );
-        readEnvironmentStrategy.setReadORoles( new HashSet<>(readRolesO) );
+
+        readEnvironmentStrategy.addRolesForEnvironment(readRolesU, "u");
+        readEnvironmentStrategy.addRolesForEnvironment(readRolesT, "t");
+        readEnvironmentStrategy.addRolesForEnvironment(readRolesQ, "q");
+        readEnvironmentStrategy.addRolesForEnvironment(readRolesP, "p");
+        readEnvironmentStrategy.addRolesForEnvironment(readRolesO, "o");
 
 
         List<AuthorisationServiceStrategy> strategies = Arrays.asList(

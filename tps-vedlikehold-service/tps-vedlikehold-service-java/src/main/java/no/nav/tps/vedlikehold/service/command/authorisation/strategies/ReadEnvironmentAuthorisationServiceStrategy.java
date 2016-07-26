@@ -2,9 +2,14 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
@@ -12,38 +17,22 @@ import static org.springframework.util.ObjectUtils.isEmpty;
  */
 public class ReadEnvironmentAuthorisationServiceStrategy implements AuthorisationServiceStrategy {
 
-    private static final String ENVIRONMENT_U = "u";
-    private static final String ENVIRONMENT_T = "t";
-    private static final String ENVIRONMENT_Q = "q";
-    private static final String ENVIRONMENT_P = "p";
-    private static final String ENVIRONMENT_O = "o";
-
     private User user;
     private String environment;
 
-    private Set<String> readURoles;
-    private Set<String> readTRoles;
-    private Set<String> readQRoles;
-    private Set<String> readPRoles;
-    private Set<String> readORoles;
+    private Map<String, Set<String>> environmentRolesMap = new HashMap<>();
 
-    
+
+    /**
+     * Find the intersection between the user's roles, and the authorised roles in the current environment.
+     * If the intersection is nonempty, the user is authorised.
+     *
+     * @return <code>Boolean</code> indicating whether the user is authorised
+     */
     @Override
     public Boolean isAuthorised() {
-        Set<String> userRoles       = new HashSet<>(user.getRoles());           // retainAll() should not modify the users objects roles
-        Set<String> authorisedRoles = new HashSet<>();
-
-        if (ENVIRONMENT_U.equals(environment)) {
-            authorisedRoles = readURoles;
-        } else if (ENVIRONMENT_T.equals(environment)) {
-            authorisedRoles = readTRoles;
-        } else if (ENVIRONMENT_Q.equals(environment)) {
-            authorisedRoles = readQRoles;
-        } else if (ENVIRONMENT_P.equals(environment)) {
-            authorisedRoles = readPRoles;
-        } else if (ENVIRONMENT_O.equals(environment)) {
-            authorisedRoles = readORoles;
-        }
+        Set<String> userRoles       = new HashSet<>(user.getRoles());               // retainAll() should not modify the users objects roles
+        Set<String> authorisedRoles = authorisedRoles();
 
         /* Retain all roles present in both authorised roles, and the users roles */
         userRoles.retainAll(authorisedRoles);
@@ -51,7 +40,21 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
         return !userRoles.isEmpty();
     }
 
-    /* Setters */
+
+    public void addRoleForEnvironment(String role, String environment) {
+        addRolesForEnvironment(singletonList(role), environment);
+    }
+
+    public void addRolesForEnvironment(Collection<String> roles, String environment) {
+        if ( !environmentRolesMap.containsKey(environment) ) {
+            environmentRolesMap.put(environment, new HashSet<>());
+        }
+
+        Set<String> environmentRoles = environmentRolesMap.get(environment);
+
+        environmentRoles.addAll(roles);
+    }
+
 
     public void setUser(User user) {
         this.user = user;
@@ -66,23 +69,12 @@ public class ReadEnvironmentAuthorisationServiceStrategy implements Authorisatio
         this.environment = Character.toString( environment.charAt(0) ).toLowerCase();
     }
 
-    public void setReadURoles(Set<String> readURoles) {
-        this.readURoles = readURoles;
-    }
+    /** Get all roles authorised to read in the current environment */
+    private Set<String> authorisedRoles() {
+        if ( !environmentRolesMap.containsKey(environment) ) {
+            return emptySet();
+        }
 
-    public void setReadTRoles(Set<String> readTRoles) {
-        this.readTRoles = readTRoles;
-    }
-
-    public void setReadPRoles(Set<String> readPRoles) {
-        this.readPRoles = readPRoles;
-    }
-
-    public void setReadQRoles(Set<String> readQRoles) {
-        this.readQRoles = readQRoles;
-    }
-
-    public void setReadORoles(Set<String> readORoles) {
-        this.readORoles = readORoles;
+        return environmentRolesMap.get(environment);
     }
 }
