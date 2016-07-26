@@ -7,29 +7,33 @@ require('angular-material-icons');
 require('angular-highlightjs');
 require('angular-moment');
 
-require('./components/login/login');
-require('./components/service-rutine/service-rutine');
+require('./components/login/login.module');
+require('./components/service-rutine/service-rutine.module');
 
-require('./services/serviceModule');
-require('./services/locationService');
-require('./services/sessionService');
-require('./services/utilsService');
-require('./services/authenticationService');
-require('./services/serverServicerutineService');
-require('./services/serverEnvironmentService');
+require('./components/login/login.controller');
+require('./components/service-rutine/service-rutine.controller');
+
+require('./services/service.module');
+require('./services/location.service');
+require('./services/session.service');
+require('./services/utils.service');
+require('./services/authentication.service');
+require('./services/server-service-rutine.service');
+require('./services/server-environment.service');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.servicerutine']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.service-rutine']);
 
-require('./factory/servicerutineFactory');
+require('./factory/service-rutine.factory');
 
-require('./shared/header/header');
-require('./shared/side-navigator/side-navigator');
+require('./shared/header/header.controller');
+require('./shared/side-navigator/side-navigator.controller');
 
-require('./directives/inputField');
-require('./directives/outputField');
+require('./directives/input-field.directive');
+require('./directives/output-field.directive');
 
-require('./settings/formConfig');
+require('./settings/response-form.config');
+require('./settings/service-rutine.config');
 
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
@@ -44,32 +48,32 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         views: {
             'content@' : {
                 templateUrl: "app/components/login/login.html",
-                controller: 'loginController'
+                controller: 'LoginCtrl'
             }
         }
     })
-    .state('servicerutine', {
+    .state('serviceRutine', {
         url: "/",
         params: {
-            serviceRutinenavn: null
+            serviceRutineName: null
         },
         resolve: {
-            servicerutinerPromise: "serverServicerutineService",
+            serviceRutinesPromise: "serverServiceRutineService",
             environmentsPromise: "serverEnvironmentService"
         },
         views: {
             'content@': {
                 templateUrl: "app/components/service-rutine/service-rutine.html",
-                controller: 'servicerutineController'
+                controller: 'ServiceRutineCtrl'
 
             },
             'header@': {
                 templateUrl: "app/shared/header/header.html",
-                controller: 'headerController'
+                controller: 'HeaderCtrl'
             },
             'side-navigator@': {
                 templateUrl: "app/shared/side-navigator/side-navigator.html",
-                controller: 'navigatorController'
+                controller: 'SideNavigatorCtrl'
             }
         }
     });

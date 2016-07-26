@@ -2,11 +2,11 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold')
-    .controller('navigatorController', ['$scope', '$mdDialog', 'servicerutineFactory', 'servicerutinerPromise', 
-        function($scope, $mdDialog, servicerutineFactory, servicerutinerPromise) {
+    .controller('SideNavigatorCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'serviceRutinesPromise',
+        function($scope, $mdDialog, serviceRutineFactory, serviceRutinesPromise) {
 
-        $scope.getServicerutineInternalName = function(serviceRutinenavn) {
-            return servicerutineFactory.getServicerutineInternalName(serviceRutinenavn);
+        $scope.getServiceRutineInternalName = function(serviceRutineName) {
+            return serviceRutineFactory.getServiceRutineInternalName(serviceRutineName);
         };
             
         function showAlertApiError() {
@@ -20,8 +20,8 @@ angular.module('tps-vedlikehold')
         }
         
         function init() {
-            if (servicerutinerPromise) {
-                $scope.serviceRutinenavns = servicerutineFactory.getServiceRutinenavns();
+            if (serviceRutinesPromise) {
+                $scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
             } else {
                 showAlertApiError();
             }

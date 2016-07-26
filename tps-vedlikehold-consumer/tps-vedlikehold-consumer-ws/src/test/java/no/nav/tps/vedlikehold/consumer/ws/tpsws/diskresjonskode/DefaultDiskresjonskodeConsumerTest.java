@@ -4,7 +4,6 @@ import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.exceptions.FNrEmptyException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,9 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.Arrays;
 import java.util.List;
 
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.INVALID_FNR_TPSWS_ERROR;
+import static no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DefaultDiskresjonskodeConsumer.NO_MATCHES_FOUND_TPSWS_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -31,19 +33,21 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDiskresjonskodeConsumerTest {
 
-    public static final String DISKRESJONSKODE_NOT_FOUND_ERROR = "Ingen forekomster funnet";
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
+    private static final String SOAP_FAULT_ERROR                   = "Soap error";
 
     //Test users
-    private static final String TEST_FNR = "11223344556";
+    private static final String TEST_FNR            = "11223344556";
     private static final List<String> TEST_FNR_LIST = Arrays.asList("11223344556", "99887766554");
-    private static final List<String> EMPTY_TEST_FNR_LIST = Arrays.asList();
-
-    @InjectMocks
-    private DefaultDiskresjonskodeConsumer diskresjonskodeConsumer;
 
     @Mock
     private DiskresjonskodePortType diskresjonskodePortType;
+
+    @Mock
+    private SOAPFaultException soapFaultException;
+
+    @InjectMocks
+    private DefaultDiskresjonskodeConsumer diskresjonskodeConsumer;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -58,22 +62,24 @@ public class DefaultDiskresjonskodeConsumerTest {
     }
 
     @Test
-    public void pingReturnsTrueWhenDiskresjonskodeThrowsExceptionWithIngenForekomsterFunnetMessage() throws Exception {
-        RuntimeException thrownException = new RuntimeException("Ingen forekomster funnet");
-        when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenThrow(thrownException);
-
-        boolean result = diskresjonskodeConsumer.ping();
-
-        assertThat(result, is(equalTo(true)));
-    }
-
-    @Test
-    public void pingThrowsExceptionWithoutIngenForekomsterFunnetMessage() throws Exception {
+    public void pingThrowsExceptionWhenGetDiskresjonskodeThrowsException() throws Exception {
         RuntimeException thrownException = new RuntimeException(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
+
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class))).thenThrow(thrownException);
 
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
+
+        diskresjonskodeConsumer.ping();
+    }
+
+    @Test
+    public void pingThrowsExceptionWhenIsEgenAnsattThrowsUncaughtSOAPFaultException() throws Exception {
+        when(soapFaultException.getMessage()).thenReturn(SOAP_FAULT_ERROR);
+        when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class)))
+                .thenThrow(soapFaultException);
+
+        expectedException.expect(SOAPFaultException.class);
 
         diskresjonskodeConsumer.ping();
     }
@@ -99,30 +105,25 @@ public class DefaultDiskresjonskodeConsumerTest {
     }
 
     @Test
-    public void getDiskresjonskodeThrowsFNrEmptyExceptionCalledWithEmptyString() throws Exception {
-        expectedException.expect(FNrEmptyException.class);
+    public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsInvalidFnrError() throws Exception {
+        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_TPSWS_ERROR);
+        when(diskresjonskodePortType.hentDiskresjonskode(
+                any(HentDiskresjonskodeRequest.class)))
+                .thenThrow(soapFaultException);
 
-        diskresjonskodeConsumer.getDiskresjonskode("");
+        String result = diskresjonskodeConsumer.getDiskresjonskode("0").getDiskresjonskode();
+
+        assertThat(result, is(equalTo("")));
     }
 
     @Test
-    public void getDiskresjonskodeThrowsFNrEmptyExceptionCalledWithNull() throws Exception {
-        expectedException.expect(FNrEmptyException.class);
+    public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsNoMatchFoundError() throws Exception {
+        when(soapFaultException.getMessage()).thenReturn(NO_MATCHES_FOUND_TPSWS_ERROR);
+        when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class)))
+                .thenThrow(soapFaultException);
 
-        diskresjonskodeConsumer.getDiskresjonskode(null);
-    }
+        String result = diskresjonskodeConsumer.getDiskresjonskode("11111111111").getDiskresjonskode();
 
-    @Test
-    public void getDiskresjonskodeBolkThrowsFNrEmptyExceptionCalledWithEmptyString() {
-        expectedException.expect(FNrEmptyException.class);
-
-        diskresjonskodeConsumer.getDiskresjonskodeBolk(EMPTY_TEST_FNR_LIST);
-    }
-
-    @Test
-    public void getDiskresjonskodeBolkThrowsFNrEmptyExceptionCalledWithNull() throws java.lang.Exception {
-        expectedException.expect(FNrEmptyException.class);
-
-        diskresjonskodeConsumer.getDiskresjonskodeBolk(null);
+        assertThat(result, is(equalTo("")));
     }
 }
