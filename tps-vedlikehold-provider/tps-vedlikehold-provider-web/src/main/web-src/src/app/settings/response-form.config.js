@@ -240,12 +240,12 @@ angular.module('tps-vedlikehold')
                         flex: 20
                     },
                     {
-                        fieldData: "Kode Fodeland",
+                        fieldData: "kodeFodeland",
                         label: "Kode FødeLand",
                         flex: 10
                     },
                     {
-                        fieldData: "fodeland",
+                        fieldData: "fodeLand",
                         label: "Fødeland",
                         flex: 10
                     }

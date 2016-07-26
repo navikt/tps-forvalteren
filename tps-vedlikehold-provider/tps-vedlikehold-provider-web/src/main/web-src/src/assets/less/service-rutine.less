@@ -3,8 +3,11 @@
   .tps-vk-top {
     margin-bottom: 10px;
     background-color: white;
-    padding: 25px 35px 8px;
     position: relative;
+
+    .tps-vk-submit-container {
+      
+    }
 
     .tps-vk-input-container {
       margin: 8px 0;
@@ -57,6 +60,7 @@
       .tps-vk-refresh-btn {
         width: 40px;
         height: 40px;
+        z-index: auto;
 
         svg {
           width: 30px;
@@ -98,8 +102,8 @@
 
         .tps-vk-output-data,
         .tps-vk-output-label {
-          border-color: rgba(0,0,0,0.12);
-          color: rgba(0,0,0,0.54);
+          border-color: rgba(0, 0, 0, 0.12);
+          color: rgba(0, 0, 0, 0.54);
 
           &.filled,
           &.empty {
@@ -109,34 +113,34 @@
       }
     }
   }
-}
 
-.tps-vk-status-container {
-  padding: 0 33px;
-  text-align: right;
-  border-top: 1px solid rgba(0,0,0,.12);
-  min-height: 30px;
+  .tps-vk-status-container {
+    padding: 0 33px;
+    text-align: right;
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    min-height: 30px;
 
-  .tps-vk-status {
-    font-size: 12px;
-    color: rgba(0,0,0,.54);
+    .tps-vk-status {
+      font-size: 12px;
+      color: rgba(0, 0, 0, .54);
 
-    .tps-vk-status-message,
-    .tps-vk-status-icon {
-      height: 100%;
-      display: inline-block;
-      vertical-align: middle;
-    }
-
-    .tps-vk-status-icon {
-      &.error {
-        svg {
-          fill: red;
-        }
+      .tps-vk-status-message,
+      .tps-vk-status-icon {
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
       }
-      &.success {
-        svg {
-          fill: green;
+
+      .tps-vk-status-icon {
+        &.error {
+          svg {
+            fill: red;
+          }
+        }
+        &.success {
+          svg {
+            fill: green;
+          }
         }
       }
     }
