@@ -16,14 +16,17 @@ public class DefaultServiceRutineMessageFactoryStrategy implements ServiceRutine
         this.parameters = new HashMap<>(parameters);
 
         this.parameters.put("serviceRutinenavn", serviceRutineName);
-
         this.parameters.remove("environment");
 
-        String aksjonskode = (String) this.parameters.get("aksjonsKode");
+        splitAksjonskodeParameterIfNecessary();
+    }
+
+    private void splitAksjonskodeParameterIfNecessary() {
+        String aksjonskode = (String) parameters.get("aksjonsKode");
 
         if (!isEmpty(aksjonskode)) {
-            this.parameters.put("aksjonsKode", aksjonskode.substring(0,1));
-            this.parameters.put("aksjonsKode2", aksjonskode.substring(1));
+            parameters.put("aksjonsKode", aksjonskode.substring(0,1));
+            parameters.put("aksjonsKode2", aksjonskode.substring(1));
         }
     }
 
