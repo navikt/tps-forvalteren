@@ -5,7 +5,8 @@ angular.module('tps-vedlikehold')
         'FS03-FDNUMMER-PERSDATA-O': {
             'serviceRutineFieldsOrderTemplate': [
                 'fnr',
-                'aksjonsDato'
+                'aksjonsDato',
+                'aksjonsKode'
             ],
             'serviceRutineReturnedDataLabel': 'personDataS004',
             'nonUniquePropertiesContainer': [
