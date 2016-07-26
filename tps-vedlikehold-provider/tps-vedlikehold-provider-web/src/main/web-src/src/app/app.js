@@ -6,6 +6,8 @@ require('angular-messages');
 require('angular-material-icons');
 require('angular-highlightjs');
 require('angular-moment');
+require('pikaday');
+require('pikaday-angular');
 
 require('./components/login/login.module');
 require('./components/service-rutine/service-rutine.module');
@@ -22,7 +24,7 @@ require('./services/server-service-rutine.service');
 require('./services/server-environment.service');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.service-rutine']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.service-rutine', 'pikaday']);
 
 require('./factory/service-rutine.factory');
 
@@ -34,6 +36,29 @@ require('./directives/output-field.directive');
 
 require('./settings/response-form.config');
 require('./settings/service-rutine.config');
+
+app.config(['pikadayConfigProvider', 'moment', function(pikaday, moment) {
+
+    moment.locale("nb");
+    var locales = {
+        nb: {
+            previousMonth : "Forrige maned",
+            nextMonth : "Neste maned",
+            months : ["Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"],
+            weekdays: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"],
+            weekdaysShort: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"]
+        }
+    };
+
+    pikaday.setConfig({
+        format: "YYYY-MM-DD",
+        firstDay: 1,
+        defaultDate: new Date(),
+        yearRange: [1900, 2100],
+        i18n: locales.nb,
+        locales: locales
+    });
+}]);
 
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
@@ -95,6 +120,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         });
         
 }]);
+
 
 app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService',
     function($rootScope, $state, authenticationService, sessionService, locationService){
