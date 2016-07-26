@@ -14,39 +14,6 @@
       }
     }
 
-    .tps-vk-date-picker-container {
-      position: relative;
-      min-height: 60px;
-      padding-top: 5px;
-
-      label {
-        position: absolute;
-        top: -5px;
-        left: 29px;
-        color: rgba(0, 0, 0, 0.541176);
-        font-size: 12px;
-      }
-
-      md-datepicker {
-
-        .md-datepicker-button {
-          padding-left: 0;
-          margin-left: 0;
-          .md-datepicker-calendar-icon {
-            margin-left: -6px;
-          }
-        }
-
-        .md-datepicker-input-container {
-          margin-left: 0;
-          position: absolute;
-          top: 16px;
-          right: 6px;
-          left: 35px;
-        }
-      }
-    }
-
     .tps-vk-form-btns {
       text-align: center;
 
@@ -140,6 +107,53 @@
           }
         }
       }
+    }
+  }
+}
+
+.pika-lendar{
+  width: auto;
+
+  .pika-label{
+    font-weight: normal;
+  }
+}
+.pika-table{
+
+  th{
+    font-weight: 100;
+    text-transform: capitalize;
+    color: #737373;
+  }
+
+  td{
+    padding: 0px 6px;
+  }
+
+  .pika-button{
+    background: none;
+    color: #212121;
+    text-align: center;
+    box-shadow:none;
+    width: 34px;
+    height: 34px;
+    padding: 0px;
+    text-indent: 0px;
+
+    &:focus{
+      background: @tps-vk-background-darkgray;
+      color: white;
+      border-radius: 50%;
+    }
+  }
+
+  .is-selected{
+    .pika-button{
+      background: @tps-vk-background-darkgray;
+      border: none;
+      color: white;
+      font-weight: 100;
+      border-radius: 50%;
     }
   }
 }

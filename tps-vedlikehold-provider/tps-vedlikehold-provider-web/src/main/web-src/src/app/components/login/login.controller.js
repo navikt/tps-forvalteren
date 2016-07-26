@@ -10,15 +10,21 @@ angular.module('tps-vedlikehold.login')
             $scope.authenticationError = false;
             $scope.serverError = false;
             $scope.pendingRequest = false;
+            $scope.forbiddenError = false;
+
 
             var callback = function(authResponse){
                 switch(authResponse.status) {
                     case 200:
                         $scope.authenticationError = false;
+                        $scope.forbiddenError = false;
                         locationService.redirectToLoginReturnState();
                         break;
                     case 401:
                         $scope.authenticationError = true;
+                        break;
+                    case 403:
+                        $scope.forbiddenError = true;
                         break;
                     default:
                         $scope.serverError = true;

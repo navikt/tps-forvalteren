@@ -2,8 +2,8 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service-rutine')
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', 'utilsService', 'serviceRutineFactory', 'responseFormConfig', 'environmentsPromise',
-        function($scope, $stateParams, $mdDialog, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'responseFormConfig', 'environmentsPromise',
+        function($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
@@ -57,6 +57,13 @@ angular.module('tps-vedlikehold.service-rutine')
                 return (requiredParameters.indexOf(type) > -1);
             };
 
+            $scope.repositionDatePicker = function(pika){
+                var parentScrollOffset = Math.abs(parseInt($document[0].body.style.top));
+                parentScrollOffset = parentScrollOffset ? parentScrollOffset : 0;
+                var modalInputOffset = pika.el.offsetTop;
+                pika.el.style.top = parentScrollOffset+modalInputOffset+'px';
+            };
+
             function showAlertTPSError(error) {
                 var errorMessages = {
                     401: {
@@ -97,7 +104,9 @@ angular.module('tps-vedlikehold.service-rutine')
                     if (formData.hasOwnProperty(key)) {
                         switch(key) {
                             case 'aksjonsDato':
-                                params.aksjonsDato = checkDate(formData.aksjonsDato);
+                                if (formData.aksjonsDato) {
+                                    params.aksjonsDato = formData.aksjonsDato;
+                                }
                                 break;
                             default:
                                 params[key] = formData[key];
@@ -107,18 +116,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 return params;
             }
 
-            function checkDate(aksjonsDato) {
-                var dato = aksjonsDato;
-                var inFuture = utilsService.isInFuture(aksjonsDato);
-
-                if (!aksjonsDato || inFuture) {
-                    var today = new Date();
-                    $scope.formData.aksjonsDato = today;
-                    dato = !aksjonsDato ? null : today;
-                }
-                return utilsService.formatDate(dato);
-            }
-            
             function getServiceRutineInputFieldName() {
                 $scope.fields = serviceRutineFactory.getServiceRutineParametersNamesInOrder($scope.serviceRutineName);
             }
@@ -151,19 +148,19 @@ angular.module('tps-vedlikehold.service-rutine')
             
             function initRequestForm() {
                 for (var i = 0; i < $scope.fields.length; i++) {
-                    var parameters = $scope.fields[i];
-                    switch(parameters) {
+                    var parameter = $scope.fields[i];
+                    switch(parameter) {
                         case 'fnr': 
                             $scope.formData.fnr = '';
                             break;
                         case 'aksjonsDato':
-                            $scope.formData.aksjonsDato = new Date();
+                            $scope.formData.aksjonsDato = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
                             $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
                             break;
                         default:
-                            $scope.formData[parameters] = ''; //
+                            $scope.formData[parameter] = '';
                     }
                 }
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;

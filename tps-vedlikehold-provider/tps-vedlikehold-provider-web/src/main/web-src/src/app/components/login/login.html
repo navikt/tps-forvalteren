@@ -31,10 +31,13 @@
                 </md-input-container>
                 <div class="tps-vk-form-error-container">
                     <div class="tps-vk-error" ng-show="authenticationError">
-                        Feil brukernavn eller passord
+                        Autentisering mislyktes! Vennligst sjekk din påloggingsinformasjon og prøv igjen.
                     </div>
                     <div class="tps-vk-error" ng-show="serverError">
-                        En feil oppstod
+                        Det oppstod en feil på serveren.
+                    </div>
+                    <div class="tps-vk-error" ng-show="forbiddenError">
+                        Du har ikke tilgang til denne applikasjonen.
                     </div>
                 </div>
                 <div>
