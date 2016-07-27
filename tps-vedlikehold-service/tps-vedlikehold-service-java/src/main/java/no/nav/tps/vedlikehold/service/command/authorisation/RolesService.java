@@ -10,6 +10,9 @@ import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.
 import static org.springframework.util.StringUtils.isEmpty;
 
 /**
+ * Reads roles from property files and exposes them.
+ * Reduces the necessary overhead when dealing with roles in the service layer
+ *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
@@ -66,13 +69,10 @@ public class RolesService {
     }
 
     private Set<String> getReadRolesForEnvironment(String environment) {
-        if (isEmpty(environment)) {
-            return emptySet();
-        }
 
-        String environmentPrefix = environment.substring(0,1);
+        String prefix = getEnvironmentPrefix(environment);
 
-        switch (environmentPrefix) {
+        switch (prefix) {
             case "u":
                 return readRolesU;
             case "t":
@@ -89,13 +89,10 @@ public class RolesService {
     }
 
     private Set<String> getWriteRolesForEnvironment(String environment) {
-        if (isEmpty(environment)) {
-            return emptySet();
-        }
 
-        String environmentPrefix = environment.substring(0,1);
+        String prefix = getEnvironmentPrefix(environment);
 
-        switch (environmentPrefix) {
+        switch (prefix) {
             case "u":
                 return writeRolesU;
             case "t":
@@ -109,5 +106,13 @@ public class RolesService {
             default:
                 return emptySet();
         }
+    }
+
+    private String getEnvironmentPrefix(String environment) {
+        if (isEmpty(environment)) {
+            return "";
+        }
+
+        return environment.substring(0, 1);
     }
 }
