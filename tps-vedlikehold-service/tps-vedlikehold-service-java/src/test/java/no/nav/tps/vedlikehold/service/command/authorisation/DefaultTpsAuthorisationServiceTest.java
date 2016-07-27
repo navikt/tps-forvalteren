@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultAuthorisationServiceTest {
+public class DefaultTpsAuthorisationServiceTest {
 
     private static final String FNR         = "12345678910";
     private static final String ENVIRONMENT = "t1";
@@ -57,7 +57,7 @@ public class DefaultAuthorisationServiceTest {
     HentDiskresjonskodeResponse hentDiskresjonskodeResponseMock;
 
     @InjectMocks
-    private DefaultAuthorisationService defaultAuthorisationService;
+    private DefaultTpsAuthorisationService defaultTpsAuthorisationService;
 
 
     @Before
@@ -78,7 +78,7 @@ public class DefaultAuthorisationServiceTest {
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = defaultAuthorisationService.isAuthorised(strategies);
+        Boolean result = defaultTpsAuthorisationService.isAuthorised(strategies);
 
         assertThat(result, is(false));
     }
@@ -90,7 +90,7 @@ public class DefaultAuthorisationServiceTest {
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = defaultAuthorisationService.isAuthorised(strategies);
+        Boolean result = defaultTpsAuthorisationService.isAuthorised(strategies);
 
         assertThat(result, is(true));
     }
@@ -102,7 +102,7 @@ public class DefaultAuthorisationServiceTest {
         when(userMock.getRoles()).thenReturn(singleton("readTRole"));
 
 
-        defaultAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
+        defaultTpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
 
         verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
         verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));

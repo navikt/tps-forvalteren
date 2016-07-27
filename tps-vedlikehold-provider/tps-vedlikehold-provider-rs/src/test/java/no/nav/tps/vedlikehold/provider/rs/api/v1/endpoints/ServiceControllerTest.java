@@ -5,7 +5,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServi
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.DefaultAuthorisationService;
+import no.nav.tps.vedlikehold.service.command.authorisation.DefaultTpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.DefaultTpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import org.junit.Before;
@@ -26,7 +26,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyMap;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.inOrder;
@@ -46,7 +45,8 @@ public class ServiceControllerTest {
 
     private static final String FNR                 = "12345678910";
     private static final String SERVICE_RUTINE_NAME = "serviceRutineName";
-    
+    private static final String REQUEST_MESSAGE     = "requestMessage";
+
     private static final String ENVIRONMENT_U   = "u1";
     private static final String ENVIRONMENT_T   = "t1";
     private static final String ENVIRONMENT_Q   = "q1";
@@ -62,7 +62,7 @@ public class ServiceControllerTest {
     DefaultTpsServiceRutineService defaultGetTpsServiceRutineServiceMock;
 
     @Mock
-    DefaultAuthorisationService defaultAuthorisationServiceMock;
+    DefaultTpsAuthorisationService defaultTpsAuthorisationServiceMock;
 
     @Mock
     Map<String, Object> parametersMock;
@@ -78,36 +78,36 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceAuthorisesTheUserBeforeContactingTps() throws Exception {
-        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(true);
 
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
 
-        InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, defaultAuthorisationServiceMock);
+        InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, defaultTpsAuthorisationServiceMock);
 
-        inOrder.verify(defaultAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
-        inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), eq(parametersMock), anyString());
+        inOrder.verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
+        inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), anyString());
     }
 
     @Test(expected = HttpUnauthorisedException.class)
     public void getServiceDeniesAccessIfUserIsUnauthorised() throws Exception {
-        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(false);
 
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
 
-        verify(defaultAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
-        verify(defaultGetTpsServiceRutineServiceMock, never()).execute(anyString(), eq(parametersMock), anyString());
+        verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
+        verify(defaultGetTpsServiceRutineServiceMock, never()).execute(eq(REQUEST_MESSAGE), anyString());
     }
 
     @Test
     public void environmentIsSentToTheService() throws Exception {
-        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(true);
 
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
-        verify(defaultAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq(ENVIRONMENT_U));
-        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq(ENVIRONMENT_U));
+        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
+        verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq(ENVIRONMENT_U));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), eq(ENVIRONMENT_U));
     }
 
     @Test
@@ -119,12 +119,12 @@ public class ServiceControllerTest {
 
     @Test(expected = HttpInternalServerErrorException.class)
     public void internalServerErrorIsThrownIfAnExceptionIsEncountered() throws Exception {
-        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(true);
-        when(defaultGetTpsServiceRutineServiceMock.execute(eq(SERVICE_RUTINE_NAME), anyMap(), eq(ENVIRONMENT_U)))
+        when(defaultGetTpsServiceRutineServiceMock.execute(any(), eq(ENVIRONMENT_U)))
                 .thenThrow(JMSException.class);
 
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
     }
 
     @Test

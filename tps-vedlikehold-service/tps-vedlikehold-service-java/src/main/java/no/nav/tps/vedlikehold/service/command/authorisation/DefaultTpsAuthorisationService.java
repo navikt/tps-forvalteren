@@ -21,7 +21,7 @@ import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.
  */
 
 @Service
-public class DefaultAuthorisationService implements AuthorisationService {
+public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
 
     @Autowired
     private RolesService rolesService;
@@ -40,6 +40,7 @@ public class DefaultAuthorisationService implements AuthorisationService {
      * @param environment environment in which to contact TPS
      * @return <code>Boolean</code> indicating whether the user is authorised
      */
+    @Override
     public Boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment) {
 
         /* Diskresjonskode */

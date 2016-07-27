@@ -10,7 +10,6 @@ import java.util.Map;
 @FunctionalInterface
 public interface TpsServiceRutineService {
      ServiceRutineResponse execute(
-            String serviceRutine,
-            Map<String, Object> parameters,
+            String requestMessage,
             String environment) throws Exception;
 }

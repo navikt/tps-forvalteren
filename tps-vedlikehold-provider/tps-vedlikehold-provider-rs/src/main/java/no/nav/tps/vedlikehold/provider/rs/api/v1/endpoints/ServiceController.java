@@ -10,9 +10,13 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedExce
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
 import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.DefaultAuthorisationService;
+import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactory;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactory;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactoryStrategy;
 import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
@@ -47,11 +51,12 @@ public class ServiceController {
     private TpsServiceRutineService tpsServiceRutineService;
 
     @Autowired
-    private DefaultAuthorisationService defaultAuthorisationService;
+    private TpsAuthorisationService tpsAuthorisationService;
 
     @Autowired
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
+    private ServiceRutineMessageFactory serviceRutineMessageFactory = new DefaultServiceRutineMessageFactory();
 
     /**
      * Execute any simple TPS service rutine.
@@ -69,24 +74,29 @@ public class ServiceController {
      * @throws HttpInternalServerErrorException an exception was thrown during execution
      */
 
-    @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/service/{serviceRutinenavn}",
+            method = RequestMethod.GET
+    )
     public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
                                             @RequestParam String environment,
+                                            @ApiIgnore @RequestParam(required = false) String fnr,
                                             @RequestParam Map<String, Object> parameters,
                                             @PathVariable("serviceRutinenavn") String serviceRutineName) throws HttpException {
 
         /* Authorise user based on requested data, and the environment */
-        String fnr = (String) parameters.get("fnr");
-
-        Boolean isAuthorised = isAuthorised(fnr, environment, session);
-
-        if ( !isAuthorised ) {
+        if ( !isAuthorised(fnr, environment, session) ) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 
+        /* Build the request XML */
+        ServiceRutineMessageFactoryStrategy messageFactoryStrategy = new DefaultServiceRutineMessageFactoryStrategy(serviceRutineName, parameters);
+
+        String requestMessage = serviceRutineMessageFactory.createMessage(messageFactoryStrategy);
+
         /* Send request to TPS */
         try {
-            ServiceRutineResponse response = tpsServiceRutineService.execute(serviceRutineName, parameters, environment);
+            ServiceRutineResponse response = tpsServiceRutineService.execute(requestMessage, environment);
 
             Sporingslogger.log(environment, serviceRutineName, fnr);
 
@@ -102,20 +112,6 @@ public class ServiceController {
     }
 
 
-    private Boolean isAuthorised(String fnr, String environment, HttpSession session) {
-        if (fnr == null) {
-            return true;
-        }
-
-        UserFactory userFactory      = new DefaultUserFactory();
-        UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
-
-        User user = userFactory.createUser(strategy);
-
-        return defaultAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
-    }
-
-
     /**
      * Get an JSONObject containing all implemented ServiceRutiner
      * and their allowed input attributes
@@ -126,5 +122,19 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.GET)
     public Collection<TpsServiceRutine> getTpsServiceRutiner() {
         return getTpsServiceRutinerService.exectue();
+    }
+
+
+    private Boolean isAuthorised(String fnr, String environment, HttpSession session) {
+        if (fnr == null) {
+            return true;
+        }
+
+        UserFactory userFactory      = new DefaultUserFactory();
+        UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
+
+        User user = userFactory.createUser(strategy);
+
+        return tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
     }
 }

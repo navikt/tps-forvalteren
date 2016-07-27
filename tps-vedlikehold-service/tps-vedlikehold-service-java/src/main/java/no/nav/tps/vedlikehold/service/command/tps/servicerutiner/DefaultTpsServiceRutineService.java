@@ -29,15 +29,13 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
-    private XmlMapper xmlMapper                                     = new XmlMapper();
-    private ServiceRutineMessageFactory serviceRutineMessageFactory = new DefaultServiceRutineMessageFactory();
+    private XmlMapper xmlMapper = new XmlMapper();
 
 
     /**
      * Send a request to TPS using asynchronous message queues
      *
-     * @param serviceRutine name of the service rutine to be executed
-     * @param parameters parameters needed to run the service rutine (as defined in document GR.8.1.1-0071)
+     * @param requestMessage TPS request message
      * @param environment the environment in which to contact TPS
      *
      * @return an object wrapping the raw XML response, and the XML represented by an object
@@ -47,13 +45,8 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
      */
 
     @Override
-    public ServiceRutineResponse execute(String serviceRutine,
-                                         Map<String, Object> parameters,
+    public ServiceRutineResponse execute(String requestMessage,
                                          String environment) throws IOException, JMSException {
-
-        ServiceRutineMessageFactoryStrategy messageFactoryStrategy = new DefaultServiceRutineMessageFactoryStrategy(serviceRutine, parameters);
-
-        String requestMessage = serviceRutineMessageFactory.createMessage(messageFactoryStrategy);
 
         try {
             /* Send message to TPS and handle the received data */
@@ -61,7 +54,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 
-            Object responseData = xmlMapper.readValue(responseXml, Map.class);
+            Object responseData = xmlMapper.readValue(responseXml, Map.class);          //TODO Map to custom object
 
             return new ServiceRutineResponse(responseXml, responseData);
         } catch (IOException exception) {
