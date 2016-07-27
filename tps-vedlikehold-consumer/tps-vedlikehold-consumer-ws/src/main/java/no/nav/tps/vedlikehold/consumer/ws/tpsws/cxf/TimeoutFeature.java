@@ -23,7 +23,7 @@ public class TimeoutFeature extends AbstractFeature {
     public TimeoutFeature(long receiveTimeout, long connectionTimeout) {
         super();
         
-        this.receiveTimeout = receiveTimeout;
+        this.receiveTimeout    = receiveTimeout;
         this.connectionTimeout = connectionTimeout;
     }
 

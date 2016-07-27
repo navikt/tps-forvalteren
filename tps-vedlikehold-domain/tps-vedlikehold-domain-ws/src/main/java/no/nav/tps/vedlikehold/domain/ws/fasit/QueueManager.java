@@ -10,9 +10,9 @@ public class QueueManager {
     private String port;
 
     public QueueManager(String name, String hostname, String port) {
-        this.name = name;
+        this.name     = name;
         this.hostname = hostname;
-        this.port = port;
+        this.port     = port;
     }
 
     public String getName() {
