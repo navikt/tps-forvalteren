@@ -48,7 +48,7 @@ angular.module('tps-vedlikehold.service')
                     for (var x in flatObject) {
                         if (!flatObject.hasOwnProperty(x)) continue;
 
-                        if (nonUniques.indexOf(i) > -1) {
+                        if (nonUniques && nonUniques.indexOf(i) > -1) {
                             finalFlatOb[i + '_' + x] = flatObject[x];
                         } else {
                             finalFlatOb[x] = flatObject[x];
