@@ -14,39 +14,6 @@
       }
     }
 
-    .tps-vk-date-picker-container {
-      position: relative;
-      min-height: 60px;
-      padding-top: 5px;
-
-      label {
-        position: absolute;
-        top: -5px;
-        left: 29px;
-        color: rgba(0, 0, 0, 0.541176);
-        font-size: 12px;
-      }
-
-      md-datepicker {
-
-        .md-datepicker-button {
-          padding-left: 0;
-          margin-left: 0;
-          .md-datepicker-calendar-icon {
-            margin-left: -6px;
-          }
-        }
-
-        .md-datepicker-input-container {
-          margin-left: 0;
-          position: absolute;
-          top: 16px;
-          right: 6px;
-          left: 35px;
-        }
-      }
-    }
-
     .tps-vk-form-btns {
       text-align: center;
 
@@ -57,6 +24,7 @@
       .tps-vk-refresh-btn {
         width: 40px;
         height: 40px;
+        z-index: auto;
 
         svg {
           width: 30px;
@@ -98,8 +66,8 @@
 
         .tps-vk-output-data,
         .tps-vk-output-label {
-          border-color: rgba(0,0,0,0.12);
-          color: rgba(0,0,0,0.54);
+          border-color: rgba(0, 0, 0, 0.12);
+          color: rgba(0, 0, 0, 0.54);
 
           &.filled,
           &.empty {
@@ -109,36 +77,83 @@
       }
     }
   }
+
+  .tps-vk-status-container {
+    padding: 0 33px;
+    text-align: right;
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    min-height: 30px;
+
+    .tps-vk-status {
+      font-size: 12px;
+      color: rgba(0, 0, 0, .54);
+
+      .tps-vk-status-message,
+      .tps-vk-status-icon {
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .tps-vk-status-icon {
+        &.error {
+          svg {
+            fill: red;
+          }
+        }
+        &.success {
+          svg {
+            fill: green;
+          }
+        }
+      }
+    }
+  }
 }
 
-.tps-vk-status-container {
-  padding: 0 33px;
-  text-align: right;
-  border-top: 1px solid rgba(0,0,0,.12);
-  min-height: 30px;
+.pika-lendar{
+  width: auto;
 
-  .tps-vk-status {
-    font-size: 12px;
-    color: rgba(0,0,0,.54);
+  .pika-label{
+    font-weight: normal;
+  }
+}
+.pika-table{
 
-    .tps-vk-status-message,
-    .tps-vk-status-icon {
-      height: 100%;
-      display: inline-block;
-      vertical-align: middle;
+  th{
+    font-weight: 100;
+    text-transform: capitalize;
+    color: #737373;
+  }
+
+  td{
+    padding: 0px 6px;
+  }
+
+  .pika-button{
+    background: none;
+    color: #212121;
+    text-align: center;
+    box-shadow:none;
+    width: 34px;
+    height: 34px;
+    padding: 0px;
+    text-indent: 0px;
+
+    &:focus{
+      background: @tps-vk-background-darkgray;
+      color: white;
+      border-radius: 50%;
     }
+  }
 
-    .tps-vk-status-icon {
-      &.error {
-        svg {
-          fill: red;
-        }
-      }
-      &.success {
-        svg {
-          fill: green;
-        }
-      }
+  .is-selected{
+    .pika-button{
+      background: @tps-vk-background-darkgray;
+      border: none;
+      color: white;
+      font-weight: 100;
+      border-radius: 50%;
     }
   }
 }

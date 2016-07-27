@@ -11,11 +11,12 @@ angular.module('tps-vedlikehold.service')
             return {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)};
         };
 
-        self.formatDate = function(dateObj) {
-            return dateObj ? moment(dateObj).format('YYYY-MM-DD') : null;
+        self.getCurrentFormattedDate = function() {
+            return moment().format('YYYY-MM-DD');
         };
 
         self.isInFuture = function(dateObj) {
+            if (!dateObj) { return false; }
             return moment().diff(dateObj) < 0;
         };
 
