@@ -14,17 +14,6 @@
                     <value>D0</value>
                 </values>
             </parameter>
-            <parameter name="asddsad" use="optional" type="string">
-                <values>
-                    <value>E0</value>
-                    <value>A0</value>
-                    <value>A2</value>
-                    <value>B0</value>
-                    <value>B2</value>
-                    <value>C0</value>
-                    <value>D0</value>
-                </values>
-            </parameter>
             <parameter name="aksjonsDato" use="optional" type="date" />
         </parameters>
     </serviceRutine>
