@@ -1,9 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories;
 
-import com.fasterxml.jackson.xml.XmlMapper;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**

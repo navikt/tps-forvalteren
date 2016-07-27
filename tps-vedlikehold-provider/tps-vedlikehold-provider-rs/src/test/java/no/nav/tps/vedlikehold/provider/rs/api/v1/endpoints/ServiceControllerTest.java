@@ -5,7 +5,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServi
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
+import no.nav.tps.vedlikehold.service.command.authorisation.DefaultAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.DefaultTpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import org.junit.Before;
@@ -62,7 +62,7 @@ public class ServiceControllerTest {
     DefaultTpsServiceRutineService defaultGetTpsServiceRutineServiceMock;
 
     @Mock
-    AuthorisationService authorisationServiceMock;
+    DefaultAuthorisationService defaultAuthorisationServiceMock;
 
     @Mock
     Map<String, Object> parametersMock;
@@ -78,35 +78,35 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceAuthorisesTheUserBeforeContactingTps() throws Exception {
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(true);
 
         serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
 
-        InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, authorisationServiceMock);
+        InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, defaultAuthorisationServiceMock);
 
-        inOrder.verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
+        inOrder.verify(defaultAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
         inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), eq(parametersMock), anyString());
     }
 
     @Test(expected = HttpUnauthorisedException.class)
     public void getServiceDeniesAccessIfUserIsUnauthorised() throws Exception {
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(false);
 
         serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
 
-        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
+        verify(defaultAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
         verify(defaultGetTpsServiceRutineServiceMock, never()).execute(anyString(), eq(parametersMock), anyString());
     }
 
     @Test
     public void environmentIsSentToTheService() throws Exception {
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(true);
 
         serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parametersMock, SERVICE_RUTINE_NAME);
-        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq(ENVIRONMENT_U));
+        verify(defaultAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq(ENVIRONMENT_U));
         verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), any(Map.class), eq(ENVIRONMENT_U));
     }
 
@@ -119,7 +119,7 @@ public class ServiceControllerTest {
 
     @Test(expected = HttpInternalServerErrorException.class)
     public void internalServerErrorIsThrownIfAnExceptionIsEncountered() throws Exception {
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+        when(defaultAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(true);
         when(defaultGetTpsServiceRutineServiceMock.execute(eq(SERVICE_RUTINE_NAME), anyMap(), eq(ENVIRONMENT_U)))
                 .thenThrow(JMSException.class);

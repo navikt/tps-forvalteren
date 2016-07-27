@@ -10,7 +10,7 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedExce
 import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
 import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.AuthorisationService;
+import no.nav.tps.vedlikehold.service.command.authorisation.DefaultAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutineService;
 import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
@@ -47,7 +47,7 @@ public class ServiceController {
     private TpsServiceRutineService tpsServiceRutineService;
 
     @Autowired
-    private AuthorisationService authorisationService;
+    private DefaultAuthorisationService defaultAuthorisationService;
 
     @Autowired
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
@@ -111,7 +111,7 @@ public class ServiceController {
 
         User user = userFactory.createUser(strategy);
 
-        return authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
+        return defaultAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
     }
 
 

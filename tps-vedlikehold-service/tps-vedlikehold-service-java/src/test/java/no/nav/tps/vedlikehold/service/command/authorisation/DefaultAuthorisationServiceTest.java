@@ -13,13 +13,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
+import static java.util.Collections.singleton;
+import static no.nav.tps.vedlikehold.service.command.authorisation.RolesManager.RoleType.READ;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.eq;
@@ -31,13 +30,16 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class AuthorisationServiceTest {
+public class DefaultAuthorisationServiceTest {
 
     private static final String FNR         = "12345678910";
     private static final String ENVIRONMENT = "t1";
 
     @Mock
     private User userMock;
+
+    @Mock
+    private RolesManager rolesManagerMock;
 
     @Mock
     private DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeAuthorisationStrategy;
@@ -55,7 +57,7 @@ public class AuthorisationServiceTest {
     HentDiskresjonskodeResponse hentDiskresjonskodeResponseMock;
 
     @InjectMocks
-    private AuthorisationService authorisationService;
+    private DefaultAuthorisationService defaultAuthorisationService;
 
 
     @Before
@@ -76,7 +78,7 @@ public class AuthorisationServiceTest {
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = authorisationService.isAuthorised(strategies);
+        Boolean result = defaultAuthorisationService.isAuthorised(strategies);
 
         assertThat(result, is(false));
     }
@@ -88,41 +90,19 @@ public class AuthorisationServiceTest {
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = authorisationService.isAuthorised(strategies);
+        Boolean result = defaultAuthorisationService.isAuthorised(strategies);
 
         assertThat(result, is(true));
     }
 
     @Test
     public void userIsAuthorisedOverloadUsesDiskresjonskodeEgenAnsattAndEnvironmentAuthorisation() throws Exception {
-        ReflectionTestUtils.setField(
-                authorisationService,
-                "readRolesT",
-                new ArrayList<>(Arrays.asList("readTRole")));
 
-        ReflectionTestUtils.setField(
-                authorisationService,
-                "readRolesQ",
-                new ArrayList<>());
+        when(rolesManagerMock.getRolesForEnvironment(eq("t"), eq(READ))).thenReturn( singleton("readTRole") );
+        when(userMock.getRoles()).thenReturn(singleton("readTRole"));
 
-        ReflectionTestUtils.setField(
-                authorisationService,
-                "readRolesU",
-                new ArrayList<>());
 
-        ReflectionTestUtils.setField(
-                authorisationService,
-                "readRolesP",
-                new ArrayList<>());
-
-        ReflectionTestUtils.setField(
-                authorisationService,
-                "readRolesO",
-                new ArrayList<>());
-
-        when(userMock.getRoles()).thenReturn(new HashSet<>(Arrays.asList("readTRole")));
-
-        authorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
+        defaultAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
 
         verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
         verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));
