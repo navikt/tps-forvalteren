@@ -5,7 +5,7 @@ angular.module('tps-vedlikehold.service')
     .service('locationService', ['$rootScope', '$state', function($rootScope, $state) {
 
         var self = this;
-        var returnState = 'serviceRutine';
+        var returnState = 'servicerutine';
 
         self.redirectToLoginReturnState = function() {
             $state.go(returnState);

@@ -1,7 +1,7 @@
 /**
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
-angular.module('tps-vedlikehold')
+angular.module('tps-vedlikehold.service')
     .factory('serviceRutineFactory', ['$http', 'serviceRutineConfig', function($http, serviceRutineConfig) {
 
         var serviceRutineFactory = {};

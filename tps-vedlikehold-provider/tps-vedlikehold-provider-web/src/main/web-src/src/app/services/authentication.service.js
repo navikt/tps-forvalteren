@@ -2,8 +2,8 @@
  * @author Kristian Kyvik (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('authenticationService', ['$http', '$location', 'sessionService', 'utilsService', 
-        function($http, $location,  sessionService, utilsService) {
+    .service('authenticationService', ['$http', '$q', '$location', 'sessionService', 'utilsService', 'locationService',
+        function($http, $q, $location,  sessionService, utilsService, locationService) {
 
         var self = this;
 
@@ -17,19 +17,38 @@ angular.module('tps-vedlikehold.service')
             $http.get(loginRoute, {
                 headers: headers
             })
-            .then(function (res) {
-                sessionService.setIsAuthenticated(true);
-                sessionService.setIsSignedIn(true);
-                sessionService.setCurrentUser(res.data);
+                .then(function (res) {
+                    setupSession(res);
 
-                if (callback) {
-                    callback(res);
-                }
-            }, function (res) {
-                if (callback) {
-                    callback(res);
-                }
-            });
+                    if (callback) {
+                        callback(res);
+                    }
+                }, function (res) {
+                    if (callback) {
+                        callback(res);
+                    }
+                });
+        };
+
+        self.loadUser = function() {
+            var defer = $q.defer();
+
+            if (!sessionService.getIsAuthenticated()) {
+                $http.get(loginRoute, {
+                    headers: {}
+                })
+                .then(function (res) {
+                    setupSession(res);
+                    defer.resolve();
+                }, function (res) {
+                    locationService.redirectToLoginState();
+                    defer.reject();
+                });
+            } else {
+                defer.resolve();
+            };
+
+            return defer.promise;
         };
 
         self.invalidateSession = function(callback){
@@ -48,5 +67,11 @@ angular.module('tps-vedlikehold.service')
                     if (callback) {callback(res);}
                 });
             });
+        };
+
+        var setupSession = function(res) {
+            sessionService.setIsAuthenticated(true);
+            sessionService.setIsSignedIn(true);
+            sessionService.setCurrentUser(res.data);
         };
     }]);
