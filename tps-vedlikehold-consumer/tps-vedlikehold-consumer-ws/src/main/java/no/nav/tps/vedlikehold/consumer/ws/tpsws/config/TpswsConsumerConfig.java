@@ -44,8 +44,8 @@ public class TpswsConsumerConfig {
 
     private final QName DISKRESJON_QNAME = new QName("http://nav.no/tjeneste/pip/diskresjonskode/", "Diskresjonskode");
 
-    private static final String PIP_EGENANSATT_WSDL_URL = "wsdl/no/nav/tjeneste/pip/pipEgenAnsatt/v1/PipEgenAnsatt.wsdl";
-    private static final QName PIP_EGENANSATT_SERVICE_NAME = new QName("http://nav.no/tjeneste/pip/pipEgenAnsatt/v1/", "PipEgenAnsatt_v1");
+    private static final String PIP_EGENANSATT_WSDL_URL     = "wsdl/no/nav/tjeneste/pip/pipEgenAnsatt/v1/PipEgenAnsatt.wsdl";
+    private static final QName PIP_EGENANSATT_SERVICE_NAME  = new QName("http://nav.no/tjeneste/pip/pipEgenAnsatt/v1/", "PipEgenAnsatt_v1");
     private static final QName PIP_EGENANSATT_ENDPOINT_NAME = new QName("http://nav.no/tjeneste/pip/pipEgenAnsatt/v1/", "PipEgenAnsatt_v1");
 
     @Value("${validering.virksomhet.diskresjonskodev1.url}")

@@ -9,7 +9,7 @@ public class Queue {
     private String manager;
 
     public Queue(String name, String manager) {
-        this.name = name;
+        this.name    = name;
         this.manager = manager;
     }
 
