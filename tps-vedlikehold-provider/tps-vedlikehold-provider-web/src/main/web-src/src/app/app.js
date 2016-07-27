@@ -20,13 +20,12 @@ require('./services/location.service');
 require('./services/session.service');
 require('./services/utils.service');
 require('./services/authentication.service');
-require('./services/server-service-rutine.service');
-require('./services/server-environment.service');
 
+require('./factory/factory.module');
 require('./factory/service-rutine.factory');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.service-rutine', 'pikaday']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine',  'pikaday']);
 
 
 require('./shared/header/header.controller');
@@ -63,9 +62,9 @@ app.config(['pikadayConfigProvider', 'moment', function(pikaday, moment) {
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
     function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
-        
-    $urlRouteProvider.otherwise("/");
 
+    $urlRouteProvider.otherwise("/");
+        
     $stateProvider
 
     .state('login', {
