@@ -1,7 +1,5 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
@@ -56,7 +54,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     @Override
     public ServiceRutineResponse execute(TpsRequest request) throws IOException, JMSException {
         try {
-            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(request) + XML_PROPERTIES_POSTFIX;
+            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(request) + XML_PROPERTIES_POSTFIX;     //TODO: This class shouldnt be responsible for message construction
 
             /* Send message to TPS and handle the received data */
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( request.getEnvironment() );
