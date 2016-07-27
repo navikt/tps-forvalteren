@@ -77,7 +77,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             }
         }
     })
-    .state('serviceRutine', {
+    .state('servicerutine', {
         url: "/",
         params: {
             serviceRutineName: null
