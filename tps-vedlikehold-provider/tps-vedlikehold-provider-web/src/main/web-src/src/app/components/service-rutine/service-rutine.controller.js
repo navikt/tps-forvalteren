@@ -133,7 +133,7 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             // ##################################
-            // These function will maybe need additions when adding new input fields
+            // These functions will maybe need additions when adding new input fields
             // See confluence for info
 
             function formatSelectValues() {
