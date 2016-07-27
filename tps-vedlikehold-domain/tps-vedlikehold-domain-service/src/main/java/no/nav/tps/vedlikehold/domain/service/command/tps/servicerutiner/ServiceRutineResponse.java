@@ -11,6 +11,13 @@ public class ServiceRutineResponse {
     /** A formatted response */
     private Object data;
 
+
+    public ServiceRutineResponse(String xml, Object data) {
+        this.xml = xml;
+        this.data = data;
+    }
+
+
     public Object getData() {
         return data;
     }

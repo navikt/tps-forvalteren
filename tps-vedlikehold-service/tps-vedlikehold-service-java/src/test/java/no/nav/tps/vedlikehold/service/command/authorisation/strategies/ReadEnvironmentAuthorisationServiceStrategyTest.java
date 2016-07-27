@@ -10,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,9 +29,9 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
     private static final String ROLE_READ_Q = "readQRoles";
     private static final String ROLE_READ_P = "readPRoles";
 
-    private static final String ENVIRONMENT_U = "u2";
-    private static final String ENVIRONMENT_T = "t4";
-    private static final String ENVIRONMENT_Q = "q1";
+    private static final String ENVIRONMENT_U = "u";
+    private static final String ENVIRONMENT_T = "t";
+    private static final String ENVIRONMENT_Q = "q";
     private static final String ENVIRONMENT_P = "p";
 
     @Mock
@@ -41,17 +42,12 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
 
     @Before
     public void setUp() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_U);
-
-        readEnvironmentStrategy.setReadTRoles(newSet(ROLE_READ_T));
-        readEnvironmentStrategy.setReadURoles(newSet(ROLE_READ_U));
-        readEnvironmentStrategy.setReadQRoles(newSet(ROLE_READ_Q));
-        readEnvironmentStrategy.setReadPRoles(newSet(ROLE_READ_P));
+        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_T);
     }
 
     @Test
-    public void userIsAuthorisedInTIfItHasReadTRole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_T);
+    public void userIsAuthorisedIfItHasAValidRole() {
+        readEnvironmentStrategy.addRoleForEnvironment(ROLE_READ_T, ENVIRONMENT_T);
 
         when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_T) );
 
@@ -61,43 +57,26 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
     }
 
     @Test
-    public void userIsNotAuthorisedInTIfItDoesNotHaveReadTRole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_U);
-
-        when(userMock.getRoles()).thenReturn( newSet() );
-
-        Boolean result = readEnvironmentStrategy.isAuthorised();
-
-        assertThat(result, is(false));
-    }
-
-    @Test
-    public void userIsAuthorisedInUIfItHasReadURole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_U);
+    public void userIsNotAuthorisedIfItHasAValidRoleInAnotherEnvironment() {
+        readEnvironmentStrategy.addRoleForEnvironment(ROLE_READ_T, ENVIRONMENT_T);
+        readEnvironmentStrategy.addRoleForEnvironment(ROLE_READ_U, ENVIRONMENT_U);
 
         when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_U) );
 
         Boolean result = readEnvironmentStrategy.isAuthorised();
 
-        assertThat(result, is(true));
-    }
-
-    @Test
-    public void userIsNotAuthorisedInUIfItDoesNotHaveReadURole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_U);
-
-        when(userMock.getRoles()).thenReturn( newSet() );
-
-        Boolean result = readEnvironmentStrategy.isAuthorised();
-
         assertThat(result, is(false));
     }
 
     @Test
-    public void userIsAuthorisedInQIfItHasReadQRole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_Q);
+    public void onlyOneValidRoleIsNeededToBeAuthorised() {
 
-        when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_Q) );
+        readEnvironmentStrategy.addRolesForEnvironment(
+                newSet(ROLE_READ_T, ROLE_READ_P),
+                ENVIRONMENT_T
+        );
+
+        when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_T) );
 
         Boolean result = readEnvironmentStrategy.isAuthorised();
 
@@ -105,36 +84,28 @@ public class ReadEnvironmentAuthorisationServiceStrategyTest {
     }
 
     @Test
-    public void userIsNotAuthorisedInQIfItDoesNotHaveReadQRole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_Q);
+    public void addingNewRolesKeepsPreviousRoles() {
 
-        when(userMock.getRoles()).thenReturn( newSet() );
+        readEnvironmentStrategy.addRoleForEnvironment(
+                ROLE_READ_T,
+                ENVIRONMENT_T
+        );
 
-        Boolean result = readEnvironmentStrategy.isAuthorised();
+        readEnvironmentStrategy.addRoleForEnvironment(
+                ROLE_READ_U,
+                ENVIRONMENT_T
+        );
 
-        assertThat(result, is(false));
-    }
+        when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_T) );
 
-    @Test
-    public void userIsAuthorisedInPIfItHasReadPRole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_P);
+        Boolean resultForT = readEnvironmentStrategy.isAuthorised();
 
-        when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_P) );
+        when(userMock.getRoles()).thenReturn( newSet(ROLE_READ_U) );
 
-        Boolean result = readEnvironmentStrategy.isAuthorised();
+        Boolean resultForU = readEnvironmentStrategy.isAuthorised();
 
-        assertThat(result, is(true));
-    }
-
-    @Test
-    public void userIsNotAuthorisedInPIfItDoesNotHaveReadPRole() {
-        readEnvironmentStrategy.setEnvironment(ENVIRONMENT_P);
-
-        when(userMock.getRoles()).thenReturn( newSet() );
-
-        Boolean result = readEnvironmentStrategy.isAuthorised();
-
-        assertThat(result, is(false));
+        assertThat(resultForU, is(true));
+        assertThat(resultForT, is(true));
     }
 
     @Test

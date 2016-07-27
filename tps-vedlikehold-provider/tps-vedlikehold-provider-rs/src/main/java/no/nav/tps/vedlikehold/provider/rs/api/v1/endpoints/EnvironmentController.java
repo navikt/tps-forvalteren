@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,15 +16,14 @@ import java.util.Set;
 @RequestMapping(value = "api/v1")
 public class EnvironmentController {
 
-    private static final Set<String> supportedEnvironments = new HashSet<>(Arrays.asList("u", "t"));
-
     @Autowired
     public GetEnvironments getEnvironmentsCommand;
 
+
     /**
-     * Get an object containing a list of environments
+     * Get a set of available environments from Vera
      *
-     * @return object containing list of environments
+     * @return a set of environment names
      */
 
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
@@ -36,7 +33,7 @@ public class EnvironmentController {
         return EnvironmentsFilter.create()
                 .include("u*")
                 .include("t*")
-                .exception("t7")                // The queue manager channel for this env does not exist
+                .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
                 .filter(environments);
     }
 }

@@ -69,51 +69,57 @@ angular.module('tps-vedlikehold')
             return serviceRutines[serviceRutineName].internalName;
         };
 
-        serviceRutineFactory.getServiceRutineAttributesNames = function(serviceRutineName) {
+        serviceRutineFactory.getServiceRutineParametersNames = function(serviceRutineName) {
+            var serviceRutineParametersNames = [];
+
+            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
+                this.push(value.name);
+            }, serviceRutineParametersNames);
+
+            return serviceRutineParametersNames;
+        };
+
+        serviceRutineFactory.getServiceRutineParametersNamesInOrder = function(serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
             // could probably be done in a better way
-            var serviceRutineAttributesNames = [];
+            var serviceRutineParametersNamesInOrder = [];
+            var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
+            var serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
 
-            if (serviceRutines[serviceRutineName].attributes) {
-                var filter = [];
+            angular.forEach(serviceRutineFieldsOrderTemplate, function (value, key) {
+                var index = restServiceRutineParametersNames.indexOf(value);
 
-                angular.forEach(serviceRutines[serviceRutineName].attributes, function (value, key) {
-                    this.push(value.name);
-                }, filter);
-
-                var serviceRutineFieldsTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsTemplate;
-
-                for (var i = 0; i < serviceRutineFieldsTemplate.length; i++) {
-                    if (filter.indexOf(serviceRutineFieldsTemplate[i]) > -1) {
-                        serviceRutineAttributesNames.push(serviceRutineFieldsTemplate[i]);
-                    }
+                if (index > -1) {
+                    serviceRutineParametersNamesInOrder.push(value);
+                    restServiceRutineParametersNames.splice(index, 1);
                 }
-                return serviceRutineAttributesNames;
-            }
-            return serviceRutineAttributesNames;
+            });
+
+            return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
 
-        serviceRutineFactory.getServiceRutineRequiredAttributesNames = function(serviceRutineName) {
-            var serviceRutineRequiredAttributesNames = [];
+        serviceRutineFactory.getServiceRutineRequiredParametersNames = function(serviceRutineName) {
+            var serviceRutineRequiredParametersNames = [];
 
-            if (serviceRutines[serviceRutineName].attributes) {
-                angular.forEach(serviceRutines[serviceRutineName].attributes, function (value, key) {
-                    if (value.use === "required") {
-                        this.push(value.name);
-                    }
-                }, serviceRutineRequiredAttributesNames);
-            }
-            return serviceRutineRequiredAttributesNames;
+            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
+                if (value.use === "required") {
+                    this.push(value.name);
+                }
+            }, serviceRutineRequiredParametersNames);
+
+            return serviceRutineRequiredParametersNames;
         };
 
-        serviceRutineFactory.hasAksjonsKodes = function(serviceRutineName) {
-            var aksjonsKodes = serviceRutines[serviceRutineName].aksjonsKodes;
+        serviceRutineFactory.getSelectValues = function (serviceRutineName) {
+            var selectValues = {};
 
-            return aksjonsKodes && aksjonsKodes.length;
-        };
+            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
+                if (value.values) {
+                    this[value.name] = value.values;
+                }
+            }, selectValues);
 
-        serviceRutineFactory.getServiceRutineAksjonsKodes = function(serviceRutineName) {
-            return serviceRutines[serviceRutineName].aksjonsKodes;
+            return selectValues;
         };
 
         serviceRutineFactory.getResponse = function(serviceRutineName, params) {

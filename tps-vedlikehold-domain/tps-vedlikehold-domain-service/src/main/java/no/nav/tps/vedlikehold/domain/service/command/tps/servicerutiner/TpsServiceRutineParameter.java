@@ -2,11 +2,13 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlProperty;
 
+import java.util.List;
+
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public class TpsServiceRutineAttribute {
+public class TpsServiceRutineParameter {
 
     @JacksonXmlProperty(isAttribute = true)
     private String name;
@@ -16,6 +18,9 @@ public class TpsServiceRutineAttribute {
 
     @JacksonXmlProperty(isAttribute = true)
     private String use;
+
+    @JacksonXmlProperty
+    private List<?> values;
 
     /* Setters */
 
@@ -31,6 +36,10 @@ public class TpsServiceRutineAttribute {
         this.use = use;
     }
 
+    public void setValues(List<?> values) {
+        this.values = values;
+    }
+
     /* Getters */
 
     public String getName() {
@@ -43,5 +52,9 @@ public class TpsServiceRutineAttribute {
 
     public String getUse() {
         return use;
+    }
+
+    public List<?> getValues() {
+        return values;
     }
 }
