@@ -34,8 +34,8 @@ angular.module('tps-vedlikehold.service')
         
         //TODO: find a better way to create dynamic output
         // Flattens a JSON object, adding all key-values at top with just their key as key
-        // Except for the objects with the names that matches nonUniques,
-        // they are given the name parentName_childName
+        // Except for the objects with the keys that matches nonUniques,
+        // they are given the name parentKey_childKey
         self.flattenObject = function(ob, nonUniques) {
             var finalFlatOb = {};
             

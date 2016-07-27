@@ -101,16 +101,8 @@ angular.module('tps-vedlikehold.service-rutine')
             function createParams(formData) {
                 var params = {};
                 for (var key in formData) {
-                    if (formData.hasOwnProperty(key)) {
-                        switch(key) {
-                            case 'aksjonsDato':
-                                if (formData.aksjonsDato) {
-                                    params.aksjonsDato = formData.aksjonsDato;
-                                }
-                                break;
-                            default:
-                                params[key] = formData[key];
-                        }
+                    if (formData.hasOwnProperty(key) && formData[key]) {
+                        params[key] = formData[key];
                     }
                 }
                 return params;
