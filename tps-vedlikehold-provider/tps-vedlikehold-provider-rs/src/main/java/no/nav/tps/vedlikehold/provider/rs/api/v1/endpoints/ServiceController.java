@@ -54,8 +54,9 @@ public class ServiceController {
 
 
     /**
-     * Execute any TPS service rutine.
-     * The necessary parameters can be found in the documentation of the various servicerutines.
+     * Execute any simple TPS service rutine.
+     * An 'environment' parameter is always needed.
+     * Other parameters for the various service rutines are defined in 'ServiceRutines.xml'.
      *
      * @param session           current session
      * @param environment       environment in which to contact TPS
