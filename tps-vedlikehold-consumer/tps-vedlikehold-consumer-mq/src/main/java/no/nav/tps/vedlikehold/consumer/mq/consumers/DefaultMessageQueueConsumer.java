@@ -2,7 +2,6 @@ package no.nav.tps.vedlikehold.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
-import no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

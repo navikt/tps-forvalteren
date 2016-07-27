@@ -132,6 +132,17 @@ angular.module('tps-vedlikehold.service-rutine')
                 });
             }
 
+            // This is needed in order to force the first tab to focus after refresh when navigating using the tab key.
+            function overwriteTabIndexes() {
+                angular.element(document).ready(function() {
+                    var mdTabsCanvas = angular.element(document.querySelector(".tps-vk-scrollable-tabs"))[0].children[0].children[1];
+                    mdTabsCanvas.setAttribute("tabindex", "-1");
+
+                    var firstTab = mdTabsCanvas.children[0].children[0];
+                    firstTab.setAttribute("tabindex", "0");
+                });
+            }
+
             // ##################################
             // These functions will maybe need additions when adding new input fields
             // See confluence for info
@@ -194,6 +205,7 @@ angular.module('tps-vedlikehold.service-rutine')
 
                 getNonUniqueProperties();
                 initRequestForm();
+                overwriteTabIndexes();
             }
 
             init();

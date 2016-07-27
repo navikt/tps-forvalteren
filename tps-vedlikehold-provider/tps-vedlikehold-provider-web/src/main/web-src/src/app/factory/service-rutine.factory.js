@@ -84,9 +84,10 @@ angular.module('tps-vedlikehold')
             // could probably be done in a better way
             var serviceRutineParametersNamesInOrder = [];
             var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
+            var serviceRutineFieldsOrderTemplate = [];
 
             if (serviceRutineConfig[serviceRutineName]) {
-                var serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
+                serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
             }
 
             angular.forEach(serviceRutineFieldsOrderTemplate, function (value, key) {
