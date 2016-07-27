@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
-import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * A connection factory factory maintaining an internal cache of connection factories.
- * This avoids instantiating new factories for every request, and improves performance.
+ * This avoids instantiating new factories for every request, and dramatically improves performance.
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */
@@ -24,7 +24,7 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CachedConnectionFactoryFactory.class);
 
-    private static final long CACHE_HOURS_TO_LIVE = 12;
+    private static final long CACHE_HOURS_TO_LIVE = 6;
 
     private Cache<String, ConnectionFactory> cache;
 
@@ -36,7 +36,7 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
     }
 
     @Override
-    public ConnectionFactory createConnectionFactory(ConnectionFactoryStrategy strategy) throws JMSException {
+    public ConnectionFactory createConnectionFactory(ConnectionFactoryFactoryStrategy strategy) throws JMSException {
         ConnectionFactory factory = getFactoryForManagerFromCache(strategy);
 
         if (factory != null) {
@@ -57,7 +57,7 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
      * @return a new ConnectionFactory
      * @throws JMSException
      */
-    private ConnectionFactory createConnectionFactoryForManager(ConnectionFactoryStrategy strategy) throws JMSException {
+    private ConnectionFactory createConnectionFactoryForManager(ConnectionFactoryFactoryStrategy strategy) throws JMSException {
         MQQueueConnectionFactory factory = new MQQueueConnectionFactory();
 
         Integer transportType   = strategy.getTransportType();
@@ -84,15 +84,15 @@ public class CachedConnectionFactoryFactory implements ConnectionFactoryFactory 
 
     /* Cache */
 
-    private void addFactoryForManagerToCache(ConnectionFactory factory, ConnectionFactoryStrategy strategy) {
+    private void addFactoryForManagerToCache(ConnectionFactory factory, ConnectionFactoryFactoryStrategy strategy) {
         cache.put( getIdentifier(strategy), factory );
     }
 
-    private ConnectionFactory getFactoryForManagerFromCache(ConnectionFactoryStrategy strategy) {
+    private ConnectionFactory getFactoryForManagerFromCache(ConnectionFactoryFactoryStrategy strategy) {
         return cache.getIfPresent( getIdentifier(strategy) );
     }
 
-    private String getIdentifier(ConnectionFactoryStrategy strategy) {
+    private String getIdentifier(ConnectionFactoryFactoryStrategy strategy) {
         return String.format("%s@%s:%d %s %d", strategy.getName(), strategy.getHostName(), strategy.getPort(), strategy.getChannelName(), strategy.getTransportType());
     }
 }

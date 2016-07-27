@@ -48,6 +48,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 
     @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
+
         /* Initiate session */
         LOGGER.debug("Creating MQ connection");
         Connection connection = connectionFactory.createConnection(USERNAME, PASSWORD);

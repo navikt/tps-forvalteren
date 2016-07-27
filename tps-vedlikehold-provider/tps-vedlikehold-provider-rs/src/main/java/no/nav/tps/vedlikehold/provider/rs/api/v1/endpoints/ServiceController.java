@@ -59,7 +59,6 @@ public class ServiceController {
      *
      * @param session           current session
      * @param environment       environment in which to contact TPS
-     * @param fnr               fnr of the person to retrieve
      * @param parameters        map with all URL parameters
      * @param serviceRutineName name of the servicerutine to be executed
      *
@@ -76,13 +75,11 @@ public class ServiceController {
                                             @PathVariable("serviceRutinenavn") String serviceRutineName) throws HttpException {
 
         /* Authorise user based on requested data, and the environment */
-        UserFactory userFactory      = new DefaultUserFactory();
-        UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
-
-        User user = userFactory.createUser(strategy);
-
         String fnr = (String) parameters.get("fnr");
-        if ( fnr != null && !authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment) ) {
+
+        Boolean isAuthorised = isAuthorised(fnr, environment, session);
+
+        if ( !isAuthorised ) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutineName);
         }
 
@@ -101,6 +98,20 @@ public class ServiceController {
 
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
+    }
+
+
+    private Boolean isAuthorised(String fnr, String environment, HttpSession session) {
+        if (fnr == null) {
+            return true;
+        }
+
+        UserFactory userFactory      = new DefaultUserFactory();
+        UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
+
+        User user = userFactory.createUser(strategy);
+
+        return authorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
     }
 
 

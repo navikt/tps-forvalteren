@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,22 +28,9 @@ public class DefaultVeraConsumer implements VeraConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVeraConsumer.class);
 
     private static final String PING_VERA = "tpws";
-    public static final String BASE_URL = "http://vera.adeo.no/api/v1";
+    private static final String BASE_URL  = "http://vera.adeo.no/api/v1";
+
     private RestTemplate template = new RestTemplate();
-
-    private enum Service {
-        DEPLOYLOG("deploylog");
-
-        private String serviceName;
-
-        Service(String serviceName) {
-            this.serviceName = serviceName;
-        }
-
-        public String getServiceName() {
-            return serviceName;
-        }
-    }
 
 
     public DefaultVeraConsumer() {
@@ -59,16 +47,27 @@ public class DefaultVeraConsumer implements VeraConsumer {
 
     @Override
     public Set<String> getEnvironments(String application, Boolean onlyLatest, Boolean filterUndeployed) {
+        Collection<VeraApplication> applications = getApplications(application, onlyLatest, filterUndeployed);
+
+        return applications.stream()
+                .map(VeraApplication::getEnvironment)
+                .collect(toSet());
+    }
+
+    private Collection<VeraApplication> getApplications(String application, Boolean onlyLatest, Boolean filterUndeployed) {
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("application", application);
         parameters.put("onlyLatest", onlyLatest);
         parameters.put("filterUndeployed", filterUndeployed);
 
-        VeraApplication[] applications = getObjects(Service.DEPLOYLOG, parameters, VeraApplication[].class);
+        String url = buildUrl(Service.DEPLOYLOG, parameters);
 
-        return applicationToEnvironmentsMapper(Arrays.asList(applications));
+        VeraApplication[] applications = template.getForObject(url, VeraApplication[].class);
+
+        return Arrays.asList(applications);
     }
+
 
     /* Helper methods */
 
@@ -85,16 +84,6 @@ public class DefaultVeraConsumer implements VeraConsumer {
         return builder.build().encode().toUriString();
     }
 
-    private <T> T getObjects(Service service, Map<String, Object> parameters, Class<T> type) {
-        String url = buildUrl(service, parameters);
-        return template.getForObject(url, type);
-    }
-
-    private Set<String> applicationToEnvironmentsMapper(List<VeraApplication> veraApplications) {
-        return veraApplications.stream()
-                .map(VeraApplication::getEnvironment)
-                .collect(toSet());
-    }
 
     @Override
     public boolean ping() throws Exception {
@@ -106,5 +95,20 @@ public class DefaultVeraConsumer implements VeraConsumer {
             throw exception;
         }
         return true;
+    }
+
+
+    private enum Service {
+        DEPLOYLOG("deploylog");
+
+        private String serviceName;
+
+        Service(String serviceName) {
+            this.serviceName = serviceName;
+        }
+
+        public String getServiceName() {
+            return serviceName;
+        }
     }
 }

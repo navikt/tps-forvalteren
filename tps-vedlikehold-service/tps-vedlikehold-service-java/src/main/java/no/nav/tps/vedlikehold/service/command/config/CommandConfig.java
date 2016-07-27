@@ -20,7 +20,6 @@ public class CommandConfig {
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        MessageQueueConsumer defaultMessageQueueConsumer = messageQueueServiceFactory.createMessageQueueService("t4");
-        return defaultMessageQueueConsumer;
+        return messageQueueServiceFactory.createMessageQueueService("t4");
     }
 }

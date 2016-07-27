@@ -9,6 +9,7 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
+            $scope.selectValues = {};
             $scope.responseFormConfig = responseFormConfig;
             $scope.onlyNumbers = /^\d+$/;
 
@@ -107,10 +108,6 @@ angular.module('tps-vedlikehold.service-rutine')
                                     params.aksjonsDato = formData.aksjonsDato;
                                 }
                                 break;
-                            case 'aksjonsKode':
-                                params.aksjonsKode = formData.aksjonsKode.charAt(0);
-                                params.aksjonsKode2 = formData.aksjonsKode.charAt(1);
-                                break;
                             default:
                                 params[key] = formData[key];
                         }
@@ -120,11 +117,7 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             function getServiceRutineInputFieldName() {
-                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNames($scope.serviceRutineName);
-
-                if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutineName)) {
-                    $scope.fields.push('aksjonsKode');
-                }
+                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNamesInOrder($scope.serviceRutineName);
             }
             
             function setIsValidServiceRutineName() {
@@ -135,9 +128,17 @@ angular.module('tps-vedlikehold.service-rutine')
                 requiredAttributes = serviceRutineFactory.getServiceRutineRequiredAttributesNames($scope.serviceRutineName);
             }
             
-            function getServiceRutineAksjonsKodes() {
-                if (serviceRutineFactory.hasAksjonsKodes($scope.serviceRutineName)) {
-                    $scope.aksjonsKodes = serviceRutineFactory.getServiceRutineAksjonsKodes($scope.serviceRutineName).sort();
+            function setSelectValues() {
+                var selectValues = serviceRutineFactory.getSelectValues($scope.serviceRutineName);
+
+                angular.forEach(selectValues, function (value, key) {
+                    $scope.selectValues[key] = value;
+                });
+            }
+
+            function formatSelectValues() {
+                if ($scope.selectValues.aksjonsKode) {
+                    $scope.selectValues.aksjonsKode.sort();
                 }
             }
 
@@ -156,7 +157,7 @@ angular.module('tps-vedlikehold.service-rutine')
                             $scope.formData.aksjonsDato = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
-                            $scope.formData.aksjonsKode = $scope.aksjonsKodes[0];
+                            $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
                             break;
                         default:
                             $scope.formData[attribute] = '';
@@ -189,7 +190,10 @@ angular.module('tps-vedlikehold.service-rutine')
 
                 getServiceRutineInputFieldName();
                 getServiceRutineRequiredAttributesNames();
-                getServiceRutineAksjonsKodes();
+
+                setSelectValues();
+                formatSelectValues();
+
                 getNonUniqueProperties();
                 initRequestForm();
             }
