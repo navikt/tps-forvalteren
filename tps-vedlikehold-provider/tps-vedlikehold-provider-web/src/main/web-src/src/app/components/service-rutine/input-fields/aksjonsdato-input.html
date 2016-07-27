@@ -15,7 +15,7 @@
            fdate>
 
     <ng-messages for="requestForm.dato.$error">
-        <ng-message when="required" ng-show="requestForm.dato.$touched">
+        <ng-message when="isRequired('aksjonsDato')" ng-show="requestForm.dato.$touched">
             Gyldig dato er påkrevd
         </ng-message>
         <ng-message when="pattern">

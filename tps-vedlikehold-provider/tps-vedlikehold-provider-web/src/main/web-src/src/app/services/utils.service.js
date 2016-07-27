@@ -15,11 +15,6 @@ angular.module('tps-vedlikehold.service')
             return moment().format('YYYY-MM-DD');
         };
 
-        self.isInFuture = function(dateObj) {
-            if (!dateObj) { return false; }
-            return moment().diff(dateObj) < 0;
-        };
-
         self.sortEnvironments = function(env) {
             if (env.length < 2) { return env; }
             return env.sort(function(a, b) {
@@ -36,7 +31,11 @@ angular.module('tps-vedlikehold.service')
                 return aSubstrInt - bSubstrInt;
             });
         };
-
+        
+        //TODO: find a better way to create dynamic output
+        // Flattens a JSON object, adding all key-values at top with just their key as key
+        // Except for the objects with the keys that matches nonUniques,
+        // they are given the name parentKey_childKey
         self.flattenObject = function(ob, nonUniques) {
             var finalFlatOb = {};
             
@@ -48,7 +47,7 @@ angular.module('tps-vedlikehold.service')
                     for (var x in flatObject) {
                         if (!flatObject.hasOwnProperty(x)) continue;
 
-                        if (nonUniques.indexOf(i) > -1) {
+                        if (nonUniques && nonUniques.indexOf(i) > -1) {
                             finalFlatOb[i + '_' + x] = flatObject[x];
                         } else {
                             finalFlatOb[x] = flatObject[x];
@@ -61,6 +60,7 @@ angular.module('tps-vedlikehold.service')
             return finalFlatOb;
         };
 
+        //TODO: use library for this
         self.formatXml = function (xml) {
             if (xml) {
                 var reg = /(>)\s*(<)(\/*)/g;

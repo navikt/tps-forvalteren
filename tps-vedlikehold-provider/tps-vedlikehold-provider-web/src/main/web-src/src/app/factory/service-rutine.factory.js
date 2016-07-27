@@ -84,7 +84,11 @@ angular.module('tps-vedlikehold')
             // could probably be done in a better way
             var serviceRutineParametersNamesInOrder = [];
             var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
-            var serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
+            var serviceRutineFieldsOrderTemplate = [];
+
+            if (serviceRutineConfig[serviceRutineName]) {
+                serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
+            }
 
             angular.forEach(serviceRutineFieldsOrderTemplate, function (value, key) {
                 var index = restServiceRutineParametersNames.indexOf(value);
@@ -131,11 +135,16 @@ angular.module('tps-vedlikehold')
         };
 
         serviceRutineFactory.getNonUniqueProperties = function(serviceRutineName) {
-            return serviceRutineConfig[serviceRutineName].nonUniquePropertiesContainer;
+            if (serviceRutineConfig[serviceRutineName]) {
+                return serviceRutineConfig[serviceRutineName].nonUniquePropertiesContainer;
+            }
+            return [];
         };
 
         serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutineName) {
-            return serviceRutineConfig[serviceRutineName].serviceRutineReturnedDataLabel;
+            if (serviceRutineConfig[serviceRutineName]) {
+                return serviceRutineConfig[serviceRutineName].serviceRutineReturnedDataLabel;
+            }
         };
 
         return serviceRutineFactory;

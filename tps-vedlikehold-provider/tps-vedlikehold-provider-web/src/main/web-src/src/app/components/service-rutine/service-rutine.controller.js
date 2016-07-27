@@ -98,24 +98,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 );
             }
 
-            function createParams(formData) {
-                var params = {};
-                for (var key in formData) {
-                    if (formData.hasOwnProperty(key)) {
-                        switch(key) {
-                            case 'aksjonsDato':
-                                if (formData.aksjonsDato) {
-                                    params.aksjonsDato = formData.aksjonsDato;
-                                }
-                                break;
-                            default:
-                                params[key] = formData[key];
-                        }
-                    }
-                }
-                return params;
-            }
-
             function getServiceRutineInputFieldName() {
                 $scope.fields = serviceRutineFactory.getServiceRutineParametersNamesInOrder($scope.serviceRutineName);
             }
@@ -127,7 +109,21 @@ angular.module('tps-vedlikehold.service-rutine')
             function getServiceRutineRequiredParametersNames() {
                 requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
             }
-            
+
+            function getNonUniqueProperties() {
+                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutineName);
+            }
+
+            function createParams(formData) {
+                var params = {};
+                for (var key in formData) {
+                    if (formData.hasOwnProperty(key) && formData[key]) {
+                        params[key] = formData[key];
+                    }
+                }
+                return params;
+            }
+
             function setSelectValues() {
                 var selectValues = serviceRutineFactory.getSelectValues($scope.serviceRutineName);
 
@@ -136,14 +132,25 @@ angular.module('tps-vedlikehold.service-rutine')
                 });
             }
 
+            // This is needed in order to force the first tab to focus after refresh when navigating using the tab key.
+            function overwriteTabIndexes() {
+                angular.element(document).ready(function() {
+                    var mdTabsCanvas = angular.element(document.querySelector(".tps-vk-scrollable-tabs"))[0].children[0].children[1];
+                    mdTabsCanvas.setAttribute("tabindex", "-1");
+
+                    var firstTab = mdTabsCanvas.children[0].children[0];
+                    firstTab.setAttribute("tabindex", "0");
+                });
+            }
+
+            // ##################################
+            // These functions will maybe need additions when adding new input fields
+            // See confluence for info
+
             function formatSelectValues() {
                 if ($scope.selectValues.aksjonsKode) {
                     $scope.selectValues.aksjonsKode.sort();
                 }
-            }
-
-            function getNonUniqueProperties() {
-                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutineName);
             }
             
             function initRequestForm() {
@@ -166,16 +173,7 @@ angular.module('tps-vedlikehold.service-rutine')
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
 
-            // This is needed in order to force the first tab to focus after refresh when navigating using the tab key.
-            function overwriteTabIndexes() {
-                angular.element(document).ready(function() {
-                    var mdTabsCanvas = angular.element(document.querySelector(".tps-vk-scrollable-tabs"))[0].children[0].children[1];
-                    mdTabsCanvas.setAttribute("tabindex", "-1");
-
-                    var firstTab = mdTabsCanvas.children[0].children[0];
-                    firstTab.setAttribute("tabindex", "0");
-                });
-            }
+            // ##################################
 
             function init() {
                 setIsValidServiceRutineName();
