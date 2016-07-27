@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
 
 import java.util.Map;
 
@@ -9,7 +10,5 @@ import java.util.Map;
  */
 @FunctionalInterface
 public interface TpsServiceRutineService {
-     ServiceRutineResponse execute(
-            String requestMessage,
-            String environment) throws Exception;
+     ServiceRutineResponse execute(TpsRequest request) throws Exception;
 }

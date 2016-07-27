@@ -1,7 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
@@ -14,11 +18,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.JMSException;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +37,7 @@ import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -64,29 +71,71 @@ public class ServiceControllerTest {
     @Mock
     DefaultTpsAuthorisationService defaultTpsAuthorisationServiceMock;
 
+    @Spy
+    ObjectMapper objectMapperMock;
+
     @Mock
-    Map<String, Object> parametersMock;
+    JsonNode jsonNode;
+
+    @Mock
+    JsonNode fnrJsonNodeMock;
+
+    @Mock
+    JsonNode environmentJsonNodeMock;
+
+    @Mock
+    JsonNode serviceRutinenavnJsonNodeMock;
 
     @InjectMocks
     ServiceController serviceController;
 
     @Before
     public void setUp() {
-        when(parametersMock.get(eq("fnr"))).thenReturn(FNR);
+        when(jsonNode.has(eq("fnr"))).thenReturn(true);
+        when(jsonNode.has(eq("environment"))).thenReturn(true);
+        when(jsonNode.has(eq("serviceRutinenavn"))).thenReturn(true);
+
+        when(jsonNode.get(eq("fnr"))).thenReturn(fnrJsonNodeMock);
+        when(jsonNode.get(eq("environment"))).thenReturn(environmentJsonNodeMock);
+        when(jsonNode.get(eq("serviceRutinenavn"))).thenReturn(serviceRutinenavnJsonNodeMock);
+
+        when(fnrJsonNodeMock.asText()).thenReturn(FNR);
+        when(environmentJsonNodeMock.asText()).thenReturn(ENVIRONMENT_U);
+        when(serviceRutinenavnJsonNodeMock.asText()).thenReturn(SERVICE_RUTINE_NAME);
+
+        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+                .thenReturn(true);
+
+        when(objectMapperMock.convertValue(eq(jsonNode), any(Class.class))).thenReturn(new TpsRequest());
+
         when(getTpsServiceRutinerService.exectue()).thenReturn(SERVICES);
+    }
+
+    @Test(expected = HttpUnauthorisedException.class)
+    public void getServiceGETCallsGetServiceWithAllParameters() throws Exception {
+        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
+                .thenReturn(false);
+
+        Map<String, Object> parameters = spy(new HashMap<>());
+
+        parameters.put("environment", ENVIRONMENT_U);
+        parameters.put("fnr", FNR);
+
+        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, parameters, SERVICE_RUTINE_NAME);
+
+        verify(parameters).put(eq("serviceRutinenavn"), eq(SERVICE_RUTINE_NAME));
+
+        verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), eq(FNR), eq(SERVICE_RUTINE_NAME));
     }
 
     @Test
     public void getServiceAuthorisesTheUserBeforeContactingTps() throws Exception {
-        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
-                .thenReturn(true);
-
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), jsonNode);
 
         InOrder inOrder = inOrder(defaultGetTpsServiceRutineServiceMock, defaultTpsAuthorisationServiceMock);
 
         inOrder.verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
-        inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), anyString());
+        inOrder.verify(defaultGetTpsServiceRutineServiceMock).execute(any(TpsRequest.class));
     }
 
     @Test(expected = HttpUnauthorisedException.class)
@@ -94,20 +143,17 @@ public class ServiceControllerTest {
         when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
                 .thenReturn(false);
 
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), jsonNode);
 
         verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString());
-        verify(defaultGetTpsServiceRutineServiceMock, never()).execute(eq(REQUEST_MESSAGE), anyString());
+        verify(defaultGetTpsServiceRutineServiceMock, never()).execute(any(TpsRequest.class));
     }
 
     @Test
     public void environmentIsSentToTheService() throws Exception {
-        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
-                .thenReturn(true);
-
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), jsonNode);
         verify(defaultTpsAuthorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), eq(ENVIRONMENT_U));
-        verify(defaultGetTpsServiceRutineServiceMock).execute(anyString(), eq(ENVIRONMENT_U));
+        verify(defaultGetTpsServiceRutineServiceMock).execute(any(TpsRequest.class));
     }
 
     @Test
@@ -117,14 +163,23 @@ public class ServiceControllerTest {
         assertThat(services, is(equalTo(SERVICES)));
     }
 
+    @Test(expected = HttpBadRequestException.class)
+    public void badRequestIsThrownIfEnvironmentAndServiceRutinenavnIsNotProvided() throws Exception {
+
+        JsonNode jsonNode = mock(JsonNode.class);
+
+        when(jsonNode.has(eq("serviceRutinenavn"))).thenReturn(false);
+        when(jsonNode.has(eq("environment"))).thenReturn(false);
+
+        serviceController.getService(mock(HttpSession.class), jsonNode);
+    }
+
     @Test(expected = HttpInternalServerErrorException.class)
     public void internalServerErrorIsThrownIfAnExceptionIsEncountered() throws Exception {
-        when(defaultTpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), anyString(), anyString()))
-                .thenReturn(true);
-        when(defaultGetTpsServiceRutineServiceMock.execute(any(), eq(ENVIRONMENT_U)))
+        when(defaultGetTpsServiceRutineServiceMock.execute(any(TpsRequest.class)))
                 .thenThrow(JMSException.class);
 
-        serviceController.getService(mock(HttpSession.class), ENVIRONMENT_U, FNR, parametersMock, SERVICE_RUTINE_NAME);
+        serviceController.getService(mock(HttpSession.class), jsonNode);
     }
 
     @Test

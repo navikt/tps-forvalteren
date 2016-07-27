@@ -29,6 +29,13 @@ public class HttpExceptionController {
         return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(HttpBadRequestException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    ExceptionInformation badRequest(HttpException exception) {
+        return informationForException(exception, HttpStatus.BAD_REQUEST);
+    }
+
     private ExceptionInformation informationForException(HttpException exception, HttpStatus status) {
         return ExceptionInformation.create()
                 .setError( status.getReasonPhrase() )

@@ -1,13 +1,13 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactory;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactory;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactoryStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +26,26 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTpsServiceRutineService.class);
 
+    private static final String XML_PROPERTIES_PREFIX  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><tpsPersonData>";
+    private static final String XML_PROPERTIES_POSTFIX = "</tpsPersonData>";
+
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
-    private XmlMapper xmlMapper = new XmlMapper();
+    private XmlMapper xmlMapper;
+
+    public DefaultTpsServiceRutineService() {
+        this.xmlMapper = new XmlMapper();
+
+        this.xmlMapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this.xmlMapper.enable(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    }
 
 
     /**
      * Send a request to TPS using asynchronous message queues
      *
-     * @param requestMessage TPS request message
-     * @param environment the environment in which to contact TPS
+     * @param request TPS request object
      *
      * @return an object wrapping the raw XML response, and the XML represented by an object
      *
@@ -45,12 +54,12 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
      */
 
     @Override
-    public ServiceRutineResponse execute(String requestMessage,
-                                         String environment) throws IOException, JMSException {
-
+    public ServiceRutineResponse execute(TpsRequest request) throws IOException, JMSException {
         try {
+            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(request) + XML_PROPERTIES_POSTFIX;
+
             /* Send message to TPS and handle the received data */
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(environment);
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( request.getEnvironment() );
 
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 
@@ -58,7 +67,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
             return new ServiceRutineResponse(responseXml, responseData);
         } catch (IOException exception) {
-            LOGGER.error("Failed to convert TPS response XML to an object with exception: {}", exception.toString());
+            LOGGER.error("Failed to convert TPS during XML marshalling with exception: {}", exception.toString());
 
             throw exception;
         } catch (JMSException exception) {
