@@ -165,6 +165,16 @@ angular.module('tps-vedlikehold.service-rutine')
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
 
+            function overwriteTabIndexes() {
+                angular.element(document).ready(function() {
+                    var mdTabsCanvas = angular.element(document.querySelector(".tps-vk-scrollable-tabs"))[0].children[0].children[1];
+                    mdTabsCanvas.setAttribute("tabindex", "-1");
+
+                    var firstTab = mdTabsCanvas.children[0].children[0];
+                    firstTab.setAttribute("tabindex", "0");
+                });
+            }
+
             function init() {
                 setIsValidServiceRutineName();
 
@@ -192,6 +202,7 @@ angular.module('tps-vedlikehold.service-rutine')
                 getServiceRutineAksjonsKodes();
                 getNonUniqueProperties();
                 initRequestForm();
+                overwriteTabIndexes();
             }
 
             init();
