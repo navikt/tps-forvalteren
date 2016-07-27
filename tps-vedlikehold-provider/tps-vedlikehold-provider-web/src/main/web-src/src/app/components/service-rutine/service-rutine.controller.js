@@ -98,16 +98,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 );
             }
 
-            function createParams(formData) {
-                var params = {};
-                for (var key in formData) {
-                    if (formData.hasOwnProperty(key) && formData[key]) {
-                        params[key] = formData[key];
-                    }
-                }
-                return params;
-            }
-
             function getServiceRutineInputFieldName() {
                 $scope.fields = serviceRutineFactory.getServiceRutineParametersNamesInOrder($scope.serviceRutineName);
             }
@@ -119,7 +109,21 @@ angular.module('tps-vedlikehold.service-rutine')
             function getServiceRutineRequiredParametersNames() {
                 requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
             }
-            
+
+            function getNonUniqueProperties() {
+                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutineName);
+            }
+
+            function createParams(formData) {
+                var params = {};
+                for (var key in formData) {
+                    if (formData.hasOwnProperty(key) && formData[key]) {
+                        params[key] = formData[key];
+                    }
+                }
+                return params;
+            }
+
             function setSelectValues() {
                 var selectValues = serviceRutineFactory.getSelectValues($scope.serviceRutineName);
 
@@ -128,14 +132,14 @@ angular.module('tps-vedlikehold.service-rutine')
                 });
             }
 
+            // ##################################
+            // These function will maybe need additions when adding new input fields
+            // See confluence for info
+
             function formatSelectValues() {
                 if ($scope.selectValues.aksjonsKode) {
                     $scope.selectValues.aksjonsKode.sort();
                 }
-            }
-
-            function getNonUniqueProperties() {
-                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutineName);
             }
             
             function initRequestForm() {
@@ -157,6 +161,8 @@ angular.module('tps-vedlikehold.service-rutine')
                 }
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
+
+            // ##################################
 
             function init() {
                 setIsValidServiceRutineName();
