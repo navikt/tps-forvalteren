@@ -165,6 +165,7 @@ angular.module('tps-vedlikehold.service-rutine')
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
 
+            // This is needed in order to force the first tab to focus after refresh when navigating using the tab key.
             function overwriteTabIndexes() {
                 angular.element(document).ready(function() {
                     var mdTabsCanvas = angular.element(document.querySelector(".tps-vk-scrollable-tabs"))[0].children[0].children[1];
