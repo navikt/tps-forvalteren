@@ -33,8 +33,6 @@ require('./shared/side-navigator/side-navigator.controller');
 
 require('./directives/input-field.directive');
 require('./directives/output-field.directive');
-require('./directives/key-listener.directive');
-
 
 require('./settings/response-form.config');
 require('./settings/service-rutine.config');
