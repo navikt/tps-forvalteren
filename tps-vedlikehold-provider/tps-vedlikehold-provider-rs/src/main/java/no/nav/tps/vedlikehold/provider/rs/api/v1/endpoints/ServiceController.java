@@ -113,26 +113,11 @@ public class ServiceController {
         TpsRequest request = requestObjectForServiceRutine(serviceRutinenavn, body);
 
         /* Send the request to TPS */
-        try {
-            ServiceRutineResponse response = tpsServiceRutineService.execute(request);
+        ServiceRutineResponse response = sendRequest(request);
 
-            Sporingslogger.log(environment, serviceRutinenavn, fnr);
+        Sporingslogger.log(environment, serviceRutinenavn, fnr);
 
-            return response;
-        } catch (Exception exception) {
-            LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
-                    serviceRutinenavn,
-                    environment,
-                    exception.toString());
-
-            throw new HttpInternalServerErrorException(exception, "api/v1/service");
-        }
-    }
-
-    private TpsRequest requestObjectForServiceRutine(String serviceRutinenavn, JsonNode body) throws HttpException {
-        Class<? extends TpsRequest> requestClass = RequestClassService.getClassForServiceRutinenavn( serviceRutinenavn );
-
-        return objectMapper.convertValue(body, requestClass);
+        return response;
     }
 
     /**
@@ -145,6 +130,27 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.GET)
     public Collection<TpsServiceRutine> getTpsServiceRutiner() {
         return getTpsServiceRutinerService.exectue();
+    }
+
+    /* Helpers */
+
+    private ServiceRutineResponse sendRequest(TpsRequest request) throws HttpException {
+        try {
+            return tpsServiceRutineService.execute(request);
+        } catch (Exception exception) {
+            LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
+                    request.getServiceRutinenavn(),
+                    request.getEnvironment(),
+                    exception.toString());
+
+            throw new HttpInternalServerErrorException(exception, "api/v1/service");
+        }
+    }
+
+    private TpsRequest requestObjectForServiceRutine(String serviceRutinenavn, JsonNode body) throws HttpException {
+        Class<? extends TpsRequest> requestClass = RequestClassService.getClassForServiceRutinenavn( serviceRutinenavn );
+
+        return objectMapper.convertValue(body, requestClass);
     }
 
 

@@ -19,7 +19,5 @@ public class RequestClassService {
             default:
                 return TpsRequest.class;
         }
-
     }
-
 }
