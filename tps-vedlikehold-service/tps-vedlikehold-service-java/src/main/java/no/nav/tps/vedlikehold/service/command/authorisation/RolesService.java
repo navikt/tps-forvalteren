@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
-import static no.nav.tps.vedlikehold.service.command.authorisation.RolesManager.RoleType.READ;
+import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
 import static org.springframework.util.StringUtils.isEmpty;
 
 /**
@@ -15,7 +15,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 
 @Component
-public class RolesManager {
+public class RolesService {
 
     public enum RoleType {
         READ,

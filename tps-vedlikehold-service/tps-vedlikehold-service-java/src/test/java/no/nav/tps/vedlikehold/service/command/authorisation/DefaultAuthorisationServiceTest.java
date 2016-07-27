@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static java.util.Collections.singleton;
-import static no.nav.tps.vedlikehold.service.command.authorisation.RolesManager.RoleType.READ;
+import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.eq;
@@ -39,7 +39,7 @@ public class DefaultAuthorisationServiceTest {
     private User userMock;
 
     @Mock
-    private RolesManager rolesManagerMock;
+    private RolesService rolesServiceMock;
 
     @Mock
     private DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeAuthorisationStrategy;
@@ -98,7 +98,7 @@ public class DefaultAuthorisationServiceTest {
     @Test
     public void userIsAuthorisedOverloadUsesDiskresjonskodeEgenAnsattAndEnvironmentAuthorisation() throws Exception {
 
-        when(rolesManagerMock.getRolesForEnvironment(eq("t"), eq(READ))).thenReturn( singleton("readTRole") );
+        when(rolesServiceMock.getRolesForEnvironment(eq("t"), eq(READ))).thenReturn( singleton("readTRole") );
         when(userMock.getRoles()).thenReturn(singleton("readTRole"));
 
 

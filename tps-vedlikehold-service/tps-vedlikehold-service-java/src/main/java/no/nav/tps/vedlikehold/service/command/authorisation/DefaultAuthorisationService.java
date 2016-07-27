@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-import static no.nav.tps.vedlikehold.service.command.authorisation.RolesManager.RoleType.READ;
+import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -25,7 +24,7 @@ import static no.nav.tps.vedlikehold.service.command.authorisation.RolesManager.
 public class DefaultAuthorisationService implements AuthorisationService {
 
     @Autowired
-    private RolesManager rolesManager;
+    private RolesService rolesService;
 
     @Autowired
     private DiskresjonskodeConsumer diskresjonskodeConsumer;
@@ -61,7 +60,7 @@ public class DefaultAuthorisationService implements AuthorisationService {
         ReadAuthorisationServiceStrategy readStrategy = new ReadAuthorisationServiceStrategy();
 
         readStrategy.setUser(user);
-        readStrategy.setReadRoles( rolesManager.getRolesForEnvironment(environment, READ) );
+        readStrategy.setReadRoles( rolesService.getRolesForEnvironment(environment, READ) );
 
 
         List<AuthorisationServiceStrategy> strategies = Arrays.asList(
