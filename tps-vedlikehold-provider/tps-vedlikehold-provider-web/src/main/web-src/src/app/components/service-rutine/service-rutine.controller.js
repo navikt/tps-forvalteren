@@ -15,7 +15,7 @@ angular.module('tps-vedlikehold.service-rutine')
 
             var tpsReturnedObject = {};
             var nonUniqueProperties = []; //objects that contain non-unique properties
-            var requiredAttributes = [];
+            var requiredParameters = [];
             var isValidServiceRutineName = false;
             var apiError = true;
 
@@ -54,7 +54,7 @@ angular.module('tps-vedlikehold.service-rutine')
             };
 
             $scope.isRequired = function(type) {
-                return (requiredAttributes.indexOf(type) > -1);
+                return (requiredParameters.indexOf(type) > -1);
             };
 
             $scope.repositionDatePicker = function(pika){
@@ -117,15 +117,15 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             function getServiceRutineInputFieldName() {
-                $scope.fields = serviceRutineFactory.getServiceRutineAttributesNamesInOrder($scope.serviceRutineName);
+                $scope.fields = serviceRutineFactory.getServiceRutineParametersNamesInOrder($scope.serviceRutineName);
             }
             
             function setIsValidServiceRutineName() {
                 isValidServiceRutineName = ($scope.serviceRutineName in serviceRutineFactory.getServiceRutines());
             }
             
-            function getServiceRutineRequiredAttributesNames() {
-                requiredAttributes = serviceRutineFactory.getServiceRutineRequiredAttributesNames($scope.serviceRutineName);
+            function getServiceRutineRequiredParametersNames() {
+                requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
             }
             
             function setSelectValues() {
@@ -148,8 +148,8 @@ angular.module('tps-vedlikehold.service-rutine')
             
             function initRequestForm() {
                 for (var i = 0; i < $scope.fields.length; i++) {
-                    var attribute = $scope.fields[i];
-                    switch(attribute) {
+                    var parameter = $scope.fields[i];
+                    switch(parameter) {
                         case 'fnr': 
                             $scope.formData.fnr = '';
                             break;
@@ -160,7 +160,7 @@ angular.module('tps-vedlikehold.service-rutine')
                             $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
                             break;
                         default:
-                            $scope.formData[attribute] = '';
+                            $scope.formData[parameter] = '';
                     }
                 }
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
@@ -189,7 +189,7 @@ angular.module('tps-vedlikehold.service-rutine')
                 }
 
                 getServiceRutineInputFieldName();
-                getServiceRutineRequiredAttributesNames();
+                getServiceRutineRequiredParametersNames();
 
                 setSelectValues();
                 formatSelectValues();
