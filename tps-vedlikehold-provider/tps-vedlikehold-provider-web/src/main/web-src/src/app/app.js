@@ -66,7 +66,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
     $urlRouteProvider.otherwise("/");
         
     $stateProvider
-
     .state('login', {
         url: "/login",
         views: {

@@ -6,12 +6,10 @@ angular.module('tps-vedlikehold.login')
         function($scope, authenticationService, locationService) {
 
             $scope.title = 'TPS Vedlikeholdsklient';
-
             $scope.authenticationError = false;
             $scope.serverError = false;
             $scope.pendingRequest = false;
             $scope.forbiddenError = false;
-
 
             var callback = function(authResponse){
                 switch(authResponse.status) {
@@ -32,16 +30,20 @@ angular.module('tps-vedlikehold.login')
                 $scope.pendingRequest = false;
             };
 
-            authenticationService.authenticate(false, function(authResponse) {
-                if (authResponse.status === 200) {
-                    locationService.redirectToLoginReturnState();
-                }
-            });
-
             $scope.login = function() {
                 $scope.pendingRequest = true;
                 $scope.authenticationError = false;
                 $scope.serverError = false;
                 authenticationService.authenticate($scope.credentials, callback);
             };
+
+            function init() {
+                authenticationService.authenticate(false, function(authResponse) {
+                    if (authResponse.status === 200) {
+                        locationService.redirectToLoginReturnState();
+                    }
+                });
+            }
+
+            init();
     }]);
