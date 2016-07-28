@@ -147,7 +147,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     } );
 
 
-                    firstTab.addEventListener("focusout", function(e){
+                    mdTabsCanvas.addEventListener("focusout", function(e){
                         firstTab.classList.remove("md-focused");
                     } );
 
