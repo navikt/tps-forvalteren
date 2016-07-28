@@ -54,4 +54,18 @@ public class HttpExceptionControllerTest {
         assertThat(exceptionInformation.getTimestamp(), greaterThanOrEqualTo(new Date().getTime()-200));
     }
 
+    @Test
+    public void badRequestReturnsCorrectInformation() {
+        HttpException httpException = new HttpBadRequestException(EXCEPTION_MESSAGE, EXCEPTION_PATH);
+
+        ExceptionInformation exceptionInformation = exceptionController.badRequest(httpException);
+
+        assertThat(exceptionInformation.getError(), is(HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        assertThat(exceptionInformation.getStatus(), is(HttpStatus.BAD_REQUEST.value()));
+        assertThat(exceptionInformation.getPath(), is(EXCEPTION_PATH));
+        assertThat(exceptionInformation.getMessage(), is(EXCEPTION_MESSAGE));
+        assertThat(exceptionInformation.getTimestamp(), lessThanOrEqualTo(new Date().getTime()));
+        assertThat(exceptionInformation.getTimestamp(), greaterThanOrEqualTo(new Date().getTime()-200));
+    }
+
 }

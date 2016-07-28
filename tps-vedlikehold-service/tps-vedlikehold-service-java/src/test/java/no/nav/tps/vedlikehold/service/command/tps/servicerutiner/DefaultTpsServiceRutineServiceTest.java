@@ -4,8 +4,7 @@ import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.DefaultServiceRutineMessageFactoryStrategy;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.factories.ServiceRutineMessageFactory;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +45,9 @@ public class DefaultTpsServiceRutineServiceTest {
     private XmlMapper xmlMapperMock;
 
     @Mock
+    private TpsRequest tpsRequestMock;
+
+    @Mock
     private MessageQueueConsumer messageQueueConsumerMock;
 
     @Mock
@@ -61,39 +63,41 @@ public class DefaultTpsServiceRutineServiceTest {
         when( messageQueueConsumerMock.sendMessage(anyString()) ).thenReturn(RESPONSE_XML);
 
         when( xmlMapperMock.readValue(anyString(), any(Class.class)) ).thenReturn(responseObjectMock);
+
+        when(tpsRequestMock.getEnvironment()).thenReturn(ENVIRONMENT);
     }
 
     @Test
     public void createsMessageQueueServiceUsingTheCorrectEnvironment() throws Exception {
-        defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
         verify(messageQueueServiceFactoryMock).createMessageQueueService(eq(ENVIRONMENT));
     }
 
     @Test
-    public void theGeneratedMessageIsSentToTps() throws Exception {
-        defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+    public void aMessageIsSentToTps() throws Exception {
+        defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
-        verify(messageQueueConsumerMock).sendMessage(eq(REQUEST_XML));
+        verify(messageQueueConsumerMock).sendMessage(anyString());
     }
 
     @Test
     public void responseXmlIsConvertedToAnObject() throws Exception {
-        defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
         verify(xmlMapperMock).readValue(eq(RESPONSE_XML), any(Class.class));
     }
 
     @Test
     public void responseXmlIsProvided() throws Exception {
-        ServiceRutineResponse result = defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        ServiceRutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
         assertThat(result.getXml(), is(RESPONSE_XML));
     }
 
     @Test
     public void responseObjectIsProvided() throws Exception {
-        ServiceRutineResponse result = defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        ServiceRutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
         assertThat(result.getData(), is(responseObjectMock));
     }
@@ -102,21 +106,21 @@ public class DefaultTpsServiceRutineServiceTest {
     public void exceptionDuringMessageQueueServiceCreationFailsGracefully() throws Exception {
         when(messageQueueServiceFactoryMock.createMessageQueueService(anyString())).thenThrow(JMSException.class);
 
-        defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        defaultGetTpsServiceRutineService.execute(tpsRequestMock);
     }
 
     @Test(expected = JMSException.class)
     public void exceptionDuringMessageSendingAreRethrown() throws Exception {
         when(messageQueueConsumerMock.sendMessage(anyString())).thenThrow(JMSException.class);
 
-        defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        defaultGetTpsServiceRutineService.execute(tpsRequestMock);
     }
 
     @Test(expected = IOException.class)
     public void exceptionDuringResponseParsingFailsGracefully() throws Exception {
         when(xmlMapperMock.readValue(anyString(), any(Class.class))).thenThrow(IOException.class);
 
-        defaultGetTpsServiceRutineService.execute(REQUEST_XML, ENVIRONMENT);
+        defaultGetTpsServiceRutineService.execute(tpsRequestMock);
     }
 
     private Map<String, Object> parameters() {
