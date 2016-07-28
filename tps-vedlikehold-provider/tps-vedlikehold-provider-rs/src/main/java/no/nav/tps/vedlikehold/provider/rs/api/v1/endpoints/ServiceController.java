@@ -147,7 +147,7 @@ public class ServiceController {
         }
     }
 
-    private TpsRequest requestObjectForServiceRutine(String serviceRutinenavn, JsonNode body) throws HttpException {
+    private TpsRequest requestObjectForServiceRutine(String serviceRutinenavn, JsonNode body) {
         Class<? extends TpsRequest> requestClass = RequestClassService.getClassForServiceRutinenavn( serviceRutinenavn );
 
         return objectMapper.convertValue(body, requestClass);
