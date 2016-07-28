@@ -7,6 +7,7 @@ import java.util.Collection;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
+@FunctionalInterface
 public interface AuthorisationService {
     Boolean isAuthorised(Collection<AuthorisationServiceStrategy> strategies);
 }
