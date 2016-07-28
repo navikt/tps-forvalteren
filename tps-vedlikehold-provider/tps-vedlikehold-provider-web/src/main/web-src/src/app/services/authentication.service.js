@@ -10,6 +10,12 @@ angular.module('tps-vedlikehold.service')
         var loginRoute = 'api/v1/user';
         var logoutRoute = 'api/v1/user/logout';
 
+        var setupSession = function(res) {
+            sessionService.setIsAuthenticated(true);
+            sessionService.setIsSignedIn(true);
+            sessionService.setCurrentUser(res.data);
+        };
+
         self.authenticate = function(credentials, callback) {
             var headers = credentials ?
                 utilsService.authHeaders(credentials) : {};
@@ -46,7 +52,7 @@ angular.module('tps-vedlikehold.service')
                 });
             } else {
                 defer.resolve();
-            };
+            }
 
             return defer.promise;
         };
@@ -67,11 +73,5 @@ angular.module('tps-vedlikehold.service')
                     if (callback) {callback(res);}
                 });
             });
-        };
-
-        var setupSession = function(res) {
-            sessionService.setIsAuthenticated(true);
-            sessionService.setIsSignedIn(true);
-            sessionService.setCurrentUser(res.data);
         };
     }]);
