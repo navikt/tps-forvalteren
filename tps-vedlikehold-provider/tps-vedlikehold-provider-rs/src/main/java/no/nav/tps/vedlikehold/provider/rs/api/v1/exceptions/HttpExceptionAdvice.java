@@ -13,7 +13,7 @@ import java.util.Date;
  */
 
 @ControllerAdvice
-public class HttpExceptionController {
+public class HttpExceptionAdvice {
 
     @ExceptionHandler(HttpUnauthorisedException.class)
     @ResponseBody

@@ -18,13 +18,13 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class HttpExceptionControllerTest {
+public class HttpExceptionAdviceTest {
 
     private static final String EXCEPTION_MESSAGE = "This is a message";
     private static final String EXCEPTION_PATH    = "this/is/a/path";
 
     @InjectMocks
-    HttpExceptionController exceptionController;
+    HttpExceptionAdvice exceptionController;
 
     @Test
     public void unauthorisedAccessReturnsCorrectInformation() {

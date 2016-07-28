@@ -60,7 +60,7 @@ public class ServiceController {
     @Autowired
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper;
 
 
     public ServiceController() {
@@ -95,7 +95,7 @@ public class ServiceController {
     public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
                                             @RequestBody JsonNode body) throws HttpException {
 
-        /* All requests must provide an environment, and a serivcerutine */
+        /* All requests must provide an environment and a serivcerutine */
         if (!body.has("environment") || !body.has("serviceRutinenavn")) {
             throw new HttpBadRequestException("Both 'environment' and 'serviceRutinenavn' must be defined in th request body", "api/v1/service");
         }
