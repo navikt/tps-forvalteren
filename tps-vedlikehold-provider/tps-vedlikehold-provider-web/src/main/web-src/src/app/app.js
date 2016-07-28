@@ -20,13 +20,13 @@ require('./services/location.service');
 require('./services/session.service');
 require('./services/utils.service');
 require('./services/authentication.service');
-require('./services/server-service-rutine.service');
-require('./services/server-environment.service');
+
+require('./factory/factory.module');
+require('./factory/service-rutine.factory');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.service-rutine', 'pikaday']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine',  'pikaday']);
 
-require('./factory/service-rutine.factory');
 
 require('./shared/header/header.controller');
 require('./shared/side-navigator/side-navigator.controller');
@@ -60,12 +60,11 @@ app.config(['pikadayConfigProvider', 'moment', function(pikaday, moment) {
     });
 }]);
 
-
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
     function($stateProvider, $httpProvider, $urlRouteProvider, $mdThemingProvider) {
 
     $urlRouteProvider.otherwise("/");
-
+        
     $stateProvider
 
     .state('login', {
@@ -83,8 +82,15 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             serviceRutineName: null
         },
         resolve: {
-            serviceRutinesPromise: "serverServiceRutineService",
-            environmentsPromise: "serverEnvironmentService"
+            user: ['authenticationService', function (authenticationService) {
+                return authenticationService.loadUser();
+            }],
+            serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                return serviceRutineFactory.loadFromServerServiceRutines();
+            }],
+            environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                return serviceRutineFactory.loadFromServerEnvironments();
+            }]
         },
         views: {
             'content@': {
@@ -118,24 +124,4 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         .backgroundPalette('tps-vk-grey', {
             'default': '50'
         });
-        
-}]);
-
-
-app.run(['$rootScope', '$state', 'authenticationService', 'sessionService', 'locationService',
-    function($rootScope, $state, authenticationService, sessionService, locationService){
-        
-    $rootScope.$on('$stateChangeStart', function(event, toState){
-        if (toState.name === 'login') {
-            return;
-        }
-
-        var authenticated = sessionService.getIsAuthenticated();
-        
-        if (authenticated) { return; }
-        else {
-            event.preventDefault();
-            locationService.redirectToLoginState();
-        }
-    });
 }]);
