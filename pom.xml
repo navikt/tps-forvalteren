@@ -36,7 +36,7 @@
         <application-ear.version>7</application-ear.version>
 
         <!--SonarQube-->
-        <jacoco.version>0.7.4.201502262128</jacoco.version>
+        <jacoco.version>0.7.7.201606060606</jacoco.version>
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
 
         <!--NAV dependency versions-->
