@@ -33,10 +33,10 @@ var dests = {
 
 gulp.task('scripts', function(){
    return gulp.src([sources.scriptsVendor])
-       .pipe(sourcemaps.init())
+       // .pipe(sourcemaps.init())
        .pipe(concat('vendor.min.js'))
        .pipe(uglify())
-       .pipe(sourcemaps.write())
+       // .pipe(sourcemaps.write())
        .pipe(gulp.dest(folders.distRoot));
 });
 
@@ -49,14 +49,14 @@ gulp.task('lint', function() {
 gulp.task('browserify', function() {
 
    return gulp.src('./src/app/app.js')
-       .pipe(sourcemaps.init())
+       // .pipe(sourcemaps.init())
        .pipe(browserify( {
           insertGlobals: true,
           debug: true
        }))
        .pipe(concat('main.js'))
        .pipe(uglify())
-       .pipe(sourcemaps.write())
+       // .pipe(sourcemaps.write())
        .pipe(gulp.dest(folders.distRoot))
        .pipe(gulp.dest(folders.targetRoot));
 });
@@ -74,11 +74,11 @@ gulp.task('clean', function() {
 
 gulp.task('less', function() {
    gulp.src(sources.lessMain) //
-       .pipe(sourcemaps.init())
+       // .pipe(sourcemaps.init())
        .pipe(less())
        .pipe(cssnano())
        .pipe(concat('app.css'))
-       .pipe(sourcemaps.write())
+       // .pipe(sourcemaps.write())
        .pipe(gulp.dest(folders.distRoot))
        .pipe(gulp.dest(folders.targetRoot))
        .pipe(livereload());

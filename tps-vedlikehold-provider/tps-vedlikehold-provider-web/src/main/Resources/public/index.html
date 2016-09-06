@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang ="no" id="ng-app">
+    <head>
+        <title>TPS Vedlikeholdsklient</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="lib/angular-material.min.css">
+        <link rel="stylesheet" href="lib/hljs-default.min.css">
+        <link rel="stylesheet" href="lib/pikaday.css">
+        <link rel="stylesheet" href="app.css">
+    </head>
+    <body ng-app="tps-vedlikehold" layout="column">
+        <div id="tps-vk-header" ui-view="header"></div>
+        <div id="tps-vk-content-wrapper" layout="row" flex>
+            <div id="tps-vk-side-navigator" ui-view="side-navigator" layout="column"></div>
+            <div id="tps-vk-main-content" ui-view="content" layout="column" flex></div>
+        </div>
+    </body>
+    <script type="text/javascript" src="vendor.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+</html>

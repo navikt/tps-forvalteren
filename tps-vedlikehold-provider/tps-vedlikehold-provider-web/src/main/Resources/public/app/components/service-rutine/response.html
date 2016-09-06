@@ -1,0 +1,6 @@
+<div layout="column">
+    <div layout-gt-xs="row" layout="column" ng-repeat="row in responseFormConfig[serviceRutineName].rows">
+        <tps-output-field  ng-repeat="field in row" field-model="personData[field.fieldData]" label="{{field.label}}" flex="{{field.flex}}">
+        </tps-output-field>
+    </div>
+</div>
