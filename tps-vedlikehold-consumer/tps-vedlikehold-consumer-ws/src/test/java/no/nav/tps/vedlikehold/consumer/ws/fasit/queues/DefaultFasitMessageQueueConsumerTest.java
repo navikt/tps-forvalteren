@@ -1,17 +1,17 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit.queues;
 
-import com.google.common.cache.Cache;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -28,9 +28,6 @@ public class DefaultFasitMessageQueueConsumerTest {
 
     @Mock
     private FasitClient fasitClientMock;
-
-    @Mock
-    private Cache<String, Object> cacheMock;
 
     @Mock
     private FasitClient.Application applicationMock;

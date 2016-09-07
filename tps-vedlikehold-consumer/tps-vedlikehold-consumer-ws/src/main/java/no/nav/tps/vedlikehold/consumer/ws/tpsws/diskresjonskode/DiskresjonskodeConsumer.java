@@ -1,17 +1,17 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode;
 
+import java.util.List;
+
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-
-import java.util.List;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
  */
 public interface DiskresjonskodeConsumer {
-    boolean ping() throws Exception;
+    boolean ping();
 
-    HentDiskresjonskodeResponse getDiskresjonskode(final String fNr) throws Exception;
+    HentDiskresjonskodeResponse getDiskresjonskode(String fNr);
 
-    HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(final List<String> fNrListe);
+    HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe);
 }

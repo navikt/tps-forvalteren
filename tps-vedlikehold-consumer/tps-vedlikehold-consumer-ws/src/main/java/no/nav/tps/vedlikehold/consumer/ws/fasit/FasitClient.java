@@ -1,17 +1,19 @@
 package no.nav.tps.vedlikehold.consumer.ws.fasit;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import java.util.concurrent.TimeUnit;
+
 import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.ResourceElement;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -23,26 +25,24 @@ public class FasitClient {
 
     private static final long CACHE_MAX_SIZE        = 100;
     private static final long CACHE_MINUTES_TO_LIVE = 30;
-
-    private FasitRestClient restClient;
-
-    private Cache<String, ResourceElement> cache;
-
     private static final String PING_ENVIRONMENT = "t4";
     private static final String PING_ALIAS = "mqGateway";
     private static final ResourceTypeDO PING_TYPE = ResourceTypeDO.QueueManager;
     private static final String PING_APPLICATION_NAME = "tpsws";
 
+    private FasitRestClient restClient;
+
+    private Cache<String, ResourceElement> cache;
+
     public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
 
-        /* Use a custom cache */
         this.cache = CacheBuilder.newBuilder()
                                  .maximumSize(CACHE_MAX_SIZE)
                                  .expireAfterWrite(CACHE_MINUTES_TO_LIVE, TimeUnit.MINUTES)
                                  .build();
 
-        this.restClient.useCache(false);                                // The rest client's cache is never updated
+        this.restClient.useCache(false); // The rest client's cache is never updated
     }
 
 
@@ -78,14 +78,13 @@ public class FasitClient {
         return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
     }
 
-    public boolean ping() throws Exception {
+    public boolean ping() {
         try {
             DomainDO domain = FasitUtilities.domainFor(PING_ENVIRONMENT);
 
             this.restClient.getResource(PING_ENVIRONMENT, PING_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
-        } catch (Exception exception) {
+        } catch (RuntimeException exception) {
             LOGGER.warn("Pinging Fasit failed with exception: {}", exception.toString());
-
             throw exception;
         }
         return true;

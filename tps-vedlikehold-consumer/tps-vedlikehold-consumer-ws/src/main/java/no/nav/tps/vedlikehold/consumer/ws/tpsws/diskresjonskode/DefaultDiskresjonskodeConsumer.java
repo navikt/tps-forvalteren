@@ -1,18 +1,20 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode;
 
+import java.util.List;
+
+import javax.xml.ws.soap.SOAPFaultException;
+
 import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.xml.ws.soap.SOAPFaultException;
-import java.util.List;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
@@ -21,8 +23,8 @@ import java.util.List;
 public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDiskresjonskodeConsumer.class);
 
-    public static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
-    public static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
+    static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     // Test user
     private static final String PING_FNR = "13037999916";
@@ -31,12 +33,11 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private DiskresjonskodePortType diskresjonskodePortType;
 
     @Override
-    public boolean ping() throws Exception {
+    public boolean ping() {
         try {
             getDiskresjonskode(PING_FNR);
-        } catch (Exception exception) {
+        } catch (RuntimeException exception) {
             LOGGER.warn("Pinging diskresjonskode failed with exception: {}", exception.toString());
-
             throw exception;
         }
 
@@ -44,7 +45,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     }
 
     @Override
-    public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) throws Exception {
+    public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) {
         HentDiskresjonskodeRequest request = createRequest(fNr);
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
@@ -54,14 +55,12 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         } catch (SOAPFaultException exception) {
             LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
 
-            Boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
-            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
+            boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
 
             if (noMatchesFound || invalidFnr) {
                 HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
-
                 response.setDiskresjonskode("");
-
                 return response;
             }
 

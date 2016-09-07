@@ -1,17 +1,23 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions;
+package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.advices;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+
+import java.util.Date;
+
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.ExceptionInformation;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
-
-import java.util.Date;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 /**
  *  @author Øyvind Grimnes, Visma Consulting AS

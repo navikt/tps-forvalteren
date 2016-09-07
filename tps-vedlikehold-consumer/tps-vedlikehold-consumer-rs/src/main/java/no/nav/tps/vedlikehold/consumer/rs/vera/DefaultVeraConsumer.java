@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toSet;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,8 +33,7 @@ public class DefaultVeraConsumer implements VeraConsumer {
     private RestTemplate template = new RestTemplate();
 
     public DefaultVeraConsumer() {
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-        messageConverters.add(new MappingJackson2HttpMessageConverter());
+        List<HttpMessageConverter<?>> messageConverters = singletonList(new MappingJackson2HttpMessageConverter());
         template.setMessageConverters(messageConverters);
     }
 
@@ -45,7 +44,7 @@ public class DefaultVeraConsumer implements VeraConsumer {
     }
 
     @Override
-    public Set<String> getEnvironments(String application, Boolean onlyLatest, Boolean filterUndeployed) {
+    public Set<String> getEnvironments(String application, boolean onlyLatest, boolean filterUndeployed) {
         Collection<VeraApplication> applications = getApplications(application, onlyLatest, filterUndeployed);
 
         return applications.stream()
@@ -53,7 +52,7 @@ public class DefaultVeraConsumer implements VeraConsumer {
                 .collect(toSet());
     }
 
-    private Collection<VeraApplication> getApplications(String application, Boolean onlyLatest, Boolean filterUndeployed) {
+    private Collection<VeraApplication> getApplications(String application, boolean onlyLatest, boolean filterUndeployed) {
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("application", application);
@@ -66,8 +65,6 @@ public class DefaultVeraConsumer implements VeraConsumer {
 
         return Arrays.asList(applications);
     }
-
-    /* Helper methods */
 
     private String buildUrl(Service service, Map<String, Object> parameters) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL);
@@ -83,13 +80,12 @@ public class DefaultVeraConsumer implements VeraConsumer {
     }
 
     @Override
-    public boolean ping() throws Exception {
+    public boolean ping() {
         try {
             this.getEnvironments(PING_VERA);
-        } catch (Exception exception) {
-            LOGGER.warn("An exceptin was encountered while pinging Vera: {}", exception.toString());
-
-            throw exception;
+        } catch (RuntimeException e) {
+            LOGGER.warn("An exception was encountered while pinging Vera: {}", e.toString());
+            throw e;
         }
         return true;
     }

@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.documentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -33,10 +34,10 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "TPS Maintenance Client",
-                "Glossy summer intern project",
+                "TPS-Vedlikeholdsklient summer intern project",
                 "1.0.0-SNAPSHOT",
-                "https://our.tos.com",
-                new Contact("Pusekatt", "http://stash.devillo.no/projects/FEL/repos/tps-vedlikehold/browse", "pusekatt@nav.no"),
+                "https://nav.no",
+                new Contact("Visma", "http://stash.devillo.no/projects/FEL/repos/tps-vedlikehold/browse", "nav.no"),
                 "Super Strict Licence",
                 "https://opensource.org/licenses/super-strict-license"
         );

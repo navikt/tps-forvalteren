@@ -7,8 +7,4 @@ public class HttpBadRequestException extends HttpException {
     public HttpBadRequestException(String message, String path) {
         super(message, path);
     }
-
-    public HttpBadRequestException(Exception exception, String path) {
-        super(exception, path);
-    }
 }

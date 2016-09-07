@@ -1,9 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collection;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
@@ -22,6 +24,7 @@ import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutin
 import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactory;
 import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +35,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.Map;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Tobias Hansen, Visma Consulting AS
@@ -69,13 +73,8 @@ public class ServiceController {
         objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     }
 
-
-    @RequestMapping(
-            value = "/service/{serviceRutinenavn}",
-            method = RequestMethod.GET
-    )
-    public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
-                                            @RequestParam String environment,
+    @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
+    public ServiceRutineResponse getService(@ApiIgnore HttpSession session, @RequestParam String environment,
                                             @RequestParam(required = false) Map<String, Object> parameters,
                                             @PathVariable("serviceRutinenavn") String serviceRutinenavn) throws HttpException {
 
@@ -87,13 +86,8 @@ public class ServiceController {
     }
 
 
-    @RequestMapping(
-            value = "/service",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
-    public ServiceRutineResponse getService(@ApiIgnore HttpSession session,
-                                            @RequestBody JsonNode body) throws HttpException {
+    @RequestMapping(value = "/service", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ServiceRutineResponse getService(@ApiIgnore HttpSession session, @RequestBody JsonNode body) throws HttpException {
 
         /* All requests must provide an environment and a serivcerutine */
         if (!body.has("environment") || !body.has("serviceRutinenavn")) {
