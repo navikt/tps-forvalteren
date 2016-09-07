@@ -5,6 +5,7 @@
         <exclude-subsystems>
             <subsystem name="jpa"/>
             <subsystem name="webservices"/>
+            <subsystem name="jaxrs" />
         </exclude-subsystems>
         <exclusions>
             <module name="javaee.api"/>
@@ -15,6 +16,7 @@
         <exclude-subsystems>
             <subsystem name="jpa"/>
             <subsystem name="webservices"/>
+            <subsystem name="jaxrs" />
         </exclude-subsystems>
         <exclusions>
             <module name="javaee.api"/>

@@ -1,12 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+import static java.util.stream.Collectors.toSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
@@ -27,11 +27,10 @@ public class DefaultVeraConsumer implements VeraConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVeraConsumer.class);
 
-    private static final String PING_VERA = "tpws";
-    private static final String BASE_URL  = "http://vera.adeo.no/api/v1";
+    private static final String PING_VERA = "tpsws";
+    private static final String BASE_URL = "https://vera.adeo.no/api/v1";
 
     private RestTemplate template = new RestTemplate();
-
 
     public DefaultVeraConsumer() {
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
@@ -68,7 +67,6 @@ public class DefaultVeraConsumer implements VeraConsumer {
         return Arrays.asList(applications);
     }
 
-
     /* Helper methods */
 
     private String buildUrl(Service service, Map<String, Object> parameters) {
@@ -84,7 +82,6 @@ public class DefaultVeraConsumer implements VeraConsumer {
         return builder.build().encode().toUriString();
     }
 
-
     @Override
     public boolean ping() throws Exception {
         try {
@@ -96,7 +93,6 @@ public class DefaultVeraConsumer implements VeraConsumer {
         }
         return true;
     }
-
 
     private enum Service {
         DEPLOYLOG("deploylog");

@@ -27,6 +27,9 @@
         <module>tps-vedlikehold-service</module>
     </modules>
 
+    <prerequisites>
+        <maven>3.3.1</maven>
+    </prerequisites>
 
     <properties>
         <!--Application properties-->
@@ -64,16 +67,10 @@
         <spring-security-ldap.version>4.0.4.RELEASE</spring-security-ldap.version>
 
         <!--Plugin versions-->
-        <aura-maven-plugin.version>5.0.7</aura-maven-plugin.version>
+        <aura-maven-plugin.version>6.1.20</aura-maven-plugin.version>
         <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
         <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
     </properties>
-
-
-    <prerequisites>
-        <maven>3.3.1</maven>
-    </prerequisites>
-
 
     <dependencyManagement>
         <dependencies>
