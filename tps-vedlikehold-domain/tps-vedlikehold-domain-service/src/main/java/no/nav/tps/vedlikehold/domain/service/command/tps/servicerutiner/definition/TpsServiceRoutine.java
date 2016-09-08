@@ -1,13 +1,13 @@
-package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner;
-
-import com.fasterxml.jackson.xml.annotate.JacksonXmlProperty;
+package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition;
 
 import java.util.List;
+
+import com.fasterxml.jackson.xml.annotate.JacksonXmlProperty;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class TpsServiceRutine {
+public class TpsServiceRoutine {
 
     @JacksonXmlProperty(isAttribute = true)
     private String name;
@@ -16,11 +16,9 @@ public class TpsServiceRutine {
     private String internalName;
 
     @JacksonXmlProperty
-    private List<TpsServiceRutineParameter> parameters;
+    private List<TpsServiceRoutineParameter> parameters;
 
-    /* Setters */
-
-    public void setParameters(List<TpsServiceRutineParameter> parameters) {
+    public void setParameters(List<TpsServiceRoutineParameter> parameters) {
         this.parameters = parameters;
     }
 
@@ -32,8 +30,6 @@ public class TpsServiceRutine {
         this.name = name;
     }
 
-    /* Getters */
-
     public String getName() {
         return name;
     }
@@ -42,7 +38,7 @@ public class TpsServiceRutine {
         return internalName;
     }
 
-    public List<TpsServiceRutineParameter> getParameters() {
+    public List<TpsServiceRoutineParameter> getParameters() {
         return parameters;
     }
 }

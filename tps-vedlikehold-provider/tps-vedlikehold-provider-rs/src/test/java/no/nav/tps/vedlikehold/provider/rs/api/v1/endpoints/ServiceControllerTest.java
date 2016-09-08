@@ -1,33 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.DefaultTpsAuthorisationService;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.DefaultTpsServiceRutineService;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.jms.JMSException;
-import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,6 +13,37 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.jms.JMSException;
+import javax.servlet.http.HttpSession;
+
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.command.authorisation.DefaultTpsAuthorisationService;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.DefaultTpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  *  @author Øyvind Grimnes, Visma Consulting AS
  */
@@ -48,7 +51,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceControllerTest {
 
-    private static final List<TpsServiceRutine> SERVICES = mock(List.class);
+    private static final List<TpsServiceRoutine> SERVICES = mock(List.class);
 
     private static final String FNR                 = "12345678910";
     private static final String SERVICE_RUTINE_NAME = "serviceRutineName";
@@ -158,7 +161,7 @@ public class ServiceControllerTest {
 
     @Test
     public void getTpsServiceRutinerReturnsServices() {
-        Collection<TpsServiceRutine> services = serviceController.getTpsServiceRutiner();
+        Collection<TpsServiceRoutine> services = serviceController.getTpsServiceRutiner();
 
         assertThat(services, is(equalTo(SERVICES)));
     }

@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.TpsServiceRutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
@@ -102,16 +102,10 @@ public class ServiceController {
         if ( !isAuthorised(fnr, environment, session) ) {
             throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutinenavn);
         }
-
-        /* Prepare the request message */
-        TpsRequest request = requestObjectForServiceRutine(serviceRutinenavn, body);
-
-        /* Send the request to TPS */
-        ServiceRutineResponse response = sendRequest(request);
-
         Sporingslogger.log(environment, serviceRutinenavn, fnr);
 
-        return response;
+        TpsRequest request = requestObjectForServiceRutine(serviceRutinenavn, body);
+        return sendRequest(request);
     }
 
     /**
@@ -122,7 +116,7 @@ public class ServiceController {
      */
 
     @RequestMapping(value = "/service", method = RequestMethod.GET)
-    public Collection<TpsServiceRutine> getTpsServiceRutiner() {
+    public Collection<TpsServiceRoutine> getTpsServiceRutiner() {
         return getTpsServiceRutinerService.exectue();
     }
 

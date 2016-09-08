@@ -1,22 +1,5 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
-import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.jms.JMSException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.any;
@@ -25,18 +8,32 @@ import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+
+import javax.jms.JMSException;
+
+import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import com.fasterxml.jackson.xml.XmlMapper;
+
 /**
  *  @author Øyvind Grimnes, Visma Consulting AS
  */
-
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultTpsServiceRutineServiceTest {
 
     private static final String ENVIRONMENT         = "environment";
-
-    private static final String REQUEST_XML         = "<requests><request>request</request></requests>";
     private static final String RESPONSE_XML        = "<responses><response>response</response></responses>";
-
 
     @Mock
     private MessageQueueServiceFactory messageQueueServiceFactoryMock;
@@ -55,7 +52,6 @@ public class DefaultTpsServiceRutineServiceTest {
 
     @InjectMocks
     private DefaultTpsServiceRutineService defaultGetTpsServiceRutineService;
-
 
     @Before
     public void setUp() throws Exception {
@@ -122,16 +118,4 @@ public class DefaultTpsServiceRutineServiceTest {
 
         defaultGetTpsServiceRutineService.execute(tpsRequestMock);
     }
-
-    private Map<String, Object> parameters() {
-        Map<String, Object> parameters = new HashMap<>();
-
-        parameters.put("serviceRutinenavn", "FS03-FDNUMMER-PERSDATA-O");
-        parameters.put("aksjonsDato", "2001-11-11");
-        parameters.put("aksjonsKode", "A");
-        parameters.put("aksjonsKode2", "0");
-
-        return parameters;
-    }
-
 }
