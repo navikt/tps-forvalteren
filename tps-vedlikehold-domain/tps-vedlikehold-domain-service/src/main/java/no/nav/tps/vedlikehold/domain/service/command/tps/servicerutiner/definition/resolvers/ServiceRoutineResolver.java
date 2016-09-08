@@ -5,6 +5,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definiti
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
  */
+@FunctionalInterface
 public interface ServiceRoutineResolver {
 
     TpsServiceRoutine resolve();

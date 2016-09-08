@@ -27,6 +27,18 @@ public class TpsServiceRoutineBuilder {
         return new TpsServiceRoutineParameterBuilder();
     }
 
+    public TpsServiceRoutine build() {
+        TpsServiceRoutine routine = new TpsServiceRoutine();
+        routine.setName(name);
+        routine.setInternalName(internalName);
+        routine.setParameters(parameters);
+        return routine;
+    }
+
+    public static TpsServiceRoutineBuilder aTpsServiceRoutine() {
+        return new TpsServiceRoutineBuilder();
+    }
+
     public class TpsServiceRoutineParameterBuilder {
         private String name;
         private TpsServiceRoutineParameter.Type type;
@@ -72,17 +84,5 @@ public class TpsServiceRoutineBuilder {
             TpsServiceRoutineBuilder.this.parameters.add(param);
             return TpsServiceRoutineBuilder.this;
         }
-    }
-
-    public TpsServiceRoutine build() {
-        TpsServiceRoutine routine = new TpsServiceRoutine();
-        routine.setName(name);
-        routine.setInternalName(internalName);
-        routine.setParameters(parameters);
-        return routine;
-    }
-
-    public static TpsServiceRoutineBuilder aTpsServiceRoutine() {
-        return new TpsServiceRoutineBuilder();
     }
 }
