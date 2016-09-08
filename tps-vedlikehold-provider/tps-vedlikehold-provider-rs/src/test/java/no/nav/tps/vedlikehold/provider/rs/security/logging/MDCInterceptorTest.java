@@ -1,20 +1,19 @@
 package no.nav.tps.vedlikehold.provider.rs.security.logging;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import org.junit.Before;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.slf4j.MDC;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -31,35 +30,46 @@ public class MDCInterceptorTest {
     @InjectMocks
     private MDCInterceptor interceptor;
 
-    @Before
-    public void setUp() {
-
-    }
-
     @Test
-    public void prehandleFailsGracefullyWhenUserIsAnonymous() throws Exception {
-        when(userContextHolderMock.getUsername()).thenThrow(RuntimeException.class);
+    public void preHandleFailsGracefullyWhenUserIsAnonymous() {
+        when(userContextHolderMock.getUsername()).thenThrow(new RuntimeException());
 
-        Boolean result = interceptor.preHandle(mock(HttpServletRequest.class), mock(HttpServletResponse.class), mock(Object.class));
+        boolean result = interceptor.preHandle(null, null, null);
 
         assertThat(result, is(true));
     }
 
-    @Test(expected = Exception.class)
-    public void prehandleFailsForGeneralExceptions() throws Exception {
-        when(userContextHolderMock.getUsername()).thenThrow(Exception.class);
-
-        interceptor.preHandle(mock(HttpServletRequest.class), mock(HttpServletResponse.class), mock(Object.class));
-    }
-
     @Test
-    public void prehandleReturnsTrue() throws Exception {
+    public void preHandleReturnsTrue() {
         when(userContextHolderMock.getUsername()).thenReturn(USERNAME);
 
-        Boolean result = interceptor.preHandle(mock(HttpServletRequest.class), mock(HttpServletResponse.class), mock(Object.class));
+        boolean result = interceptor.preHandle(null, null, null);
 
         assertThat(result, is(true));
     }
 
+    @Test
+    public void preHandlePopulatesMdc() {
+        when(userContextHolderMock.getUsername()).thenReturn(USERNAME);
 
+        interceptor.preHandle(null, null, null);
+
+        String userId = MDC.get(MDCInterceptor.USER_ID_ATTRIBUTE_NAME);
+        assertThat(userId, is(USERNAME));
+    }
+
+    @Test
+    public void postHandleDoesNothing() {
+        interceptor.postHandle(null, null, null, null);
+
+        verifyZeroInteractions(userContextHolderMock);
+    }
+
+    @Test
+    public void afterCompletionRemovesFromMdc() {
+        interceptor.afterCompletion(null, null, null, null);
+
+        String userId = MDC.get(MDCInterceptor.USER_ID_ATTRIBUTE_NAME);
+        assertThat(userId, is(nullValue()));
+    }
 }
