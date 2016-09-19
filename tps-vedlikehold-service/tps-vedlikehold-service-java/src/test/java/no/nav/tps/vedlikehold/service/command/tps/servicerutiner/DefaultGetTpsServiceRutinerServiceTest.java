@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
@@ -46,7 +45,7 @@ public class DefaultGetTpsServiceRutinerServiceTest {
 
     @Test
     public void returnsRoutines() {
-        Collection<TpsServiceRoutine> routines = command.exectue();
+        List<TpsServiceRoutine> routines = command.exectue();
 
         assertThat(routines, contains(routineMock));
     }

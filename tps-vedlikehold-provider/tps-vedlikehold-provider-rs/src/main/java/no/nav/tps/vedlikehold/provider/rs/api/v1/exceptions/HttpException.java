@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class HttpException extends Exception {
+public class HttpException extends RuntimeException {
 
     private final String path;
 
@@ -16,7 +16,6 @@ public class HttpException extends Exception {
         super(exception);
         this.path = path;
     }
-
 
     public String getPath() {
         return path;

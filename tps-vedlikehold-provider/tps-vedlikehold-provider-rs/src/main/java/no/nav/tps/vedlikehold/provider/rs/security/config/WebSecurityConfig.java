@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.security.config;
 
 import no.nav.tps.vedlikehold.provider.rs.security.csrf.CsrfHeaderFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Value("${tps.vedlikehold.cookie.path}")
     private String cookiePath;
 

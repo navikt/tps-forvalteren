@@ -7,6 +7,7 @@ angular.module('tps-vedlikehold.factory')
         var serviceRutineFactory = {};
         
         var urlBase = 'api/v1/service';
+        var urlRoutinesBase = 'api/v1/serviceroutine';
         var urlBaseEnv = 'api/v1/environments';
 
         var serviceRutines = {};
@@ -24,7 +25,7 @@ angular.module('tps-vedlikehold.factory')
         };
 
         serviceRutineFactory.loadFromServerServiceRutines = function() {
-            return $http({method: 'GET', url: urlBase}).then(function(res) {
+            return $http({method: 'GET', url: urlRoutinesBase}).then(function(res) {
                 if (res.data) {
                     var serviceRutineList = res.data;
 

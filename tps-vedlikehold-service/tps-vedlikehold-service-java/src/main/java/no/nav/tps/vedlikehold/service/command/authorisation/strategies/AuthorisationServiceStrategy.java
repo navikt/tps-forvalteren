@@ -5,5 +5,5 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
  */
 @FunctionalInterface
 public interface AuthorisationServiceStrategy {
-    Boolean isAuthorised();
+    boolean isAuthorised();
 }

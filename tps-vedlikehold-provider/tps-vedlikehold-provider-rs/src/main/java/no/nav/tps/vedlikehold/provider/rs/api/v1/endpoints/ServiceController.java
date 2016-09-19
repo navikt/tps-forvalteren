@@ -1,32 +1,24 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
 
-import java.util.Collection;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
+import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.strategies.user.UserContextUserFactoryStrategy;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.utils.RequestClassService;
 import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutineService;
-import no.nav.tps.vedlikehold.service.command.user.DefaultUserFactory;
-import no.nav.tps.vedlikehold.service.command.user.UserFactory;
-import no.nav.tps.vedlikehold.service.command.user.UserFactoryStrategy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,11 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import springfox.documentation.annotations.ApiIgnore;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Tobias Hansen, Visma Consulting AS
@@ -49,8 +37,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 @RequestMapping(value = "api/v1")
 public class ServiceController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -62,96 +48,58 @@ public class ServiceController {
     private TpsAuthorisationService tpsAuthorisationService;
 
     @Autowired
-    private GetTpsServiceRutinerService getTpsServiceRutinerService;
+    private RsRequestMappingUtils mappingUtils;
 
-    private ObjectMapper objectMapper;
+    @Autowired
+    private MessageProvider messageProvider;
 
-
-    public ServiceController() {
-        objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-    }
-
+    @LogExceptions
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
-    public ServiceRutineResponse getService(@ApiIgnore HttpSession session, @RequestParam String environment,
-                                            @RequestParam(required = false) Map<String, Object> parameters,
-                                            @PathVariable("serviceRutinenavn") String serviceRutinenavn) throws HttpException {
-
+    public ServiceRutineResponse getService(@RequestParam(required = false) Map<String, Object> parameters, @PathVariable String serviceRutinenavn) throws HttpException {
         parameters.put("serviceRutinenavn", serviceRutinenavn);
 
-        JsonNode jsonNode = objectMapper.convertValue(parameters, JsonNode.class);
-
-        return getService(session, jsonNode);
+        JsonNode jsonNode = mappingUtils.convert(parameters, JsonNode.class);
+        return getService(jsonNode);
     }
 
-
+    @LogExceptions
     @RequestMapping(value = "/service", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ServiceRutineResponse getService(@ApiIgnore HttpSession session, @RequestBody JsonNode body) throws HttpException {
+    public ServiceRutineResponse getService(@RequestBody JsonNode body) throws HttpException {
+        validateRequest(body);
 
-        /* All requests must provide an environment and a serivcerutine */
-        if (!body.has("environment") || !body.has("serviceRutinenavn")) {
-            throw new HttpBadRequestException("Both 'environment' and 'serviceRutinenavn' must be defined in th request body", "api/v1/service");
-        }
-
-        String environment       = body.get("environment").asText();
+        String environment = body.get("environment").asText();
         String serviceRutinenavn = body.get("serviceRutinenavn").asText();
-        String fnr               = body.has("fnr") ? body.get("fnr").asText() : null;
+        String fnr = body.has("fnr") ? body.get("fnr").asText() : null;
 
-        /* Authorise user based on requested data, and the environment */
-        if ( !isAuthorised(fnr, environment, session) ) {
-            throw new HttpUnauthorisedException("User is not authorized to access the requested data", "api/v1/service/" + serviceRutinenavn);
-        }
+        validateAuthorized(fnr, environment, serviceRutinenavn);
+
         Sporingslogger.log(environment, serviceRutinenavn, fnr);
 
-        TpsRequest request = requestObjectForServiceRutine(serviceRutinenavn, body);
+        TpsRequest request = mappingUtils.convertToTpsRequest(serviceRutinenavn, body);
         return sendRequest(request);
     }
 
-    /**
-     * Get an JSONObject containing all implemented ServiceRutiner
-     * and their allowed input attributes
-     *
-     * @return JSONObject as String containing metadata about all ServiceRutiner
-     */
-
-    @RequestMapping(value = "/service", method = RequestMethod.GET)
-    public Collection<TpsServiceRoutine> getTpsServiceRutiner() {
-        return getTpsServiceRutinerService.exectue();
+    private void validateRequest(JsonNode body) throws HttpBadRequestException {
+        if (!body.has("environment") || !body.has("serviceRutinenavn")) {
+            throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
+        }
     }
-
-    /* Helpers */
 
     private ServiceRutineResponse sendRequest(TpsRequest request) throws HttpException {
         try {
             return tpsServiceRutineService.execute(request);
         } catch (Exception exception) {
-            LOGGER.error("Failed to execute '{}' in environment '{}' with exception: {}",
-                    request.getServiceRutinenavn(),
-                    request.getEnvironment(),
-                    exception.toString());
-
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
 
-    private TpsRequest requestObjectForServiceRutine(String serviceRutinenavn, JsonNode body) {
-        Class<? extends TpsRequest> requestClass = RequestClassService.getClassForServiceRutinenavn( serviceRutinenavn );
-
-        return objectMapper.convertValue(body, requestClass);
-    }
-
-
-    private Boolean isAuthorised(String fnr, String environment, HttpSession session) {
-        if (fnr == null) {
-            return true;
+    private void validateAuthorized(String fnr, String environment, String serviceRutinenavn) {
+        if (!isEmpty(fnr)) {
+            User user = userContextHolder.getUser();
+            boolean authorized = tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
+            if (!authorized) {
+                throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + serviceRutinenavn);
+            }
         }
-
-        UserFactory userFactory      = new DefaultUserFactory();
-        UserFactoryStrategy strategy = new UserContextUserFactoryStrategy(userContextHolder, session);
-
-        User user = userFactory.createUser(strategy);
-
-        return tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
     }
 }

@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
-import java.util.Collection;
+import java.util.List;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 
@@ -9,5 +9,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definiti
  */
 @FunctionalInterface
 public interface GetTpsServiceRutinerService {
-    Collection<TpsServiceRoutine> exectue();
+    List<TpsServiceRoutine> exectue();
 }

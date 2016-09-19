@@ -4,6 +4,7 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.d
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineParameter;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequest;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -15,6 +16,7 @@ public class S400HentPersonServiceRoutineResolver implements ServiceRoutineResol
         return aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-PERSDATA-O")
                 .internalName("S400 hentPerson")
+                .javaClass(TpsHentPersonRequest.class)
                 .parameter()
                     .name("fnr")
                     .required()

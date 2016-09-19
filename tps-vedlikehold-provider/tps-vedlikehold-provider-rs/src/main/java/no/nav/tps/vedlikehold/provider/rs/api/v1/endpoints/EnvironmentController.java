@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import java.util.Set;
 
+import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.utils.EnvironmentsFilter;
 import no.nav.tps.vedlikehold.service.command.vera.GetEnvironments;
 
@@ -25,6 +26,7 @@ public class EnvironmentController {
      *
      * @return a set of environment names
      */
+    @LogExceptions
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Set<String> getEnvironments() {
         Set<String> environments = getEnvironmentsCommand.execute("tpsws");

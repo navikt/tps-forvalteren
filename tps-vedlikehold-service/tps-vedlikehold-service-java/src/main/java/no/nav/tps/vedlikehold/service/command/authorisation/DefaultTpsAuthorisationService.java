@@ -1,5 +1,11 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
+import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
@@ -7,14 +13,9 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategies.Authorisa
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadAuthorisationServiceStrategy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -41,7 +42,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
      * @return <code>Boolean</code> indicating whether the user is authorised
      */
     @Override
-    public Boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment) {
+    public boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment) {
 
         /* Diskresjonskode */
         DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeStrategy = new DiskresjonskodeAuthorisationServiceStrategy();
@@ -81,7 +82,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
      * @return boolean indicating whether the user is authorised
      */
     @Override
-    public Boolean isAuthorised(Collection<AuthorisationServiceStrategy> strategies) {
+    public boolean isAuthorised(Collection<AuthorisationServiceStrategy> strategies) {
 
         for (AuthorisationServiceStrategy strategy : strategies) {
             if (!strategy.isAuthorised()) {

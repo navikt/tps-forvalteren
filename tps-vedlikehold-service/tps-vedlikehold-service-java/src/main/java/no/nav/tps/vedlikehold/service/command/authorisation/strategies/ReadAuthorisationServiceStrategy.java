@@ -1,9 +1,9 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategies;
 
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -20,7 +20,7 @@ public class ReadAuthorisationServiceStrategy implements AuthorisationServiceStr
      * @return <code>Boolean</code> indicating whether the user is authorised
      */
     @Override
-    public Boolean isAuthorised() {
+    public boolean isAuthorised() {
         Set<String> userRoles = new HashSet<>(user.getRoles());               // retainAll() should not modify the users objects roles
 
         /* Retain all roles present in both authorised roles, and the users roles */

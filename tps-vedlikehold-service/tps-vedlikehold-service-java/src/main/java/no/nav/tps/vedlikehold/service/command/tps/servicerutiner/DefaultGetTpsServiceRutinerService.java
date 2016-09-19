@@ -2,7 +2,6 @@ package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.Collection;
 import java.util.List;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
@@ -21,7 +20,7 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
     private List<ServiceRoutineResolver> resolvers;
 
     @Override
-    public Collection<TpsServiceRoutine> exectue() {
+    public List<TpsServiceRoutine> exectue() {
         return resolvers.stream()
                 .map(ServiceRoutineResolver::resolve)
                 .collect(toList());
