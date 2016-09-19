@@ -11,7 +11,6 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
@@ -55,7 +54,7 @@ public class ServiceController {
 
     @LogExceptions
     @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
-    public ServiceRutineResponse getService(@RequestParam(required = false) Map<String, Object> parameters, @PathVariable String serviceRutinenavn) throws HttpException {
+    public ServiceRutineResponse getService(@RequestParam(required = false) Map<String, Object> parameters, @PathVariable String serviceRutinenavn) {
         parameters.put("serviceRutinenavn", serviceRutinenavn);
 
         JsonNode jsonNode = mappingUtils.convert(parameters, JsonNode.class);
@@ -64,7 +63,7 @@ public class ServiceController {
 
     @LogExceptions
     @RequestMapping(value = "/service", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ServiceRutineResponse getService(@RequestBody JsonNode body) throws HttpException {
+    public ServiceRutineResponse getService(@RequestBody JsonNode body) {
         validateRequest(body);
 
         String environment = body.get("environment").asText();
@@ -79,13 +78,13 @@ public class ServiceController {
         return sendRequest(request);
     }
 
-    private void validateRequest(JsonNode body) throws HttpBadRequestException {
+    private void validateRequest(JsonNode body) {
         if (!body.has("environment") || !body.has("serviceRutinenavn")) {
             throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
         }
     }
 
-    private ServiceRutineResponse sendRequest(TpsRequest request) throws HttpException {
+    private ServiceRutineResponse sendRequest(TpsRequest request) {
         try {
             return tpsServiceRutineService.execute(request);
         } catch (Exception exception) {

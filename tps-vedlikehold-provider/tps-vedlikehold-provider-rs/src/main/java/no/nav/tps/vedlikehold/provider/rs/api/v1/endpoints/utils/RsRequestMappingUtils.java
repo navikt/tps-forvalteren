@@ -30,7 +30,7 @@ public class RsRequestMappingUtils {
     public TpsRequest convertToTpsRequest(String serviceRutineNavn, JsonNode node) {
         Class<? extends TpsRequest> requestClass = service.exectue()
                 .stream()
-                .filter((e) -> e.getName().equalsIgnoreCase(serviceRutineNavn))
+                .filter(e -> e.getName().equalsIgnoreCase(serviceRutineNavn))
                 .findFirst().get()
                 .getJavaClass();
 
