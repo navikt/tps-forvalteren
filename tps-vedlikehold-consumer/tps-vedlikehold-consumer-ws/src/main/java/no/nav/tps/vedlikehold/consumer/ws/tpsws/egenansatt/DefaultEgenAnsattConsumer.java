@@ -1,15 +1,16 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt;
 
+import javax.xml.ws.soap.SOAPFaultException;
+
 import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.xml.ws.soap.SOAPFaultException;
 
 /**
  * @author Tobias Hansen (Visma Consulting AS).
@@ -18,23 +19,21 @@ import javax.xml.ws.soap.SOAPFaultException;
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
 
-    public static final String PERSON_NOT_FOUND_TPSWS_ERROR = "PERSON IKKE FUNNET";
-    public static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
-    public static final String EMPTY_FNR_TPSWS_ERROR        = "FNR MÅ FYLLES UT";
+    static final String PERSON_NOT_FOUND_TPSWS_ERROR = "PERSON IKKE FUNNET";
+    static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    static final String EMPTY_FNR_TPSWS_ERROR        = "FNR MÅ FYLLES UT";
 
-    // Test user
     private static final String PING_FNR = "13037999916";
 
     @Autowired
     private PipEgenAnsattPortType pipEgenAnsattPortType;
 
     @Override
-    public boolean ping() throws Exception {
+    public boolean ping() {
         try {
             isEgenAnsatt(PING_FNR);
-        } catch (Exception exception) {
+        } catch (RuntimeException exception) {
             LOGGER.warn("Pinging egenAnsatt failed with exception: {}", exception.toString());
-
             throw exception;
         }
         return true;
@@ -44,7 +43,6 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     public boolean isEgenAnsatt(String fnr) {
         if (fnr == null) {
             LOGGER.info("isEgenAnsatt called with Fnr == null");
-
             return false;
         }
 
@@ -59,9 +57,9 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
         } catch (SOAPFaultException exception) {
             LOGGER.info("TPSWS: isEgenAnsatt failed with exception: {}", exception.toString());
 
-            Boolean personNotFound = exception.getMessage().contains(PERSON_NOT_FOUND_TPSWS_ERROR);
-            Boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
-            Boolean emptyFnr       = exception.getMessage().contains(EMPTY_FNR_TPSWS_ERROR);
+            boolean personNotFound = exception.getMessage().contains(PERSON_NOT_FOUND_TPSWS_ERROR);
+            boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            boolean emptyFnr       = exception.getMessage().contains(EMPTY_FNR_TPSWS_ERROR);
 
             if (personNotFound || invalidFnr || emptyFnr) {
                 return false;

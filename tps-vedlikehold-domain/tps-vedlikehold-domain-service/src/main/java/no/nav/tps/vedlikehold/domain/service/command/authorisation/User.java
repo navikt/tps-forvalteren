@@ -14,11 +14,10 @@ public class User {
     private String token;
     private Set<String> roles;
 
-    public User(String name, String username, Set<String> roles, String token) {
+    public User(String name, String username, Set<String> roles) {
         this.name = name;
         this.username = username;
         this.roles = roles;
-        this.token = token;
     }
 
     public String getName() {
@@ -35,5 +34,9 @@ public class User {
 
     public Set<String> getRoles() {
         return roles;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

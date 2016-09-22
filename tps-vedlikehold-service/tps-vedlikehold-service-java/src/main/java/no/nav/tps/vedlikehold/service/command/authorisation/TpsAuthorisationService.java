@@ -6,5 +6,5 @@ import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 public interface TpsAuthorisationService extends AuthorisationService {
-    Boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment);
+    boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment);
 }

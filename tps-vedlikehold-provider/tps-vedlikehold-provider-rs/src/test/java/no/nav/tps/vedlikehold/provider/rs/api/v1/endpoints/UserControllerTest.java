@@ -1,33 +1,34 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
+import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.List;
-
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -60,14 +61,14 @@ public class UserControllerTest {
     }
 
     @Test
-    public void getUserReturnsMappedUser() {
-        User user = controller.getUser(httpSessionMock);
+    public void getUserReturnsUserWithToken() {
+        User user = mock(User.class);
+        when(userContextHolderMock.getUser()).thenReturn(user);
 
-        assertThat(user.getRoles(), containsInAnyOrder(ROLE_READ_T.name(), ROLE_WRITE_T.name(), ROLE_READ_Q.name(), ROLE_WRITE_Q.name()));
-        assertThat(user.getRoles(), hasSize(ROLES.size()));
-        assertThat(user.getName(), is(DISTINGUISHED_NAME));
-        assertThat(user.getUsername(), is(USERNAME));
-        assertThat(user.getToken(), is(SESSION_ID));
+        User result = controller.getUser(httpSessionMock);
+
+        assertThat(result, is(sameInstance(user)));
+        verify(user).setToken(SESSION_ID);
     }
 
     @Test

@@ -16,7 +16,7 @@ public class EgenAnsattAuthorisationServiceStrategy implements AuthorisationServ
 
 
     @Override
-    public Boolean isAuthorised() {
+    public boolean isAuthorised() {
         Boolean isEgenAnsatt = egenAnsattConsumer.isEgenAnsatt(fnr);
 
         return !isEgenAnsatt || user.getRoles().contains(ROLE_READ_EGENANSATT);

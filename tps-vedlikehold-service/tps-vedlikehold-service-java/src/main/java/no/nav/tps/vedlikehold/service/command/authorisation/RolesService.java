@@ -1,13 +1,13 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.util.Set;
-
 import static java.util.Collections.emptySet;
 import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
 import static org.springframework.util.StringUtils.isEmpty;
+
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Reads roles from property files and exposes them.
@@ -72,39 +72,36 @@ public class RolesService {
 
         String prefix = getEnvironmentPrefix(environment);
 
-        switch (prefix) {
-            case "u":
-                return readRolesU;
-            case "t":
-                return readRolesT;
-            case "q":
-                return readRolesQ;
-            case "p":
-                return readRolesP;
-            case "o":
-                return readRolesO;
-            default:
-                return emptySet();
+        if ("u".equalsIgnoreCase(prefix)) {
+            return readRolesU;
+        } else if ("t".equalsIgnoreCase(prefix)) {
+            return readRolesT;
+        } else if ("q".equalsIgnoreCase(prefix)) {
+            return readRolesQ;
+        } else if ("p".equalsIgnoreCase(prefix)) {
+            return readRolesP;
+        } else if ("o".equalsIgnoreCase(prefix)) {
+            return readRolesO;
+        } else {
+            return emptySet();
         }
     }
 
     private Set<String> getWriteRolesForEnvironment(String environment) {
-
         String prefix = getEnvironmentPrefix(environment);
 
-        switch (prefix) {
-            case "u":
-                return writeRolesU;
-            case "t":
-                return writeRolesT;
-            case "q":
-                return writeRolesQ;
-            case "p":
-                return writeRolesP;
-            case "o":
-                return writeRolesO;
-            default:
-                return emptySet();
+        if ("u".equalsIgnoreCase(prefix)) {
+            return writeRolesU;
+        } else if ("t".equalsIgnoreCase(prefix)) {
+            return writeRolesT;
+        } else if ("q".equalsIgnoreCase(prefix)) {
+            return writeRolesQ;
+        } else if ("p".equalsIgnoreCase(prefix)) {
+            return writeRolesP;
+        } else if ("o".equalsIgnoreCase(prefix)) {
+            return writeRolesO;
+        } else {
+            return emptySet();
         }
     }
 

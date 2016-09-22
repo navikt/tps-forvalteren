@@ -8,7 +8,7 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit.config;
 class FasitConstants {
     static final String BASE_URL = "https://fasit.adeo.no/conf/";
     static final String USERNAME = "admin";
-    static final String PASSWORD = "admin";
+    static final String PASSWORD = "admin"; // NOSONAR
 
     /* The name of the fasit application */
     static final String APPLICATION_NAME = "tpsws";

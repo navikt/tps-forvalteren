@@ -1,15 +1,21 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
+import static java.util.stream.Collectors.toSet;
+
+import java.util.Collection;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
 /**
  * Implementation of the UserContextHolder interface using spring security
@@ -20,65 +26,40 @@ import java.util.Collection;
 @Service
 public class DefaultUserContextHolder implements UserContextHolder {
 
-    /**
-     * Get the display name of the currently authenticated user
-     *
-     * @return display name of the authenticated user
-     */
-
     @Override
     public String getDisplayName() {
         return getUserDetails().getDn();
     }
-
-    /**
-     * Get the username of the currently authenticated user
-     *
-     * @return username of the authenticated user
-     */
 
     @Override
     public String getUsername() {
         return getUserDetails().getUsername();
     }
 
-    /**
-     * Get an object containing information about the authenticated user
-     *
-     * @return An Authentication object
-     */
-
     @Override
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    /**
-     * Check if the current user is authenticated
-     *
-     * @return boolean indicating whether the user is authenticated
-     */
-
     @Override
-    public Boolean isAuthenticated() {
+    public boolean isAuthenticated() {
         Authentication authentication = getAuthentication();
         return authentication != null && authentication.isAuthenticated();
     }
 
-    /**
-     * Get all roles for the authenticated user
-     *
-     * @return collection of the authenticated users roles
-     */
+    @Override
+    public User getUser() {
+        Set<String> roles = getRoles().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(toSet());
+
+        return new User(getDisplayName(), getUsername(), roles);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getRoles() {
         return getUserDetails().getAuthorities();
     }
-
-    /**
-     * Logout the authenticated user
-     */
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -86,14 +67,6 @@ public class DefaultUserContextHolder implements UserContextHolder {
             new SecurityContextLogoutHandler().logout(request, response, getAuthentication());
         }
     }
-
-    /**
-     * Retrieve user details for the authenticated user from LDAP
-     *
-     * @throws RuntimeException if the user details retrieved is not an LdapUserDetails object
-     *
-     * @return User details as an LdapUserDetails object
-     */
 
     private LdapUserDetails getUserDetails() {
         Object userDetails = getAuthentication().getPrincipal();
