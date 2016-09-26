@@ -1,0 +1,16 @@
+<div layout="column" class="md-whiteframe-z2" flex>
+    <md-sidenav md-component-id="left" class="md-sidenav-left" md-is-locked-open="$mdMedia('gt-md')">
+        <md-content>
+            <md-list class="tps-vk-side-navigator-list" layout="column" layout-align="start start">
+                <md-list-item ng-repeat="serviceRutineName in serviceRutineNames" class="tps-vk-service-rutine-list-item">
+                        <md-button md-ripple-container class="md-primary tps-vk-service-rutine-button"
+                                   ui-sref="servicerutine({serviceRutineName: serviceRutineName})"
+                                   ui-sref-active="activeMenuButton" tabindex="0">
+                            {{ getServiceRutineInternalName(serviceRutineName) }}
+                        </md-button>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+</div>

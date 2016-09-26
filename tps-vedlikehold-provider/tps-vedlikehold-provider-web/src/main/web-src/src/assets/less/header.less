@@ -1,0 +1,31 @@
+#tps-vk-header {
+
+  md-toolbar {
+    .md-toolbar-tools{
+      width: auto;
+    }
+
+    .tps-vk-user-info {
+      text-align: right;
+    }
+
+    @media (max-width: 599px) {
+      padding: 20px 0;
+      border-radius: 0;
+
+      .md-toolbar-tools {
+        display: table;
+
+        a {
+          text-align: left;
+          text-decoration: underline;
+        }
+
+        .tps-vk-user-info {
+          margin: 10px 8px;
+          text-align: left !important;
+        }
+      }
+    }
+  }
+}
