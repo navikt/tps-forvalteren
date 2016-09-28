@@ -4,6 +4,7 @@ import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S400HentPersonServiceRoutineResolver;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S600HentKontaktinformasjon;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 import no.nav.tps.vedlikehold.service.command.Command;
 
@@ -43,6 +44,12 @@ public class CommandConfig {
     @Order(Integer.MAX_VALUE)
     ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
         return new S000TilgangTilTpsServiceRoutineResolver();
+    }
+
+    @Bean
+    @Order(2)
+    ServiceRoutineResolver tillgangTilTestRoutineResolver() {
+        return new S600HentKontaktinformasjon();
     }
 
     @Bean

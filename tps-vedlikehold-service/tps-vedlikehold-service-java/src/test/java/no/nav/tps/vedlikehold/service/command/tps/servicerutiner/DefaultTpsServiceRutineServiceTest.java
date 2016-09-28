@@ -15,7 +15,7 @@ import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -86,14 +86,14 @@ public class DefaultTpsServiceRutineServiceTest {
 
     @Test
     public void responseXmlIsProvided() throws Exception {
-        ServiceRutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestMock);
+        ServiceRoutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
         assertThat(result.getXml(), is(RESPONSE_XML));
     }
 
     @Test
     public void responseObjectIsProvided() throws Exception {
-        ServiceRutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestMock);
+        ServiceRoutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestMock);
 
         assertThat(result.getData(), is(responseObjectMock));
     }

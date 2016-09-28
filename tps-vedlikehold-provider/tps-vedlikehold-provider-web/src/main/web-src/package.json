@@ -4,6 +4,7 @@
   "description": "tps-vedlikehold client",
   "main": "index.js",
   "scripts": {
+    "start": "gulp default --color",
     "build": "gulp build --color"
   },
   "author": "",

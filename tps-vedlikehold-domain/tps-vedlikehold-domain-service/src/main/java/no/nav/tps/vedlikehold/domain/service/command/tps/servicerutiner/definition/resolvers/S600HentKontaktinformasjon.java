@@ -1,22 +1,25 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+/**
+ * Created by f148888 on 26.09.2016.
+ */
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineParameter;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentKontaktinformasjon;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsPingRequest;
 
-/**
- * @author Kenneth Gunnerud (Visma Consulting AS).
- */
-public class S400HentPersonServiceRoutineResolver implements ServiceRoutineResolver {
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+
+
+public class S600HentKontaktinformasjon implements ServiceRoutineResolver {
 
     @Override
     public TpsServiceRoutine resolve() {
         return aTpsServiceRoutine()
-                .name("FS03-FDNUMMER-PERSDATA-O")
-                .internalName("S400 Hent Person")
-                .javaClass(TpsHentPersonRequest.class)
+                .name("FS03-FDNUMMER-KONTINFO-O")
+                .internalName("S600 Hent Kontaktinformasjon")
+                .javaClass(TpsHentKontaktinformasjon.class)
                 .parameter()
                     .name("fnr")
                     .required()

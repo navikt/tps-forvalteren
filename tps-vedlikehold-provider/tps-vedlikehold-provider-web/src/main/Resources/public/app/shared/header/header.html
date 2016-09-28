@@ -11,18 +11,24 @@
                     </a>
                 </div>
                 <div flex-gt-xs="5"></div>
+                <!-- Person Button -->
                 <md-button class="md-raised md-accent" tabindex="-1">
                     Person
                 </md-button>
                 <span flex-gt-xs></span>
+
+                <!-- Upper right names -->
                 <div layout="column" class="tps-vk-user-info">
                     <div class="md-body-1">{{currentUser.username}}</div>
                     <div class="md-body-2">{{currentUser.name}}</div>
                 </div>
                 <div flex-gt-xs="5"></div>
+
+                <!-- Logout Button -->
                 <md-button id="tps-vk-logout-button" class="md-raised md-accent" ng-click="logout()" tabindex="-1">
                     Logg ut
                 </md-button>
+
             </div>
         </nav>
     </md-toolbar>

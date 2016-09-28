@@ -8,7 +8,7 @@ import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
@@ -37,6 +37,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 @RequestMapping(value = "api/v1")
 public class ServiceController {
 
+    private static final String TPS_SERVICE_ROUTINE_PARAM_NAME = "serviceRutinenavn";
+
     @Autowired
     private UserContextHolder userContextHolder;
 
@@ -53,38 +55,42 @@ public class ServiceController {
     private MessageProvider messageProvider;
 
     @LogExceptions
-    @RequestMapping(value = "/service/{serviceRutinenavn}", method = RequestMethod.GET)
-    public ServiceRutineResponse getService(@RequestParam(required = false) Map<String, Object> parameters, @PathVariable String serviceRutinenavn) {
-        parameters.put("serviceRutinenavn", serviceRutinenavn);
+    @RequestMapping(value = "/service/{"+ TPS_SERVICE_ROUTINE_PARAM_NAME +"}", method = RequestMethod.GET)
+    public ServiceRoutineResponse getService(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
+        tpsRequestParameters.put(TPS_SERVICE_ROUTINE_PARAM_NAME, serviceRutinenavn);
 
-        JsonNode jsonNode = mappingUtils.convert(parameters, JsonNode.class);
+        JsonNode jsonNode = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
         return getService(jsonNode);
     }
 
     @LogExceptions
     @RequestMapping(value = "/service", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ServiceRutineResponse getService(@RequestBody JsonNode body) {
+    public ServiceRoutineResponse getService(@RequestBody JsonNode body) {
         validateRequest(body);
 
         String environment = body.get("environment").asText();
-        String serviceRutinenavn = body.get("serviceRutinenavn").asText();
-        String fnr = body.has("fnr") ? body.get("fnr").asText() : null;
+        String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
+        String fnr = null;
+        if(body.has("fnr")){
+            fnr = body.get("fnr").asText();
+        }
 
-        validateAuthorized(fnr, environment, serviceRutinenavn);
+        validateAuthorized(fnr, environment, tpsServiceRutinenavn);
 
-        Sporingslogger.log(environment, serviceRutinenavn, fnr);
+        Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
 
-        TpsRequest request = mappingUtils.convertToTpsRequest(serviceRutinenavn, body);
-        return sendRequest(request);
+        TpsRequest request = mappingUtils.convertToTpsRequest(tpsServiceRutinenavn, body);
+        ServiceRoutineResponse tpsResponse = sendTpsRequest(request);
+        return tpsResponse;
     }
 
     private void validateRequest(JsonNode body) {
-        if (!body.has("environment") || !body.has("serviceRutinenavn")) {
+        if (!body.has("environment") || !body.has(TPS_SERVICE_ROUTINE_PARAM_NAME)) {
             throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
         }
     }
 
-    private ServiceRutineResponse sendRequest(TpsRequest request) {
+    private ServiceRoutineResponse sendTpsRequest(TpsRequest request) {
         try {
             return tpsServiceRutineService.execute(request);
         } catch (Exception exception) {
@@ -92,6 +98,7 @@ public class ServiceController {
         }
     }
 
+    // Dette er bare for rettighet til å lese person vel..
     private void validateAuthorized(String fnr, String environment, String serviceRutinenavn) {
         if (!isEmpty(fnr)) {
             User user = userContextHolder.getUser();

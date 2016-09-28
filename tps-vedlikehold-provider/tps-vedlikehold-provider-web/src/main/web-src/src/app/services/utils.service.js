@@ -31,34 +31,45 @@ angular.module('tps-vedlikehold.service')
                 return aSubstrInt - bSubstrInt;
             });
         };
-        
+
+
         //TODO: find a better way to create dynamic output
         // Flattens a JSON object, adding all key-values at top with just their key as key
         // Except for the objects with the keys that matches nonUniques,
         // they are given the name parentKey_childKey
-        self.flattenObject = function(ob, nonUniques) {
-            var finalFlatOb = {};
-            
-            for (var i in ob) {
-                if (!ob.hasOwnProperty(i)) continue;
-                
-                if ((typeof ob[i]) == 'object') {
-                    var flatObject = self.flattenObject(ob[i]);
-                    for (var x in flatObject) {
-                        if (!flatObject.hasOwnProperty(x)) continue;
+        self.flattenObject = function (jsonObject, nonUniques) {
+            return _flattenObject({}, jsonObject, nonUniques);
+        };
 
-                        if (nonUniques && nonUniques.indexOf(i) > -1) {
-                            finalFlatOb[i + '_' + x] = flatObject[x];
+        //TODO Look into what nonUniques are... Cause this beneath do not add duplicate properties.
+        var _flattenObject = function (finalFlatObject, jsonObject, nonUniques) {
+            for(var key in jsonObject){
+                if (!jsonObject.hasOwnProperty(key)) continue;
+                if ((typeof jsonObject[key]) == 'object') {
+                    var flatterObject = _flattenObject(finalFlatObject, jsonObject[key], nonUniques);
+                    for (var keyInFlatObject in flatterObject) {
+                        if (!flatterObject.hasOwnProperty(keyInFlatObject)) continue;
+                        if (nonUniques && nonUniques.indexOf(key) > -1) {
+                            if(!finalFlatObject.hasOwnProperty(key + '_' + keyInFlatObject) || finalFlatObject[key + '_' + keyInFlatObject]=== ""){
+                                finalFlatObject[key + '_' + keyInFlatObject] = flatterObject[keyInFlatObject];
+                            }
                         } else {
-                            finalFlatOb[x] = flatObject[x];
+                            if(!finalFlatObject.hasOwnProperty(keyInFlatObject) || finalFlatObject[keyInFlatObject] === ""){
+                                finalFlatObject[keyInFlatObject] = flatterObject[keyInFlatObject];
+                            }
                         }
                     }
+
                 } else {
-                    finalFlatOb[i] = ob[i];
+                    if(!finalFlatObject.hasOwnProperty(key) || finalFlatObject[key] === ""){
+                        finalFlatObject[key] = jsonObject[key];
+                    }
                 }
             }
-            return finalFlatOb;
+            return finalFlatObject;
         };
+
+
 
         //TODO: use library for this
         self.formatXml = function (xml) {

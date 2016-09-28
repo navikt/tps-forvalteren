@@ -8,7 +8,7 @@ import javax.jms.JMSException;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     /**
      * Send a request to TPS using asynchronous message queues
      *
-     * @param request TPS request object
+     * @param tpsRequest TPS request object
      *
      * @return an object wrapping the raw XML response, and the XML represented by an object
      *
@@ -45,18 +45,18 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
      * @throws IOException failed to convert the response XML to an object
      */
     @Override
-    public ServiceRutineResponse execute(TpsRequest request) throws IOException, JMSException {
+    public ServiceRoutineResponse execute(TpsRequest tpsRequest) throws IOException, JMSException {
         try {
-            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(request) + XML_PROPERTIES_POSTFIX;     //TODO: This class shouldnt be responsible for message construction
+            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(tpsRequest) + XML_PROPERTIES_POSTFIX;     //TODO: This class shouldnt be responsible for message construction
 
             /* Send message to TPS and handle the received data */
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( request.getEnvironment() );
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( tpsRequest.getEnvironment() );
 
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 
             Object responseData = xmlMapper.readValue(responseXml, Map.class);          //TODO Map to custom object
 
-            return new ServiceRutineResponse(responseXml, responseData);
+            return new ServiceRoutineResponse(responseXml, responseData);
         } catch (IOException exception) {
             LOGGER.error("Failed to convert TPS during XML marshalling with exception: {}", exception.toString());
             throw exception;

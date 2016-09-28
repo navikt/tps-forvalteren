@@ -16,7 +16,7 @@ import java.util.Map;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
@@ -174,10 +174,10 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceReturnsResultFromServiceRutineService() throws Exception {
-        ServiceRutineResponse response = mock(ServiceRutineResponse.class);
+        ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
         when(tpsRutineServiceMock.execute(any(TpsRequest.class))).thenReturn(response);
 
-        ServiceRutineResponse result = controller.getService(baseJsonNode);
+        ServiceRoutineResponse result = controller.getService(baseJsonNode);
 
         assertThat(result, is(sameInstance(response)));
     }

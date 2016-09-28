@@ -25,9 +25,9 @@ angular.module('tps-vedlikehold.factory')
         };
 
         serviceRutineFactory.loadFromServerServiceRutines = function() {
-            return $http({method: 'GET', url: urlRoutinesBase}).then(function(res) {
-                if (res.data) {
-                    var serviceRutineList = res.data;
+            return $http({method: 'GET', url: urlRoutinesBase}).then(function(response) {
+                if (response.data) {
+                    var serviceRutineList = response.data;
 
                     for (var i = 0; i < serviceRutineList.length; i++) {
                         serviceRutines[serviceRutineList[i].name] = serviceRutineList[i];

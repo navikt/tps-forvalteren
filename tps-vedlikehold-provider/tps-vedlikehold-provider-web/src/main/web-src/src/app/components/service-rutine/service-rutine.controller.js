@@ -27,11 +27,13 @@ angular.module('tps-vedlikehold.service-rutine')
                 var params = createParams($scope.formData);
                 $scope.loading = true;
 
-                serviceRutineFactory.getResponse($scope.serviceRutineName, params).then(function(res) {
+                serviceRutineFactory.getResponse($scope.serviceRutineName, params).then(function(response) {
                     $scope.loading = false;
-                    $scope.xmlForm = utilsService.formatXml(res.data.xml);
+                    $scope.xmlForm = utilsService.formatXml(response.data.xml);
 
-                    tpsReturnedObject = res.data.data;
+                    tpsReturnedObject = response.data.data;
+
+                    console.log("Success: " + $scope.serviceRutineName);
 
                     var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
                     $scope.svarStatus = "STATUS: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
@@ -101,11 +103,11 @@ angular.module('tps-vedlikehold.service-rutine')
             function getServiceRutineInputFieldName() {
                 $scope.fields = serviceRutineFactory.getServiceRutineParametersNamesInOrder($scope.serviceRutineName);
             }
-            
+
             function setIsValidServiceRutineName() {
                 isValidServiceRutineName = ($scope.serviceRutineName in serviceRutineFactory.getServiceRutines());
             }
-            
+
             function getServiceRutineRequiredParametersNames() {
                 requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
             }
@@ -163,12 +165,12 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.selectValues.aksjonsKode.sort();
                 }
             }
-            
+
             function initRequestForm() {
                 for (var i = 0; i < $scope.fields.length; i++) {
                     var parameter = $scope.fields[i];
                     switch(parameter) {
-                        case 'fnr': 
+                        case 'fnr':
                             $scope.formData.fnr = '';
                             break;
                         case 'aksjonsDato':

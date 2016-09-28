@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.respons
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class ServiceRutineResponse {
+public class ServiceRoutineResponse {
 
     /** The raw response from TPS */
     private String xml;
@@ -12,7 +12,7 @@ public class ServiceRutineResponse {
     private Object data;
 
 
-    public ServiceRutineResponse(String xml, Object data) {
+    public ServiceRoutineResponse(String xml, Object data) {
         this.xml = xml;
         this.data = data;
     }

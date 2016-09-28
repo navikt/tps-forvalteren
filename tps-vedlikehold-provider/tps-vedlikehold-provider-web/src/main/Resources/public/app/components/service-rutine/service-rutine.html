@@ -1,6 +1,8 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
     <div ng-show="loadServiceRutineTemplate()" layout="column" flex>
         <div class="tps-vk-top md-whiteframe-z2">
+
+            <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <div layout-gt-xs="row" layout="column" layout-wrap>
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"></tps-input-field>
@@ -13,9 +15,11 @@
                         </md-select>
                     </md-input-container>
                     <md-input-container flex-gt-xs flex="66" class="tps-vk-input-container tps-vk-form-btns" layout-align="center center">
+                        <!-- Submit request Button -->
                         <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-disabled="requestForm.$invalid || loading">
                             Send til TPS
                         </md-button>
+                        <!-- Clear response Button -->
                         <md-button class="md-fab  md-accent tps-vk-refresh-btn" type="button" ng-transclude="" aria-label="Fjern responsdata." ng-click="clearResponseForm()">
                             <ng-md-icon icon="delete_sweep" aria-label="Fjern responsdata."></ng-md-icon>
                             <md-tooltip md-direction="top">
@@ -25,14 +29,21 @@
                     </md-input-container>
                 </div>
             </form>
+            <!-- Loading bar -->
             <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+
+            <!-- Resulting Response -->
         </div>
         <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
+            <!-- Setup Tabs -->
             <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
+                <!-- Tab Readable Result -->
                 <md-tab label="Resultat">
+                    <!-- Include HTML file "response.html" -->
                     <div ng-include="'app/components/service-rutine/response.html'" class="tps-vk-response-form">
                     </div>
                 </md-tab>
+                <!-- Tab XML Result -->
                 <md-tab label="XML">
                     <div class="tps-vk-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
                     </div>

@@ -251,6 +251,103 @@ angular.module('tps-vedlikehold')
                     }
                 ]
             ]
+        },
+        'FS03-FDNUMMER-KONTINFO-O': {
+            rows: [
+                [
+                    {
+                        fieldData: "fodselsnummer",
+                        label: "Fødselsnummer",
+                        flex: 30
+                    },
+                    {
+                        fieldData: "kontoNummer",
+                        label: "Kontonummer",
+                        flex: 30
+                    },
+                    {
+                        fieldData: "boAdresse1",
+                        label: "Adresse 1",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "bolignr",
+                        label: "BoligNr",
+                        flex: 10
+                    }
+                ],
+
+                [
+                    {
+                        fieldData: "boPostnr",
+                        label: "Postnummer",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "tknr",
+                        label: "tkNr",
+                        flex: 5
+                    },
+                    {
+                        fieldData: "tkNavn",
+                        label: "tkNavn",
+                        flex: 15
+                    }
+                ],
+                [
+                    {
+                        fieldData: "kommuneNavn",
+                        label: "KommuneNavn",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "kommunenr",
+                        label: "Kommunenummer",
+                        flex: 10
+                    },
+                    {
+                        fieldData: "land",
+                        label: "Land",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "adresseType",
+                        label: "AdrType",
+                        flex: 10
+                    }
+                ],
+
+                [
+                    {
+                        fieldData: "kodeNAVenhet",
+                        label: "KodeNAVenhet",
+                        flex: 15
+                    },
+                    {
+                        fieldData: "kodeNAVenhetBeskr",
+                        label: "NAVenhet område",
+                        flex: 15
+                    },
+                    {
+                        fieldData: "NAVenhetSystem",
+                        label: "NAVenhetSystem",
+                        flex: 15
+                    }
+                ],
+
+                [
+                    {
+                        fieldData: "adrSaksbehandler",
+                        label: "AdrSaksbehandler",
+                        flex: 15
+                    },
+                    {
+                        fieldData: "adrTidspunktReg",
+                        label: "adrTidspunktReg",
+                        flex: 15
+                    }
+                ]
+            ]
         }
     }
 );
