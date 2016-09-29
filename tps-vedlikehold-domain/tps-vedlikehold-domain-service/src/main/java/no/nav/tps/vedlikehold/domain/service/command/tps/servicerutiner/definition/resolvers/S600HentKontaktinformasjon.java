@@ -7,7 +7,6 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineParameter;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentKontaktinformasjon;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsPingRequest;
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
 
