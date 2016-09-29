@@ -6,7 +6,7 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineParameter;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentKontaktinformasjon;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentKontaktinformasjonServiceRoutine;
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
 
@@ -18,7 +18,7 @@ public class S600HentKontaktinformasjon implements ServiceRoutineResolver {
         return aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-KONTINFO-O")
                 .internalName("S600 Hent Kontaktinformasjon")
-                .javaClass(TpsHentKontaktinformasjon.class)
+                .javaClass(TpsHentKontaktinformasjonServiceRoutine.class)
                 .parameter()
                     .name("fnr")
                     .required()

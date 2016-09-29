@@ -42,6 +42,7 @@ angular.module('tps-vedlikehold.service')
         };
 
         //TODO Look into what nonUniques are... Cause this beneath do not add duplicate properties.
+        //TODO Add test to validate that this method actually works properly. (unit.js)
         var _flattenObject = function (finalFlatObject, jsonObject, nonUniques) {
             for(var key in jsonObject){
                 if (!jsonObject.hasOwnProperty(key)) continue;

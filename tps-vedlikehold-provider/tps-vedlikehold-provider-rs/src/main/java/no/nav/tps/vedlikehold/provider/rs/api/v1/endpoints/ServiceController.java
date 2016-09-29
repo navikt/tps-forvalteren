@@ -7,7 +7,7 @@ import java.util.Map;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
@@ -79,7 +79,7 @@ public class ServiceController {
 
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
 
-        TpsRequest request = mappingUtils.convertToTpsRequest(tpsServiceRutinenavn, body);
+        TpsRequestServiceRoutine request = mappingUtils.convertToTpsRequest(tpsServiceRutinenavn, body);
         ServiceRoutineResponse tpsResponse = sendTpsRequest(request);
         return tpsResponse;
     }
@@ -90,7 +90,7 @@ public class ServiceController {
         }
     }
 
-    private ServiceRoutineResponse sendTpsRequest(TpsRequest request) {
+    private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request) {
         try {
             return tpsServiceRutineService.execute(request);
         } catch (Exception exception) {

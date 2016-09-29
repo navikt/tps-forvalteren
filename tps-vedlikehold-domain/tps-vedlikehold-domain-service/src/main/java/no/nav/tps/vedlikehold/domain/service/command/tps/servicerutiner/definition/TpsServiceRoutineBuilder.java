@@ -5,7 +5,7 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -13,7 +13,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 public class TpsServiceRoutineBuilder {
     private String name;
     private String internalName;
-    private Class<? extends TpsRequest> javaClass;
+    private Class<? extends TpsRequestServiceRoutine> javaClass;
     private List<TpsServiceRoutineParameter> parameters = new ArrayList();
 
     public TpsServiceRoutineBuilder name(String name) {
@@ -26,7 +26,7 @@ public class TpsServiceRoutineBuilder {
         return this;
     }
 
-    public TpsServiceRoutineBuilder javaClass(Class<? extends TpsRequest> javaClass) {
+    public TpsServiceRoutineBuilder javaClass(Class<? extends TpsRequestServiceRoutine> javaClass) {
         this.javaClass = javaClass;
         return this;
     }

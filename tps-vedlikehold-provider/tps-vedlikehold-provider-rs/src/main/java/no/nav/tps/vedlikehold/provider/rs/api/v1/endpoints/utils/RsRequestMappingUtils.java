@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils;
 
 import java.util.Map;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class RsRequestMappingUtils {
         return objectMapper.convertValue(params, type);
     }
 
-    public TpsRequest convertToTpsRequest(String serviceRutineNavn, JsonNode node) {
-        Class<? extends TpsRequest> requestClass = service.exectue()
+    public TpsRequestServiceRoutine convertToTpsRequest(String serviceRutineNavn, JsonNode node) {
+        Class<? extends TpsRequestServiceRoutine> requestClass = service.exectue()
                 .stream()
                 .filter(e -> e.getName().equalsIgnoreCase(serviceRutineNavn))
                 .findFirst().get()

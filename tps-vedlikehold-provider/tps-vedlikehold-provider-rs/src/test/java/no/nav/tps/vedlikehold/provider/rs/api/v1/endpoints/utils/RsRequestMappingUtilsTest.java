@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 
 import org.junit.Test;
@@ -56,16 +56,16 @@ public class RsRequestMappingUtilsTest {
     public void convertToTpsRequestMapsServiceRoutineAndReturnsMappedResult() {
         TpsServiceRoutine routine = mock(TpsServiceRoutine.class);
         doReturn("name").when(routine).getName();
-        doReturn(TpsHentPersonRequest.class).when(routine).getJavaClass();
+        doReturn(TpsHentPersonRequestServiceRoutine.class).when(routine).getJavaClass();
         List<TpsServiceRoutine> routines = Collections.singletonList(routine);
         when(serviceMock.exectue()).thenReturn(routines);
 
         JsonNode nodeMock = mock(JsonNode.class);
 
-        TpsHentPersonRequest respMock = mock(TpsHentPersonRequest.class);
-        when(objectMapperMock.convertValue(nodeMock, TpsHentPersonRequest.class)).thenReturn(respMock);
+        TpsHentPersonRequestServiceRoutine respMock = mock(TpsHentPersonRequestServiceRoutine.class);
+        when(objectMapperMock.convertValue(nodeMock, TpsHentPersonRequestServiceRoutine.class)).thenReturn(respMock);
 
-        TpsRequest result = utils.convertToTpsRequest("name", nodeMock);
+        TpsRequestServiceRoutine result = utils.convertToTpsRequest("name", nodeMock);
 
         assertThat(result, is(sameInstance(respMock)));
     }

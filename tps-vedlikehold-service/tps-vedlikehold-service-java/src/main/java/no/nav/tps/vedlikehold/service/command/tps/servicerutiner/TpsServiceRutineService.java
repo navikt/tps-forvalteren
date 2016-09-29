@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
 /**
@@ -8,5 +8,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response
  */
 @FunctionalInterface
 public interface TpsServiceRutineService {
-     ServiceRoutineResponse execute(TpsRequest request) throws Exception;
+     ServiceRoutineResponse execute(TpsRequestServiceRoutine request) throws Exception;
 }

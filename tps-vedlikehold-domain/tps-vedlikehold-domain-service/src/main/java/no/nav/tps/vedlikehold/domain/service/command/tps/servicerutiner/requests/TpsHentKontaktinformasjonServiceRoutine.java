@@ -3,8 +3,9 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.request
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 
 /**
- * @author Øyvind Grimnes, Visma Consulting AS
+ * Created by f148888 on 27.09.2016.
  */
+
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
-public class TpsPingRequest extends TpsRequest {
+public class TpsHentKontaktinformasjonServiceRoutine extends TpsHentPersonRequestServiceRoutine {
 }

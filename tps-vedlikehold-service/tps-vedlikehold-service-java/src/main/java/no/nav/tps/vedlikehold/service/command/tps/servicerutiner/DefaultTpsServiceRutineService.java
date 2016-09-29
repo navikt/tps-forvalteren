@@ -7,7 +7,7 @@ import javax.jms.JMSException;
 
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     /**
      * Send a request to TPS using asynchronous message queues
      *
-     * @param tpsRequest TPS request object
+     * @param tpsRequestServiceRoutine TPS request object
      *
      * @return an object wrapping the raw XML response, and the XML represented by an object
      *
@@ -45,12 +45,12 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
      * @throws IOException failed to convert the response XML to an object
      */
     @Override
-    public ServiceRoutineResponse execute(TpsRequest tpsRequest) throws IOException, JMSException {
+    public ServiceRoutineResponse execute(TpsRequestServiceRoutine tpsRequestServiceRoutine) throws IOException, JMSException {
         try {
-            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(tpsRequest) + XML_PROPERTIES_POSTFIX;     //TODO: This class shouldnt be responsible for message construction
+            String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(tpsRequestServiceRoutine) + XML_PROPERTIES_POSTFIX;     //TODO: This class shouldnt be responsible for message construction
 
             /* Send message to TPS and handle the received data */
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( tpsRequest.getEnvironment() );
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( tpsRequestServiceRoutine.getEnvironment() );
 
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 

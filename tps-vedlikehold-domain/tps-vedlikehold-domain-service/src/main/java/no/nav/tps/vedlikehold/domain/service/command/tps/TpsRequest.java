@@ -1,9 +1,9 @@
-package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests;
+package no.nav.tps.vedlikehold.domain.service.command.tps;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
- * @author Øyvind Grimnes, Visma Consulting AS
+ * Created by f148888 on 29.09.2016.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,13 +33,5 @@ public class TpsRequest {
 
     public String getAksjonsKode2() {
         return aksjonsKode2;
-    }
-
-    public void setServiceRutinenavn(String serviceRutinenavn) {
-        this.serviceRutinenavn = serviceRutinenavn;
-    }
-
-    public String getServiceRutinenavn() {
-        return serviceRutinenavn;
     }
 }

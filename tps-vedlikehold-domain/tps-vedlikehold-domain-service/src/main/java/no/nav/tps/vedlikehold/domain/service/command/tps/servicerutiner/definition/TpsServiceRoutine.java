@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
 
 import java.util.List;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -16,7 +16,7 @@ public class TpsServiceRoutine {
     private String internalName;
 
     @JsonIgnore
-    private Class<? extends TpsRequest> javaClass;
+    private Class<? extends TpsRequestServiceRoutine> javaClass;
 
     private List<TpsServiceRoutineParameter> parameters;
 
@@ -36,11 +36,11 @@ public class TpsServiceRoutine {
         this.internalName = internalName;
     }
 
-    public Class<? extends TpsRequest> getJavaClass() {
+    public Class<? extends TpsRequestServiceRoutine> getJavaClass() {
         return javaClass;
     }
 
-    public void setJavaClass(Class<? extends TpsRequest> javaClass) {
+    public void setJavaClass(Class<? extends TpsRequestServiceRoutine> javaClass) {
         this.javaClass = javaClass;
     }
 

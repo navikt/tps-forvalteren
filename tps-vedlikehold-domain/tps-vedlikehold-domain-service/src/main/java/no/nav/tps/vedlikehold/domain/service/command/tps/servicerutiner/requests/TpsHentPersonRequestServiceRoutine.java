@@ -7,7 +7,7 @@ import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
  */
 
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
-public class TpsHentPersonRequest extends TpsRequest {
+public class TpsHentPersonRequestServiceRoutine extends TpsRequestServiceRoutine {
 
     private String aksjonsDato;
     private String fnr;

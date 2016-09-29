@@ -15,7 +15,7 @@ import java.util.Map;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
@@ -165,7 +165,7 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceThrowsInternalServerErrorWhenServiceRoutineFailed() throws Exception {
-        when(tpsRutineServiceMock.execute(any(TpsRequest.class))).thenThrow(new IllegalArgumentException());
+        when(tpsRutineServiceMock.execute(any(TpsRequestServiceRoutine.class))).thenThrow(new IllegalArgumentException());
 
         expectedException.expect(HttpInternalServerErrorException.class);
 
@@ -175,7 +175,7 @@ public class ServiceControllerTest {
     @Test
     public void getServiceReturnsResultFromServiceRutineService() throws Exception {
         ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
-        when(tpsRutineServiceMock.execute(any(TpsRequest.class))).thenReturn(response);
+        when(tpsRutineServiceMock.execute(any(TpsRequestServiceRoutine.class))).thenReturn(response);
 
         ServiceRoutineResponse result = controller.getService(baseJsonNode);
 
