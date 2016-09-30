@@ -79,8 +79,8 @@ public class ServiceController {
 
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
 
-        TpsRequestServiceRoutine request = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
-        ServiceRoutineResponse tpsResponse = sendTpsRequest(request);
+        TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
+        ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest);
         return tpsResponse;
     }
 
@@ -99,6 +99,8 @@ public class ServiceController {
     }
 
     // Dette er bare for rettighet til å lese person vel..
+    // Hva skjer her når fnr er empty? Bare authoriserer den ikke? hmm jaja bra da. For nå...
+    //TODO Add authorized for Search on Name.
     private void validateAuthorized(String fnr, String environment, String serviceRutinenavn) {
         if (!isEmpty(fnr)) {
             User user = userContextHolder.getUser();

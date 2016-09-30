@@ -12,6 +12,8 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.selectValues = {};
             $scope.responseFormConfig = responseFormConfig;
             $scope.onlyNumbers = /^\d+$/;
+            $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
+
 
             var tpsReturnedObject = {};
             var nonUniqueProperties = []; //objects that contain non-unique properties
@@ -179,6 +181,8 @@ angular.module('tps-vedlikehold.service-rutine')
                         case 'aksjonsKode':
                             $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
                             break;
+                        case 'navn':
+                            $scope.formData.navn = '';
                         default:
                             $scope.formData[parameter] = '';
                     }

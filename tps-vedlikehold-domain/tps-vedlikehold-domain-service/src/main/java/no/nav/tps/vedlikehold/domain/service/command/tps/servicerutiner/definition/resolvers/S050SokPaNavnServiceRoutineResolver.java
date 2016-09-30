@@ -1,28 +1,36 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
-/**
- * Created by f148888 on 26.09.2016.
- */
-
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentKontaktinformasjonServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsSokPersonRequestServiceRoutine;
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
 
-
-public class S600HentKontaktinformasjon implements ServiceRoutineResolver {
+/**
+ * Created by f148888 on 30.09.2016.
+ */
+public class S050SokPaNavnServiceRoutineResolver implements ServiceRoutineResolver{
 
     @Override
     public TpsServiceRoutine resolve() {
         return aTpsServiceRoutine()
-                .name("FS03-FDNUMMER-KONTINFO-O")
-                .internalName("S600 Hent Kontaktinformasjon")
-                .javaClass(TpsHentKontaktinformasjonServiceRoutine.class)
+                .name("FS03-NAADRSOK-PERSDATA-O")
+                .internalName("S050 Sok Person")
+                .javaClass(TpsSokPersonRequestServiceRoutine.class)
                 .parameter()
-                    .name("fnr")
-                    .required()
+                    .name("navn")
+                    .optional()
                     .type(TpsParameterType.STRING)
+                .and()
+                .parameter()
+                    .name("etternavn")
+                    .optional()
+                    .type(TpsParameterType.STRING)
+                .and()
+                .parameter()
+                    .name("fornavn")
+                    .optional()
+                .   type(TpsParameterType.STRING)
                 .and()
                 .parameter()
                     .name("aksjonsKode")

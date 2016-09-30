@@ -4,11 +4,13 @@
 
             <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
+                <!-- upper row -->
                 <div layout-gt-xs="row" layout="column" layout-wrap>
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"></tps-input-field>
                 </div>
+                <!-- lower row-->
                 <div class="tps-vk-submit-container" layout-gt-xs="row" layout="column" layout-align>
-                    <md-input-container flex-gt-xs flex="33" class="tps-vk-input-container">
+                    <md-input-container flex-gt-xs flex="5" class="tps-vk-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
@@ -31,6 +33,7 @@
             </form>
             <!-- Loading bar -->
             <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+
 
             <!-- Resulting Response -->
         </div>

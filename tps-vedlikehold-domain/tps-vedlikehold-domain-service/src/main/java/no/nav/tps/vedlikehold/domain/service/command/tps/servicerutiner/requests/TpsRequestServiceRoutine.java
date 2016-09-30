@@ -9,6 +9,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TpsRequestServiceRoutine extends TpsRequest{
+
+    private String aksjonsDato;
     private String serviceRutinenavn;
 
     public void setServiceRutinenavn(String serviceRutinenavn) {
@@ -17,5 +19,13 @@ public class TpsRequestServiceRoutine extends TpsRequest{
 
     public String getServiceRutinenavn() {
         return serviceRutinenavn;
+    }
+
+    public String getAksjonsDato() {
+        return aksjonsDato;
+    }
+
+    public void setAksjonsDato(String aksjonsDato) {
+        this.aksjonsDato = aksjonsDato;
     }
 }
