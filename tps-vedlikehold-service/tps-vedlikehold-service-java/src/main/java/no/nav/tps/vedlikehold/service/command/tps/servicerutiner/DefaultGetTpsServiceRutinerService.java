@@ -20,7 +20,7 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
     private List<ServiceRoutineResolver> resolvers;
 
     @Override
-    public List<TpsServiceRoutine> exectue() {
+    public List<TpsServiceRoutine> execute() {
         return resolvers.stream()
                 .map(ServiceRoutineResolver::resolve)
                 .collect(toList());

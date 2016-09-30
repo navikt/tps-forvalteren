@@ -5,6 +5,8 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameter;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 
 /**
@@ -14,7 +16,7 @@ public class TpsServiceRoutineBuilder {
     private String name;
     private String internalName;
     private Class<? extends TpsRequestServiceRoutine> javaClass;
-    private List<TpsServiceRoutineParameter> parameters = new ArrayList();
+    private List<TpsParameter> parameters = new ArrayList();
 
     public TpsServiceRoutineBuilder name(String name) {
         this.name = name;
@@ -50,7 +52,7 @@ public class TpsServiceRoutineBuilder {
 
     public class TpsServiceRoutineParameterBuilder {
         private String name;
-        private TpsServiceRoutineParameter.Type type;
+        private TpsParameterType type;
         private String use;
         private List<String> values = new ArrayList<>();
 
@@ -59,7 +61,7 @@ public class TpsServiceRoutineBuilder {
             return this;
         }
 
-        public TpsServiceRoutineParameterBuilder type(TpsServiceRoutineParameter.Type type) {
+        public TpsServiceRoutineParameterBuilder type(TpsParameterType type) {
             this.type = type;
             return this;
         }
@@ -85,7 +87,7 @@ public class TpsServiceRoutineBuilder {
         }
 
         public TpsServiceRoutineBuilder and() {
-            TpsServiceRoutineParameter param = new TpsServiceRoutineParameter();
+            TpsParameter param = new TpsParameter();
             param.setName(name);
             param.setType(type);
             param.setUse(use);

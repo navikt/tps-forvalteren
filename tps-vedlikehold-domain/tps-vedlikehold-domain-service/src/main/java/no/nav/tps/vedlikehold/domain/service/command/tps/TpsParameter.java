@@ -1,4 +1,6 @@
-package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition;
+package no.nav.tps.vedlikehold.domain.service.command.tps;
+
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 
 import java.util.List;
 
@@ -6,10 +8,10 @@ import java.util.List;
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 
-public class TpsServiceRoutineParameter {
+public class TpsParameter {
 
     private String name;
-    private Type type;
+    private TpsParameterType type;
     private String use;
     private List<?> values;
 
@@ -17,7 +19,7 @@ public class TpsServiceRoutineParameter {
         this.name = name;
     }
 
-    public void setType(Type type) {
+    public void setType(TpsParameterType type) {
         this.type = type;
     }
 
@@ -33,7 +35,7 @@ public class TpsServiceRoutineParameter {
         return name;
     }
 
-    public Type getType() {
+    public TpsParameterType getType() {
         return type;
     }
 
@@ -45,7 +47,7 @@ public class TpsServiceRoutineParameter {
         return values;
     }
 
-    public enum Type {
+    /*public enum Type {
         STRING, DATE;
-    }
+    }*/
 }

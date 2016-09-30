@@ -58,14 +58,14 @@ public class RsRequestMappingUtilsTest {
         doReturn("name").when(routine).getName();
         doReturn(TpsHentPersonRequestServiceRoutine.class).when(routine).getJavaClass();
         List<TpsServiceRoutine> routines = Collections.singletonList(routine);
-        when(serviceMock.exectue()).thenReturn(routines);
+        when(serviceMock.execute()).thenReturn(routines);
 
         JsonNode nodeMock = mock(JsonNode.class);
 
         TpsHentPersonRequestServiceRoutine respMock = mock(TpsHentPersonRequestServiceRoutine.class);
         when(objectMapperMock.convertValue(nodeMock, TpsHentPersonRequestServiceRoutine.class)).thenReturn(respMock);
 
-        TpsRequestServiceRoutine result = utils.convertToTpsRequest("name", nodeMock);
+        TpsRequestServiceRoutine result = utils.convertToTpsRequestServiceRoutine("name", nodeMock);
 
         assertThat(result, is(sameInstance(respMock)));
     }

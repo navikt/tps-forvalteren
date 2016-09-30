@@ -29,6 +29,6 @@ public class ServiceRoutineController {
     @LogExceptions
     @RequestMapping(value = "/serviceroutine", method = RequestMethod.GET)
     public List<TpsServiceRoutine> getTpsServiceRutiner() {
-        return getTpsServiceRutinerService.exectue();
+        return getTpsServiceRutinerService.execute();
     }
 }

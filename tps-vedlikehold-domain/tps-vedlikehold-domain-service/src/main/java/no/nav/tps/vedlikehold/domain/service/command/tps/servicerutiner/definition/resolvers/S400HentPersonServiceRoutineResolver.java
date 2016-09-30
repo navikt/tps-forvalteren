@@ -2,8 +2,8 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
 
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineParameter;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
 
 /**
@@ -20,18 +20,18 @@ public class S400HentPersonServiceRoutineResolver implements ServiceRoutineResol
                 .parameter()
                     .name("fnr")
                     .required()
-                    .type(TpsServiceRoutineParameter.Type.STRING)
+                    .type(TpsParameterType.STRING)
                 .and()
                 .parameter()
                     .name("aksjonsKode")
                     .required()
-                    .type(TpsServiceRoutineParameter.Type.STRING)
+                    .type(TpsParameterType.STRING)
                     .values("E0", "A0", "A2", "B0", "B2", "C0", "D0")
                 .and()
                 .parameter()
                     .name("aksjonsDato")
                     .optional()
-                    .type(TpsServiceRoutineParameter.Type.DATE)
+                    .type(TpsParameterType.DATE)
                 .and()
                 .build();
     }

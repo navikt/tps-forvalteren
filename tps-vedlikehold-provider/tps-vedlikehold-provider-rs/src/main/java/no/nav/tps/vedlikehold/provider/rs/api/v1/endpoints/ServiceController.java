@@ -79,7 +79,7 @@ public class ServiceController {
 
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
 
-        TpsRequestServiceRoutine request = mappingUtils.convertToTpsRequest(tpsServiceRutinenavn, body);
+        TpsRequestServiceRoutine request = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
         ServiceRoutineResponse tpsResponse = sendTpsRequest(request);
         return tpsResponse;
     }

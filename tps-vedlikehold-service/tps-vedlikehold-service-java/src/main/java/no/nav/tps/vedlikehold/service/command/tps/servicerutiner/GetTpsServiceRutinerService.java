@@ -9,5 +9,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definiti
  */
 @FunctionalInterface
 public interface GetTpsServiceRutinerService {
-    List<TpsServiceRoutine> exectue();
+    List<TpsServiceRoutine> execute();
 }

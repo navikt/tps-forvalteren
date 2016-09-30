@@ -32,7 +32,7 @@ public class ServiceRoutineControllerTest {
     @Test
     public void returnsResultFromService() {
         List<TpsServiceRoutine> routines = Collections.emptyList();
-        when(serviceMock.exectue()).thenReturn(routines);
+        when(serviceMock.execute()).thenReturn(routines);
 
         List<TpsServiceRoutine> result = controller.getTpsServiceRutiner();
 

@@ -45,7 +45,7 @@ public class DefaultGetTpsServiceRutinerServiceTest {
 
     @Test
     public void returnsRoutines() {
-        List<TpsServiceRoutine> routines = command.exectue();
+        List<TpsServiceRoutine> routines = command.execute();
 
         assertThat(routines, contains(routineMock));
     }
