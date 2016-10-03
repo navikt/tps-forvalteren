@@ -78,7 +78,6 @@ public class ServiceController {
             fnr = body.get("fnr").asText();
         }
 
-        System.out.println(tpsServiceRutinenavn);
         validateAuthorized(fnr, environment, tpsServiceRutinenavn);
 
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
