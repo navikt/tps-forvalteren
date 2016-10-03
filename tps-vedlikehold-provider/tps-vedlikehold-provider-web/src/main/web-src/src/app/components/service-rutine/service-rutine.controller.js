@@ -183,6 +183,7 @@ angular.module('tps-vedlikehold.service-rutine')
                             break;
                         case 'navn':
                             $scope.formData.navn = '';
+                            break;
                         default:
                             $scope.formData[parameter] = '';
                     }

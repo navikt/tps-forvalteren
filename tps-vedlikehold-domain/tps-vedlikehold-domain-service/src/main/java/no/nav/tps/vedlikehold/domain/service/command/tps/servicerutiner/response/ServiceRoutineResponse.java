@@ -1,5 +1,11 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
@@ -33,4 +39,32 @@ public class ServiceRoutineResponse {
     public void setXml(String xml) {
         this.xml = xml;
     }
+
+    public String getServiceRoutineName(){
+        String serviceRoutineNamePattern = "<serviceRutinenavn>(.+?)</serviceRutinenavn>";
+        Matcher matcher = Pattern.compile(serviceRoutineNamePattern, Pattern.DOTALL).matcher(this.xml);
+        matcher.find();
+        return matcher.group(1);
+    }
+
+    public String getEnvironment(){
+        String responseEnvironmentPattern = "<environment>(.+?)</environment>";
+        Matcher matcher = Pattern.compile(responseEnvironmentPattern, Pattern.DOTALL).matcher(this.xml);
+        matcher.find();
+        return matcher.group(1);
+
+    }
+
+    /*
+    public ArrayList<String> getFnrInResponse(){
+        ArrayList<String> fodselsnummer = new ArrayList<>();
+        if(this.xml != null){
+            String personRegex = "(<enPersonRes>.+?<spesregType>\\w+?</spesregType>.+?</enPersonRes>)";
+            Pattern pattern = Pattern.compile(personRegex, Pattern.DOTALL);
+            String xmlWithoutDiscreteUsers = pattern.matcher(tpsResponse.getXml()).replaceAll("");
+            tpsResponse.setXml(xmlWithoutDiscreteUsers);
+        }
+       return fodselsnummer;
+    }
+    */
 }

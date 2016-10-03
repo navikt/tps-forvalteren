@@ -1,8 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
+import static org.springframework.util.ObjectUtils.caseInsensitiveValueOf;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
@@ -75,13 +78,63 @@ public class ServiceController {
             fnr = body.get("fnr").asText();
         }
 
+        System.out.println(tpsServiceRutinenavn);
         validateAuthorized(fnr, environment, tpsServiceRutinenavn);
 
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
 
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
         ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest);
+        //TODO Create a better logic for which "code" to service routine to choose.
+        if(!body.has("fnr")){
+            removePersonsNotAuthorizedToSeeFromTpsRepsons(tpsResponse);
+        }
         return tpsResponse;
+    }
+
+    private void selectExecution(String serviceRoutine){
+        switch (serviceRoutine){
+            case ("FS03-FDNUMMER-PERSDATA-O"):
+                break;
+            case ("FS03-FDNUMMER-KONTINFO-O"):
+                break;
+            case ("FS03-NAADRSOK-PERSDATA-O"):
+                //getAuthorizedUsers.
+                break;
+            default:
+                break;
+        }
+    }
+
+    //TODO Move to own authorization class.
+    private void removePersonsNotAuthorizedToSeeFromTpsRepsons(ServiceRoutineResponse tpsResponse){
+        String serviceRutineName = tpsResponse.getServiceRoutineName();
+        String environment = tpsResponse.getEnvironment();
+        String allPersonsInXmlRegex = "<enPersonRes>.+</enPersonRes>";
+        String xmlWithoutPersons = Pattern.compile(allPersonsInXmlRegex, Pattern.DOTALL)
+                .matcher(tpsResponse.getXml()).replaceFirst("-->erstatt_senere<--");
+        String personRegex = "<enPersonRes>.*?<fnr>(\\d{11})</fnr>.+?</enPersonRes>";
+        Matcher matcher = Pattern.compile(personRegex, Pattern.DOTALL).matcher(tpsResponse.getXml());
+        String personsReplacement = "";
+        while(matcher.find()){
+            String fnr = matcher.group(1);
+            try{
+                validateAuthorized(fnr, environment, serviceRutineName);
+                personsReplacement = personsReplacement + matcher.group();
+            } catch (HttpUnauthorisedException unauthorisedException){
+                //Do not add xml to final xml. Do anything.?
+            }
+        }
+        String xmlWithoutUnauthorizedToViewPersons = xmlWithoutPersons.replace("-->erstatt_senere<--", personsReplacement);
+        tpsResponse.setXml(xmlWithoutUnauthorizedToViewPersons);
+    }
+
+    // Not used for now, but will maybe be used later for prod when who you can view is restricted.
+    private void removePersonsWithDiscretionCodesFromTpsResponse(ServiceRoutineResponse tpsResponse){
+        String personRegex = "(<enPersonRes>.+?<spesregType>\\w+?</spesregType>.+?</enPersonRes>)";
+        Pattern pattern = Pattern.compile(personRegex, Pattern.DOTALL);
+        String xmlWithoutDiscreteUsers = pattern.matcher(tpsResponse.getXml()).replaceAll("");
+        tpsResponse.setXml(xmlWithoutDiscreteUsers);
     }
 
     private void validateRequest(JsonNode body) {
