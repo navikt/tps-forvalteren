@@ -6,7 +6,7 @@
                 <md-list-item ng-repeat="serviceRutineName in serviceRutineNames" class="tps-vk-service-rutine-list-item">
                         <md-button md-ripple-container class="md-primary tps-vk-service-rutine-button"
                                    ui-sref="servicerutine({serviceRutineName: serviceRutineName})"
-                                   ui-sref-active="activeMenuButton" tabindex="0">
+                                   ui-sref-active="activeMenuButton" tabindex="0" style="text-transform: none">
                             {{ getServiceRutineInternalName(serviceRutineName) }}
                         </md-button>
                     <md-divider></md-divider>

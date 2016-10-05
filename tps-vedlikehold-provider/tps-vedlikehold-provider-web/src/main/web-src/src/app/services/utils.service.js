@@ -41,22 +41,21 @@ angular.module('tps-vedlikehold.service')
             return _flattenObject({}, jsonObject, nonUniques);
         };
 
-        //TODO Look into what nonUniques are... Cause this beneath do not add duplicate properties.
         //TODO Add test to validate that this method actually works properly. (unit.js)
-        var _flattenObject = function (finalFlatObject, jsonObject, nonUniques) {
+         function _flattenObject(finalFlatObject, jsonObject, nonUniques) {
             for(var key in jsonObject){
                 if (!jsonObject.hasOwnProperty(key)) continue;
                 if ((typeof jsonObject[key]) == 'object') {
                     var flatterObject = _flattenObject(finalFlatObject, jsonObject[key], nonUniques);
-                    for (var keyInFlatObject in flatterObject) {
-                        if (!flatterObject.hasOwnProperty(keyInFlatObject)) continue;
+                    for (var keyInFlatterObject in flatterObject) {
+                        if (!flatterObject.hasOwnProperty(keyInFlatterObject)) continue;
                         if (nonUniques && nonUniques.indexOf(key) > -1) {
-                            if(!finalFlatObject.hasOwnProperty(key + '_' + keyInFlatObject) || finalFlatObject[key + '_' + keyInFlatObject]=== ""){
-                                finalFlatObject[key + '_' + keyInFlatObject] = flatterObject[keyInFlatObject];
+                            if(!finalFlatObject.hasOwnProperty(key + '_' + keyInFlatterObject) || finalFlatObject[key + '_' + keyInFlatterObject]=== ""){
+                                finalFlatObject[key + '_' + keyInFlatterObject] = flatterObject[keyInFlatterObject];
                             }
                         } else {
-                            if(!finalFlatObject.hasOwnProperty(keyInFlatObject) || finalFlatObject[keyInFlatObject] === ""){
-                                finalFlatObject[keyInFlatObject] = flatterObject[keyInFlatObject];
+                            if(!finalFlatObject.hasOwnProperty(keyInFlatterObject) || finalFlatObject[keyInFlatterObject] === ""){
+                                finalFlatObject[keyInFlatterObject] = flatterObject[keyInFlatterObject];
                             }
                         }
                     }
@@ -68,7 +67,7 @@ angular.module('tps-vedlikehold.service')
                 }
             }
             return finalFlatObject;
-        };
+        }
 
 
 

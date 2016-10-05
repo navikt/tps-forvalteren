@@ -13,6 +13,7 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.responseFormConfig = responseFormConfig;
             $scope.onlyNumbers = /^\d+$/;
             $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
+            $scope.personsData = {};
 
 
             var tpsReturnedObject = {};
@@ -33,17 +34,14 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.loading = false;
                     $scope.xmlForm = utilsService.formatXml(response.data.xml);
 
-                    tpsReturnedObject = response.data.data;
-
-                    console.log("Success: " + $scope.serviceRutineName);
+                    tpsReturnedObject = response.data.data.tpsPersonData;
 
                     var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
                     $scope.svarStatus = "STATUS: " + svarStatus.returStatus + " " +  svarStatus.returMelding + " " +  svarStatus.utfyllendeMelding;
                     $scope.returStatus = svarStatus.returStatus;
 
-                    $scope.personData = utilsService.flattenObject(tpsReturnedObject
-                        .tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutineName)],
-                        nonUniqueProperties);
+                    var jsonObjectWithResultData = tpsReturnedObject.tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutineName)];
+                    extractPersonsData(jsonObjectWithResultData, $scope.serviceRutineName, nonUniqueProperties);
 
                 }, function(error) {
                     $scope.loading = false;
@@ -51,8 +49,9 @@ angular.module('tps-vedlikehold.service-rutine')
                 });
             };
 
+
             $scope.clearResponseForm = function() {
-                $scope.personData = {};
+                $scope.personsData = {};
                 $scope.svarStatus = null;
                 $scope.xmlForm = null;
             };
@@ -67,6 +66,25 @@ angular.module('tps-vedlikehold.service-rutine')
                 var modalInputOffset = pika.el.offsetTop;
                 pika.el.style.top = parentScrollOffset+modalInputOffset+'px';
             };
+
+            function extractPersonsData(responseObject, serviceRutineName, nonUniqueProperties){
+                switch(serviceRutineName){
+                    case "FS03-FDNUMMER-KONTINFO-O":
+                        $scope.personsData[0] = utilsService.flattenObject(responseObject, nonUniqueProperties);
+                        break;
+                    case "FS03-FDNUMMER-PERSDATA-O":
+                        $scope.personsData[0] = utilsService.flattenObject(responseObject, nonUniqueProperties);
+                        break;
+                    case "FS03-NAADRSOK-PERSDATA-O":
+                        var i = 0;
+                        while(i<responseObject.antallTotalt){
+                            $scope.personsData[i] = utilsService.flattenObject(responseObject.enPersonRes[i], nonUniqueProperties);
+                            i++;
+                        }
+                        break;
+                    default:        // Default for nå. Må sikkert gjøre om.
+                }
+            }
 
             function showAlertTPSError(error) {
                 var errorMessages = {

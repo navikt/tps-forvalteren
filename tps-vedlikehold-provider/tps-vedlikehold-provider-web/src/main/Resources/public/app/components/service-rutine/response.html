@@ -1,6 +1,24 @@
 <div layout="column">
-    <div layout-gt-xs="row" layout="column" ng-repeat="row in responseFormConfig[serviceRutineName].rows">
-        <tps-output-field  ng-repeat="field in row" field-model="personData[field.fieldData]" label="{{field.label}}" flex="{{field.flex}}">
-        </tps-output-field>
+
+    <!-- For Persons found.. bla bl+3a. Tell fra 1,2,3 -- -->
+    <div flex-xs flex-gt-xs="60" layout="column">
+        <md-card ng-show="personsData" md-theme="default" ng-repeat="(key, personData) in personsData">
+
+            <!-- Results unexpanded. Soon -->
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{personData["etternavn"]}}, {{personData["fornavn"]}} {{personData["mellomnavn"]}}</span>
+                    <span class="md-subhead">{{personData["fnr"]}} {{personData["fodselsnummer"]}}</span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-button class="btn1" ng-click="toggle = !toggle" layout-align="end center" style="margin-bottom: 5px">Toggle</md-button>
+
+            <!-- Results expanded-->
+            <div layout-gt-xs="row" ng-show="toggle" layout="column" ng-repeat="row in responseFormConfig[serviceRutineName].rows">
+                <tps-output-field  ng-repeat="field in row" field-model="personData[field.fieldData]" label="{{field.label}}" flex="{{field.flex}}">
+                </tps-output-field>
+            </div>
+        </md-card>
     </div>
 </div>

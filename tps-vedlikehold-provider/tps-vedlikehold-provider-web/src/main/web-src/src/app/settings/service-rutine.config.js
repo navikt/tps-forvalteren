@@ -29,6 +29,19 @@ angular.module('tps-vedlikehold')
                 'tlfMobil'
             ]
         },
+        'FS03-NAADRSOK-PERSDATA-O': {
+            'serviceRutineFieldsOrderTemplate': [
+                'navn',
+                'fornavn',
+                'etternavn',
+                'aksjonsDato',
+                'aksjonsKode'
+            ],
+            'serviceRutineReturnedDataLabel': 'personDataS050',
+            'nonUniquePropertiesContainer': [
+
+            ]
+        },
         'FS03-OTILGANG-TILSRTPS-O': {
             'serviceRutineFieldsOrderTemplate': [],
             'serviceRutineReturnedDataLabel': 'ingenReturData',

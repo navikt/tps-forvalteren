@@ -348,6 +348,91 @@ angular.module('tps-vedlikehold')
                     }
                 ]
             ]
+        },
+
+        'FS03-NAADRSOK-PERSDATA-O': {
+            rows: [
+                [
+                    {
+                        fieldData: "fnr",
+                        label: "Fødselsnummer",
+                        flex: 30
+                    },
+                    {
+                        fieldData: "fornavn",
+                        label: "Fornavn",
+                        flex: 30
+                    },
+                    {
+                        fieldData: "mellomnavn",
+                        label: "Mellomnavn",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "etternavn",
+                        label: "Etternavn",
+                        flex: 10
+                    }
+                ],
+
+                [
+                    {
+                        fieldData: "adresseType",
+                        label: "adrType",
+                        flex: 10
+                    },
+                    {
+                        fieldData: "adresse1",
+                        label: "Adr1",
+                        flex: 5
+                    },
+                    {
+                        fieldData: "adresse2",
+                        label: "Adr2",
+                        flex: 15
+                    }
+                ],
+                [
+                    {
+                        fieldData: "kommuneNavn",
+                        label: "KommuneNavn",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "postnr",
+                        label: "PostNr",
+                        flex: 10
+                    },
+                    {
+                        fieldData: "poststed",
+                        label: "Poststed",
+                        flex: 20
+                    },
+                    {
+                        fieldData: "kommunenr",
+                        label: "Kommunenr",
+                        flex: 10
+                    }
+                ],
+
+                [
+                    {
+                        fieldData: "tknr",
+                        label: "TkNr",
+                        flex: 15
+                    },
+                    {
+                        fieldData: "personStatus",
+                        label: "PersonStatus",
+                        flex: 15
+                    },
+                    {
+                        fieldData: "statsborgerskap",
+                        label: "Statsborgerskap",
+                        flex: 15
+                    }
+                ]
+            ]
         }
     }
 );
