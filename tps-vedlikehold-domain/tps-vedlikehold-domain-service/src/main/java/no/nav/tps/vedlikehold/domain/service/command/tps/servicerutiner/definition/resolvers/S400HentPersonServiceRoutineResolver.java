@@ -26,7 +26,7 @@ public class S400HentPersonServiceRoutineResolver implements ServiceRoutineResol
                     .name("aksjonsKode")
                     .required()
                     .type(TpsParameterType.STRING)
-                    .values("E0", "A0", "A2", "B0", "B2", "C0", "D0")
+                    .values("A0", "A2", "B0", "B2", "C0")
                 .and()
                 .parameter()
                     .name("aksjonsDato")

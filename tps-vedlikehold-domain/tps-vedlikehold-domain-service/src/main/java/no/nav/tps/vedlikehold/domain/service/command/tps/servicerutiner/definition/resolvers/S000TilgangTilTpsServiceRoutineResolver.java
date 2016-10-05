@@ -14,7 +14,7 @@ public class S000TilgangTilTpsServiceRoutineResolver implements ServiceRoutineRe
     public TpsServiceRoutine resolve() {
         return aTpsServiceRoutine()
                 .name("FS03-OTILGANG-TILSRTPS-O")
-                .internalName("S000 tilgangTilTps")
+                .internalName("S000 Tilgang til Tps")
                 .javaClass(TpsPingRequestServiceRoutine.class)
                 .build();
     }
