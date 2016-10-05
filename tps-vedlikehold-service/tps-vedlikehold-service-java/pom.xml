@@ -50,6 +50,12 @@
             <artifactId>jackson-xml-databind</artifactId>
         </dependency>
 
+        <!-- Org.json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>org.apache.directory.studio</groupId>
