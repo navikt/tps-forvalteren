@@ -5,11 +5,15 @@ import java.util.Map;
 
 import javax.jms.JMSException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
+import org.json.JSONObject;
+import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +58,12 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
 
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 
-            Object responseData = xmlMapper.readValue(responseXml, Map.class);          //TODO Map to custom object
+            JSONObject jObject = XML.toJSONObject(responseXml);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+            Object responseData = mapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
+            System.out.println("OBJECT STRING: " + mapper.writeValueAsString(responseData));
 
             return new ServiceRoutineResponse(responseXml, responseData);
         } catch (IOException exception) {
