@@ -1,6 +1,6 @@
-<md-input-container class="tps-vk-input-container" flex="15j">
-    <label>Fornavn</label>
-    <input name="navnInput" md-maxlength="30"  ng-model="formData.fornavn"/>
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Adressenavn</label>
+    <input name="navnInput" md-maxlength="30"  ng-model="formData.adresseNavn"/>
     <div ng-messages="requestForm.navnInput.$error" ng-show="requestForm.navnInput$touched">
         <div ng-message="pattern">Feltet kan kun inneholde bokstaver</div>
         <div ng-message="md-maxlength">Hva skal max lengde være?</div>
