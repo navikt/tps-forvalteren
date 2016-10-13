@@ -37,27 +37,27 @@ public class CommandConfig {
         return xmlMapper;
     }
 
-    @Bean
+    /*@Bean
     @Order(Integer.MAX_VALUE)
     ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
         return new S000TilgangTilTpsServiceRoutineResolver();
-    }
+    }*/
 
     @Bean
     @Order(2)
-    ServiceRoutineResolver tillgangTilTestRoutineResolver() {
+    ServiceRoutineResolver hentKontaktinformasjonRoutineResolver() {
         return new S600HentKontaktinformasjonServiceRoutineResolver();
     }
 
     @Bean
     @Order(3)
     ServiceRoutineResolver sokPersonRoutineResolver() {
-        return new S050SokPaNavnServiceRoutineResolver();
+        return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
 
     @Bean
     @Order(1)
     ServiceRoutineResolver hentPersonServiceRoutineResolver() {
-        return new S400HentPersonServiceRoutineResolver();
+        return new S004HentPersonopplysningerServiceRoutineResolver();
     }
 }
