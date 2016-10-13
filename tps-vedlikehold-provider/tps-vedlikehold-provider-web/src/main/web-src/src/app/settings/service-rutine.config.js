@@ -28,14 +28,19 @@ angular.module('tps-vedlikehold')
                 'tlfJobb',
                 'tlfMobil'
             ]
-        },
+        }, 
         'FS03-NAADRSOK-PERSDATA-O': {
             'serviceRutineFieldsOrderTemplate': [
                 'navn',
                 'fornavn',
                 'etternavn',
                 'aksjonsDato',
-                'aksjonsKode'
+                'aksjonsKode',
+                'adresseNavn',
+                'postnr',
+                'husnrFra',
+                'husnrTil',
+                'knr'
             ],
             'serviceRutineReturnedDataLabel': 'personDataS050',
             'nonUniquePropertiesContainer': [
