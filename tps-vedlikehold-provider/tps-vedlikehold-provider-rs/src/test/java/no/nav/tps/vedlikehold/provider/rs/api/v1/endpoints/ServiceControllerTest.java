@@ -125,15 +125,6 @@ public class ServiceControllerTest {
     }
 
     @Test
-    public void getServiceDoesNotCallAuthorizationServiceWhenFnrIsEmpty() {
-        mockNodeContent(baseJsonNode, "fnr", "");
-
-        controller.getService(baseJsonNode);
-
-        verify(authorisationServiceMock, never()).userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class));
-    }
-
-    @Test
     public void getServiceCallsAuthorizationServiceWhenFnrIsSet() {
         mockNodeContent(baseJsonNode, "fnr", "13");
 
@@ -161,6 +152,24 @@ public class ServiceControllerTest {
         expectedException.expectMessage("val");
 
         controller.getService(baseJsonNode);
+    }
+
+    @Test
+    public void getServiceThrowsUnauthorizedWhenAuthorizationFailsWhenFnrIsEmpty(){
+        mockNodeContent(baseJsonNode, "fnr", "");
+
+        when(messageProviderMock.get("rest.service.request.exception.Unauthorized")).thenReturn("val");
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false);
+
+        expectedException.expect(HttpUnauthorisedException.class);
+        expectedException.expectMessage("val");
+
+        controller.getService(baseJsonNode);
+    }
+
+    @Test
+    public void getServiceDoesNotThrowUnauthorizedWhenAuthorizationOnlyFailsOnOneOutOfManyPersons(){
+        //when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false, true);
     }
 
     @Test
