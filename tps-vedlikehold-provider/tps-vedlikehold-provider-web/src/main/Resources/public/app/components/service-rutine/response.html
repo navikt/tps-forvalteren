@@ -1,24 +1,64 @@
+<script src="service-rutine.module.js"></script>
 <div layout="column">
-
-    <!-- For Persons found.. bla bl+3a. Tell fra 1,2,3 -- -->
+    <!-- For Persons found. -->
     <div flex-xs flex-gt-xs="60" layout="column">
-        <md-card ng-show="personsData" md-theme="default" ng-repeat="(key, personData) in personsData">
+        <md-item class="tps-vk-response" ng-show="personsData" ng-repeat="(key, personData) in personsData | notEmpty">
+            <md-item-content ng-init="paramsToShow = responseFormConfig[serviceRutineName].show">
+                <md-card class="md-whiteframe-1dp tps-vk-response-card">
+                    <!-- Results unexpanded -->
+                    <div class="md-tile-content" ng-click="toggle = !toggle" layout="row" layout-align="start center">
+                        <div flex="5">
+                        </div>
+                        <div flex="30" class="tps-vk-output-container">
+                            <h3 class="tps-vk-response-card-header">{{personData[paramsToShow[0]]}}, {{personData[paramsToShow[1]]}}</h3>
+                            <h4 class="tps-vk-output-label"> Adresse </h4>
+                            <p class="tps-vk-output-data">{{ personData[paramsToShow[2]]}}, {{personData[paramsToShow[3]] }} {{personData[paramsToShow[4]]}}</p>
+                        </div>
 
-            <!-- Results unexpanded. Soon -->
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">{{personData["etternavn"]}}, {{personData["fornavn"]}} {{personData["mellomnavn"]}}</span>
-                    <span class="md-subhead">{{personData["fnr"]}} {{personData["fodselsnummer"]}}</span>
-                </md-card-title-text>
-            </md-card-title>
+                        <div flex="15" class="tps-vk-output-container">
+                            <h2> &nbsp; </h2>
+                            <h4 class="tps-vk-output-label"> Fødselsnummer </h4>
+                            <p class="tps-vk-output-data" ng-show="personData[paramsToShow[5]]">{{personData[paramsToShow[5]]}}</p>
+                            <p ng-show='(!personData[paramsToShow[5]] )'> &nbsp; </p>
+                        </div>
+                        <div flex="15" class="tps-vk-output-container">
+                            <h2 > &nbsp;  </h2>
+                            <h4 class="tps-vk-output-label"> TK-nummer </h4>
+                            <p class="tps-vk-output-data" ng-show="personData[paramsToShow[6]]">{{ personData[paramsToShow[6]] }}</p>
+                            <p ng-show='(!personData[paramsToShow[6]] || personData[paramsToShow[6]] == " ")'> &nbsp; </p>
+                        </div>
+                        <div flex="15" class="tps-vk-output-container">
+                            <h2> &nbsp; </h2>
+                            <h4 class="tps-vk-output-label"> Kommune </h4>
+                            <p class="tps-vk-output-data" ng-show="personData[paramsToShow[7]] || personData[paramsToShow[8]]">{{ personData[paramsToShow[7]] }} {{ personData[paramsToShow[8]] }}</p>
+                            <p class="tps-vk-output-data" ng-show=" !(personData[paramsToShow[7]] || personData[paramsToShow[8]])"> &nbsp;</p>
+                        </div>
+                        <div flex="15" class="tps-vk-output-container" ng-show="personData[paramsToShow[9]]">
+                            <h2> &nbsp; </h2>
+                            <h4 class="tps-vk-output-label"> NAV-Enhet </h4>
+                            <p class="tps-vk-output-data">{{ personData[paramsToShow[9]] }} {{ personData[paramsToShow[10]] }}</p>
+                        </div>
+                        <!-- <div>
+                            <ng-md-icon ng-show="!toggle" icon="expand_more" size="48" style="fill: black" ng-click="toggle = !toggle"></ng-md-icon>
+                            <ng-md-icon ng-show="toggle" icon="expand_less" size="48" style="fill: black" ng-click="toggle = !toggle"></ng-md-icon>
+                        </div> -->
+                    </div>
 
-            <md-button class="btn1" ng-click="toggle = !toggle" layout-align="end center" style="margin-bottom: 5px">Toggle</md-button>
+                    <!-- Results expanded. create .less-->
+                    <div style="border-top:1px solid lightgrey; padding-top: 30px;" ng-show="toggle" >
+                        <div layout-gt-xs="row" ng-repeat="row in responseFormConfig[serviceRutineName].rows" class="md-title-content" layout-align="start center">
+                            <div flex="5"> </div>
+                            <div ng-repeat="field in row" flex="{{field.flex}}">
+                                <tps-output-field  ng-show="personData[field.fieldData]" label="{{field.label}}" field-model="personData[field.fieldData]"> </tps-output-field>
+                                <tps-output-field-no-value ng-show="!personData[field.fieldData]" label="{{field.label}}"> </tps-output-field-no-value>
+                            </div>
+                        </div>
 
-            <!-- Results expanded-->
-            <div layout-gt-xs="row" ng-show="toggle" layout="column" ng-repeat="row in responseFormConfig[serviceRutineName].rows">
-                <tps-output-field  ng-repeat="field in row" field-model="personData[field.fieldData]" label="{{field.label}}" flex="{{field.flex}}">
-                </tps-output-field>
-            </div>
-        </md-card>
+                    </div>
+
+                </md-card>
+            </md-item-content>
+        </md-item>
     </div>
 </div>
+
