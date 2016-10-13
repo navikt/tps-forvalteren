@@ -32,6 +32,31 @@ angular.module('tps-vedlikehold.service')
             });
         };
 
+        self.capitalizeFirstLetter = function capitalizeFirstLetter(word){
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        };
+
+        //TODO Legg til unntak/keys som skal/skal ikke få stor forbokstav? Som NOR osv.
+        //TODO Har nå sideeffekt av den gjør om Ints til Strings hvis jeg ikke tar feil.
+        self.capitalizeFirstLetterInObjectProperties = function capitalizeFirstLetterInObjectProperties(ObjectToFormat) {
+            for (var key in ObjectToFormat) {
+                if (ObjectToFormat.hasOwnProperty(key)) {
+                    ObjectToFormat[key] = ObjectToFormat[key].toString();
+                    var splittedProperty = ObjectToFormat[key].split(" ");
+                    var keyData = "";
+                    for (var i in splittedProperty) {
+                        keyData = keyData + " " + self.capitalizeFirstLetter(splittedProperty[i].toLowerCase());
+                    }
+                    ObjectToFormat[key] = keyData;
+                }
+            }
+            return ObjectToFormat;
+        };
+
+        self.isNumber = function(n){
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        };
+
 
         //TODO: find a better way to create dynamic output
         // Flattens a JSON object, adding all key-values at top with just their key as key
