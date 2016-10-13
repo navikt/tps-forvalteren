@@ -9,7 +9,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TpsRequest {
     private String environment;
-    private String serviceRutinenavn;
+
+    private String buffNr;
 
     private String aksjonsKode;
     private String aksjonsKode2;
@@ -33,5 +34,13 @@ public class TpsRequest {
 
     public String getAksjonsKode2() {
         return aksjonsKode2;
+    }
+
+    public String getBuffNr() {
+        return buffNr;
+    }
+
+    public void setBuffNr(String buffNr) {
+        this.buffNr = buffNr;
     }
 }
