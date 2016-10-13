@@ -82,31 +82,28 @@ public class ServiceController {
         String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
         String fnr = null;
         if(body.has("fnr")) fnr = body.get("fnr").asText();
-        switch (tpsServiceRutinenavn){
-            case ("FS03-FDNUMMER-PERSDATA-O"):
-                return sendTpsRequestForServiceRoutineWithFodselsnummerAsInput(tpsServiceRutinenavn,fnr,environment,body);
-            case ("FS03-FDNUMMER-KONTINFO-O"):
-                return sendTpsRequestForServiceRoutineWithFodselsnummerAsInput(tpsServiceRutinenavn,fnr,environment,body);
-            case ("FS03-NAADRSOK-PERSDATA-O"):
-                return sendTpsRequestForServiceRoutineWithoutFodselsnummerAsInput(tpsServiceRutinenavn,fnr,environment,body);
-            default:
-                return sendTpsRequestForServiceRoutineWithoutFodselsnummerAsInput(tpsServiceRutinenavn,fnr,environment,body);
+        if(fnr != null) {
+            return sendTpsRequestAndAuthorizeBeforeSendingRequest(tpsServiceRutinenavn,fnr,environment,body);
+        } else{
+            return sendTpsRequestAndAuthorizeAfterResponseIsReceived(tpsServiceRutinenavn,environment,body);
         }
     }
 
-    private ServiceRoutineResponse sendTpsRequestForServiceRoutineWithFodselsnummerAsInput(String tpsServiceRutinenavn, String fnr, String environment, JsonNode body){
-        validateAuthorized(fnr, environment, tpsServiceRutinenavn);
+    private ServiceRoutineResponse sendTpsRequestAndAuthorizeBeforeSendingRequest(String tpsServiceRutinenavn, String fnr, String environment, JsonNode body){
+        User user = userContextHolder.getUser();
+        if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment)) {
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsServiceRutinenavn);
+        }
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
-        ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest);
-        return tpsResponse;
+        return sendTpsRequest(tpsRequest);
     }
 
-    private ServiceRoutineResponse sendTpsRequestForServiceRoutineWithoutFodselsnummerAsInput(String tpsServiceRutinenavn, String fnr, String environment, JsonNode body){
-        Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
+    private ServiceRoutineResponse sendTpsRequestAndAuthorizeAfterResponseIsReceived(String tpsServiceRutinenavn, String environment, JsonNode body){
+        Sporingslogger.log(environment, tpsServiceRutinenavn, null);
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
         ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest);
-        removeDataNotAuthorizedToSeeFromTpsRepsonse(tpsResponse);
+        removeUnauthorizedDataFromTpsResponse(tpsResponse);
         remapResponseData(tpsResponse);
         return tpsResponse;
     }
@@ -116,7 +113,7 @@ public class ServiceController {
         JSONObject jObject = XML.toJSONObject(tpsResponse.getXml());
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        Object responseData = null;          //TODO Map to custom object
+        Object responseData = null;
         try {
             responseData = mapper.readValue(jObject.toString(), Map.class);
         } catch (IOException e) {
@@ -125,33 +122,30 @@ public class ServiceController {
         tpsResponse.setData(responseData);
     }
 
-    //TODO Move to own authorization class.
-    private void removeDataNotAuthorizedToSeeFromTpsRepsonse(ServiceRoutineResponse tpsResponse){
-        String serviceRutineName = tpsResponse.getServiceRoutineName();
-        String environment = tpsResponse.getEnvironment();
-        String allPersonsInXmlRegex = "<enPersonRes>.+</enPersonRes>";
-        String xmlWithoutPersons = Pattern.compile(allPersonsInXmlRegex, Pattern.DOTALL)
-                                    .matcher(tpsResponse.getXml()).replaceFirst("-->erstatt_senere<--");
-        String personRegex = "<enPersonRes>.*?<fnr>(\\d{11})</fnr>.+?</enPersonRes>";
-        Matcher matcher = Pattern.compile(personRegex, Pattern.DOTALL).matcher(tpsResponse.getXml());
-        String personsReplacement = "";
+    //TODO Move to own authorization class. Split it up.
+    private void removeUnauthorizedDataFromTpsResponse(ServiceRoutineResponse tpsResponse){
+        String extractPersonDataRegex = "<enPersonRes>.*?<fnr>(\\d{11})</fnr>.+?</enPersonRes>";
+        Matcher matcher = Pattern.compile(extractPersonDataRegex, Pattern.DOTALL).matcher(tpsResponse.getXml());
+        String filteredXML = "";
         int antallAuthoriserteTreff = 0,  totaltAntallTreff = 0;
+        User user = userContextHolder.getUser();
         while(matcher.find()){
             String fnr = matcher.group(1);
-            try{
-                validateAuthorized(fnr, environment, serviceRutineName);
-                personsReplacement = personsReplacement + matcher.group();
+            if(tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, tpsResponse.getEnvironment())){
+                filteredXML = filteredXML + matcher.group();
                 antallAuthoriserteTreff++;
-            } catch (HttpUnauthorisedException unauthorisedException){
-                //Do not add xml to final xml. Do anything.?
             }
             totaltAntallTreff++;
         }
-        String xmlWithoutUnauthorizedToViewPersons = xmlWithoutPersons.replace("-->erstatt_senere<--", personsReplacement);
-        xmlWithoutUnauthorizedToViewPersons = xmlWithoutUnauthorizedToViewPersons
-                                            .replace("<antallTotalt>"+totaltAntallTreff+"</antallTotalt>",
-                                                    "<antallTotalt>"+antallAuthoriserteTreff+"</antallTotalt>");
-        tpsResponse.setXml(xmlWithoutUnauthorizedToViewPersons);
+        if(antallAuthoriserteTreff == 0 && totaltAntallTreff > 0) {
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsResponse.getServiceRoutineName());
+        }
+        String everyPersonInXmlRegex = "<enPersonRes>.+</enPersonRes>";
+        String xmlWithoutUnauthorizedData = Pattern.compile(everyPersonInXmlRegex, Pattern.DOTALL)
+                                            .matcher(tpsResponse.getXml()).replaceFirst(filteredXML);
+        xmlWithoutUnauthorizedData = xmlWithoutUnauthorizedData.replace("<antallTotalt>"+totaltAntallTreff+"</antallTotalt>",
+                                            "<antallTotalt>"+antallAuthoriserteTreff+"</antallTotalt>");
+        tpsResponse.setXml(xmlWithoutUnauthorizedData);
     }
 
     private void validateRequest(JsonNode body) {
@@ -168,7 +162,7 @@ public class ServiceController {
         }
     }
 
-    private void validateAuthorized(String fnr, String environment, String serviceRutinenavn) {
+    private void isUserAuthorized(String fnr, String environment, String serviceRutinenavn) {
         if (!isEmpty(fnr)) {
             User user = userContextHolder.getUser();
             boolean authorized = tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment);
