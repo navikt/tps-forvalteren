@@ -9,13 +9,13 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.d
 /**
  * Created by f148888 on 30.09.2016.
  */
-public class S050SokPaNavnServiceRoutineResolver implements ServiceRoutineResolver{
+public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements ServiceRoutineResolver{
 
     @Override
     public TpsServiceRoutine resolve() {
         return aTpsServiceRoutine()
                 .name("FS03-NAADRSOK-PERSDATA-O")
-                .internalName("S050 Sok Person")
+                .internalName("S050 Sok ut Fra navn")
                 .javaClass(TpsSokPersonRequestServiceRoutine.class)
                 .parameter()
                     .name("navn")
@@ -42,6 +42,31 @@ public class S050SokPaNavnServiceRoutineResolver implements ServiceRoutineResolv
                     .name("aksjonsDato")
                     .optional()
                     .type(TpsParameterType.DATE)
+                .and()
+                .parameter()
+                    .name("adresseNavn")
+                    .optional()
+                    .type(TpsParameterType.STRING)
+                .and()
+                .parameter()
+                    .name("postnr")
+                    .optional()
+                    .type(TpsParameterType.STRING)
+                .and()
+                .parameter()
+                    .name("husnrFra")
+                    .optional()
+                    .type(TpsParameterType.STRING)
+                .and()
+                .parameter()
+                    .name("husnrTil")
+                    .optional()
+                    .type(TpsParameterType.STRING)
+                .and()
+                    .parameter()
+                    .name("knr")
+                    .optional()
+                    .type(TpsParameterType.STRING)
                 .and()
                 .build();
     }

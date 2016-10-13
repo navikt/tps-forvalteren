@@ -9,13 +9,13 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
  */
-public class S400HentPersonServiceRoutineResolver implements ServiceRoutineResolver {
+public class S004HentPersonopplysningerServiceRoutineResolver implements ServiceRoutineResolver {
 
     @Override
     public TpsServiceRoutine resolve() {
         return aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-PERSDATA-O")
-                .internalName("S400 Hent Person")
+                .internalName("S004 Hent Personopplysninger")
                 .javaClass(TpsHentPersonRequestServiceRoutine.class)
                 .parameter()
                     .name("fnr")
