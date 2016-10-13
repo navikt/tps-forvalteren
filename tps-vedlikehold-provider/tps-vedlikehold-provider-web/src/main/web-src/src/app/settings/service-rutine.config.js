@@ -28,7 +28,7 @@ angular.module('tps-vedlikehold')
                 'tlfJobb',
                 'tlfMobil'
             ]
-        }, 
+        },
         'FS03-NAADRSOK-PERSDATA-O': {
             'serviceRutineFieldsOrderTemplate': [
                 'navn',
