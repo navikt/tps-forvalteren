@@ -1,438 +1,730 @@
 angular.module('tps-vedlikehold')
     .constant('responseFormConfig',
-        
-    {
-        'FS03-FDNUMMER-PERSDATA-O': {
-            rows: [
-                [
-                    {
-                        fieldData: "fnr",
-                        label: "Fødselsnummer",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "kortnavn",
-                        label: "Forkortet navn",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "spesregType",
-                        label: "SpesReg",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "kodePersonStatus",
-                        label: "Kode PS",
-                        flex: 20
-                    }
+
+        {
+            'FS03-FDNUMMER-PERSDATA-O': {
+                show: [
+                    "etternavn",
+                    "fornavn",
+                    "boAdresse1",
+                    "postnr",
+                    "boPoststed",
+                    "fnr",
+                    "tknr",
+                    "kommunenr",
+                    "kommuneNavn"
                 ],
-        
-                [
-                    {
-                        fieldData: "fornavn",
-                        label: "Fornavn",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "mellomnavn",
-                        label: "Mellomnavn",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "etternavn",
-                        label: "Etternavn",
-                        flex: 40
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "boAdresse1",
-                        label: "Bostedsadresse 1",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "boAdresse2",
-                        label: "Bostedsadresse 2",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "bolignr",
-                        label: "Bolignr",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "personStatus",
-                        label: "Person Status",
-                        flex: 20
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "postnr",
-                        label: "Postnr",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "boPoststed",
-                        label: "Poststed",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "datoDo",
-                        label: "Dødsdato",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "datoUmyndiggjort",
-                        label: "Dato Umyndig",
-                        flex: 20
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "postAdresse1",
-                        label: "Post Adresse 1",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "postAdresse1",
-                        label: "Post Adresse 2",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "postAdresse1",
-                        label: "Post Adresse 3",
-                        flex: 40
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "tknr",
-                        label: "Tknr",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "tknrNavn",
-                        label: "TkNavn",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "kommunenr",
-                        label: "Knr",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "kommuneNavn",
-                        label: "KomNavn",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "tidligereKommunenr",
-                        label: "Tidligere knr",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "tidligereKNavn",
-                        label: "Tidl.Komm.Navn",
-                        flex: 20
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "kodeSivilstand",
-                        label: "Kode Sivilist",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "sivilstand",
-                        label: "Sivilstand",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "datoSivilstand",
-                        label: "Dato Sivilstand",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "kodeInnvandretFra",
-                        label: "Kode Innvandret",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "innvandretFra",
-                        label: "Innvandret fra",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "datoInnvandret",
-                        label: "Dato Innvdr.",
-                        flex: 10
-                    },
-                    {
-                        fieldData: "datoFlyttet",
-                        label: "Flytte Dato",
-                        flex: 10
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "kodeStatsborger",
-                        label: "Kode statsb.",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "statsborger",
-                        label: "Statsborger",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "datoStatsborger",
-                        label: "Statsb. Dato",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "kodeUtvandretTil",
-                        label: "Kode Utv.til",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "utvandretTil",
-                        label: "Utvandret til",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "datoUtvandret",
-                        label: "Dato Utvandret",
-                        flex: 20
-                    }
-                ],
-        
-                [
-                    {
-                        fieldData: "tlfPrivat_tlfNummer",
-                        label: "Tlf privat",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "tlfJobb_tlfNummer",
-                        label: "Tlf jobb",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "tlfMobil_tlfNummer",
-                        label: "Tlf mobil",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "epostAdresse",
-                        label: "E-postadr",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "giroNummer",
-                        label: "Gironr",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "kodeFodeland",
-                        label: "Kode FødeLand",
-                        flex: 10
-                    },
-                    {
-                        fieldData: "fodeLand",
-                        label: "Fødeland",
-                        flex: 10
-                    }
+                rows: [
+                    [
+                        {
+                            fieldData: "fnr",
+                            label: "Fødselsnummer",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fnrTidspunkt",
+                            label: "Fodselsnummer Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fnrSystem",
+                            label: "Fodselsnummer System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "fnrSaksbehandler",
+                            label: "Fodselsnummer Saksbehandler",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "kortnavn",
+                            label: "Forkortet navn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fornavn",
+                            label: "Fornavn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "mellomnavn",
+                            label: "Mellomnavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "etternavn",
+                            label: "Mellomnavn",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "navnTidspunkt",
+                            label: "Navn Tidsp.",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "navnSystem",
+                            label: "Navn System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "navnSaksbehandler",
+                            label: "Navn Saksbehandler",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "spesregType",
+                            label: "Spesreg Type",
+                            flex: 25
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "boAdresse1",
+                            label: "Bo-Adresse 1",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "boAdresse2",
+                            label: "Bo- Adresse 2",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "postnr",
+                            label: "Postnummer",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "boPoststed",
+                            label: "Bo-Poststed",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "bolignr",
+                            label: "Bolignummer",
+                            flex: 10
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "postAdresse1",
+                            label: "Post-Adresse 1",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "postAdresse2",
+                            label: "Post-Adresse 2",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "postAdresse3",
+                            label: "Post-Adresse 3",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "kommunenr",
+                            label: "Kommunenr",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "kommuneNavn",
+                            label: "Kommune Navn",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "tknr",
+                            label: "TK-Nummer",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "tknrNavn",
+                            label: "Tk Nr Navn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tknrTidspunkt",
+                            label: "Tk Nr. Tidspunkt",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "tknrSystem",
+                            label: "Tk Nr. System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tknrSaksbehandler",
+                            label: "Tk Nr. Saksbehandler",
+                            flex: 25
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "tidligereKommunenr",
+                            label: "Tidligere KommuneNr",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "tidligereKNavn",
+                            label: "Tidligere KommuneNavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "datoFlyttet",
+                            label: "Dato flyttet",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "kodePersonStatus",
+                            label: "Person status",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "personStatus",
+                            label: "Person status",
+                            flex: 30
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "kodeFodeland",
+                            label: "Kode Fodeland",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "fodeLand",
+                            label: "Fodeland",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "kodeStatsborger",
+                            label: "Kode statsborger",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "statsborger",
+                            label: "Statsborger",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "datoStatsborger",
+                            label: "Dato Statsborger",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "statsbTidspunkt",
+                            label: "Stats B. Tidspunkt",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "statsbSaksbehandler",
+                            label: "Stats B Saksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "statsbSaksbehandler",
+                            label: "StatsBSaksbehandler",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "sivilstand",
+                            label: "Sivilstand",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "datoSivilstand",
+                            label: "Dato Sivilstand",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "datoDo",
+                            label: "Dato Do.",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "kodeSivilstand",
+                            label: "Kode Sivilstand",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "sivilstand",
+                            label: "Sivilstand",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "datoSivilstand",
+                            label: "Dato Sivilstand",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "sivilstTidspunkt",
+                            label: "Sivilst Tidspunkt",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "sivilstSystem",
+                            label: "sivilstSystem",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "sivilstSaksbehandler",
+                            label: "Sivil St. Saksbehandler",
+                            flex: 15
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "datoDo",
+                            label: "Dato Do.",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "doTidspunkt",
+                            label: "Do Tidspunkt",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "doSystem",
+                            label: "Do System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "doSaksbehandler",
+                            label: "Do Saksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "datoUmyndiggjort",
+                            label: "Dato Umyndiggjort",
+                            flex: 10
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "kodeInnvandretFra",
+                            label: "Kode innvandret Fra",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "innvandretFra",
+                            label: "Innvandret Fra",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "datoInnvandret",
+                            label: "Dato Innvandret",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "kodeUtvandretTil",
+                            label: "Kode Utvandret Til",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "utvandretTil",
+                            label: "Utvandret Til",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "datoUtvandret",
+                            label: "Dato Utvandret",
+                            flex: 10
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "giroNummer",
+                            label: "Giro Nummer",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "giroTidspunktReg",
+                            label: "giro Tidsp. Reg.",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "giroTidspunkt",
+                            label: "giro Tidspunkt",
+                            flex: 15
+                        },
+                        {
+                            fieldData: "giroSystem",
+                            label: "Giro system",
+                            flex: 10
+                        },
+                        {
+                            fieldData: "giroSaksbehandler",
+                            label: "Giro Saksbehandler",
+                            flex: 25
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "tlfPrivat_tlfNummer",
+                            label: "Tlf privat",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tlfPrivat_tlfTidspunkt",
+                            label: "Tlf pr. tidspunkt",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tlfPrivat_tlfSystem",
+                            label: "Tlf pr. System",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tlfPrivat_tlfSaksbehandler",
+                            label: "Tlf pr. Saksbehandler",
+                            flex: 25
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "tlfJobb_tlfNummer",
+                            label: "Tlf Jobb",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tlfJobb_tlfTidspunkt",
+                            label: "Tlf jobb. tidspunkt",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tlfJobb_tlfSystem",
+                            label: "Tlf jobb. System",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tlfJobb_tlfSaksbehandler",
+                            label: "Tlf jobb. Saksbehandler",
+                            flex: 25
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "tlfMobil_tlfNummer",
+                            label: "Tlf mobil",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tlfMobil_tlfTidspunkt",
+                            label: "Tlf mob. Tidspunkt ",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tlfMobil_tlfSystem",
+                            label: "Tlf mobil System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tlfMobil_tlfSaksbehandler",
+                            label: "Tlf mobil Saksbehandler",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "epostAdresse",
+                            label: "Epostadresse",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "epostTidspunkt",
+                            label: "Eposttidspunkt ",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "epostSystem",
+                            label: "Epostsystem",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "epostSaksbehandler",
+                            label: "Epostsaksbehandler",
+                            flex: 20
+                        }
+                    ]
                 ]
-            ]
-        },
-        'FS03-FDNUMMER-KONTINFO-O': {
-            rows: [
-                [
-                    {
-                        fieldData: "fodselsnummer",
-                        label: "Fødselsnummer",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "kontoNummer",
-                        label: "Kontonummer",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "boAdresse1",
-                        label: "Adresse 1",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "bolignr",
-                        label: "BoligNr",
-                        flex: 10
-                    }
-                ],
+            },
+            'FS03-FDNUMMER-KONTINFO-O': {
+                show: [
 
-                [
-                    {
-                        fieldData: "boPostnr",
-                        label: "Postnummer",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "tknr",
-                        label: "tkNr",
-                        flex: 5
-                    },
-                    {
-                        fieldData: "tkNavn",
-                        label: "tkNavn",
-                        flex: 15
-                    }
-                ],
-                [
-                    {
-                        fieldData: "kommuneNavn",
-                        label: "KommuneNavn",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "kommunenr",
-                        label: "Kommunenummer",
-                        flex: 10
-                    },
-                    {
-                        fieldData: "land",
-                        label: "Land",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "adresseType",
-                        label: "AdrType",
-                        flex: 10
-                    }
-                ],
+                    "etternavn",
+                    "fornavn",
+                    "boAdresse1",
+                    "boPostnr",
+                    "poststed",
+                    "fodselsnummer",
+                    "tknr",
+                    "kommunenr",
+                    "kommuneNavn",
+                    "kodeNAVenhet",
+                    "kodeNAVenhetBeskr"
 
-                [
-                    {
-                        fieldData: "kodeNAVenhet",
-                        label: "KodeNAVenhet",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "kodeNAVenhetBeskr",
-                        label: "NAVenhet område",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "NAVenhetSystem",
-                        label: "NAVenhetSystem",
-                        flex: 15
-                    }
                 ],
+                rows: [
+                    [
+                        {
+                            fieldData: "fodselsnummer",
+                            label: "Fødselsnummer",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "fodselsdato",
+                            label: "Fødselsdato",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "personstatus",
+                            label: "Person status",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "gjeldendePersonnavn",
+                            label: "Gjeldende Personnavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "kortnavn",
+                            label: "Kortnavn",
+                            flex: 20
+                        }
+                    ],
 
-                [
-                    {
-                        fieldData: "adrSaksbehandler",
-                        label: "AdrSaksbehandler",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "adrTidspunktReg",
-                        label: "adrTidspunktReg",
-                        flex: 15
-                    }
+                    [
+                        {
+                            fieldData: "fornavn",
+                            label: "Fornavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "mellomnavn",
+                            label: "Mellomnavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "etternavn",
+                            label: "Etternavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "navnTidspunkt",
+                            label: "Navn tidspunkt",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "navnSystem",
+                            label: "Navnsystem",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "navnSaksbehandler",
+                            label: "Navn saksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "kontoNummer",
+                            label: "Kontonummer",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "banknavn",
+                            label: "Banknavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "regTidspunkt",
+                            label: "Reg. Tidspunkt",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "regSystem",
+                            label: "Reg. System",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "regSaksbehandler",
+                            label: "Reg. Saksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "boAdresse1",
+                            label: "Bo-adresse 1",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "boAdresse2",
+                            label: "Bo-adresse 2",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "boPostnr",
+                            label: "Bo-postnummer",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "boPoststed",
+                            label: "Bo-poststed",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "datoFom",
+                            label: "Bo-Dato Fra og Med",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "datoTom",
+                            label: "Bo-Dato Til og Med",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "adresse1",
+                            label: "Full Bo-adresse 2",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "adresse2",
+                            label: "Full Bo-adresse 2",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tilleggsAdresseSKD",
+                            label: "Tilleggsadresse SKD",
+                            flex: 20
+                        }
+                    ]
                 ]
-            ]
-        },
+            },
 
-        'FS03-NAADRSOK-PERSDATA-O': {
-            rows: [
-                [
-                    {
-                        fieldData: "fnr",
-                        label: "Fødselsnummer",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "fornavn",
-                        label: "Fornavn",
-                        flex: 30
-                    },
-                    {
-                        fieldData: "mellomnavn",
-                        label: "Mellomnavn",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "etternavn",
-                        label: "Etternavn",
-                        flex: 10
-                    }
+            'FS03-NAADRSOK-PERSDATA-O': {
+                show: [
+                    "etternavn",
+                    "fornavn",
+                    "adresse1",
+                    "postnr",
+                    "poststed",
+                    "fnr",
+                    "tknr",
+                    "kommunenr",
+                    "kommuneNavn"
                 ],
+                rows: [
+                    [
+                        {
+                            fieldData: "fnr",
+                            label: "Fødselsnummer",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fornavn",
+                            label: "Fornavn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "mellomnavn",
+                            label: "Mellomnavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "etternavn",
+                            label: "Etternavn",
+                            flex: 20
+                        }
+                    ],
 
-                [
-                    {
-                        fieldData: "adresseType",
-                        label: "adrType",
-                        flex: 10
-                    },
-                    {
-                        fieldData: "adresse1",
-                        label: "Adr1",
-                        flex: 5
-                    },
-                    {
-                        fieldData: "adresse2",
-                        label: "Adr2",
-                        flex: 15
-                    }
-                ],
-                [
-                    {
-                        fieldData: "kommuneNavn",
-                        label: "KommuneNavn",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "postnr",
-                        label: "PostNr",
-                        flex: 10
-                    },
-                    {
-                        fieldData: "poststed",
-                        label: "Poststed",
-                        flex: 20
-                    },
-                    {
-                        fieldData: "kommunenr",
-                        label: "Kommunenr",
-                        flex: 10
-                    }
-                ],
+                    [
+                        {
+                            fieldData: "adresseType",
+                            label: "Adresse type",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "adresse1",
+                            label: "Adresse 1",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "adresse2",
+                            label: "Adresse 2",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "adresse3",
+                            label: "Adresse 3",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "landKode",
+                            label: "Adresse landkode",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "kommunenr",
+                            label: "Kommunenr",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "poststed",
+                            label: "Poststed",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "postnr",
+                            label: "Postnummer",
+                            flex: 20
+                        }
+                    ],
 
-                [
-                    {
-                        fieldData: "tknr",
-                        label: "TkNr",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "personStatus",
-                        label: "PersonStatus",
-                        flex: 15
-                    },
-                    {
-                        fieldData: "statsborgerskap",
-                        label: "Statsborgerskap",
-                        flex: 15
-                    }
+                    [
+                        {
+                            fieldData: "statsborgerskap",
+                            label: "Statsborgerskap",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "kjonn",
+                            label: "Kjonn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tknr",
+                            label: "TkNr",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "personStatus",
+                            label: "PersonStatus",
+                            flex: 20
+                        }
+                    ]
                 ]
-            ]
+            }
         }
-    }
-);
+    );
