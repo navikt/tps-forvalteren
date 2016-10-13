@@ -1,8 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.utils;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsPingRequestServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.*;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -14,8 +12,10 @@ public class RequestClassService {
         switch (serviceRutinenavn) {
             case "FS03-FDNUMMER-PERSDATA-O":
                 return TpsHentPersonRequestServiceRoutine.class;
-            case "FS03-OTILGANG-TILSRTPS-O":
-                return TpsPingRequestServiceRoutine.class;
+            case "FS03-FDNUMMER-KONTINFO-O":
+                return TpsHentKontaktinformasjonServiceRoutine.class;
+            case "FS03-NAADRSOK-PERSDATA-O":
+                return TpsSokPersonRequestServiceRoutine.class;
             default:
                 return TpsRequestServiceRoutine.class;
         }
