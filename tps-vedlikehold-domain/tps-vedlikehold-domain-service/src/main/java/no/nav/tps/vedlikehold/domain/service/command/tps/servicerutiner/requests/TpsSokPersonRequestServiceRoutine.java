@@ -13,6 +13,11 @@ public class TpsSokPersonRequestServiceRoutine extends TpsRequestServiceRoutine 
     private String navn;
     private String etternavn;
     private String fornavn;
+    private String adresseNavn;
+    private String postnr;
+    private String husnrFra;
+    private String husnrTil;
+    private String knr;
 
     public String getNavn() {
         return navn;
@@ -36,5 +41,46 @@ public class TpsSokPersonRequestServiceRoutine extends TpsRequestServiceRoutine 
 
     public void setFornavn(String fornavn) {
         this.fornavn = fornavn;
+    }
+
+
+    public String getAdresseNavn() {
+        return adresseNavn;
+    }
+
+    public void setAdresseNavn(String adresseNavn) {
+        this.adresseNavn = adresseNavn;
+    }
+
+    public String getPostnr() {
+        return postnr;
+    }
+
+    public void setPostnr(String postnr) {
+        this.postnr = postnr;
+    }
+
+    public String getHusnrFra() {
+        return husnrFra;
+    }
+
+    public void setHusnrFra(String husnrFra) {
+        this.husnrFra = husnrFra;
+    }
+
+    public String getHusnrTil() {
+        return husnrTil;
+    }
+
+    public void setHusnrTil(String husnrTil) {
+        this.husnrTil = husnrTil;
+    }
+
+    public String getKnr(){
+        return knr;
+    }
+
+    public void setKnr(String knr) {
+        this.knr = knr;
     }
 }
