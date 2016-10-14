@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.jms.JMSException;
 
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
@@ -38,6 +39,9 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     @Autowired
     private XmlMapper xmlMapper;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     /**
      * Send a request to TPS using asynchronous message queues
      *
@@ -59,11 +63,7 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
 
             JSONObject jObject = XML.toJSONObject(responseXml);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-            Object responseData = mapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
-            System.out.println("OBJECT STRING: " + mapper.writeValueAsString(responseData));
+            Object responseData = objectMapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
 
             return new ServiceRoutineResponse(responseXml, responseData);
         } catch (IOException exception) {
