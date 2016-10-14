@@ -127,24 +127,24 @@ public class ServiceController {
         String extractPersonDataRegex = "<enPersonRes>.*?<fnr>(\\d{11})</fnr>.+?</enPersonRes>";
         Matcher matcher = Pattern.compile(extractPersonDataRegex, Pattern.DOTALL).matcher(tpsResponse.getXml());
         String filteredXML = "";
-        int antallAuthoriserteTreff = 0,  totaltAntallTreff = 0;
+        int countAuthorizedMatches = 0,  countTotalMatches = 0;
         User user = userContextHolder.getUser();
         while(matcher.find()){
             String fnr = matcher.group(1);
             if(tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, tpsResponse.getEnvironment())){
                 filteredXML = filteredXML + matcher.group();
-                antallAuthoriserteTreff++;
+                countAuthorizedMatches++;
             }
-            totaltAntallTreff++;
+            countTotalMatches++;
         }
-        if(antallAuthoriserteTreff == 0 && totaltAntallTreff > 0) {
+        if(countAuthorizedMatches == 0 && countTotalMatches > 0) {
             throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsResponse.getServiceRoutineName());
         }
         String everyPersonInXmlRegex = "<enPersonRes>.+</enPersonRes>";
         String xmlWithoutUnauthorizedData = Pattern.compile(everyPersonInXmlRegex, Pattern.DOTALL)
                                             .matcher(tpsResponse.getXml()).replaceFirst(filteredXML);
-        xmlWithoutUnauthorizedData = xmlWithoutUnauthorizedData.replace("<antallTotalt>"+totaltAntallTreff+"</antallTotalt>",
-                                            "<antallTotalt>"+antallAuthoriserteTreff+"</antallTotalt>");
+        xmlWithoutUnauthorizedData = xmlWithoutUnauthorizedData.replace("<antallTotalt>"+ countTotalMatches +"</antallTotalt>",
+                                            "<antallTotalt>"+ countAuthorizedMatches +"</antallTotalt>");
         tpsResponse.setXml(xmlWithoutUnauthorizedData);
     }
 
