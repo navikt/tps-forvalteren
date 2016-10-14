@@ -1,5 +1,8 @@
 package no.nav.tps.vedlikehold.service.command.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.*;
@@ -37,11 +40,18 @@ public class CommandConfig {
         return xmlMapper;
     }
 
-    /*@Bean
-    @Order(Integer.MAX_VALUE)
-    ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
-        return new S000TilgangTilTpsServiceRoutineResolver();
-    }*/
+    @Bean
+    ObjectMapper objectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        return objectMapper;
+    }
+
+    @Bean
+    @Order(1)
+    ServiceRoutineResolver hentPersonServiceRoutineResolver() {
+        return new S004HentPersonopplysningerServiceRoutineResolver();
+    }
 
     @Bean
     @Order(2)
@@ -56,8 +66,9 @@ public class CommandConfig {
     }
 
     @Bean
-    @Order(1)
-    ServiceRoutineResolver hentPersonServiceRoutineResolver() {
-        return new S004HentPersonopplysningerServiceRoutineResolver();
+    @Order(Integer.MAX_VALUE)
+    ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
+        return new S000TilgangTilTpsServiceRoutineResolver();
     }
+
 }
