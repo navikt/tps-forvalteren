@@ -12,11 +12,14 @@ import java.io.IOException;
 
 import javax.jms.JMSException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
+import org.json.JSONObject;
+import org.json.XML;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +45,9 @@ public class DefaultTpsServiceRutineServiceTest {
     private XmlMapper xmlMapperMock;
 
     @Mock
+    private ObjectMapper objectMapper;
+
+    @Mock
     private TpsRequestServiceRoutine tpsRequestServiceRoutineMock;
 
     @Mock
@@ -58,7 +64,7 @@ public class DefaultTpsServiceRutineServiceTest {
         when( messageQueueServiceFactoryMock.createMessageQueueService(eq(ENVIRONMENT)) ).thenReturn(messageQueueConsumerMock);
         when( messageQueueConsumerMock.sendMessage(anyString()) ).thenReturn(RESPONSE_XML);
 
-        when( xmlMapperMock.readValue(anyString(), any(Class.class)) ).thenReturn(responseObjectMock);
+        when( objectMapper.readValue(anyString(), any(Class.class)) ).thenReturn(responseObjectMock);
 
         when(tpsRequestServiceRoutineMock.getEnvironment()).thenReturn(ENVIRONMENT);
     }
@@ -81,7 +87,8 @@ public class DefaultTpsServiceRutineServiceTest {
     public void responseXmlIsConvertedToAnObject() throws Exception {
         defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
 
-        verify(xmlMapperMock).readValue(eq(RESPONSE_XML), any(Class.class));
+        JSONObject jsonObject = XML.toJSONObject(RESPONSE_XML);
+        verify(objectMapper).readValue(eq(jsonObject.toString()), any(Class.class));
     }
 
     @Test
@@ -114,7 +121,7 @@ public class DefaultTpsServiceRutineServiceTest {
 
     @Test(expected = IOException.class)
     public void exceptionDuringResponseParsingFailsGracefully() throws Exception {
-        when(xmlMapperMock.readValue(anyString(), any(Class.class))).thenThrow(IOException.class);
+        when(objectMapper.readValue(anyString(), any(Class.class))).thenThrow(IOException.class);
 
         defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
     }
