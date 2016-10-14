@@ -51,10 +51,5 @@ public class RsRequestMappingUtils {
 
         //getTpsServiceRutinerServicereturn objectMapper.convertValue(node, requestClass);
         return null;
-        /* Det som skjer er at den går igjen alle TpsService/meldinger du har også leter den etter
-        * den du har kalt ved navn "para som du sender inn". Navnet setter du i klassen til
-        * kommandoen, blir satt i "EndreSprak" klassen for eksempel gjennom builderen dens.
-        * Så da finner den den klassen også returnerer den den. Altså finner riktig Javaklasse
-        * basert på navnet på Klassen, som man sender inn som para. */
     }
 }
