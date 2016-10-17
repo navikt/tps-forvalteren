@@ -61,10 +61,10 @@ public class DefaultTpsServiceRutineServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        when( messageQueueServiceFactoryMock.createMessageQueueService(eq(ENVIRONMENT)) ).thenReturn(messageQueueConsumerMock);
-        when( messageQueueConsumerMock.sendMessage(anyString()) ).thenReturn(RESPONSE_XML);
+        when(messageQueueServiceFactoryMock.createMessageQueueService(eq(ENVIRONMENT)) ).thenReturn(messageQueueConsumerMock);
+        when(messageQueueConsumerMock.sendMessage(anyString()) ).thenReturn(RESPONSE_XML);
 
-        when( objectMapper.readValue(anyString(), any(Class.class)) ).thenReturn(responseObjectMock);
+        when(objectMapper.readValue(anyString(), any(Class.class)) ).thenReturn(responseObjectMock);
 
         when(tpsRequestServiceRoutineMock.getEnvironment()).thenReturn(ENVIRONMENT);
     }
@@ -84,25 +84,9 @@ public class DefaultTpsServiceRutineServiceTest {
     }
 
     @Test
-    public void responseXmlIsConvertedToAnObject() throws Exception {
-        defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
-
-        JSONObject jsonObject = XML.toJSONObject(RESPONSE_XML);
-        verify(objectMapper).readValue(eq(jsonObject.toString()), any(Class.class));
-    }
-
-    @Test
     public void responseXmlIsProvided() throws Exception {
-        /*ServiceRoutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
-
-        assertThat(result.getXml(), is(RESPONSE_XML)); */
-    }
-
-    @Test
-    public void responseObjectIsProvided() throws Exception {
-       /* ServiceRoutineResponse result = defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
-
-        assertThat(result.getData(), is(responseObjectMock));*/
+        String result = defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
+        assertThat(result, is(RESPONSE_XML));
     }
 
     @Test(expected = JMSException.class)
@@ -115,13 +99,6 @@ public class DefaultTpsServiceRutineServiceTest {
     @Test(expected = JMSException.class)
     public void exceptionDuringMessageSendingAreRethrown() throws Exception {
         when(messageQueueConsumerMock.sendMessage(anyString())).thenThrow(JMSException.class);
-
-        defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
-    }
-
-    @Test(expected = IOException.class)
-    public void exceptionDuringResponseParsingFailsGracefully() throws Exception {
-        when(objectMapper.readValue(anyString(), any(Class.class))).thenThrow(IOException.class);
 
         defaultGetTpsServiceRutineService.execute(tpsRequestServiceRoutineMock);
     }

@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by F148888 on 17.10.2016.
+ * Created by Peter Fløgstad on 17.10.2016.
  */
 
 @Component

@@ -18,6 +18,7 @@ import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
@@ -65,6 +66,9 @@ public class ServiceControllerTest {
 
     @Mock
     private JsonNode baseJsonNode;
+
+    @Mock
+    private TpsResponseMappingUtils tpsResponseMappingUtils;
 
     @InjectMocks
     private ServiceController controller;
@@ -182,8 +186,8 @@ public class ServiceControllerTest {
     }
 
     @Test
-    public void getServiceReturnsResultFromServiceRutineService() throws Exception {
-       /* ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
+    public void getServiceReturnsXMLResultFromServiceRutineService() throws Exception {
+        /*ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
         when(tpsRutineServiceMock.execute(any(TpsRequestServiceRoutine.class))).thenReturn(response);
 
         ServiceRoutineResponse result = controller.getService(baseJsonNode);
