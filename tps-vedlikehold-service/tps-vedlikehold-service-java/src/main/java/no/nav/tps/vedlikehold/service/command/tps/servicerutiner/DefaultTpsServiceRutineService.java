@@ -1,18 +1,12 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.jms.JMSException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
-
-import org.json.JSONObject;
-import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

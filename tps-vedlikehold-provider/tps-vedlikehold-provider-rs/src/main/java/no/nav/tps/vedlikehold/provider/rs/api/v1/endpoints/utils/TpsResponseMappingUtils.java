@@ -64,11 +64,12 @@ public class TpsResponseMappingUtils {
     }
 
     //TODO Split it up. Refactor. Kanskje flytte...
-    public void removeUnauthorizedDataFromTpsResponse(ServiceRoutineResponse tpsResponse) throws HttpUnauthorisedException{
+    public void removeUnauthorizedDataFromTpsResponse(ServiceRoutineResponse tpsResponse){
         String extractPersonDataRegex = "<enPersonRes>.*?<fnr>(\\d{11})</fnr>.+?</enPersonRes>";
         Matcher matcher = Pattern.compile(extractPersonDataRegex, Pattern.DOTALL).matcher(tpsResponse.getXml());
         StringBuilder filteredXMLsb = new StringBuilder();
-        int countAuthorizedMatches = 0,  countTotalMatches = 0;
+        int countAuthorizedMatches = 0;
+        int countTotalMatches = 0;
         User user = userContextHolder.getUser();
         while(matcher.find()){
             String fnr = matcher.group(1);

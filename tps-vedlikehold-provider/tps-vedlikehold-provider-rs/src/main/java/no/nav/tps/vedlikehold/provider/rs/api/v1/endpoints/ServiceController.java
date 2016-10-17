@@ -109,7 +109,7 @@ public class ServiceController {
             tpsResponseMappingUtils.remapTpSResponse(tpsResponse);
         } catch (HttpUnauthorisedException exception) {
             throw new HttpUnauthorisedException(messageProvider.get(HttpUnauthorisedException.messageKey), exception.getPath());
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
