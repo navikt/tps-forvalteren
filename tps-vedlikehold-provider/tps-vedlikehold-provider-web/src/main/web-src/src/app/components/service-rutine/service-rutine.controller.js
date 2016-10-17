@@ -15,7 +15,7 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
             $scope.personsData = {};
             $scope.toggle = false;
-            $scope.buffNumbers = ["1"];
+            //$scope.buffNumbers = ["1, 2, 3, 4, 5,6"];
 
             var tpsReturnedObject = {};
             var nonUniqueProperties = []; //objects that contain non-unique properties
@@ -49,7 +49,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     capitalizeFirstLetterInPersonsData(jsonObjectWithResultData);
                     var antallTreff = jsonObjectWithResultData.antallTotalt;
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
-                    else updateBufferChoices(antallTreff);
+                    //else updateBufferChoices(antallTreff);
 
                 }, function (error) {
                     $scope.loading = false;
@@ -222,7 +222,6 @@ angular.module('tps-vedlikehold.service-rutine')
                         }
                     });
 
-
                     mdTabsCanvas.addEventListener("focusout", function (e) {
                         firstTab.classList.remove("md-focused");
                     });
@@ -250,12 +249,14 @@ angular.module('tps-vedlikehold.service-rutine')
                         case 'aksjonsKode':
                             $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
                             break;
+                        case 'buffNr':
+                            $scope.formData.buffNr = $scope.selectValues.buffNr[0];
+                            break;
                         default:
                             $scope.formData[parameter] = '';
                     }
                 }
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
-                $scope.formData.buffNr = $scope.buffNumbers ? $scope.buffNumbers[0] : null;
             }
 
             // ##################################

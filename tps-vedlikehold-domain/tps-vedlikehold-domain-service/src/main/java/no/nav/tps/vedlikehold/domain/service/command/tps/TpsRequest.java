@@ -10,13 +10,11 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class TpsRequest {
     private String environment;
 
-    private String buffNr;
-
     private String aksjonsKode;
     private String aksjonsKode2;
 
     public void setAksjonsKode(String aksjonsKode) {
-        this.aksjonsKode = aksjonsKode.substring(0,1);
+        this.aksjonsKode = aksjonsKode.substring(0, 1);
         this.aksjonsKode2 = aksjonsKode.substring(1);
     }
 
@@ -36,11 +34,4 @@ public class TpsRequest {
         return aksjonsKode2;
     }
 
-    public String getBuffNr() {
-        return buffNr;
-    }
-
-    public void setBuffNr(String buffNr) {
-        this.buffNr = buffNr;
-    }
 }

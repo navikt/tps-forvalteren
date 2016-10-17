@@ -68,6 +68,12 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                     .optional()
                     .type(TpsParameterType.STRING)
                 .and()
+                    .parameter()
+                    .name("buffNr")
+                    .required()
+                    .values("1","2","3","4","5", "6")
+                    .type(TpsParameterType.STRING)
+                .and()
                 .build();
     }
 }

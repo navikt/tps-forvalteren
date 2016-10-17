@@ -18,6 +18,7 @@ public class TpsSokPersonRequestServiceRoutine extends TpsRequestServiceRoutine 
     private String husnrFra;
     private String husnrTil;
     private String knr;
+    private String buffNr;
 
     public String getNavn() {
         return navn;
@@ -82,5 +83,13 @@ public class TpsSokPersonRequestServiceRoutine extends TpsRequestServiceRoutine 
 
     public void setKnr(String knr) {
         this.knr = knr;
+    }
+
+    public String getBuffNr() {
+        return buffNr;
+    }
+
+    public void setBuffNr(String buffNr) {
+        this.buffNr = buffNr;
     }
 }
