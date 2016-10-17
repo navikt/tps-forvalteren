@@ -6,10 +6,13 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.response.En
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import org.codehaus.jackson.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.function.ObjDoubleConsumer;
 
 /**
  * Created by f148888 on 29.09.2016.

@@ -9,6 +9,7 @@ import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRu
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

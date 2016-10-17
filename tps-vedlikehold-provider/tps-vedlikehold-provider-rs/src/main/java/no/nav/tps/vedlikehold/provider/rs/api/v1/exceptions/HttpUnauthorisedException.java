@@ -5,6 +5,8 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions;
  */
 public class HttpUnauthorisedException extends HttpException {
 
+    public static String messageKey = "rest.service.request.exception.Unauthorized";
+
     public HttpUnauthorisedException(String message, String path) {
         super(message, path);
     }

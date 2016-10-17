@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.service.command.tps.ajourforing;
+package no.nav.tps.vedlikehold.service.command.tps.endringsmeldinger;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.TpsEndringsmelding;
 import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.resolvers.EndringsmeldingResolver;

@@ -8,5 +8,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response
  */
 @FunctionalInterface
 public interface TpsServiceRutineService {
-     ServiceRoutineResponse execute(TpsRequestServiceRoutine request) throws Exception;
+     String execute(TpsRequestServiceRoutine request) throws Exception;
 }

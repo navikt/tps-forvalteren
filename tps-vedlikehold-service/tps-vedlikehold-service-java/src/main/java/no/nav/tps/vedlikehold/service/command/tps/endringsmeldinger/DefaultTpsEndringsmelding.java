@@ -1,6 +1,4 @@
-package no.nav.tps.vedlikehold.service.command.tps.ajourforing;
-
-import org.springframework.beans.factory.annotation.Autowired;
+package no.nav.tps.vedlikehold.service.command.tps.endringsmeldinger;
 
 /**
  * Created by f148888 on 29.09.2016.

@@ -15,8 +15,6 @@ import static java.util.Arrays.asList;
 public class TpsEndringsmeldingBuilder {
     private String name;
     private String internalName;
-    private String brukerID;
-    private String kilde;
     private Class<? extends TpsRequestEndringsmelding> javaClass;
     private List<TpsParameter> parameters = new ArrayList();
 
@@ -45,8 +43,6 @@ public class TpsEndringsmeldingBuilder {
         endringsmelding.setInternalName(internalName);
         endringsmelding.setJavaClass(javaClass);
         endringsmelding.setParameters(parameters);
-        endringsmelding.setBrukerID(brukerID);
-        endringsmelding.setKilde(kilde);
         return endringsmelding;
     }
 
@@ -58,22 +54,10 @@ public class TpsEndringsmeldingBuilder {
         private String name;
         private TpsParameterType type;
         private String use;
-        private String brukerID;
-        private String kilde;
         private List<String> values = new ArrayList<>();
 
         public TpsEndringsmeldingParameterBuilder name(String name) {
             this.name = name;
-            return this;
-        }
-
-        public TpsEndringsmeldingParameterBuilder brukerID(String brukerID) {
-            this.brukerID = brukerID;
-            return this;
-        }
-
-        public TpsEndringsmeldingParameterBuilder kilde(String kilde) {
-            this.kilde = kilde;
             return this;
         }
 

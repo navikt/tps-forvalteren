@@ -49,4 +49,5 @@ public class DefaultMessageProvider implements MessageProvider {
             LOGGER.error("Unable find the standard message, '{}', in messages.properties", UNKNOWN_MESSAGE_KEY);
         }
     }
+
 }

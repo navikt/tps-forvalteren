@@ -54,17 +54,4 @@ public class ServiceRoutineResponse {
         return matcher.group(1);
 
     }
-
-    /*
-    public ArrayList<String> getFnrInResponse(){
-        ArrayList<String> fodselsnummer = new ArrayList<>();
-        if(this.xml != null){
-            String personRegex = "(<enPersonRes>.+?<spesregType>\\w+?</spesregType>.+?</enPersonRes>)";
-            Pattern pattern = Pattern.compile(personRegex, Pattern.DOTALL);
-            String xmlWithoutDiscreteUsers = pattern.matcher(tpsResponse.getXml()).replaceAll("");
-            tpsResponse.setXml(xmlWithoutDiscreteUsers);
-        }
-       return fodselsnummer;
-    }
-    */
 }

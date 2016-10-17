@@ -47,7 +47,4 @@ public class TpsParameter {
         return values;
     }
 
-    /*public enum Type {
-        STRING, DATE;
-    }*/
 }
