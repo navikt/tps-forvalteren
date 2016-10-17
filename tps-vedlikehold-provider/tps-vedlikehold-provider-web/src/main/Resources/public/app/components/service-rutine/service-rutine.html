@@ -79,12 +79,12 @@
                 <div class="tps-vk-hits-meesage" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0 ">
                      Treff: {{ getAntallTreff(personsData)  }}
                 </div>
-                <div ng-show="buffNr" class="tps-vk-hits-message" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0" >
+                <div ng-show='formData["buffNr"]' class="tps-vk-hits-message" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0" >
                      Viser treff: {{ getStartIndex(formData["buffNr"]) }} - {{ getEndIndex(formData["buffNr"], getAntallTreff(personsData))  }}
                 </div>
             </div>
 
-            <div ng-show="buffNr" class="tps-vk-hits" layout="row" flex="10" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0">
+            <div ng-show='formData["buffNr"]' class="tps-vk-hits" layout="row" flex="10" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0">
                 <ng-md-icon ng-click="pageBackwards()" icon="fast_rewind" size="24" style="fill: #bdbdbd"></ng-md-icon>
                 <div class="tps-vk-hits-message"> Paging </div>
                 <ng-md-icon ng-click="pageForward()" icon="fast_forward" size="24" style="fill: #bdbdbd"></ng-md-icon>
