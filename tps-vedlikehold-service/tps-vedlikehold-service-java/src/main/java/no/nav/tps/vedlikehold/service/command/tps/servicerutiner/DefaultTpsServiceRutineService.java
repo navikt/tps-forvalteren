@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javax.jms.JMSException;
 
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
@@ -39,36 +37,23 @@ public class DefaultTpsServiceRutineService implements TpsServiceRutineService {
     @Autowired
     private XmlMapper xmlMapper;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     /**
      * Send a request to TPS using asynchronous message queues
      *
      * @param tpsRequestServiceRoutine TPS request object
      *
-     * @return an object wrapping the raw XML response, and the XML represented by an object
+     * @return A String representing the XML-response from TPS
      *
      * @throws JMSException failed to send the message
-     * @throws IOException failed to convert the response XML to an object
      */
     @Override
-    public ServiceRoutineResponse execute(TpsRequestServiceRoutine tpsRequestServiceRoutine) throws IOException, JMSException {
+    public String execute(TpsRequestServiceRoutine tpsRequestServiceRoutine) throws IOException, JMSException {
         try {
             String requestMessage = XML_PROPERTIES_PREFIX + xmlMapper.writeValueAsString(tpsRequestServiceRoutine) + XML_PROPERTIES_POSTFIX;     //TODO: This class shouldnt be responsible for message construction
 
-            /* Send message to TPS and handle the received data */
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService( tpsRequestServiceRoutine.getEnvironment() );
-
             String responseXml = messageQueueConsumer.sendMessage(requestMessage);
-
-            JSONObject jObject = XML.toJSONObject(responseXml);
-            Object responseData = objectMapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
-
-            return new ServiceRoutineResponse(responseXml, responseData);
-        } catch (IOException exception) {
-            LOGGER.error("Failed to convert TPS during XML marshalling with exception: {}", exception.toString());
-            throw exception;
+            return responseXml;
         } catch (JMSException exception) {
             LOGGER.error("Failed to connect to MQ with exception: {}", exception.toString());
             throw exception;
