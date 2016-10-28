@@ -13,8 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class TpsServiceRoutine {
 
     private String name;
-
-    private String internalName;
+    private String internalName;    // (DisplayName)
 
     @JsonIgnore
     private Class<? extends TpsRequestServiceRoutine> javaClass;

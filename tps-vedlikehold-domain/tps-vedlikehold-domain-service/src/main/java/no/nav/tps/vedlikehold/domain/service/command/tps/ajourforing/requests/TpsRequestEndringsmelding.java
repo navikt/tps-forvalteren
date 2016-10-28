@@ -1,7 +1,10 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import java.util.Map;
 
 /**
  * Created by f148888 on 29.09.2016.
@@ -9,31 +12,5 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TpsRequestEndringsmelding extends TpsRequest {
-    private String xmlEndringsMeldingTag;
-    private String brukerID;
-    private String kilde;
 
-    public String getBrukerID() {
-        return brukerID;
-    }
-
-    public void setBrukerID(String brukerID) {
-        this.brukerID = brukerID;
-    }
-
-    public String getKilde() {
-        return kilde;
-    }
-
-    public void setKilde(String kilde) {
-        this.kilde = kilde;
-    }
-
-    public String getXmlEndringsMeldingTag() {
-        return xmlEndringsMeldingTag;
-    }
-
-    public void setXmlEndringsMeldingTag(String xmlEndringsMeldingTag) {
-        this.xmlEndringsMeldingTag = xmlEndringsMeldingTag;
-    }
 }

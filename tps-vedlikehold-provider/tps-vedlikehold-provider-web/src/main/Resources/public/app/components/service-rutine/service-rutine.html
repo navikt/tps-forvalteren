@@ -1,5 +1,5 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
-    <div ng-show="loadServiceRutineTemplate()" layout="column" flex>
+    <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>
         <div class="tps-vk-top md-whiteframe-z2">
 
             <!-- Form to submit to TPS.  -->
@@ -24,14 +24,7 @@
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <!--
-                    <md-input-container flex-gt-xs flex="20" class="tps-vk-input-container">
-                        <<label>Buffer</label>
-                        <md-select ng-model="formData.buffNr" required>
-                            <md-option ng-repeat="buffer in buffNumbers" value="{{buffer}}">{{ buffer }}</md-option>
-                        </md-select>
-                    </md-input-container>
-                    -->
+
                     <md-input-container flex-gt-xs flex="80" class="tps-vk-input-container tps-vk-form-btns"
                                         layout-align="center center">
                         <!-- Submit request Button -->
@@ -101,7 +94,7 @@
     </div>
 
     <!-- Velkomstsmelding -->
-    <div ng-show="!loadServiceRutineTemplate()" layout="column" flex>
+    <div ng-show="!loadServiceRutineTemplate() && !loadEndringsmeldingTemplate()" layout="column" flex>
         <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
     </div>
 </div>

@@ -14,8 +14,6 @@ import java.util.List;
 public class TpsEndringsmelding {
     private String name;
     private String internalName;
-    private String kilde;
-    private String brukerID;
 
     @JsonIgnore
     private Class<? extends TpsRequestEndringsmelding> javaClass;
@@ -52,22 +50,6 @@ public class TpsEndringsmelding {
 
     public void setParameters(List<TpsParameter> parameters) {
         this.parameters = parameters;
-    }
-
-    public String getKilde() {
-        return kilde;
-    }
-
-    public void setKilde(String kilde) {
-        this.kilde = kilde;
-    }
-
-    public String getBrukerID() {
-        return brukerID;
-    }
-
-    public void setBrukerID(String brukerID) {
-        this.brukerID = brukerID;
     }
 }
 

@@ -1,0 +1,9 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Postnummer</label>
+    <input name="postnrInput" md-maxlength="6" ng-pattern="onlyNumbers" ng-model="formData.postnr"/>
+    <div ng-messages="requestForm.postnrInput.$error" ng-show="requestForm.postnrInput.$touched">
+        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
+        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
+    </div>
+</md-input-container>
+

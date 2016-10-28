@@ -4,7 +4,7 @@
 angular.module('tps-vedlikehold')
     .directive('tpsInputField', ['$templateRequest', '$compile', function($templateRequest, $compile){
     
-        var templatesPath = 'app/components/service-rutine/input-fields/';
+        var templatesPath = 'app/components/input-fields/';
         var templateSuffix = '-input.html';
     
         var getTemplateUrl = function(type) {

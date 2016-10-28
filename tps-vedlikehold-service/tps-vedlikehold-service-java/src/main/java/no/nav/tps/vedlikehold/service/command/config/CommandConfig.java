@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
+import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.resolvers.EndreNavn;
+import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.resolvers.EndringsmeldingResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.*;
 import no.nav.tps.vedlikehold.service.command.Command;
 
@@ -24,12 +27,14 @@ import com.fasterxml.jackson.xml.XmlMapper;
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
 
+    private static final String DEFAULT_ENV = "t4";
+
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        return messageQueueServiceFactory.createMessageQueueService("t4");
+        return messageQueueServiceFactory.createMessageQueueService(DEFAULT_ENV, FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
     @Bean
@@ -64,6 +69,12 @@ public class CommandConfig {
     @Order(3)
     ServiceRoutineResolver sokPersonRoutineResolver() {
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
+    }
+
+    @Bean
+    @Order(4)
+    EndringsmeldingResolver endreNavnResolver() {
+        return new EndreNavn();
     }
 
     @Bean

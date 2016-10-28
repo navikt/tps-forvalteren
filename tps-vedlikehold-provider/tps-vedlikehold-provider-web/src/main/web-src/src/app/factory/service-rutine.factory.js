@@ -8,13 +8,17 @@ angular.module('tps-vedlikehold.factory')
         
         var urlBase = 'api/v1/service';
         var urlRoutinesBase = 'api/v1/serviceroutine';
+        var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
+        var urlEndringsmeldingBase ='api/v1/endring';
         var urlBaseEnv = 'api/v1/environments';
 
         var serviceRutines = {};
+        var endringsmeldinger = {};
         var environments = [];
         
         var isSetServiceRutines = false;
         var isSetEnvironments = false;
+        var isSetEndringsmeldinger = false;
 
         serviceRutineFactory.isSetServiceRutines = function () {
             return isSetServiceRutines;
@@ -22,6 +26,10 @@ angular.module('tps-vedlikehold.factory')
 
         serviceRutineFactory.isSetEnvironments = function () {
             return isSetEnvironments;
+        };
+
+        serviceRutineFactory.isSetEndringsmeldinger = function () {
+           return isSetEndringsmeldinger;
         };
 
         serviceRutineFactory.loadFromServerServiceRutines = function() {
@@ -43,6 +51,23 @@ angular.module('tps-vedlikehold.factory')
             });
         };
 
+        serviceRutineFactory.loadFromServerEndringsmeldinger = function(){
+          return $http({method: 'GET', url: urlEndrinsmeldinger}).then(function(response){
+              if(response.data){
+                  var endringsmeldingList = response.data;
+                  for(var i = 0; i < endringsmeldingList.length; i++){
+                      endringsmeldinger[endringsmeldingList[i].name] = endringsmeldingList[i];
+                  }
+                  isSetEndringsmeldinger = true;
+                  return endringsmeldinger;
+              } else {
+                  return null;
+              }
+          }, function (error) {
+              return null;
+          });
+        };
+
         serviceRutineFactory.loadFromServerEnvironments = function() {
             return $http({method: 'GET', url: urlBaseEnv}).then(function(res) {
                 environments = res.data;
@@ -53,8 +78,21 @@ angular.module('tps-vedlikehold.factory')
             });
         };
 
+        serviceRutineFactory.getEndringsmeldinger = function () {
+            return endringsmeldinger;
+        };
+
         serviceRutineFactory.getServiceRutines = function() {
             return serviceRutines;
+        };
+
+        serviceRutineFactory.getEndringsmeldingerNames = function () {
+            var endringsmeldingNames = [];
+
+            angular.forEach(endringsmeldinger, function(value, key) {
+                this.push(key);
+            }, endringsmeldingNames);
+            return endringsmeldingNames;
         };
 
         serviceRutineFactory.getServiceRutineNames = function() {
@@ -66,18 +104,21 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutineNames;
         };
 
+        //TODO Prøv å generaliser dette igjen...
         serviceRutineFactory.getServiceRutineInternalName = function(serviceRutineName) {
             return serviceRutines[serviceRutineName].internalName;
         };
 
+        serviceRutineFactory.getEndringsmeldingInternalName = function (endringsmeldingName) {
+           return endringsmeldinger[endringsmeldingName].internalName;
+        };
+
         serviceRutineFactory.getServiceRutineParametersNames = function(serviceRutineName) {
-            var serviceRutineParametersNames = [];
+            return getRequestParametersNames(serviceRutines, serviceRutineName);
+        };
 
-            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
-                this.push(value.name);
-            }, serviceRutineParametersNames);
-
-            return serviceRutineParametersNames;
+        serviceRutineFactory.getEndringsmeldingParametersNames = function(endringsmeldingName) {
+            return getRequestParametersNames(endringsmeldinger, endringsmeldingName);
         };
 
         serviceRutineFactory.getServiceRutineParametersNamesInOrder = function(serviceRutineName) {
@@ -103,32 +144,33 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
 
+        serviceRutineFactory.getEndringsmeldingParameterNamesInOrder = function(endringsmeldingName){
+             return serviceRutineFactory.getEndringsmeldingParametersNames(endringsmeldingName);
+        };
+
         serviceRutineFactory.getServiceRutineRequiredParametersNames = function(serviceRutineName) {
-            var serviceRutineRequiredParametersNames = [];
-
-            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
-                if (value.use === "required") {
-                    this.push(value.name);
-                }
-            }, serviceRutineRequiredParametersNames);
-
-            return serviceRutineRequiredParametersNames;
+            return getRequestRequiredParametersNames(serviceRutines, serviceRutineName);
         };
 
-        serviceRutineFactory.getSelectValues = function (serviceRutineName) {
-            var selectValues = {};
-
-            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
-                if (value.values) {
-                    this[value.name] = value.values;
-                }
-            }, selectValues);
-
-            return selectValues;
+        serviceRutineFactory.getEndringsmeldingerRequiredParametersNames = function(endringsmeldingName) {
+            return getRequestRequiredParametersNames(endringsmeldinger, endringsmeldingName);
         };
 
-        serviceRutineFactory.getResponse = function(serviceRutineName, params) {
+
+        serviceRutineFactory.getSelectValuesServiceRutine = function (serviceRutineName) {
+            return getSelectValues(serviceRutines, serviceRutineName);
+        };
+
+        serviceRutineFactory.getSelectValuesEndringsmelding = function (endringsmeldingName) {
+            return getSelectValues(endringsmeldinger,endringsmeldingName);
+        };
+
+        serviceRutineFactory.getServiceRutineResponse = function(serviceRutineName, params) {
             return $http({method: 'GET', url:urlBase + '/' + serviceRutineName, params:params});
+        };
+
+        serviceRutineFactory.getEndringsmeldingResponse = function (endringsmeldingName, params) {
+            return $http({method: 'GET', url:urlEndringsmeldingBase + '/' + endringsmeldingName, params:params});
         };
 
         serviceRutineFactory.getEnvironments = function() {
@@ -147,6 +189,40 @@ angular.module('tps-vedlikehold.factory')
                 return serviceRutineConfig[serviceRutineName].serviceRutineReturnedDataLabel;
             }
         };
+
+        function getRequestParametersNames(requestMap, requestName) {
+            var serviceRutineParametersNames = [];
+
+            angular.forEach(requestMap[requestName].parameters, function (value, key) {
+                this.push(value.name);
+            }, serviceRutineParametersNames);
+
+            return serviceRutineParametersNames;
+        }
+
+        function getRequestRequiredParametersNames(requestMap, requestName){
+            var requestRequiredParametersNames = [];
+
+            angular.forEach(requestMap[requestName].parameters, function (value, key) {
+                if (value.use === "required") {
+                    this.push(value.name);
+                }
+            }, requestRequiredParametersNames);
+
+            return requestRequiredParametersNames;
+        }
+
+        function getSelectValues(requestMap, requestName){
+            var selectValues = {};
+
+            angular.forEach(requestMap[requestName].parameters, function (value, key) {
+                if (value.values) {
+                    this[value.name] = value.values;
+                }
+            }, selectValues);
+
+            return selectValues;
+        }
 
         return serviceRutineFactory;
     }]);

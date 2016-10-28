@@ -14,4 +14,13 @@ angular.module('tps-vedlikehold.service')
         self.redirectToLoginState = function() {
             $state.go('login');
         };
+
+        self.redirectToEndringState = function () {
+            $state.go('endringer');
+        };
+
+        self.redirectToServiceRutineState = function () {
+            $state.go('servicerutine');
+        };
+
     }]);

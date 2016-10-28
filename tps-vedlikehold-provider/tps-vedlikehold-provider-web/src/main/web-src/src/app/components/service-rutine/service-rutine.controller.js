@@ -6,6 +6,8 @@ angular.module('tps-vedlikehold.service-rutine')
         function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
+            $scope.endringsmeldingName  = $stateParams.endringsmeldingName;
+            console.log("Endre: " + $scope.endringsmeldingName);
             $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
@@ -27,11 +29,12 @@ angular.module('tps-vedlikehold.service-rutine')
                 return isValidServiceRutineName && !apiError;
             };
 
+            //TODO Må nullstille "buffer" når man tar et nytt søk og ikke bare pager i buffer.
             $scope.submit = function () {
                 var params = createParams($scope.formData);
                 $scope.loading = true;
 
-                serviceRutineFactory.getResponse($scope.serviceRutineName, params).then(function (response) {
+                serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (response) {
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
@@ -49,7 +52,6 @@ angular.module('tps-vedlikehold.service-rutine')
                     capitalizeFirstLetterInPersonsData(jsonObjectWithResultData);
                     var antallTreff = jsonObjectWithResultData.antallTotalt;
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
-                    //else updateBufferChoices(antallTreff);
 
                 }, function (error) {
                     $scope.loading = false;
@@ -201,7 +203,7 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             function setSelectValues() {
-                var selectValues = serviceRutineFactory.getSelectValues($scope.serviceRutineName);
+                var selectValues = serviceRutineFactory.getSelectValuesServiceRutine($scope.serviceRutineName);
 
                 angular.forEach(selectValues, function (value, key) {
                     $scope.selectValues[key] = value;
@@ -262,6 +264,7 @@ angular.module('tps-vedlikehold.service-rutine')
             // ##################################
 
             function init() {
+                console.log("Init: ");
                 setIsValidServiceRutineName();
 
                 //better way to do this?

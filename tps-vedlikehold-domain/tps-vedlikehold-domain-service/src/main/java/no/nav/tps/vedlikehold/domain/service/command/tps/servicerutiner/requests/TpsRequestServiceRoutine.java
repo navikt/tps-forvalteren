@@ -13,6 +13,14 @@ public class TpsRequestServiceRoutine extends TpsRequest{
     private String aksjonsDato;
     private String serviceRutinenavn;
 
+    private String aksjonsKode;
+    private String aksjonsKode2;
+
+    public void setAksjonsKode(String aksjonsKode) {
+        this.aksjonsKode = aksjonsKode.substring(0, 1);
+        this.aksjonsKode2 = aksjonsKode.substring(1);
+    }
+
     public void setServiceRutinenavn(String serviceRutinenavn) {
         this.serviceRutinenavn = serviceRutinenavn;
     }
@@ -28,4 +36,13 @@ public class TpsRequestServiceRoutine extends TpsRequest{
     public void setAksjonsDato(String aksjonsDato) {
         this.aksjonsDato = aksjonsDato;
     }
+
+    public String getAksjonsKode() {
+        return aksjonsKode;
+    }
+
+    public String getAksjonsKode2() {
+        return aksjonsKode2;
+    }
 }
+

@@ -1,0 +1,9 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Fødselsnummer</label>
+    <input name="fnrInput" ng-required="isRequired('fnr')" md-maxlength="11" ng-pattern="onlyNumbers" ng-model="formData.fnr"/>
+    <div ng-messages="requestForm.fnrInput.$error" ng-show="requestForm.fnrInput.$touched">
+        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
+        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
+    </div>
+</md-input-container>
+

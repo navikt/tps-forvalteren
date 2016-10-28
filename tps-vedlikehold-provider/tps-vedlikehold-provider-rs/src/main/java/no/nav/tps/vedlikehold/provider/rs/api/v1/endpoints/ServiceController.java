@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 import java.io.IOException;
 import java.util.Map;
@@ -18,7 +17,7 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedExce
 import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutineService;
+import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -45,7 +44,7 @@ public class ServiceController {
     private UserContextHolder userContextHolder;
 
     @Autowired
-    private TpsServiceRutineService tpsServiceRutineService;
+    private TpsRequestService tpsRequestService;
 
     @Autowired
     private TpsAuthorisationService tpsAuthorisationService;
@@ -106,10 +105,10 @@ public class ServiceController {
     private void remapTpsResponseExcludingUnauthorizedData(ServiceRoutineResponse tpsResponse) {
         try {
             tpsResponseMappingUtils.removeUnauthorizedDataFromTpsResponse(tpsResponse);
-            tpsResponseMappingUtils.remapTpSResponse(tpsResponse);
+            tpsResponseMappingUtils.remapTpsResponse(tpsResponse);
         } catch (HttpUnauthorisedException exception) {
-            throw new HttpUnauthorisedException(messageProvider.get(HttpUnauthorisedException.messageKey), exception.getPath());
-        } catch (Exception exception) {
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsResponse.getServiceRoutineName());
+        } catch (IOException exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
@@ -122,7 +121,7 @@ public class ServiceController {
 
     private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request) {
         try {
-            String xmlResponse = tpsServiceRutineService.execute(request);
+            String xmlResponse = tpsRequestService.executeServiceRutineRequest(request);
             ServiceRoutineResponse response = tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(xmlResponse);
             return response;
         } catch (Exception exception) {

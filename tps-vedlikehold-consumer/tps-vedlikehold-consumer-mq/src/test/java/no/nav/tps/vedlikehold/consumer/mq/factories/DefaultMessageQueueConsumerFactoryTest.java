@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
+import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
@@ -48,7 +49,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
     @Test
     public void retrievesInformationFromFasit() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT);
+        serviceFactory.createMessageQueueService(ENVIRONMENT, FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         verify(fasitMessageQueueConsumerMock).getQueueManager(eq(ENVIRONMENT));
         verify(fasitMessageQueueConsumerMock).getRequestQueue(eq(ENVIRONMENT));
@@ -57,7 +58,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
     @Test
     public void retrievesAConnectionFactoryFromTheConnectionFactoryFactory() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT);
+        serviceFactory.createMessageQueueService(ENVIRONMENT, FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         verify(connectionFactoryFactoryMock).createConnectionFactory(isA(ConnectionFactoryFactoryStrategy.class));
     }

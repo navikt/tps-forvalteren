@@ -14,4 +14,13 @@ angular.module('tps-vedlikehold')
     $scope.toggleSideNav = function(menuId) {
         $mdSidenav(menuId).toggle();
     };
+
+    $scope.endringState = function () {
+        locationService.redirectToEndringState();
+    };
+
+    $scope.serviceRutineState = function(){
+        locationService.redirectToServiceRutineState();
+    };
+
 }]);

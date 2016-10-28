@@ -32,6 +32,11 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
     }
 
     @Override
+    public void setRequestQueueAlias(String requestQueueAlias){
+        this.requestQueueAlias = requestQueueAlias;
+    }
+
+    @Override
     public Queue getRequestQueue(String environment) {
         return getQueue(requestQueueAlias, environment);
     }

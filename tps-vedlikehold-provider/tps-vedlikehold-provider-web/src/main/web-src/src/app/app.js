@@ -14,6 +14,7 @@ require('./components/service-rutine/service-rutine.module');
 
 require('./components/login/login.controller');
 require('./components/service-rutine/service-rutine.controller');
+require('./components/endringsmeldinger/endringsmelding.controller');
 
 require('./services/service.module');
 require('./services/location.service');
@@ -79,7 +80,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             .state('servicerutine', {
                 url: "/",
                 params: {
-                    serviceRutineName: null
+                    serviceRutineName: null,
                 },
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
@@ -87,6 +88,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     }],
                     serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEndringsmeldinger();
                     }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
@@ -96,14 +100,48 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     'content@': {
                         templateUrl: "app/components/service-rutine/service-rutine.html",
                         controller: 'ServiceRutineCtrl'
-
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",
                         controller: 'HeaderCtrl'
                     },
                     'side-navigator@': {
-                        templateUrl: "app/shared/side-navigator/side-navigator.html",
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+            .state('endringer', {
+                url: "/endringer",
+                params: {
+                    serviceRutineName: null,
+                    endringsmeldingName: null
+                },
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEndringsmeldinger();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/service-rutine/service-rutine.html",
+                        controller: 'EndringsmeldingCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-em.html",
                         controller: 'SideNavigatorCtrl'
                     }
                 }
@@ -126,6 +164,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             });
     }]);
 
+/* Custom Filters */
 app.filter('startFrom', function () {
     return function (input, start) {
         if (input) {

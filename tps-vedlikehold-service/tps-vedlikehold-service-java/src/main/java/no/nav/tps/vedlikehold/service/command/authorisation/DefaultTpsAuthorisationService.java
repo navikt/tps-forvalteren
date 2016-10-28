@@ -2,13 +2,20 @@ package no.nav.tps.vedlikehold.service.command.authorisation;
 
 import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.Person;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.AuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
@@ -72,6 +79,25 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
         );
 
         return isAuthorised(strategies);
+    }
+
+    //TODO Kanskje flytte. Er ikke helt authorizering task.
+    @Override
+    public ArrayList<Person> getAuthorizedPersons(User user, List<Person> persons, String environment) {
+        return persons.stream()
+                .filter(person -> userIsAuthorisedToReadPersonInEnvironment(user, person.getFnr(), environment))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public boolean isAuthorizedToReadAtLeastOnePerson(User user, List<Person> persons, String environment){
+        if(persons.isEmpty()) return true;
+        for(Person person : persons){
+            if(userIsAuthorisedToReadPersonInEnvironment(user,person.getFnr(), environment)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

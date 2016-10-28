@@ -1,0 +1,9 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Husnummer Til</label>
+    <input name="husnrTilInput" md-maxlength="6" ng-pattern="onlyNumbers" ng-model="formData.husnrTil"/>
+    <div ng-messages="requestForm.husnrTilInput.$error" ng-show="requestForm.husnrTilInput.$touched">
+        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
+        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
+    </div>
+</md-input-container>
+

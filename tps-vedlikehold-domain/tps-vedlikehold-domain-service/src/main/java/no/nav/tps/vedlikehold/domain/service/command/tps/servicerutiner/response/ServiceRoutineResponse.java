@@ -1,5 +1,9 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response;
 
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.Person;
+import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,12 +18,13 @@ public class ServiceRoutineResponse {
     /** A formatted response */
     private Object data;
 
+    /** Persons found in the response */
+    private ArrayList<Person> persons;
 
     public ServiceRoutineResponse(String xml, Object data) {
         this.xml = xml;
         this.data = data;
     }
-
 
     public Object getData() {
         return data;
@@ -49,6 +54,16 @@ public class ServiceRoutineResponse {
         Matcher matcher = Pattern.compile(responseEnvironmentPattern, Pattern.DOTALL).matcher(this.xml);
         matcher.find();
         return matcher.group(1);
+    }
 
+    public ArrayList<Person> getPersons(){
+        if(persons != null) return persons;
+        persons = new ArrayList<>();
+        String extractPersonsDataRegex = "<enPersonRes>.*?</enPersonRes>";
+        Matcher matcher = Pattern.compile(extractPersonsDataRegex, Pattern.DOTALL).matcher(xml);
+        while(matcher.find()){
+           persons.add(new Person(matcher.group()));
+        }
+        return persons;
     }
 }
