@@ -5,10 +5,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="lib/angular-material.min.css">
-        <link rel="stylesheet" href="lib/hljs-default.min.css">
-        <link rel="stylesheet" href="lib/pikaday.css">
-        <link rel="stylesheet" href="app.css">
+        <!-- inject:css -->
+        <link rel="stylesheet" href="master-f98927f8a5170ef157c8.min.css">
+        <link rel="stylesheet" href="assets/lib/angular-material.min.css">
+        <link rel="stylesheet" href="assets/lib/hljs-default.min.css">
+        <link rel="stylesheet" href="assets/lib/pikaday.css">
+        <!-- endinject -->
+
     </head>
     <body ng-app="tps-vedlikehold" layout="column">
         <div id="tps-vk-header" ui-view="header"></div>
@@ -17,6 +20,8 @@
             <div id="tps-vk-main-content" ui-view="content" layout="column" flex></div>
         </div>
     </body>
-    <script type="text/javascript" src="vendor.min.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+    <!-- inject:js -->
+    <script src="app-fe997fb0b21a6874a9b7.js"></script>
+    <script src="assets/lib/vendor.min.js"></script>
+    <!-- endinject -->
 </html>
