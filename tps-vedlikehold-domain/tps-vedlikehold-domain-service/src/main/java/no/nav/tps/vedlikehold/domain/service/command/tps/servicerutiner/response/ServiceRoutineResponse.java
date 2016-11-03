@@ -1,9 +1,9 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response;
 
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.Person;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,8 +56,10 @@ public class ServiceRoutineResponse {
         return matcher.group(1);
     }
 
-    public ArrayList<Person> getPersons(){
-        if(persons != null) return persons;
+    public List<Person> getPersons(){
+        if(persons != null){
+            return persons;
+        }
         persons = new ArrayList<>();
         String extractPersonsDataRegex = "<enPersonRes>.*?</enPersonRes>";
         Matcher matcher = Pattern.compile(extractPersonsDataRegex, Pattern.DOTALL).matcher(xml);

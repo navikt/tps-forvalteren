@@ -22,7 +22,6 @@ public class TpsRequestXmlCreator {
 
     private static final String XML_PROPERTIES_PREFIX  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><tpsPersonData>";
     private static final String XML_PROPERTIES_POSTFIX = "</tpsPersonData>";
-    private static final String XML_PROPERTIES_PREFIX_ENDRE_FAKE = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><sfePersonData> <sfeAjourforing> <systemInfo><kilde>FS22</kilde><brukerID>Z990485</brukerID></systemInfo>";
     private static final String XML_PROPERTIES_PREFIX_ENDRE  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><sfePersonData> <sfeAjourforing>";
     private static final String XML_PROPERTIES_POSTFIX_ENDRE = "</sfeAjourforing> </sfePersonData>";
 

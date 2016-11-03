@@ -14,7 +14,12 @@ import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -61,7 +66,7 @@ public class EndringsmeldingController {
     }
 
     private EndringsmeldingResponse sendRequest(Map<String, Object> param){
-        String endringsmeldingNavn = param.get(TPS_ENDRINGSMLD_PARAM).toString(); //TODO Mer Generalisert. Ta med navnet.
+        String endringsmeldingNavn = param.get(TPS_ENDRINGSMLD_PARAM).toString();
         TpsRequestEndringsmelding request = mappingUtils.convertToTpsRequestEndringsmelding(endringsmeldingNavn, param);
         return sendTpsRequest(request, param.get("kilde").toString());
     }

@@ -55,24 +55,19 @@ public class TpsResponseMappingUtils {
 
     public EndringsmeldingResponse xmlResponseToEndringsmeldingResponse(String responseXml) throws IOException{
         try{
-            //TODO Failer her... På Xml to JSON.
             JSONObject jObject = XML.toJSONObject(responseXml);
-            Object responseData = objectMapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
+            Object responseData = objectMapper.readValue(jObject.toString(), Map.class);
             return new EndringsmeldingResponse(responseXml, responseData);
         } catch (IOException exception){
             LOGGER.error("Failed to convert TPS during XML marshalling with exception: {}", exception.toString());
             throw exception;
-        } catch (Exception e){
-            String err = e.getMessage();
-            e.printStackTrace();
-            throw e;
         }
     }
 
     public void remapTpsResponse(ServiceRoutineResponse tpsResponse) throws IOException{
         try{
             JSONObject jObject = XML.toJSONObject(tpsResponse.getXml());
-            Object responseData = objectMapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
+            Object responseData = objectMapper.readValue(jObject.toString(), Map.class);
             tpsResponse.setData(responseData);
         } catch (IOException exception){
             LOGGER.error("Failed to convert TPS during XML marshalling with exception: {}", exception.toString());
