@@ -85,6 +85,18 @@ angular.module('tps-vedlikehold.service-rutine')
                 return count;
             };
 
+            $scope.resolveDisplayTemplate = function(text, personData) {
+                var pattern = /\$\{(.)*?}/g;
+                var matches = text.match(pattern);
+
+                angular.forEach(matches, function(val) {
+                    var objKey = val.slice(2, -1);
+
+                    text = text.replace(val, personData[objKey]);
+                });
+                return text;
+            };
+
             $scope.pageForward = function pageForward(){
                $scope.formData.buffNr = (parseInt($scope.formData.buffNr)+1).toString();
                 $scope.submit();

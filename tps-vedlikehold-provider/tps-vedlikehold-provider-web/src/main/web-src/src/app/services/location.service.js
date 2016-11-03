@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('locationService', ['$rootScope', '$state', function($rootScope, $state) {
+    .service('locationService', ['$state', function($state) {
 
         var self = this;
         var returnState = 'servicerutine';

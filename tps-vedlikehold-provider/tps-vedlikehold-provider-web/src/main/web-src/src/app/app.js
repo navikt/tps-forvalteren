@@ -61,7 +61,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             .state('servicerutine', {
                 url: "/",
                 params: {
-                    serviceRutineName: null,
+                    serviceRutineName: null
                 },
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
@@ -158,7 +158,7 @@ app.filter('startFrom', function () {
 
 app.filter('notEmpty', function (){
   return function (inputObject) {
-      outputObject = {};
+      var outputObject = {};
       for(var key in inputObject){
           if(!angular.equals(inputObject[key], {})){
               outputObject[key] = inputObject[key];

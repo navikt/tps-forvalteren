@@ -4,4 +4,4 @@ require('./service-rutine/service-rutine.module');
 
 require('./login/login.controller');
 require('./service-rutine/service-rutine.controller');
-require('./endringsmeldinger/endringsmelding.controller');
+require('./service-rutine/endringsmeldinger/endringsmelding.controller');

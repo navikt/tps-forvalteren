@@ -3,17 +3,32 @@ angular.module('tps-vedlikehold')
 
         {
             'FS03-FDNUMMER-PERSDATA-O': {
-                show: [
-                    "etternavn",
-                    "fornavn",
-                    "boAdresse1",
-                    "postnr",
-                    "boPoststed",
-                    "fnr",
-                    "tknr",
-                    "kommunenr",
-                    "kommuneNavn"
-                ],
+                display: {
+                    header: "${etternavn}, ${fornavn}",
+                    properties: [
+                        {
+                            label: "Addresse",
+                            template: "${boAdresse1}, ${postnr} ${boPoststed}",
+                            flex: 30
+                        },
+                        {
+                            label: "Fødselsnummer",
+                            template: "${fnr}",
+                            flex: 20
+                        },
+                        {
+                            label: "TK-nummer",
+                            template: "${tknr}",
+                            flex: 20
+                        },
+                        {
+                            label: "Kommune",
+                            template: "${kommunenr}",
+                            flex: 25
+                        }
+                    ]
+
+                },
                 rows: [
                     [
                         {
@@ -464,21 +479,36 @@ angular.module('tps-vedlikehold')
                 ]
             },
             'FS03-FDNUMMER-KONTINFO-O': {
-                show: [
-
-                    "etternavn",
-                    "fornavn",
-                    "boAdresse1",
-                    "boPostnr",
-                    "poststed",
-                    "fodselsnummer",
-                    "tknr",
-                    "kommunenr",
-                    "kommuneNavn",
-                    "kodeNAVenhet",
-                    "kodeNAVenhetBeskr"
-
-                ],
+                display: {
+                    header: "${etternavn}, ${fornavn}",
+                    properties: [
+                        {
+                            label: "Addresse",
+                            template: "${boAdresse1}, ${postnr} ${boPoststed}",
+                            flex: 30
+                        },
+                        {
+                            label: "Fødselsnummer",
+                            template: "${fodselsnummer}",
+                            flex: 15
+                        },
+                        {
+                            label: "TK-nummer",
+                            template: "${tknr}",
+                            flex: 15
+                        },
+                        {
+                            label: "Kommune",
+                            template: "${kommunenr}",
+                            flex: 15
+                        },
+                        {
+                            label: "NAV-enhet",
+                            template: "${kodeNAVenhet} ${kodeNAVenhetBeskr}",
+                            flex: 15
+                        }
+                    ]
+                },
                 rows: [
                     [
                         {
@@ -622,17 +652,31 @@ angular.module('tps-vedlikehold')
             },
 
             'FS03-NAADRSOK-PERSDATA-O': {
-                show: [
-                    "etternavn",
-                    "fornavn",
-                    "adresse1",
-                    "postnr",
-                    "poststed",
-                    "fnr",
-                    "tknr",
-                    "kommunenr",
-                    "kommuneNavn"
-                ],
+                display: {
+                    header: "${etternavn}, ${fornavn}",
+                    properties: [
+                        {
+                            label: "Addresse",
+                            template: "${adresse1}, ${postnr} ${poststed}",
+                            flex: 30
+                        },
+                        {
+                            label: "Fødselsnummer",
+                            template: "${fnr}",
+                            flex: 20
+                        },
+                        {
+                            label: "TK-nummer",
+                            template: "${tknr}",
+                            flex: 20
+                        },
+                        {
+                            label: "Kommune",
+                            template: "${kommunenr}",
+                            flex: 20
+                        }
+                    ]
+                },
                 rows: [
                     [
                         {

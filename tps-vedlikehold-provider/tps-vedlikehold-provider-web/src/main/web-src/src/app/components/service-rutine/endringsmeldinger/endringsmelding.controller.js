@@ -8,7 +8,6 @@ angular.module('tps-vedlikehold.service-rutine')
     .controller('EndringsmeldingCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'responseFormConfig', 'environmentsPromise',
         function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
 
-            //$scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.endringsmeldingName  = $stateParams.endringsmeldingName;
             $scope.loading = false;
             $scope.formData = {};
@@ -50,14 +49,6 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.svarStatus = "STATUS: " + svarStatus.returStatus + " " + svarStatus.returMelding + " " + svarStatus.utfyllendeMelding;
                     $scope.returStatus = svarStatus.returStatus;
 
-                    /*
-                    var jsonObjectWithResultData = tpsReturnedObject.tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutineName)];
-                    if(jsonObjectWithResultData === undefined) return;
-                    $scope.personsData = extractPersonsData(jsonObjectWithResultData, nonUniqueProperties);
-                    capitalizeFirstLetterInPersonsData(jsonObjectWithResultData);
-                    var antallTreff = jsonObjectWithResultData.antallTotalt;
-                    if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
-                    */
 
                 }, function (error) {
                     $scope.loading = false;
