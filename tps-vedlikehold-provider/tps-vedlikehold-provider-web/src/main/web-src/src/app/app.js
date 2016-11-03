@@ -9,35 +9,16 @@ require('angular-moment');
 require('pikaday');
 require('pikaday-angular');
 
-require('./components/login/login.module');
-require('./components/service-rutine/service-rutine.module');
-
-require('./components/login/login.controller');
-require('./components/service-rutine/service-rutine.controller');
-require('./components/endringsmeldinger/endringsmelding.controller');
-
+require('./components/index');
 require('./services/service.module');
-require('./services/location.service');
-require('./services/session.service');
-require('./services/utils.service');
-require('./services/authentication.service');
-
+require('./directives/directives.module');
 require('./factory/factory.module');
-require('./factory/service-rutine.factory');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'pikaday']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday']);
 
-
-require('./shared/header/header.controller');
-require('./shared/side-navigator/side-navigator.controller');
-
-require('./directives/input-field.directive');
-require('./directives/output-field.directive');
-require('./directives/output-field-empty.directive');
-
-require('./settings/response-form.config');
-require('./settings/service-rutine.config');
+require('./shared/index');
+require('./settings/index');
 
 app.config(['pikadayConfigProvider', 'moment', function (pikaday, moment) {
 
