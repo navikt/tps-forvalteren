@@ -7,7 +7,6 @@ angular.module('tps-vedlikehold.service-rutine')
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.endringsmeldingName  = $stateParams.endringsmeldingName;
-            console.log("Endre: " + $scope.endringsmeldingName);
             $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
@@ -17,10 +16,9 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
             $scope.personsData = {};
             $scope.toggle = false;
-            //$scope.buffNumbers = ["1, 2, 3, 4, 5,6"];
 
             var tpsReturnedObject = {};
-            var nonUniqueProperties = []; //objects that contain non-unique properties
+            var nonUniqueProperties = [];
             var requiredParameters = [];
             var isValidServiceRutineName = false;
             var apiError = true;
@@ -276,7 +274,6 @@ angular.module('tps-vedlikehold.service-rutine')
             // ##################################
 
             function init() {
-                console.log("Init: ");
                 setIsValidServiceRutineName();
 
                 //better way to do this?

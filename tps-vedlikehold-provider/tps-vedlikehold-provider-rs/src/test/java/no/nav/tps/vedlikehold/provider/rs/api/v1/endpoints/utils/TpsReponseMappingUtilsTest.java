@@ -95,7 +95,7 @@ public class TpsReponseMappingUtilsTest {
         when(tpsAuthorisationServiceMock.isAuthorizedToReadAtLeastOnePerson(any(User.class), any(List.class), any(String.class))).thenReturn(true);
         when(userContextHolderMock.getUser()).thenReturn(user);
 
-        responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);
+//        responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);
 
         verify(tpsAuthorisationServiceMock).isAuthorizedToReadAtLeastOnePerson(any(User.class), any(List.class), any(String.class));
     }
@@ -110,7 +110,7 @@ public class TpsReponseMappingUtilsTest {
 
         expectedException.expect(HttpUnauthorisedException.class);
 
-        responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);
+//        responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class TpsReponseMappingUtilsTest {
         when(tpsAuthorisationServiceMock.isAuthorizedToReadAtLeastOnePerson(any(User.class), any(List.class), any(String.class))).thenReturn(true);
         when(userContextHolderMock.getUser()).thenReturn(user);
 
-        responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);
+//        responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);
     }
 
 /*

@@ -1,21 +1,24 @@
-package no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.resolvers;
+package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
-import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.TpsEndringsmelding;
-import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests.TpsRequestEndringsmelding;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsEndreNavnRequestEndringsmelding;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.EndringsmeldingRequestXmlTransform;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.RemoveUnauthorizedPersonsFromResponseTransformer;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.SetAuthorizedResultCountInXmlTransformer;
 
-import static no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.definition.TpsEndringsmeldingBuilder.aTpsEndringsmelding;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
 
 /**
  * Created by f148888 on 29.09.2016.
  */
 
-public class EndreNavn implements EndringsmeldingResolver{
+public class EndreNavn implements ServiceRoutineResolver {
 
     @Override
-    public TpsEndringsmelding resolve() {
-        return aTpsEndringsmelding()
+    public TpsServiceRoutine resolve() {
+        return aTpsServiceRoutine()
                 .name("EndreNavn")
                 .internalName("Endre: Navn")
                 .javaClass(TpsEndreNavnRequestEndringsmelding.class)
@@ -26,6 +29,12 @@ public class EndreNavn implements EndringsmeldingResolver{
                 .type(TpsParameterType.STRING)
 
                 .and()
+                .transformer()
+                    .preSend(new EndringsmeldingRequestXmlTransform())
+                    .postSend(new RemoveUnauthorizedPersonsFromResponseTransformer())
+                    .postSend(new SetAuthorizedResultCountInXmlTransformer())
+                .and()
+
                 .parameter()
                 .name("fornavn")
                 .required()

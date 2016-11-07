@@ -5,6 +5,7 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.d
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.DefaultServiceRoutineXmlTransform;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -32,6 +33,9 @@ public class S004HentPersonopplysningerServiceRoutineResolver implements Service
                     .name("aksjonsDato")
                     .optional()
                     .type(TpsParameterType.DATE)
+                .and()
+                .transformer()
+                    .preSend(new DefaultServiceRoutineXmlTransform())
                 .and()
                 .build();
     }

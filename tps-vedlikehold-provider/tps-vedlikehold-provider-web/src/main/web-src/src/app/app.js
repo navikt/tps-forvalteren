@@ -70,9 +70,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
-                    endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerEndringsmeldinger();
-                    }],
+                    // endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                    //     return serviceRutineFactory.loadFromServerEndringsmeldinger();
+                    // }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
                     }]

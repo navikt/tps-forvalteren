@@ -18,10 +18,9 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
             $scope.personsData = {};
             $scope.toggle = false;
-            //$scope.buffNumbers = ["1, 2, 3, 4, 5,6"];
 
             var tpsReturnedObject = {};
-            var nonUniqueProperties = []; //objects that contain non-unique properties
+            var nonUniqueProperties = [];
             var requiredParameters = [];
             var isValidEndringsmeldingName = false;
             var apiError = true;
@@ -37,8 +36,6 @@ angular.module('tps-vedlikehold.service-rutine')
 
                 serviceRutineFactory.getEndringsmeldingResponse($scope.endringsmeldingName, params).then(function (response) {
                     $scope.loading = false;
-                    console.log("Got response endring..");
-                    //$scope.clearResponseForm();
 
                     $scope.xmlForm = utilsService.formatXml(response.data.xml);
 
@@ -260,7 +257,6 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             function init() {
-                console.log("Init: ");
                 setIsValidEndringsmeldingName();
 
                 //better way to do this?

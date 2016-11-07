@@ -43,16 +43,16 @@ public class TpsResponseMappingUtils {
     private MessageProvider messageProvider;
 
     public ServiceRoutineResponse xmlResponseToServiceRoutineResponse(String responseXml) throws IOException{
-        try{
+        try {
             JSONObject jObject = XML.toJSONObject(responseXml);
             Object responseData = objectMapper.readValue(jObject.toString(), Map.class);          //TODO Map to custom object
             return new ServiceRoutineResponse(responseXml, responseData);
-        }catch (IOException exception){
+        } catch (IOException exception){
             LOGGER.error("Failed to convert TPS during XML marshalling with exception: {}", exception.toString());
             throw exception;
         }
     }
-
+/*
     public EndringsmeldingResponse xmlResponseToEndringsmeldingResponse(String responseXml) throws IOException{
         try{
             //TODO Failer her... På Xml to JSON.
@@ -68,6 +68,7 @@ public class TpsResponseMappingUtils {
             throw e;
         }
     }
+    */
 
     public void remapTpsResponse(ServiceRoutineResponse tpsResponse) throws IOException{
         try{
@@ -80,6 +81,8 @@ public class TpsResponseMappingUtils {
         }
     }
 
+    //TODO Til transformStrategy
+/*
     public void removeUnauthorizedDataFromTpsResponse(ServiceRoutineResponse tpsResponse){
         User user = userContextHolder.getUser();
         if(!tpsAuthorisationService.isAuthorizedToReadAtLeastOnePerson(user, tpsResponse.getPersons(), tpsResponse.getEnvironment())){
@@ -106,4 +109,5 @@ public class TpsResponseMappingUtils {
                 "<antallTotalt>"+ countAuthorizedMatches +"</antallTotalt>");
 
     }
+    */
 }

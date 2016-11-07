@@ -7,6 +7,9 @@ import java.util.Map;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
@@ -71,9 +74,16 @@ public class ServiceController {
     @RequestMapping(value = "/service", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ServiceRoutineResponse getService(@RequestBody JsonNode body) {
         validateRequest(body);
-        return sendRequest(body);
-    }
+//        return sendRequest(body);
 
+        String environment = body.get("environment").asText();
+        String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
+        TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
+
+        return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
+
+    }
+/*
     private ServiceRoutineResponse sendRequest(JsonNode body) {
         String environment = body.get("environment").asText();
         String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
@@ -84,6 +94,10 @@ public class ServiceController {
         return sendTpsRequestAndAuthorizeAfterResponseIsReceived(tpsServiceRutinenavn, environment, body);
     }
 
+    */
+
+    /*
+
     private ServiceRoutineResponse sendTpsRequestAndAuthorizeBeforeSendingRequest(String tpsServiceRutinenavn, String fnr, String environment, JsonNode body) {
         User user = userContextHolder.getUser();
         if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment)) {
@@ -91,17 +105,18 @@ public class ServiceController {
         }
         Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
-        return sendTpsRequest(tpsRequest);
+        return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
     }
 
     private ServiceRoutineResponse sendTpsRequestAndAuthorizeAfterResponseIsReceived(String tpsServiceRutinenavn, String environment, JsonNode body) {
         Sporingslogger.log(environment, tpsServiceRutinenavn, null);
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
-        ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest);
-        remapTpsResponseExcludingUnauthorizedData(tpsResponse);
+        ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
+//        remapTpsResponseExcludingUnauthorizedData(tpsResponse);
         return tpsResponse;
     }
-
+    */
+/*
     private void remapTpsResponseExcludingUnauthorizedData(ServiceRoutineResponse tpsResponse) {
         try {
             tpsResponseMappingUtils.removeUnauthorizedDataFromTpsResponse(tpsResponse);
@@ -112,20 +127,24 @@ public class ServiceController {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
-
+*/
     private void validateRequest(JsonNode body) {
         if (!body.has("environment") || !body.has(TPS_SERVICE_ROUTINE_PARAM_NAME)) {
             throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
         }
     }
 
-    private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request) {
+
+    private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request, String serviceRoutineName) {
         try {
-            String xmlResponse = tpsRequestService.executeServiceRutineRequest(request);
-            ServiceRoutineResponse response = tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(xmlResponse);
-            return response;
+            TpsServiceRoutine serviceRoutine = mappingUtils.findRoutineByName(serviceRoutineName).get();
+            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine);
+            return tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(response.getXml());
+//            ServiceRoutineResponse response = tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(xmlResponse);
+//            return response;
         } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
+
 }

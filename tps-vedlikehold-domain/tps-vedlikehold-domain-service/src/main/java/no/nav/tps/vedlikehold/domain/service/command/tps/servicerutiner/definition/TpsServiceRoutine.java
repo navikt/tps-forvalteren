@@ -1,11 +1,11 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition;
 
-import java.util.List;
-
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameter;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
-
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.XmlTransformer;
 import org.codehaus.jackson.annotate.JsonIgnore;
+//import org.codehaus.jackson.annotate.JsonIgnore;
+
+import java.util.List;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -16,9 +16,12 @@ public class TpsServiceRoutine {
     private String internalName;    // (DisplayName)
 
     @JsonIgnore
-    private Class<? extends TpsRequestServiceRoutine> javaClass;
+    private Class<?> javaClass;
 
     private List<TpsParameter> parameters;
+
+    @JsonIgnore
+    private List<XmlTransformer> transformers;
 
     public String getName() {
         return name;
@@ -36,11 +39,11 @@ public class TpsServiceRoutine {
         this.internalName = internalName;
     }
 
-    public Class<? extends TpsRequestServiceRoutine> getJavaClass() {
+    public Class<?> getJavaClass() {
         return javaClass;
     }
 
-    public void setJavaClass(Class<? extends TpsRequestServiceRoutine> javaClass) {
+    public void setJavaClass(Class<?> javaClass) {
         this.javaClass = javaClass;
     }
 
@@ -50,5 +53,15 @@ public class TpsServiceRoutine {
 
     public void setParameters(List<TpsParameter> parameters) {
         this.parameters = parameters;
+    }
+
+    @JsonIgnore
+    public List<XmlTransformer> getTransformers() {
+        return transformers;
+    }
+
+    @JsonIgnore
+    public void setTransformers(List<XmlTransformer> transformers) {
+        this.transformers = transformers;
     }
 }

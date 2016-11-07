@@ -8,7 +8,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TpsRequestServiceRoutine extends TpsRequest{
+public class TpsRequestServiceRoutine extends TpsRequest {
 
     private String aksjonsDato;
     private String serviceRutinenavn;
