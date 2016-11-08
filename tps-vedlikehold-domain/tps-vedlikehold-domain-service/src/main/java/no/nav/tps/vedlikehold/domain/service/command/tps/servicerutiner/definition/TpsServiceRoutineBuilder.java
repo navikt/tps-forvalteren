@@ -60,7 +60,7 @@ public class TpsServiceRoutineBuilder {
         return new TpsServiceRoutineBuilder();
     }
 
-    private class TpsServiceRoutineParameterBuilder {
+    public class TpsServiceRoutineParameterBuilder {
         private String name;
         private TpsParameterType type;
         private String use;

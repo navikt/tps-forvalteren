@@ -2,10 +2,9 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.request
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests.TpsRequestEndringsmelding;
 
 @JacksonXmlRootElement(localName = "endreNavn")
-public class TpsEndreNavnRequestEndringsmelding extends TpsRequestEndringsmelding {
+public class TpsEndreNavnRequestEndringsmelding extends TpsRequest {
 
     private String offentligIdent;
     private String fornavn;

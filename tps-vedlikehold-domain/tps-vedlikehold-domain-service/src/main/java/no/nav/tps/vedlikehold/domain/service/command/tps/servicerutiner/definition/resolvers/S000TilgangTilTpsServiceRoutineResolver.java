@@ -18,7 +18,7 @@ public class S000TilgangTilTpsServiceRoutineResolver implements ServiceRoutineRe
                 .internalName("S000 Tilgang til Tps")
                 .javaClass(TpsPingRequestServiceRoutine.class)
                 .transformer()
-                 .preSend(serviceRoutineXmlWrappingAppender())
+                    .preSend(serviceRoutineXmlWrappingAppender())
                 .and()
                 .build();
     }

@@ -1,23 +1,12 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import javax.jms.JMSException;
-
+import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests.TpsRequestEndringsmelding;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.xml.XmlMapper;
+import javax.jms.JMSException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultTpsRequestServiceTest {
@@ -41,9 +37,6 @@ public class DefaultTpsRequestServiceTest {
 
     @Mock
     private TpsRequestServiceRoutine tpsRequestServiceRoutineMock;
-
-    @Mock
-    private TpsRequestEndringsmelding tpsRequestEndringsmelding;
 
     @Mock
     private MessageQueueConsumer messageQueueConsumerMock;

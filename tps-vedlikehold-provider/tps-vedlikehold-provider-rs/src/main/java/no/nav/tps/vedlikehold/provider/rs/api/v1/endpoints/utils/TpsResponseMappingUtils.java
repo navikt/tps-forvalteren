@@ -2,11 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.Person;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.response.EndringsmeldingResponse;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import org.json.JSONObject;
@@ -17,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Created by Peter Fløgstad on 17.10.2016.
