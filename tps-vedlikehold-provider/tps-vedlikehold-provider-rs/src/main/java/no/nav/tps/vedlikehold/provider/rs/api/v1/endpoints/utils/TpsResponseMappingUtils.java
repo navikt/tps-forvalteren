@@ -2,13 +2,14 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.Person;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.User.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsMessage;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.person.Person;
+import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.response.EndringsmeldingResponse;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.json.JSONObject;
 import org.json.XML;
 import org.slf4j.Logger;
@@ -75,12 +76,13 @@ public class TpsResponseMappingUtils {
         }
     }
 
-    public void removeUnauthorizedDataFromTpsResponse(ServiceRoutineResponse tpsResponse){
+    /*
+    public void removeUnauthorizedDataFromTpsResponse(TpsMessage tpsMessage, ServiceRoutineResponse tpsResponse){
         User user = userContextHolder.getUser();
-        if(!tpsAuthorisationService.isAuthorizedToReadAtLeastOnePerson(user, tpsResponse.getPersons(), tpsResponse.getEnvironment())){
+        if(!tpsAuthorisationService.isAuthorizedToReadAtLeastOnePerson(tpsMessage, user, tpsResponse.getPersons(), tpsResponse.getEnvironment())){
             throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsResponse.getServiceRoutineName());
         }
-        ArrayList<Person> authorizedPersons = tpsAuthorisationService.getAuthorizedPersons(user, tpsResponse.getPersons(), tpsResponse.getEnvironment());
+        ArrayList<Person> authorizedPersons = tpsAuthorisationService.getAuthorizedPersons(tpsMessage, user, tpsResponse.getPersons(), tpsResponse.getEnvironment());
         StringBuilder authorizedPersonsXml = new StringBuilder();
         for(Person person : authorizedPersons){
             authorizedPersonsXml.append(person.getXml());
@@ -88,7 +90,7 @@ public class TpsResponseMappingUtils {
         String xmlWithoutUnauthorizedData = removeUnauthorizedPersonsFromXML(authorizedPersonsXml.toString(), tpsResponse);
         xmlWithoutUnauthorizedData = setAuthorizedResultCountInXml(xmlWithoutUnauthorizedData, tpsResponse.getPersons().size(), authorizedPersons.size());
         tpsResponse.setXml(xmlWithoutUnauthorizedData);
-    }
+    }*/
 
     private String removeUnauthorizedPersonsFromXML(String filteredXml, ServiceRoutineResponse tpsResponse){
         String everyPersonInXmlRegex = "<enPersonRes>.+</enPersonRes>";
