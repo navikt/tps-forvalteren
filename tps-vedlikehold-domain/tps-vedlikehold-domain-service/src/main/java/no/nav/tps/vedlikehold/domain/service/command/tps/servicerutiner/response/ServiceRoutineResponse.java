@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response;
 
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.Person;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.person.Person;
 
 import java.util.ArrayList;
 import java.util.List;
