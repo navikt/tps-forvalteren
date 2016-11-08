@@ -2,13 +2,11 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsEndreNavnRequestEndringsmelding;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.EndringsmeldingRequestXmlTransform;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.RemoveUnauthorizedPersonsFromResponseTransformer;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.SetAuthorizedResultCountInXmlTransformer;
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
 
 /**
  * Created by f148888 on 29.09.2016.
@@ -30,9 +28,8 @@ public class EndreNavn implements ServiceRoutineResolver {
 
                 .and()
                 .transformer()
-                    .preSend(new EndringsmeldingRequestXmlTransform())
-                    .postSend(new RemoveUnauthorizedPersonsFromResponseTransformer())
-                    .postSend(new SetAuthorizedResultCountInXmlTransformer())
+                    .preSend(endringsmeldingXmlWrappingAppender())
+                    .postSend(removeUnauthorizedFnrFromResponse())
                 .and()
 
                 .parameter()

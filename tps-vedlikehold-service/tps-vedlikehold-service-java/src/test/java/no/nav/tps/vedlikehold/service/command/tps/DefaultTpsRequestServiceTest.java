@@ -17,7 +17,6 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests.TpsRequestEndringsmelding;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
-import no.nav.tps.vedlikehold.service.command.tps.utils.TpsRequestXmlCreator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,9 +44,6 @@ public class DefaultTpsRequestServiceTest {
 
     @Mock
     private TpsRequestEndringsmelding tpsRequestEndringsmelding;
-
-    @Mock
-    private TpsRequestXmlCreator tpsRequestXmlCreator;
 
     @Mock
     private MessageQueueConsumer messageQueueConsumerMock;

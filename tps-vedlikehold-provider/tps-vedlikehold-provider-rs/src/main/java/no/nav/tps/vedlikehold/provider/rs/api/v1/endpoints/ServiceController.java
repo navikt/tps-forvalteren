@@ -1,27 +1,22 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 
-import java.io.IOException;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
-import no.nav.tps.vedlikehold.provider.rs.security.logging.Sporingslogger;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
-
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.FindServiceRoutineByName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Map;
 
 /**
  * @author Tobias Hansen, Visma Consulting AS
@@ -54,6 +49,9 @@ public class ServiceController {
 
     @Autowired
     private RsRequestMappingUtils mappingUtils;
+
+    @Autowired
+    private FindServiceRoutineByName findServiceRoutineByName;
 
     @Autowired
     private TpsResponseMappingUtils tpsResponseMappingUtils;
@@ -79,6 +77,8 @@ public class ServiceController {
         String environment = body.get("environment").asText();
         String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
+
+        User user = userContextHolder.getUser();
 
         return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
 
@@ -137,7 +137,7 @@ public class ServiceController {
 
     private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request, String serviceRoutineName) {
         try {
-            TpsServiceRoutine serviceRoutine = mappingUtils.findRoutineByName(serviceRoutineName).get();
+            TpsServiceRoutine serviceRoutine = findServiceRoutineByName.execute(serviceRoutineName).get();
             Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine);
             return tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(response.getXml());
 //            ServiceRoutineResponse response = tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(xmlResponse);

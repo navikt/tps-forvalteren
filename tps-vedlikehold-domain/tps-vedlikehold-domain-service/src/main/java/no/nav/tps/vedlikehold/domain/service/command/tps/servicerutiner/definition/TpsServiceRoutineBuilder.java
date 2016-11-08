@@ -7,8 +7,9 @@ import java.util.List;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameter;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.XmlTransformStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.XmlTransformer;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.RequestTransformer;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseTransformer;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -18,7 +19,7 @@ public class TpsServiceRoutineBuilder {
     private String internalName;
     private Class<?> javaClass;
     private List<TpsParameter> parameters = new ArrayList<>();
-    private List<XmlTransformer> transformers = new ArrayList<>();
+    private List<Transformer> transformers = new ArrayList<>();
 
 
     public XmlTransformerBuilder transformer(){
@@ -59,7 +60,7 @@ public class TpsServiceRoutineBuilder {
         return new TpsServiceRoutineBuilder();
     }
 
-    public class TpsServiceRoutineParameterBuilder {
+    private class TpsServiceRoutineParameterBuilder {
         private String name;
         private TpsParameterType type;
         private String use;
@@ -107,24 +108,23 @@ public class TpsServiceRoutineBuilder {
     }
 
     public class XmlTransformerBuilder {
-        private List<XmlTransformer> transformers;
+        private List<Transformer> transformers;
 
         XmlTransformerBuilder() {
             this.transformers = new ArrayList<>();
         }
 
-        public XmlTransformerBuilder preSend(XmlTransformStrategy strategy) {
-            transformers.add(new XmlTransformer(strategy, XmlTransformer.Type.PRE_SEND));
+        public XmlTransformerBuilder preSend(RequestTransformer transformer) {
+            transformers.add(transformer);
             return this;
         }
 
-        public XmlTransformerBuilder postSend(XmlTransformStrategy strategy) {
-            transformers.add(new XmlTransformer(strategy, XmlTransformer.Type.POST_SEND));
+        public XmlTransformerBuilder postSend(ResponseTransformer transformer) {
+            transformers.add(transformer);
             return this;
         }
 
         public TpsServiceRoutineBuilder and() {
-//            TpsServiceRoutineBuilder.this.transformers = new XmlTransformers();
             TpsServiceRoutineBuilder.this.transformers.addAll(transformers);
             return TpsServiceRoutineBuilder.this;
         }

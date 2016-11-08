@@ -5,6 +5,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definiti
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsSokPersonRequestServiceRoutine;
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
 /**
  * Created by f148888 on 30.09.2016.
@@ -73,6 +74,9 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                     .required()
                     .values("1","2","3","4","5", "6")
                     .type(TpsParameterType.STRING)
+                .and()
+                .transformer()
+                  .preSend(serviceRoutineXmlWrappingAppender())
                 .and()
                 .build();
     }

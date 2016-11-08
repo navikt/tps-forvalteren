@@ -1,10 +1,10 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsPingRequestServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.DefaultServiceRoutineXmlTransform;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -18,7 +18,7 @@ public class S000TilgangTilTpsServiceRoutineResolver implements ServiceRoutineRe
                 .internalName("S000 Tilgang til Tps")
                 .javaClass(TpsPingRequestServiceRoutine.class)
                 .transformer()
-                    .preSend(new DefaultServiceRoutineXmlTransform())
+                 .preSend(serviceRoutineXmlWrappingAppender())
                 .and()
                 .build();
     }
