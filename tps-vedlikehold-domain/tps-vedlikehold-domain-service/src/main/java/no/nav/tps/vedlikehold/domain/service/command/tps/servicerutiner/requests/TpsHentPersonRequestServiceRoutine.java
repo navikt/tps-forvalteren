@@ -17,6 +17,7 @@ public class TpsHentPersonRequestServiceRoutine extends TpsRequestServiceRoutine
 
     public void setFnr(String fnr) {
         this.fnr = fnr;
+        addToParameterMap("fnr", fnr);
     }
 
 }

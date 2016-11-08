@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions;
+package no.nav.tps.vedlikehold.service.command.exceptions;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

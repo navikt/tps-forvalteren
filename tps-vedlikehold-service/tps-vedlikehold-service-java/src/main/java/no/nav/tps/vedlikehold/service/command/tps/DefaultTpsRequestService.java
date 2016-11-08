@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
 import com.fasterxml.jackson.xml.XmlMapper;
+import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
@@ -8,6 +9,8 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
+import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.TransformationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import java.io.IOException;
-
 
 @Service
 public class DefaultTpsRequestService implements TpsRequestService {
@@ -32,6 +34,12 @@ public class DefaultTpsRequestService implements TpsRequestService {
     @Autowired
     private TransformationService transformationService;
 
+    @Autowired
+    private TpsAuthorisationService tpsAuthorisationService;
+
+    @Autowired
+    private MessageProvider messageProvider;
+
     /**
      * Send a request to TPS using asynchronous message queues
      *
@@ -40,7 +48,10 @@ public class DefaultTpsRequestService implements TpsRequestService {
      * @throws JMSException failed to send the message
      */
     @Override
-    public Response executeServiceRutineRequest(TpsRequestServiceRoutine tpsRequest, TpsServiceRoutine serviceRoutine) throws IOException, JMSException {
+    public Response executeServiceRutineRequest(TpsRequestServiceRoutine tpsRequest, TpsServiceRoutine serviceRoutine) throws IOException, JMSException, HttpUnauthorisedException {
+        if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest)) {
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsRequest.getServiceRutinenavn());
+        }
         try {
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(tpsRequest.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 //            String xmlRequestMessage = tpsRequestXmlCreator.createXmlTpsRequestServiceRutine(tpsRequest);
@@ -67,26 +78,5 @@ public class DefaultTpsRequestService implements TpsRequestService {
             throw exception;
         }
     }
-/*
-    @Override
-    public String executeEndringsmeldingRequest(TpsRequestEndringsmelding tpsRequest, TpsSystemInfo tpsSystemInfo) throws IOException, JMSException {
-        try {
 
-            //TODO demolish
-
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(tpsRequest.getEnvironment(), FasitConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS);
-
-
-            String xmlRequestMessage = tpsRequestXmlCreator.createXmlTpsRequestEndringsmelding(tpsRequest, tpsSystemInfo);
-
-
-
-            String responseXml = messageQueueConsumer.sendMessage(xmlRequestMessage);
-            return responseXml;
-        } catch (JMSException exception) {
-            LOGGER.error("Failed to connect to MQ with exception: {}", exception.toString());
-            throw exception;
-        }
-    }
-    */
 }

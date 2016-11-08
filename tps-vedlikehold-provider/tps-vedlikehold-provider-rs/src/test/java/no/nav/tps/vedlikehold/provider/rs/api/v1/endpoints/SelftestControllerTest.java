@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.SelftestFailureException;
+import no.nav.tps.vedlikehold.service.command.exceptions.SelftestFailureException;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.Selftest;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status;

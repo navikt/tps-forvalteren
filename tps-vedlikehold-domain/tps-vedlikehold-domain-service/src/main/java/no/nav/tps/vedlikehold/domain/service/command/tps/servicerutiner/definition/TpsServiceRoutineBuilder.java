@@ -3,8 +3,11 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameter;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
@@ -20,7 +23,8 @@ public class TpsServiceRoutineBuilder {
     private Class<?> javaClass;
     private List<TpsParameter> parameters = new ArrayList<>();
     private List<Transformer> transformers = new ArrayList<>();
-
+    private Set<String> requiredRoles = new HashSet<>();
+    private List<AuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
     public XmlTransformerBuilder transformer(){
         return new XmlTransformerBuilder();
@@ -46,6 +50,31 @@ public class TpsServiceRoutineBuilder {
         return new TpsServiceRoutineParameterBuilder();
     }
 
+    public TpsServiceRoutineSecurityBuilder securityBuilder() {
+        return new TpsServiceRoutineSecurityBuilder();
+    }
+
+    public class TpsServiceRoutineSecurityBuilder {
+        private Set<String> access = new HashSet<>();
+        private List<AuthorisationStrategy> serviceStrategies = new ArrayList<>();
+
+        public TpsServiceRoutineSecurityBuilder addRequiredRole(String role) {
+            this.access.add(role);
+            return this;
+        }
+
+        public TpsServiceRoutineSecurityBuilder addRequiredSearchAuthorisationStrategy(AuthorisationStrategy serviceStrategy){
+            this.serviceStrategies.add(serviceStrategy);
+            return this;
+        }
+
+        public TpsServiceRoutineBuilder addSecurity() {
+            requiredRoles = this.access;
+            securitySearchAuthorisationStrategies = this.serviceStrategies;
+            return TpsServiceRoutineBuilder.this;
+        }
+    }
+
     public TpsServiceRoutine build() {
         TpsServiceRoutine routine = new TpsServiceRoutine();
         routine.setName(name);
@@ -53,6 +82,8 @@ public class TpsServiceRoutineBuilder {
         routine.setJavaClass(javaClass);
         routine.setParameters(parameters);
         routine.setTransformers(transformers);
+        routine.setRequiredRoles(requiredRoles);
+        routine.setSecurityServiceStrategy(securitySearchAuthorisationStrategies);
         return routine;
     }
 

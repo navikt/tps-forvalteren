@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;

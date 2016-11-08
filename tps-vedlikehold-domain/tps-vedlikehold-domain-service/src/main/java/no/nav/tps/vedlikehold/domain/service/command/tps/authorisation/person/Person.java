@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.domain.service.command.authorisation;
+package no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.person;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

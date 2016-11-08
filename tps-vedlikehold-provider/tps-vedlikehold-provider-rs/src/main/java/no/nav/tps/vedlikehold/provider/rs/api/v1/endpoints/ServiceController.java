@@ -4,17 +4,16 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.FindServiceRoutineByName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+
 
 /**
  * @author Tobias Hansen, Visma Consulting AS
@@ -71,68 +71,20 @@ public class ServiceController {
     @LogExceptions
     @RequestMapping(value = "/service", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ServiceRoutineResponse getService(@RequestBody JsonNode body) {
-        validateRequest(body);
-//        return sendRequest(body);
+//        validateRequest(body);
 
         String environment = body.get("environment").asText();
         String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
 
-        User user = userContextHolder.getUser();
-
         return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
 
     }
-/*
-    private ServiceRoutineResponse sendRequest(JsonNode body) {
-        String environment = body.get("environment").asText();
-        String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
-        if (body.has("fnr")) {
-            String fnr = body.get("fnr").asText();
-            return sendTpsRequestAndAuthorizeBeforeSendingRequest(tpsServiceRutinenavn, fnr, environment, body);
-        }
-        return sendTpsRequestAndAuthorizeAfterResponseIsReceived(tpsServiceRutinenavn, environment, body);
-    }
-
-    */
-
-    /*
-
-    private ServiceRoutineResponse sendTpsRequestAndAuthorizeBeforeSendingRequest(String tpsServiceRutinenavn, String fnr, String environment, JsonNode body) {
-        User user = userContextHolder.getUser();
-        if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(user, fnr, environment)) {
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsServiceRutinenavn);
-        }
-        Sporingslogger.log(environment, tpsServiceRutinenavn, fnr);
-        TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
-        return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
-    }
-
-    private ServiceRoutineResponse sendTpsRequestAndAuthorizeAfterResponseIsReceived(String tpsServiceRutinenavn, String environment, JsonNode body) {
-        Sporingslogger.log(environment, tpsServiceRutinenavn, null);
-        TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
-        ServiceRoutineResponse tpsResponse = sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
-//        remapTpsResponseExcludingUnauthorizedData(tpsResponse);
-        return tpsResponse;
-    }
-    */
-/*
-    private void remapTpsResponseExcludingUnauthorizedData(ServiceRoutineResponse tpsResponse) {
-        try {
-            tpsResponseMappingUtils.removeUnauthorizedDataFromTpsResponse(tpsResponse);
-            tpsResponseMappingUtils.remapTpsResponse(tpsResponse);
-        } catch (HttpUnauthorisedException exception) {
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsResponse.getServiceRoutineName());
-        } catch (IOException exception) {
-            throw new HttpInternalServerErrorException(exception, "api/v1/service");
-        }
-    }
-*/
-    private void validateRequest(JsonNode body) {
-        if (!body.has("environment") || !body.has(TPS_SERVICE_ROUTINE_PARAM_NAME)) {
-            throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
-        }
-    }
+//    private void validateRequest(JsonNode body) {
+//        if (!body.has("environment") || !body.has(TPS_SERVICE_ROUTINE_PARAM_NAME)) {
+//            throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
+//        }
+//    }
 
 
     private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request, String serviceRoutineName) {
@@ -142,6 +94,8 @@ public class ServiceController {
             return tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(response.getXml());
 //            ServiceRoutineResponse response = tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(xmlResponse);
 //            return response;
+        } catch (HttpUnauthorisedException ex){
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + request.getServiceRutinenavn());
         } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
