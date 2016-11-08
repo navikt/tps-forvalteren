@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps.utils;
 
 import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
 import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests.TpsRequestEndringsmelding;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
