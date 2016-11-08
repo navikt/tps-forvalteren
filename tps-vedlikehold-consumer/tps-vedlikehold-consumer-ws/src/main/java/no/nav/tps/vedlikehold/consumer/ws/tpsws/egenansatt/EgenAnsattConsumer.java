@@ -1,10 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
-public interface EgenAnsattConsumer {
-    boolean ping();
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.AuthorisationStrategyConsumer;
 
+
+public interface EgenAnsattConsumer extends AuthorisationStrategyConsumer{
     boolean isEgenAnsatt(String fnr);
 }
