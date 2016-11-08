@@ -7,11 +7,11 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import java.util.Date;
 
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.ExceptionInformation;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.command.exceptions.ExceptionInformation;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpBadRequestException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

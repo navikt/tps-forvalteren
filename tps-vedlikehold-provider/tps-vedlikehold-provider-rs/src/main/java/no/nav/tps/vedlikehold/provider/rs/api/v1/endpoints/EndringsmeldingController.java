@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import ch.qos.logback.core.util.SystemInfo;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
@@ -8,8 +7,8 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.requests.Tp
 import no.nav.tps.vedlikehold.domain.service.command.tps.ajourforing.response.EndringsmeldingResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpBadRequestException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**

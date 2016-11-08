@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions;
+package no.nav.tps.vedlikehold.service.command.exceptions;
 
 /**
  * Object containing information about the exception.

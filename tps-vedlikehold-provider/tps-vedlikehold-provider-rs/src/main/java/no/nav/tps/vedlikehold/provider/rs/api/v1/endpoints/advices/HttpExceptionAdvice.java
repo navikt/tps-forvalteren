@@ -2,11 +2,11 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.advices;
 
 import java.util.Date;
 
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.ExceptionInformation;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.command.exceptions.ExceptionInformation;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpBadRequestException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
