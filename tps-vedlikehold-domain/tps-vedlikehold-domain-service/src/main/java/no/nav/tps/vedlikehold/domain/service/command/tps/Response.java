@@ -22,5 +22,4 @@ public class Response {
     public void setRoutineResponse(ServiceRoutineResponse routineResponse) {
         this.routineResponse = routineResponse;
     }
-
 }

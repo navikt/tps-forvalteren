@@ -59,7 +59,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
             request.setRoutineRequest(tpsRequest);
             request.setUser(user);
 
-            tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, user);
+            tpsAuthorisationService.authoriseRequest(serviceRoutine, tpsRequest, user);
             transformationService.transform(request, serviceRoutine);
 
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(tpsRequest.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
@@ -69,7 +69,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
             Response response = new Response();
             response.setXml(responseXml);
 
-            tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, user);
+            tpsAuthorisationService.authoriseRequest(serviceRoutine, tpsRequest, user);
             transformationService.transform(response, serviceRoutine);
 
             return response;

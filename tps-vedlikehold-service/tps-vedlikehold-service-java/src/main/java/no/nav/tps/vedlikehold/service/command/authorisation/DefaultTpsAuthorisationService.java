@@ -21,7 +21,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     private List<SecurityStrategy> securityStrategies;
 
     @Override
-    public boolean userIsAuthorisedToReadPersonInEnvironment(TpsServiceRoutine serviceRoutine, TpsRequest request, User user) {
+    public boolean authoriseRequest(TpsServiceRoutine serviceRoutine, TpsRequest request, User user) {
         for (AuthorisationStrategy authorisationStrategy : serviceRoutine.getSecurityServiceStrategies()) {
             for (SecurityStrategy strategyService : securityStrategies) {
                 if (strategyService.isSupported(authorisationStrategy)) {
@@ -40,7 +40,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     @Override
     public ArrayList<Person> getAuthorizedPersons(TpsMessage tpsMessage, User user, List<Person> persons, String environment) {
         return persons.stream()
-                .filter(person -> userIsAuthorisedToReadPersonInEnvironment(tpsMessage, user, person.getFnr(), environment))
+                .filter(person -> authoriseRequest(tpsMessage, user, person.getFnr(), environment))
                 .collect(Collectors.toCollection(ArrayList::new));
     }*/
 
@@ -48,7 +48,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     public boolean isAuthorizedToReadAtLeastOnePerson(TpsMessage tpsMessage, User user, List<Person> persons, String environment){
         if(persons.isEmpty()) return true;
         for(Person person : persons){
-            if(userIsAuthorisedToReadPersonInEnvironment(tpsMessage, )){
+            if(authoriseRequest(tpsMessage, )){
                 return true;
             }
         }

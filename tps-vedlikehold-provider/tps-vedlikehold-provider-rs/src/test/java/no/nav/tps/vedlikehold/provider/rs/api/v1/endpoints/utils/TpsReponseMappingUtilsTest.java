@@ -120,7 +120,7 @@ public class TpsReponseMappingUtilsTest {
         ServiceRoutineResponse response = Mockito.spy(new ServiceRoutineResponse("Rand", new Object()));
         User user = mock(User.class);
         when(response.getXml()).thenReturn(XML_RESPONSE + XML_RESPONSE2 + XML_RESPONSE3).thenReturn(response.getXml());
-        when(tpsAuthorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false,true,false);
+        when(tpsAuthorisationServiceMock.authoriseRequest(any(User.class), any(String.class), any(String.class))).thenReturn(false,true,false);
         when(userContextHolderMock.getUser()).thenReturn(user);
 
         responseMappingUtilsMock.removeUnauthorizedDataFromTpsResponse(response);

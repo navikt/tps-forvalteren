@@ -94,7 +94,7 @@ public class DefaultTpsAuthorisationServiceTest {
         when(userMock.getRoles()).thenReturn(singleton("readTRole"));
 
 
-        defaultTpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
+        defaultTpsAuthorisationService.authoriseRequest(userMock, FNR, ENVIRONMENT);
 
         verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
         verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));
