@@ -53,8 +53,11 @@ public class DefaultTpsRequestService implements TpsRequestService {
         if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, user)) {
             throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsRequest.getServiceRutinenavn());
         }
+
+
+
         try {
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(tpsRequest.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+
 
             String xml = xmlMapper.writeValueAsString(tpsRequest);
 
@@ -63,13 +66,17 @@ public class DefaultTpsRequestService implements TpsRequestService {
             request.setRoutineRequest(tpsRequest);
             request.setUser(user);
 
+            tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, user);
             transformationService.transform(request, serviceRoutine);
+
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(tpsRequest.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
             String responseXml = messageQueueConsumer.sendMessage(request.getXml());
 
             Response response = new Response();
             response.setXml(responseXml);
 
+            tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, user);
             transformationService.transform(response, serviceRoutine);
 
             return response;

@@ -8,6 +8,8 @@ import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SecurityStr
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
@@ -16,12 +18,12 @@ import org.springframework.stereotype.Service;
 public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
 
     @Autowired
-    private SecurityStrategyService strategiesService;
+    private List<SecurityStrategy> securityStrategies;
 
     @Override
     public boolean userIsAuthorisedToReadPersonInEnvironment(TpsServiceRoutine serviceRoutine, TpsRequest request, User user) {
-        for (SecurityStrategy strategyService : strategiesService.getSecurityStrategies()) {
-            for (AuthorisationStrategy authorisationStrategy : serviceRoutine.getSecurityServiceStrategies()) {
+        for (AuthorisationStrategy authorisationStrategy : serviceRoutine.getSecurityServiceStrategies()) {
+            for (SecurityStrategy strategyService : securityStrategies) {
                 if (strategyService.isSupported(authorisationStrategy)) {
                     String param = request.getParamValue(authorisationStrategy.getRequiredParamKeyName());
                     if (!strategyService.isAuthorised(user.getRoles(), param)) {
@@ -34,8 +36,8 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     }
 }
 
-    //TODO Kanskje flytte. Er ikke helt authorizering task.
-    // Tanken var å uncommente senere når jeg skulle legge til Authorsering for svar med flere resultater
+//TODO Kanskje flytte. Er ikke helt authorizering task.
+// Tanken var å uncommente senere når jeg skulle legge til Authorsering for svar med flere resultater
     /*
     @Override
     public ArrayList<Person> getAuthorizedPersons(TpsMessage tpsMessage, User user, List<Person> persons, String environment) {
