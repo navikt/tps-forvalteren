@@ -54,8 +54,8 @@ public class DefaultTpsAuthorisationServiceTest {
 /*
     @Before
     public void setUp() throws Exception {
-        when( diskresjonskodeAuthorisationStrategy.isAuthorised()).thenReturn(true);
-        when( egenAnsattAuthorisationStrategy.isAuthorised() ).thenReturn(true);
+        when( diskresjonskodeAuthorisationStrategy.authorise()).thenReturn(true);
+        when( egenAnsattAuthorisationStrategy.authorise() ).thenReturn(true);
 
         when(diskresjonskodeConsumerMock.getDiskresjonskode(eq(FNR))).thenReturn(hentDiskresjonskodeResponseMock);
         when(hentDiskresjonskodeResponseMock.getDiskresjonskode()).thenReturn("1");
@@ -63,14 +63,14 @@ public class DefaultTpsAuthorisationServiceTest {
 
     @Test
     public void userIsUnauthorisedIfAnyStrategyReturnsFalse()  {
-        when( egenAnsattAuthorisationStrategy.isAuthorised() ).thenReturn(false);
+        when( egenAnsattAuthorisationStrategy.authorise() ).thenReturn(false);
 
         Collection<AuthorisationStrategy> strategies = Arrays.asList(
                 diskresjonskodeAuthorisationStrategy,
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = defaultTpsAuthorisationService.isAuthorised(strategies);
+        Boolean result = defaultTpsAuthorisationService.authorise(strategies);
 
         assertThat(result, is(false));
     }
@@ -82,7 +82,7 @@ public class DefaultTpsAuthorisationServiceTest {
                 egenAnsattAuthorisationStrategy
         );
 
-        Boolean result = defaultTpsAuthorisationService.isAuthorised(strategies);
+        Boolean result = defaultTpsAuthorisationService.authorise(strategies);
 
         assertThat(result, is(true));
     }
