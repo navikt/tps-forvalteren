@@ -1,10 +1,12 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameter;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -21,6 +23,11 @@ public class TpsServiceRoutine {
 
     @JsonIgnore
     private List<Transformer> transformers;
+
+    private List<AuthorisationStrategy> securityServiceStrategies;
+
+    private Set<String> requiredRoles;
+
 
     public String getName() {
         return name;
@@ -61,5 +68,21 @@ public class TpsServiceRoutine {
 
     public void setTransformers(List<Transformer> transformers) {
         this.transformers = transformers;
+    }
+
+    public List<AuthorisationStrategy> getSecurityServiceStrategies() {
+        return securityServiceStrategies;
+    }
+
+    public void setSecurityServiceStrategies(List<AuthorisationStrategy> securityServiceStrategies) {
+        this.securityServiceStrategies = securityServiceStrategies;
+    }
+
+    public Set<String> getRequiredRoles() {
+        return requiredRoles;
+    }
+
+    public void setRequiredRoles(Set<String> requiredRoles) {
+        this.requiredRoles = requiredRoles;
     }
 }

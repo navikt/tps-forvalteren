@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
+import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
@@ -9,5 +10,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
  */
 
 public interface TpsRequestService {
-    Response executeServiceRutineRequest(TpsRequestServiceRoutine request, TpsServiceRoutine serviceRoutine) throws Exception;
+    Response executeServiceRutineRequest(TpsRequestServiceRoutine request, TpsServiceRoutine serviceRoutine, User user) throws Exception;
 }

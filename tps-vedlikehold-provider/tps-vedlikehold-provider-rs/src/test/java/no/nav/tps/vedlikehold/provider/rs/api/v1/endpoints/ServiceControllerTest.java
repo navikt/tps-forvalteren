@@ -1,18 +1,11 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
-
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -20,8 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS

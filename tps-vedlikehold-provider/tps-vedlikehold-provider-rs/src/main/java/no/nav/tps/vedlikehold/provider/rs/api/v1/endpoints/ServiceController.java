@@ -4,6 +4,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
+import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
@@ -11,7 +12,6 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
@@ -45,9 +45,6 @@ public class ServiceController {
     private TpsRequestService tpsRequestService;
 
     @Autowired
-    private TpsAuthorisationService tpsAuthorisationService;
-
-    @Autowired
     private RsRequestMappingUtils mappingUtils;
 
     @Autowired
@@ -78,7 +75,6 @@ public class ServiceController {
         TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
 
         return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
-
     }
 //    private void validateRequest(JsonNode body) {
 //        if (!body.has("environment") || !body.has(TPS_SERVICE_ROUTINE_PARAM_NAME)) {
@@ -90,10 +86,12 @@ public class ServiceController {
     private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request, String serviceRoutineName) {
         try {
             TpsServiceRoutine serviceRoutine = findServiceRoutineByName.execute(serviceRoutineName).get();
-            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine);
+
+            User user = userContextHolder.getUser();
+
+            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, user);
             return tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(response.getXml());
-//            ServiceRoutineResponse response = tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(xmlResponse);
-//            return response;
+
         } catch (HttpUnauthorisedException ex){
             throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + request.getServiceRutinenavn());
         } catch (Exception exception) {

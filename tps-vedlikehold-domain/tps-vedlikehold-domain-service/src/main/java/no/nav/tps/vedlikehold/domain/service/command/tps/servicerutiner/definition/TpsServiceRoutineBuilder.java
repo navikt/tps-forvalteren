@@ -83,7 +83,7 @@ public class TpsServiceRoutineBuilder {
         routine.setParameters(parameters);
         routine.setTransformers(transformers);
         routine.setRequiredRoles(requiredRoles);
-        routine.setSecurityServiceStrategy(securitySearchAuthorisationStrategies);
+        routine.setSecurityServiceStrategies(securitySearchAuthorisationStrategies);
         return routine;
     }
 

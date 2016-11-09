@@ -1,13 +1,11 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps;
 
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
 public class Response {
 
     private String xml;
     private ServiceRoutineResponse routineResponse;
-    private User user;
 
     public String getXml() {
         return xml;
@@ -25,11 +23,4 @@ public class Response {
         this.routineResponse = routineResponse;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
