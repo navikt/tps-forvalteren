@@ -5,21 +5,20 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definit
  */
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentKontaktinformasjonServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsHentKontaktinformasjonServiceRoutineRequest;
 
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
 public class S600HentKontaktinformasjonServiceRoutineResolver implements ServiceRoutineResolver {
 
     @Override
-    public TpsServiceRoutine resolve() {
+    public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-KONTINFO-O")
                 .internalName("S600 Hent Kontaktinformasjon")
-                .javaClass(TpsHentKontaktinformasjonServiceRoutine.class)
+                .javaClass(TpsHentKontaktinformasjonServiceRoutineRequest.class)
                 .parameter()
                     .name("fnr")
                     .required()

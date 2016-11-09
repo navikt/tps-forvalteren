@@ -1,9 +1,9 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
 import no.nav.tps.vedlikehold.domain.service.command.User.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.TpsRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SecurityStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,12 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     private SecurityStrategyService strategiesService;
 
     @Override
-    public boolean userIsAuthorisedToReadPersonInEnvironment(TpsServiceRoutine serviceRoutine, TpsRequest request, User user) {
+    public boolean userIsAuthorisedToReadPersonInEnvironment(TpsServiceRoutineDefinition serviceRoutine, TpsServiceRoutineRequest request, User user) {
         for (SecurityStrategy strategyService : strategiesService.getSecurityStrategies()) {
             for (AuthorisationStrategy authorisationStrategy : serviceRoutine.getSecurityServiceStrategies()) {
                 if (strategyService.isSupported(authorisationStrategy)) {
-                    String param = request.getParamValue(authorisationStrategy.getRequiredParamKeyName());
+                    //TODO nødvendige parametere må hentes på en annen måte. Hører ikke hjemme i DTO-objektet
+                    String param = ""; //request.getParamValue(authorisationStrategy.getRequiredParamKeyName());
                     if (!strategyService.isAuthorised(user.getRoles(), param)) {
                         return false;
                     }

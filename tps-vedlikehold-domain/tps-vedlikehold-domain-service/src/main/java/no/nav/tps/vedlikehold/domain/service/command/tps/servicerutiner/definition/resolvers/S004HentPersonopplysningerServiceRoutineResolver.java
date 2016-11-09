@@ -1,14 +1,14 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -16,11 +16,11 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 public class S004HentPersonopplysningerServiceRoutineResolver implements ServiceRoutineResolver {
 
     @Override
-    public TpsServiceRoutine resolve() {
+    public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-PERSDATA-O")
                 .internalName("S004 Hent Personopplysninger")
-                .javaClass(TpsHentPersonRequestServiceRoutine.class)
+                .javaClass(TpsHentPersonServiceRoutineRequest.class)
                 .parameter()
                     .name("fnr")
                     .required()

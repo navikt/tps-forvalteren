@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 
 import org.junit.Test;
@@ -54,18 +54,18 @@ public class RsRequestMappingUtilsTest {
 
     @Test
     public void convertToTpsRequestMapsServiceRoutineAndReturnsMappedResult() {
-        TpsServiceRoutine routine = mock(TpsServiceRoutine.class);
+        TpsServiceRoutineDefinition routine = mock(TpsServiceRoutineDefinition.class);
         doReturn("name").when(routine).getName();
-        doReturn(TpsHentPersonRequestServiceRoutine.class).when(routine).getJavaClass();
-        List<TpsServiceRoutine> routines = Collections.singletonList(routine);
+        doReturn(TpsHentPersonServiceRoutineRequest.class).when(routine).getJavaClass();
+        List<TpsServiceRoutineDefinition> routines = Collections.singletonList(routine);
         when(serviceMock.execute()).thenReturn(routines);
 
         JsonNode nodeMock = mock(JsonNode.class);
 
-        TpsHentPersonRequestServiceRoutine respMock = mock(TpsHentPersonRequestServiceRoutine.class);
-        when(objectMapperMock.convertValue(nodeMock, TpsHentPersonRequestServiceRoutine.class)).thenReturn(respMock);
+        TpsHentPersonServiceRoutineRequest respMock = mock(TpsHentPersonServiceRoutineRequest.class);
+        when(objectMapperMock.convertValue(nodeMock, TpsHentPersonServiceRoutineRequest.class)).thenReturn(respMock);
 
-        TpsRequestServiceRoutine result = utils.convertToTpsRequestServiceRoutine("name", nodeMock);
+        TpsServiceRoutineRequest result = utils.convertToTpsRequestServiceRoutine("name", nodeMock);
 
         assertThat(result, is(sameInstance(respMock)));
     }

@@ -1,6 +1,8 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.person.Person;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +23,13 @@ public class ServiceRoutineResponse {
     /** Persons found in the response */
     private ArrayList<Person> persons;
 
-    public ServiceRoutineResponse(String xml, Object data) {
+    @JsonIgnore
+    private TpsRequestContext context;
+
+    public ServiceRoutineResponse(String xml, Object data, TpsRequestContext context) {
         this.xml = xml;
         this.data = data;
+        this.context = context;
     }
 
     public Object getData() {
@@ -49,11 +55,8 @@ public class ServiceRoutineResponse {
         return matcher.group(1);
     }
 
-    public String getEnvironment(){
-        String responseEnvironmentPattern = "<environment>(.+?)</environment>";
-        Matcher matcher = Pattern.compile(responseEnvironmentPattern, Pattern.DOTALL).matcher(this.xml);
-        matcher.find();
-        return matcher.group(1);
+    public String getEnvironment() {
+        return context.getEnvironment();
     }
 
     public List<Person> getPersons(){

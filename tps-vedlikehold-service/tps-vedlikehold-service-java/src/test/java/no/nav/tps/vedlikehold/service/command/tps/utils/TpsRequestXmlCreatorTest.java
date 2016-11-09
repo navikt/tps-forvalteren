@@ -1,8 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.tps.utils;
 
 import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.vedlikehold.domain.service.command.tps.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +29,7 @@ public class TpsRequestXmlCreatorTest {
     private XmlMapper xmlMapperMock;
 
     @Mock
-    private TpsRequestServiceRoutine tpsRequestServiceRoutine;
+    private TpsServiceRoutineRequest tpsServiceRoutineRequest;
 
 //    @Mock
 //    private TpsRequestEndringsmelding tpsRequestEndringsmelding;
@@ -38,13 +37,13 @@ public class TpsRequestXmlCreatorTest {
 
     @Test(expected = IOException.class)
     public void throwsIOExceptionWhenMapperFails() throws Exception{
-        when(xmlMapperMock.writeValueAsString(any(TpsRequest.class))).thenThrow(IOException.class);
-//        tpsRequestXmlCreator.createXmlTpsRequestServiceRutine(tpsRequestServiceRoutine);
+//        when(xmlMapperMock.writeValueAsString(any(TpsRequest.class))).thenThrow(IOException.class);
+//        tpsRequestXmlCreator.createXmlTpsRequestServiceRutine(tpsServiceRoutineRequest);
     }
 
     @Test
     public void setsCorrectPreAndPostFixToServiceRutineXmlString() throws Exception{
-        String tpsReqSr = null;//tpsRequestXmlCreator.createXmlTpsRequestServiceRutine(tpsRequestServiceRoutine);
+        String tpsReqSr = null;//tpsRequestXmlCreator.createXmlTpsRequestServiceRutine(tpsServiceRoutineRequest);
         assertThat(tpsReqSr, not(CoreMatchers.containsString(POSTFIX_ENDRINGSMELDING)));
         assertThat(tpsReqSr, CoreMatchers.containsString(POSTFIX_SERVICE_RUTINE));
     }

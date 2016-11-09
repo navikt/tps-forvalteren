@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 
 import org.junit.Test;
@@ -31,10 +31,10 @@ public class ServiceRoutineControllerTest {
 
     @Test
     public void returnsResultFromService() {
-        List<TpsServiceRoutine> routines = Collections.emptyList();
+        List<TpsServiceRoutineDefinition> routines = Collections.emptyList();
         when(serviceMock.execute()).thenReturn(routines);
 
-        List<TpsServiceRoutine> result = controller.getTpsServiceRutiner();
+        List<TpsServiceRoutineDefinition> result = controller.getTpsServiceRutiner();
 
         assertThat(result, is(sameInstance(routines)));
     }

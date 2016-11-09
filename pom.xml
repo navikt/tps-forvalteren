@@ -37,6 +37,7 @@
         <application.name>tps-vedlikehold</application.name>
         <application.version>${project.version}</application.version>
         <application-ear.version>7</application-ear.version>
+        <lombok.version>1.16.10</lombok.version>
 
         <!--SonarQube-->
         <jacoco.version>0.7.7.201606060606</jacoco.version>
@@ -74,6 +75,14 @@
         <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
         <frontend-maven-plugin.version>1.2</frontend-maven-plugin.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

@@ -165,7 +165,7 @@ public class ServiceControllerTest {
 
 //    @Test
 //    public void getServiceDoNotThrowUnauthorizedWhenAuthorizationFailsDoesNotFailOnEveryPersonInResult() throws Exception{
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsRequestServiceRoutine.class))).thenReturn(XML_RESPONSE);
+//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenReturn(XML_RESPONSE);
 //        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false, true);
 //
 //        controller.getService(baseJsonNode);
@@ -196,7 +196,7 @@ public class ServiceControllerTest {
 //    @Test
 //    public void getServiceThrowsInternalServerErrorWhenServiceRoutineFailed() throws Exception {
 //        mockNodeContent(baseJsonNode, "fnr", FNR);
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsRequestServiceRoutine.class))).thenThrow(new IllegalArgumentException());
+//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenThrow(new IllegalArgumentException());
 //
 //        expectedException.expect(HttpInternalServerErrorException.class);
 //
@@ -207,7 +207,7 @@ public class ServiceControllerTest {
 //    public void getServiceReturnsSRResponse() throws Exception {
 //        mockNodeContent(baseJsonNode, "fnr", FNR);
 //        ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsRequestServiceRoutine.class))).thenReturn(XML_RESPONSE);
+//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenReturn(XML_RESPONSE);
 //        when(tpsResponseMappingUtilsMock.xmlResponseToServiceRoutineResponse(XML_RESPONSE)).thenReturn(response);
 //
 //        ServiceRoutineResponse result = controller.getService(baseJsonNode);

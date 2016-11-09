@@ -1,26 +1,16 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Response {
 
     private String xml;
     private ServiceRoutineResponse routineResponse;
-
-    public String getXml() {
-        return xml;
-    }
-
-    public void setXml(String xml) {
-        this.xml = xml;
-    }
-
-    public ServiceRoutineResponse getRoutineResponse() {
-        return routineResponse;
-    }
-
-    public void setRoutineResponse(ServiceRoutineResponse routineResponse) {
-        this.routineResponse = routineResponse;
-    }
 
 }
