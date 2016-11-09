@@ -1,8 +1,10 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
+import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisationStrategy;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +22,19 @@ public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStra
     @Autowired
     private EgenAnsattConsumer egenAnsattConsumer;
 
+    @Autowired
+    private MessageProvider messageProvider;
+
     @Override
     public boolean isSupported(AuthorisationStrategy a1) {
         return a1 instanceof EgenAnsattAuthorisationStrategy;
     }
 
     @Override
-    public boolean isAuthorised(Set<String> roles, String fodselsnummer) {
+    public void authorise(Set<String> roles, String fodselsnummer) {
         Boolean isEgenAnsatt = egenAnsattConsumer.isEgenAnsatt(fodselsnummer);
-        return !isEgenAnsatt || roles.contains(ROLE_READ_EGENANSATT);
+        if(isEgenAnsatt && !roles.contains(ROLE_READ_EGENANSATT)){
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+        }
     }
 }

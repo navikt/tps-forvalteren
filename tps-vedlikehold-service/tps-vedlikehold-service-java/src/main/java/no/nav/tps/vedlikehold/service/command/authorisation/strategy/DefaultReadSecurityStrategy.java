@@ -24,7 +24,7 @@ public class DefaultReadSecurityStrategy implements ReadSecurityStrategy {
     }
 
     @Override
-    public boolean isAuthorised(Set<String> userRoles, String environment) {
+    public boolean authorise(Set<String> userRoles, String environment) {
         Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.READ);
         userRoles.add("${tps.vedlikehold.securityBuilder.t.readroles}");    //TODO Hack for å få den til å være authorisert uten riktig role.
 

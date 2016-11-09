@@ -1,8 +1,10 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
+import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisationStrategy;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,28 +27,31 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
     @Autowired
     private DiskresjonskodeConsumer diskresjonskodeConsumer;
 
+    @Autowired
+    private MessageProvider messageProvider;
+
     @Override
     public boolean isSupported(AuthorisationStrategy a1) {
         return a1 instanceof DiskresjonskodeAuthorisationStrategy;
     }
 
     @Override
-    public boolean isAuthorised(Set<String> userRoles, String fodselsnummer) {
+    public void authorise(Set<String> userRoles, String fodselsnummer) {
         String diskresjonskode;
 
         try {
             diskresjonskode = diskresjonskodeConsumer.getDiskresjonskode(fodselsnummer).getDiskresjonskode();
         } catch (Exception exception) {
             LOGGER.warn("Authorisation denied. Failed to get diskresjonskode with exception: {}", exception.toString());
-
-            return false;
+            throw exception;
         }
 
-        if ("6".equals(diskresjonskode)) {
-            return userRoles.contains(ROLE_READ_DISKRESJONSKODE_6);
+        if ("6".equals(diskresjonskode) && !userRoles.contains(ROLE_READ_DISKRESJONSKODE_6)) {
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
         }
 
-        return !"7".equals(diskresjonskode) || userRoles.contains(ROLE_READ_DISKRESJONSKODE_7);
-
+        if("7".equals(diskresjonskode) && !userRoles.contains(ROLE_READ_DISKRESJONSKODE_7)){
+            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+        }
     }
 }

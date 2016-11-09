@@ -26,9 +26,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
             for (SecurityStrategy strategyService : securityStrategies) {
                 if (strategyService.isSupported(authorisationStrategy)) {
                     String param = request.getParamValue(authorisationStrategy.getRequiredParamKeyName());
-                    if (!strategyService.isAuthorised(user.getRoles(), param)) {
-                        return false;
-                    }
+                    strategyService.authorise(user.getRoles(), param);
                 }
             }
         }

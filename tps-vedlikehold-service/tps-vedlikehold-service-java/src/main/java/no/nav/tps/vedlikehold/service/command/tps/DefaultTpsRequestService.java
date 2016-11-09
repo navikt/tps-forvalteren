@@ -50,14 +50,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
      */
     @Override
     public Response executeServiceRutineRequest(TpsRequestServiceRoutine tpsRequest, TpsServiceRoutine serviceRoutine, User user) throws IOException, JMSException, HttpUnauthorisedException {
-        if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, user)) {
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsRequest.getServiceRutinenavn());
-        }
-
-
-
         try {
-
 
             String xml = xmlMapper.writeValueAsString(tpsRequest);
 
