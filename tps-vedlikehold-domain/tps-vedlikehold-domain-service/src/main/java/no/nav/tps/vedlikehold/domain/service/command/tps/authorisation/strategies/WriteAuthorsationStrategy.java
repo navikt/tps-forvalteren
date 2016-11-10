@@ -5,16 +5,6 @@ package no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategi
  */
 public class WriteAuthorsationStrategy implements AuthorisationStrategy {
 
-    String requiredParam;
-
-    public WriteAuthorsationStrategy(String param){
-        requiredParam = param;
-    }
-
-    @Override
-    public String getRequiredParamKeyName() {
-        return requiredParam;
-    }
 
 }
 

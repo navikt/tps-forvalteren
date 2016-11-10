@@ -1,6 +1,10 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation.diskresjonskodeAuthorisation;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation.egenAnsattAuthorisation;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation.readAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
@@ -8,7 +12,9 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategie
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -43,9 +49,9 @@ public class S004HentPersonopplysningerServiceRoutineResolver implements Service
 
                 .securityBuilder()
                     .addRequiredRole("0000-GA-NORG_Skriv")
-                    .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation("fnr"))
-                    .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation("fnr"))
-                    .addRequiredSearchAuthorisationStrategy(readAuthorisation("environment"))
+                    .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
+                    .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
+                    .addRequiredSearchAuthorisationStrategy(readAuthorisation())
                     .addSecurity()
 
                 .build();
