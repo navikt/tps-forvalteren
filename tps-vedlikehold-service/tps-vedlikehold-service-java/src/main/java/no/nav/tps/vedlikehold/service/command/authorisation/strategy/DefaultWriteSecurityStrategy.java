@@ -27,7 +27,7 @@ public class DefaultWriteSecurityStrategy implements WriteSecurityStrategy{
 
     @Override
     public void authorise(Set<String> userRoles, String environment) {
-        Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.READ);
+        Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.WRITE);
 
         // Retain all roles present in both authorised roles, and the users roles /
         userRoles.retainAll(rolesRequiredForEnvironment);
