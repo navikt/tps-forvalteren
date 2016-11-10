@@ -20,12 +20,6 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     @Autowired
     private List<RestSecurityStrategy> restSecurityStrategies;
 
-//    @Override
-//    public void authoriseRequest(TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext request, User user) {
-//        authoriseRestCall(restSecurityStrategies, serviceRoutine, , user);
-//        authoriseFodselsnummer();
-//    }
-
     @Override
     public void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine, String environment, User user) {
         authorise(restSecurityStrategies, serviceRoutine, environment, user);
@@ -46,10 +40,3 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
         }
     }
 }
-//                if (strategyService.isSupported(authorisationStrategy)) {
-//        //TODO nødvendige parametere må hentes på en annen måte. Hører ikke hjemme i DTO-objektet
-//        String param = ""; //request.getParamValue(authorisationStrategy.getRequiredParamKeyName());
-//        if (!strategyService.isAuthorised(user.getRoles(), param)) {
-//            return false;
-//        }
-

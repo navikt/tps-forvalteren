@@ -55,6 +55,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
 //            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsRequest.getServiceRutinenavn());
 //        }
 
+        // Denne må alltid bli gjort 1 gang uansett.
         tpsAuthorisationService.authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
 
         //TODO hent kø som melding skal sendes på i resolver
