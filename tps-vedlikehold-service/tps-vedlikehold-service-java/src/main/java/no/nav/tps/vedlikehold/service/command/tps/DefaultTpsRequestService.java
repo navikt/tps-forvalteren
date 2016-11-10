@@ -4,14 +4,12 @@ import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
-import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.TransformationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +54,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
         tpsAuthorisationService.authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
 
         //TODO hent kø som melding skal sendes på i resolver
-        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
         String xml = xmlMapper.writeValueAsString(tpsRequest);
 

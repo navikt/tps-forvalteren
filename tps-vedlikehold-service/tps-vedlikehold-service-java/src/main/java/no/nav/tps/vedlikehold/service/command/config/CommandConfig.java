@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.EndreNavn;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S004HentPersonopplysningerServiceRoutineResolver;
@@ -23,6 +22,8 @@ import org.springframework.core.annotation.Order;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
 \ */
@@ -37,7 +38,7 @@ public class CommandConfig {
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        return messageQueueServiceFactory.createMessageQueueService(DEFAULT_ENV, FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        return messageQueueServiceFactory.createMessageQueueService(DEFAULT_ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
     @Bean

@@ -4,13 +4,13 @@ import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "endreNavn")
-public class TpsEndreNavnEndringsmeldingRequest extends TpsServiceRoutineRequest {
+public class TpsEndreNavnEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
     private String offentligIdent;
     private String fornavn;
