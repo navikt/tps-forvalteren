@@ -60,7 +60,7 @@ public class ServiceControllerTest {
         mockNodeContent(baseJsonNode, "serviceRutinenavn", SERVICE_RUTINE_NAME);
 
         when(mappingUtilsMock.convert(any(Map.class), eq(JsonNode.class))).thenReturn(baseJsonNode);
-        when(authorisationServiceMock.authoriseRequest(any(User.class), any(String.class), any(String.class))).thenReturn(true);
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(true);
     }
 
     @Test
@@ -129,7 +129,7 @@ public class ServiceControllerTest {
 
         controller.getService(baseJsonNode);
 
-        verify(authorisationServiceMock).authoriseRequest(any(User.class), any(String.class), any(String.class));
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class));
     }
 
 
@@ -148,14 +148,14 @@ public class ServiceControllerTest {
 
         controller.getService(baseJsonNode);
 
-        verify(authorisationServiceMock).authoriseRequest(user, FNR, ENVIRONMENT_U);
+        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(user, FNR, ENVIRONMENT_U);
     }
 
     @Test
     public void getServiceThrowsUnauthorizedWhenAuthorizationFails() {
         mockNodeContent(baseJsonNode, "fnr", FNR);
         when(messageProviderMock.get("rest.service.request.exception.Unauthorized")).thenReturn("val");
-        when(authorisationServiceMock.authoriseRequest(any(User.class), any(String.class), any(String.class))).thenReturn(false);
+        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false);
 
         expectedException.expect(HttpUnauthorisedException.class);
         expectedException.expectMessage("val");
@@ -165,8 +165,8 @@ public class ServiceControllerTest {
 
 //    @Test
 //    public void getServiceDoNotThrowUnauthorizedWhenAuthorizationFailsDoesNotFailOnEveryPersonInResult() throws Exception{
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsRequestServiceRoutine.class))).thenReturn(XML_RESPONSE);
-//        when(authorisationServiceMock.authoriseRequest(any(User.class), any(String.class), any(String.class))).thenReturn(false, true);
+//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenReturn(XML_RESPONSE);
+//        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false, true);
 //
 //        controller.getService(baseJsonNode);
 //    }
@@ -196,7 +196,7 @@ public class ServiceControllerTest {
 //    @Test
 //    public void getServiceThrowsInternalServerErrorWhenServiceRoutineFailed() throws Exception {
 //        mockNodeContent(baseJsonNode, "fnr", FNR);
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsRequestServiceRoutine.class))).thenThrow(new IllegalArgumentException());
+//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenThrow(new IllegalArgumentException());
 //
 //        expectedException.expect(HttpInternalServerErrorException.class);
 //
@@ -207,7 +207,7 @@ public class ServiceControllerTest {
 //    public void getServiceReturnsSRResponse() throws Exception {
 //        mockNodeContent(baseJsonNode, "fnr", FNR);
 //        ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsRequestServiceRoutine.class))).thenReturn(XML_RESPONSE);
+//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenReturn(XML_RESPONSE);
 //        when(tpsResponseMappingUtilsMock.xmlResponseToServiceRoutineResponse(XML_RESPONSE)).thenReturn(response);
 //
 //        ServiceRoutineResponse result = controller.getService(baseJsonNode);

@@ -8,5 +8,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definiti
  * @author Øyvind Grimnes, Visma Consulting AS
  */
 public interface TpsAuthorisationService {
-    void authoriseRequest(TpsServiceRoutine serviceRoutine, TpsRequest request, User user);
+    boolean userIsAuthorisedToReadPersonInEnvironment(TpsServiceRoutine serviceRoutine, TpsRequest request, User user);
 }

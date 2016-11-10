@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 
 import org.junit.Before;
@@ -25,7 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class DefaultGetTpsServiceRutinerServiceTest {
 
     @Mock
-    private TpsServiceRoutine routineMock;
+    private TpsServiceRoutineDefinition routineMock;
 
     @Mock
     private ServiceRoutineResolver resolverMock;
@@ -45,7 +45,7 @@ public class DefaultGetTpsServiceRutinerServiceTest {
 
     @Test
     public void returnsRoutines() {
-        List<TpsServiceRoutine> routines = command.execute();
+        List<TpsServiceRoutineDefinition> routines = command.execute();
 
         assertThat(routines, contains(routineMock));
     }

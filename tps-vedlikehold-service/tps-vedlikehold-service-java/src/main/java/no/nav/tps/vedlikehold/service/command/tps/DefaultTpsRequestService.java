@@ -5,11 +5,11 @@ import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
-import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.TransformationService;
@@ -49,34 +49,32 @@ public class DefaultTpsRequestService implements TpsRequestService {
      * @throws JMSException failed to send the message
      */
     @Override
-    public Response executeServiceRutineRequest(TpsRequestServiceRoutine tpsRequest, TpsServiceRoutine serviceRoutine, User user) throws IOException, JMSException, HttpUnauthorisedException {
-        try {
+    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
+        //TODO innkommenter når ting funker :3
+//        if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, context.getUser())) {
+//            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsRequest.getServiceRutinenavn());
+//        }
 
-            String xml = xmlMapper.writeValueAsString(tpsRequest);
+        //TODO hent kø som melding skal sendes på i resolver
+        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
-            Request request = new Request();
-            request.setXml(xml);
-            request.setRoutineRequest(tpsRequest);
-            request.setUser(user);
+        String xml = xmlMapper.writeValueAsString(tpsRequest);
 
-            tpsAuthorisationService.authoriseRequest(serviceRoutine, tpsRequest, user);
-            transformationService.transform(request, serviceRoutine);
+        Request request = new Request();
+        request.setXml(xml);
+        request.setRoutineRequest(tpsRequest);
+        request.setContext(context);
 
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(tpsRequest.getEnvironment(), FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        transformationService.transform(request, serviceRoutine);
 
-            String responseXml = messageQueueConsumer.sendMessage(request.getXml());
+        String responseXml = messageQueueConsumer.sendMessage(request.getXml());
 
-            Response response = new Response();
-            response.setXml(responseXml);
+        Response response = new Response();
+        response.setXml(responseXml);
 
-            tpsAuthorisationService.authoriseRequest(serviceRoutine, tpsRequest, user);
-            transformationService.transform(response, serviceRoutine);
+        transformationService.transform(response, serviceRoutine);
 
-            return response;
-        } catch (JMSException exception) {
-            LOGGER.error("Failed to connect to MQ with exception: {}", exception.toString());
-            throw exception;
-        }
+        return response;
     }
 
 }

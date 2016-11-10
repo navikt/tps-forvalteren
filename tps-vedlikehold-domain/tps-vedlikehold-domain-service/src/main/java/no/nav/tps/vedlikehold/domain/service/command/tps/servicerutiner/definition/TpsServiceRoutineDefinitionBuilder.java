@@ -17,7 +17,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transfor
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
  */
-public class TpsServiceRoutineBuilder {
+public class TpsServiceRoutineDefinitionBuilder {
     private String name;
     private String internalName;
     private Class<?> javaClass;
@@ -31,17 +31,17 @@ public class TpsServiceRoutineBuilder {
     }
 
 
-    public TpsServiceRoutineBuilder name(String name) {
+    public TpsServiceRoutineDefinitionBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public TpsServiceRoutineBuilder internalName(String internalName) {
+    public TpsServiceRoutineDefinitionBuilder internalName(String internalName) {
         this.internalName = internalName;
         return this;
     }
 
-    public TpsServiceRoutineBuilder javaClass(Class<?> javaClass) {
+    public TpsServiceRoutineDefinitionBuilder javaClass(Class<?> javaClass) {
         this.javaClass = javaClass;
         return this;
     }
@@ -68,15 +68,15 @@ public class TpsServiceRoutineBuilder {
             return this;
         }
 
-        public TpsServiceRoutineBuilder addSecurity() {
+        public TpsServiceRoutineDefinitionBuilder addSecurity() {
             requiredRoles = this.access;
             securitySearchAuthorisationStrategies = this.serviceStrategies;
-            return TpsServiceRoutineBuilder.this;
+            return TpsServiceRoutineDefinitionBuilder.this;
         }
     }
 
-    public TpsServiceRoutine build() {
-        TpsServiceRoutine routine = new TpsServiceRoutine();
+    public TpsServiceRoutineDefinition build() {
+        TpsServiceRoutineDefinition routine = new TpsServiceRoutineDefinition();
         routine.setName(name);
         routine.setInternalName(internalName);
         routine.setJavaClass(javaClass);
@@ -87,8 +87,8 @@ public class TpsServiceRoutineBuilder {
         return routine;
     }
 
-    public static TpsServiceRoutineBuilder aTpsServiceRoutine() {
-        return new TpsServiceRoutineBuilder();
+    public static TpsServiceRoutineDefinitionBuilder aTpsServiceRoutine() {
+        return new TpsServiceRoutineDefinitionBuilder();
     }
 
     public class TpsServiceRoutineParameterBuilder {
@@ -127,14 +127,14 @@ public class TpsServiceRoutineBuilder {
             return this;
         }
 
-        public TpsServiceRoutineBuilder and() {
+        public TpsServiceRoutineDefinitionBuilder and() {
             TpsParameter param = new TpsParameter();
             param.setName(name);
             param.setType(type);
             param.setUse(use);
             param.setValues(values);
-            TpsServiceRoutineBuilder.this.parameters.add(param);
-            return TpsServiceRoutineBuilder.this;
+            TpsServiceRoutineDefinitionBuilder.this.parameters.add(param);
+            return TpsServiceRoutineDefinitionBuilder.this;
         }
     }
 
@@ -155,9 +155,9 @@ public class TpsServiceRoutineBuilder {
             return this;
         }
 
-        public TpsServiceRoutineBuilder and() {
-            TpsServiceRoutineBuilder.this.transformers.addAll(transformers);
-            return TpsServiceRoutineBuilder.this;
+        public TpsServiceRoutineDefinitionBuilder and() {
+            TpsServiceRoutineDefinitionBuilder.this.transformers.addAll(transformers);
+            return TpsServiceRoutineDefinitionBuilder.this;
         }
 
 

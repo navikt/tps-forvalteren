@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
  */
-public class TpsServiceRoutine {
+public class TpsServiceRoutineDefinition {
 
     private String name;
     private String internalName;    // (DisplayName)

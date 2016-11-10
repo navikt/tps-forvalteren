@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.service.command.tps.transformation;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.request.RequestTransformStrategy;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.response.ResponseTransformStrategy;
@@ -21,7 +21,7 @@ public class TransformationService {
     private List<ResponseTransformStrategy> responseStrategies;
 
 
-    public void transform(Request request, TpsServiceRoutine serviceRoutine) {
+    public void transform(Request request, TpsServiceRoutineDefinition serviceRoutine) {
         for (Transformer transformer : serviceRoutine.getTransformers()) {
             for (RequestTransformStrategy strategy : requestStrategies) {
                 if (strategy.isSupported(transformer)){
@@ -31,7 +31,7 @@ public class TransformationService {
         }
     }
 
-    public void transform(Response response, TpsServiceRoutine serviceRoutine) {
+    public void transform(Response response, TpsServiceRoutineDefinition serviceRoutine) {
         for (Transformer transformer : serviceRoutine.getTransformers()) {
             for (ResponseTransformStrategy strategy : responseStrategies) {
                 if (strategy.isSupported(transformer)){

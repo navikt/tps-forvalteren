@@ -1,10 +1,10 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsEndreNavnRequestEndringsmelding;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.endring.TpsEndreNavnEndringsmeldingRequest;
 
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
 
@@ -15,11 +15,11 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.t
 public class EndreNavn implements ServiceRoutineResolver {
 
     @Override
-    public TpsServiceRoutine resolve() {
+    public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
                 .name("EndreNavn")
                 .internalName("Endre: Navn")
-                .javaClass(TpsEndreNavnRequestEndringsmelding.class)
+                .javaClass(TpsEndreNavnEndringsmeldingRequest.class)
 
                 .parameter()
                     .name("offentligIdent")

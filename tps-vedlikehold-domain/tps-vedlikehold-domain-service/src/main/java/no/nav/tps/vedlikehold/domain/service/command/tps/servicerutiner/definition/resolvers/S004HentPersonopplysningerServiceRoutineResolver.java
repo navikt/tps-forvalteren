@@ -1,15 +1,14 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
-
-import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation.diskresjonskodeAuthorisation;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation.egenAnsattAuthorisation;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation.readAuthorisation;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.WriteAuthorisation.writeAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
+
+import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
 
 /**
  * @author Kenneth Gunnerud (Visma Consulting AS).
@@ -17,11 +16,11 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.t
 public class S004HentPersonopplysningerServiceRoutineResolver implements ServiceRoutineResolver {
 
     @Override
-    public TpsServiceRoutine resolve() {
+    public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-PERSDATA-O")
                 .internalName("S004 Hent Personopplysninger")
-                .javaClass(TpsHentPersonRequestServiceRoutine.class)
+                .javaClass(TpsHentPersonServiceRoutineRequest.class)
                 .parameter()
                     .name("fnr")
                     .required()

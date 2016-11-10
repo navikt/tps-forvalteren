@@ -4,9 +4,6 @@ import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsHentPersonRequestServiceRoutine;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategy.RestSecurityStrategy;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SearchSecurityStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SecurityStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +46,13 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
                 }
             }
         }
+    }
+//                if (strategyService.isSupported(authorisationStrategy)) {
+//        //TODO nødvendige parametere må hentes på en annen måte. Hører ikke hjemme i DTO-objektet
+//        String param = ""; //request.getParamValue(authorisationStrategy.getRequiredParamKeyName());
+//        if (!strategyService.isAuthorised(user.getRoles(), param)) {
+//            return false;
+//        }
     }
 }
 

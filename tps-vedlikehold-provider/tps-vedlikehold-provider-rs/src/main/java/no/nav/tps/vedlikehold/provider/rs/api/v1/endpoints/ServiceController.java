@@ -4,10 +4,10 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
@@ -37,6 +37,7 @@ import java.util.Map;
 public class ServiceController {
 
     private static final String TPS_SERVICE_ROUTINE_PARAM_NAME = "serviceRutinenavn";
+    private static final String ENVIRONMENT_PARAM_NAME = "environment";
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -70,12 +71,16 @@ public class ServiceController {
     public ServiceRoutineResponse getService(@RequestBody JsonNode body) {
 //        validateRequest(body);
 
-        String environment = body.get("environment").asText();
-        String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
-        TpsRequestServiceRoutine tpsRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
+        TpsRequestContext context = new TpsRequestContext();
+        context.setUser(userContextHolder.getUser());
+        context.setEnvironment(body.get(ENVIRONMENT_PARAM_NAME).asText());
 
-        return sendTpsRequest(tpsRequest, tpsServiceRutinenavn);
+        String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsRequestServiceRoutine(tpsServiceRutinenavn, body);
+
+        return sendTpsRequest(tpsServiceRoutineRequest, context);
     }
+
 //    private void validateRequest(JsonNode body) {
 //        if (!body.has("environment") || !body.has(TPS_SERVICE_ROUTINE_PARAM_NAME)) {
 //            throw new HttpBadRequestException(messageProvider.get("rest.service.request.exception.MissingRequiredParams"), "api/v1/service");
@@ -83,14 +88,12 @@ public class ServiceController {
 //    }
 
 
-    private ServiceRoutineResponse sendTpsRequest(TpsRequestServiceRoutine request, String serviceRoutineName) {
+    private ServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context) {
         try {
-            TpsServiceRoutine serviceRoutine = findServiceRoutineByName.execute(serviceRoutineName).get();
+            TpsServiceRoutineDefinition serviceRoutine = findServiceRoutineByName.execute(request.getServiceRutinenavn()).get();
 
-            User user = userContextHolder.getUser();
-
-            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, user);
-            return tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(response.getXml());
+            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, context);
+            return tpsResponseMappingUtils.xmlResponseToServiceRoutineResponse(response.getXml(), context);
 
         } catch (HttpUnauthorisedException ex){
             throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + request.getServiceRutinenavn());
