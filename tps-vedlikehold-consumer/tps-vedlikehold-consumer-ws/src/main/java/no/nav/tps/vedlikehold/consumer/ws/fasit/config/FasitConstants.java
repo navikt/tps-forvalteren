@@ -15,7 +15,5 @@ public class FasitConstants {
 
     /* Aliases for the different resources. Should be the same in all environments */
     static final String QUEUE_MANAGER_ALIAS  = "mqGateway";
-    public static final String REQUEST_QUEUE_SERVICE_RUTINE_ALIAS = "TPS_FORESPORSEL_XML_O";
-    public static final String REQUEST_QUEUE_ENDRINGSMELDING_ALIAS = "SFE_ENDRINGSMELDING";
     static final String RESPONSE_QUEUE_ALIAS = "tps.endrings.melding.svar";
 }

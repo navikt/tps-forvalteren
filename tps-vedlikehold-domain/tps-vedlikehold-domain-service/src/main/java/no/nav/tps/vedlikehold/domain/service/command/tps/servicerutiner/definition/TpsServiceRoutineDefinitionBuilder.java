@@ -10,6 +10,7 @@ import java.util.Set;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameter;
+import no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsRequestConfig;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.RequestTransformer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseTransformer;
@@ -23,13 +24,17 @@ public class TpsServiceRoutineDefinitionBuilder {
     private Class<?> javaClass;
     private List<TpsParameter> parameters = new ArrayList<>();
     private List<Transformer> transformers = new ArrayList<>();
+    private TpsRequestConfig requestConfig;
     private Set<String> requiredRoles = new HashSet<>();
     private List<AuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
-    public XmlTransformerBuilder transformer(){
-        return new XmlTransformerBuilder();
+    public TransformerBuilder transformer(){
+        return new TransformerBuilder();
     }
 
+    public TpsRequestConfigBuilder config() {
+        return new TpsRequestConfigBuilder();
+    }
 
     public TpsServiceRoutineDefinitionBuilder name(String name) {
         this.name = name;
@@ -82,6 +87,7 @@ public class TpsServiceRoutineDefinitionBuilder {
         routine.setJavaClass(javaClass);
         routine.setParameters(parameters);
         routine.setTransformers(transformers);
+        routine.setConfig(requestConfig);
         routine.setRequiredRoles(requiredRoles);
         routine.setSecurityServiceStrategies(securitySearchAuthorisationStrategies);
         return routine;
@@ -138,19 +144,19 @@ public class TpsServiceRoutineDefinitionBuilder {
         }
     }
 
-    public class XmlTransformerBuilder {
+    public class TransformerBuilder {
         private List<Transformer> transformers;
 
-        XmlTransformerBuilder() {
+        TransformerBuilder() {
             this.transformers = new ArrayList<>();
         }
 
-        public XmlTransformerBuilder preSend(RequestTransformer transformer) {
+        public TransformerBuilder preSend(RequestTransformer transformer) {
             transformers.add(transformer);
             return this;
         }
 
-        public XmlTransformerBuilder postSend(ResponseTransformer transformer) {
+        public TransformerBuilder postSend(ResponseTransformer transformer) {
             transformers.add(transformer);
             return this;
         }
@@ -159,8 +165,24 @@ public class TpsServiceRoutineDefinitionBuilder {
             TpsServiceRoutineDefinitionBuilder.this.transformers.addAll(transformers);
             return TpsServiceRoutineDefinitionBuilder.this;
         }
+    }
 
+    public class TpsRequestConfigBuilder {
+        private TpsRequestConfig config;
 
+        TpsRequestConfigBuilder() {
+            this.config = new TpsRequestConfig();
+        }
+
+        public TpsRequestConfigBuilder requestQueue(String requestQueue){
+            config.setRequestQueue(requestQueue);
+            return this;
+        }
+
+        public TpsServiceRoutineDefinitionBuilder and() {
+            TpsServiceRoutineDefinitionBuilder.this.requestConfig = config;
+            return TpsServiceRoutineDefinitionBuilder.this;
+        }
     }
 
 }

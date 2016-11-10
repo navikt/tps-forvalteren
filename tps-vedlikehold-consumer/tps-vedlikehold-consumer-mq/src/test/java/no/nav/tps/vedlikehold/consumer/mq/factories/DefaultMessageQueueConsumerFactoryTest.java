@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.mq.factories;
 
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
@@ -14,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.JMSException;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.isA;
@@ -49,7 +49,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
     @Test
     public void retrievesInformationFromFasit() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT, FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        serviceFactory.createMessageQueueService(ENVIRONMENT, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         verify(fasitMessageQueueConsumerMock).getQueueManager(eq(ENVIRONMENT));
         verify(fasitMessageQueueConsumerMock).getRequestQueue(eq(ENVIRONMENT));
@@ -58,7 +58,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
     @Test
     public void retrievesAConnectionFactoryFromTheConnectionFactoryFactory() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT, FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        serviceFactory.createMessageQueueService(ENVIRONMENT, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         verify(connectionFactoryFactoryMock).createConnectionFactory(isA(ConnectionFactoryFactoryStrategy.class));
     }

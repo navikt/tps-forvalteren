@@ -4,6 +4,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsSokPersonServiceRoutineRequest;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
@@ -18,6 +19,9 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("FS03-NAADRSOK-PERSDATA-O")
                 .internalName("S050 Sok ut Fra navn")
                 .javaClass(TpsSokPersonServiceRoutineRequest.class)
+                .config()
+                    .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
+                .and()
                 .parameter()
                     .name("navn")
                     .optional()

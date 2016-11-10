@@ -3,7 +3,6 @@ package no.nav.tps.vedlikehold.service.command.tps;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import org.junit.Before;
@@ -12,11 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,7 +45,7 @@ public class DefaultTpsRequestServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        when(messageQueueServiceFactoryMock.createMessageQueueService(eq(ENVIRONMENT), eq(FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS))).thenReturn(messageQueueConsumerMock);
+        when(messageQueueServiceFactoryMock.createMessageQueueService(eq(ENVIRONMENT), eq(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS))).thenReturn(messageQueueConsumerMock);
         when(messageQueueConsumerMock.sendMessage(anyString()) ).thenReturn(RESPONSE_XML);
 
 //        when(tpsServiceRoutineRequestMock.getEnvironment()).thenReturn(ENVIRONMENT);

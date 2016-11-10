@@ -1,5 +1,7 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
+
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
@@ -17,6 +19,9 @@ public class S000TilgangTilTpsServiceRoutineResolver implements ServiceRoutineRe
                 .name("FS03-OTILGANG-TILSRTPS-O")
                 .internalName("S000 Tilgang til Tps")
                 .javaClass(TpsPingServiceRoutineRequest.class)
+                .config()
+                    .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
+                .and()
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
                 .and()

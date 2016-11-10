@@ -4,9 +4,9 @@ import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.APP
 import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.BASE_URL;
 import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.PASSWORD;
 import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
-import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.RESPONSE_QUEUE_ALIAS;
 import static no.nav.tps.vedlikehold.consumer.ws.fasit.config.FasitConstants.USERNAME;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
 import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
 import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.DefaultFasitMessageQueueConsumer;

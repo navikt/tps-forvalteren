@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
 
@@ -21,6 +22,9 @@ public class S004HentPersonopplysningerServiceRoutineResolver implements Service
                 .name("FS03-FDNUMMER-PERSDATA-O")
                 .internalName("S004 Hent Personopplysninger")
                 .javaClass(TpsHentPersonServiceRoutineRequest.class)
+                .config()
+                    .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
+                .and()
                 .parameter()
                     .name("fnr")
                     .required()
