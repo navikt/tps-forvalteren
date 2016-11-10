@@ -51,11 +51,8 @@ public class DefaultTpsRequestService implements TpsRequestService {
     @Override
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
         //TODO innkommenter når ting funker :3
-//        if (!tpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(serviceRoutine, tpsRequest, context.getUser())) {
-//            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + tpsRequest.getServiceRutinenavn());
-//        }
 
-        // Denne må alltid bli gjort 1 gang uansett.
+        // Denne må alltid bli gjort 1 gang uansett uavhenging av om man får mange resultater eller 1.
         tpsAuthorisationService.authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
 
         //TODO hent kø som melding skal sendes på i resolver
