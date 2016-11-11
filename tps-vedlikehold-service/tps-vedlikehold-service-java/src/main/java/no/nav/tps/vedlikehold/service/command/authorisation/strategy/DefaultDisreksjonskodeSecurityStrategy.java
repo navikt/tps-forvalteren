@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
 
     @Override
     public boolean isSupported(AuthorisationStrategy a1) {
-        return a1 instanceof DiskresjonskodeAuthorisationStrategy;
+        return a1 instanceof DiskresjonskodeAuthorisation;
     }
 
     @Override

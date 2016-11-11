@@ -34,6 +34,7 @@ public class TpsServiceRoutineDefinition {
     @JsonIgnore
     private List<Transformer> transformers;
 
+    @JsonIgnore
     private List<AuthorisationStrategy> securityServiceStrategies;
 
     private Set<String> requiredRoles;

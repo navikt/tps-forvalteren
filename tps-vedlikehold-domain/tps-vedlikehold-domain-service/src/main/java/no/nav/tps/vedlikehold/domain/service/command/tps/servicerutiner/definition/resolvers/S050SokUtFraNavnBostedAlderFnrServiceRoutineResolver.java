@@ -4,6 +4,9 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsSokPersonServiceRoutineRequest;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation.diskresjonskodeAuthorisation;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation.egenAnsattAuthorisation;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation.readAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
@@ -82,6 +85,12 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .transformer()
                   .preSend(serviceRoutineXmlWrappingAppender())
                 .and()
+
+                .securityBuilder()
+                .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
+                .addSecurity()
+
                 .build();
     }
 }

@@ -1,11 +1,15 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies;
 
+import org.codehaus.jackson.annotate.JsonIgnoreType;
+
 /**
  * Created by F148888 on 09.11.2016.
  */
-public class EgenAnsattAuthorisation {
-    public static EgenAnsattAuthorisationStrategy egenAnsattAuthorisation(){
-        return new EgenAnsattAuthorisationStrategy();
+
+@JsonIgnoreType
+public class EgenAnsattAuthorisation implements AuthorisationStrategy{
+    public static EgenAnsattAuthorisation egenAnsattAuthorisation(){
+        return new EgenAnsattAuthorisation();
     }
 }
 

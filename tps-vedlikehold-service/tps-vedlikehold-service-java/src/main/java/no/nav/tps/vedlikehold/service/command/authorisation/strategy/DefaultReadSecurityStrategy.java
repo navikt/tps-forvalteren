@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation;
 import no.nav.tps.vedlikehold.service.command.authorisation.RolesService;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class DefaultReadSecurityStrategy implements ReadSecurityStrategy {
 
     @Override
     public boolean isSupported(AuthorisationStrategy a1) {
-        return a1 instanceof ReadAuthorisationStrategy;
+        return a1 instanceof ReadAuthorisation;
     }
 
     @Override

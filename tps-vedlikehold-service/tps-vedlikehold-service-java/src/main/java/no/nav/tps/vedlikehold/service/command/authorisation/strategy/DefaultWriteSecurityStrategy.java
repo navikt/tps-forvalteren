@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.WriteAuthorsationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.WriteAuthorisation;
 import no.nav.tps.vedlikehold.service.command.authorisation.RolesService;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class DefaultWriteSecurityStrategy implements WriteSecurityStrategy{
 
     @Override
     public boolean isSupported(AuthorisationStrategy a1) {
-        return a1 instanceof WriteAuthorsationStrategy;
+        return a1 instanceof WriteAuthorisation;
     }
 
     @Override

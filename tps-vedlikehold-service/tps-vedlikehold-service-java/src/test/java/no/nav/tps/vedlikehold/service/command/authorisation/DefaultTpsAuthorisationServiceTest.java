@@ -4,17 +4,12 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.User.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
 
 /**
  *  @author Øyvind Grimnes, Visma Consulting AS
@@ -33,10 +28,10 @@ public class DefaultTpsAuthorisationServiceTest {
     private RolesService rolesServiceMock;
 
     @Mock
-    private DiskresjonskodeAuthorisationStrategy diskresjonskodeAuthorisationStrategy;
+    private DiskresjonskodeAuthorisation diskresjonskodeAuthorisationStrategy;
 
     @Mock
-    private EgenAnsattAuthorisationStrategy egenAnsattAuthorisationStrategy;
+    private EgenAnsattAuthorisation egenAnsattAuthorisationStrategy;
 
     @Mock
     private EgenAnsattConsumer egenAnsattConsumerMock;

@@ -1,6 +1,8 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation.diskresjonskodeAuthorisation;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation.egenAnsattAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
@@ -25,6 +27,12 @@ public class S000TilgangTilTpsServiceRoutineResolver implements ServiceRoutineRe
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
                 .and()
+
+                .securityBuilder()
+                .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
+                .addSecurity()
+
                 .build();
     }
 }
