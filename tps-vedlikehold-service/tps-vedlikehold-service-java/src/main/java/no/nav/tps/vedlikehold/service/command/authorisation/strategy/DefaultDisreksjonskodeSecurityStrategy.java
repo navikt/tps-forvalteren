@@ -40,7 +40,7 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
         String diskresjonskode;
 
         try {
-            diskresjonskode = diskresjonskodeConsumer.getDiskresjonskode(fodselsnummer).getDiskresjonskode();
+            diskresjonskode = diskresjonskodeConsumer.getDiskresjonskodeResponse(fodselsnummer).getDiskresjonskode();
         } catch (Exception exception) {
             LOGGER.warn("Authorisation denied. Failed to get diskresjonskode with exception: {}", exception.toString());
             throw exception;

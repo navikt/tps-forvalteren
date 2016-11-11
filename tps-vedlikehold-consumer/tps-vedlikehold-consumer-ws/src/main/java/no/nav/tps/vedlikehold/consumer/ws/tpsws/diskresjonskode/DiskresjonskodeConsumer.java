@@ -10,7 +10,7 @@ import no.nav.tps.vedlikehold.consumer.ws.tpsws.AuthorisationStrategyConsumer;
  * @author Tobias Hansen (Visma Consulting AS).
  */
 public interface DiskresjonskodeConsumer extends AuthorisationStrategyConsumer {
-    HentDiskresjonskodeResponse getDiskresjonskode(String fNr);
+    HentDiskresjonskodeResponse getDiskresjonskodeResponse(String fNr);
 
     HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe);
 }

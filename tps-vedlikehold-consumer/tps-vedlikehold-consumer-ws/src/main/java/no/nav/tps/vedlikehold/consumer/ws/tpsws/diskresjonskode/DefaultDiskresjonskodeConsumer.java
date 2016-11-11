@@ -35,7 +35,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     @Override
     public boolean ping() {
         try {
-            getDiskresjonskode(PING_FNR);
+            getDiskresjonskodeResponse(PING_FNR);
         } catch (RuntimeException exception) {
             LOGGER.warn("Pinging diskresjonskode failed with exception: {}", exception.toString());
             throw exception;
@@ -45,7 +45,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     }
 
     @Override
-    public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) {
+    public HentDiskresjonskodeResponse getDiskresjonskodeResponse(String fNr) {
         HentDiskresjonskodeRequest request = createRequest(fNr);
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
