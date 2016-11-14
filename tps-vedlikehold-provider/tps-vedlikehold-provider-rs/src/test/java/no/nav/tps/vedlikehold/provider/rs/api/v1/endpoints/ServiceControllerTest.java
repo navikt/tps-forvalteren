@@ -2,8 +2,8 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.TpsResponseMappingUtils;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
@@ -37,13 +37,13 @@ public class ServiceControllerTest {
     private TpsAuthorisationService authorisationServiceMock;
 
     @Mock
-    private RsRequestMappingUtils mappingUtilsMock;
+    private RsTpsRequestMappingUtils mappingUtilsMock;
 
     @Mock
     private MessageProvider messageProviderMock;
 
     @Mock
-    private TpsResponseMappingUtils tpsResponseMappingUtilsMock;
+    private RsTpsResponseMappingUtils rsTpsResponseMappingUtilsMock;
 
     @Mock
     private JsonNode baseJsonNode;

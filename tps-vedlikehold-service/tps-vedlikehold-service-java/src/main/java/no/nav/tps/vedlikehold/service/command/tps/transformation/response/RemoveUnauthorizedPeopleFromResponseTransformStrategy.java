@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.service.command.tps.transformation.response;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     private MessageProvider messageProvider;
 
     @Override
-    public void execute(Response response) {
+    public void execute(Response response, Transformer transformer) {
 
     }
 /*

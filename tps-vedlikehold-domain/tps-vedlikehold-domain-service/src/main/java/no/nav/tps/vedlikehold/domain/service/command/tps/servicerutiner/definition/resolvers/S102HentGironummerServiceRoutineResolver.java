@@ -11,6 +11,8 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConsta
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 /**
  * Created by F148888 on 14.11.2016.
@@ -44,6 +46,8 @@ public class S102HentGironummerServiceRoutineResolver implements ServiceRoutineR
                 .and()
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
+                    .postSend(extractDataFromXmlElement("personDataS102"))
+                    .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()

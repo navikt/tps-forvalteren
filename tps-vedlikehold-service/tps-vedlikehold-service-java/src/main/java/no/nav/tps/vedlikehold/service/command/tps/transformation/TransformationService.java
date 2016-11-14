@@ -25,7 +25,7 @@ public class TransformationService {
         for (Transformer transformer : serviceRoutine.getTransformers()) {
             for (RequestTransformStrategy strategy : requestStrategies) {
                 if (strategy.isSupported(transformer)){
-                    strategy.execute(request);
+                    strategy.execute(request, transformer);
                 }
             }
         }
@@ -35,7 +35,7 @@ public class TransformationService {
         for (Transformer transformer : serviceRoutine.getTransformers()) {
             for (ResponseTransformStrategy strategy : responseStrategies) {
                 if (strategy.isSupported(transformer)){
-                    strategy.execute(response);
+                    strategy.execute(response, transformer);
                 }
             }
         }

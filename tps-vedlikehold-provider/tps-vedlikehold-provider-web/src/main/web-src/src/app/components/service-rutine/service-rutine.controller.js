@@ -6,7 +6,6 @@ angular.module('tps-vedlikehold.service-rutine')
         function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
-            $scope.endringsmeldingName  = $stateParams.endringsmeldingName;
             $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
@@ -17,12 +16,13 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.personsData = {};
             $scope.toggle = false;
 
-            var tpsReturnedObject = {};
             var nonUniqueProperties = [];
             var requiredParameters = [];
             var isValidServiceRutineName = false;
             var apiError = true;
 
+
+            //TODO rename
             $scope.loadServiceRutineTemplate = function () {
                 return isValidServiceRutineName && !apiError;
             };
@@ -32,23 +32,22 @@ angular.module('tps-vedlikehold.service-rutine')
                 var params = createParams($scope.formData);
                 $scope.loading = true;
 
-                serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (response) {
+                serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
-                    $scope.xmlForm = utilsService.formatXml(response.data.xml);
+                    var response = res.data.response;
+                    var xml = res.data.xml;
 
-                    tpsReturnedObject = response.data.data.tpsPersonData;
+                    $scope.xmlForm = utilsService.formatXml(xml);
 
-                    var svarStatus = tpsReturnedObject.tpsSvar.svarStatus;
-                    $scope.svarStatus = "STATUS: " + svarStatus.returStatus + " " + svarStatus.returMelding + " " + svarStatus.utfyllendeMelding;
-                    $scope.returStatus = svarStatus.returStatus;
+                    $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
+                    $scope.returStatus = response.status.kode;
 
-                    var jsonObjectWithResultData = tpsReturnedObject.tpsSvar[serviceRutineFactory.getServiceRutineReturnedDataLabel($scope.serviceRutineName)];
-                    if(jsonObjectWithResultData === undefined) return;
-                    $scope.personsData = extractPersonsData(jsonObjectWithResultData, nonUniqueProperties);
-                    capitalizeFirstLetterInPersonsData(jsonObjectWithResultData);
-                    var antallTreff = jsonObjectWithResultData.antallTotalt;
+                    if(response === undefined) return;
+                    $scope.personsData = extractPersonsData(response, nonUniqueProperties);
+                    capitalizeFirstLetterInPersonsData(response);
+                    var antallTreff = response.antallTotalt;
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
 
                 }, function (error) {
@@ -129,23 +128,24 @@ angular.module('tps-vedlikehold.service-rutine')
                 }
             }
 
-            function updateBufferChoices(antallTreff){
-                var i = 0;
-                $scope.buffNumbers = [];
-                while(i < Math.ceil(parseInt(antallTreff)/34)){
-                    $scope.buffNumbers[i] = (i+1).toString();
-                    i++;
-                }
-            }
+            // function updateBufferChoices(antallTreff){  //TODO Delete. unused
+            //     var i = 0;
+            //     $scope.buffNumbers = [];
+            //     while(i < Math.ceil(parseInt(antallTreff)/34)){
+            //         $scope.buffNumbers[i] = (i+1).toString();
+            //         i++;
+            //     }
+            // }
 
             function extractPersonsData(responseObject, nonUniqueProperties) {
+                console.log("responseObject: ", responseObject);
                 var personsData = {};
                 if (responseObject.antallTotalt === undefined || responseObject.antallTotalt == 1) {
-                    personsData[0] = utilsService.flattenObject(responseObject, nonUniqueProperties);
+                    personsData[0] = utilsService.flattenObject(responseObject.data[0], nonUniqueProperties);
                 } else {
                     var i = 0;
                     while (i < responseObject.antallTotalt) {
-                        personsData[i] = utilsService.flattenObject(responseObject.enPersonRes[i], nonUniqueProperties);
+                        personsData[i] = utilsService.flattenObject(responseObject.data[i], nonUniqueProperties);
                         i++;
                     }
                 }

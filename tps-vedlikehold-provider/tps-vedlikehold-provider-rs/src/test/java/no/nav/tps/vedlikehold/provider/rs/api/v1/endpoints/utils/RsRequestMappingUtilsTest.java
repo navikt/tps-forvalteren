@@ -39,7 +39,7 @@ public class RsRequestMappingUtilsTest {
     private GetTpsServiceRutinerService serviceMock;
 
     @InjectMocks
-    private RsRequestMappingUtils utils;
+    private RsTpsRequestMappingUtils utils;
 
     @Test
     public void convertConvertsToTypeAndReturnsResult() {
@@ -65,7 +65,7 @@ public class RsRequestMappingUtilsTest {
         TpsHentPersonServiceRoutineRequest respMock = mock(TpsHentPersonServiceRoutineRequest.class);
         when(objectMapperMock.convertValue(nodeMock, TpsHentPersonServiceRoutineRequest.class)).thenReturn(respMock);
 
-        TpsServiceRoutineRequest result = utils.convertToTpsRequestServiceRoutine("name", nodeMock);
+        TpsServiceRoutineRequest result = utils.convertToTpsServiceRoutineRequest("name", nodeMock);
 
         assertThat(result, is(sameInstance(respMock)));
     }

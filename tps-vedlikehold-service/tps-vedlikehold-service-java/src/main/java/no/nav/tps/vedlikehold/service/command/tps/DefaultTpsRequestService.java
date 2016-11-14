@@ -36,9 +36,6 @@ public class DefaultTpsRequestService implements TpsRequestService {
     @Autowired
     private TpsAuthorisationService tpsAuthorisationService;
 
-    @Autowired
-    private MessageProvider messageProvider;
-
     /**
      * Send a request to TPS using asynchronous message queues
      *
@@ -48,12 +45,10 @@ public class DefaultTpsRequestService implements TpsRequestService {
      */
     @Override
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
-        //TODO innkommenter når ting funker :3
 
         // Denne må alltid bli gjort 1 gang uansett uavhenging av om man får mange resultater eller 1.
         tpsAuthorisationService.authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
 
-        //TODO hent kø som melding skal sendes på i resolver
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
         String xml = xmlMapper.writeValueAsString(tpsRequest);
@@ -68,7 +63,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
         String responseXml = messageQueueConsumer.sendMessage(request.getXml());
 
         Response response = new Response();
-        response.setXml(responseXml);
+        response.setRawXml(responseXml);
 
         transformationService.transform(response, serviceRoutine);
 

@@ -932,6 +932,42 @@ angular.module('tps-vedlikehold')
                         }
                     ]
                 ]
+            },
+            'EndreNavn': {
+                display: {
+                    header: "${etternavn}, ${fornavn} ${mellomnavn}"
+                },
+                rows: [
+                    [
+                        {
+                            label: "Fornavn",
+                            fieldData: "fornavn",
+                            flex: 30
+                        },
+                        {
+                            label: "Mellomnavn",
+                            fieldData: "mellomnavn",
+                            flex: 30
+                        },
+                        {
+                            label: "Etternavn",
+                            fieldData: "etternavn",
+                            flex: 30
+                        }
+                    ],
+                    [
+                        {
+                            label: "Dato nytt navn",
+                            fieldData: "datoNyttNavn",
+                            flex: 20
+                        },
+                        {
+                            label: "Tidligere navn",
+                            fieldData: "tidligereNavn",
+                            flex: 70
+                        }
+                    ]
+                ]
             }
         }
     );

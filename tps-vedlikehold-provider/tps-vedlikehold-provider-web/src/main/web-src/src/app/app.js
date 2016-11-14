@@ -59,7 +59,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
             .state('servicerutine', {
-                url: "/",
+                url: "/{serviceRutineName}/",
                 params: {
                     serviceRutineName: null
                 },
@@ -70,9 +70,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
-                    // endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                    //     return serviceRutineFactory.loadFromServerEndringsmeldinger();
-                    // }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
                     }]
@@ -92,12 +89,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     }
                 }
             })
-            .state('endringer', {
-                url: "/endringer",
-                params: {
-                    serviceRutineName: null,
-                    endringsmeldingName: null
-                },
+
+            .state('root', {
+                url: '/',
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -105,24 +99,21 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
-                    endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerEndringsmeldinger();
-                    }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
                     }]
                 },
                 views: {
                     'content@': {
-                        templateUrl: "app/components/service-rutine/service-rutine.html",
-                        controller: 'EndringsmeldingCtrl'
+                        templateUrl: "app/components/service-rutine/welcome.html",
+                        controller: 'ServiceRutineCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",
                         controller: 'HeaderCtrl'
                     },
                     'side-navigator@': {
-                        templateUrl: "app/shared/side-navigator/side-navigator-em.html",
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
                         controller: 'SideNavigatorCtrl'
                     }
                 }

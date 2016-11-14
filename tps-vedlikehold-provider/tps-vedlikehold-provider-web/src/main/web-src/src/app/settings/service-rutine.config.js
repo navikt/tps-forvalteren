@@ -57,6 +57,18 @@ angular.module('tps-vedlikehold')
             'serviceRutineFieldsOrderTemplate': [],
             'serviceRutineReturnedDataLabel': 'ingenReturData',
             'nonUniquePropertiesContainer': []
+        },
+        'EndreNavn': {
+            'serviceRutineFieldsOrderTemplate': [
+                'offentligIdent',
+                'fornavn',
+                'mellomnavn',
+                'etternavn',
+                'kilde'
+            ]
         }
+
+
+
     }
 );
