@@ -6,6 +6,7 @@ import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeC
 import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +47,9 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
     private EgenAnsattAuthorisation egenAnsattAuthorisation;
 
     @Mock
+    private ReadAuthorisation readAuthorisation;
+
+    @Mock
     private HentDiskresjonskodeResponse hentDiskresjonskodeResponse;
 
     @InjectMocks
@@ -55,6 +59,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
     public void isSupported() throws Exception {
         assertEquals(defaultDisreksjonskodeSecurityStrategy.isSupported(diskresjonskodeAuthorisation), true);
         assertEquals(defaultDisreksjonskodeSecurityStrategy.isSupported(egenAnsattAuthorisation), false);
+        assertEquals(defaultDisreksjonskodeSecurityStrategy.isSupported(readAuthorisation), false);
     }
 
     @Test
@@ -64,7 +69,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
 
         userRoles.add(ROLE_READ_DISKRESJONSKODE_6);
         userRoles.add(ROLE_READ_DISKRESJONSKODE_7);
-       defaultDisreksjonskodeSecurityStrategy.authorise(userRoles, "any");
+        defaultDisreksjonskodeSecurityStrategy.authorise(userRoles, "any");
     }
 
     @Test(expected = HttpUnauthorisedException.class)
@@ -83,7 +88,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
         defaultDisreksjonskodeSecurityStrategy.authorise(userRoles, "any");
     }
 
-    public void authorisationAlwaysSuccessfulWhenResultGotNoDiskresjonskoder() throws Exception {
+    public void authorisationAlwaysSuccessfulWhenResultGotNoDiskresjonskoder() {
         when(diskresjonskodeConsumer.getDiskresjonskodeResponse(anyString())).thenReturn(hentDiskresjonskodeResponse);
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("");
 
