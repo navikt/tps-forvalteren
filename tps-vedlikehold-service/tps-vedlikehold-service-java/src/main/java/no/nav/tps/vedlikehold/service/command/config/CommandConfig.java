@@ -5,12 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.EndreNavn;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S004HentPersonopplysningerServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S600HentKontaktinformasjonServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.*;
 import no.nav.tps.vedlikehold.service.command.Command;
 
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -73,6 +68,12 @@ public class CommandConfig {
     @Order(3)
     ServiceRoutineResolver sokPersonRoutineResolver() {
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
+    }
+
+    @Bean
+    @Order(3)
+    ServiceRoutineResolver hentGironummerResolver() {
+        return new S102HentGironummerServiceRoutineResolver();
     }
 
     @Bean

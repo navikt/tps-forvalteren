@@ -47,6 +47,12 @@ angular.module('tps-vedlikehold')
 
             ]
         },
+        "FS03-FDNUMMER-GIRONUMR-O": {
+            'serviceRutineReturnedDataLabel': 'personDataS102',
+            'nonUniquePropertiesContainer': [
+
+            ]
+        },
         'FS03-OTILGANG-TILSRTPS-O': {
             'serviceRutineFieldsOrderTemplate': [],
             'serviceRutineReturnedDataLabel': 'ingenReturData',

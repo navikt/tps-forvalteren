@@ -769,6 +769,169 @@ angular.module('tps-vedlikehold')
                         }
                     ]
                 ]
+            },
+            'FS03-FDNUMMER-GIRONUMR-O': {
+                display: {
+                    header: "${etternavn}, ${fornavn}",
+                    properties: [
+                        {
+                            label: "Gironummer",
+                            template: "${giroNummer}",
+                            flex: 30
+                        },
+                        {
+                            label: "Girotidspunkt",
+                            template: "${giroTidspunktReg}",
+                            flex: 20
+                        },
+                        {
+                            label: "Fødselsnummer",
+                            template: "${fnr}",
+                            flex: 20
+                        },
+                        {
+                            label: "TK-nummer",
+                            template: "${tknr}",
+                            flex: 20
+                        }
+                    ]
+                },
+                rows: [
+                    [
+                        {
+                            fieldData: "fnr",
+                            label: "Fødselsnummer",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fnrTidspunkt",
+                            label: "Fnr tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fnrSystem",
+                            label: "Fnr System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "fnrSaksbehandler",
+                            label: "Fnr Saksbehandler",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "spesregTyp",
+                            label: "Spesreg Type",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "kortnavn",
+                            label: "Kortnavn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fornavn",
+                            label: "Fornavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "mellomnavn",
+                            label: "Mellomnavn",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "etternavn",
+                            label: "Etternavn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "navnTidspunkt",
+                            label: "Navn Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "navnSystem",
+                            label: "Navn system",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "navnSaksbehandler",
+                            label: "Navn Saksbehandler",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "datoDo",
+                            label: "Dato Do",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "doTidspunkt",
+                            label: "Do Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "doSystem",
+                            label: "DoSaksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tknr",
+                            label: "TKNR",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "tknrTidspunkt",
+                            label: "TKRN Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tknrSystem",
+                            label: "TKRN System",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tknrSaksbehandler",
+                            label: "DoSaksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tknr",
+                            label: "TKNR",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "giroNummer",
+                            label: "Gironummer",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "giroTidspunktReg",
+                            label: "Giro Tidspunkt Reg.",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "giroSystem",
+                            label: "Giro System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "giroSaksbehandler",
+                            label: "Girosaksbehandler",
+                            flex: 20
+                        }
+                    ]
+                ]
             }
         }
     );
