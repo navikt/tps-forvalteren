@@ -261,6 +261,9 @@ angular.module('tps-vedlikehold.service-rutine')
                         case 'aksjonsKode':
                             $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
                             break;
+                        case 'adresseTypeS103':
+                            $scope.formData.adresseTypeS103 = $scope.selectValues.adresseTypeS103[0];
+                            break;
                         case 'buffNr':
                             $scope.formData.buffNr = $scope.selectValues.buffNr[0];
                             break;

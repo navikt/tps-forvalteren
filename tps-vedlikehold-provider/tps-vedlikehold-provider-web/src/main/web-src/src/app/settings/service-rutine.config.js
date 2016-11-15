@@ -53,6 +53,25 @@ angular.module('tps-vedlikehold')
 
             ]
         },
+        "FS03-FDNUMMER-ADRESSER-O": {
+            'serviceRutineReturnedDataLabel': 'personDataS103',
+            'nonUniquePropertiesContainer': [
+                'datoFrom',
+                'datoTom',
+                'landKode',
+                "land",
+                "adresseType",
+                "beskrAdrType",
+                "adresse1",
+                "adresse2",
+                "adresse3",
+                "postnr",
+                "poststed",
+                "adrTidspunktReg",
+                "adrSystem",
+                "adrSaksbehandler"
+            ]
+        },
         'FS03-OTILGANG-TILSRTPS-O': {
             'serviceRutineFieldsOrderTemplate': [],
             'serviceRutineReturnedDataLabel': 'ingenReturData',

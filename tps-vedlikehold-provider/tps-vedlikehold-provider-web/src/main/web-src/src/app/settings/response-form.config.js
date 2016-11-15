@@ -933,6 +933,165 @@ angular.module('tps-vedlikehold')
                     ]
                 ]
             },
+            "FS03-FDNUMMER-ADRESSER-O": {
+                display: {
+                    header: "${etternavn}, ${fornavn}",
+                    properties: [
+                        {
+                            label: "Postadresse",
+                            template: "${postAdresse_adresse1}, ${postAdresse_postnr} ${postAdresse_poststed}, ${postAdresse_adresseType}",
+                            flex: 33
+                        },
+                        {
+                            label: "Tilleggsadresse",
+                            template: "${tilleggsAdresse_adresse1}, ${tilleggsAdresse_postnr} ${tilleggsAdresse_poststed}, ${tilleggsAdresse_adresseType}",
+                            flex: 33
+                        },
+                        {
+                            label: "Utlandsadresse",
+                            template: "${utenlandsAdresse_adresse1}, ${utenlandsAdresse_postnr} ${utenlandsAdresse_poststed}, ${utenlandsAdresse_adresseType}",
+                            flex: 33
+                        }
+                    ]
+                },
+                rows: [
+                    [
+                        {
+                            fieldData: "fnr",
+                            label: "Fødselsnummer",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fnrTidspunkt",
+                            label: "Fnr tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fnrSystem",
+                            label: "Fnr System",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "fnrSaksbehandler",
+                            label: "Fnr Saksbehandler",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "spesregType",
+                            label: "SpesReg Type",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "kortnavn",
+                            label: "Kortnavn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "fornavn",
+                            label: "Fornavn",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "mellomnavn",
+                            label: "Mellomnavn",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "etternavn",
+                            label: "Etternavn",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "navnTidspunkt",
+                            label: "Navn Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "navnSystem",
+                            label: "Navn system",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "navnSaksbehandler",
+                            label: "Navn Saksbehandler",
+                            flex: 20
+                        }
+                    ],
+
+                    [
+                        {
+                            fieldData: "datoDo",
+                            label: "Dato Do",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "doTidspunkt",
+                            label: "Do Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "doSystem",
+                            label: "DoSaksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tknr",
+                            label: "TKNR",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "tknrTidspunkt",
+                            label: "TKRN Tidspunkt",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tknrSystem",
+                            label: "TKRN System",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "tknrSaksbehandler",
+                            label: "DoSaksbehandler",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "tknr",
+                            label: "TKNR",
+                            flex: 20
+                        }
+                    ],
+                    [
+                        {
+                            fieldData: "spraakBeskrivelse",
+                            label: "Sprakbeskrivelse",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "spraakKode",
+                            label: "Spraakkode",
+                            flex: 25
+                        },
+                        {
+                            fieldData: "spraakDatoFom",
+                            label: "Spraakdato fra og med",
+                            flex: 20
+                        },
+                        {
+                            fieldData: "spraakSystem",
+                            label: "Spraaksystem",
+                            flex: 20
+                        }
+                    ]
+                ]
+            },
+
             'EndreNavn': {
                 display: {
                     header: "${etternavn}, ${fornavn} ${mellomnavn}"
