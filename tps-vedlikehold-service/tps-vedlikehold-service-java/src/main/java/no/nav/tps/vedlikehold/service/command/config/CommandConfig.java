@@ -89,6 +89,12 @@ public class CommandConfig {
     }
 
     @Bean
+    @Order(6)
+    ServiceRoutineResolver endreTIADResolver() {
+        return new EndreTIAD();
+    }
+
+    @Bean
     @Order(Integer.MAX_VALUE)
     ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
         return new S000TilgangTilTpsServiceRoutineResolver();

@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Husbokstav</label>
+    <input name="navnInput" md-maxlength="3"  ng-model="formData.husbokstav"/>
+    <div ng-messages="requestForm.navnInput.$error" ng-show="requestForm.navnInput$touched">
+        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
+    </div>
+</md-input-container>

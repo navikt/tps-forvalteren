@@ -255,17 +255,15 @@ angular.module('tps-vedlikehold.service-rutine')
                 for (var i = 0; i < $scope.fields.length; i++) {
                     var parameter = $scope.fields[i];
                     switch (parameter) {
+                        case 'datoNyttNavn':
                         case 'aksjonsDato':
-                            $scope.formData.aksjonsDato = utilsService.getCurrentFormattedDate();
+                        case 'datoTom':
+                            $scope.formData[parameter] = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
-                            $scope.formData.aksjonsKode = $scope.selectValues.aksjonsKode[0];
-                            break;
                         case 'adresseTypeS103':
-                            $scope.formData.adresseTypeS103 = $scope.selectValues.adresseTypeS103[0];
-                            break;
                         case 'buffNr':
-                            $scope.formData.buffNr = $scope.selectValues.buffNr[0];
+                            $scope.formData[parameter] = $scope.selectValues[parameter][0];
                             break;
                         default:
                             $scope.formData[parameter] = '';
