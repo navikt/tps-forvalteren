@@ -122,6 +122,13 @@ public class EndreTIAD implements ServiceRoutineResolver{
                 .type(TpsParameterType.STRING)
                 .and()
 
+                .parameter()
+                .name("kilde")
+                .required()
+                .type(TpsParameterType.STRING)
+                .values("FS22")
+                .and()
+
                 .securityBuilder()
                 .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
                 .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
