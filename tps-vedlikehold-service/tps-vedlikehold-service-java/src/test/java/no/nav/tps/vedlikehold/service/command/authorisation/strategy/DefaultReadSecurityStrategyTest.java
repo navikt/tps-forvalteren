@@ -1,12 +1,9 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
-import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation;
 import no.nav.tps.vedlikehold.service.command.authorisation.RolesService;
-import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +13,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,6 +47,9 @@ public class DefaultReadSecurityStrategyTest {
 
     @Before
     public void setup(){
+        userRoles.clear();
+        requiredRoles.clear();
+
         when(rolesService.getRolesForEnvironment(ENV, RolesService.RoleType.READ)).thenReturn(requiredRoles);
     }
 
@@ -58,28 +60,34 @@ public class DefaultReadSecurityStrategyTest {
         assertEquals(defaultReadSecurityStrategy.isSupported(egenAnsattAuthorisation), false);
     }
 
-    @Test(expected = HttpUnauthorisedException.class)
+    @Test
     public void authoriseThrowsUnauthorisedIfMissingRole(){
         requiredRoles.add(ROLE_READ);
-        defaultReadSecurityStrategy.authorise(userRoles, ENV);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(false));
     }
 
     @Test
     public void authoriseDoesNotThrowExceptionWhenHaveRequiredRoles(){
         requiredRoles.add(ROLE_READ);
         userRoles.add(ROLE_READ);
-        defaultReadSecurityStrategy.authorise(userRoles, ENV);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(true));
+
     }
 
-    @Test(expected = HttpUnauthorisedException.class)
+    @Test
     public void authoriseThrowsAuthorisedIfHaveWrongRole(){
         requiredRoles.add(ROLE_READ);
         userRoles.add("role");
-        defaultReadSecurityStrategy.authorise(userRoles, ENV);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(false));
+
     }
 
     @Test
     public void authoriseSuccessWhenNoRequiredRoles(){
-        defaultReadSecurityStrategy.authorise(userRoles,ENV);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(true));
     }
 }

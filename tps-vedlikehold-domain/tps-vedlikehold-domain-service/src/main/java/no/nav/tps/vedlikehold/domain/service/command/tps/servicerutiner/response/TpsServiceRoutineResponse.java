@@ -12,20 +12,4 @@ public class TpsServiceRoutineResponse {
     private String xml;
     private Object response;
 
-
-    /**
-    {
-        status: {
-            kode : 00,
-            melding: "something",
-            utfyllendeMelding: "something something"
-
-        },
-        result: {
-
-        }
-    }
-
-*/
-
 }

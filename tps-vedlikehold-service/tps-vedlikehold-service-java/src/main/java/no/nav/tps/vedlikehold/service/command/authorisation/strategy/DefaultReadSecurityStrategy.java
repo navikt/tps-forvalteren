@@ -25,11 +25,13 @@ public class DefaultReadSecurityStrategy implements ReadSecurityStrategy {
     }
 
     @Override
-    public void authorise(Set<String> userRoles, String environment) {
-        Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.READ);
+    public void handleUnauthorised(Set<String> userRoles, String environment) {
+        throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+    }
 
-        if(!userRoles.containsAll(rolesRequiredForEnvironment)){
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
-        }
+    @Override
+    public boolean isAuthorised(Set<String> roles, String environment) {
+        Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.READ);
+        return roles.containsAll(rolesRequiredForEnvironment);
     }
 }

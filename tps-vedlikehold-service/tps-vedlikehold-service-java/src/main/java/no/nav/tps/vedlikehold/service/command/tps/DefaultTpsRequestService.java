@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
 import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
@@ -11,8 +10,6 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.TransformationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +18,6 @@ import java.io.IOException;
 
 @Service
 public class DefaultTpsRequestService implements TpsRequestService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTpsRequestService.class);
 
     @Autowired
     private XmlMapper xmlMapper;
@@ -64,6 +59,8 @@ public class DefaultTpsRequestService implements TpsRequestService {
 
         Response response = new Response();
         response.setRawXml(responseXml);
+        response.setContext(context);
+        response.setServiceRoutine(serviceRoutine);
 
         transformationService.transform(response, serviceRoutine);
 

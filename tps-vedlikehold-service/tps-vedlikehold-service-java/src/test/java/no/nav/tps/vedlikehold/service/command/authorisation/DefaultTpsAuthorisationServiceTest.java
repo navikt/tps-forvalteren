@@ -71,14 +71,14 @@ public class DefaultTpsAuthorisationServiceTest {
 //
 //    @Test
 //    public void userIsUnauthorisedIfAnyStrategyReturnsFalse()  {
-//        when( egenAnsattAuthorisationStrategy.authorise() ).thenReturn(false);
+//        when( egenAnsattAuthorisationStrategy.handleUnauthorised() ).thenReturn(false);
 //
 //        Collection<AuthorisationStrategy> strategies = Arrays.asList(
 //                diskresjonskodeAuthorisationStrategy,
 //                egenAnsattAuthorisationStrategy
 //        );
 //
-//        Boolean result = defaultTpsAuthorisationService.authorise(strategies);
+//        Boolean result = defaultTpsAuthorisationService.handleUnauthorised(strategies);
 //
 //        assertThat(result, is(false));
 //    }
@@ -90,7 +90,7 @@ public class DefaultTpsAuthorisationServiceTest {
 //                egenAnsattAuthorisationStrategy
 //        );
 //
-//        Boolean result = defaultTpsAuthorisationService.authorise(strategies);
+//        Boolean result = defaultTpsAuthorisationService.handleUnauthorised(strategies);
 //
 //        assertThat(result, is(true));
 //    }

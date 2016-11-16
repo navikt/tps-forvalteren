@@ -1,13 +1,10 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
-import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.WriteAuthorisation;
 import no.nav.tps.vedlikehold.service.command.authorisation.RolesService;
-import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
@@ -54,6 +53,9 @@ public class DefaultWriteSecurityStrategyTest {
 
     @Before
     public void setup(){
+        rolesRequired.clear();
+        userRoles.clear();
+
         when(rolesService.getRolesForEnvironment(ENV, RolesService.RoleType.WRITE)).thenReturn(rolesRequired);
     }
 
@@ -65,22 +67,25 @@ public class DefaultWriteSecurityStrategyTest {
         assertEquals(defaultWriteSecurityStrategy.isSupported(readAuthorisation), false);
     }
 
-    @Test(expected = HttpUnauthorisedException.class)
+    @Test
     public void authoriseThrowsUnauthorsiedWriteRolesIsMissing() {
         rolesRequired.add(WRITE_ROLE);
-        defaultWriteSecurityStrategy.authorise(userRoles, ENV);
+        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(false));
     }
 
     @Test
     public void authoriseAcceptedWhenHaveWriteRoleForEnvironment() {
         rolesRequired.add(WRITE_ROLE);
         userRoles.add(WRITE_ROLE);
-        defaultWriteSecurityStrategy.authorise(userRoles, ENV);
+        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(true));
     }
 
-    @Test(expected = HttpUnauthorisedException.class)
+    @Test
     public void authorsieThrowsUnauthorisedWhenUserDontHaveAnyRolesEnvironment(){
         rolesRequired.add(WRITE_ROLE);
-        defaultWriteSecurityStrategy.authorise(userRoles, ENV);
+        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised(userRoles, ENV);
+        assertThat(isAuthorised, is(false));
     }
 }

@@ -9,8 +9,8 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.st
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataListTransformer.extractDataListFromXml;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 /**
@@ -86,13 +86,14 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .and()
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
+                    .postSend(removeUnauthorizedFnrFromResponse("antallTotalt", "antallFS050"))
                     .postSend(extractDataListFromXml("personDataS050", "enPersonRes", "antallTotalt"))
                     .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()
-                .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
-                .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
+                    .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
+                    .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
                 .addSecurity()
 
                 .build();

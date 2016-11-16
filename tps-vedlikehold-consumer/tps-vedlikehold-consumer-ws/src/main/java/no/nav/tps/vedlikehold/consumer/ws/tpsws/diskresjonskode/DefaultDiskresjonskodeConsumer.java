@@ -53,7 +53,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         try {
             return diskresjonskodePortType.hentDiskresjonskode(request);
         } catch (SOAPFaultException exception) {
-            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
+            LOGGER.warn("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
 
             boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
             boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);

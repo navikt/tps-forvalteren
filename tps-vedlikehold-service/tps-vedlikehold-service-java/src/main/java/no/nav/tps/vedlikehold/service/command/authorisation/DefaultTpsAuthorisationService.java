@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
@@ -22,21 +23,38 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
 
     @Override
     public void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine, String environment, User user) {
-        authorise(restSecurityStrategies, serviceRoutine, environment, user);
-    }
-
-    @Override
-    public void authoriseFodselsnummer(TpsServiceRoutineDefinition serviceRoutine, String fnr, User user) {
-        authorise(searchPersonSecurityStrategies, serviceRoutine, fnr, user);
-    }
-
-    private void authorise(List<? extends SecurityStrategy> securityStrategies, TpsServiceRoutineDefinition serviceRoutine, String param, User user) {
-        for (AuthorisationStrategy authorisationStrategy : serviceRoutine.getSecurityServiceStrategies()) {
-            for (SecurityStrategy strategyService : securityStrategies) {
-                if (strategyService.isSupported(authorisationStrategy)) {
-                    strategyService.authorise(user.getRoles(), param);
-                }
-            }
+        for (AuthorisationStrategy auth: serviceRoutine.getSecurityServiceStrategies()) {
+            getUnauthorizedStrategies(auth, user, environment, restSecurityStrategies)
+                    .stream()
+                    .forEach(s -> s.handleUnauthorised(user.getRoles(), environment));
         }
     }
+
+    public boolean isAuthorisedToSeePerson(TpsServiceRoutineDefinition serviceRoutine, String fnr, User user) {
+        return !serviceRoutine.getSecurityServiceStrategies()
+                .stream()
+                .filter(s -> !isAuthorised(s, user, fnr, searchPersonSecurityStrategies))
+                .findFirst()
+                .isPresent();
+    }
+
+
+    private List<SecurityStrategy> getUnauthorizedStrategies (AuthorisationStrategy authorisation, User user, String param, List<? extends SecurityStrategy> securityStrategies) {
+        return securityStrategies
+                .stream()
+                .filter(s -> s.isSupported(authorisation))
+                .filter(s -> !s.isAuthorised(user.getRoles(), param))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isAuthorised (AuthorisationStrategy authorisation, User user, String param, List<? extends SecurityStrategy> securityStrategies) {
+        return !securityStrategies
+                .stream()
+                .filter(s -> s.isSupported(authorisation))
+                .filter(s -> !s.isAuthorised(user.getRoles(), param))
+                .findFirst()
+                .isPresent();
+    }
+
+
 }

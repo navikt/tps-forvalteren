@@ -7,7 +7,6 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
@@ -35,7 +34,6 @@ public class EndreNavn implements ServiceRoutineResolver {
                 .and()
                 .transformer()
                     .preSend(endringsmeldingXmlWrappingAppender())
-                    .postSend(removeUnauthorizedFnrFromResponse())
                     .postSend(extractDataFromXmlElement("endreNavn"))
                     .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()

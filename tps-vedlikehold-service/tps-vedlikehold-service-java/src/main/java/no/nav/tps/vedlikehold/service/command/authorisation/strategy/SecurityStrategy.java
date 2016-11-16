@@ -9,5 +9,6 @@ import java.util.Set;
  */
 public interface SecurityStrategy {
     boolean isSupported(AuthorisationStrategy a1);
-    void authorise(Set<String> roles, String requiredParam);
+    void handleUnauthorised(Set<String> roles, String requiredParam);
+    boolean isAuthorised(Set<String> roles, String requiredParam);
 }
