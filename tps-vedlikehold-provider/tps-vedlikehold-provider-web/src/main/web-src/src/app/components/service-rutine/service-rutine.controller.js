@@ -2,15 +2,14 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service-rutine')
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'responseFormConfig', 'environmentsPromise',
-        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, responseFormConfig, environmentsPromise) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise',
+        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
             $scope.formData = {};
             $scope.fields = [];
             $scope.selectValues = {};
-            $scope.responseFormConfig = responseFormConfig;
             $scope.onlyNumbers = /^\d+$/;
             $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
             $scope.personsData = {};
@@ -55,6 +54,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     showAlertTPSError(error);
                 });
             };
+
 
             $scope.clearResponseForm = function () {
                 $scope.personsData = {};
@@ -296,6 +296,10 @@ angular.module('tps-vedlikehold.service-rutine')
                     apiError = true;
                     return;
                 }
+
+                serviceRutineFactory.getServiceRoutineConfig($scope.serviceRutineName).then(function (res){
+                    $scope.responseFormConfig = res.data;
+                });
 
                 getServiceRutineInputFieldName();
                 getServiceRutineRequiredParametersNames();

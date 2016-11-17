@@ -10,6 +10,7 @@ angular.module('tps-vedlikehold.factory')
         var urlRoutinesBase = 'api/v1/serviceroutine';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
         var urlBaseEnv = 'api/v1/environments';
+        var urlConfig = '/assets/config/';
 
         var serviceRutines = {};
         var endringsmeldinger = {};
@@ -49,6 +50,7 @@ angular.module('tps-vedlikehold.factory')
                 return null;
             });
         };
+
 
         serviceRutineFactory.loadFromServerEndringsmeldinger = function(){
           return $http({method: 'GET', url: urlEndrinsmeldinger}).then(function(response){
@@ -101,7 +103,7 @@ angular.module('tps-vedlikehold.factory')
             return getRequestParametersNames(serviceRutines, serviceRutineName);
         };
 
-
+        //TODO Fjern. Finner aldri order templates uansett.
         serviceRutineFactory.getServiceRutineParametersNamesInOrder = function(serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
             // could probably be done in a better way
@@ -135,6 +137,11 @@ angular.module('tps-vedlikehold.factory')
 
         serviceRutineFactory.getServiceRutineResponse = function(serviceRutineName, params) {
             return $http({method: 'GET', url:urlBase + '/' + serviceRutineName, params:params});
+        };
+
+        serviceRutineFactory.getServiceRoutineConfig = function(serviceRutineName){
+            var srn = serviceRutineName.toLowerCase();
+            return $http.get(urlConfig+srn+'.json');
         };
 
         serviceRutineFactory.getEnvironments = function() {
