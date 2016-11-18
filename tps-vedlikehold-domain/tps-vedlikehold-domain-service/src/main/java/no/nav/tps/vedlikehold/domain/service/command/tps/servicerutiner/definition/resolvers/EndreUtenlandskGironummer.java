@@ -9,6 +9,8 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.st
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 /**
  * Created by F148888 on 17.11.2016.
@@ -27,6 +29,8 @@ public class EndreUtenlandskGironummer implements ServiceRoutineResolver {
 
                 .transformer()
                 .preSend(endringsmeldingXmlWrappingAppender())
+                .postSend(extractDataFromXmlElement("endreGironrUtl"))
+                .postSend(extractStatusFromXmlElement("svarStatus"))
 
                 .and()
 

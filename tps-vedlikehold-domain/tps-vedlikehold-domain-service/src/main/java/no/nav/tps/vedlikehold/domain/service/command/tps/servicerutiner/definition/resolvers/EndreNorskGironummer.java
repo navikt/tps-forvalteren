@@ -9,6 +9,8 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.st
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 /**
  * Created by F148888 on 16.11.2016.
@@ -18,7 +20,7 @@ public class EndreNorskGironummer implements ServiceRoutineResolver {
     @Override
     public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
-                    .name("EndreNorksGironummer")
+                    .name("EndreNorskGironummer")
                     .internalName("Endre: Norsk Gironummer")
                     .javaClass(TpsEndreNorskGironummerEndringsmeldingRequest.class)
                 .config()
@@ -27,6 +29,8 @@ public class EndreNorskGironummer implements ServiceRoutineResolver {
 
                 .transformer()
                     .preSend(endringsmeldingXmlWrappingAppender())
+                .postSend(extractDataFromXmlElement("endreGironrNorsk"))
+                .postSend(extractStatusFromXmlElement("svarStatus"))
 
                 .and()
 
