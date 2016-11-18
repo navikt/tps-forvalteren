@@ -31,10 +31,12 @@ public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStra
     }
 
     @Override
-    public void authorise(Set<String> roles, String fodselsnummer) {
-        Boolean isEgenAnsatt = egenAnsattConsumer.isEgenAnsatt(fodselsnummer);
-        if(isEgenAnsatt && !roles.contains(ROLE_READ_EGENANSATT)){
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
-        }
+    public void handleUnauthorised(Set<String> roles, String fodselsnummer) {
+        throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+    }
+
+    @Override
+    public boolean isAuthorised(Set<String> roles, String fnr) {
+        return !egenAnsattConsumer.isEgenAnsatt(fnr) || roles.contains(ROLE_READ_EGENANSATT);
     }
 }

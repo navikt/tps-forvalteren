@@ -4,6 +4,7 @@ import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class EndringsmeldingRequestTransformStrategy implements RequestTransform
 
 
     @Override
-    public void execute(Request request) {
+    public void execute(Request request, Transformer transformer) {
         request.setXml(XML_PROPERTIES_PREFIX + resolveTpsSysInfoAsXml(request) + request.getXml() + XML_PROPERTIES_POSTFIX);
     }
 

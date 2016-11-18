@@ -68,26 +68,26 @@ angular.module('tps-vedlikehold.service')
 
         //TODO Add test to validate that this method actually works properly. (unit.js)
          function _flattenObject(finalFlatObject, jsonObject, nonUniques) {
-            for(var key in jsonObject){
-                if (!jsonObject.hasOwnProperty(key)) continue;
-                if ((typeof jsonObject[key]) == 'object') {
-                    var flatterObject = _flattenObject(finalFlatObject, jsonObject[key], nonUniques);
-                    for (var keyInFlatterObject in flatterObject) {
-                        if (!flatterObject.hasOwnProperty(keyInFlatterObject)) continue;
-                        if (nonUniques && nonUniques.indexOf(key) > -1) {
-                            if(!finalFlatObject.hasOwnProperty(key + '_' + keyInFlatterObject) || finalFlatObject[key + '_' + keyInFlatterObject]=== ""){
-                                finalFlatObject[key + '_' + keyInFlatterObject] = flatterObject[keyInFlatterObject];
+            for(var parentKey in jsonObject){
+                if (!jsonObject.hasOwnProperty(parentKey)) continue;
+                if ((typeof jsonObject[parentKey]) == 'object') {
+                    var flatterObject = _flattenObject(finalFlatObject, jsonObject[parentKey], nonUniques);
+                    for (var childKey in flatterObject) {
+                        if (!flatterObject.hasOwnProperty(childKey)) continue;
+                        if (nonUniques && nonUniques.indexOf(childKey) > -1) {
+                            if(!finalFlatObject.hasOwnProperty(parentKey + '_' + childKey) || finalFlatObject[parentKey + '_' + childKey]=== ""){
+                                finalFlatObject[parentKey + '_' + childKey] = flatterObject[childKey];
                             }
                         } else {
-                            if(!finalFlatObject.hasOwnProperty(keyInFlatterObject) || finalFlatObject[keyInFlatterObject] === ""){
-                                finalFlatObject[keyInFlatterObject] = flatterObject[keyInFlatterObject];
+                            if(!finalFlatObject.hasOwnProperty(childKey) || finalFlatObject[childKey] === ""){
+                                finalFlatObject[childKey] = flatterObject[childKey];
                             }
                         }
                     }
 
                 } else {
-                    if(!finalFlatObject.hasOwnProperty(key) || finalFlatObject[key] === ""){
-                        finalFlatObject[key] = jsonObject[key];
+                    if(!finalFlatObject.hasOwnProperty(parentKey) || finalFlatObject[parentKey] === ""){
+                        finalFlatObject[parentKey] = jsonObject[parentKey];
                     }
                 }
             }

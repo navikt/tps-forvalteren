@@ -35,7 +35,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     @Override
     public boolean ping() {
         try {
-            getDiskresjonskode(PING_FNR);
+            getDiskresjonskodeResponse(PING_FNR);
         } catch (RuntimeException exception) {
             LOGGER.warn("Pinging diskresjonskode failed with exception: {}", exception.toString());
             throw exception;
@@ -45,7 +45,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     }
 
     @Override
-    public HentDiskresjonskodeResponse getDiskresjonskode(String fNr) {
+    public HentDiskresjonskodeResponse getDiskresjonskodeResponse(String fNr) {
         HentDiskresjonskodeRequest request = createRequest(fNr);
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
@@ -53,7 +53,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         try {
             return diskresjonskodePortType.hentDiskresjonskode(request);
         } catch (SOAPFaultException exception) {
-            LOGGER.info("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
+            LOGGER.warn("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
 
             boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
             boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);

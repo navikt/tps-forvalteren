@@ -1,5 +1,11 @@
 package no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
+
 import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
@@ -40,6 +46,8 @@ public class S004HentPersonopplysningerServiceRoutineResolver implements Service
                 .and()
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
+                    .postSend(extractDataFromXmlElement("personDataS004"))
+                    .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()

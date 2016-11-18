@@ -49,7 +49,7 @@ public class TpsReponseMappingUtilsTest {
     private JSONObject jsonObject;
 
     @InjectMocks
-    private TpsResponseMappingUtils responseMappingUtilsMock;
+    private RsTpsResponseMappingUtils responseMappingUtilsMock;
 
     @Before
     public void before(){

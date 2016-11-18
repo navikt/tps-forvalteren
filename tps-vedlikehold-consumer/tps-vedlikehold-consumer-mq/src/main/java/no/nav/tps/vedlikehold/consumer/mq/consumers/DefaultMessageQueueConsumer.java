@@ -85,7 +85,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         /* Close the queues, the session, and the connection */
         connection.close();
 
-        return responseMessage.getText();
+        return responseMessage != null ? responseMessage.getText() : "";
     }
 
     @Override

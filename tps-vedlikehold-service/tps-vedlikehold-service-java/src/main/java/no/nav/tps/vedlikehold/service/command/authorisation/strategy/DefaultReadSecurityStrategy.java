@@ -25,14 +25,13 @@ public class DefaultReadSecurityStrategy implements ReadSecurityStrategy {
     }
 
     @Override
-    public void authorise(Set<String> userRoles, String environment) {
-        Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.READ);
-        userRoles.add("${tps.vedlikehold.securityBuilder.t.readroles}");    //TODO Hack for å få den til å være authorisert uten riktig role.
+    public void handleUnauthorised(Set<String> userRoles, String environment) {
+        throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+    }
 
-        // Retain all roles present in both authorised roles, and the users roles /
-        userRoles.retainAll(rolesRequiredForEnvironment);
-        if(userRoles.isEmpty()){
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
-        }
+    @Override
+    public boolean isAuthorised(Set<String> roles, String environment) {
+        Set<String> rolesRequiredForEnvironment = rolesService.getRolesForEnvironment(environment, RolesService.RoleType.READ);
+        return roles.containsAll(rolesRequiredForEnvironment);
     }
 }

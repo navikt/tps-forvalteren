@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class RsRequestMappingUtils {
+public class RsTpsRequestMappingUtils {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -22,7 +22,7 @@ public class RsRequestMappingUtils {
         return objectMapper.convertValue(params, type);
     }
 
-    public TpsServiceRoutineRequest convertToTpsRequestServiceRoutine(String serviceRutineNavn, JsonNode node) {
+    public TpsServiceRoutineRequest convertToTpsServiceRoutineRequest(String serviceRutineNavn, JsonNode node) {
         Class<?> requestClass = getTpsServiceRutinerService.execute()
                 .stream()
                 .filter(request -> request.getName().equalsIgnoreCase(serviceRutineNavn))

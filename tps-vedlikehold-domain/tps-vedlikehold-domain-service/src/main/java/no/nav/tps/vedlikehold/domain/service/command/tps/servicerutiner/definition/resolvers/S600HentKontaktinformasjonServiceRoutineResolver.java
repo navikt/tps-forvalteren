@@ -13,6 +13,8 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.st
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 public class S600HentKontaktinformasjonServiceRoutineResolver implements ServiceRoutineResolver {
 
@@ -43,6 +45,9 @@ public class S600HentKontaktinformasjonServiceRoutineResolver implements Service
                 .and()
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
+//                    .postSend(extractDataFromXmlElement("personDataS600"))
+                    .postSend(extractDataFromXmlElement("person"))
+                    .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()

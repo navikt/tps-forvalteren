@@ -5,5 +5,5 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definiti
 
 public interface TpsAuthorisationService {
     void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine, String environment, User user);
-    void authoriseFodselsnummer(TpsServiceRoutineDefinition serviceRoutine, String fnr, User user);
+    boolean isAuthorisedToSeePerson(TpsServiceRoutineDefinition serviceRoutine, String fnr, User user);
 }

@@ -36,22 +36,22 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
     }
 
     @Override
-    public void authorise(Set<String> userRoles, String fodselsnummer) {
-        String diskresjonskode;
+    public void handleUnauthorised(Set<String> userRoles, String fodselsnummer) {
+        throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+    }
 
-        try {
-            diskresjonskode = diskresjonskodeConsumer.getDiskresjonskode(fodselsnummer).getDiskresjonskode();
-        } catch (Exception exception) {
-            LOGGER.warn("Authorisation denied. Failed to get diskresjonskode with exception: {}", exception.toString());
-            throw exception;
+    @Override
+    public boolean isAuthorised(Set<String> roles, String fnr) {
+        String diskresjonskode = diskresjonskodeConsumer.getDiskresjonskodeResponse(fnr).getDiskresjonskode();
+
+        if ("6".equals(diskresjonskode) && !roles.contains(ROLE_READ_DISKRESJONSKODE_6)) {
+            return false;
         }
 
-        if ("6".equals(diskresjonskode) && !userRoles.contains(ROLE_READ_DISKRESJONSKODE_6)) {
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+        if("7".equals(diskresjonskode) && !roles.contains(ROLE_READ_DISKRESJONSKODE_7)){
+            return false;
         }
 
-        if("7".equals(diskresjonskode) && !userRoles.contains(ROLE_READ_DISKRESJONSKODE_7)){
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
-        }
+        return true;
     }
 }

@@ -6,10 +6,12 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 
 import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation.diskresjonskodeAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation.egenAnsattAuthorisation;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation.readAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataListTransformer.extractDataListFromXml;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 /**
  * Created by f148888 on 30.09.2016.
@@ -79,16 +81,19 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                     .parameter()
                     .name("buffNr")
                     .required()
-                    .values("1","2","3","4","5", "6")
+                    .values("1","2","3","4","5","6")
                     .type(TpsParameterType.STRING)
                 .and()
                 .transformer()
-                  .preSend(serviceRoutineXmlWrappingAppender())
+                    .preSend(serviceRoutineXmlWrappingAppender())
+                    .postSend(removeUnauthorizedFnrFromResponse("antallTotalt", "antallFS050"))
+                    .postSend(extractDataListFromXml("personDataS050", "enPersonRes", "antallTotalt"))
+                    .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()
-                .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
-                .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
+                    .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
+                    .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
                 .addSecurity()
 
                 .build();

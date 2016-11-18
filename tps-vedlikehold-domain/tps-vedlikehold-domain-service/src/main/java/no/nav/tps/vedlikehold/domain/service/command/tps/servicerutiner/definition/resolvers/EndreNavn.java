@@ -4,10 +4,13 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.endring.TpsEndreNavnEndringsmeldingRequest;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation.diskresjonskodeAuthorisation;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation.egenAnsattAuthorisation;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine;
 import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
-import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataTransformer.extractDataFromXmlElement;
+import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
 /**
  * Created by f148888 on 29.09.2016.
@@ -26,6 +29,13 @@ public class EndreNavn implements ServiceRoutineResolver {
                 .and()
 
                 .parameter()
+                .name("fornavn")
+                .required()
+                .type(TpsParameterType.STRING)
+
+                .and()
+
+                .parameter()
                     .name("offentligIdent")
                     .required()
                     .type(TpsParameterType.STRING)
@@ -33,15 +43,8 @@ public class EndreNavn implements ServiceRoutineResolver {
                 .and()
                 .transformer()
                     .preSend(endringsmeldingXmlWrappingAppender())
-                    .postSend(removeUnauthorizedFnrFromResponse())
                 .and()
 
-                .parameter()
-                    .name("fornavn")
-                    .required()
-                    .type(TpsParameterType.STRING)
-
-                .and()
                 .parameter()
                     .name("mellomnavn")
                     .required()
@@ -79,6 +82,11 @@ public class EndreNavn implements ServiceRoutineResolver {
                     .values("FS22")
 
                 .and()
+                .securityBuilder()
+                .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
+                .addSecurity()
+
                 .build();
     }
 }
