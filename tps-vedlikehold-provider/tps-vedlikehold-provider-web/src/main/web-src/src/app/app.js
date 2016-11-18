@@ -126,7 +126,42 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                         controller: 'SideNavigatorCtrl'
                     }
                 }
-            });
+            }
+            .state('testdata', {
+                    url: "/testdata",
+                    params: {
+                        serviceRutineName: null,
+                        endringsmeldingName: null
+                    },
+                    resolve: {
+                        user: ['authenticationService', function (authenticationService) {
+                            return authenticationService.loadUser();
+                        }],
+                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                            return serviceRutineFactory.loadFromServerServiceRutines();
+                        }],
+                        endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                            return serviceRutineFactory.loadFromServerEndringsmeldinger();
+                        }],
+                        environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                            return serviceRutineFactory.loadFromServerEnvironments();
+                        }]
+                    },
+                    views: {
+                        'content@': {
+                            templateUrl: "app/components/testdata/testdata.html",
+                            controller: 'EndringsmeldingCtrl'
+                        },
+                        'header@': {
+                            templateUrl: "app/shared/header/header.html",
+                            controller: 'HeaderCtrl'
+                        },
+                        'side-navigator@': {
+                            templateUrl: "app/shared/side-navigator/side-navigator-em.html",
+                            controller: 'SideNavigatorCtrl'
+                        }
+                    }
+            }));
 
         $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 

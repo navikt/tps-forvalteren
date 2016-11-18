@@ -64,6 +64,7 @@
         <jms.version>1.1</jms.version>
         <guava.version>19.0</guava.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
+        <orika.version>1.4.5</orika.version>
         <mqjms.version>7.1</mqjms.version>
         <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
@@ -135,6 +136,11 @@
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-domain-ws</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-domain-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -244,6 +250,11 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${springfox-swagger-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ma.glasnost.orika</groupId>
+                <artifactId>orika-core</artifactId>
+                <version>${orika.version}</version>
             </dependency>
 
             <!-- DEPLOYMENT -->

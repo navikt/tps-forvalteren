@@ -1,19 +1,18 @@
 package no.nav.tps.vedlikehold.provider.rs.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.UserController;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.advices.HttpExceptionAdvice;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.mapping.TestDataMappingConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
 import no.nav.tps.vedlikehold.service.config.ServiceConfig;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
         ServiceConfig.class,
         SwaggerConfig.class,
         WebSecurityConfig.class,
+        TestDataMappingConfig.class,
         RestSecurityConfig.class,
 })
 @ComponentScan(basePackageClasses = {

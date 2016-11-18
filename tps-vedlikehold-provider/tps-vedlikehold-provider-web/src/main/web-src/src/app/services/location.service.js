@@ -19,6 +19,10 @@ angular.module('tps-vedlikehold.service')
             $state.go('endringer');
         };
 
+        self.redirectToTestdataState = function () {
+            $state.go('testdata');
+        };
+
         self.redirectToServiceRutineState = function () {
             $state.go('servicerutine');
         };
