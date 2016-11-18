@@ -6,8 +6,6 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategie
 import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -18,8 +16,6 @@ import java.util.Set;
 
 @Component
 public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSecurityStrategy {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDisreksjonskodeSecurityStrategy.class);
 
     private static final String ROLE_READ_DISKRESJONSKODE_6 = "0000-GA-GOSYS_KODE6";
     private static final String ROLE_READ_DISKRESJONSKODE_7 = "0000-GA-GOSYS_KODE7";
