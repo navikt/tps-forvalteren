@@ -1,9 +1,9 @@
 <md-input-container class="tps-vk-input-container" flex>
     <label>Husnummer Fra</label>
-    <input name="husnrFraInput" md-maxlength="6" ng-pattern="onlyNumbers" ng-model="formData.husnrFra"/>
+    <input name="husnrFraInput" md-maxlength="4" ng-pattern="onlyNumbers" ng-model="formData.husnrFra"/>
     <div ng-messages="requestForm.husnrFraInput.$error" ng-show="requestForm.husnrFraInput.$touched">
         <div ng-message="pattern">Feltet kan kun inneholde tall</div>
-        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
+        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde fire siffer</div>
     </div>
 </md-input-container>
 

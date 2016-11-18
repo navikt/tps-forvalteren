@@ -95,6 +95,18 @@ public class CommandConfig {
     }
 
     @Bean
+    @Order(6)
+    ServiceRoutineResolver endreNorskGironummerResolver() {
+        return new EndreNorskGironummer();
+    }
+
+    @Bean
+    @Order(6)
+    ServiceRoutineResolver endreUtlandskGironummerResolver() {
+        return new EndreUtenlandskGironummer();
+    }
+
+    @Bean
     @Order(Integer.MAX_VALUE)
     ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
         return new S000TilgangTilTpsServiceRoutineResolver();

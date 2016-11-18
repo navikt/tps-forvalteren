@@ -1,9 +1,8 @@
 <md-input-container class="tps-vk-input-container" flex>
-    <label>Husnummer</label>
-    <input name="navnInput" md-maxlength="30"  ng-model="formData.husnr"/>
+    <label>Gironummer Norsk</label>
+    <input name="navnInput" md-maxlength="4"  ng-model="formData.giroNrNorsk"/>
     <div ng-messages="requestForm.navnInput.$error" ng-show="requestForm.navnInput$touched">
         <div ng-message="pattern">Feltet kan kun inneholde tall</div>
-        <div ng-message="md-maxlength">Maks lengde er uvisst</div>
+        <div ng-message="md-maxlength">Maks lengde er 4</div>
     </div>
 </md-input-container>
-+
