@@ -138,7 +138,6 @@ angular.module('tps-vedlikehold.service-rutine')
             // }
 
             function extractPersonsData(responseObject, nonUniqueProperties) {
-                console.log("responseObject: ", responseObject);
                 var personsData = {};
                 if (responseObject.antallTotalt === undefined || responseObject.antallTotalt == 1) {
                     personsData[0] = utilsService.flattenObject(responseObject.data[0], nonUniqueProperties);
@@ -198,10 +197,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
             }
 
-            function getNonUniqueProperties() {
-                nonUniqueProperties = serviceRutineFactory.getNonUniqueProperties($scope.serviceRutineName);
-            }
-
             function createParams(formData) {
                 var params = {};
                 for (var key in formData) {
@@ -258,6 +253,8 @@ angular.module('tps-vedlikehold.service-rutine')
                         case 'datoNyttNavn':
                         case 'aksjonsDato':
                         case 'datoTom':
+                        case 'datogiroNrNorsk':
+                        case 'datoGiroNr':
                             $scope.formData[parameter] = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
@@ -299,6 +296,7 @@ angular.module('tps-vedlikehold.service-rutine')
 
                 serviceRutineFactory.getServiceRoutineConfig($scope.serviceRutineName).then(function (res){
                     $scope.responseFormConfig = res.data;
+                    nonUniqueProperties = res.data[$scope.serviceRutineName].nonUniqueProperties;
                 });
 
                 getServiceRutineInputFieldName();
@@ -307,7 +305,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 setSelectValues();
                 formatSelectValues();
 
-                getNonUniqueProperties();
                 initRequestForm();
                 overwriteTabFocusBehaviour();
             }

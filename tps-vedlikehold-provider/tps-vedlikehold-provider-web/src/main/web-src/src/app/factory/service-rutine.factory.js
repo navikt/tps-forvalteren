@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold.factory')
-    .factory('serviceRutineFactory', ['$http', 'serviceRutineConfig', function($http, serviceRutineConfig) {
+    .factory('serviceRutineFactory', ['$http', function($http) {
 
         var serviceRutineFactory = {};
         
@@ -109,20 +109,6 @@ angular.module('tps-vedlikehold.factory')
             // could probably be done in a better way
             var serviceRutineParametersNamesInOrder = [];
             var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
-            var serviceRutineFieldsOrderTemplate = [];
-
-            if (serviceRutineConfig[serviceRutineName]) {
-                serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
-            }
-
-            angular.forEach(serviceRutineFieldsOrderTemplate, function (value, key) {
-                var index = restServiceRutineParametersNames.indexOf(value);
-
-                if (index > -1) {
-                    serviceRutineParametersNamesInOrder.push(value);
-                    restServiceRutineParametersNames.splice(index, 1);
-                }
-            });
 
             return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
@@ -147,19 +133,6 @@ angular.module('tps-vedlikehold.factory')
         serviceRutineFactory.getEnvironments = function() {
             return environments;
         };
-
-        serviceRutineFactory.getNonUniqueProperties = function(serviceRutineName) {
-            if (serviceRutineConfig[serviceRutineName]) {
-                return serviceRutineConfig[serviceRutineName].nonUniquePropertiesContainer;
-            }
-            return [];
-        };
-
-        // serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutineName) {
-        //     if (serviceRutineConfig[serviceRutineName]) {
-        //         return serviceRutineConfig[serviceRutineName].serviceRutineReturnedDataLabel;
-        //     }
-        // };
 
         function getRequestParametersNames(requestMap, requestName) {
             var serviceRutineParametersNames = [];

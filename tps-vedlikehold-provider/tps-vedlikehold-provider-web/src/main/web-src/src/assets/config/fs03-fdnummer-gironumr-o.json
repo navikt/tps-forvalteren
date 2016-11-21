@@ -29,36 +29,35 @@
       [
         {
           "fieldData": "fnr",
-          "label": "Fødselsnummer",
-          "flex": 25
+          "label": "Fnr",
+          "flex": 20
         },
         {
           "fieldData": "fnrTidspunkt",
-          "label": "Fnr tidspunkt",
-          "flex": 25
+          "label": "Fnrtidspunkt",
+          "flex": 20
         },
         {
           "fieldData": "fnrSystem",
-          "label": "Fnr System",
+          "label": "Fnrsystem",
           "flex": 20
         },
         {
           "fieldData": "fnrSaksbehandler",
-          "label": "Fnr Saksbehandler",
+          "label": "Fnrsaksbehandler",
           "flex": 20
         }
       ],
-
       [
         {
-          "fieldData": "spesregTyp",
-          "label": "Spesreg Type",
-          "flex": 25
+          "fieldData": "spesregType",
+          "label": "Spesregtype",
+          "flex": 20
         },
         {
           "fieldData": "kortnavn",
           "label": "Kortnavn",
-          "flex": 25
+          "flex": 20
         },
         {
           "fieldData": "fornavn",
@@ -75,66 +74,65 @@
         {
           "fieldData": "etternavn",
           "label": "Etternavn",
-          "flex": 25
+          "flex": 20
         },
         {
           "fieldData": "navnTidspunkt",
-          "label": "Navn Tidspunkt",
-          "flex": 25
+          "label": "Navntidspunkt",
+          "flex": 20
         },
         {
           "fieldData": "navnSystem",
-          "label": "Navn system",
+          "label": "Navnsystem",
           "flex": 20
         },
         {
           "fieldData": "navnSaksbehandler",
-          "label": "Navn Saksbehandler",
+          "label": "Navnsaksbehandler",
           "flex": 20
         }
       ],
-
       [
         {
           "fieldData": "datoDo",
-          "label": "Dato Do",
-          "flex": 25
-        },
-        {
-          "fieldData": "doTidspunkt",
-          "label": "Do Tidspunkt",
-          "flex": 25
-        },
-        {
-          "fieldData": "doSystem",
-          "label": "DoSaksbehandler",
+          "label": "Datodo",
           "flex": 20
         },
         {
-          "fieldData": "tknr",
-          "label": "TKNR",
+          "fieldData": "doTidspunkt",
+          "label": "Dotidspunkt",
+          "flex": 20
+        },
+        {
+          "fieldData": "doSystem",
+          "label": "Dosystem",
+          "flex": 20
+        },
+        {
+          "fieldData": "doSaksbehandler",
+          "label": "Dosaksbehandler",
           "flex": 20
         }
       ],
       [
         {
-          "fieldData": "tknrTidspunkt",
-          "label": "TKRN Tidspunkt",
-          "flex": 25
-        },
-        {
-          "fieldData": "tknrSystem",
-          "label": "TKRN System",
-          "flex": 25
-        },
-        {
-          "fieldData": "tknrSaksbehandler",
-          "label": "DoSaksbehandler",
+          "fieldData": "tknr",
+          "label": "Tknr",
           "flex": 20
         },
         {
-          "fieldData": "tknr",
-          "label": "TKNR",
+          "fieldData": "tknrTidspunkt",
+          "label": "Tknrtidspunkt",
+          "flex": 20
+        },
+        {
+          "fieldData": "tknrSystem",
+          "label": "Tknrsystem",
+          "flex": 20
+        },
+        {
+          "fieldData": "tknrSaksbehandler",
+          "label": "Tknrsaksbehandler",
           "flex": 20
         }
       ],
@@ -142,16 +140,16 @@
         {
           "fieldData": "giroNummer",
           "label": "Gironummer",
-          "flex": 25
+          "flex": 20
         },
         {
           "fieldData": "giroTidspunktReg",
-          "label": "Giro Tidspunkt Reg.",
-          "flex": 25
+          "label": "Girotidspunktreg",
+          "flex": 20
         },
         {
           "fieldData": "giroSystem",
-          "label": "Giro System",
+          "label": "Girosystem",
           "flex": 20
         },
         {
@@ -159,8 +157,85 @@
           "label": "Girosaksbehandler",
           "flex": 20
         }
+      ],
+      [
+        {
+          "fieldData": "giroNrUtland",
+          "label": "Gironrutland",
+          "flex": 20
+        },
+        {
+          "fieldData": "swiftKodeUtland",
+          "label": "Swiftkodeutland",
+          "flex": 20
+        },
+        {
+          "fieldData": "bankKodeUtland",
+          "label": "Bankkodeutland",
+          "flex": 20
+        },
+        {
+          "fieldData": "bankNavnUtland",
+          "label": "Banknavnutland",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "fieldData": "bankAdresse1",
+          "label": "Bankadresse1",
+          "flex": 20
+        },
+        {
+          "fieldData": "bankAdresse2",
+          "label": "Bankadresse2",
+          "flex": 20
+        },
+        {
+          "fieldData": "bankAdresse3",
+          "label": "Bankadresse3",
+          "flex": 20
+        },
+        {
+          "fieldData": "bankLandKode",
+          "label": "Banklandkode",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "fieldData": "bankLand",
+          "label": "Bankland",
+          "flex": 20
+        },
+        {
+          "fieldData": "bankValuta",
+          "label": "Bankvaluta",
+          "flex": 20
+        },
+        {
+          "fieldData": "beskrBankValuta",
+          "label": "Beskrbankvaluta",
+          "flex": 20
+        },
+        {
+          "fieldData": "regTidspunkt",
+          "label": "Regtidspunkt",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "fieldData": "regSystem",
+          "label": "Regsystem",
+          "flex": 20
+        },
+        {
+          "fieldData": "regSaksbehandler",
+          "label": "Regsaksbehandler",
+          "flex": 20
+        }
       ]
     ]
   }
-
 }

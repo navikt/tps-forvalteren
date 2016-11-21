@@ -27,6 +27,14 @@
       ]
 
     },
+
+    "nonUniqueProperties":
+    [
+      "tlfPrivat",
+      "tlfJobb",
+      "tlfMobil"
+    ],
+
     "rows": [
       [
         {
