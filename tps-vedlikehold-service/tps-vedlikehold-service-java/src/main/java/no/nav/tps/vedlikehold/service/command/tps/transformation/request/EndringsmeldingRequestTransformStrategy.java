@@ -6,6 +6,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
+import no.nav.tps.vedlikehold.service.command.exceptions.XmlWriteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class EndringsmeldingRequestTransformStrategy implements RequestTransform
             xml = xmlMapper.writeValueAsString(systemInfo);
         } catch (IOException e) {
             LOGGER.error("Could not write xml as string");
-            throw new RuntimeException();
+            throw new XmlWriteException(e);
         }
         return xml;
     }
