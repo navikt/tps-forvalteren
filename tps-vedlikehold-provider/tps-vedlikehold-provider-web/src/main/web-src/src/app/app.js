@@ -15,7 +15,7 @@ require('./directives/directives.module');
 require('./factory/factory.module');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday', 'tps-vedlikehold.testdata']);
 
 require('./shared/index');
 require('./settings/index');
@@ -91,33 +91,34 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('root', {
-                url: '/',
-                resolve: {
-                    user: ['authenticationService', function (authenticationService) {
-                        return authenticationService.loadUser();
-                    }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
-                    }],
-                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerEnvironments();
-                    }]
-                },
-                views: {
-                    'content@': {
-                        templateUrl: "app/components/service-rutine/welcome.html",
-                        controller: 'ServiceRutineCtrl'
+                    url: '/',
+                    resolve: {
+                        user: ['authenticationService', function (authenticationService) {
+                            return authenticationService.loadUser();
+                        }],
+                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                            return serviceRutineFactory.loadFromServerServiceRutines();
+                        }],
+                        environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                            return serviceRutineFactory.loadFromServerEnvironments();
+                        }]
                     },
-                    'header@': {
-                        templateUrl: "app/shared/header/header.html",
-                        controller: 'HeaderCtrl'
-                    },
-                    'side-navigator@': {
-                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
-                        controller: 'SideNavigatorCtrl'
+                    views: {
+                        'content@': {
+                            templateUrl: "app/components/service-rutine/welcome.html",
+                            controller: 'ServiceRutineCtrl'
+                        },
+                        'header@': {
+                            templateUrl: "app/shared/header/header.html",
+                            controller: 'HeaderCtrl'
+                        },
+                        'side-navigator@': {
+                            templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                            controller: 'SideNavigatorCtrl'
+                        }
                     }
                 }
-            }
+            )
             .state('testdata', {
                     url: "/testdata",
                     params: {
@@ -131,9 +132,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                         serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                             return serviceRutineFactory.loadFromServerServiceRutines();
                         }],
-                        endringsmeldingPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                            return serviceRutineFactory.loadFromServerEndringsmeldinger();
-                        }],
                         environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                             return serviceRutineFactory.loadFromServerEnvironments();
                         }]
@@ -141,18 +139,18 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     views: {
                         'content@': {
                             templateUrl: "app/components/testdata/testdata.html",
-                            controller: 'EndringsmeldingCtrl'
+                            controller: 'TestDataCtrl'
                         },
                         'header@': {
                             templateUrl: "app/shared/header/header.html",
                             controller: 'HeaderCtrl'
                         },
                         'side-navigator@': {
-                            templateUrl: "app/shared/side-navigator/side-navigator-em.html",
+                            templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
                             controller: 'SideNavigatorCtrl'
                         }
                     }
-            }));
+            });
 
         $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
