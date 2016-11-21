@@ -1,9 +1,7 @@
 <md-input-container class="tps-vk-input-container" flex>
-    <label>Offentlig Ident</label>
-    <input name="navnInput" md-maxlength="11"  ng-model="formData.offentligIdent"/>
+    <label>Husbokstav</label>
+    <input name="navnInput" md-maxlength="5"  ng-model="formData.husbokstav"/>
     <div ng-messages="requestForm.navnInput.$error" ng-show="requestForm.navnInput$touched">
         <div ng-message="pattern">Feltet kan kun inneholde tall</div>
-        <div ng-message="md-maxlength">Maks lengde er 11</div>
     </div>
 </md-input-container>
-<!-- ng-pattern="onlyLetters" -->
