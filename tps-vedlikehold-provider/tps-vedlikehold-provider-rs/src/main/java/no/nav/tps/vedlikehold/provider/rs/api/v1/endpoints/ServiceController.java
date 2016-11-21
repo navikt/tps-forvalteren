@@ -3,7 +3,6 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
@@ -54,8 +53,6 @@ public class ServiceController {
     @Autowired
     private RsTpsResponseMappingUtils rsTpsResponseMappingUtils;
 
-    @Autowired
-    private MessageProvider messageProvider;
 
     @LogExceptions
     @RequestMapping(value = "/service/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
@@ -90,7 +87,7 @@ public class ServiceController {
             return rsTpsResponseMappingUtils.convertToResponse(response);
 
         } catch (HttpUnauthorisedException ex){
-            throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/" + request.getServiceRutinenavn());
+            throw new HttpUnauthorisedException(ex, "api/v1/service/" + request.getServiceRutinenavn());
         } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
