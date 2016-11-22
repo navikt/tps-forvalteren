@@ -43,7 +43,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
                     $scope.returStatus = response.status.kode;
 
-                    if(response === undefined) return;
+                    if(response.data === undefined) return;
                     $scope.personsData = extractPersonsData(response, nonUniqueProperties);
                     capitalizeFirstLetterInPersonsData(response);
                     var antallTreff = response.antallTotalt;
@@ -128,14 +128,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 }
             }
 
-            // function updateBufferChoices(antallTreff){  //TODO Delete. unused
-            //     var i = 0;
-            //     $scope.buffNumbers = [];
-            //     while(i < Math.ceil(parseInt(antallTreff)/34)){
-            //         $scope.buffNumbers[i] = (i+1).toString();
-            //         i++;
-            //     }
-            // }
 
             function extractPersonsData(responseObject, nonUniqueProperties) {
                 var personsData = {};

@@ -1,0 +1,9 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Type Tillegslinje </label>
+    <input name="navnInput" md-maxlength="30"  ng-model="formData.typeTilleggslinje"/>
+    <div ng-messages="requestForm.navnInput.$error" ng-show="requestForm.navnInput$touched">
+        <div ng-message="pattern">Feltet kan kun inneholde bokstaver</div>
+        <div ng-message="md-maxlength">Hva skal max lengde være?</div>
+    </div>
+</md-input-container>
+

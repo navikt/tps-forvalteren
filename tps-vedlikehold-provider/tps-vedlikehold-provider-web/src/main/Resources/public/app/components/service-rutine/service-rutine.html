@@ -10,10 +10,15 @@
                                      ng-if="$index < 5"></tps-input-field>
                 </div>
 
-                <!-- mid row-->
+                <!-- mid-upper row-->
                 <div layout-gt-xs="row" layout="column" layout-wrap>
                     <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >4"
-                                     ng-if="$index > 4"></tps-input-field>
+                                     ng-if="$index > 4 && $index < 10"></tps-input-field>
+                </div>
+                <!-- mid lower row -->
+                <div layout-gt-xs="row" layout="column" layout-wrap>
+                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >9"
+                                     ng-if="$index > 9"></tps-input-field>
                 </div>
 
                 <!-- lowest row-->
