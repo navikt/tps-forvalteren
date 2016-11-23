@@ -1,6 +1,41 @@
+<!--<script src="service-rutine.module.js"></script>-->
 <div layout="column">
-    <div layout-gt-xs="row" layout="column" ng-repeat="row in responseFormConfig[serviceRutineName].rows">
-        <tps-output-field  ng-repeat="field in row" field-model="personData[field.fieldData]" label="{{field.label}}" flex="{{field.flex}}">
-        </tps-output-field>
+    <!-- For Persons found. -->
+    <div flex-xs flex-gt-xs="60" layout="column">
+        <md-item class="tps-vk-response" ng-show="personsData" ng-repeat="(key, personData) in personsData | notEmpty">
+            <md-item-content ng-init="paramsToShow = responseFormConfig[serviceRutineName].display">
+                <md-card class="md-whiteframe-1dp tps-vk-response-card">
+                    <!-- Results unexpanded -->
+                    <div class="md-tile-content" ng-click="toggle = !toggle" layout="row" layout-align="start center">
+                        <div flex="5">
+                        </div>
+
+                        <div layout="column" flex>
+                            <div layout="row">
+                                <h3 class="tps-vk-response-card-header">{{resolveDisplayTemplate(paramsToShow.header, personData)}}</h3>
+                            </div>
+                            <div layout="row">
+                                <div flex="{{param.flex}}" class="tps-vk-output-container" ng-repeat="param in paramsToShow.properties">
+                                    <h4 class="tps-vk-output-label"> {{param.label}} </h4>
+                                    <p class="tps-vk-output-data">{{resolveDisplayTemplate(param.template, personData)}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results expanded -->
+                    <div class="tps-vk-response-expanded" ng-show="toggle" >
+                        <div layout-gt-xs="row" ng-repeat="row in responseFormConfig[serviceRutineName].rows" class="md-title-content" layout-align="start center">
+                            <div flex="5"> </div>
+                            <div ng-repeat="field in row" flex="{{field.flex}}">
+                                <tps-output-field  ng-show="personData[field.fieldData]" label="{{field.label}}" field-model="personData[field.fieldData]"> </tps-output-field>
+                                <tps-output-field-no-value ng-show="!personData[field.fieldData]" label="{{field.label}}"> </tps-output-field-no-value>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </md-item-content>
+        </md-item>
     </div>
 </div>
+

@@ -1,30 +1,17 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.ServiceRutineResponse;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsRequestMappingUtils;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpBadRequestException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsServiceRutineService;
-
+import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.FindServiceRoutineByName;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +21,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsSame.sameInstance;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -52,16 +51,25 @@ public class ServiceControllerTest {
     private UserContextHolder userContextHolderMock;
 
     @Mock
-    private TpsServiceRutineService tpsRutineServiceMock;
+    private TpsRequestService tpsRequestServiceMock;
 
     @Mock
-    private TpsAuthorisationService authorisationServiceMock;
+    private FindServiceRoutineByName findServiceRoutineByName;
 
     @Mock
-    private RsRequestMappingUtils mappingUtilsMock;
+    private TpsServiceRoutineDefinition tpsServiceRoutineDefinitionMock;
+
+    @Mock
+    private TpsServiceRoutineRequest serviceRoutineRequestMock;
+
+    @Mock
+    private RsTpsRequestMappingUtils mappingUtilsMock;
 
     @Mock
     private MessageProvider messageProviderMock;
+
+    @Mock
+    private RsTpsResponseMappingUtils rsTpsResponseMappingUtilsMock;
 
     @Mock
     private JsonNode baseJsonNode;
@@ -72,16 +80,20 @@ public class ServiceControllerTest {
     @Before
     @SuppressWarnings("unchecked")
     public void before() {
-        mockNodeContent(baseJsonNode, "fnr", FNR);
         mockNodeContent(baseJsonNode, "environment", ENVIRONMENT_U);
         mockNodeContent(baseJsonNode, "serviceRutinenavn", SERVICE_RUTINE_NAME);
 
         when(mappingUtilsMock.convert(any(Map.class), eq(JsonNode.class))).thenReturn(baseJsonNode);
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(true);
+        when(mappingUtilsMock.convertToTpsServiceRoutineRequest(SERVICE_RUTINE_NAME, baseJsonNode)).thenReturn(serviceRoutineRequestMock);
+
+        when(findServiceRoutineByName.execute(anyString())).thenReturn(Optional.of(tpsServiceRoutineDefinitionMock));
+        when(serviceRoutineRequestMock.getServiceRutinenavn()).thenReturn(SERVICE_RUTINE_NAME);
+
     }
 
     @Test
     public void getServiceUsingHttpGetSetsServiceRoutineNameOnParameters() {
+        mockNodeContent(baseJsonNode, "fnr", FNR);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
         parameters.put("fnr", FNR);
@@ -93,6 +105,7 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceUsingHttpGetCallsMappingUtilsWithMap() {
+        mockNodeContent(baseJsonNode, "fnr", FNR);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
         parameters.put("fnr", FNR);
@@ -103,84 +116,40 @@ public class ServiceControllerTest {
     }
 
     @Test
-    public void getServiceThrowsBadRequestWhenMissingEnvironment() {
-        mockNodeContent(baseJsonNode, "environment", null);
-        when(messageProviderMock.get("rest.service.request.exception.MissingRequiredParams")).thenReturn("val");
+    public void getServiceCallsMappingUtilsOnResponseFromRequestService() throws Exception {
+        mockNodeContent(baseJsonNode, "fnr", FNR);
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("environment", ENVIRONMENT_U);
+        parameters.put("fnr", FNR);
 
-        expectedException.expect(HttpBadRequestException.class);
-        expectedException.expectMessage("val");
+        Response response = mock(Response.class);
 
-        controller.getService(baseJsonNode);
+        when(tpsRequestServiceMock.executeServiceRutineRequest(any(), any(), any())).thenReturn(response);
+
+        controller.getService(parameters, SERVICE_RUTINE_NAME);
+
+        verify(rsTpsResponseMappingUtilsMock).convertToResponse(response);
     }
 
     @Test
-    public void getServiceThrowsBadRequestWhenMissingServiceRutinenavn() {
-        mockNodeContent(baseJsonNode, "serviceRutinenavn", null);
-        when(messageProviderMock.get("rest.service.request.exception.MissingRequiredParams")).thenReturn("val");
+    public void getServiceReturnsMappedTpsResponse() throws Exception {
+        mockNodeContent(baseJsonNode, "fnr", FNR);
 
-        expectedException.expect(HttpBadRequestException.class);
-        expectedException.expectMessage("val");
+        TpsServiceRoutineResponse response = mock(TpsServiceRoutineResponse.class);
+        Response r = mock(Response.class);
 
-        controller.getService(baseJsonNode);
-    }
+        when(tpsRequestServiceMock.executeServiceRutineRequest(
+                any(TpsServiceRoutineRequest.class),
+                eq(tpsServiceRoutineDefinitionMock),
+                any(TpsRequestContext.class))).thenReturn(r);
 
-    @Test
-    public void getServiceDoesNotCallAuthorizationServiceWhenFnrIsEmpty() {
-        mockNodeContent(baseJsonNode, "fnr", "");
+        when(rsTpsResponseMappingUtilsMock.convertToResponse(r)).thenReturn(response);
 
-        controller.getService(baseJsonNode);
-
-        verify(authorisationServiceMock, never()).userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class));
-    }
-
-    @Test
-    public void getServiceCallsAuthorizationServiceWhenFnrIsSet() {
-        mockNodeContent(baseJsonNode, "fnr", "13");
-
-        controller.getService(baseJsonNode);
-
-        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class));
-    }
-
-    @Test
-    public void getServiceCallsAuthorizationServiceUsingUserFnrAndEnvironment() {
-        User user = mock(User.class);
-        when(userContextHolderMock.getUser()).thenReturn(user);
-
-        controller.getService(baseJsonNode);
-
-        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(user, FNR, ENVIRONMENT_U);
-    }
-
-    @Test
-    public void getServiceThrowsUnauthorizedWhenAuthorizationFails() {
-        when(messageProviderMock.get("rest.service.request.exception.Unauthorized")).thenReturn("val");
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false);
-
-        expectedException.expect(HttpUnauthorisedException.class);
-        expectedException.expectMessage("val");
-
-        controller.getService(baseJsonNode);
-    }
-
-    @Test
-    public void getServiceThrowsInternalServerErrorWhenServiceRoutineFailed() throws Exception {
-        when(tpsRutineServiceMock.execute(any(TpsRequest.class))).thenThrow(new IllegalArgumentException());
-
-        expectedException.expect(HttpInternalServerErrorException.class);
-
-        controller.getService(baseJsonNode);
-    }
-
-    @Test
-    public void getServiceReturnsResultFromServiceRutineService() throws Exception {
-        ServiceRutineResponse response = mock(ServiceRutineResponse.class);
-        when(tpsRutineServiceMock.execute(any(TpsRequest.class))).thenReturn(response);
-
-        ServiceRutineResponse result = controller.getService(baseJsonNode);
+        TpsServiceRoutineResponse result = controller.getService(baseJsonNode);
 
         assertThat(result, is(sameInstance(response)));
     }
+
 
     private void mockNodeContent(JsonNode node, String key, Object value) {
         when(node.has(key)).thenReturn(value != null);
@@ -189,5 +158,4 @@ public class ServiceControllerTest {
         when(subNode.asText()).thenReturn(value != null ? value.toString() : null);
         when(node.get(key)).thenReturn(subNode);
     }
-
 }

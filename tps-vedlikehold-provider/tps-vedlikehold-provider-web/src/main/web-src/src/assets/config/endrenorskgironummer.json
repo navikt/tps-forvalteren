@@ -1,0 +1,27 @@
+{
+
+  "EndreNorskGironummer": {
+    "display": {
+      "header": "${offentligIdent}"
+    },
+    "rows": [
+      [
+        {
+          "label": "Offentlig Ident",
+          "fieldData": "offentligIdent",
+          "flex": 30
+        },
+        {
+          "label": "Gironummer Norsk",
+          "fieldData": "giroNrNorsk",
+          "flex": 30
+        },
+        {
+          "label": "Datagironummer Norsk",
+          "fieldData": "datogiroNrNorsk",
+          "flex": 30
+        }
+      ]
+    ]
+  }
+}

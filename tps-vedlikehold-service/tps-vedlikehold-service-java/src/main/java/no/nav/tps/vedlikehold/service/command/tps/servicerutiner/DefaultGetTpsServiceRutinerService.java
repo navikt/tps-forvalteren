@@ -4,7 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutine;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerS
     private List<ServiceRoutineResolver> resolvers;
 
     @Override
-    public List<TpsServiceRoutine> exectue() {
+    public List<TpsServiceRoutineDefinition> execute() {
         return resolvers.stream()
                 .map(ServiceRoutineResolver::resolve)
                 .collect(toList());

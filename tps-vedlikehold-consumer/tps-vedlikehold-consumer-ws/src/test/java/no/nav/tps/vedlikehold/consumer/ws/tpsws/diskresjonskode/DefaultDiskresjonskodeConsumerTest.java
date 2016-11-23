@@ -86,7 +86,7 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     @Test
     public void getDiskresjonskodeRequestIsSentWithCorrectFNr() throws Exception {
-        diskresjonskodeConsumer.getDiskresjonskode(TEST_FNR);
+        diskresjonskodeConsumer.getDiskresjonskodeResponse(TEST_FNR);
 
         ArgumentCaptor<HentDiskresjonskodeRequest> captor = ArgumentCaptor.forClass(HentDiskresjonskodeRequest.class);
         verify(diskresjonskodePortType).hentDiskresjonskode(captor.capture());
@@ -111,7 +111,7 @@ public class DefaultDiskresjonskodeConsumerTest {
                 any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
 
-        String result = diskresjonskodeConsumer.getDiskresjonskode("0").getDiskresjonskode();
+        String result = diskresjonskodeConsumer.getDiskresjonskodeResponse("0").getDiskresjonskode();
 
         assertThat(result, is(equalTo("")));
     }
@@ -122,7 +122,7 @@ public class DefaultDiskresjonskodeConsumerTest {
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
 
-        String result = diskresjonskodeConsumer.getDiskresjonskode("11111111111").getDiskresjonskode();
+        String result = diskresjonskodeConsumer.getDiskresjonskodeResponse("11111111111").getDiskresjonskode();
 
         assertThat(result, is(equalTo("")));
     }

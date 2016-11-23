@@ -35,9 +35,9 @@
         <application.name>tps-vedlikehold</application.name>
         <application.version>${project.version}</application.version>
         <application-ear.version>7</application-ear.version>
+        <lombok.version>1.16.10</lombok.version>
 
         <!--SonarQube-->
-        <jacoco.version>0.7.7.201606060606</jacoco.version>
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-vedlikehold/domain/test/**</sonar.exclusions>
         <sonar.coverage.exclusions>**/vedlikehold/domain/**,**Constants.java,**ServletInitializer.java</sonar.coverage.exclusions>
 
@@ -70,8 +70,17 @@
         <aura-maven-plugin.version>6.1.20</aura-maven-plugin.version>
         <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
         <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
+        <frontend-maven-plugin.version>1.2</frontend-maven-plugin.version>
         <jgitflow-maven-plugin.version>1.0-m5.1</jgitflow-maven-plugin.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -296,37 +305,16 @@
                     </configuration>
                 </plugin>
 
-                <!--Sonar-->
                 <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.version}</version>
-                    <executions>
-                        <!-- Generate an aggregated code coverage report for all sub-modules and store it in the target folder as jacoco.exec. -->
-                        <execution>
-                            <id>generate-coverage-reports</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <append>true</append>
-                                <includes>
-                                    <include>no.nav.*</include>
-                                </includes>
-                                <destFile>${session.executionRootDirectory}/target/jacoco.exec</destFile>
-                            </configuration>
-                        </execution>
-                    </executions>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${frontend-maven-plugin.version}</version>
                 </plugin>
+
             </plugins>
         </pluginManagement>
 
         <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>

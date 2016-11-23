@@ -1,95 +1,60 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
-import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.AuthorisationServiceStrategy;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.ReadAuthorisationServiceStrategy;
-
+import no.nav.tps.vedlikehold.domain.service.command.User.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.service.command.authorisation.strategy.RestSecurityStrategy;
+import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SearchSecurityStrategy;
+import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SecurityStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
 
     @Autowired
-    private RolesService rolesService;
+    private List<SearchSecurityStrategy> searchPersonSecurityStrategies;
 
     @Autowired
-    private DiskresjonskodeConsumer diskresjonskodeConsumer;
+    private List<RestSecurityStrategy> restSecurityStrategies;
 
-    @Autowired
-    private EgenAnsattConsumer egenAnsattConsumer;
-
-    /**
-     * Convenience method authorising the user based on its roles, 'diskresjonskode', and 'egen ansatt'.
-     *
-     * @param user user trying to access a person's data
-     * @param fnr fnr of the person to be accessed
-     * @param environment environment in which to contact TPS
-     * @return <code>Boolean</code> indicating whether the user is authorised
-     */
     @Override
-    public boolean userIsAuthorisedToReadPersonInEnvironment(User user, String fnr, String environment) {
-
-        /* Diskresjonskode */
-        DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeStrategy = new DiskresjonskodeAuthorisationServiceStrategy();
-
-        diskresjonskodeStrategy.setDiskresjonskodeConsumer(diskresjonskodeConsumer);
-        diskresjonskodeStrategy.setUser(user);
-        diskresjonskodeStrategy.setFnr(fnr);
-
-        /* Egen ansatt */
-        EgenAnsattAuthorisationServiceStrategy egenAnsattStrategy = new EgenAnsattAuthorisationServiceStrategy();
-
-        egenAnsattStrategy.setEgenAnsattConsumer(egenAnsattConsumer);
-        egenAnsattStrategy.setUser(user);
-        egenAnsattStrategy.setFnr(fnr);
-
-        /* Read environment */
-        ReadAuthorisationServiceStrategy readStrategy = new ReadAuthorisationServiceStrategy();
-
-        readStrategy.setUser(user);
-        readStrategy.setReadRoles( rolesService.getRolesForEnvironment(environment, READ) );
-
-
-        List<AuthorisationServiceStrategy> strategies = Arrays.asList(
-                diskresjonskodeStrategy,
-                egenAnsattStrategy,
-                readStrategy
-        );
-
-        return isAuthorised(strategies);
-    }
-
-    /**
-     * Authorises the user based on an arbitrary collection of strategies.
-     * Should make adding additional authorisation procedures easy as pie.
-     *
-     * @param strategies authorisation strategies used to authorise the user
-     * @return boolean indicating whether the user is authorised
-     */
-    @Override
-    public boolean isAuthorised(Collection<AuthorisationServiceStrategy> strategies) {
-
-        for (AuthorisationServiceStrategy strategy : strategies) {
-            if (!strategy.isAuthorised()) {
-                return false;
-            }
+    public void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine, String environment, User user) {
+        for (AuthorisationStrategy auth: serviceRoutine.getSecurityServiceStrategies()) {
+            getUnauthorizedStrategies(auth, user, environment, restSecurityStrategies)
+                    .stream()
+                    .forEach(s -> s.handleUnauthorised(user.getRoles(), environment));
         }
-
-        return true;
     }
+
+    public boolean isAuthorisedToSeePerson(TpsServiceRoutineDefinition serviceRoutine, String fnr, User user) {
+        return !serviceRoutine.getSecurityServiceStrategies()
+                .stream()
+                .filter(s -> !isAuthorised(s, user, fnr, searchPersonSecurityStrategies))
+                .findFirst()
+                .isPresent();
+    }
+
+
+    private List<SecurityStrategy> getUnauthorizedStrategies (AuthorisationStrategy authorisation, User user, String param, List<? extends SecurityStrategy> securityStrategies) {
+        return securityStrategies
+                .stream()
+                .filter(s -> s.isSupported(authorisation))
+                .filter(s -> !s.isAuthorised(user.getRoles(), param))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isAuthorised (AuthorisationStrategy authorisation, User user, String param, List<? extends SecurityStrategy> securityStrategies) {
+        return !securityStrategies
+                .stream()
+                .filter(s -> s.isSupported(authorisation))
+                .filter(s -> !s.isAuthorised(user.getRoles(), param))
+                .findFirst()
+                .isPresent();
+    }
+
+
 }

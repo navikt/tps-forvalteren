@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
+import no.nav.tps.vedlikehold.domain.service.command.User.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 
 import org.springframework.beans.factory.annotation.Autowired;

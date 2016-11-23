@@ -1,27 +1,30 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.vedlikehold.domain.service.command.authorisation.User;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.AuthorisationServiceStrategy;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.DiskresjonskodeAuthorisationServiceStrategy;
-import no.nav.tps.vedlikehold.service.command.authorisation.strategies.EgenAnsattAuthorisationServiceStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.User.User;
+import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.AuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.service.command.authorisation.strategy.RestSecurityStrategy;
+import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SearchSecurityStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.internal.util.collections.Sets;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
-import static java.util.Collections.singleton;
-import static no.nav.tps.vedlikehold.service.command.authorisation.RolesService.RoleType.READ;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.eq;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,80 +35,130 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultTpsAuthorisationServiceTest {
 
-    private static final String FNR         = "12345678910";
-    private static final String ENVIRONMENT = "t1";
+    private static final String FNR = "01018012345";
+    private static final String ENVIRONMENT = "environment";
 
-    @Mock
-    private User userMock;
 
-    @Mock
-    private RolesService rolesServiceMock;
+    @Spy
+    private List<SearchSecurityStrategy> searchPersonSecurityStrategies = new ArrayList<>();
 
-    @Mock
-    private DiskresjonskodeAuthorisationServiceStrategy diskresjonskodeAuthorisationStrategy;
-
-    @Mock
-    private EgenAnsattAuthorisationServiceStrategy egenAnsattAuthorisationStrategy;
-
-    @Mock
-    private EgenAnsattConsumer egenAnsattConsumerMock;
-
-    @Mock
-    DiskresjonskodeConsumer diskresjonskodeConsumerMock;
-
-    @Mock
-    HentDiskresjonskodeResponse hentDiskresjonskodeResponseMock;
+    @Spy
+    private List<RestSecurityStrategy> restSecurityStrategies = new ArrayList<>();
 
     @InjectMocks
-    private DefaultTpsAuthorisationService defaultTpsAuthorisationService;
-
+    private DefaultTpsAuthorisationService command;
 
     @Before
-    public void setUp() throws Exception {
-        when( diskresjonskodeAuthorisationStrategy.isAuthorised()).thenReturn(true);
-        when( egenAnsattAuthorisationStrategy.isAuthorised() ).thenReturn(true);
+    public void before() {
+    }
 
-        when(diskresjonskodeConsumerMock.getDiskresjonskode(eq(FNR))).thenReturn(hentDiskresjonskodeResponseMock);
-        when(hentDiskresjonskodeResponseMock.getDiskresjonskode()).thenReturn("1");
+
+    @Test
+    public void isAuthorisedToSeePersonReturnsTrueIfUserIsAuthorisedForAllSearchStrategies() {
+        AuthorisationStrategy a1 = mock(AuthorisationStrategy.class);
+        AuthorisationStrategy a2 = mock(AuthorisationStrategy.class);
+
+        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+
+        when(serviceRoutine.getSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2));
+
+        SearchSecurityStrategy s1 = mock(SearchSecurityStrategy.class);
+        SearchSecurityStrategy s2 = mock(SearchSecurityStrategy.class);
+
+        searchPersonSecurityStrategies.add(s1);
+        searchPersonSecurityStrategies.add(s2);
+
+        when(s1.isSupported(a1)).thenReturn(true);
+        when(s1.isSupported(a2)).thenReturn(false);
+
+        when(s2.isSupported(a1)).thenReturn(false);
+        when(s2.isSupported(a2)).thenReturn(true);
+
+        when(s1.isAuthorised(any(), any())).thenReturn(true);
+        when(s2.isAuthorised(any(), any())).thenReturn(true);
+
+        User user = new User("name", "username", Sets.newSet("rolle"));
+
+        boolean isAuthorised = command.isAuthorisedToSeePerson(serviceRoutine, FNR, user);
+
+        assertThat(isAuthorised, is(true));
     }
 
     @Test
-    public void userIsUnauthorisedIfAnyStrategyReturnsFalse()  {
-        when( egenAnsattAuthorisationStrategy.isAuthorised() ).thenReturn(false);
+    public void isAuthorisedToSeePersonReturnsFalseIfUserNotIsAuthorisedForAllSearchStrategies() {
+        AuthorisationStrategy a1 = mock(AuthorisationStrategy.class);
+        AuthorisationStrategy a2 = mock(AuthorisationStrategy.class);
 
-        Collection<AuthorisationServiceStrategy> strategies = Arrays.asList(
-                diskresjonskodeAuthorisationStrategy,
-                egenAnsattAuthorisationStrategy
-        );
+        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
 
-        Boolean result = defaultTpsAuthorisationService.isAuthorised(strategies);
+        when(serviceRoutine.getSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2));
 
-        assertThat(result, is(false));
+        SearchSecurityStrategy s1 = mock(SearchSecurityStrategy.class);
+        SearchSecurityStrategy s2 = mock(SearchSecurityStrategy.class);
+
+        searchPersonSecurityStrategies.add(s1);
+        searchPersonSecurityStrategies.add(s2);
+
+        when(s1.isSupported(a1)).thenReturn(true);
+        when(s1.isSupported(a2)).thenReturn(false);
+
+        when(s2.isSupported(a1)).thenReturn(false);
+        when(s2.isSupported(a2)).thenReturn(true);
+
+        when(s1.isAuthorised(any(), any())).thenReturn(true);
+        when(s2.isAuthorised(any(), any())).thenReturn(false);
+
+        User user = new User("name", "username", Sets.newSet("rolle"));
+
+        boolean isAuthorised = command.isAuthorisedToSeePerson(serviceRoutine, FNR, user);
+
+        assertThat(isAuthorised, is(false));
     }
+
 
     @Test
-    public void userIsAuthorisedIfAllStrategiesReturnTrue()  {
-        Collection<AuthorisationServiceStrategy> strategies = Arrays.asList(
-                diskresjonskodeAuthorisationStrategy,
-                egenAnsattAuthorisationStrategy
-        );
+    public void authoriseRestCallsHandleUnauthorizedForSupportedAndUnauthorizedStrategies() {
 
-        Boolean result = defaultTpsAuthorisationService.isAuthorised(strategies);
+        AuthorisationStrategy a1 = mock(AuthorisationStrategy.class);
+        AuthorisationStrategy a2 = mock(AuthorisationStrategy.class);
+        AuthorisationStrategy a3 = mock(AuthorisationStrategy.class);
 
-        assertThat(result, is(true));
+        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+
+        when(serviceRoutine.getSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2, a3));
+
+        RestSecurityStrategy s1 = mock(RestSecurityStrategy.class);
+        RestSecurityStrategy s2 = mock(RestSecurityStrategy.class);
+        RestSecurityStrategy s3 = mock(RestSecurityStrategy.class);
+
+        restSecurityStrategies.add(s1);
+        restSecurityStrategies.add(s2);
+        restSecurityStrategies.add(s3);
+
+        when(s1.isSupported(a1)).thenReturn(true);
+        when(s1.isSupported(a2)).thenReturn(false);
+        when(s1.isSupported(a3)).thenReturn(false);
+
+        when(s2.isSupported(a1)).thenReturn(false);
+        when(s2.isSupported(a2)).thenReturn(true);
+        when(s2.isSupported(a3)).thenReturn(false);
+
+        when(s3.isSupported(a1)).thenReturn(false);
+        when(s3.isSupported(a2)).thenReturn(false);
+        when(s3.isSupported(a3)).thenReturn(false);
+
+        when(s1.isAuthorised(any(), any())).thenReturn(true);
+        when(s2.isAuthorised(any(), any())).thenReturn(false);
+        when(s3.isAuthorised(any(), any())).thenReturn(false);
+
+        Set<String> roles = Sets.newSet("rolle");
+        User user = new User("name", "username", roles);
+
+        command.authoriseRestCall(serviceRoutine, ENVIRONMENT, user);
+
+        verify(s1, times(0)).handleUnauthorised(eq(roles), anyString());
+        verify(s2, times(1)).handleUnauthorised(eq(roles), anyString());
+        verify(s3, times(0)).handleUnauthorised(eq(roles), anyString());
+
     }
-
-    @Test
-    public void userIsAuthorisedOverloadUsesDiskresjonskodeEgenAnsattAndEnvironmentAuthorisation() throws Exception {
-
-        when(rolesServiceMock.getRolesForEnvironment(eq("t"), eq(READ))).thenReturn( singleton("readTRole") );
-        when(userMock.getRoles()).thenReturn(singleton("readTRole"));
-
-
-        defaultTpsAuthorisationService.userIsAuthorisedToReadPersonInEnvironment(userMock, FNR, ENVIRONMENT);
-
-        verify(diskresjonskodeConsumerMock).getDiskresjonskode(eq(FNR));
-        verify(egenAnsattConsumerMock).isEgenAnsatt(eq(FNR));
-    }
-
 }

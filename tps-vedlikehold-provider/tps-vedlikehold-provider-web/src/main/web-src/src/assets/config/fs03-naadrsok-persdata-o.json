@@ -1,0 +1,122 @@
+{
+
+  "FS03-NAADRSOK-PERSDATA-O": {
+    "display": {
+      "header": "${etternavn}, ${fornavn}",
+      "properties": [
+        {
+          "label": "Addresse",
+          "template": "${adresse1}, ${postnr} ${poststed}",
+          "flex": 30
+        },
+        {
+          "label": "Fødselsnummer",
+          "template": "${fnr}",
+          "flex": 20
+        },
+        {
+          "label": "TK-nummer",
+          "template": "${tknr}",
+          "flex": 20
+        },
+        {
+          "label": "Kommune",
+          "template": "${kommunenr}",
+          "flex": 20
+        }
+      ]
+    },
+    "rows": [
+      [
+        {
+          "fieldData": "fnr",
+          "label": "Fødselsnummer",
+          "flex": 25
+        },
+        {
+          "fieldData": "fornavn",
+          "label": "Fornavn",
+          "flex": 25
+        },
+        {
+          "fieldData": "mellomnavn",
+          "label": "Mellomnavn",
+          "flex": 20
+        },
+        {
+          "fieldData": "etternavn",
+          "label": "Etternavn",
+          "flex": 20
+        }
+      ],
+
+      [
+        {
+          "fieldData": "adresseType",
+          "label": "Adresse type",
+          "flex": 25
+        },
+        {
+          "fieldData": "adresse1",
+          "label": "Adresse 1",
+          "flex": 25
+        },
+        {
+          "fieldData": "adresse2",
+          "label": "Adresse 2",
+          "flex": 20
+        },
+        {
+          "fieldData": "adresse3",
+          "label": "Adresse 3",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "fieldData": "landKode",
+          "label": "Adresse landkode",
+          "flex": 25
+        },
+        {
+          "fieldData": "kommunenr",
+          "label": "Kommunenr",
+          "flex": 25
+        },
+        {
+          "fieldData": "poststed",
+          "label": "Poststed",
+          "flex": 20
+        },
+        {
+          "fieldData": "postnr",
+          "label": "Postnummer",
+          "flex": 20
+        }
+      ],
+
+      [
+        {
+          "fieldData": "statsborgerskap",
+          "label": "Statsborgerskap",
+          "flex": 25
+        },
+        {
+          "fieldData": "kjonn",
+          "label": "Kjonn",
+          "flex": 25
+        },
+        {
+          "fieldData": "tknr",
+          "label": "TkNr",
+          "flex": 20
+        },
+        {
+          "fieldData": "personStatus",
+          "label": "PersonStatus",
+          "flex": 20
+        }
+      ]
+    ]
+  }
+}

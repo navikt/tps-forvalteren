@@ -21,6 +21,10 @@
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-domain-ws</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-domain-service</artifactId>
+        </dependency>
 
         <!--SPRING-->
         <dependency>

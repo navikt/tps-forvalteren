@@ -22,16 +22,16 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
-            <artifactId>tps-vedlikehold-consumer-ws</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-domain-service</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-java</artifactId>
         </dependency>
 
         <!-- SPRING -->
@@ -46,11 +46,18 @@
             <artifactId>jackson-xml-databind</artifactId>
         </dependency>
 
+        <!-- Org.json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>org.apache.directory.studio</groupId>
             <artifactId>org.apache.commons.io</artifactId>
         </dependency>
+
     </dependencies>
     
 </project>

@@ -1,22 +1,45 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
-    <div ng-show="loadServiceRutineTemplate()" layout="column" flex>
+    <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>
         <div class="tps-vk-top md-whiteframe-z2">
+
+            <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
+                <!-- upper row -->
                 <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"></tps-input-field>
+                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"
+                                     ng-if="$index < 5"></tps-input-field>
                 </div>
+
+                <!-- mid-upper row-->
+                <div layout-gt-xs="row" layout="column" layout-wrap>
+                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >4"
+                                     ng-if="$index > 4 && $index < 10"></tps-input-field>
+                </div>
+                <!-- mid lower row -->
+                <div layout-gt-xs="row" layout="column" layout-wrap>
+                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >9"
+                                     ng-if="$index > 9"></tps-input-field>
+                </div>
+
+                <!-- lowest row-->
                 <div class="tps-vk-submit-container" layout-gt-xs="row" layout="column" layout-align>
-                    <md-input-container flex-gt-xs flex="33" class="tps-vk-input-container">
+                    <md-input-container flex-gt-xs flex="20" class="tps-vk-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
                             <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex-gt-xs flex="66" class="tps-vk-input-container tps-vk-form-btns" layout-align="center center">
-                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-disabled="requestForm.$invalid || loading">
+
+                    <md-input-container flex-gt-xs flex="80" class="tps-vk-input-container tps-vk-form-btns"
+                                        layout-align="center center">
+                        <!-- Submit request Button -->
+                        <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                                   ng-disabled="requestForm.$invalid || loading">
                             Send til TPS
                         </md-button>
-                        <md-button class="md-fab  md-accent tps-vk-refresh-btn" type="button" ng-transclude="" aria-label="Fjern responsdata." ng-click="clearResponseForm()">
+                        <!-- Clear response Button -->
+                        <md-button class="md-fab  md-accent tps-vk-refresh-btn" type="button" ng-transclude=""
+                                   aria-label="Fjern responsdata." ng-click="clearResponseForm()">
                             <ng-md-icon icon="delete_sweep" aria-label="Fjern responsdata."></ng-md-icon>
                             <md-tooltip md-direction="top">
                                 <span>Fjern responsdata</span>
@@ -25,30 +48,58 @@
                     </md-input-container>
                 </div>
             </form>
+            <!-- Loading bar -->
             <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+
+
+            <!-- Resulting Response -->
         </div>
         <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
+            <!-- Setup Tabs -->
             <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
-                <md-tab label="Resultat">
+                <!-- Tab Readable Result -->
+                <md-tab label="Resultat" style="background-color: rgb(250,250,250)">
+                    <!-- Include HTML file "response.html" -->
                     <div ng-include="'app/components/service-rutine/response.html'" class="tps-vk-response-form">
                     </div>
                 </md-tab>
+                <!-- Tab XML Result -->
                 <md-tab label="XML">
                     <div class="tps-vk-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
                     </div>
                 </md-tab>
             </md-tabs>
         </md-content>
-        <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="center center">
-            <div class="tps-vk-status" flex ng-show="svarStatus">
-                <ng-md-icon class="tps-vk-status-icon" ng-class="returStatus == '00' ? 'success' : 'error'" icon="fiber_manual_record"></ng-md-icon>
+
+        <!-- Footer Response -->
+        <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="start center">
+            <div class="tps-vk-hits" flex="45" layout="row" layout-align="start center">
+                <div class="tps-vk-hits-meesage" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0 ">
+                     Treff: {{ getAntallTreff(personsData)  }}
+                </div>
+                <div ng-show='formData["buffNr"]' class="tps-vk-hits-message" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0" >
+                     Viser treff: {{ getStartIndex(formData["buffNr"]) }} - {{ getEndIndex(formData["buffNr"], getAntallTreff(personsData))  }}
+                </div>
+            </div>
+
+            <div ng-show='formData["buffNr"]' class="tps-vk-hits" layout="row" flex="10" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0">
+                <ng-md-icon ng-click="pageBackwards()" icon="fast_rewind" size="24" style="fill: #bdbdbd"></ng-md-icon>
+                <div class="tps-vk-hits-message"> Paging </div>
+                <ng-md-icon ng-click="pageForward()" icon="fast_forward" size="24" style="fill: #bdbdbd"></ng-md-icon>
+            </div>
+
+            <div class="tps-vk-status" flex="45" ng-show="svarStatus">
+                <ng-md-icon class="tps-vk-status-icon" ng-class="returStatus == '00' ? 'success' : 'error'"
+                            icon="fiber_manual_record"></ng-md-icon>
                 <div class="tps-vk-status-message">
                     {{svarStatus}}
                 </div>
             </div>
         </md-content>
     </div>
-    <div ng-show="!loadServiceRutineTemplate()"  layout="column" flex>
+
+    <!-- Velkomstsmelding -->
+    <div ng-show="!loadServiceRutineTemplate() && !loadEndringsmeldingTemplate()" layout="column" flex>
         <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
     </div>
 </div>

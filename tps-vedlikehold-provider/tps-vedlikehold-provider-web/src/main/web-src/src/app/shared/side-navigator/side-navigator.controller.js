@@ -8,13 +8,17 @@ angular.module('tps-vedlikehold')
         $scope.getServiceRutineInternalName = function(serviceRutineName) {
             return serviceRutineFactory.getServiceRutineInternalName(serviceRutineName);
         };
+
+        $scope.getEndringsmeldingInternalName = function(endringsmeldingName){
+            return serviceRutineFactory.getEndringsmeldingInternalName(endringsmeldingName);
+        };
             
-        function showAlertApiError() {
+        function showAlertApiError(requestType) {
             $mdDialog.show(
                 $mdDialog.alert()
                     .title('Serverfeil')
-                    .textContent('Fikk ikke hentet informasjon om servicerutiner fra server.')
-                    .ariaLabel('Feil ved henting av servicerutiner')
+                    .textContent('Fikk ikke hentet informasjon om '+ requestType +' fra server.')
+                    .ariaLabel('Feil ved henting av ' + requestType)
                     .ok('OK')
             );
         }
@@ -23,8 +27,13 @@ angular.module('tps-vedlikehold')
             if (serviceRutinesPromise) {
                 $scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
             } else {
-                showAlertApiError();
+                showAlertApiError("servicerutiner");
             }
+            // if(endringsmeldingPromise){
+            //     $scope.endringsmeldingNames = serviceRutineFactory.getEndringsmeldingerNames();
+            // } else {
+            //     showAlertApiError("endringsmeldinger");
+            // }
         }
         
         init();

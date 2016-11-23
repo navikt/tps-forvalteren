@@ -2,19 +2,23 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold.factory')
-    .factory('serviceRutineFactory', ['$http', 'serviceRutineConfig', function($http, serviceRutineConfig) {
+    .factory('serviceRutineFactory', ['$http', function($http) {
 
         var serviceRutineFactory = {};
         
         var urlBase = 'api/v1/service';
         var urlRoutinesBase = 'api/v1/serviceroutine';
+        var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
         var urlBaseEnv = 'api/v1/environments';
+        var urlConfig = '/assets/config/';
 
         var serviceRutines = {};
+        var endringsmeldinger = {};
         var environments = [];
         
         var isSetServiceRutines = false;
         var isSetEnvironments = false;
+        var isSetEndringsmeldinger = false;
 
         serviceRutineFactory.isSetServiceRutines = function () {
             return isSetServiceRutines;
@@ -24,10 +28,14 @@ angular.module('tps-vedlikehold.factory')
             return isSetEnvironments;
         };
 
+        serviceRutineFactory.isSetEndringsmeldinger = function () {
+           return isSetEndringsmeldinger;
+        };
+
         serviceRutineFactory.loadFromServerServiceRutines = function() {
-            return $http({method: 'GET', url: urlRoutinesBase}).then(function(res) {
-                if (res.data) {
-                    var serviceRutineList = res.data;
+            return $http({method: 'GET', url: urlRoutinesBase}).then(function(response) {
+                if (response.data) {
+                    var serviceRutineList = response.data;
 
                     for (var i = 0; i < serviceRutineList.length; i++) {
                         serviceRutines[serviceRutineList[i].name] = serviceRutineList[i];
@@ -41,6 +49,24 @@ angular.module('tps-vedlikehold.factory')
             }, function(error) {
                 return null;
             });
+        };
+
+
+        serviceRutineFactory.loadFromServerEndringsmeldinger = function(){
+          return $http({method: 'GET', url: urlEndrinsmeldinger}).then(function(response){
+              if(response.data){
+                  var endringsmeldingList = response.data;
+                  for(var i = 0; i < endringsmeldingList.length; i++){
+                      endringsmeldinger[endringsmeldingList[i].name] = endringsmeldingList[i];
+                  }
+                  isSetEndringsmeldinger = true;
+                  return endringsmeldinger;
+              } else {
+                  return null;
+              }
+          }, function (error) {
+              return null;
+          });
         };
 
         serviceRutineFactory.loadFromServerEnvironments = function() {
@@ -57,6 +83,7 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutines;
         };
 
+
         serviceRutineFactory.getServiceRutineNames = function() {
             var serviceRutineNames = [];
 
@@ -66,87 +93,80 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutineNames;
         };
 
+        //TODO Prøv å generaliser dette igjen...
         serviceRutineFactory.getServiceRutineInternalName = function(serviceRutineName) {
             return serviceRutines[serviceRutineName].internalName;
         };
 
+
         serviceRutineFactory.getServiceRutineParametersNames = function(serviceRutineName) {
-            var serviceRutineParametersNames = [];
-
-            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
-                this.push(value.name);
-            }, serviceRutineParametersNames);
-
-            return serviceRutineParametersNames;
+            return getRequestParametersNames(serviceRutines, serviceRutineName);
         };
 
+        //TODO Fjern. Finner aldri order templates uansett.
         serviceRutineFactory.getServiceRutineParametersNamesInOrder = function(serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
             // could probably be done in a better way
             var serviceRutineParametersNamesInOrder = [];
             var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
-            var serviceRutineFieldsOrderTemplate = [];
-
-            if (serviceRutineConfig[serviceRutineName]) {
-                serviceRutineFieldsOrderTemplate = serviceRutineConfig[serviceRutineName].serviceRutineFieldsOrderTemplate;
-            }
-
-            angular.forEach(serviceRutineFieldsOrderTemplate, function (value, key) {
-                var index = restServiceRutineParametersNames.indexOf(value);
-
-                if (index > -1) {
-                    serviceRutineParametersNamesInOrder.push(value);
-                    restServiceRutineParametersNames.splice(index, 1);
-                }
-            });
 
             return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
 
         serviceRutineFactory.getServiceRutineRequiredParametersNames = function(serviceRutineName) {
-            var serviceRutineRequiredParametersNames = [];
-
-            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
-                if (value.use === "required") {
-                    this.push(value.name);
-                }
-            }, serviceRutineRequiredParametersNames);
-
-            return serviceRutineRequiredParametersNames;
+            return getRequestRequiredParametersNames(serviceRutines, serviceRutineName);
         };
 
-        serviceRutineFactory.getSelectValues = function (serviceRutineName) {
-            var selectValues = {};
-
-            angular.forEach(serviceRutines[serviceRutineName].parameters, function (value, key) {
-                if (value.values) {
-                    this[value.name] = value.values;
-                }
-            }, selectValues);
-
-            return selectValues;
+        serviceRutineFactory.getSelectValuesServiceRutine = function (serviceRutineName) {
+            return getSelectValues(serviceRutines, serviceRutineName);
         };
 
-        serviceRutineFactory.getResponse = function(serviceRutineName, params) {
+        serviceRutineFactory.getServiceRutineResponse = function(serviceRutineName, params) {
             return $http({method: 'GET', url:urlBase + '/' + serviceRutineName, params:params});
+        };
+
+        serviceRutineFactory.getServiceRoutineConfig = function(serviceRutineName){
+            var srn = serviceRutineName.toLowerCase();
+            return $http.get(urlConfig+srn+'.json');
         };
 
         serviceRutineFactory.getEnvironments = function() {
             return environments;
         };
 
-        serviceRutineFactory.getNonUniqueProperties = function(serviceRutineName) {
-            if (serviceRutineConfig[serviceRutineName]) {
-                return serviceRutineConfig[serviceRutineName].nonUniquePropertiesContainer;
-            }
-            return [];
-        };
+        function getRequestParametersNames(requestMap, requestName) {
+            var serviceRutineParametersNames = [];
 
-        serviceRutineFactory.getServiceRutineReturnedDataLabel = function(serviceRutineName) {
-            if (serviceRutineConfig[serviceRutineName]) {
-                return serviceRutineConfig[serviceRutineName].serviceRutineReturnedDataLabel;
-            }
-        };
+            angular.forEach(requestMap[requestName].parameters, function (value, key) {
+                this.push(value.name);
+            }, serviceRutineParametersNames);
+
+            return serviceRutineParametersNames;
+        }
+
+        function getRequestRequiredParametersNames(requestMap, requestName){
+            var requestRequiredParametersNames = [];
+
+            angular.forEach(requestMap[requestName].parameters, function (value, key) {
+                if (value.use === "required") {
+                    this.push(value.name);
+                }
+            }, requestRequiredParametersNames);
+
+            return requestRequiredParametersNames;
+        }
+
+        function getSelectValues(requestMap, requestName){
+            var selectValues = {};
+
+            angular.forEach(requestMap[requestName].parameters, function (value, key) {
+                if (value.values) {
+                    this[value.name] = value.values;
+                }
+            }, selectValues);
+
+            return selectValues;
+        }
 
         return serviceRutineFactory;
     }]);

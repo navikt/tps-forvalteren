@@ -1,10 +1,11 @@
 package no.nav.tps.vedlikehold.service.command.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.S400HentPersonServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.*;
 import no.nav.tps.vedlikehold.service.command.Command;
 
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -16,6 +17,8 @@ import org.springframework.core.annotation.Order;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 
+import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
 /**
  * @author Kristian Kyvik (Visma Consulting AS).
 \ */
@@ -23,12 +26,14 @@ import com.fasterxml.jackson.xml.XmlMapper;
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
 
+    private static final String DEFAULT_ENV = "t4";
+
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        return messageQueueServiceFactory.createMessageQueueService("t4");
+        return messageQueueServiceFactory.createMessageQueueService(DEFAULT_ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
     @Bean
@@ -40,14 +45,77 @@ public class CommandConfig {
     }
 
     @Bean
-    @Order(Integer.MAX_VALUE)
-    ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
-        return new S000TilgangTilTpsServiceRoutineResolver();
+    ObjectMapper objectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return objectMapper;
     }
 
     @Bean
     @Order(1)
     ServiceRoutineResolver hentPersonServiceRoutineResolver() {
-        return new S400HentPersonServiceRoutineResolver();
+        return new S004HentPersonopplysningerServiceRoutineResolver();
     }
+
+    @Bean
+    @Order(2)
+    ServiceRoutineResolver hentKontaktinformasjonRoutineResolver() {
+        return new S600HentKontaktinformasjonServiceRoutineResolver();
+    }
+
+    @Bean
+    @Order(3)
+    ServiceRoutineResolver sokPersonRoutineResolver() {
+        return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
+    }
+
+    @Bean
+    @Order(3)
+    ServiceRoutineResolver hentGironummerResolver() {
+        return new S102HentGironummerServiceRoutineResolver();
+    }
+
+    @Bean
+    @Order(4)
+    ServiceRoutineResolver hentLinjeadresseResolver(){
+        return new S103HentLinjeadresser();
+    }
+
+    @Bean
+    @Order(5)
+    ServiceRoutineResolver hentOppholdsArbeidsTillatlse(){
+        return new S101HentOppholdArbeidTillatelseOgUtenlandskId();
+    }
+
+    @Bean
+    @Order(6)
+    ServiceRoutineResolver endreNavnResolver() {
+        return new EndreNavn();
+    }
+
+    @Bean
+    @Order(7)
+    ServiceRoutineResolver endreTIADResolver() {
+        return new EndreTIAD();
+    }
+
+    @Bean
+    @Order(8)
+    ServiceRoutineResolver endreNorskGironummerResolver() {
+        return new EndreNorskGironummer();
+    }
+
+    @Bean
+    @Order(9)
+    ServiceRoutineResolver endreUtlandskGironummerResolver() {
+        return new EndreUtenlandskGironummer();
+    }
+
+    @Bean
+    @Order(Integer.MAX_VALUE)
+    ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
+        return new S000TilgangTilTpsServiceRoutineResolver();
+    }
+
 }

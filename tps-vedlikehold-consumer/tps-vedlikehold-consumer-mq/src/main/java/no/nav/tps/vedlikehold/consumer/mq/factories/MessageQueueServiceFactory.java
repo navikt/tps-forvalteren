@@ -9,5 +9,5 @@ import javax.jms.JMSException;
  */
 @FunctionalInterface
 public interface MessageQueueServiceFactory {
-    MessageQueueConsumer createMessageQueueService(String environment) throws JMSException;
+    MessageQueueConsumer createMessageQueueService(String environment, String requestQueueAlias) throws JMSException;
 }

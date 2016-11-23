@@ -1,10 +1,10 @@
 /**
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
-angular.module('tps-vedlikehold')
+angular.module('tps-vedlikehold.directives')
     .directive('tpsInputField', ['$templateRequest', '$compile', function($templateRequest, $compile){
     
-        var templatesPath = 'app/components/service-rutine/input-fields/';
+        var templatesPath = 'app/components/input-fields/';
         var templateSuffix = '-input.html';
     
         var getTemplateUrl = function(type) {

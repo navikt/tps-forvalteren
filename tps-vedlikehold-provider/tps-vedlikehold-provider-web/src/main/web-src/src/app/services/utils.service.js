@@ -31,34 +31,70 @@ angular.module('tps-vedlikehold.service')
                 return aSubstrInt - bSubstrInt;
             });
         };
-        
+
+        self.capitalizeFirstLetter = function capitalizeFirstLetter(word){
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        };
+
+        //TODO Legg til unntak/keys som skal/skal ikke få stor forbokstav? Som NOR osv.
+        //TODO Har nå sideeffekt av den gjør om Ints til Strings hvis jeg ikke tar feil.
+        self.capitalizeFirstLetterInObjectProperties = function capitalizeFirstLetterInObjectProperties(ObjectToFormat) {
+            for (var key in ObjectToFormat) {
+                if (ObjectToFormat.hasOwnProperty(key)) {
+                    ObjectToFormat[key] = ObjectToFormat[key].toString();
+                    var splittedProperty = ObjectToFormat[key].split(" ");
+                    var keyData = "";
+                    for (var i in splittedProperty) {
+                        keyData = keyData + " " + self.capitalizeFirstLetter(splittedProperty[i].toLowerCase());
+                    }
+                    ObjectToFormat[key] = keyData;
+                }
+            }
+            return ObjectToFormat;
+        };
+
+        self.isNumber = function(n){
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        };
+
+
         //TODO: find a better way to create dynamic output
         // Flattens a JSON object, adding all key-values at top with just their key as key
         // Except for the objects with the keys that matches nonUniques,
         // they are given the name parentKey_childKey
-        self.flattenObject = function(ob, nonUniques) {
-            var finalFlatOb = {};
-            
-            for (var i in ob) {
-                if (!ob.hasOwnProperty(i)) continue;
-                
-                if ((typeof ob[i]) == 'object') {
-                    var flatObject = self.flattenObject(ob[i]);
-                    for (var x in flatObject) {
-                        if (!flatObject.hasOwnProperty(x)) continue;
+        self.flattenObject = function (jsonObject, nonUniques) {
+            return _flattenObject({}, jsonObject, nonUniques);
+        };
 
-                        if (nonUniques && nonUniques.indexOf(i) > -1) {
-                            finalFlatOb[i + '_' + x] = flatObject[x];
+        //TODO Add test to validate that this method actually works properly. (unit.js)
+         function _flattenObject(finalFlatObject, jsonObject, nonUniques) {
+            for(var parentKey in jsonObject){
+                if (!jsonObject.hasOwnProperty(parentKey)) continue;
+                if ((typeof jsonObject[parentKey]) == 'object') {
+                    var flatterObject = _flattenObject(finalFlatObject, jsonObject[parentKey], nonUniques);
+                    for (var childKey in flatterObject) {
+                        if (!flatterObject.hasOwnProperty(childKey)) continue;
+                        if (nonUniques && nonUniques.indexOf(childKey) > -1) {
+                            if(!finalFlatObject.hasOwnProperty(parentKey + '_' + childKey) || finalFlatObject[parentKey + '_' + childKey]=== ""){
+                                finalFlatObject[parentKey + '_' + childKey] = flatterObject[childKey];
+                            }
                         } else {
-                            finalFlatOb[x] = flatObject[x];
+                            if(!finalFlatObject.hasOwnProperty(childKey) || finalFlatObject[childKey] === ""){
+                                finalFlatObject[childKey] = flatterObject[childKey];
+                            }
                         }
                     }
+
                 } else {
-                    finalFlatOb[i] = ob[i];
+                    if(!finalFlatObject.hasOwnProperty(parentKey) || finalFlatObject[parentKey] === ""){
+                        finalFlatObject[parentKey] = jsonObject[parentKey];
+                    }
                 }
             }
-            return finalFlatOb;
-        };
+            return finalFlatObject;
+        }
+
+
 
         //TODO: use library for this
         self.formatXml = function (xml) {

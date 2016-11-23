@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('locationService', ['$rootScope', '$state', function($rootScope, $state) {
+    .service('locationService', ['$state', function($state) {
 
         var self = this;
         var returnState = 'servicerutine';
@@ -14,4 +14,13 @@ angular.module('tps-vedlikehold.service')
         self.redirectToLoginState = function() {
             $state.go('login');
         };
+
+        self.redirectToEndringState = function () {
+            $state.go('endringer');
+        };
+
+        self.redirectToServiceRutineState = function () {
+            $state.go('servicerutine');
+        };
+
     }]);
