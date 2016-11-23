@@ -90,24 +90,30 @@ public class CommandConfig {
 
     @Bean
     @Order(6)
+    ServiceRoutineResolver hentTKNrEndringshistorie(){
+        return new S013HentTKNrEndringshistorie();
+    }
+
+    @Bean
+    @Order(7)
     ServiceRoutineResolver endreNavnResolver() {
         return new EndreNavn();
     }
 
     @Bean
-    @Order(7)
+    @Order(8)
     ServiceRoutineResolver endreTIADResolver() {
         return new EndreTIAD();
     }
 
     @Bean
-    @Order(8)
+    @Order(9)
     ServiceRoutineResolver endreNorskGironummerResolver() {
         return new EndreNorskGironummer();
     }
 
     @Bean
-    @Order(9)
+    @Order(10)
     ServiceRoutineResolver endreUtlandskGironummerResolver() {
         return new EndreUtenlandskGironummer();
     }
