@@ -6,6 +6,9 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
+import no.nav.tps.vedlikehold.service.command.exceptions.XmlWriteException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +19,8 @@ public class EndringsmeldingRequestTransformStrategy implements RequestTransform
 
     private static final String XML_PROPERTIES_PREFIX  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><sfePersonData><sfeAjourforing>";
     private static final String XML_PROPERTIES_POSTFIX = "</sfeAjourforing></sfePersonData>";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EndringsmeldingRequestTransformStrategy.class);
 
     @Autowired
     private XmlMapper xmlMapper;
@@ -28,13 +33,14 @@ public class EndringsmeldingRequestTransformStrategy implements RequestTransform
 
 
     private String resolveTpsSysInfoAsXml(Request request) {
-        String xml = "";
+        String xml;
         TpsServiceRoutineEndringRequest endringRequest = (TpsServiceRoutineEndringRequest) request.getRoutineRequest();
         TpsSystemInfo systemInfo = new TpsSystemInfo(endringRequest.getKilde(), request.getContext().getUser().getUsername());
         try {
             xml = xmlMapper.writeValueAsString(systemInfo);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Could not write xml as string");
+            throw new XmlWriteException(e);
         }
         return xml;
     }

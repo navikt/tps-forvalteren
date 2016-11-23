@@ -43,6 +43,8 @@ public class EndreNavn implements ServiceRoutineResolver {
                 .and()
                 .transformer()
                     .preSend(endringsmeldingXmlWrappingAppender())
+                    .postSend(extractDataFromXmlElement("endreNavn"))
+                    .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .parameter()

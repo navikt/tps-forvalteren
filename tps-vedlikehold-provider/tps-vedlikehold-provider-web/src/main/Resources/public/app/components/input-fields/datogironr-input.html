@@ -1,0 +1,25 @@
+<md-input-container  class="tps-vk-input-container" flex>
+    <md-tooltip md-direction="top">
+        Tom eller en fremtidig dato, oppfattes av TPS som dagens dato
+    </md-tooltip>
+    <label for="dato">Dato</label>
+    <input name="dato"
+           id="dato"
+           type="text"
+           pikaday="dato"
+           set-default-date="false"
+           autocomplete="off"
+           ng-model="formData.datoGiroNr"
+           on-open="repositionDatePicker(dato)"
+           ng-pattern="/^\d{4}-\d{2}-\d{2}$/"
+           fdate>
+    <ng-messages for="requestForm.dato.$error">
+        <ng-message when="isRequired('datoGiroNr')" ng-show="requestForm.dato.$touched">
+            Gyldig dato er påkrevd
+        </ng-message>
+        <ng-message when="pattern">
+            Ugyldig datoformat (YYYY-MM-DD)
+        </ng-message>
+    </ng-messages>
+</md-input-container>
+

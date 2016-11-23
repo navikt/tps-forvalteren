@@ -15,7 +15,9 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.t
 /**
  * Created by F148888 on 16.11.2016.
  */
+@SuppressWarnings("squid:S138")
 public class EndreTIAD implements ServiceRoutineResolver{
+
     @Override
     public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
