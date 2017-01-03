@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Kenneth Gunnerud (Visma Consulting AS).
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RsRequestMappingUtilsTest {
+public class RsTpsRequestMappingUtilsTest {
 
     @Mock
     private ObjectMapper objectMapperMock;

@@ -18,7 +18,6 @@ var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIco
     'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday', 'tps-vedlikehold.testdata']);
 
 require('./shared/index');
-require('./settings/index');
 
 app.config(['pikadayConfigProvider', 'moment', function (pikaday, moment) {
 

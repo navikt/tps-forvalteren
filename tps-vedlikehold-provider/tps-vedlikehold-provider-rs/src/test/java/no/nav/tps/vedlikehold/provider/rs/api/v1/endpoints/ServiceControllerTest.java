@@ -2,17 +2,38 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
+import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.FindServiceRoutineByName;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsSame.sameInstance;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Øyvind Grimnes, Visma Consulting AS
@@ -22,7 +43,6 @@ public class ServiceControllerTest {
     private static final String FNR = "12345678910";
     private static final String SERVICE_RUTINE_NAME = "serviceRutineName";
     private static final String ENVIRONMENT_U = "u1";
-    private static final String XML_RESPONSE = "<enPersonRes><fnr>11111111111</fnr> </enPersonRes>";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -31,10 +51,16 @@ public class ServiceControllerTest {
     private UserContextHolder userContextHolderMock;
 
     @Mock
-    private TpsRequestService tpsRutineServiceMock;
+    private TpsRequestService tpsRequestServiceMock;
 
     @Mock
-    private TpsAuthorisationService authorisationServiceMock;
+    private FindServiceRoutineByName findServiceRoutineByName;
+
+    @Mock
+    private TpsServiceRoutineDefinition tpsServiceRoutineDefinitionMock;
+
+    @Mock
+    private TpsServiceRoutineRequest serviceRoutineRequestMock;
 
     @Mock
     private RsTpsRequestMappingUtils mappingUtilsMock;
@@ -51,8 +77,6 @@ public class ServiceControllerTest {
     @InjectMocks
     private ServiceController controller;
 
-    //Kommentert ut fordi den feilet hele tiden når jeg gjorde endringer. Tanken var å endre de når refaktorering var ferdig.
-    /*
     @Before
     @SuppressWarnings("unchecked")
     public void before() {
@@ -60,7 +84,11 @@ public class ServiceControllerTest {
         mockNodeContent(baseJsonNode, "serviceRutinenavn", SERVICE_RUTINE_NAME);
 
         when(mappingUtilsMock.convert(any(Map.class), eq(JsonNode.class))).thenReturn(baseJsonNode);
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(true);
+        when(mappingUtilsMock.convertToTpsServiceRoutineRequest(SERVICE_RUTINE_NAME, baseJsonNode)).thenReturn(serviceRoutineRequestMock);
+
+        when(findServiceRoutineByName.execute(anyString())).thenReturn(Optional.of(tpsServiceRoutineDefinitionMock));
+        when(serviceRoutineRequestMock.getServiceRutinenavn()).thenReturn(SERVICE_RUTINE_NAME);
+
     }
 
     @Test
@@ -88,132 +116,40 @@ public class ServiceControllerTest {
     }
 
     @Test
-    public void getServiceCallsMappingUtilsConvertingXmlToSRResponse() throws Exception{
+    public void getServiceCallsMappingUtilsOnResponseFromRequestService() throws Exception {
         mockNodeContent(baseJsonNode, "fnr", FNR);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
         parameters.put("fnr", FNR);
 
+        Response response = mock(Response.class);
+
+        when(tpsRequestServiceMock.executeServiceRutineRequest(any(), any(), any())).thenReturn(response);
+
         controller.getService(parameters, SERVICE_RUTINE_NAME);
 
-        verify(tpsResponseMappingUtilsMock).xmlResponseToServiceRoutineResponse(any(String.class));
+        verify(rsTpsResponseMappingUtilsMock).convertToResponse(response);
     }
 
     @Test
-    public void getServiceThrowsBadRequestWhenMissingEnvironment() {
+    public void getServiceReturnsMappedTpsResponse() throws Exception {
         mockNodeContent(baseJsonNode, "fnr", FNR);
-        mockNodeContent(baseJsonNode, "environment", null);
-        when(messageProviderMock.get("rest.service.request.exception.MissingRequiredParams")).thenReturn("val");
 
-        expectedException.expect(HttpBadRequestException.class);
-        expectedException.expectMessage("val");
+        TpsServiceRoutineResponse response = mock(TpsServiceRoutineResponse.class);
+        Response r = mock(Response.class);
 
-        controller.getService(baseJsonNode);
+        when(tpsRequestServiceMock.executeServiceRutineRequest(
+                any(TpsServiceRoutineRequest.class),
+                eq(tpsServiceRoutineDefinitionMock),
+                any(TpsRequestContext.class))).thenReturn(r);
+
+        when(rsTpsResponseMappingUtilsMock.convertToResponse(r)).thenReturn(response);
+
+        TpsServiceRoutineResponse result = controller.getService(baseJsonNode);
+
+        assertThat(result, is(sameInstance(response)));
     }
 
-    @Test
-    public void getServiceThrowsBadRequestWhenMissingServiceRutinenavn() {
-        mockNodeContent(baseJsonNode, "fnr", FNR);
-        mockNodeContent(baseJsonNode, "serviceRutinenavn", null);
-        when(messageProviderMock.get("rest.service.request.exception.MissingRequiredParams")).thenReturn("val");
-
-        expectedException.expect(HttpBadRequestException.class);
-        expectedException.expectMessage("val");
-
-        controller.getService(baseJsonNode);
-    }
-
-    @Test
-    public void getServiceCallsAuthorizationServiceWhenFnrIsSet() {
-        mockNodeContent(baseJsonNode, "fnr", "13");
-
-        controller.getService(baseJsonNode);
-
-        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class));
-    }
-
-
-//    @Test
-//    public void getServiceCallsUnauth() throws Exception{
-//        controller.getService(baseJsonNode);
-//        verify(tpsResponseMappingUtilsMock).removeUnauthorizedDataFromTpsResponse(any(ServiceRoutineResponse.class));
-//        //verify(authorisationServiceMock).userIsAuthorisedToReadListOfPersonsInEnvironment(any(User.class), anyListOf(String.class), any(String.class));
-//    }
-
-    @Test
-    public void getServiceCallsAuthorizationServiceUsingUserFnrAndEnvironment() {
-        mockNodeContent(baseJsonNode, "fnr", FNR);
-        User user = mock(User.class);
-        when(userContextHolderMock.getUser()).thenReturn(user);
-
-        controller.getService(baseJsonNode);
-
-        verify(authorisationServiceMock).userIsAuthorisedToReadPersonInEnvironment(user, FNR, ENVIRONMENT_U);
-    }
-
-    @Test
-    public void getServiceThrowsUnauthorizedWhenAuthorizationFails() {
-        mockNodeContent(baseJsonNode, "fnr", FNR);
-        when(messageProviderMock.get("rest.service.request.exception.Unauthorized")).thenReturn("val");
-        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false);
-
-        expectedException.expect(HttpUnauthorisedException.class);
-        expectedException.expectMessage("val");
-
-        controller.getService(baseJsonNode);
-    }
-
-//    @Test
-//    public void getServiceDoNotThrowUnauthorizedWhenAuthorizationFailsDoesNotFailOnEveryPersonInResult() throws Exception{
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenReturn(XML_RESPONSE);
-//        when(authorisationServiceMock.userIsAuthorisedToReadPersonInEnvironment(any(User.class), any(String.class), any(String.class))).thenReturn(false, true);
-//
-//        controller.getService(baseJsonNode);
-//    }
-
-//    @Test
-//    public void getServiceThrowsHttpUnauthorizedWhenNoFnrAndMappingThrowsUnauthorized() throws Exception{
-//        ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
-//        when(tpsResponseMappingUtilsMock.xmlResponseToServiceRoutineResponse(any(String.class))).thenReturn(response);
-//        Mockito.doThrow(new HttpUnauthorisedException("Val", SERVICE_RUTINE_NAME)).when(tpsResponseMappingUtilsMock).removeUnauthorizedDataFromTpsResponse(any(ServiceRoutineResponse.class));
-//
-//        expectedException.expect(HttpUnauthorisedException.class);
-//
-//        controller.getService(baseJsonNode);
-//    }
-
-    @Test
-    public void getServiceThrowsHttpInternalServerWhenNoFnrAndMappingOfObjectFails() throws Exception{
-        ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
-        when(tpsResponseMappingUtilsMock.xmlResponseToServiceRoutineResponse(any(String.class))).thenReturn(response);
-        Mockito.doThrow(new IOException()).when(tpsResponseMappingUtilsMock).remapTpsResponse(any(ServiceRoutineResponse.class));
-
-        expectedException.expect(HttpInternalServerErrorException.class);
-
-        controller.getService(baseJsonNode);
-    }
-
-//    @Test
-//    public void getServiceThrowsInternalServerErrorWhenServiceRoutineFailed() throws Exception {
-//        mockNodeContent(baseJsonNode, "fnr", FNR);
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenThrow(new IllegalArgumentException());
-//
-//        expectedException.expect(HttpInternalServerErrorException.class);
-//
-//        controller.getService(baseJsonNode);
-//    }
-
-//    @Test
-//    public void getServiceReturnsSRResponse() throws Exception {
-//        mockNodeContent(baseJsonNode, "fnr", FNR);
-//        ServiceRoutineResponse response = mock(ServiceRoutineResponse.class);
-//        when(tpsRutineServiceMock.executeServiceRutineRequest(any(TpsServiceRoutineRequest.class))).thenReturn(XML_RESPONSE);
-//        when(tpsResponseMappingUtilsMock.xmlResponseToServiceRoutineResponse(XML_RESPONSE)).thenReturn(response);
-//
-//        ServiceRoutineResponse result = controller.getService(baseJsonNode);
-//
-//        assertThat(result, is(sameInstance(response)));
-//    }
 
     private void mockNodeContent(JsonNode node, String key, Object value) {
         when(node.has(key)).thenReturn(value != null);
@@ -222,5 +158,4 @@ public class ServiceControllerTest {
         when(subNode.asText()).thenReturn(value != null ? value.toString() : null);
         when(node.get(key)).thenReturn(subNode);
     }
-*/
 }

@@ -1,0 +1,83 @@
+{
+  "EndreTIAD": {
+    "display": {
+      "header": "${offentligIdent}"
+    },
+    "rows": [
+      [
+        {
+          "label": "Dato til og med",
+          "fieldData": "datoTom",
+          "flex": 30
+        },
+        {
+          "label": "Type Adresse ANV Norge",
+          "fieldData": "typeAdresseNavNorge",
+          "flex": 30
+        },
+        {
+          "label": "Type tilleggslinje",
+          "fieldData": "typeTilleggslinje",
+          "flex": 30
+        }
+      ],
+      [
+        {
+          "label": "Tilleggslinje",
+          "fieldData": "tilleggslinje",
+          "flex": 20
+        },
+        {
+          "label": "Kommunenummer TIAD",
+          "fieldData": "kommunenrTIAD",
+          "flex": 20
+        },
+        {
+          "label": "Gatekode",
+          "fieldData": "gatekode",
+          "flex": 20
+        },
+        {
+          "label": "Husnummer",
+          "fieldData": "husnr",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "label": "Postnummer",
+          "fieldData": "postnr",
+          "flex": 20
+        },
+        {
+          "label": "Husbokstav",
+          "fieldData": "husbokstav",
+          "flex": 20
+        },
+        {
+          "label": "Bolignummer",
+          "fieldData": "bolignr",
+          "flex": 20
+        },
+        {
+          "label": "Eiendomsnavn",
+          "fieldData": "eiendomsnavn",
+          "flex": 20
+        }
+      ],
+
+      [
+        {
+          "label": "Postboksnummer",
+          "fieldData": "postboksnr",
+          "flex": 25
+        },
+        {
+          "label": "Postbokstanlegg",
+          "fieldData": "postboksAnlegg",
+          "flex": 25
+        }
+      ]
+    ]
+  }
+}

@@ -84,24 +84,30 @@ public class CommandConfig {
 
     @Bean
     @Order(5)
+    ServiceRoutineResolver hentOppholdsArbeidsTillatlse(){
+        return new S101HentOppholdArbeidTillatelseOgUtenlandskId();
+    }
+
+    @Bean
+    @Order(6)
     ServiceRoutineResolver endreNavnResolver() {
         return new EndreNavn();
     }
 
     @Bean
-    @Order(6)
+    @Order(7)
     ServiceRoutineResolver endreTIADResolver() {
         return new EndreTIAD();
     }
 
     @Bean
-    @Order(6)
+    @Order(8)
     ServiceRoutineResolver endreNorskGironummerResolver() {
         return new EndreNorskGironummer();
     }
 
     @Bean
-    @Order(6)
+    @Order(9)
     ServiceRoutineResolver endreUtlandskGironummerResolver() {
         return new EndreUtenlandskGironummer();
     }
