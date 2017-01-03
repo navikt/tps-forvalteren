@@ -74,8 +74,8 @@ public class GenererFiktiveIdenter {
             identitetBuilder = new StringBuilder();
             List<Integer> rangeList = getRangeForIndividualRange(request.getDato());
             identitetBuilder.append(fdato).append(genererIndividnummer(rangeList.get(0),rangeList.get(1),request.getKjonn()));
-            identitetBuilder.append(getFirstControlCipher(identitetBuilder.toString()));
-            identitetBuilder.append(getSecondControlCipher(identitetBuilder.toString()));
+            identitetBuilder.append(getFirstKontrollSiffer(identitetBuilder.toString()));
+            identitetBuilder.append(getSecondKontrollSiffer(identitetBuilder.toString()));
             identListe.add(identitetBuilder.toString());
         }
         return identListe;
@@ -107,17 +107,17 @@ public class GenererFiktiveIdenter {
         return individNummber;
     }
 
-    private int getFirstControlCipher(String unprocessedFnr){
+    private int getFirstKontrollSiffer(String unprocessedFnr){
         char[] fnrCharacters = unprocessedFnr.toCharArray();
-        return getControlCipher(fnrCharacters, KONTROLL_SIFFER_C1);
+        return getKontrollSiffer(fnrCharacters, KONTROLL_SIFFER_C1);
     }
 
-    private int getSecondControlCipher(String unprocessedFnr){
+    private int getSecondKontrollSiffer(String unprocessedFnr){
         char[] fnrCharacters = unprocessedFnr.toCharArray();
-        return getControlCipher(fnrCharacters, KONTROLL_SIFFER_C2);
+        return getKontrollSiffer(fnrCharacters, KONTROLL_SIFFER_C2);
     }
 
-    private int getControlCipher(char[] fnrCharacters, int[] controlChipers){
+    private int getKontrollSiffer(char[] fnrCharacters, int[] controlChipers){
         int sumOfMulplier = 0;
         for (int i = 0; i < fnrCharacters.length; i++){
             sumOfMulplier += controlChipers[i]*Character.getNumericValue(fnrCharacters[i]);
