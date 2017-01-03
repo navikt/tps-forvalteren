@@ -96,6 +96,24 @@ public class CommandConfig {
 
     @Bean
     @Order(7)
+    ServiceRoutineResolver hentBrukerprofil(){
+        return new S120HentBrukerprofil();
+    }
+
+    @Bean
+    @Order(7)
+    ServiceRoutineResolver hentFnrEndringshistorie(){
+        return new S011HentFnrEndringshistorie();
+    }
+
+    @Bean
+    @Order(7)
+    ServiceRoutineResolver sjekkFnrErDefinert(){
+        return new S100SjekkOmFnrDnrBnrErDefinertITPS();
+    }
+
+    @Bean
+    @Order(7)
     ServiceRoutineResolver endreNavnResolver() {
         return new EndreNavn();
     }

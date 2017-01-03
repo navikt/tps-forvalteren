@@ -41,7 +41,6 @@ public class DefaultTpsRequestService implements TpsRequestService {
     @Override
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
 
-        // Denne må alltid bli gjort 1 gang uansett uavhenging av om man får mange resultater eller 1.
         tpsAuthorisationService.authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());

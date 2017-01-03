@@ -12,27 +12,58 @@
 
                         <div layout="column" flex>
                             <div layout="row">
-                                <h3 class="tps-vk-response-card-header">{{resolveDisplayTemplate(paramsToShow.header, personData)}}</h3>
+                                <h3 class="tps-vk-response-card-header">{{resolveDisplayTemplate(paramsToShow.header,
+                                    personData)}}</h3>
                             </div>
-                            <div layout="row">
-                                <div flex="{{param.flex}}" class="tps-vk-output-container" ng-repeat="param in paramsToShow.properties">
+                            <div ng-if="paramsToShow.properties" layout="row">
+                                <div flex="{{param.flex}}" class="tps-vk-output-container"
+                                     ng-repeat="param in paramsToShow.properties">
                                     <h4 class="tps-vk-output-label"> {{param.label}} </h4>
-                                    <p class="tps-vk-output-data">{{resolveDisplayTemplate(param.template, personData)}}</p>
+                                    <p class="tps-vk-output-data">{{resolveDisplayTemplate(param.template,
+                                        personData)}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Results expanded -->
-                    <div class="tps-vk-response-expanded" ng-show="toggle" >
+                    <!-- Results expanded --> <!-- Versjon med hvite felt midten  -->
+                    <!--
+                     <div class="tps-vk-response-expanded" ng-show="toggle" >
                         <div layout-gt-xs="row" ng-repeat="row in responseFormConfig[serviceRutineName].rows" class="md-title-content" layout-align="start center">
                             <div flex="5"> </div>
-                            <div ng-repeat="field in row" flex="{{field.flex}}">
-                                <tps-output-field  ng-show="personData[field.fieldData]" label="{{field.label}}" field-model="personData[field.fieldData]"> </tps-output-field>
-                                <tps-output-field-no-value ng-show="!personData[field.fieldData]" label="{{field.label}}"> </tps-output-field-no-value>
+                            <div ng-repeat="field in row" flex="22">
+                                <tps-output-field  ng-show="personData[field.fieldData] !== undefined" label="{{field.label}}" field-model="personData[field.fieldData]"> </tps-output-field>
+                                <tps-output-field-no-value ng-show="personData[field.fieldData] == undefined" label="{{field.label}}"> </tps-output-field-no-value>
                             </div>
                         </div>
                     </div>
+                    -->
+
+                    <!-- Versjon med hvite felt nederst. Også mer dynamisk siden man looper bare hele resultat objectet og ikke forhåndsatt objelt -->
+                    <div class="tps-vk-response-expanded" ng-show="toggle" ng-init="counter=0" >
+                        <div ng-repeat="(key, value) in personData" field-model="value" ng-init="parentIndex = $index">
+                            <div layout-gt-xs="row" ng-if="(parentIndex%4)==0" class="md-title-content" layout-align="start center">
+                                <div flex="5"> </div>
+                                <div flex="25" ng-if="$index < 4" ng-repeat="(keyChild, valueChild) in personData | startFromKey: key">
+                                    <tps-output-field  ng-show="valueChild !== undefined" label="{{keyChild}}" field-model="valueChild"> </tps-output-field>
+                                    <tps-output-field-no-value ng-show="valueChild == undefined" label="{{keyChild}}"> </tps-output-field-no-value>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-repeat="(key, value) in (filteredItems = (responseFormConfig[serviceRutineName].justdata | removeDuplicateKeys:personData))" field-model="value" ng-init="parentIndexCon = $index">
+                            <div layout-gt-xs="row" ng-if="(parentIndexCon%4)==0" class="md-title-content"
+                                 layout-align="start center">
+                                <div flex="5"></div>
+                                <div flex="25" ng-if="$index < 4"
+                                     ng-repeat="(keyChild, valueChild) in filteredItems | startFromKey: key">
+                                    <tps-output-field-no-value label="{{keyChild}}"></tps-output-field-no-value>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </md-card>
             </md-item-content>
         </md-item>

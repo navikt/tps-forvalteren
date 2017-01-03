@@ -4,21 +4,13 @@
 
             <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
-                <!-- upper row -->
-                <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"
-                                     ng-if="$index < 5"></tps-input-field>
-                </div>
 
-                <!-- mid-upper row-->
-                <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >4"
-                                     ng-if="$index > 4 && $index < 10"></tps-input-field>
-                </div>
-                <!-- mid lower row -->
-                <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >9"
-                                     ng-if="$index > 9"></tps-input-field>
+                <!-- Input fields rows -->
+                <div ng-repeat="field in fields" ng-init="parentIndex = $index" >
+                    <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%4)==0"  >
+                        <tps-input-field data-ng-repeat="i in [0,1,2,3]" ng-if="fields[parentIndex+i]"
+                                         form-data="formData" select-values="selectValues" input-param-name="fields[parentIndex+i]"></tps-input-field>
+                    </div>
                 </div>
 
                 <!-- lowest row-->

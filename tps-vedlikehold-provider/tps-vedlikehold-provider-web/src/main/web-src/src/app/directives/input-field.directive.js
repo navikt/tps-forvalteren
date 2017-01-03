@@ -7,12 +7,12 @@ angular.module('tps-vedlikehold.directives')
         var templatesPath = 'app/components/input-fields/';
         var templateSuffix = '-input.html';
     
-        var getTemplateUrl = function(type) {
-            return templatesPath + '' + type.toLowerCase() + '' + templateSuffix;
+        var getTemplateUrl = function(inputParamName) {
+            return templatesPath + '' + inputParamName.toLowerCase() + '' + templateSuffix;
         };
     
-        var linker = function(scope, element, attrs) {
-            $templateRequest(getTemplateUrl(scope.fieldData)).then(function(html) {
+        var linkerFunction = function(scope, element, attrs) {
+            $templateRequest(getTemplateUrl(scope.inputParamName)).then(function(html) {
                 var template = angular.element(html);
                 element.replaceWith(template);
                 $compile(template)(scope);
@@ -21,7 +21,11 @@ angular.module('tps-vedlikehold.directives')
     
         return {
             restrict: 'E',
-            scope: true,
-            link: linker
+            scope: {
+                inputParamName: '=',
+                formData: '=',
+                selectValues: '='
+            },
+            link: linkerFunction
         };
     }]);

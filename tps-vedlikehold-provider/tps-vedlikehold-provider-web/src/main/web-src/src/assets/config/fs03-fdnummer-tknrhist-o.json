@@ -187,6 +187,168 @@
           "flex": 20
         }
       ]
+    ],
+    "justdata": [
+      {
+        "fieldData": "fnr",
+        "label": "Fnr",
+        "flex": 20
+      },
+      {
+        "fieldData": "fnrTidspunkt",
+        "label": "Fnrtidspunkt",
+        "flex": 20
+      },
+      {
+        "fieldData": "fnrSystem",
+        "label": "Fnrsystem",
+        "flex": 20
+      },
+      {
+        "fieldData": "fnrSaksbehandler",
+        "label": "Fnrsaksbehandler",
+        "flex": 20
+      },
+      {
+        "fieldData": "spesregType",
+        "label": "Spesregtype",
+        "flex": 20
+      },
+      {
+        "fieldData": "kortnavn",
+        "label": "Kortnavn",
+        "flex": 20
+      },
+      {
+        "fieldData": "navnTidspunkt",
+        "label": "Navntidspunkt",
+        "flex": 20
+      },
+      {
+        "fieldData": "navnSystem",
+        "label": "Navnsystem",
+        "flex": 20
+      },
+      {
+        "fieldData": "navnSaksbehandler",
+        "label": "Navnsaksbehandler",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknr",
+        "label": "Tknr",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrTidspunkt",
+        "label": "Tknrtidspunkt",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrSystem",
+        "label": "Tknrsystem",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrSaksbehandler",
+        "label": "Tknrsaksbehandler",
+        "flex": 20
+      },
+      {
+        "fieldData": "datoDo",
+        "label": "Datodo",
+        "flex": 20
+      },
+      {
+        "fieldData": "doTidspunkt",
+        "label": "Dotidspunkt",
+        "flex": 20
+      },
+      {
+        "fieldData": "doSystem",
+        "label": "Dosystem",
+        "flex": 20
+      },
+      {
+        "fieldData": "doSaksbehandler",
+        "label": "Dosaksbehandler",
+        "flex": 20
+      },
+      {
+        "fieldData": "antallFS013",
+        "label": "Antallfs013",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknr",
+        "label": "Tknrhistorikk Tknr",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrKnytningFom",
+        "label": "Tknrhistorikk Tknrknytningfom",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrKnytningTom",
+        "label": "Tknrhistorikk Tknrknytningtom",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrTidspunkt",
+        "label": "Tknrhistorikk Tknrtidspunkt",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrSystem",
+        "label": "Tknrhistorikk Tknrsystem",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrSaksbehandler",
+        "label": "Tknrhistorikk Tknrsaksbehandler",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrInfo",
+        "label": "Tknrhistorikk Tknrinfo",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknr",
+        "label": "Tknrhistorikk Tknr",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrKnytningFom",
+        "label": "Tknrhistorikk Tknrknytningfom",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrKnytningTom",
+        "label": "Tknrhistorikk Tknrknytningtom",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrTidspunkt",
+        "label": "Tknrhistorikk Tknrtidspunkt",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrSystem",
+        "label": "Tknrhistorikk Tknrsystem",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrSaksbehandler",
+        "label": "Tknrhistorikk Tknrsaksbehandler",
+        "flex": 20
+      },
+      {
+        "fieldData": "tknrHistorikk_tknrInfo",
+        "label": "Tknrhistorikk Tknrinfo",
+        "flex": 20
+      }
     ]
   }
 }
