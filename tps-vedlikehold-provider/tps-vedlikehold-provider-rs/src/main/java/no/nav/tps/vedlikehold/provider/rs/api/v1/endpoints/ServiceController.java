@@ -78,19 +78,16 @@ public class ServiceController {
         return sendTpsRequest(tpsServiceRoutineRequest, context);
     }
 
-
     private TpsServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context) {
         try {
             TpsServiceRoutineDefinition serviceRoutine = findServiceRoutineByName.execute(request.getServiceRutinenavn()).get();
 
             Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, context);
             return rsTpsResponseMappingUtils.convertToResponse(response);
-
         } catch (HttpUnauthorisedException ex){
             throw new HttpUnauthorisedException(ex, "api/v1/service/" + request.getServiceRutinenavn());
         } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
+import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.Kjonn;
 import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataPerson;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,7 +20,8 @@ public class NavnGeneratorForTestPersoner {
     static final String[] etternavn = {"Nordmann, Thomassen, Kaiassen"};
 
     public static void setTilfeldigNavnForTestPerson(TestDataPerson testDataPerson){
-        testDataPerson.setFornavn(testDataPerson.getKjonn().equals("MANN") ? genererTilfeldigGuttefornavn() : genererTilfeldigJentefornavn());
+        //TODO Kan bare avgjøre kjønn basert på FNR.
+        testDataPerson.setFornavn(testDataPerson.getKjonn().equals(Kjonn.MANN) ? genererTilfeldigGuttefornavn() : genererTilfeldigJentefornavn());
         testDataPerson.setEtternavn(genererTilfeldigEtternavn());
     }
 

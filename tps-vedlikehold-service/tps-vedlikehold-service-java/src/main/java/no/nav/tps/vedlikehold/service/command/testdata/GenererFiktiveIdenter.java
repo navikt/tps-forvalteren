@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
+import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.Kjonn;
 import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataRequest;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +98,7 @@ public class GenererFiktiveIdenter {
         Random random = new Random();
         int individNummber;
         //KVINNE: Individnummer avsluttes med partall
-        if(kjonn.equals("KVINNE")){
+        if(kjonn.equals(Kjonn.KVINNE)){
             individNummber =  random.nextInt((range_end-range_start)/2)*2;
         }else{ // MANN: Individnummer avsluttes med oddetall
             if(range_start % 2 == 0) --range_start;
