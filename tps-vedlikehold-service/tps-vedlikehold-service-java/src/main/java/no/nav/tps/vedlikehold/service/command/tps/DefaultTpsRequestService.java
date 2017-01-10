@@ -49,13 +49,11 @@ public class DefaultTpsRequestService implements TpsRequestService {
         String xml = xmlMapper.writeValueAsString(tpsRequest);
 
         Request request = new Request(xml, tpsRequest, context);
-
         transformationService.transform(request, serviceRoutine);
 
         String responseXml = messageQueueConsumer.sendMessage(request.getXml());
 
         Response response = new Response(responseXml, context, serviceRoutine);
-
         transformationService.transform(response, serviceRoutine);
 
         return response;

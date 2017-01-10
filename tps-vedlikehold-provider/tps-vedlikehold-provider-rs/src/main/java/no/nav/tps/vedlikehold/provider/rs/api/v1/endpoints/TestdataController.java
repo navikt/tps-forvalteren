@@ -1,17 +1,12 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.vedlikehold.domain.rs.testdata.RsTestDataRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataRequest;
-import no.nav.tps.vedlikehold.service.command.testdata.GenererFiktiveIdenter;
+//import no.nav.tps.vedlikehold.domain.rs.testdata.RsTestDataRequest;
+import no.nav.tps.vedlikehold.service.command.testdata.SkdMeldingFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
-import java.util.List;
+        import java.util.HashMap;
+        import java.util.Map;
 
 /**
  * Created by Rizwan Ali Ahmed, Visma Consulting AS.
@@ -20,17 +15,19 @@ import java.util.List;
 @RequestMapping(value = "api/v1")
 public class TestdataController {
 
-    @Inject
-    private MapperFacade testDataRequestMapper;
-
     @Autowired
-    private GenererFiktiveIdenter genererFiktiveIdenter;
+    private SkdMeldingFormatter skdMeldingFormatter;
 
-    @RequestMapping(value = "/testdata/fnr", method = RequestMethod.GET)
-    public List<String> getGeneratedFnr(@RequestBody RsTestDataRequest rsTestDataRequest) {
-
-        TestDataRequest testDataRequest = testDataRequestMapper.map(rsTestDataRequest, TestDataRequest.class);
-
-        return genererFiktiveIdenter.execute(testDataRequest);
+    @RequestMapping(value = "/testdata/skdcreate", method = RequestMethod.GET)
+    public String createTestData(@RequestParam(required = false) Map<String, Object> skdMeldingParameters){
+        //TODO Bare for testing dette mappet som lages under.
+        //TODO Husk å sette på CSFR
+        HashMap<String,String> bla = new HashMap<>();
+        bla.put("T1-FORNAVN", "Peter");
+        bla.put("T1-SLEKTSNAVN", "Fløgstad");
+        bla.put("T1-PERSONNUMMER", "33152");
+        String skdMelding = skdMeldingFormatter.convertToSkdMelding(bla);
+        return skdMelding;
     }
+
 }
