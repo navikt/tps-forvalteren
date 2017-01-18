@@ -113,6 +113,12 @@ public class CommandConfig {
     }
 
     @Bean
+    @Order(10)
+    ServiceRoutineResolver hentMangeFnrHistorier(){
+        return new M211HentFnrHistorieMultiple();
+    }
+
+    @Bean
     @Order(Integer.MAX_VALUE)
     ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
         return new S000TilgangTilTpsServiceRoutineResolver();

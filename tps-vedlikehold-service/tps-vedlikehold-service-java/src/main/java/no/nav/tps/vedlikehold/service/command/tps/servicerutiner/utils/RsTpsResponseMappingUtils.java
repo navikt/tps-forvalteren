@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils;
+package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.domain.service.command.tps.Response;

@@ -1,12 +1,25 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 //import no.nav.tps.vedlikehold.domain.rs.testdata.RsTestDataRequest;
-import no.nav.tps.vedlikehold.service.command.testdata.SkdMeldingFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-        import java.util.HashMap;
-        import java.util.Map;
+import com.fasterxml.jackson.databind.JsonNode;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.command.testdata.FiktiveIdenterGenerator;
+import no.nav.tps.vedlikehold.service.command.testdata.SkdMeldingFormatter;
+import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsRequestSender;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.jms.JMSException;
+import java.util.Map;
 
 /**
  * Created by Rizwan Ali Ahmed, Visma Consulting AS.
@@ -16,18 +29,71 @@ import org.springframework.web.bind.annotation.*;
 public class TestdataController {
 
     @Autowired
+    private UserContextHolder userContextHolder;
+
+    @Autowired
     private SkdMeldingFormatter skdMeldingFormatter;
 
-    @RequestMapping(value = "/testdata/skdcreate", method = RequestMethod.GET)
-    public String createTestData(@RequestParam(required = false) Map<String, Object> skdMeldingParameters){
-        //TODO Bare for testing dette mappet som lages under.
-        //TODO Husk å sette på CSFR
-        HashMap<String,String> bla = new HashMap<>();
-        bla.put("T1-FORNAVN", "Peter");
-        bla.put("T1-SLEKTSNAVN", "Fløgstad");
-        bla.put("T1-PERSONNUMMER", "33152");
-        String skdMelding = skdMeldingFormatter.convertToSkdMelding(bla);
+    @Autowired
+    private TpsRequestService tpsRequestService;
+
+    @Autowired
+    private RsTpsRequestMappingUtils mappingUtils;
+
+    @Autowired
+    private FiktiveIdenterGenerator fiktiveIdenterGenerator;
+
+    @Autowired
+    private TpsRequestSender tpsRequestSender;
+
+    //TODO Husk å sette på CSFR
+    @RequestMapping(value = "/testdata/skdcreate", method = RequestMethod.POST)
+    public String createTestData(@RequestParam(required = false) Map<String, String> skdMeldingParameters){
+
+        String skdMelding = skdMeldingFormatter.convertToSkdMeldingInnhold(skdMeldingParameters);
+
+        //TODO Settes av  param etter testing. Eller body?
+        TpsRequestContext context = new TpsRequestContext();
+        context.setEnvironment("t4");
+
+        try {
+            tpsRequestService.executeSkdMeldingRequest(skdMelding, context );
+        } catch (JMSException e) {
+            e.printStackTrace();    //TODO Gjør om til logger
+        }
+
         return skdMelding;
     }
 
+    @RequestMapping(value = "/testdata/fodsel", method = RequestMethod.GET)
+    public TpsServiceRoutineResponse getFodselsnummer(@RequestParam(required = false) Map<String, Object> tpsRequestParameters){
+        tpsRequestParameters.put("serviceRutinenavn","FS03-FDNUMMER-FNRHISTO-M");
+
+        //Testdata generer Fodselsnummer array. //TODO Skal generes av fiktiveIdenterGeneratoren når den er ferdig.
+        String[] fnrs = {"07019233152", "07018833152", "07018933152","13058841522"};
+        tpsRequestParameters.put("fnr", fnrs);
+        tpsRequestParameters.put("antallFnr", fnrs.length);
+        tpsRequestParameters.put("buffNr", 1);  //TODO Må kanskje loope alikvel? Da det kun er 24 res per resultat.
+
+        JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
+
+        TpsRequestContext context = new TpsRequestContext();
+        context.setUser(userContextHolder.getUser());
+        context.setEnvironment("t4");
+
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest("FS03-FDNUMMER-FNRHISTO-M", body);
+        return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+
+//        //TODO Bare test request... Fjern senere.
+//        TestDataRequest testDataRequest = new TestDataRequest();
+//        testDataRequest.setAntallIdenter(10);
+//        testDataRequest.setIdentType("Fnr");
+//        testDataRequest.setKjonn(Kjonn.MANN);
+//        LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
+//        testDataRequest.setDato(date);
+//        //List<String> fnrs = fiktiveIdenterGenerator.genererFiktiveIdenter(testDataRequest);
+//        ArrayList<String> fnrs = new ArrayList<>();
+//        fnrs.add("07019233152");
+
+    }
 }

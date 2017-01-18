@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Convenience class for exposing MQ resources.
  * Connects to the application's Fasit resources and exposes its request and response queues.
+ * It connects to tpsws Fasit resources
  *
  * @author Øyvind Grimnes, Visma Consulting AS
  */

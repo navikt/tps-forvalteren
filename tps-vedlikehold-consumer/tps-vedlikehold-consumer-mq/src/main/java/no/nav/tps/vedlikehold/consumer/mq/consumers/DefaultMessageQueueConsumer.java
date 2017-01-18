@@ -41,6 +41,11 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     }
 
     @Override
+    public void setRequestQueue(String requestQueue){
+        this.requestQueueName = requestQueue;
+    }
+
+    @Override
     public String sendMessage(String requestMessageContent) throws JMSException {
         return sendMessage(requestMessageContent, DEFAULT_TIMEOUT);
     }

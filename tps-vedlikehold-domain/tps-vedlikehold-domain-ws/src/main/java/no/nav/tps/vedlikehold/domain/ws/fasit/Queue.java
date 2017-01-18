@@ -13,6 +13,11 @@ public class Queue {
         this.manager = manager;
     }
 
+    //TODO Fjern senere. Bare for testing av SKD melding
+    public void setName(String qName){
+        this.name = qName;
+    }
+
     public String getName() {
         return name;
     }

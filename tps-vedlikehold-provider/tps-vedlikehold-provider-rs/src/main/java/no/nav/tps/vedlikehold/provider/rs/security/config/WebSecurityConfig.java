@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         builder.authenticationProvider(authenticationProvider);
     }
 
+    //TODO SETT -->CSRF<-- Til Enable igjen når man er ferdig med å teste med Postman
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -51,5 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new CsrfHeaderFilter(cookiePath), CsrfFilter.class);
 
         http.exceptionHandling().authenticationEntryPoint(authentificationEntryPoint);
+
+        http.csrf().disable();  //TODO REMOVE LATER
     }
 }
