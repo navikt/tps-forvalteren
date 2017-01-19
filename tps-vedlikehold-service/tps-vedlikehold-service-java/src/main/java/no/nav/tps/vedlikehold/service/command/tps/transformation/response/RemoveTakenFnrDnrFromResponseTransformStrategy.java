@@ -27,7 +27,7 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseT
 
     private void removeTakenFnrDnrFromResponse(Response response, RemoveTakenFnrFromResponseTransform transformer) {
         String fnrPattern = "<EFnr>.+?</EFnr>";
-        String feilmldPattern = "<utfyllendeMelding>PERSON IKKE FUNNET</utfyllendeMelding>";
+        String feilmldPattern = "<returMelding>S201005F</returMelding>";
         Matcher fnrMatcher = Pattern.compile(fnrPattern, Pattern.DOTALL).matcher(response.getRawXml());
 
         int fnrDnrRemoved = 0;

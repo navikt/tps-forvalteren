@@ -13,8 +13,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 
 /**
  * Created by Peter Fløgstad on 18.01.2017.
@@ -41,18 +39,18 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategyTest {
 
         String personTaken1 = "<EFnr><fnr>"+fnr1+"</fnr></EFnr>";
         String personTaken2 = "<EFnr><fnr>"+fnr2+"</fnr></EFnr>";
-        String personNotTaken1 = "<EFnr><utfyllendeMelding>PERSON IKKE FUNNET</utfyllendeMelding></EFnr>";
-        String personNotTaken2 = "<EFnr><utfyllendeMelding>PERSON IKKE FUNNET</utfyllendeMelding></EFnr>";
+        String personNotTaken1 = "<EFnr><returMelding>S201005F</returMelding></EFnr>";
+        String personNotTaken2 = "<EFnr><returMelding>S201005F</returMelding></EFnr>";
 
         RemoveTakenFnrFromResponseTransform transform = new RemoveTakenFnrFromResponseTransform();
-        transform.setAntallFnrRequestTag("antallFM211");
+        transform.setAntallFnrRequestTag("antallFM201");
 
         Response response = new Response();
         response.setContext(createContext());
         response.setServiceRoutine(new TpsServiceRoutineDefinition());
         response.setRawXml(
                         "<data>"+
-                        "<antallFM211>4</antallFM211>"
+                        "<antallFM201>4</antallFM201>"
                         + personTaken1
                                 + personNotTaken1
                                 + personNotTaken2
@@ -64,7 +62,7 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategyTest {
 
         String expectedResponseXml =
                 "<data>"+
-                        "<antallFM211>2</antallFM211>"
+                        "<antallFM201>2</antallFM201>"
                         + personNotTaken1
                         + personNotTaken2
                         + "</data>";

@@ -18,6 +18,7 @@ import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
 public class TpsHentFnrHistMultiServiceRoutineRequest extends TpsServiceRoutineHentRequest{
     private String antallFnr;
+    private String buffNr;
 
     @JacksonXmlElementWrapper(localName = "nFnr")
     @JacksonXmlProperty(localName = "fnr")

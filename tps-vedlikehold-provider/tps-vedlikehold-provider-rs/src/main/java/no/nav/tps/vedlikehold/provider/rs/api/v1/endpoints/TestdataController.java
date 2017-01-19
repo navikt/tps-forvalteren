@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.Kjonn;
+import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataRequest;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.testdata.FiktiveIdenterGenerator;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.JMSException;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,25 +70,30 @@ public class TestdataController {
         return skdMelding;
     }
 
+    //TODO Vurdere om man trenger en loop for flere nummer. Vurdere mo request skal kunne innholde D-Nummer og F-nummer samtidig.. osv.
     @RequestMapping(value = "/testdata/fodsel", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getFodselsnummer(@RequestParam(required = false) Map<String, Object> tpsRequestParameters){
-        tpsRequestParameters.put("serviceRutinenavn","FS03-FDNUMMER-FNRHISTO-M");
 
-        //Testdata generer Fodselsnummer array. //TODO Skal generes av fiktiveIdenterGeneratoren når den er ferdig.
-        String[] fnrs = {"07019233152", "07018833152", "07018933152","13058841522"};
-        tpsRequestParameters.put("fnr", fnrs);
-        tpsRequestParameters.put("antallFnr", fnrs.length);
-        tpsRequestParameters.put("buffNr", 1);  //TODO Må kanskje loope alikvel? Da det kun er 24 res per resultat.
-
-        JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
+        //TODO Tilpass når vi vet akkurat hvordan input fra Frontend kommer til å være. Hardinput av Dato f.eks er bare for testing.
+        TestDataRequest testDataRequest = new TestDataRequest();
+        testDataRequest.setAntallIdenter(Integer.parseInt(tpsRequestParameters.get("antall").toString()));
+        testDataRequest.setIdentType("Fnr");
+        testDataRequest.setKjonn(Kjonn.MANN);
+        LocalDate date = LocalDate.of(1981, Month.JANUARY, 15);
+        testDataRequest.setDato(date);
+        List<String> fodselsnummere = fiktiveIdenterGenerator.genererFiktiveIdenter(testDataRequest);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        context.setEnvironment("t4");
+        context.setEnvironment(tpsRequestParameters.get("environment").toString());
 
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest("FS03-FDNUMMER-FNRHISTO-M", body);
-        return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+        tpsRequestParameters.put("fnr", fodselsnummere);
+        tpsRequestParameters.put("antallFnr", fodselsnummere.size());
 
+        JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
 
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsRequestParameters.get("serviceRutinenavn").toString(), body);
+        TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+        return tpsResponse;
     }
 }

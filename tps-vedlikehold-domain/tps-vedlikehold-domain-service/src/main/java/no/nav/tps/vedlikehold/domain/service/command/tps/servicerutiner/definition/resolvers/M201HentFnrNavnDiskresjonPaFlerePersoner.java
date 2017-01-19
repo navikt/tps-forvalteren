@@ -14,13 +14,13 @@ import static no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.t
 /**
  * Created by Peter Fløgstad on 17.01.2017.
  */
-public class M211HentFnrHistorieMultiple implements ServiceRoutineResolver{
+public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineResolver{
 
     @Override
     public TpsServiceRoutineDefinition resolve() {
         return aTpsServiceRoutine()
-                .name("FS03-FDNUMMER-FNRHISTO-M")
-                .internalName("M211 Hent Fnr historier")
+                .name("FS03-FDLISTER-DISKNAVN-M")
+                .internalName("M201 Hent Fnr Navn")
                 .javaClass(TpsHentFnrHistMultiServiceRoutineRequest.class)
                 .config()
                     .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
@@ -28,6 +28,12 @@ public class M211HentFnrHistorieMultiple implements ServiceRoutineResolver{
                 .and()
                 .parameter()
                     .name("antallFnr")
+                    .required()
+                    .type(TpsParameterType.STRING)
+
+                .and()
+                .parameter()
+                    .name("buffNr")
                     .required()
                     .type(TpsParameterType.STRING)
 
@@ -47,8 +53,8 @@ public class M211HentFnrHistorieMultiple implements ServiceRoutineResolver{
                 .and()
                 .transformer()
                     .preSend(serviceRoutineXmlWrappingAppender())
-                    .postSend(removeTakenFnrFromResponseTransform("antallFM211"))
-                    .postSend(extractDataListFromXml("personDataM211", "EFnr", "antallFM211"))
+                    .postSend(removeTakenFnrFromResponseTransform("antallFM201"))
+                    .postSend(extractDataListFromXml("personDataM201", "EFnr", "antallFM201"))
                     .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
 

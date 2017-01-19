@@ -115,7 +115,7 @@ public class CommandConfig {
     @Bean
     @Order(10)
     ServiceRoutineResolver hentMangeFnrHistorier(){
-        return new M211HentFnrHistorieMultiple();
+        return new M201HentFnrNavnDiskresjonPaFlerePersoner();
     }
 
     @Bean
