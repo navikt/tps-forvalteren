@@ -84,16 +84,6 @@ public class TestdataController {
         TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest("FS03-FDNUMMER-FNRHISTO-M", body);
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
 
-//        //TODO Bare test request... Fjern senere.
-//        TestDataRequest testDataRequest = new TestDataRequest();
-//        testDataRequest.setAntallIdenter(10);
-//        testDataRequest.setIdentType("Fnr");
-//        testDataRequest.setKjonn(Kjonn.MANN);
-//        LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
-//        testDataRequest.setDato(date);
-//        //List<String> fnrs = fiktiveIdenterGenerator.genererFiktiveIdenter(testDataRequest);
-//        ArrayList<String> fnrs = new ArrayList<>();
-//        fnrs.add("07019233152");
 
     }
 }
