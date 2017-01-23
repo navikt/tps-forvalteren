@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.jms.JMSException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "api/v1")
 public class TestdataController {
+
+    private static final String SERVICE_NAVN_SJEKK_FNR = "FS03-FDLISTER-DISKNAVN-M";
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -76,23 +79,31 @@ public class TestdataController {
 
         //TODO Tilpass når vi vet akkurat hvordan input fra Frontend kommer til å være. Hardinput av Dato f.eks er bare for testing.
         TestDataRequest testDataRequest = new TestDataRequest();
-        testDataRequest.setAntallIdenter(Integer.parseInt(tpsRequestParameters.get("antall").toString()));
+
+        //TODO Antall i parameter er antall man vil ha tilbake, men nå i kode er det antall som man sender inn til ServiceRutine
+        //TODO --> Når vi ønsker riktig antall resultat tilbake må man øke antallet som sendes inn i ServiceRutine.
+        //testDataRequest.setAntallIdenter(Integer.parseInt(tpsRequestParameters.get("antall").toString()));
+        testDataRequest.setAntallIdenter(80);
         testDataRequest.setIdentType("Fnr");
         testDataRequest.setKjonn(Kjonn.MANN);
-        LocalDate date = LocalDate.of(1981, Month.JANUARY, 15);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(tpsRequestParameters.get("aksjonsDato").toString(), formatter);
+        //LocalDate date = LocalDate.of(1981, Month.JANUARY, 15);
         testDataRequest.setDato(date);
         List<String> fodselsnummere = fiktiveIdenterGenerator.genererFiktiveIdenter(testDataRequest);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        context.setEnvironment(tpsRequestParameters.get("environment").toString());
+        context.setEnvironment("t4");
 
         tpsRequestParameters.put("fnr", fodselsnummere);
         tpsRequestParameters.put("antallFnr", fodselsnummere.size());
+        tpsRequestParameters.put("aksjonsKode", "A0");
+        tpsRequestParameters.put("serviceRutinenavn", SERVICE_NAVN_SJEKK_FNR);
 
         JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
 
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsRequestParameters.get("serviceRutinenavn").toString(), body);
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(SERVICE_NAVN_SJEKK_FNR, body);
         TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
         return tpsResponse;
     }

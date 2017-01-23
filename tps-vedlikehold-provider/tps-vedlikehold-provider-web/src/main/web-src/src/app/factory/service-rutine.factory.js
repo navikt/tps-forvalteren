@@ -2,20 +2,21 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold.factory')
-    .factory('serviceRutineFactory', ['$http', function($http) {
+    .factory('serviceRutineFactory', ['$http', function ($http) {
 
         var serviceRutineFactory = {};
-        
+
         var urlBase = 'api/v1/service';
         var urlRoutinesBase = 'api/v1/serviceroutine';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
+        var urlTestdataEndepunkter = 'api/v1/testdata';
         var urlBaseEnv = 'api/v1/environments';
         var urlConfig = '/assets/config/';
 
         var serviceRutines = {};
         var endringsmeldinger = {};
         var environments = [];
-        
+
         var isSetServiceRutines = false;
         var isSetEnvironments = false;
         var isSetEndringsmeldinger = false;
@@ -29,11 +30,11 @@ angular.module('tps-vedlikehold.factory')
         };
 
         serviceRutineFactory.isSetEndringsmeldinger = function () {
-           return isSetEndringsmeldinger;
+            return isSetEndringsmeldinger;
         };
 
-        serviceRutineFactory.loadFromServerServiceRutines = function() {
-            return $http({method: 'GET', url: urlRoutinesBase}).then(function(response) {
+        serviceRutineFactory.loadFromServerServiceRutines = function () {
+            return $http({method: 'GET', url: urlRoutinesBase}).then(function (response) {
                 if (response.data) {
                     var serviceRutineList = response.data;
 
@@ -46,65 +47,65 @@ angular.module('tps-vedlikehold.factory')
                 } else {
                     return null;
                 }
-            }, function(error) {
+            }, function (error) {
                 return null;
             });
         };
 
 
-        serviceRutineFactory.loadFromServerEndringsmeldinger = function(){
-          return $http({method: 'GET', url: urlEndrinsmeldinger}).then(function(response){
-              if(response.data){
-                  var endringsmeldingList = response.data;
-                  for(var i = 0; i < endringsmeldingList.length; i++){
-                      endringsmeldinger[endringsmeldingList[i].name] = endringsmeldingList[i];
-                  }
-                  isSetEndringsmeldinger = true;
-                  return endringsmeldinger;
-              } else {
-                  return null;
-              }
-          }, function (error) {
-              return null;
-          });
+        serviceRutineFactory.loadFromServerEndringsmeldinger = function () {
+            return $http({method: 'GET', url: urlEndrinsmeldinger}).then(function (response) {
+                if (response.data) {
+                    var endringsmeldingList = response.data;
+                    for (var i = 0; i < endringsmeldingList.length; i++) {
+                        endringsmeldinger[endringsmeldingList[i].name] = endringsmeldingList[i];
+                    }
+                    isSetEndringsmeldinger = true;
+                    return endringsmeldinger;
+                } else {
+                    return null;
+                }
+            }, function (error) {
+                return null;
+            });
         };
 
-        serviceRutineFactory.loadFromServerEnvironments = function() {
-            return $http({method: 'GET', url: urlBaseEnv}).then(function(res) {
+        serviceRutineFactory.loadFromServerEnvironments = function () {
+            return $http({method: 'GET', url: urlBaseEnv}).then(function (res) {
                 environments = res.data;
                 isSetEnvironments = true;
                 return environments;
-            }, function(error) {
+            }, function (error) {
                 return null;
             });
         };
 
-        serviceRutineFactory.getServiceRutines = function() {
+        serviceRutineFactory.getServiceRutines = function () {
             return serviceRutines;
         };
 
 
-        serviceRutineFactory.getServiceRutineNames = function() {
+        serviceRutineFactory.getServiceRutineNames = function () {
             var serviceRutineNames = [];
 
-            angular.forEach(serviceRutines, function(value, key) {
+            angular.forEach(serviceRutines, function (value, key) {
                 this.push(key);
             }, serviceRutineNames);
             return serviceRutineNames;
         };
 
         //TODO Prøv å generaliser dette igjen...
-        serviceRutineFactory.getServiceRutineInternalName = function(serviceRutineName) {
+        serviceRutineFactory.getServiceRutineInternalName = function (serviceRutineName) {
             return serviceRutines[serviceRutineName].internalName;
         };
 
 
-        serviceRutineFactory.getServiceRutineParametersNames = function(serviceRutineName) {
+        serviceRutineFactory.getServiceRutineParametersNames = function (serviceRutineName) {
             return getRequestParametersNames(serviceRutines, serviceRutineName);
         };
 
         //TODO Fjern. Finner aldri order templates uansett.
-        serviceRutineFactory.getServiceRutineParametersNamesInOrder = function(serviceRutineName) {
+        serviceRutineFactory.getServiceRutineParametersNamesInOrder = function (serviceRutineName) {
             // want the fields from serviceRutineFieldsTemplate in a certain order
             // could probably be done in a better way
             var serviceRutineParametersNamesInOrder = [];
@@ -113,7 +114,7 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
 
-        serviceRutineFactory.getServiceRutineRequiredParametersNames = function(serviceRutineName) {
+        serviceRutineFactory.getServiceRutineRequiredParametersNames = function (serviceRutineName) {
             return getRequestRequiredParametersNames(serviceRutines, serviceRutineName);
         };
 
@@ -121,16 +122,20 @@ angular.module('tps-vedlikehold.factory')
             return getSelectValues(serviceRutines, serviceRutineName);
         };
 
-        serviceRutineFactory.getServiceRutineResponse = function(serviceRutineName, params) {
-            return $http({method: 'GET', url:urlBase + '/' + serviceRutineName, params:params});
+        serviceRutineFactory.getServiceRutineResponse = function (serviceRutineName, params) {
+            return $http({method: 'GET', url: urlBase + '/' + serviceRutineName, params: params});
         };
 
-        serviceRutineFactory.getServiceRoutineConfig = function(serviceRutineName){
+        serviceRutineFactory.getTestdataResponse = function (params) {
+            return $http({method: 'GET', url: urlTestdataEndepunkter + "/fodsel", params: params});
+        };
+
+        serviceRutineFactory.getServiceRoutineConfig = function (serviceRutineName) {
             var srn = serviceRutineName.toLowerCase();
-            return $http.get(urlConfig+srn+'.json');
+            return $http.get(urlConfig + srn + '.json');
         };
 
-        serviceRutineFactory.getEnvironments = function() {
+        serviceRutineFactory.getEnvironments = function () {
             return environments;
         };
 
@@ -144,7 +149,7 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutineParametersNames;
         }
 
-        function getRequestRequiredParametersNames(requestMap, requestName){
+        function getRequestRequiredParametersNames(requestMap, requestName) {
             var requestRequiredParametersNames = [];
 
             angular.forEach(requestMap[requestName].parameters, function (value, key) {
@@ -156,7 +161,7 @@ angular.module('tps-vedlikehold.factory')
             return requestRequiredParametersNames;
         }
 
-        function getSelectValues(requestMap, requestName){
+        function getSelectValues(requestMap, requestName) {
             var selectValues = {};
 
             angular.forEach(requestMap[requestName].parameters, function (value, key) {

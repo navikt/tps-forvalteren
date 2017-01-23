@@ -1,4 +1,29 @@
-<form>
-    <div ng-show="fodselsdato"></div>
-    <!--TODO: -->
-</form>
+<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+    <div class="tps-vk-top md-whiteframe-z2">
+
+        <h1 class="md-title">Testdata</h1>
+
+        <form name="requestForm" ng-submit="submit()">
+            <div layout-gt-xs="row" layout="column" layout-wrap>
+                <tps-input-field field-data="fieldData" ng-repeat="fieldData in formFields">
+
+                </tps-input-field>
+            </div>
+
+            <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                       ng-disabled="requestForm.$invalid || loading">
+                <!-- TODO set loading til denne når knappen trykkes -->
+                Send
+            </md-button>
+
+        </form>
+    </div>
+
+    <div>
+        Testi test
+        <p ng-repeat="content in fnrListe">
+            {{content.fnr}}
+        </p>
+    </div>
+
+</div>

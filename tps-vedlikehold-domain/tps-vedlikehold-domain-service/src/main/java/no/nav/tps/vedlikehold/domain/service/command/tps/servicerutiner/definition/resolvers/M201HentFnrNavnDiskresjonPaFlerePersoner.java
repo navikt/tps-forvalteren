@@ -31,6 +31,7 @@ public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineR
                     .required()
                     .type(TpsParameterType.STRING)
 
+                //TODO Trenger kanskje ikke buff på denne.
                 .and()
                 .parameter()
                     .name("buffNr")
