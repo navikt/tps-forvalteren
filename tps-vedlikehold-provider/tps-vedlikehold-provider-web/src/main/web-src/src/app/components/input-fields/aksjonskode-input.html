@@ -1,6 +1,7 @@
 <md-input-container class="tps-vk-input-container" flex>
     <label>Aksjonskode</label>
-    <md-select ng-model="formData.aksjonsKode" placeholder="Aksjonskode">
-        <md-option ng-repeat="val in selectValues.aksjonsKode" ng-value="val">{{ val }}</md-option>
+    <md-select ng-model="formData[inputParamName]">
+        <md-option ng-repeat="val in selectValues[inputParamName]" ng-value="val">{{ val }}</md-option>
+
     </md-select>
 </md-input-container>

@@ -90,24 +90,48 @@ public class CommandConfig {
 
     @Bean
     @Order(6)
+    ServiceRoutineResolver hentTKNrEndringshistorie(){
+        return new S013HentTKNrEndringshistorie();
+    }
+
+    @Bean
+    @Order(7)
+    ServiceRoutineResolver hentBrukerprofil(){
+        return new S120HentBrukerprofil();
+    }
+
+    @Bean
+    @Order(7)
+    ServiceRoutineResolver hentFnrEndringshistorie(){
+        return new S011HentFnrEndringshistorie();
+    }
+
+    @Bean
+    @Order(7)
+    ServiceRoutineResolver sjekkFnrErDefinert(){
+        return new S100SjekkOmFnrDnrBnrErDefinertITPS();
+    }
+
+    @Bean
+    @Order(7)
     ServiceRoutineResolver endreNavnResolver() {
         return new EndreNavn();
     }
 
     @Bean
-    @Order(7)
+    @Order(8)
     ServiceRoutineResolver endreTIADResolver() {
         return new EndreTIAD();
     }
 
     @Bean
-    @Order(8)
+    @Order(9)
     ServiceRoutineResolver endreNorskGironummerResolver() {
         return new EndreNorskGironummer();
     }
 
     @Bean
-    @Order(9)
+    @Order(10)
     ServiceRoutineResolver endreUtlandskGironummerResolver() {
         return new EndreUtenlandskGironummer();
     }

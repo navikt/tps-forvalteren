@@ -179,6 +179,42 @@ app.filter('startFrom', function () {
     };
 });
 
+app.filter('startFromKey', function () {
+    return function (inputObject, startKey) {
+        var outputObject = {};
+        var reachedKey = false;
+        for(var key in inputObject){
+           if(key == startKey){
+               reachedKey = true;
+           }
+           if(reachedKey){
+               outputObject[key] = inputObject[key];
+           }
+        }
+        return outputObject;
+    };
+});
+
+app.filter('removeDuplicateKeys', function () {
+    return function (inputObject, objectComp) {
+        var outputObject = {};
+        console.log("Her ever: " + inputObject + " outer: " + objectComp);
+        for(var i in inputObject){
+            jsonObject = inputObject[i];
+            console.log("Loggger.");
+            if(jsonObject.fieldData.indexOf("[") ){
+                var res = jsonObject.fieldData.split("[");
+                jsonObject.fieldData = res[0];
+                console.log("Field: " + jsonObject.fieldData);
+            }
+            if(!objectComp.hasOwnProperty(jsonObject.fieldData) && !objectComp.hasOwnProperty()){
+               outputObject[jsonObject.fieldData] = inputObject[jsonObject.fieldData];
+            }
+        }
+        return outputObject;
+    };
+});
+
 app.filter('notEmpty', function (){
   return function (inputObject) {
       var outputObject = {};

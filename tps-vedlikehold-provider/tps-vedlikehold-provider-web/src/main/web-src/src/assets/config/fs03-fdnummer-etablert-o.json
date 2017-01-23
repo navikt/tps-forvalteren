@@ -1,0 +1,7 @@
+{
+  "FS03-FDNUMMER-ETABLERT-O": {
+    "display": {
+      "header": "${fnr}"
+    }
+  }
+}
