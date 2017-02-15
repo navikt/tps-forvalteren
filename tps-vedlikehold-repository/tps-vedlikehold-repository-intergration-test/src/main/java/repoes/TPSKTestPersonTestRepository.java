@@ -1,3 +1,5 @@
+package repoes;
+
 import no.nav.tps.vedlikehold.domain.service.jpa.TPSKTestPerson;
 import org.springframework.data.repository.CrudRepository;
 

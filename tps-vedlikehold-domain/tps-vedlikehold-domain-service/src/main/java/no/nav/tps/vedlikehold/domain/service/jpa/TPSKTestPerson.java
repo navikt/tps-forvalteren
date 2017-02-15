@@ -22,10 +22,13 @@ public class TPSKTestPerson {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "personIdGenerator")
     @SequenceGenerator(name = "personIdGenerator", sequenceName = "T_PERSON_SEQUENCE", allocationSize = 100)
-    @Column(name = "PERSON_ID", nullable = false)
+    @Column(name = "TEST_PERSON_ID", nullable = false)
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private Long id;
+
+//    @Column(name = "GRUPPE_ID", nullable = false)
+//    private int gruppeId;
 
     @Column(name = "FORNAVN", nullable = false)
     private String fornavn;
@@ -33,7 +36,7 @@ public class TPSKTestPerson {
     @Column(name = "SLEKTSNAVN", nullable = false)
     private String slektsnavn;
 
-    @Column(name = "MELLOMNAVN", nullable = false)
+    @Column(name = "MELLOMNAVN")
     private String mellomnavn;
 
     @Column(name = "PERSONNUMMER", nullable = false)

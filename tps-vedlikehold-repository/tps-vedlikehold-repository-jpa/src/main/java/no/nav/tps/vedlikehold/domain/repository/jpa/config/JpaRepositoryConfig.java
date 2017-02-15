@@ -1,6 +1,7 @@
 package no.nav.tps.vedlikehold.domain.repository.jpa.config;
 
 import no.nav.tps.vedlikehold.domain.repository.jpa.repoes.TPSKTestPersonRepository;
+import no.nav.tps.vedlikehold.domain.service.jpa.TPSKTestPerson;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(basePackages = "no.nav.tps.vedlikehold.domain.service.jpa")
+@EntityScan(basePackageClasses = TPSKTestPerson.class)
 @EnableJpaRepositories(basePackageClasses = {
         TPSKTestPersonRepository.class
 })
