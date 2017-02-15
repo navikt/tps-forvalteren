@@ -154,7 +154,7 @@
         },
         {
           "fieldData": "kommuneNavn",
-          "label": "Kommune Navn",
+          "label": "KommuneNavn",
           "flex": 20
         }
       ],

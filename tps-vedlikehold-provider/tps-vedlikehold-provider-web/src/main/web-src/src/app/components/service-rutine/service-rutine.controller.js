@@ -14,13 +14,17 @@ angular.module('tps-vedlikehold.service-rutine')
             $scope.onlyLetters = /^[a-zA-Z0-9\s]*$/;
             $scope.personsData = {};
             $scope.toggle = false;
+            $scope.isArray = angular.isArray;
 
             var nonUniqueProperties = [];
             var requiredParameters = [];
             var isValidServiceRutineName = false;
             var apiError = true;
 
-            //TODO rename
+
+            $scope.isArrays = function(arr){
+            };
+
             $scope.loadServiceRutineTemplate = function () {
                 return isValidServiceRutineName && !apiError;
             };
@@ -36,23 +40,17 @@ angular.module('tps-vedlikehold.service-rutine')
 
                     var response = res.data.response;
                     var xml = res.data.xml;
-                    str = JSON.stringify(response.status, null, 4);
-                    console.log(str);
-                    //console.log("Response: " + str);
 
                     $scope.xmlForm = utilsService.formatXml(xml);
 
                     $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
                     $scope.returStatus = response.status.kode;
                     if(response.data === undefined) return;
-                    str = JSON.stringify(response.data, null, 4);
-                    console.log(str);
                     $scope.personsData = extractPersonsData(response, nonUniqueProperties);
-                    str = JSON.stringify($scope.personsData, null, 4);
-                    console.log(str);
-                    capitalizeFirstLetterInPersonsData(response);
-                    var antallTreff = response.antallTotalt;
-                    if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
+
+                    // capitalizeFirstLetterInPersonsData(response);   //TODO Må kanskje fjernes. Spørs skal se ut
+                    // var antallTreff = response.antallTotalt;
+                    // if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
                 }, function (error) {
                     $scope.loading = false;
                     showAlertTPSError(error);
@@ -132,16 +130,15 @@ angular.module('tps-vedlikehold.service-rutine')
                 }
             }
 
-
             function extractPersonsData(responseObject, nonUniqueProperties) {
                 var personsData = {};
                 if (responseObject.antallTotalt === undefined || responseObject.antallTotalt == 1) {
-                    personsData[0] = utilsService.flattenObject2(responseObject.data[0], nonUniqueProperties);
+                    personsData[0] = utilsService.flattenObject(responseObject.data[0], nonUniqueProperties);
+                    utilsService.lagArray(personsData[0]);
                 } else {
                     var i = 0;
                     while (i < responseObject.antallTotalt) {
-                        personsData[i] = utilsService.flattenObject2(responseObject.data[i], nonUniqueProperties);
-
+                        personsData[i] = utilsService.flattenObject(responseObject.data[i], nonUniqueProperties);
                         i++;
                     }
                 }
@@ -294,10 +291,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 serviceRutineFactory.getServiceRoutineConfig($scope.serviceRutineName).then(function (res){
                     $scope.responseFormConfig = res.data;
                     nonUniqueProperties = res.data[$scope.serviceRutineName].nonUniqueProperties;
-                    console.log("Jupp: " + res.data[$scope.serviceRutineName]);
-                    str = JSON.stringify(res.data[$scope.serviceRutineName], null, 4);
-                    console.log(str);
-                    console.log("Jupp2: " + res.data[$scope.serviceRutineName].justData);
 
                 });
 

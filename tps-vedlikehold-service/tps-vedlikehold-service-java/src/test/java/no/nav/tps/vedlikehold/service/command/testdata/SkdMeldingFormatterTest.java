@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.SkdFeltDefinisjon;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.SkdFeltDefinisjon;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

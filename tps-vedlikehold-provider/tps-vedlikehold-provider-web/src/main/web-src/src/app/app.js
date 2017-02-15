@@ -121,15 +121,11 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             .state('testdata', {
                     url: "/testdata",
                     params: {
-                        serviceRutineName: null,
-                        endringsmeldingName: null
+
                     },
                     resolve: {
                         user: ['authenticationService', function (authenticationService) {
                             return authenticationService.loadUser();
-                        }],
-                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                            return serviceRutineFactory.loadFromServerServiceRutines();
                         }],
                         environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                             return serviceRutineFactory.loadFromServerEnvironments();
@@ -195,17 +191,20 @@ app.filter('startFromKey', function () {
     };
 });
 
+app.filter('startFromIndex', function () {
+    return function (inputObject, startIndex) {
+        return inputObject.slice(startIndex);
+    };
+});
+
 app.filter('removeDuplicateKeys', function () {
     return function (inputObject, objectComp) {
         var outputObject = {};
-        console.log("Her ever: " + inputObject + " outer: " + objectComp);
         for(var i in inputObject){
             jsonObject = inputObject[i];
-            console.log("Loggger.");
             if(jsonObject.fieldData.indexOf("[") ){
                 var res = jsonObject.fieldData.split("[");
                 jsonObject.fieldData = res[0];
-                console.log("Field: " + jsonObject.fieldData);
             }
             if(!objectComp.hasOwnProperty(jsonObject.fieldData) && !objectComp.hasOwnProperty()){
                outputObject[jsonObject.fieldData] = inputObject[jsonObject.fieldData];

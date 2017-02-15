@@ -1,0 +1,42 @@
+<md-dialog aria-label="Legg til Testpersoner" flex="40">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Legg til Testpersoner</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content >
+            <!-- Tabs -->
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Nye Fnr">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Nye Testpersoner</h1>
+                        <p></p>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Fra liste">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Fra Fnr liste</h1>
+                        <p></p>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button>
+                Avbryt
+            </md-button>
+            <md-button  style="margin-right:20px;" >
+                Opprett
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

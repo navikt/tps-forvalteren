@@ -27,19 +27,53 @@
                     </div>
 
                     <!-- Results expanded --> <!-- Versjon med hvite felt midten  -->
-                    <!--
-                     <div class="tps-vk-response-expanded" ng-show="toggle" >
-                        <div layout-gt-xs="row" ng-repeat="row in responseFormConfig[serviceRutineName].rows" class="md-title-content" layout-align="start center">
-                            <div flex="5"> </div>
+
+                    <div class="tps-vk-response-expanded" ng-show="toggle">
+                        <div layout-gt-xs="row" ng-repeat="row in responseFormConfig[serviceRutineName].rows"
+                             class="md-title-content" layout-align="start center">
+                            <div flex="5"></div>
                             <div ng-repeat="field in row" flex="22">
-                                <tps-output-field  ng-show="personData[field.fieldData] !== undefined" label="{{field.label}}" field-model="personData[field.fieldData]"> </tps-output-field>
-                                <tps-output-field-no-value ng-show="personData[field.fieldData] == undefined" label="{{field.label}}"> </tps-output-field-no-value>
+
+                                <tps-output-field
+                                        ng-if="!isArray(personData[field.fieldData])"
+                                        ng-show="personData[field.fieldData] != undefined"
+                                        label="{{field.label}}"
+                                        field-model="personData[field.fieldData]"></tps-output-field>
+                                <tps-output-field-no-value
+                                        ng-if="!isArray(personData[field.fieldData])"
+                                        ng-show="personData[field.fieldData] === undefined"
+                                        label="{{field.label}}"></tps-output-field-no-value>
                             </div>
                         </div>
+
+                        <div  class="md-title-content" layout-align="start center">
+                            <div flex="5"></div>
+                            <div layout-gt-xs="row" ng-repeat="indexContent in personData[responseFormConfig[serviceRutineName].arrayName['name']]"  ng-init="parentIndex=$index">
+                                <div ng-repeat="arrayFields in responseFormConfig[serviceRutineName].arrayValues" flex="{{arrayFields.flex}}" >
+                                    <tps-output-field
+                                            ng-show="indexContent[arrayFields.fieldData] !== undefined"
+                                            label="{{arrayFields.label}} - {{parentIndex}}"
+                                            field-model="indexContent[arrayFields.fieldData]"></tps-output-field>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    -->
+
+
+                    <!--
+                     <div class="tps-vk-response-expanded" ng-show="toggle" >
+                         <div layout-gt-xs="row" ng-repeat="(key, value) in responseFormConfig[serviceRutineName].justdata" class="md-title-content" layout-align="start center" ng-init="parentIndex = $index">
+                             <div flex="25" ng-if="(parentIndex%4)==0" ng-if="$index < 4" ng-repeat="(keyChild, valueChild) in responseFormConfig[serviceRutineName].justdata | startFromIndex: parentIndex">
+                                 <tps-output-field  ng-show="personData[valueChild.fieldData] !== undefined" label="{{valueChild.label}}" field-model="personData[valueChild.fieldData]"> </tps-output-field>
+                                 <tps-output-field-no-value ng-show="personData[valueChild.fieldData] == undefined" label="{{valueChild.label}}"> </tps-output-field-no-value>
+                             </div>
+                         </div>
+                     </div>
+ -->
 
                     <!-- Versjon med hvite felt nederst. Også mer dynamisk siden man looper bare hele resultat objectet og ikke forhåndsatt objelt -->
+                    <!--
                     <div class="tps-vk-response-expanded" ng-show="toggle" ng-init="counter=0" >
                         <div ng-repeat="(key, value) in personData" field-model="value" ng-init="parentIndex = $index">
                             <div layout-gt-xs="row" ng-if="(parentIndex%4)==0" class="md-title-content" layout-align="start center">
@@ -55,14 +89,13 @@
                             <div layout-gt-xs="row" ng-if="(parentIndexCon%4)==0" class="md-title-content"
                                  layout-align="start center">
                                 <div flex="5"></div>
-                                <div flex="25" ng-if="$index < 4"
-                                     ng-repeat="(keyChild, valueChild) in filteredItems | startFromKey: key">
+                                <div flex="25" ng-if="$index < 4" ng-repeat="(keyChild, valueChild) in filteredItems | startFromKey: key">
                                     <tps-output-field-no-value label="{{keyChild}}"></tps-output-field-no-value>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    -->
 
                 </md-card>
             </md-item-content>

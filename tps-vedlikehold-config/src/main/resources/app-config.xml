@@ -16,6 +16,8 @@
         <webservice alias="virksomhet:PipErEgenAnsatt_v1" mapToProperty="validering.virksomhet.egenansattv1"/>
         <ldap alias="ldap" mapToProperty="ldap"/>
 
+        <datasource alias="tps-vedlikeholdDB" jndi="java:/jboss/datasources/tps-vedlikeholdDB" ></datasource>
+
         <applicationProperties alias="tps-vedlikeholdProperties"/>
     </resources>
 

@@ -1,12 +1,12 @@
 package no.nav.tps.vedlikehold.service.command.tps.transformation.request;
 
 import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.vedlikehold.domain.service.command.User.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
-import no.nav.tps.vedlikehold.domain.service.command.tps.TpsSystemInfo;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
+import no.nav.tps.vedlikehold.domain.service.User.User;
+import no.nav.tps.vedlikehold.domain.service.tps.Request;
+import no.nav.tps.vedlikehold.domain.service.tps.TpsSystemInfo;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

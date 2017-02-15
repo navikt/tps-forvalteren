@@ -1,10 +1,10 @@
 package no.nav.tps.vedlikehold.service.command.tps.transformation;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
-import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.RequestTransformer;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseTransformer;
+import no.nav.tps.vedlikehold.domain.service.tps.Request;
+import no.nav.tps.vedlikehold.domain.service.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.request.RequestTransformer;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseTransformer;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.request.RequestTransformStrategy;
 import no.nav.tps.vedlikehold.service.command.tps.transformation.response.ResponseTransformStrategy;
 import org.junit.Test;

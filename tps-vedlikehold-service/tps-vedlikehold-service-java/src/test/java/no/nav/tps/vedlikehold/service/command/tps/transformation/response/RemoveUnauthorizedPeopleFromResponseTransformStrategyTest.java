@@ -1,10 +1,10 @@
 package no.nav.tps.vedlikehold.service.command.tps.transformation.response;
 
-import no.nav.tps.vedlikehold.domain.service.command.User.User;
-import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
+import no.nav.tps.vedlikehold.domain.service.User.User;
+import no.nav.tps.vedlikehold.domain.service.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
 import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,9 +1,9 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.ResponseStatus;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.domain.service.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.tps.ResponseStatus;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
 import org.junit.Rule;
 import org.junit.Test;

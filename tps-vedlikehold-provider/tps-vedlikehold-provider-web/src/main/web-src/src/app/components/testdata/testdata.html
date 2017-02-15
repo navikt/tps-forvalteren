@@ -5,16 +5,32 @@
 
         <form name="requestForm" ng-submit="submit()">
             <div layout-gt-xs="row" layout="column" layout-wrap>
-                <tps-input-field field-data="fieldData" ng-repeat="fieldData in formFields">
+                <tps-input-field input-param-name="fieldData" ng-repeat="fieldData in formFields" form-data="formData"
+                                 select-values="selectValues">
 
                 </tps-input-field>
             </div>
 
-            <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                       ng-disabled="requestForm.$invalid || loading">
-                <!-- TODO set loading til denne når knappen trykkes -->
-                Send
-            </md-button>
+
+            <div class="tps-vk-submit-container" layout-gt-xs="row" layout="column" layout-align>
+                <md-input-container flex-gt-xs flex="20" class="tps-vk-input-container">
+                    <label>Miljø</label>
+                    <md-select ng-model="formData.environment" required>
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-button  class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-click="showTabDialog($event)">
+                    <!-- TODO set loading til denne når knappen trykkes -->
+                    Legg til
+                </md-button>
+
+                <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                           ng-disabled="requestForm.$invalid || loading">
+                    <!-- TODO set loading til denne når knappen trykkes -->
+                    Send
+                </md-button>
+            </div>
 
         </form>
     </div>

@@ -24,7 +24,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import no.nav.tps.vedlikehold.domain.service.command.User.User;
+import no.nav.tps.vedlikehold.domain.service.User.User;
 
 import org.junit.Before;
 import org.junit.Rule;

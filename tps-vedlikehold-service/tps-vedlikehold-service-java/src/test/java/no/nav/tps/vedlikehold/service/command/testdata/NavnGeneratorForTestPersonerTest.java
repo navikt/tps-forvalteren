@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataPerson;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.TestDataPerson;
 import org.junit.Test;
 
 import java.util.Arrays;

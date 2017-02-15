@@ -22,6 +22,7 @@
         <module>tps-vedlikehold-consumer</module>
         <module>tps-vedlikehold-domain</module>
         <module>tps-vedlikehold-provider</module>
+        <module>tps-vedlikehold-repository</module>
         <module>tps-vedlikehold-service</module>
     </modules>
 
@@ -66,6 +67,9 @@
         <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
         <spring-security-ldap.version>4.0.4.RELEASE</spring-security-ldap.version>
+
+
+        <ojdbc6.version>11.2.0.3</ojdbc6.version>
 
         <!--Plugin versions-->
         <aura-maven-plugin.version>6.1.20</aura-maven-plugin.version>
@@ -157,6 +161,11 @@
                 <artifactId>tps-vedlikehold-provider-web</artifactId>
                 <version>${project.version}</version>
                 <classifier>classes</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.vedlikehold</groupId>
+                <artifactId>tps-vedlikehold-repository-jpa</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
@@ -295,6 +304,22 @@
                 <artifactId>mqjms</artifactId>
                 <version>${mqjms.version}</version>
             </dependency>
+
+            <!-- Flyway -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>4.0</version>
+            </dependency>
+
+            <!-- Drivers -->
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>ojdbc6</artifactId>
+                <!-- <version>11.2.0.3</version>-->
+                <version>${ojdbc6.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -4,7 +4,7 @@ import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import no.nav.tps.vedlikehold.domain.rs.testdata.RsTestDataRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataRequest;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.TestDataRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

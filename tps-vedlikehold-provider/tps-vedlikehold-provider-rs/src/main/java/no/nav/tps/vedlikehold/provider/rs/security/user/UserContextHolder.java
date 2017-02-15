@@ -5,7 +5,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import no.nav.tps.vedlikehold.domain.service.command.User.User;
+import no.nav.tps.vedlikehold.domain.service.User.User;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

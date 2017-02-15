@@ -2,18 +2,16 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 //import no.nav.tps.vedlikehold.domain.rs.testdata.RsTestDataRequest;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.Kjonn;
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataRequest;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.TestDataRequest;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.vedlikehold.service.command.testdata.SkdMeldingFormatter;
+import no.nav.tps.vedlikehold.service.command.testdata.TPSFodselsnummerFetcher;
+import no.nav.tps.vedlikehold.service.command.testdata.TestDataRequestMapper;
+import no.nav.tps.vedlikehold.service.command.testdata.testperson.TestPersonCreator;
+import no.nav.tps.vedlikehold.service.command.testdata.testperson.TestPersonFetcher;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
-import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsRequestSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.JMSException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +30,6 @@ import java.util.Map;
 @RequestMapping(value = "api/v1")
 public class TestdataController {
 
-    private static final String SERVICE_NAVN_SJEKK_FNR = "FS03-FDLISTER-DISKNAVN-M";
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -46,13 +41,16 @@ public class TestdataController {
     private TpsRequestService tpsRequestService;
 
     @Autowired
-    private RsTpsRequestMappingUtils mappingUtils;
+    private TPSFodselsnummerFetcher TPSFodselsnummerFetcher;
 
     @Autowired
-    private FiktiveIdenterGenerator fiktiveIdenterGenerator;
+    private TestDataRequestMapper testDataRequestMapper;
 
     @Autowired
-    private TpsRequestSender tpsRequestSender;
+    private TestPersonCreator testPersonCreator;
+
+    @Autowired
+    private TestPersonFetcher testPersonFetcher;
 
     //TODO Husk å sette på CSFR
     @RequestMapping(value = "/testdata/skdcreate", method = RequestMethod.POST)
@@ -60,7 +58,6 @@ public class TestdataController {
 
         String skdMelding = skdMeldingFormatter.convertToSkdMeldingInnhold(skdMeldingParameters);
 
-        //TODO Settes av  param etter testing. Eller body?
         TpsRequestContext context = new TpsRequestContext();
         context.setEnvironment("t4");
 
@@ -73,38 +70,26 @@ public class TestdataController {
         return skdMelding;
     }
 
-    //TODO Vurdere om man trenger en loop for flere nummer. Vurdere mo request skal kunne innholde D-Nummer og F-nummer samtidig.. osv.
     @RequestMapping(value = "/testdata/fodsel", method = RequestMethod.GET)
-    public TpsServiceRoutineResponse getFodselsnummer(@RequestParam(required = false) Map<String, Object> tpsRequestParameters){
+    public List<TpsServiceRoutineResponse> hentUbrukteFodselsnummerFraTPS(@RequestParam(required = false) Map<String, Object> tpsRequestParameters){
+        TestDataRequest testDataRequest = testDataRequestMapper.mapParametersToTestDataRequest(tpsRequestParameters);
+        TpsRequestContext tpsRequestContext = getTpsRequestContext(tpsRequestParameters);
+        return TPSFodselsnummerFetcher.hentUbrukteFodselsnummereFraTPS(tpsRequestParameters, tpsRequestContext,testDataRequest);
+    }
 
-        //TODO Tilpass når vi vet akkurat hvordan input fra Frontend kommer til å være. Hardinput av Dato f.eks er bare for testing.
-        TestDataRequest testDataRequest = new TestDataRequest();
 
-        //TODO Antall i parameter er antall man vil ha tilbake, men nå i kode er det antall som man sender inn til ServiceRutine
-        //TODO --> Når vi ønsker riktig antall resultat tilbake må man øke antallet som sendes inn i ServiceRutine.
-        //testDataRequest.setAntallIdenter(Integer.parseInt(tpsRequestParameters.get("antall").toString()));
-        testDataRequest.setAntallIdenter(80);
-        testDataRequest.setIdentType("Fnr");
-        testDataRequest.setKjonn(Kjonn.MANN);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(tpsRequestParameters.get("aksjonsDato").toString(), formatter);
-        //LocalDate date = LocalDate.of(1981, Month.JANUARY, 15);
-        testDataRequest.setDato(date);
-        List<String> fodselsnummere = fiktiveIdenterGenerator.genererFiktiveIdenter(testDataRequest);
+    @RequestMapping(value = "/testdata/sattfodsel", method = RequestMethod.GET)
+    public TpsServiceRoutineResponse sjekkMotTPSOgReturnerDeUbrukteFodselsnummerene(@RequestParam(required = false) Map<String, Object> tpsRequestParameters){
+        String fodselsnummer =  tpsRequestParameters.get("fodselsnummer").toString();
+        TpsRequestContext tpsRequestContext = getTpsRequestContext(tpsRequestParameters);
+        return TPSFodselsnummerFetcher.sjekkTilgjengelighetAvFodselsnummere(tpsRequestParameters, tpsRequestContext, Arrays.asList(fodselsnummer.split(";")));
+    }
 
+    private TpsRequestContext getTpsRequestContext(Map<String, Object> tpsRequestParameters){
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        context.setEnvironment("t4");
-
-        tpsRequestParameters.put("fnr", fodselsnummere);
-        tpsRequestParameters.put("antallFnr", fodselsnummere.size());
-        tpsRequestParameters.put("aksjonsKode", "A0");
-        tpsRequestParameters.put("serviceRutinenavn", SERVICE_NAVN_SJEKK_FNR);
-
-        JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
-
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(SERVICE_NAVN_SJEKK_FNR, body);
-        TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
-        return tpsResponse;
+        context.setEnvironment(tpsRequestParameters.get("environment").toString());
+        return context;
     }
+
 }

@@ -33,6 +33,10 @@
             <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-common-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-repository-jpa</artifactId>
+        </dependency>
 
         <!-- SPRING -->
         <dependency>

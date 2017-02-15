@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.service.command.tps.transformation.response;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.RemoveTakenFnrFromResponseTransform;
+import no.nav.tps.vedlikehold.domain.service.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.Transformer;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.RemoveTakenFnrFromResponseTransform;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;

@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.tps.transformation.response;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.Response;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.response.ResponseDataListTransformer;
+import no.nav.tps.vedlikehold.domain.service.tps.Response;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseDataListTransformer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

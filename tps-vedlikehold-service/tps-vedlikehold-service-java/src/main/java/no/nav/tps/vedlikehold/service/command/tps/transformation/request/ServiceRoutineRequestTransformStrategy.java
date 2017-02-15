@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.service.command.tps.transformation.request;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.Request;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.Transformer;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
+import no.nav.tps.vedlikehold.domain.service.tps.Request;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.Transformer;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import org.springframework.stereotype.Component;
 
 @Component

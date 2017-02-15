@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.command.tps.servicerutiner.definition.resolvers.*;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.*;
 import no.nav.tps.vedlikehold.service.command.Command;
 
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -17,7 +17,7 @@ import org.springframework.core.annotation.Order;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 
-import static no.nav.tps.vedlikehold.domain.service.command.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import static no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
 /**
  * @author Kristian Kyvik (Visma Consulting AS).

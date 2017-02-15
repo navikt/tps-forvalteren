@@ -1,9 +1,9 @@
 package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.EgenAnsattAuthorisation;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.ReadAuthorisation;
-import no.nav.tps.vedlikehold.domain.service.command.tps.authorisation.strategies.WriteAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.WriteAuthorisation;
 import no.nav.tps.vedlikehold.service.command.authorisation.RolesService;
 import org.junit.Before;
 import org.junit.Test;

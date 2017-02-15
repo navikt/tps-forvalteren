@@ -14,7 +14,7 @@ import org.springframework.context.annotation.*;
 @EnableConfigurationProperties
 @PropertySource("classpath:global.properties")
 @Import({RestProviderConfig.class,
-        CommonConfig.class
+        CommonConfig.class,
 })
 @ComponentScan(basePackageClasses = {
         Selftest.class

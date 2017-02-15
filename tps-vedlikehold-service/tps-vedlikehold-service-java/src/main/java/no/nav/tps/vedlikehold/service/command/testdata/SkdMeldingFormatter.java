@@ -1,8 +1,8 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.SkdFeltDefinisjon;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.SkdFeltDefinisjon;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Created by Peter Fløgstad on 09.01.2017.
  */
 
-@Component
+@Service
 public class SkdMeldingFormatter {
 
     private static final String whitespace20 = "                    ";

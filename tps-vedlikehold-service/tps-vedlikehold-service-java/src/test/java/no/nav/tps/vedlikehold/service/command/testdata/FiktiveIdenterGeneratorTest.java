@@ -1,7 +1,7 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.Kjonn;
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataRequest;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.Kjonn;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.TestDataRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

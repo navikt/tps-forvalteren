@@ -58,50 +58,83 @@ angular.module('tps-vedlikehold.service')
         };
 
 
+
+        self.flattenObject = function(jsonObject){
+            var result = {};
+            function recurse(jObject, properties){
+                if(Object(jObject) !== jObject){
+                    result[properties] = jObject;
+                } else if(Array.isArray(jObject)){
+                    for(var i=0, l=jObject.length; i<jObject.length; i++){
+                        recurse(jObject[i], properties + "[" + i + "]");
+                    }
+                    if(l === 0){
+                        result[properties] = [];
+                    }
+                } else {
+                    var isEmpty = true;
+                    for(var p in jObject){
+                        isEmpty = false;
+                        recurse(jObject[p], properties ? properties + "." + p : p);
+                    }
+                    if(isEmpty && properties){
+                        result[properties] = {};
+                    }
+                }
+            }
+            recurse(jsonObject, "");
+            return result;
+        };
+
+        self.lagArray = function (jsonObject){
+            var propertiesArray = [];
+            var propertiesObject = {};
+            var parentPropertiesName = "";
+
+           for(var key in jsonObject) {
+              if(jsonObject.hasOwnProperty(key)) {
+                    var propertiesName = key.toString().split("]");
+                    if(propertiesName.length > 1 && !propertiesObject.hasOwnProperty(propertiesName[0])){
+                        propertiesObject[propertiesName[0]] = _getObjectWithPropertiesOfParentTag(propertiesName[0], jsonObject)
+                        var tempArr= propertiesName[0].split("[");
+                        parentPropertiesName = tempArr[0];
+                    }
+              }
+           }
+            var count = 0;
+            for(var key in propertiesObject){
+               propertiesArray[count] = propertiesObject[key];
+               count++;
+            }
+            jsonObject[parentPropertiesName] = propertiesArray;
+        };
+
+        function _getObjectWithPropertiesOfParentTag(name, inputObject){
+            var jObject = {};
+            for(var key in inputObject){
+                var propertyNameArray = key.toString().split("]");
+                if(propertyNameArray[0] == name){
+                    var end = propertyNameArray[1].split(".");
+                    jObject[end[1]] = inputObject[key];
+                }
+            }
+           return jObject;
+        }
+
         //TODO: find a better way to create dynamic output
         // Flattens a JSON object, adding all key-values at top with just their key as key
         // Except for the objects with the keys that matches nonUniques,
         // they are given the name parentKey_childKey
-        self.flattenObject = function (jsonObject, nonUniques) {
-            return _flattenObject2({}, jsonObject, nonUniques);
+        self.flattenObject_old = function (jsonObject, nonUniques) {
+            return _flattenObject_old({}, jsonObject, nonUniques);
         };
 
-        //TODO Add test to validate that this method actually works properly. (unit.js)
-         function _flattenObject(finalFlatObject, jsonObject, nonUniques) {
-            for(var parentKey in jsonObject){
-                if (!jsonObject.hasOwnProperty(parentKey)) continue;
-                if ((typeof jsonObject[parentKey]) == 'object') {
-                    var flatterObject = _flattenObject(finalFlatObject, jsonObject[parentKey], nonUniques);
-                    for (var childKey in flatterObject) {
-                        if (!flatterObject.hasOwnProperty(childKey)) continue;
-                        // console.log("Keys: " + parentKey + "   childKey: " + childKey);
-                        if (nonUniques && nonUniques.indexOf(childKey) > -1) {
-                            // console.log("Non unq: " + parentKey + "   child: " + childKey);
-                            if(!finalFlatObject.hasOwnProperty(parentKey + '_' + childKey) || finalFlatObject[parentKey + '_' + childKey]=== ""){
-                                //console.log("Here!");
-                                finalFlatObject[parentKey + '_' + childKey] = flatterObject[childKey];
-                            }
-                        } else {
-                            if(!finalFlatObject.hasOwnProperty(childKey) || finalFlatObject[childKey] === ""){
-                                finalFlatObject[childKey] = flatterObject[childKey];
-                            }
-                        }
-                    }
-                } else {
-                    if(!finalFlatObject.hasOwnProperty(parentKey) || finalFlatObject[parentKey] === ""){
-                        finalFlatObject[parentKey] = jsonObject[parentKey];
-                    }
-                }
-            }
-            return finalFlatObject;
-        }
-
-        function _flattenObject2(finalFlatObject, jsonObject, nonUniques) {
+        function _flattenObject_old(finalFlatObject, jsonObject, nonUniques) {
             for(var parentKey in jsonObject){
                 if (!jsonObject.hasOwnProperty(parentKey)) continue;
                 if ((typeof jsonObject[parentKey]) == 'object') {
                     // Går inn hit ved epost, så i flatter, det som blir returnert, er hele mor objectet! ikke bare den innenfor! Så får med masse ekstra.
-                    var flatterObject = _flattenObject2({}, jsonObject[parentKey], nonUniques);
+                    var flatterObject = _flattenObject_old({}, jsonObject[parentKey], nonUniques);
                     for (var childKey in flatterObject) {
                         if (!flatterObject.hasOwnProperty(childKey)) continue;
                         if (nonUniques && nonUniques.indexOf(childKey) > -1) {
@@ -123,33 +156,6 @@ angular.module('tps-vedlikehold.service')
             return finalFlatObject;
         }
 
-        //TODO Den flatter ikke når man har et array som er større enn 1.
-        self.flattenObject2 = function(jsonObject){
-            var result = {};
-            function recurse(jObject, properties){
-                if(Object(jObject) !== jObject){
-                    result[properties] = jObject;
-                } else if(Array.isArray(jObject)){
-                    for(var i=0, l=jObject.length; i<jObject.length; i++){
-                        recurse(jObject[i], properties +"["+i+"]");
-                    }
-                    if(l === 0){
-                        result[properties] = [];
-                    }
-                } else {
-                    var isEmpty = true;
-                    for(var p in jObject){
-                        isEmpty = false;
-                        recurse(jObject[p], properties ? properties +"."+p : p);
-                    }
-                    if(isEmpty && properties){
-                        result[properties] = {};
-                    }
-                }
-            }
-            recurse(jsonObject, "");
-            return result;
-        };
 
 
         //TODO: use library for this

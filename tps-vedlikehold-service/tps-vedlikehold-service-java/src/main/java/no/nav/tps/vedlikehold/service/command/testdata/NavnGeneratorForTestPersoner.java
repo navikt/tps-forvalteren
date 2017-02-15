@@ -1,10 +1,11 @@
 package no.nav.tps.vedlikehold.service.command.testdata;
 
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.Kjonn;
-import no.nav.tps.vedlikehold.domain.service.command.tps.testdata.TestDataPerson;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.Kjonn;
+import no.nav.tps.vedlikehold.domain.service.tps.testdata.TestDataPerson;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+//TODO kanskje gjøre om til Bean slik at man kan Autowire.
 public class NavnGeneratorForTestPersoner {
 
     // Fornavn Gutter
