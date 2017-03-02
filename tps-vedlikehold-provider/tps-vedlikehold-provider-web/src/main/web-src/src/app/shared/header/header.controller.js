@@ -3,28 +3,28 @@
  * */
 angular.module('tps-vedlikehold')
     .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', '$mdSidenav',
-        function($scope, authenticationService, locationService, $mdSidenav) {
+        function ($scope, authenticationService, locationService, $mdSidenav) {
 
-    $scope.logout = function(){
-        authenticationService.invalidateSession(function(){
-            locationService.redirectToLoginState();
-        });
-    };
+            $scope.logout = function () {
+                authenticationService.invalidateSession(function () {
+                    locationService.redirectToLoginState();
+                });
+            };
 
-    $scope.toggleSideNav = function(menuId) {
-        $mdSidenav(menuId).toggle();
-    };
+            $scope.toggleSideNav = function (menuId) {
+                $mdSidenav(menuId).toggle();
+            };
 
-    $scope.endringState = function () {
-        locationService.redirectToEndringState();
-    };
+            $scope.endringState = function () {
+                locationService.redirectToEndringState();
+            };
 
-    $scope.testdataState = function () {
-        locationService.redirectToTestdataState();
-    };
+            $scope.testdataState = function () {
+                locationService.redirectToTestdataState();
+            };
 
-    $scope.serviceRutineState = function(){
-        locationService.redirectToServiceRutineState();
-    };
+            $scope.serviceRutineState = function () {
+                locationService.redirectToServiceRutineState();
+            };
 
-}]);
+        }]);

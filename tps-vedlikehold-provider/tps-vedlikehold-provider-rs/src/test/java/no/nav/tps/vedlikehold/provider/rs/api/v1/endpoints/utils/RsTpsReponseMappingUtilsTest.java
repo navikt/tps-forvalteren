@@ -63,7 +63,7 @@ public class RsTpsReponseMappingUtilsTest {
         response.setTotalHits(2);
         response.setStatus(new ResponseStatus());
 
-        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToResponse(response);
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
         assertThat(result.getXml(), is(equalTo(response.getRawXml())));
     }
@@ -77,7 +77,7 @@ public class RsTpsReponseMappingUtilsTest {
         response.setTotalHits(null);
         response.setStatus(new ResponseStatus());
 
-        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToResponse(response);
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
         assertThat(result.getResponse(), is(notNullValue()));
         assertThat(result.getResponse(), is(instanceOf(LinkedHashMap.class)));
@@ -102,7 +102,7 @@ public class RsTpsReponseMappingUtilsTest {
 
         response.setStatus(responseStatus);
 
-        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToResponse(response);
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
         LinkedHashMap map = (LinkedHashMap)result.getResponse();
         LinkedHashMap status = (LinkedHashMap)map.get("status");
@@ -122,7 +122,7 @@ public class RsTpsReponseMappingUtilsTest {
 
         response.setStatus(new ResponseStatus());
 
-        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToResponse(response);
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
         LinkedHashMap map = (LinkedHashMap)result.getResponse();
 

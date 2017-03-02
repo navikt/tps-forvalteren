@@ -4,9 +4,9 @@
     <div flex-xs flex-gt-xs="60" layout="column">
         <md-item class="tps-vk-response" ng-show="personsData" ng-repeat="(key, personData) in personsData | notEmpty">
             <md-item-content ng-init="paramsToShow = responseFormConfig[serviceRutineName].display">
-                <md-card class="md-whiteframe-1dp tps-vk-response-card">
+                <md-card class="tps-vk-response-card">
                     <!-- Results unexpanded -->
-                    <div class="md-tile-content" ng-click="toggle = !toggle" layout="row" layout-align="start center">
+                    <div ng-click="toggle = !toggle" layout="row" layout-align="start center">
                         <div flex="5">
                         </div>
 
@@ -16,8 +16,7 @@
                                     personData)}}</h3>
                             </div>
                             <div ng-if="paramsToShow.properties" layout="row">
-                                <div flex="{{param.flex}}" class="tps-vk-output-container"
-                                     ng-repeat="param in paramsToShow.properties">
+                                <div flex="{{param.flex}}" class="tps-vk-output-container" ng-repeat="param in paramsToShow.properties">
                                     <h4 class="tps-vk-output-label"> {{param.label}} </h4>
                                     <p class="tps-vk-output-data">{{resolveDisplayTemplate(param.template,
                                         personData)}}</p>

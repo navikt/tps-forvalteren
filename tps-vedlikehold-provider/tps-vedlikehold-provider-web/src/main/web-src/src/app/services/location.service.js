@@ -2,7 +2,7 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  */
 angular.module('tps-vedlikehold.service')
-    .service('locationService', ['$state', function($state) {
+    .service('locationService', ['$state','$location', function($state, $location) {
 
         var self = this;
         var returnState = 'servicerutine';
@@ -20,11 +20,19 @@ angular.module('tps-vedlikehold.service')
         };
 
         self.redirectToTestdataState = function () {
-            $state.go('testdata');
+            $location.url('testdata/first');
         };
 
         self.redirectToServiceRutineState = function () {
             $state.go('servicerutine');
+        };
+
+        self.isTestdataState = function(){
+            return $state.current.name === 'testdata';
+        };
+
+        self.isServicerutineState = function(){
+            return $state.current.name === 'servicerutine';
         };
 
     }]);

@@ -3,12 +3,22 @@
         <md-content>
             <md-list class="tps-vk-side-navigator-list" layout="column" layout-align="start start">
                 <!-- Side menu created by loop of Service Rutine names -->
-                <md-list-item ng-repeat="serviceRutineName in serviceRutineNames" class="tps-vk-service-rutine-list-item">
+                <md-list-item ng-if="isServicerutineState()" ng-repeat="serviceRutineName in serviceRutineNames" class="tps-vk-service-rutine-list-item">
                         <md-button md-ripple-container class="md-primary tps-vk-service-rutine-button"
                                    ui-sref="servicerutine({serviceRutineName: serviceRutineName})"
                                    ui-sref-active="activeMenuButton" tabindex="0" style="text-transform: none">
                             {{ getServiceRutineInternalName(serviceRutineName) }}
                         </md-button>
+                    <md-divider></md-divider>
+                </md-list-item>
+
+                <!-- Testdata side nav -->
+                <md-list-item  ng-if="isTestdataState()" ng-repeat="page in testdataNames" class="tps-vk-service-rutine-list-item">
+                    <md-button md-ripple-container class="md-primary tps-vk-service-rutine-button"
+                               ui-sref="testdata({testdataPage: page})"
+                               ui-sref-active="activeMenuButton" tabindex="0" style="text-transform: none">
+                                {{ page }}
+                    </md-button>
                     <md-divider></md-divider>
                 </md-list-item>
 

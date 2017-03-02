@@ -130,6 +130,14 @@ angular.module('tps-vedlikehold.factory')
             return $http({method: 'GET', url: urlTestdataEndepunkter + "/fodsel", params: params});
         };
 
+        serviceRutineFactory.loadTestdataPersoner = function (params) {
+            return $http.get(urlTestdataEndepunkter + "/testpersoner", {params: params});
+        };
+
+        serviceRutineFactory.updateTestdataPersoner = function (params) {
+            return $http({method: 'POST', url: urlTestdataEndepunkter + "/testpersoner", params: params});
+        };
+
         serviceRutineFactory.getServiceRoutineConfig = function (serviceRutineName) {
             var srn = serviceRutineName.toLowerCase();
             return $http.get(urlConfig + srn + '.json');

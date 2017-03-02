@@ -27,6 +27,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class TPSKTestPersonTestRepositoryTest {
 
+    //TODO Lag en litt bebdre måte å opprette bruker/Objekter. Sjekk ut NORG2 hvordan de gjør det.
     private static final String name1 = "TestPeter";
     private static final String name2 = "TestRetep";
     private static final String slektsnavn1= "TestSlekt";

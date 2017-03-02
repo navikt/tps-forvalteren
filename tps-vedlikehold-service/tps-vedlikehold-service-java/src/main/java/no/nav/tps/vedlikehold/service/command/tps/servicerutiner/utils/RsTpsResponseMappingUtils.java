@@ -24,7 +24,7 @@ public class RsTpsResponseMappingUtils {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public TpsServiceRoutineResponse convertToResponse(Response r) throws IOException {
+    public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response r) throws IOException {
         TpsServiceRoutineResponse response = new TpsServiceRoutineResponse();
 
         response.setXml(r.getRawXml());

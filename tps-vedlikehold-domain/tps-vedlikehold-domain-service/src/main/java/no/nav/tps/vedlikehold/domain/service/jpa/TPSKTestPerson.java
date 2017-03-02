@@ -7,7 +7,11 @@ package no.nav.tps.vedlikehold.domain.service.jpa;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 
@@ -19,6 +23,8 @@ public class TPSKTestPerson {
 
     static final String TABLE_NAME = "T_TEST_PERSON";
 
+    //private Set<TestGruppe> testgrupper;
+
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "personIdGenerator")
     @SequenceGenerator(name = "personIdGenerator", sequenceName = "T_PERSON_SEQUENCE", allocationSize = 100)
@@ -26,9 +32,6 @@ public class TPSKTestPerson {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private Long id;
-
-//    @Column(name = "GRUPPE_ID", nullable = false)
-//    private int gruppeId;
 
     @Column(name = "FORNAVN", nullable = false)
     private String fornavn;
@@ -44,5 +47,22 @@ public class TPSKTestPerson {
 
     @Column(name = "FODSELSNUMMER", nullable = false)
     private String fodselsnummer;
+
+    @ManyToMany(mappedBy = "testpersoner", fetch = FetchType.EAGER)
+    private Set<TestGruppe> testgrupper = new HashSet<>();
+
+    public boolean addToGroup(TestGruppe testGruppe){
+       if(!testgrupper.contains(testGruppe)) {
+           testgrupper.add(testGruppe);
+           return true;
+       }
+       return false;
+    }
+
+    public void removeFromGroup(TestGruppe testGruppe){
+        if(testgrupper.contains(testGruppe)){
+            testgrupper.remove(testGruppe);
+        }
+    }
 
 }

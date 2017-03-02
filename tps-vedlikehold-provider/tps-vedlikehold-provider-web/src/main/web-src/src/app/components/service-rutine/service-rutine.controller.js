@@ -21,7 +21,6 @@ angular.module('tps-vedlikehold.service-rutine')
             var isValidServiceRutineName = false;
             var apiError = true;
 
-
             $scope.isArrays = function(arr){
             };
 
@@ -47,10 +46,12 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.returStatus = response.status.kode;
                     if(response.data === undefined) return;
                     $scope.personsData = extractPersonsData(response, nonUniqueProperties);
+                    var str = JSON.stringify($scope.personsData, null, 2);
+                    console.log(str);
 
                     // capitalizeFirstLetterInPersonsData(response);   //TODO Må kanskje fjernes. Spørs skal se ut
-                    // var antallTreff = response.antallTotalt;
-                    // if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
+                    var antallTreff = response.antallTotalt;
+                    if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
                 }, function (error) {
                     $scope.loading = false;
                     showAlertTPSError(error);
@@ -87,7 +88,9 @@ angular.module('tps-vedlikehold.service-rutine')
             //TODO Denne får nullpointer ganske ofte fordi "text" er undefined ofte.
             $scope.resolveDisplayTemplate = function(text, personData) {
                 var pattern = /\$\{(.)*?}/g;
+                console.log("Text: "+ text);
                 var matches = text.match(pattern);
+                console.log("Matches: " + matches);
 
                 angular.forEach(matches, function(val) {
                     var objKey = val.slice(2, -1);

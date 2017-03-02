@@ -2,11 +2,11 @@
 
   "FS03-FDNUMMER-PERSDATA-O": {
     "display": {
-      "header": "${etternavn}, ${fornavn}",
+      "header": "${navn.etternavn}, ${navn.fornavn}",
       "properties": [
         {
           "label": "Addresse",
-          "template": "${boAdresse1}, ${postnr} ${boPoststed}",
+          "template": "${adresse.boAdresse.adresse1}, ${adresse.boAdresse.postnr} ${adresse.boAdresse.poststed}",
           "flex": 30
         },
         {
@@ -16,12 +16,12 @@
         },
         {
           "label": "TK-nummer",
-          "template": "${tknr}",
+          "template": "${personData.tknr}",
           "flex": 20
         },
         {
           "label": "Kommune",
-          "template": "${kommunenr}",
+          "template": "${adresse.boAdresse.kommunenr}",
           "flex": 25
         }
       ]

@@ -125,7 +125,7 @@ public class ServiceControllerTest {
 
         controller.getService(parameters, SERVICE_RUTINE_NAME);
 
-        verify(rsTpsResponseMappingUtilsMock).convertToResponse(response);
+        verify(rsTpsResponseMappingUtilsMock).convertToTpsServiceRutineResponse(response);
     }
 
     @Test

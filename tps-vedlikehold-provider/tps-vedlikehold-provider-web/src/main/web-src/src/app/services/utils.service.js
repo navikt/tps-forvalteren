@@ -57,8 +57,6 @@ angular.module('tps-vedlikehold.service')
             return !isNaN(parseFloat(n)) && isFinite(n);
         };
 
-
-
         self.flattenObject = function(jsonObject){
             var result = {};
             function recurse(jObject, properties){
@@ -95,15 +93,15 @@ angular.module('tps-vedlikehold.service')
               if(jsonObject.hasOwnProperty(key)) {
                     var propertiesName = key.toString().split("]");
                     if(propertiesName.length > 1 && !propertiesObject.hasOwnProperty(propertiesName[0])){
-                        propertiesObject[propertiesName[0]] = _getObjectWithPropertiesOfParentTag(propertiesName[0], jsonObject)
+                        propertiesObject[propertiesName[0]] = _getObjectWithPropertiesOfParentTag(propertiesName[0], jsonObject);
                         var tempArr= propertiesName[0].split("[");
                         parentPropertiesName = tempArr[0];
                     }
               }
            }
             var count = 0;
-            for(var key in propertiesObject){
-               propertiesArray[count] = propertiesObject[key];
+            for(var keyProp in propertiesObject){
+               propertiesArray[count] = propertiesObject[keyProp];
                count++;
             }
             jsonObject[parentPropertiesName] = propertiesArray;

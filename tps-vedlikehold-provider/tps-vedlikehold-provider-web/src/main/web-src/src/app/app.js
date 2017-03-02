@@ -119,9 +119,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             )
             .state('testdata', {
-                    url: "/testdata",
+                    url: "/testdata/{testdataPage}",
                     params: {
-
+                        testdataPage: null
                     },
                     resolve: {
                         user: ['authenticationService', function (authenticationService) {
@@ -129,7 +129,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                         }],
                         environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                             return serviceRutineFactory.loadFromServerEnvironments();
-                        }]
+                        }],
+                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function(){}]
                     },
                     views: {
                         'content@': {

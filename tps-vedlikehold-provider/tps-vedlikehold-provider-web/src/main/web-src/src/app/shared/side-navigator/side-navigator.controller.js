@@ -2,17 +2,14 @@
  * @author Frederik de Lichtenberg (Visma Consulting AS).
  * */
 angular.module('tps-vedlikehold')
-    .controller('SideNavigatorCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'serviceRutinesPromise',
-        function($scope, $mdDialog, serviceRutineFactory, serviceRutinesPromise) {
+    .controller('SideNavigatorCtrl', ['$scope', '$mdDialog', '$state', 'serviceRutineFactory', 'serviceRutinesPromise', 'locationService',
+        function($scope, $mdDialog,$state, serviceRutineFactory, serviceRutinesPromise, locationService) {
+
 
         $scope.getServiceRutineInternalName = function(serviceRutineName) {
             return serviceRutineFactory.getServiceRutineInternalName(serviceRutineName);
         };
 
-        $scope.getEndringsmeldingInternalName = function(endringsmeldingName){
-            return serviceRutineFactory.getEndringsmeldingInternalName(endringsmeldingName);
-        };
-            
         function showAlertApiError(requestType) {
             $mdDialog.show(
                 $mdDialog.alert()
@@ -22,18 +19,30 @@ angular.module('tps-vedlikehold')
                     .ok('OK')
             );
         }
-        
+
+            $scope.isTestdataState = function () {
+                return locationService.isTestdataState();
+            };
+
+            $scope.isServicerutineState = function () {
+                return locationService.isServicerutineState();
+            };
+
         function init() {
-            if (serviceRutinesPromise) {
-                $scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
-            } else {
-                showAlertApiError("servicerutiner");
+            switch ($state.current.name){
+                case 'servicerutine':
+                    if (serviceRutinesPromise ){
+                        $scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
+                    } else {
+                        showAlertApiError("servicerutiner");
+                    }
+                    break;
+                case 'testdata':
+                    $scope.testdataNames = ["first","second"];      //TODO Kun for testing.
+                    break;
+                default:
+                    break;
             }
-            // if(endringsmeldingPromise){
-            //     $scope.endringsmeldingNames = serviceRutineFactory.getEndringsmeldingerNames();
-            // } else {
-            //     showAlertApiError("endringsmeldinger");
-            // }
         }
         
         init();

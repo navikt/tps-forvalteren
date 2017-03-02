@@ -6,9 +6,13 @@ angular.module('tps-vedlikehold.testdata')
     .controller('TestDataCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'environmentsPromise','utilsService',
         function($scope, $mdDialog, serviceRutineFactory,environmentsPromise, utilsService) {
 
+            //TODO Laget noen arrays bare for testing
             $scope.formFields = ["aksjonsdato", "antalltestbrukere"];   //TODO lag på annen måte senere
+
             $scope.formData = {};
             $scope.fnrListe = [];
+            $scope.testpersoner = [];
+            $scope.editMode = false;
 
             $scope.submit = function(){
                 var params = createParams($scope.formData);
@@ -28,6 +32,27 @@ angular.module('tps-vedlikehold.testdata')
 
                 }, function (error) {
                     //$scope.loading = false;
+                });
+            };
+
+            $scope.loadTestpersoner = function(){
+                serviceRutineFactory.loadTestdataPersoner({}).then(function (responseObject) {
+                    var responseData = responseObject.data;
+                    $scope.testpersoner = responseData.response;
+
+                }, function (error) {
+
+                });
+            };
+
+            $scope.updateTestdataPersoner = function () {
+                //var data = {data: $scope.testpersoner};
+                var data = {"testi": "test"};
+                serviceRutineFactory.updateTestdataPersoner(data).then(function (responseObject){
+                    str = JSON.stringify(responseObject, null, 2);
+                    console.log("Tester:" + str);
+                }, function(error){
+
                 });
             };
 
@@ -57,6 +82,8 @@ angular.module('tps-vedlikehold.testdata')
                     $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
                     $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
                 }
+
+                $scope.loadTestpersoner();
             }
 
             // Run Init
