@@ -40,9 +40,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUserContextHolderTest {

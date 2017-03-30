@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 /**
  * Reads roles from property files and exposes them.
  * Reduces the necessary overhead when dealing with roles in the service layer
- *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 

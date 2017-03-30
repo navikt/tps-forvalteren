@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @Configuration
 @EnableScheduling
 @Import({

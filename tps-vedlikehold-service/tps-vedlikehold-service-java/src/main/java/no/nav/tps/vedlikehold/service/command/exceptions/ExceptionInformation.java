@@ -3,8 +3,6 @@ package no.nav.tps.vedlikehold.service.command.exceptions;
 /**
  * Object containing information about the exception.
  * This is the response type for exceptions in the REST provider
- *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 public final class ExceptionInformation {
 

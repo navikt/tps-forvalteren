@@ -4,9 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @Component
 public class JsonSelftest {
     private String applicationName;

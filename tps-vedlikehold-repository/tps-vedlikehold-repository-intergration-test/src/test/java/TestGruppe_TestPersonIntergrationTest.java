@@ -3,37 +3,30 @@ import no.nav.tps.vedlikehold.domain.repository.jpa.repoes.TPSKTestPersonReposit
 import no.nav.tps.vedlikehold.domain.repository.jpa.repoes.TestGruppeRepository;
 import no.nav.tps.vedlikehold.domain.service.jpa.TPSKTestPerson;
 import no.nav.tps.vedlikehold.domain.service.jpa.TestGruppe;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.person.Person;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repoes.TPSKTestPersonTestRepository;
 import repoes.TestGruppTestRepository;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Peter Fløgstad on 16.02.2017.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = RepositoryTestConfig.class)
+@SpringBootApplication(scanBasePackageClasses = RepositoryTestConfig.class)
 @Transactional
 public class TestGruppe_TestPersonIntergrationTest {
 

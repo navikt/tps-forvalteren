@@ -1,6 +1,4 @@
-/**
- * @author Frederik de Lichtenberg (Visma Consulting AS).
- * */
+
 angular.module('tps-vedlikehold')
     .controller('SideNavigatorCtrl', ['$scope', '$mdDialog', '$state', 'serviceRutineFactory', 'serviceRutinesPromise', 'locationService',
         function($scope, $mdDialog,$state, serviceRutineFactory, serviceRutinesPromise, locationService) {

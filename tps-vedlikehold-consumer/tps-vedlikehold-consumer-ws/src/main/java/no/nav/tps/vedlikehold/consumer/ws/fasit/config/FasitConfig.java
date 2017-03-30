@@ -18,9 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 
 @Configuration
 @ComponentScan(basePackageClasses = {

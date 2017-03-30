@@ -5,10 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
-
 @Getter
 @Setter
 @NoArgsConstructor

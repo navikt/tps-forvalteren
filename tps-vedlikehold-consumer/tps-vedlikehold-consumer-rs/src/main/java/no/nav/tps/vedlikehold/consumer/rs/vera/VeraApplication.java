@@ -1,8 +1,6 @@
 package no.nav.tps.vedlikehold.consumer.rs.vera;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public class VeraApplication {
 
     private String application;

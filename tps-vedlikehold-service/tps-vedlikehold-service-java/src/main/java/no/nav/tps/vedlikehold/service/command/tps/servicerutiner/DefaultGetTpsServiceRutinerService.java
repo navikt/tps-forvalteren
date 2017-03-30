@@ -10,9 +10,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resol
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @Service
 public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerService {
 

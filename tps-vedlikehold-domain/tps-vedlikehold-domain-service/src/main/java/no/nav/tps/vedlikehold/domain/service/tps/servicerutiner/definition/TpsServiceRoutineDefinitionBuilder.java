@@ -15,9 +15,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.Tra
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.request.RequestTransformer;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseTransformer;
 
-/**
- * @author Kenneth Gunnerud (Visma Consulting AS).
- */
+
 public class TpsServiceRoutineDefinitionBuilder {
     private String name;
     private String internalName;

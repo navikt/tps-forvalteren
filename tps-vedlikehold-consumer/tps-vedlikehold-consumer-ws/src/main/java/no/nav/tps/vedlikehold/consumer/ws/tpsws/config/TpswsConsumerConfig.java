@@ -31,8 +31,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration class for the TPSWS Consumer module
- *
- * @author Tobias Hansen (Visma Consulting AS).
  */
 @Configuration
 @ComponentScan(basePackageClasses = {

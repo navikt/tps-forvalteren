@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import springfox.documentation.annotations.ApiIgnore;
 
-/**
- * Endpoint for user related requests in the REST API
- *
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @RestController
 @RequestMapping(value = "api/v1")
 public class UserController {

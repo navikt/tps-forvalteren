@@ -13,8 +13,6 @@ import java.io.IOException;
 
 /**
  * Filter for handling: Cross-Site Request Forgery (CSRF) token used by AngularJs
- *
- * @author Tobias Hansen (Visma Consulting AS).
  */
 
 

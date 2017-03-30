@@ -14,8 +14,6 @@ import javax.jms.JMSException;
 
 /**
  * Consumes information from Fasit and produces MessageQueueServices
- *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 @Component

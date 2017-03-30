@@ -4,9 +4,7 @@ import java.util.List;
 
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @FunctionalInterface
 public interface GetTpsServiceRutinerService {
     List<TpsServiceRoutineDefinition> execute();

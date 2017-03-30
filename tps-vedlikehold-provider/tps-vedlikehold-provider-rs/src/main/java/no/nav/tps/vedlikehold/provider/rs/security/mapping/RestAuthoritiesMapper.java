@@ -25,9 +25,7 @@ import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRI
 import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
 import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_U;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
 
     @Value("${tps.vedlikehold.security.t.writeroles}")

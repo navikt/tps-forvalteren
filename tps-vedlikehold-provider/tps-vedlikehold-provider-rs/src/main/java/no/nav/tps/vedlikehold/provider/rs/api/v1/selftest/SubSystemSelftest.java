@@ -10,9 +10,7 @@ import org.springframework.util.StopWatch;
 import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTEST_UNKNOWN_ERROR_KEY;
 
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public abstract class SubSystemSelftest implements Selftest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubSystemSelftest.class);

@@ -7,9 +7,7 @@ import no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.Selftest;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @Configuration
 @EnableConfigurationProperties
 @PropertySource("classpath:global.properties")

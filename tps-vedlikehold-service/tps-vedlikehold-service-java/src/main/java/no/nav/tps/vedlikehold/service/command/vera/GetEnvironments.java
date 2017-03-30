@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @Service
 public class GetEnvironments {
 

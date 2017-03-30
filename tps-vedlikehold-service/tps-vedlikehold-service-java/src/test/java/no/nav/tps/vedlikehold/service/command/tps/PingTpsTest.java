@@ -12,9 +12,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class PingTpsTest {
 

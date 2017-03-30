@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
 @ControllerAdvice
 public class HttpExceptionAdvice {
 

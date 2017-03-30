@@ -12,8 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Abstraction of the user context for testability and reusability
- *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 public interface UserContextHolder {

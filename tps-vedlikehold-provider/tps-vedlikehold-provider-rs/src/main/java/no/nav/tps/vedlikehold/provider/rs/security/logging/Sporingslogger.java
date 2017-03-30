@@ -3,9 +3,7 @@ package no.nav.tps.vedlikehold.provider.rs.security.logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 public class Sporingslogger {
 
     private static final String NAME = "no.nav.tps.vedlikehold.provider.rs.Sporingslogger";

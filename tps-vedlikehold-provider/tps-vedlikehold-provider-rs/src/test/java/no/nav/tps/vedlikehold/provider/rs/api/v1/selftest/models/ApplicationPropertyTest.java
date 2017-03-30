@@ -6,9 +6,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
 public class ApplicationPropertyTest {
 
     @Test

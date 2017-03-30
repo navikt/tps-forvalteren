@@ -18,9 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultGetTpsServiceRutinerServiceTest {
 

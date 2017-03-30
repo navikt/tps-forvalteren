@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentRequest;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @Getter
 @Setter
 @NoArgsConstructor

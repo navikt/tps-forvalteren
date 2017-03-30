@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @Getter
 @Setter
 @NoArgsConstructor

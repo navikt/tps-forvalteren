@@ -2,8 +2,6 @@ package no.nav.tps.vedlikehold.consumer.ws.fasit.config;
 
 /**
  * Extracted Fasit constants to simplify the process of connecting to new queues and managers, when they are defined
- *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 public class FasitConstants {
     static final String BASE_URL = "https://fasit.adeo.no/conf/";

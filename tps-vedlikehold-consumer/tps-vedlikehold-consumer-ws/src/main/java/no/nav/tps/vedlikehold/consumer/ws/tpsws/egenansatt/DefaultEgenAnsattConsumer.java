@@ -12,9 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @Component
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);

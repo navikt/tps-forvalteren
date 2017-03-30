@@ -6,9 +6,7 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResp
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.AuthorisationStrategyConsumer;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 public interface DiskresjonskodeConsumer extends AuthorisationStrategyConsumer {
     HentDiskresjonskodeResponse getDiskresjonskodeResponse(String fNr);
 

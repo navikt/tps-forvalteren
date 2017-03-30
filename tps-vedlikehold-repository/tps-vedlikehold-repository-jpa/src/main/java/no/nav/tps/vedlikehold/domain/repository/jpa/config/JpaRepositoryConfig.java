@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.domain.repository.jpa.config;
 
 import no.nav.tps.vedlikehold.domain.repository.jpa.repoes.TPSKTestPersonRepository;
 import no.nav.tps.vedlikehold.domain.service.jpa.TPSKTestPerson;
-import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

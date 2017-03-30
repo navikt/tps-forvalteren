@@ -17,9 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class TimeoutFeatureTest {
 

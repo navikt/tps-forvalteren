@@ -7,9 +7,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 public class EnvironmentsFilter {
 
     private final AntPathMatcher matcher = new AntPathMatcher();

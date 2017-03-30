@@ -27,9 +27,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * @author Kenneth Gunnerud (Visma Consulting AS).
- */
 @RunWith(MockitoJUnitRunner.class)
 public class RsTpsRequestMappingUtilsTest {
 

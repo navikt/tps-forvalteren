@@ -7,9 +7,7 @@ import org.apache.cxf.transport.Conduit;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 public class TimeoutFeature extends AbstractFeature {
     private long receiveTimeout;
     private long connectionTimeout = Long.MIN_VALUE;

@@ -21,9 +21,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class CsrfHeaderFilterTest {

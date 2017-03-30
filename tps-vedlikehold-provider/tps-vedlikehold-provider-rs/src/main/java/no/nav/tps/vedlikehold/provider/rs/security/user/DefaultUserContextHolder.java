@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * Implementation of the UserContextHolder interface using spring security
- * 
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 @Service

@@ -8,9 +8,7 @@ import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
 
 import java.util.Collection;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 public class RestUserDetailsMapper extends LdapUserDetailsMapper {
 
     private static final String DISPLAY_NAME_ATTRIBUTE = "displayname";

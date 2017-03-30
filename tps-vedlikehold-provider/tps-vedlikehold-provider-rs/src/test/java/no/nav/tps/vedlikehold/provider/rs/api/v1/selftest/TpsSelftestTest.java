@@ -13,9 +13,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.springframework.util.StringUtils.isEmpty;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
 @RunWith(MockitoJUnitRunner.class)
 public class TpsSelftestTest {
 

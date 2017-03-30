@@ -4,9 +4,7 @@ import no.nav.tps.vedlikehold.service.command.tps.PingTps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @Component
 public class TpsSelftest extends SubSystemSelftest {
     @Autowired

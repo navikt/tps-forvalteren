@@ -32,9 +32,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceControllerTest {
     private static final String FNR = "12345678910";

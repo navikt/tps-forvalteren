@@ -1,8 +1,5 @@
 package no.nav.tps.vedlikehold.domain.ws.fasit;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
 
 public class QueueManager {
     private String name;

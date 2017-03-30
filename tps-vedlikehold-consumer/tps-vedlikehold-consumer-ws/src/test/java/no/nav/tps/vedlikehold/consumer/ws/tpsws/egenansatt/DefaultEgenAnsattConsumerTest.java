@@ -24,9 +24,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultEgenAnsattConsumerTest {
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Database connection error";

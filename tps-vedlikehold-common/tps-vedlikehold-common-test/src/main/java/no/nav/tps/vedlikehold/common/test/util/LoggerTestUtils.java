@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import static org.mockito.Mockito.when;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public final class LoggerTestUtils {
 
     public static Appender<ILoggingEvent> getMockedAppender(String loggerName) {

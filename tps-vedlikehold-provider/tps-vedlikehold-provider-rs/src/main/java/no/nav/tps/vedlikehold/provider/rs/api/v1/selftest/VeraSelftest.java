@@ -4,9 +4,7 @@ import no.nav.tps.vedlikehold.service.command.vera.PingVera;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @Component
 public class VeraSelftest extends SubSystemSelftest {
 

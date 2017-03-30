@@ -1,6 +1,4 @@
-/**
- * @author Frederik de Lichtenberg (Visma Consulting AS).
- */
+
 angular.module('tps-vedlikehold.service')
     .service('locationService', ['$state','$location', function($state, $location) {
 

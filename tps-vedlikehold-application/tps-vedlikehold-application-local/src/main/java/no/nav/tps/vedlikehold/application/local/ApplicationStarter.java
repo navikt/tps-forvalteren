@@ -4,9 +4,6 @@ import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.testcertificates.TestCertificates;
 import org.springframework.boot.SpringApplication;
 
-/**
- *  @author Kristian Kyvik (Visma Consulting).
- */
 public class ApplicationStarter {
 
     public static void main(String[] args) {

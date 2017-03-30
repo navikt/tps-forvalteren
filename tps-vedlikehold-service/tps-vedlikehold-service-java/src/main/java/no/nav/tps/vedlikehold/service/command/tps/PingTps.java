@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
 @Service
 public class PingTps implements Command {
 

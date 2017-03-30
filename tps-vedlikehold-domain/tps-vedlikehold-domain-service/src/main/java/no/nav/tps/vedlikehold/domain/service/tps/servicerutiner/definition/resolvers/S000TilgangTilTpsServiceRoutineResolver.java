@@ -11,9 +11,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.req
 import static no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
-/**
- * @author Kenneth Gunnerud (Visma Consulting AS).
- */
+
 public class S000TilgangTilTpsServiceRoutineResolver implements ServiceRoutineResolver {
 
     @Override

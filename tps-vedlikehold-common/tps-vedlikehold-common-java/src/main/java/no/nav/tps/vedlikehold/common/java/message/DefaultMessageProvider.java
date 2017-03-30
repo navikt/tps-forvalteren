@@ -13,9 +13,7 @@ import java.util.Locale;
 
 import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @Component
 public class DefaultMessageProvider implements MessageProvider {
 

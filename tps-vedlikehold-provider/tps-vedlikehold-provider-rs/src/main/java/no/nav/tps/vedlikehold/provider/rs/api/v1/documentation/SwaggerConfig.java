@@ -13,8 +13,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Configure automated swagger API documentation
- *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 @Configuration

@@ -1,6 +1,4 @@
-/**
- * @author Frederik de Lichtenberg (Visma Consulting AS).
- */
+
 angular.module('tps-vedlikehold.service-rutine')
     .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise',
         function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise) {

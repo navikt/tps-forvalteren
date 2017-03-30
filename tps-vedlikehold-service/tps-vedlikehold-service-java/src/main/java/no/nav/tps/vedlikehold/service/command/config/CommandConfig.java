@@ -19,9 +19,7 @@ import com.fasterxml.jackson.xml.XmlMapper;
 
 import static no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
-\ */
+
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {

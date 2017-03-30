@@ -18,9 +18,6 @@ import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerCons
 import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.USERNAME;
 
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
 
 public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 

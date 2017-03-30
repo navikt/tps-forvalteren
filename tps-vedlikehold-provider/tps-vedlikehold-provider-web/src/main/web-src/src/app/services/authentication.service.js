@@ -1,6 +1,4 @@
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 angular.module('tps-vedlikehold.service')
     .service('authenticationService', ['$http', '$q', '$location', 'sessionService', 'utilsService', 'locationService',
         function($http, $q, $location,  sessionService, utilsService, locationService) {

@@ -19,9 +19,7 @@ import static org.hamcrest.number.OrderingComparison.greaterThan;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class SubSystemSelftestTest {
 

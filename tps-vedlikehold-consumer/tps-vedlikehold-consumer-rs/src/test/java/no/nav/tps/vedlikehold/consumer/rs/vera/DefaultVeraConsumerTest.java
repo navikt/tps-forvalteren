@@ -22,9 +22,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultVeraConsumerTest {
 

@@ -6,9 +6,7 @@ import java.util.List;
 import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.FEILET;
 import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.OK;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public class AggregateSelftestResult {
     private List<SelftestResult> results;
 

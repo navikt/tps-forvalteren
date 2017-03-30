@@ -15,10 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
-
 public class FasitClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FasitClient.class);

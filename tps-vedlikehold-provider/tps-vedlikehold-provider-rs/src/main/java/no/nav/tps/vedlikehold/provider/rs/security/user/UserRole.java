@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * System user roles
  *
- * @author Tobias Hansen (Visma Consulting AS).
  */
 public enum UserRole implements GrantedAuthority {
 

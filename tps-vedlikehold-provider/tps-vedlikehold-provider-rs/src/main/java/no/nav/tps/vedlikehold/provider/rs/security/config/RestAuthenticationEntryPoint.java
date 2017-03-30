@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint{
 
     @Override

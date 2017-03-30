@@ -8,9 +8,7 @@ import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.Selftest
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public class AggregateSelftestResultTest {
 
     @Test

@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 
-/**
- * @author Peter Fløgstad, Visma Consulting AS
- */
+
 
 @RestController
 @RequestMapping(value = "api/v1")

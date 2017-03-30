@@ -20,9 +20,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
-/**
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class RestAuthoritiesMapperTest {
     private static final SimpleGrantedAuthority CURRENT_WRITE_ROLE_T = new SimpleGrantedAuthority("WRITE_T1");

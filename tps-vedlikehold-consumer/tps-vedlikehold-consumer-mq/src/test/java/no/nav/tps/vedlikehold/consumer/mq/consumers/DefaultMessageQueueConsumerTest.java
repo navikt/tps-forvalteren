@@ -35,7 +35,6 @@ import static org.mockito.Mockito.when;
 /**
  * Quite thorough testing, but there is a lot to keep in mind during the message exchange
  *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 
 @RunWith(MockitoJUnitRunner.class)

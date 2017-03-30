@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.provider.web.config;
 
 import no.nav.tps.vedlikehold.provider.rs.security.logging.MDCInterceptor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -10,9 +10,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-/**
- *  @author Kristian Kyvik (Visma Consulting).
- */
+
 @Configuration
 @EnableAutoConfiguration
 @Import(ApplicationConfig.class)

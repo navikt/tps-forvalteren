@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @RestController
 @RequestMapping(value = "api/v1")
 public class EnvironmentController {

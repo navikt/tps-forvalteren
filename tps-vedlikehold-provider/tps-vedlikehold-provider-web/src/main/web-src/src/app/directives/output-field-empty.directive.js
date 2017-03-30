@@ -1,6 +1,4 @@
-/**
- * @author Frederik de Lichtenberg (Visma Consulting AS).
- * */
+
 angular.module('tps-vedlikehold.directives')
     .directive('tpsOutputFieldNoValue', function(){
 

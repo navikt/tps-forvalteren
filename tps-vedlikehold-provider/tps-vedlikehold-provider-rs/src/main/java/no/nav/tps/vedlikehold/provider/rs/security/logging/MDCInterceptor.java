@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @Component
 public class MDCInterceptor implements HandlerInterceptor {
 

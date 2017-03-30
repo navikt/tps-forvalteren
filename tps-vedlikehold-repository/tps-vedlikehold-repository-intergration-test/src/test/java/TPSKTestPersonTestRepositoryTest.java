@@ -4,7 +4,7 @@ import no.nav.tps.vedlikehold.domain.service.jpa.TPSKTestPerson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repoes.TPSKTestPersonTestRepository;
 
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = RepositoryTestConfig.class)
+@SpringBootApplication(scanBasePackageClasses = RepositoryTestConfig.class)
 @Transactional
 public class TPSKTestPersonTestRepositoryTest {
 

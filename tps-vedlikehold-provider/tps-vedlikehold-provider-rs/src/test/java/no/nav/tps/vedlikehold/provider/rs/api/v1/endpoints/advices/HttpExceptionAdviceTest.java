@@ -19,9 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 
-/**
- *  @author Øyvind Grimnes, Visma Consulting AS
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpExceptionAdviceTest {

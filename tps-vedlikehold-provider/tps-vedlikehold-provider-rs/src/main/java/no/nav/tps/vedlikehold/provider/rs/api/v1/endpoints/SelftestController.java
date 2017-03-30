@@ -33,9 +33,7 @@ import static no.nav.tps.vedlikehold.common.java.message.MessageConstants.SELFTE
 import static no.nav.tps.vedlikehold.provider.rs.api.v1.selftest.models.SelftestResult.Status.FEILET;
 import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
 
-/**
- * @author Kristian Kyvik (Visma Consulting).
- */
+
 @Controller
 public class SelftestController {
 

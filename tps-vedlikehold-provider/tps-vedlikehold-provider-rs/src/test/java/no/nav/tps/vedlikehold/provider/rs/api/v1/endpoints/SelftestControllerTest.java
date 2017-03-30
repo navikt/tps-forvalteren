@@ -29,9 +29,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class SelftestControllerTest {
 

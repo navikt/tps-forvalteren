@@ -12,9 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
+
 @Getter
 @Setter
 @NoArgsConstructor

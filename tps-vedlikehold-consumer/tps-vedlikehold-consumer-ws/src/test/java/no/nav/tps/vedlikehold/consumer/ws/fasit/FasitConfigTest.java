@@ -12,9 +12,6 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import static org.mockito.Mockito.isA;
 import static org.mockito.Mockito.verify;
 
-/**
- * @author Øyvind Grimnes, Visma Consulting AS
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class FasitConfigTest {

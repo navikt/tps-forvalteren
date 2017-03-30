@@ -17,9 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class EnvironmentControllerTest {
 

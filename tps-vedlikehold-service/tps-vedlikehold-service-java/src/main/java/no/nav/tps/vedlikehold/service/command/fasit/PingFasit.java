@@ -5,9 +5,7 @@ import no.nav.tps.vedlikehold.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Kristian Kyvik (Visma Consulting).
- */
+
 @Service
 public class PingFasit implements Command {
     @Autowired

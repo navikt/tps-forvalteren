@@ -1,8 +1,6 @@
 package no.nav.tps.vedlikehold.common.java.message;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- */
+
 public class MessageConstants {
     public static final String UNKNOWN_MESSAGE_KEY = "messages.unknown.message.key";
 

@@ -7,7 +7,6 @@ import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerCons
 /**
  * Provides information needed when creating a queue connection factory
  *
- * @author Øyvind Grimnes, Visma Consulting AS
  */
 public class QueueManagerConnectionFactoryFactoryStrategy implements ConnectionFactoryFactoryStrategy {
 

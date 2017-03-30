@@ -18,10 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/**
- * @author Kristian Kyvik (Visma Consulting AS).
- * @author Tobias Hansen (Visma Consulting AS).
- */
+
 @Component
 public class DefaultVeraConsumer implements VeraConsumer {
 
