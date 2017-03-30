@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
@@ -69,6 +72,9 @@ public class ServiceControllerTest {
     @Mock
     private JsonNode baseJsonNode;
 
+    @Mock
+    private TpsRequestSender tpsRequestSenderMock;
+
     @InjectMocks
     private ServiceController controller;
 
@@ -83,6 +89,7 @@ public class ServiceControllerTest {
 
         when(findServiceRoutineByName.execute(anyString())).thenReturn(Optional.of(tpsServiceRoutineDefinitionMock));
         when(serviceRoutineRequestMock.getServiceRutinenavn()).thenReturn(SERVICE_RUTINE_NAME);
+
 
     }
 
@@ -100,6 +107,8 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceUsingHttpGetCallsMappingUtilsWithMap() {
+        when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class))).thenReturn(new TpsServiceRoutineResponse());
+
         mockNodeContent(baseJsonNode, "fnr", FNR);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
@@ -108,42 +117,6 @@ public class ServiceControllerTest {
         controller.getService(parameters, SERVICE_RUTINE_NAME);
 
         verify(mappingUtilsMock).convert(parameters, JsonNode.class);
-    }
-
-    @Test
-    public void getServiceCallsMappingUtilsOnResponseFromRequestService() throws Exception {
-        mockNodeContent(baseJsonNode, "fnr", FNR);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("environment", ENVIRONMENT_U);
-        parameters.put("fnr", FNR);
-
-        Response response = mock(Response.class);
-
-        when(tpsRequestServiceMock.executeServiceRutineRequest(any(), any(), any())).thenReturn(response);
-
-        controller.getService(parameters, SERVICE_RUTINE_NAME);
-
-        verify(rsTpsResponseMappingUtilsMock).convertToTpsServiceRutineResponse(response);
-    }
-
-    @Test
-    public void getServiceReturnsMappedTpsResponse() throws Exception {
-        /*mockNodeContent(baseJsonNode, "fnr", FNR);
-
-        TpsServiceRoutineResponse response = mock(TpsServiceRoutineResponse.class);
-        Response r = mock(Response.class);
-
-        when(tpsRequestServiceMock.executeServiceRutineRequest(
-                any(TpsServiceRoutineRequest.class),
-                eq(tpsServiceRoutineDefinitionMock),
-                any(TpsRequestContext.class))).thenReturn(r);
-
-        when(rsTpsResponseMappingUtilsMock.convertToResponse(r)).thenReturn(response);
-
-        TpsServiceRoutineResponse result = controller.getService(baseJsonNode);
-
-        assertThat(result, is(sameInstance(response)));
-        */
     }
 
 

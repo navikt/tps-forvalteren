@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.UserController;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.advices.HttpExceptionAdvice;
-import no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.mapping.TestDataMappingConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.vedlikehold.provider.rs.security.config.WebSecurityConfig;
 import no.nav.tps.vedlikehold.service.config.ServiceConfig;
@@ -21,8 +20,7 @@ import org.springframework.context.annotation.Import;
         ServiceConfig.class,
         SwaggerConfig.class,
         WebSecurityConfig.class,
-        TestDataMappingConfig.class,
-        RestSecurityConfig.class,
+        RestSecurityConfig.class
 })
 @ComponentScan(basePackageClasses = {
         UserController.class,

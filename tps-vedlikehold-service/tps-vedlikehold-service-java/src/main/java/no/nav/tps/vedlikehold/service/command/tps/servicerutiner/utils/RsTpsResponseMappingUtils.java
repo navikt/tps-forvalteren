@@ -14,10 +14,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-/**
- * Created by Peter Fløgstad on 17.10.2016.
- */
-
 @Component
 public class RsTpsResponseMappingUtils {
 
