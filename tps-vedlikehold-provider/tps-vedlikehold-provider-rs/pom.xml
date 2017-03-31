@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.freg</groupId>
-            <artifactId>freg-spring-boot-starters-log-exceptions</artifactId>
+            <artifactId>freg-spring-boot-starter-log-exceptions</artifactId>
         </dependency>
 
         <!--SPRING-->

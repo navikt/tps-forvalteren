@@ -25,7 +25,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     // Test user
-    private static final String PING_FNR = "13037999916";
+    private static final String FNR_TEST_PERSON_IPROD = "10108000398";
 
     @Autowired
     private DiskresjonskodePortType diskresjonskodePortType;
@@ -33,7 +33,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     @Override
     public boolean ping() {
         try {
-            getDiskresjonskodeResponse(PING_FNR);
+            getDiskresjonskodeResponse(FNR_TEST_PERSON_IPROD);
         } catch (RuntimeException exception) {
             LOGGER.warn("Pinging diskresjonskode failed with exception: {}", exception.toString());
             throw exception;

@@ -16,6 +16,10 @@
         <!--INTERNAL-->
         <dependency>
             <groupId>no.nav.tps.vedlikehold</groupId>
+            <artifactId>tps-vedlikehold-common-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.vedlikehold</groupId>
             <artifactId>tps-vedlikehold-common-test</artifactId>
             <scope>test</scope>
         </dependency>

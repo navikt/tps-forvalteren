@@ -108,4 +108,12 @@ public class TpswsConsumerConfig {
 
         return new WSS4JOutInterceptor(properties);
     }
+
+    public String getDiskresjonskodeAddress() {
+        return diskresjonskodeAddress;
+    }
+
+    public String getEgenAnsattAddress() {
+        return egenAnsattAddress;
+    }
 }

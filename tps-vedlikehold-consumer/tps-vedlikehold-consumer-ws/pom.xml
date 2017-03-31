@@ -32,6 +32,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--SELFTEST-->
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
+        </dependency>
+
         <!--Nav Diskresjonstjeneste-->
         <dependency>
             <groupId>no.nav.tjenester.pip</groupId>
