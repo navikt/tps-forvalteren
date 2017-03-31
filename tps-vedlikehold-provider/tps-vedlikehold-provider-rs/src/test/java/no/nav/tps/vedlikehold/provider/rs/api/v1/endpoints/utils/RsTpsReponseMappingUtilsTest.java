@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,104 +42,107 @@ public class RsTpsReponseMappingUtilsTest {
     private static final String XML_RAW = "<message><data>"+XML_DATA+"</data></message>";
 
 
-//    @Rule
-//    public ExpectedException expectedException = ExpectedException.none();
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
     private RsTpsResponseMappingUtils responseMappingUtilsMock;
 
     @Test
-    public void mapsXmlData() {
+    public void rawXmlIsUnaltered() throws Exception {
+
         Response response = new Response();
         response.setRawXml(XML_RAW);
         response.setDataXmls(Arrays.asList(XML_PERSON1, XML_PERSON2));
         response.setTotalHits(2);
         response.setStatus(new ResponseStatus());
 
-        TpsServiceRoutineResponse result = null;
-        try {
-            result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
-        assertThat(result.getXml(), is(any(String.class)));
+        assertThat(result.getXml(), is(equalTo(response.getRawXml())));
+    }
+
+    @Test
+    public void mapsXmlData() throws Exception {
+
+        Response response = new Response();
+        response.setDataXmls(Collections.singletonList(XML_PERSON1));
+        response.setStatus(new ResponseStatus());
+
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
+
+        assertThat(result.getResponse(), is(notNullValue()));
+        assertThat(result.getResponse(), is(instanceOf(LinkedHashMap.class)));
+
+        LinkedHashMap map = (LinkedHashMap)result.getResponse();
+        LinkedHashMap data = ((LinkedHashMap)((ArrayList)map.get("data")).get(0));
+
+        assertThat(data.get("navn"), is(NAVN_1));
+        assertThat(data.get("fnr"), is(FNR_1));
+    }
+
+    @Test
+    public void mapsXmlDataWithMultiplePersonResultsInResponse() throws Exception {
+
+        Response response = new Response();
+        response.setDataXmls(Collections.singletonList(XML_DATA));
+        response.setStatus(new ResponseStatus());
+
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
+
+        assertThat(result.getResponse(), is(notNullValue()));
+        assertThat(result.getResponse(), is(instanceOf(LinkedHashMap.class)));
+
+        LinkedHashMap map = (LinkedHashMap)result.getResponse();
+        LinkedHashMap data = ((LinkedHashMap)((ArrayList)map.get("data")).get(0));
+        LinkedHashMap data2 = ((LinkedHashMap)((ArrayList)map.get("data")).get(1));
+
+        assertTrue(((ArrayList) map.get("data")).size() == 2);
+        assertThat(data.get("navn"), is(NAVN_1));
+        assertThat(data.get("fnr"), is(FNR_1));
+        assertThat(data2.get("navn"), is(NAVN_2));
+        assertThat(data2.get("fnr"), is(FNR_2));
     }
 
 
-//    @Test
-//    public void rawXmlIsUnaltered() throws Exception {
-//
-//        Response response = new Response();
-//        response.setRawXml(XML_RAW);
-//        response.setDataXmls(Arrays.asList(XML_PERSON1, XML_PERSON2));
-//        response.setTotalHits(2);
-//        response.setStatus(new ResponseStatus());
-//
-//        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
-//
-//        assertThat(result.getXml(), is(equalTo(response.getRawXml())));
-//    }
-//
-//
-//    @Test
-//    public void mapsXmlData() throws Exception {
-//
-//        Response response = new Response();
-//        response.setDataXmls(Collections.singletonList(XML_PERSON1));
-//        response.setTotalHits(null);
-//        response.setStatus(new ResponseStatus());
-//
-//        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
-//
-//        assertThat(result.getResponse(), is(notNullValue()));
-//        assertThat(result.getResponse(), is(instanceOf(LinkedHashMap.class)));
-//
-//        LinkedHashMap map = (LinkedHashMap)result.getResponse();
-//        LinkedHashMap data = ((LinkedHashMap)((ArrayList)map.get("data")).get(0));
-//
-//        assertThat(data.get("navn"), is(NAVN_1));
-//        assertThat(data.get("fnr"), is(FNR_1));
-//    }
-//
-//    @Test
-//    public void mapsStatus() throws Exception {
-//        Response response = new Response();
-//        response.setDataXmls(null);
-//        response.setTotalHits(null);
-//
-//        ResponseStatus responseStatus = new ResponseStatus();
-//        responseStatus.setKode("00");
-//        responseStatus.setMelding("melding");
-//        responseStatus.setUtfyllendeMelding("utfyllende melding");
-//
-//        response.setStatus(responseStatus);
-//
-//        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
-//
-//        LinkedHashMap map = (LinkedHashMap)result.getResponse();
-//        LinkedHashMap status = (LinkedHashMap)map.get("status");
-//
-//        assertThat(status.get("kode"), is("00"));
-//        assertThat(status.get("melding"), is("melding"));
-//        assertThat(status.get("utfyllendeMelding"), is("utfyllende melding"));
-//
-//    }
-//
-//    @Test
-//    public void mapsTotalHits() throws Exception {
-//
-//        Response response = new Response();
-//        response.setDataXmls(null);
-//        response.setTotalHits(2);
-//
-//        response.setStatus(new ResponseStatus());
-//
-//        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
-//
-//        LinkedHashMap map = (LinkedHashMap)result.getResponse();
-//
-//        assertThat(map.get("antallTotalt"), is(2));
-//    }
+    @Test
+    public void mapsStatus() throws Exception {
+        Response response = new Response();
+        response.setDataXmls(null);
+        response.setTotalHits(null);
+
+        ResponseStatus responseStatus = new ResponseStatus();
+        responseStatus.setKode("00");
+        responseStatus.setMelding("melding");
+        responseStatus.setUtfyllendeMelding("utfyllende melding");
+
+        response.setStatus(responseStatus);
+
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
+
+        LinkedHashMap map = (LinkedHashMap)result.getResponse();
+        LinkedHashMap status = (LinkedHashMap)map.get("status");
+
+        assertThat(status.get("kode"), is("00"));
+        assertThat(status.get("melding"), is("melding"));
+        assertThat(status.get("utfyllendeMelding"), is("utfyllende melding"));
+
+    }
+
+    @Test
+    public void mapsTotalHits() throws Exception {
+
+        Response response = new Response();
+        response.setDataXmls(null);
+        response.setTotalHits(2);
+
+        response.setStatus(new ResponseStatus());
+
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
+
+        LinkedHashMap map = (LinkedHashMap)result.getResponse();
+
+        assertThat(map.get("antallTotalt"), is(2));
+    }
 
 }

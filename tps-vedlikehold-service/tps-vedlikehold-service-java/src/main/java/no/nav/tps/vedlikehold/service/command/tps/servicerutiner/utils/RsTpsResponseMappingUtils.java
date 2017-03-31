@@ -1,14 +1,15 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import org.json.JSONObject;
-import org.json.XML;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,33 +18,45 @@ import java.util.stream.Collectors;
 @Component
 public class RsTpsResponseMappingUtils {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+//    @Autowired
+//    private ObjectMapper objectMapper;
 
-    public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response r) throws IOException {
-        TpsServiceRoutineResponse response = new TpsServiceRoutineResponse();
+//    @Autowired
+//    private XmlMapper xmlMapper;
 
-        response.setXml(r.getRawXml());
+    public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response response) throws IOException {
+        TpsServiceRoutineResponse TpsServiceRutineResponse = new TpsServiceRoutineResponse();
 
-        JSONObject jsonObject = new JSONObject();
-        if (r.getDataXmls() != null) {
-            List<JSONObject> data =  r.getDataXmls()
-                    .stream()
-                    .map(XML::toJSONObject)
-                    .collect(Collectors.toList());
+        TpsServiceRutineResponse.setXml(response.getRawXml());
 
-            jsonObject.put("data", data);
+        XmlMapper mapser = new XmlMapper();
+        Map<String, Object> responseMap = new LinkedHashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        if(response.getDataXmls() != null){
+           List<Map> data = response.getDataXmls()
+                   .stream()
+                   .map(xml -> {
+                       try {
+                           return mapser.readValue(xml, Map.class);
+                       } catch (IOException e) {
+                           //TODO Kast på en annen måte.
+                           throw new HttpInternalServerErrorException(e, "api/v1/service");
+                       }
+                   })
+                   .collect(Collectors.toList());
+           responseMap.put("data", data);
         }
 
-        if (r.getTotalHits() != null) {
-            jsonObject.put("antallTotalt", r.getTotalHits());
+        if(response.getTotalHits() != null){
+            responseMap.put("antallTotalt", response.getTotalHits());
         }
-        jsonObject.put("status", new JSONObject(r.getStatus()));
 
-        Map data = objectMapper.readValue(jsonObject.toString(), Map.class);
-        response.setResponse(data);
+        Map status = objectMapper.readValue(objectMapper.writeValueAsString(response.getStatus()), Map.class);
+        responseMap.put("status", status);
+        TpsServiceRutineResponse.setResponse(responseMap);
 
-        return response;
+        return TpsServiceRutineResponse;
     }
 
 }
