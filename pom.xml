@@ -166,11 +166,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.vedlikehold</groupId>
-                <artifactId>tps-vedlikehold-repository-jpa</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.vedlikehold</groupId>
                 <artifactId>tps-vedlikehold-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
