@@ -332,6 +332,18 @@
                 <version>${ojdbc6.version}</version>
             </dependency>
 
+            <!-- Intern -->
+            <dependency>
+                <groupId>no.nav.freg</groupId>
+                <artifactId>metrics-spring</artifactId>
+                <version>${freg-metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.freg</groupId>
+                <artifactId>metrics-annotations</artifactId>
+                <version>${freg-metrics.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
