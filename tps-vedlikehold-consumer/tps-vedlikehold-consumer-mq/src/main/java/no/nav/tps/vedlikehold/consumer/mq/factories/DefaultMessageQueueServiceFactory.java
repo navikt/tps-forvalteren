@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.consumer.mq.factories;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
-import no.nav.tps.vedlikehold.consumer.ws.fasit.queues.FasitMessageQueueConsumer;
+import no.nav.tps.vedlikehold.consumer.rs.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.fasit;
 
-import no.nav.tps.vedlikehold.consumer.ws.fasit.FasitClient;
+import no.nav.tps.vedlikehold.consumer.rs.fasit.FasitClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
