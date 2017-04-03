@@ -17,11 +17,7 @@ angular.module('tps-vedlikehold')
                     .ok('OK')
             );
         }
-
-            $scope.isTestdataState = function () {
-                return locationService.isTestdataState();
-            };
-
+        
             $scope.isServicerutineState = function () {
                 return locationService.isServicerutineState();
             };
@@ -35,13 +31,10 @@ angular.module('tps-vedlikehold')
                         showAlertApiError("servicerutiner");
                     }
                     break;
-                case 'testdata':
-                    $scope.testdataNames = ["first","second"];      //TODO Kun for testing.
-                    break;
                 default:
                     break;
             }
         }
-        
+
         init();
     }]);

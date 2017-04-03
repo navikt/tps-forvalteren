@@ -15,7 +15,7 @@ require('./directives/directives.module');
 require('./factory/factory.module');
 
 var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday', 'tps-vedlikehold.testdata']);
+    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday']);
 
 require('./shared/index');
 
@@ -117,36 +117,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                         }
                     }
                 }
-            )
-            .state('testdata', {
-                    url: "/testdata/{testdataPage}",
-                    params: {
-                        testdataPage: null
-                    },
-                    resolve: {
-                        user: ['authenticationService', function (authenticationService) {
-                            return authenticationService.loadUser();
-                        }],
-                        environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                            return serviceRutineFactory.loadFromServerEnvironments();
-                        }],
-                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function(){}]
-                    },
-                    views: {
-                        'content@': {
-                            templateUrl: "app/components/testdata/testdata.html",
-                            controller: 'TestDataCtrl'
-                        },
-                        'header@': {
-                            templateUrl: "app/shared/header/header.html",
-                            controller: 'HeaderCtrl'
-                        },
-                        'side-navigator@': {
-                            templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
-                            controller: 'SideNavigatorCtrl'
-                        }
-                    }
-            });
+            );
 
         $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 

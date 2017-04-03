@@ -7,7 +7,6 @@ angular.module('tps-vedlikehold.factory')
         var urlBase = 'api/v1/service';
         var urlRoutinesBase = 'api/v1/serviceroutine';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
-        var urlTestdataEndepunkter = 'api/v1/testdata';
         var urlBaseEnv = 'api/v1/environments';
         var urlConfig = '/assets/config/';
 
@@ -122,18 +121,6 @@ angular.module('tps-vedlikehold.factory')
 
         serviceRutineFactory.getServiceRutineResponse = function (serviceRutineName, params) {
             return $http({method: 'GET', url: urlBase + '/' + serviceRutineName, params: params});
-        };
-
-        serviceRutineFactory.getTestdataResponse = function (params) {
-            return $http({method: 'GET', url: urlTestdataEndepunkter + "/fodsel", params: params});
-        };
-
-        serviceRutineFactory.loadTestdataPersoner = function (params) {
-            return $http.get(urlTestdataEndepunkter + "/testpersoner", {params: params});
-        };
-
-        serviceRutineFactory.updateTestdataPersoner = function (params) {
-            return $http({method: 'POST', url: urlTestdataEndepunkter + "/testpersoner", params: params});
         };
 
         serviceRutineFactory.getServiceRoutineConfig = function (serviceRutineName) {

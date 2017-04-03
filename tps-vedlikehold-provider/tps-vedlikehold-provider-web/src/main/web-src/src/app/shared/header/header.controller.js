@@ -17,10 +17,6 @@ angular.module('tps-vedlikehold')
                 locationService.redirectToEndringState();
             };
 
-            $scope.testdataState = function () {
-                locationService.redirectToTestdataState();
-            };
-
             $scope.serviceRutineState = function () {
                 locationService.redirectToServiceRutineState();
             };
