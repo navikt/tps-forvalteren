@@ -13,14 +13,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-
-/**
- * Created by F148888 on 14.11.2016.
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultReadSecurityStrategyTest {
@@ -55,9 +52,9 @@ public class DefaultReadSecurityStrategyTest {
 
     @Test
     public void isSupported() throws Exception {
-        assertEquals(defaultReadSecurityStrategy.isSupported(readAuthorisation), true);
-        assertEquals(defaultReadSecurityStrategy.isSupported(diskresjonskodeAuthorisation), false);
-        assertEquals(defaultReadSecurityStrategy.isSupported(egenAnsattAuthorisation), false);
+        assertTrue(defaultReadSecurityStrategy.isSupported(readAuthorisation));
+        assertFalse(defaultReadSecurityStrategy.isSupported(diskresjonskodeAuthorisation));
+        assertFalse(defaultReadSecurityStrategy.isSupported(egenAnsattAuthorisation));
     }
 
     @Test

@@ -17,6 +17,8 @@ import java.util.HashSet;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -57,9 +59,9 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
 
     @Test
     public void isSupported() throws Exception {
-        assertEquals(defaultDisreksjonskodeSecurityStrategy.isSupported(diskresjonskodeAuthorisation), true);
-        assertEquals(defaultDisreksjonskodeSecurityStrategy.isSupported(egenAnsattAuthorisation), false);
-        assertEquals(defaultDisreksjonskodeSecurityStrategy.isSupported(readAuthorisation), false);
+        assertTrue(defaultDisreksjonskodeSecurityStrategy.isSupported(diskresjonskodeAuthorisation));
+        assertFalse(defaultDisreksjonskodeSecurityStrategy.isSupported(egenAnsattAuthorisation));
+        assertFalse(defaultDisreksjonskodeSecurityStrategy.isSupported(readAuthorisation));
     }
 
     @Test

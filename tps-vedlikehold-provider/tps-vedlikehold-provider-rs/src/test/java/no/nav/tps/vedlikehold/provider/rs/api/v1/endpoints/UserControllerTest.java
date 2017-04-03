@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import no.nav.tps.vedlikehold.domain.service.User.User;
+import no.nav.tps.vedlikehold.domain.service.user.User;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
 import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
 

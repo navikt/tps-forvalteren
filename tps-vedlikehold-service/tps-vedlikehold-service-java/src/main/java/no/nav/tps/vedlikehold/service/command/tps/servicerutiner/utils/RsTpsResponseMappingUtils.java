@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Component
 public class RsTpsResponseMappingUtils {
 
-    private static final String htmlTagWithContentPattern ="<(\\w+?)>(.*?)</\\1>";
+    private static final String HTML_TAG_WITH_CONTENT_PATTERN ="<(\\w+?)>(.*?)</\\1>";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -33,7 +33,7 @@ public class RsTpsResponseMappingUtils {
         if(response.getDataXmls() != null){
            List<Map> data = response.getDataXmls()
                    .stream()
-                   .map(xml -> xmlToLinkedHashMap(xml))
+                   .map(this::xmlToLinkedHashMap)
                    .collect(Collectors.toList());
 
            responseMap.put("data", data);
@@ -52,7 +52,7 @@ public class RsTpsResponseMappingUtils {
 
     private LinkedHashMap<String, Object> xmlToLinkedHashMap(String xml){
         LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
-        Matcher tagMatcher = Pattern.compile(htmlTagWithContentPattern, Pattern.DOTALL).matcher(xml);
+        Matcher tagMatcher = Pattern.compile(HTML_TAG_WITH_CONTENT_PATTERN, Pattern.DOTALL).matcher(xml);
 
         while(tagMatcher.find()){
             String tagContent = tagMatcher.group(2);

@@ -95,7 +95,7 @@ public class RsTpsReponseMappingUtilsTest {
         LinkedHashMap data = ((LinkedHashMap)((ArrayList)map.get("data")).get(0));
         LinkedHashMap data2 = ((LinkedHashMap)((ArrayList)map.get("data")).get(1));
 
-        assertTrue(((ArrayList) map.get("data")).size() == 2);
+        assertThat(((ArrayList) map.get("data")).size(), is(2));
         assertThat(data.get("navn"), is(NAVN_1));
         assertThat(data.get("fnr"), is(FNR_1));
         assertThat(data2.get("navn"), is(NAVN_2));
