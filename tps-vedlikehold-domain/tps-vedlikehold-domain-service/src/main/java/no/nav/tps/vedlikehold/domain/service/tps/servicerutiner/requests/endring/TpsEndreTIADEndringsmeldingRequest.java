@@ -21,7 +21,7 @@ public class TpsEndreTIADEndringsmeldingRequest extends TpsServiceRoutineEndring
     private String gatekode;
     private String gatenavn;
     private String husnr;
-    private String Postnr;
+    private String postNr;
     private String husbokstav;
     private String bolignr;
     private String eiendomsnav;

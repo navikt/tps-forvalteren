@@ -12,7 +12,7 @@ public class VeraSelftestCheck implements SelftestCheck {
     @Autowired
     private VeraConsumer consumer;
 
-    private final static String FASIT_ALIAS = "deployLog_v1";
+    private static final String FASIT_ALIAS = "deployLog_v1";
 
     @Override
     public boolean perform() {

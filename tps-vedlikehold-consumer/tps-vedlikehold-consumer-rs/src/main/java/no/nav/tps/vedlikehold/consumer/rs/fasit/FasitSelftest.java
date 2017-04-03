@@ -23,7 +23,7 @@ public class FasitSelftest implements SelftestCheck {
     }
 
     @Override public String getEndpoint() {
-        return FasitConstants.BASE_URL;
+        return "rs:action @ " + RS_ACTION_NAME + " via " + FasitConstants.BASE_URL;
     }
 
     @Override public boolean isVital() {

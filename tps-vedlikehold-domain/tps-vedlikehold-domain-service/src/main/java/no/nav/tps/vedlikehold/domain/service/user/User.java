@@ -1,4 +1,4 @@
-package no.nav.tps.vedlikehold.domain.service.User;
+package no.nav.tps.vedlikehold.domain.service.user;
 
 import java.util.Set;
 
