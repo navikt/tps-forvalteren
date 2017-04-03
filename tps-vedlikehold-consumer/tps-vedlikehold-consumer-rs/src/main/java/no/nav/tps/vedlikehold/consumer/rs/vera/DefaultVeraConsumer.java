@@ -25,7 +25,7 @@ public class DefaultVeraConsumer implements VeraConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVeraConsumer.class);
 
     private static final String PING_VERA = "tpsws";
-    private static final String BASE_URL = "https://vera.adeo.no/api/v1";
+    protected static final String BASE_URL = "https://vera.adeo.no/api/v1";
 
     private RestTemplate template = new RestTemplate();
 
@@ -100,4 +100,5 @@ public class DefaultVeraConsumer implements VeraConsumer {
             return serviceName;
         }
     }
+
 }
