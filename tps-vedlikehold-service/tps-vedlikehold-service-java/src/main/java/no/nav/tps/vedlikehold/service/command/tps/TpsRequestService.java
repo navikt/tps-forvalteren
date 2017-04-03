@@ -5,7 +5,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 
-
+@FunctionalInterface
 public interface TpsRequestService {
     Response executeServiceRutineRequest(TpsServiceRoutineRequest request, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws Exception;
 }

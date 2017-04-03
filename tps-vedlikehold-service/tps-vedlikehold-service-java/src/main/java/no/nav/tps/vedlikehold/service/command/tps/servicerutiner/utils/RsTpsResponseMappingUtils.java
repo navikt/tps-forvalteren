@@ -24,9 +24,9 @@ public class RsTpsResponseMappingUtils {
     private ObjectMapper objectMapper;
 
     public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response response) throws IOException {
-        TpsServiceRoutineResponse TpsServiceRutineResponse = new TpsServiceRoutineResponse();
+        TpsServiceRoutineResponse tpsServiceRutineResponse = new TpsServiceRoutineResponse();
 
-        TpsServiceRutineResponse.setXml(response.getRawXml());
+        tpsServiceRutineResponse.setXml(response.getRawXml());
 
         Map<String, Object> responseMap = new LinkedHashMap<>();
 
@@ -45,9 +45,9 @@ public class RsTpsResponseMappingUtils {
 
         Map status = objectMapper.readValue(objectMapper.writeValueAsString(response.getStatus()), Map.class);
         responseMap.put("status", status);
-        TpsServiceRutineResponse.setResponse(responseMap);
+        tpsServiceRutineResponse.setResponse(responseMap);
 
-        return TpsServiceRutineResponse;
+        return tpsServiceRutineResponse;
     }
 
     private LinkedHashMap<String, Object> xmlToLinkedHashMap(String xml){

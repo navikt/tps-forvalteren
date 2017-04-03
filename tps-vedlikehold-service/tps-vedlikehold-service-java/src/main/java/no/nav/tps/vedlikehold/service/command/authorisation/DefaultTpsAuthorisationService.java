@@ -30,6 +30,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
         }
     }
 
+    @Override
     public boolean isAuthorisedToSeePerson(TpsServiceRoutineDefinition serviceRoutine, String fnr, User user) {
         return !serviceRoutine.getSecurityServiceStrategies()
                 .stream()
