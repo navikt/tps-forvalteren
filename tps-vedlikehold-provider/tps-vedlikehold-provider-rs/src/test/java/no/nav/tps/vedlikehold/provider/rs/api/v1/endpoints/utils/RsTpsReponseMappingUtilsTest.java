@@ -1,5 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.ResponseStatus;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -9,21 +10,15 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.*;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,9 +36,13 @@ public class RsTpsReponseMappingUtilsTest {
     private static final String XML_DATA = "<enPerson>"+XML_PERSON1+"</enPerson><enPerson>"+XML_PERSON2+"</enPerson>";
     private static final String XML_RAW = "<message><data>"+XML_DATA+"</data></message>";
 
+    private LinkedHashMap map;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Mock
+    private ObjectMapper objectMapperMock;
 
     @InjectMocks
     private RsTpsResponseMappingUtils responseMappingUtilsMock;
@@ -64,7 +63,6 @@ public class RsTpsReponseMappingUtilsTest {
 
     @Test
     public void mapsXmlData() throws Exception {
-
         Response response = new Response();
         response.setDataXmls(Collections.singletonList(XML_PERSON1));
         response.setStatus(new ResponseStatus());
@@ -85,7 +83,7 @@ public class RsTpsReponseMappingUtilsTest {
     public void mapsXmlDataWithMultiplePersonResultsInResponse() throws Exception {
 
         Response response = new Response();
-        response.setDataXmls(Collections.singletonList(XML_DATA));
+        response.setDataXmls(Arrays.asList(XML_PERSON1, XML_PERSON2));
         response.setStatus(new ResponseStatus());
 
         TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
@@ -108,8 +106,6 @@ public class RsTpsReponseMappingUtilsTest {
     @Test
     public void mapsStatus() throws Exception {
         Response response = new Response();
-        response.setDataXmls(null);
-        response.setTotalHits(null);
 
         ResponseStatus responseStatus = new ResponseStatus();
         responseStatus.setKode("00");
@@ -117,6 +113,15 @@ public class RsTpsReponseMappingUtilsTest {
         responseStatus.setUtfyllendeMelding("utfyllende melding");
 
         response.setStatus(responseStatus);
+        String statusAsString = "00, melding, utfyllende melding";
+
+        LinkedHashMap statusMap = new LinkedHashMap();
+        statusMap.put("kode", "00");
+        statusMap.put("melding", "melding");
+        statusMap.put("utfyllendeMelding", "utfyllende melding");
+
+        when(objectMapperMock.writeValueAsString(responseStatus)).thenReturn(statusAsString);
+        when(objectMapperMock.readValue(statusAsString, Map.class)).thenReturn(statusMap);
 
         TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
