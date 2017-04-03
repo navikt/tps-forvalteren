@@ -49,6 +49,7 @@
         <modig-testcertificates.version>1.2.0</modig-testcertificates.version>
         <diskresjonskode-v1.version>1.1.0</diskresjonskode-v1.version>
         <pipEgenAnsatt-v1.version>1.0.0</pipEgenAnsatt-v1.version>
+        <freg-metrics.version>1.0.0</freg-metrics.version>
         <freg-spring-boot-starter-dependencies.version>1.4.0</freg-spring-boot-starter-dependencies.version>
         <freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
 
@@ -330,6 +331,18 @@
                 <artifactId>ojdbc6</artifactId>
                 <!-- <version>11.2.0.3</version>-->
                 <version>${ojdbc6.version}</version>
+            </dependency>
+
+            <!-- Metrics -->
+            <dependency>
+                <groupId>no.nav.freg</groupId>
+                <artifactId>metrics-spring</artifactId>
+                <version>${freg-metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.freg</groupId>
+                <artifactId>metrics-annotations</artifactId>
+                <version>${freg-metrics.version}</version>
             </dependency>
 
         </dependencies>

@@ -2,6 +2,7 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
+import static no.nav.tps.vedlikehold.provider.rs.config.ProviderConstants.OPERATION;
+import static no.nav.tps.vedlikehold.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 
 @RestController
 @RequestMapping(value = "api/v1")
 public class ServiceController {
 
+    private static final String REST_SERVICE_NAME = "service";
     private static final String TPS_SERVICE_ROUTINE_PARAM_NAME = "serviceRutinenavn";
     private static final String ENVIRONMENT_PARAM_NAME = "environment";
 
@@ -35,6 +38,7 @@ public class ServiceController {
 
 
     @LogExceptions
+    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService")})
     @RequestMapping(value = "/service/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getService(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
         tpsRequestParameters.put(TPS_SERVICE_ROUTINE_PARAM_NAME, serviceRutinenavn);
