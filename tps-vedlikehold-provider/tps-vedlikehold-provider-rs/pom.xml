@@ -65,6 +65,18 @@
             <groupId>ma.glasnost.orika</groupId>
             <artifactId>orika-core</artifactId>
         </dependency>
+
+        <!-- Interne -->
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>metrics-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>metrics-spring</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

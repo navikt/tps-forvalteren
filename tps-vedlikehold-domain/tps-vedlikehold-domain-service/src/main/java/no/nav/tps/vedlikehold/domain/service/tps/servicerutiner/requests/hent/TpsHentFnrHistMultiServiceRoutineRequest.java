@@ -8,15 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentRequest;
 
-/**
- * Created by Peter Fløgstad on 17.01.2017.
- */
-
 @Getter
 @Setter
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
 public class TpsHentFnrHistMultiServiceRoutineRequest extends TpsServiceRoutineHentRequest{
+
     private String antallFnr;
     private String buffNr;
 

@@ -45,7 +45,6 @@ public class S600HentKontaktinformasjonServiceRoutineResolver implements Service
                 .and()
                 .transformer()
                     .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
-//                    .postSend(extractDataFromXmlElement("personDataS600"))
                     .postSend(ResponseDataTransformer.extractDataFromXmlElement("person"))
                     .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()

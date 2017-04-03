@@ -4,7 +4,7 @@ import com.fasterxml.jackson.xml.XmlMapper;
 import com.google.common.collect.Sets;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.User.User;
+import no.nav.tps.vedlikehold.domain.service.user.User;
 import no.nav.tps.vedlikehold.domain.service.tps.Request;
 import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.config.TpsRequestConfig;

@@ -57,6 +57,23 @@ public class TpsServiceRoutineDefinitionBuilder {
         return new TpsServiceRoutineSecurityBuilder();
     }
 
+    public TpsServiceRoutineDefinition build() {
+        TpsServiceRoutineDefinition routine = new TpsServiceRoutineDefinition();
+        routine.setName(name);
+        routine.setInternalName(internalName);
+        routine.setJavaClass(javaClass);
+        routine.setParameters(parameters);
+        routine.setTransformers(transformers);
+        routine.setConfig(requestConfig);
+        routine.setRequiredRoles(requiredRoles);
+        routine.setSecurityServiceStrategies(securitySearchAuthorisationStrategies);
+        return routine;
+    }
+
+    public static TpsServiceRoutineDefinitionBuilder aTpsServiceRoutine() {
+        return new TpsServiceRoutineDefinitionBuilder();
+    }
+
     public class TpsServiceRoutineSecurityBuilder {
         private Set<String> access = new HashSet<>();
         private List<AuthorisationStrategy> serviceStrategies = new ArrayList<>();
@@ -76,23 +93,6 @@ public class TpsServiceRoutineDefinitionBuilder {
             securitySearchAuthorisationStrategies = this.serviceStrategies;
             return TpsServiceRoutineDefinitionBuilder.this;
         }
-    }
-
-    public TpsServiceRoutineDefinition build() {
-        TpsServiceRoutineDefinition routine = new TpsServiceRoutineDefinition();
-        routine.setName(name);
-        routine.setInternalName(internalName);
-        routine.setJavaClass(javaClass);
-        routine.setParameters(parameters);
-        routine.setTransformers(transformers);
-        routine.setConfig(requestConfig);
-        routine.setRequiredRoles(requiredRoles);
-        routine.setSecurityServiceStrategies(securitySearchAuthorisationStrategies);
-        return routine;
-    }
-
-    public static TpsServiceRoutineDefinitionBuilder aTpsServiceRoutine() {
-        return new TpsServiceRoutineDefinitionBuilder();
     }
 
     public class TpsServiceRoutineParameterBuilder {

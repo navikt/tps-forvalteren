@@ -16,7 +16,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashSet;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -59,9 +61,9 @@ public class DefaultEgenAnsattSecurityStrategyTest {
 
     @Test
     public void isSupported() throws Exception {
-        assertEquals(defaultEgenAnsattSecurityStrategy.isSupported(egenAnsattAuthorisation), true);
-        assertEquals(defaultEgenAnsattSecurityStrategy.isSupported(diskresjonskodeAuthorisation), false);
-        assertEquals(defaultEgenAnsattSecurityStrategy.isSupported(readAuthorisation), false);
+        assertTrue(defaultEgenAnsattSecurityStrategy.isSupported(egenAnsattAuthorisation));
+        assertFalse(defaultEgenAnsattSecurityStrategy.isSupported(diskresjonskodeAuthorisation));
+        assertFalse(defaultEgenAnsattSecurityStrategy.isSupported(readAuthorisation));
     }
 
     @Test

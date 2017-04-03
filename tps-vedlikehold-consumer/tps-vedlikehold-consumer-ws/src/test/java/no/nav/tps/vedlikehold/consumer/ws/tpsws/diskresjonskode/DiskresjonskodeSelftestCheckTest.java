@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode;
 
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.config.TpswsConsumerConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,18 +22,16 @@ public class DiskresjonskodeSelftestCheckTest {
     private DiskresjonskodeSelftestCheck selftestCheck;
 
     @Mock
-    private TpswsConsumerConfig properties;
+    private TpswsConsumerConfig config;
 
     @Mock
     private DiskresjonskodeConsumer consumer;
 
     private final String ENDPOINT_URL = "DISKRESJONSKODE_URL";
-    private final String FNR_TEST_PERSON_IPROD = "10108000398";
 
     @Before
     public void before() {
-        when(properties.getDiskresjonskodeAddress()).thenReturn(ENDPOINT_URL);
-        when(consumer.getDiskresjonskodeResponse(FNR_TEST_PERSON_IPROD)).thenReturn(new HentDiskresjonskodeResponse());
+        when(config.getDiskresjonskodeAddress()).thenReturn(ENDPOINT_URL);
     }
 
     @Test
@@ -45,21 +43,21 @@ public class DiskresjonskodeSelftestCheckTest {
     @Test
     public void includesOperationNameInEndpoint() {
         String result = selftestCheck.getEndpoint();
-        verify(properties).getDiskresjonskodeAddress();
+        verify(config).getDiskresjonskodeAddress();
         assertThat(result, containsString("ping"));
     }
 
     @Test
     public void includesFasitAliasInEndpoint() {
         String result = selftestCheck.getEndpoint();
-        verify(properties).getDiskresjonskodeAddress();
+        verify(config).getDiskresjonskodeAddress();
         assertThat(result, containsString("virksomhet:Diskresjonskode_v1"));
     }
 
     @Test
     public void includesEndpointUrlInEndpoint() {
         String result = selftestCheck.getEndpoint();
-        verify(properties).getDiskresjonskodeAddress();
+        verify(config).getDiskresjonskodeAddress();
         assertThat(result, containsString(ENDPOINT_URL));
     }
 
@@ -71,6 +69,7 @@ public class DiskresjonskodeSelftestCheckTest {
 
     @Test
     public void returnsTrueOnPerform() {
+        when(consumer.getDiskresjonskodeResponse(anyString())).thenReturn(null);
         boolean result = selftestCheck.perform();
         assertThat(result, is(true));
     }

@@ -15,7 +15,7 @@ public class DiskresjonskodeSelftestCheck implements SelftestCheck {
     private DiskresjonskodeConsumer consumer;
 
     @Autowired
-    private TpswsConsumerConfig properties;
+    private TpswsConsumerConfig config;
 
     @Override
     public boolean perform() {
@@ -30,7 +30,7 @@ public class DiskresjonskodeSelftestCheck implements SelftestCheck {
 
     @Override
     public String getEndpoint() {
-        return "ws:action " + WS_ACTION_NAME + " @ " + FASIT_ENDPOINT_ALIAS + " via " + properties.getDiskresjonskodeAddress();
+        return "ws:action " + WS_ACTION_NAME + " @ " + FASIT_ENDPOINT_ALIAS + " via " + config.getDiskresjonskodeAddress();
     }
 
     @Override

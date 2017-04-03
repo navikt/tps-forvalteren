@@ -21,8 +21,4 @@ public class TpsServiceRoutineHentRequest extends TpsServiceRoutineRequest {
         this.aksjonsKode2 = aksjonsKode.substring(1);
     }
 
-    public void setAksjonsKode2(String aksjonsKode2) {
-        // Do nothing. oh goodie...
-    }
-
 }
