@@ -2,7 +2,7 @@ package no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.reso
 
 import no.nav.tps.vedlikehold.domain.service.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.endring.TpsEndreTIADEndringsmeldingRequest;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.endring.TpsEndreTiadEndringsmeldingRequest;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
@@ -12,18 +12,16 @@ import static no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants.REQU
 import static no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender;
 import static no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
 
-/**
- * Created by F148888 on 16.11.2016.
- */
+
 @SuppressWarnings("squid:S138")
-public class EndreTIAD implements ServiceRoutineResolver{
+public class EndreTiad implements ServiceRoutineResolver{
 
     @Override
     public TpsServiceRoutineDefinition resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("EndreTIAD")
+                .name("EndreTiad")
                 .internalName("Endre: TIAD")
-                .javaClass(TpsEndreTIADEndringsmeldingRequest.class)
+                .javaClass(TpsEndreTiadEndringsmeldingRequest.class)
                 .config()
                     .requestQueue(REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
@@ -65,7 +63,7 @@ public class EndreTIAD implements ServiceRoutineResolver{
                 .and()
 
                 .parameter()
-                    .name("kommunenrTIAD")
+                    .name("kommunenrTiad")
                     .optional()
                     .type(TpsParameterType.STRING)
                 .and()

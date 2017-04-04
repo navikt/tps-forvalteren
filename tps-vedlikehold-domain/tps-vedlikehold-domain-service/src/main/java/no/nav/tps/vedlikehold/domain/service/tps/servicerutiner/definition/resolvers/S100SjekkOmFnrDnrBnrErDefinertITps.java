@@ -1,9 +1,5 @@
 package no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers;
 
-/**
- * Created by Peter on 30.11.2016.
- */
-
 import no.nav.tps.vedlikehold.domain.service.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.hent.TpsHentTKNrEndringerServiceRoutineRequest;
@@ -14,7 +10,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.req
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
-public class S100SjekkOmFnrDnrBnrErDefinertITPS implements ServiceRoutineResolver{
+public class S100SjekkOmFnrDnrBnrErDefinertITps implements ServiceRoutineResolver{
 
     @Override
     public TpsServiceRoutineDefinition resolve() {

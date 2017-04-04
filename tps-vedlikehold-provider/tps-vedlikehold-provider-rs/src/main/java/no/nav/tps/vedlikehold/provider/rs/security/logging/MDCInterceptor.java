@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public class MDCInterceptor implements HandlerInterceptor {
 
-    static final String USER_ID_ATTRIBUTE_NAME = "userId";
+    static final String USER_KEY = "userId";
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -23,7 +23,7 @@ public class MDCInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
-            MDC.put(USER_ID_ATTRIBUTE_NAME, userContextHolder.getUsername());
+            MDC.put(USER_KEY, userContextHolder.getUsername());
         } catch (RuntimeException exception){
             return true;                            // Exception is thrown if this is accessed before the user context is configured
         }
@@ -37,6 +37,6 @@ public class MDCInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        MDC.remove(USER_ID_ATTRIBUTE_NAME);
+        MDC.remove(USER_KEY);
     }
 }
