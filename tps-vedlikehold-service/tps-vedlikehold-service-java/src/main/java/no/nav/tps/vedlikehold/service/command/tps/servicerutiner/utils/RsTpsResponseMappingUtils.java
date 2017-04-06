@@ -1,12 +1,15 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.xstream.XStream;
 import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.core.MultivaluedHashMap;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,7 @@ public class RsTpsResponseMappingUtils {
 
         Map<String, Object> responseMap = new LinkedHashMap<>();
 
+
         if(response.getDataXmls() != null){
            List<Map> data = response.getDataXmls()
                    .stream()
@@ -50,17 +54,23 @@ public class RsTpsResponseMappingUtils {
         return tpsServiceRutineResponse;
     }
 
-    private LinkedHashMap<String, Object> xmlToLinkedHashMap(String xml){
-        LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
+
+    private Map<String, Object> xmlToLinkedHashMap(String xml){
+        Map<String, Object> responseMap = new LinkedHashMap<>();
         Matcher tagMatcher = Pattern.compile(HTML_TAG_WITH_CONTENT_PATTERN, Pattern.DOTALL).matcher(xml);
 
         while(tagMatcher.find()){
             String tagContent = tagMatcher.group(2);
             String tagName = tagMatcher.group(1);
             if(tagHasNoChildren(tagContent)){
-                responseMap.put(tagName, tagContent);
+               responseMap.put(tagName, tagContent);
             } else {
-                responseMap.put(tagName, xmlToLinkedHashMap(tagContent));
+                Object o = responseMap.get(tagName);
+                if (o != null) {
+                    responseMap.put(tagName, Arrays.asList(responseMap.get(tagName), xmlToLinkedHashMap(tagContent)));
+                } else {
+                    responseMap.put(tagName, xmlToLinkedHashMap(tagContent));
+                }
             }
         }
         return responseMap;
