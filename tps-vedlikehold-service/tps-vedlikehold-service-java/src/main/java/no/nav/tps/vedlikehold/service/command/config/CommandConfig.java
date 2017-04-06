@@ -107,7 +107,7 @@ public class CommandConfig {
     @Bean
     @Order(7)
     ServiceRoutineResolver sjekkFnrErDefinert(){
-        return new S100SjekkOmFnrDnrBnrErDefinertITPS();
+        return new S100SjekkOmFnrDnrBnrErDefinertITps();
     }
 
     @Bean
@@ -119,7 +119,7 @@ public class CommandConfig {
     @Bean
     @Order(8)
     ServiceRoutineResolver endreTIADResolver() {
-        return new EndreTIAD();
+        return new EndreTiad();
     }
 
     @Bean
