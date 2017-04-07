@@ -113,8 +113,7 @@ public class FasitClient {
             String managerName = resource.getPropertyString("name");
             String hostname    = resource.getPropertyString("hostname");
             String port        = resource.getPropertyString("port");
-
-            return new QueueManager(managerName, hostname, port);
+            return new QueueManager(managerName, hostname, port, this.environment);
         }
 
         public Queue getQueue(String alias) {

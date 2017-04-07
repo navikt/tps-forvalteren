@@ -52,7 +52,7 @@ public class MDCInterceptorTest {
 
         interceptor.preHandle(null, null, null);
 
-        String userId = MDC.get(MDCInterceptor.USER_ID_ATTRIBUTE_NAME);
+        String userId = MDC.get(MDCInterceptor.USER_KEY);
         assertThat(userId, is(USERNAME));
     }
 
@@ -67,7 +67,7 @@ public class MDCInterceptorTest {
     public void afterCompletionRemovesFromMdc() {
         interceptor.afterCompletion(null, null, null, null);
 
-        String userId = MDC.get(MDCInterceptor.USER_ID_ATTRIBUTE_NAME);
+        String userId = MDC.get(MDCInterceptor.USER_KEY);
         assertThat(userId, is(nullValue()));
     }
 }

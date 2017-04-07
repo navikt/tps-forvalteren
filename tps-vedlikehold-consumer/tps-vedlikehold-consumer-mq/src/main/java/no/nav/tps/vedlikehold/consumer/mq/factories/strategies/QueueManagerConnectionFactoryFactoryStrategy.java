@@ -2,8 +2,6 @@ package no.nav.tps.vedlikehold.consumer.mq.factories.strategies;
 
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 
-import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
-
 /**
  * Provides information needed when creating a queue connection factory
  *
@@ -12,10 +10,12 @@ public class QueueManagerConnectionFactoryFactoryStrategy implements ConnectionF
 
     private QueueManager queueManager;
     private String environment;
+    private String channelName;
 
-    public QueueManagerConnectionFactoryFactoryStrategy(QueueManager queueManager, String environment) {
+    public QueueManagerConnectionFactoryFactoryStrategy(QueueManager queueManager, String environment, String channelName) {
         this.queueManager = queueManager;
         this.environment = environment;
+        this.channelName = channelName;
     }
 
     @Override
@@ -40,6 +40,6 @@ public class QueueManagerConnectionFactoryFactoryStrategy implements ConnectionF
 
     @Override
     public String getChannelName() {
-        return environment.toUpperCase() + CHANNEL_POSTFIX;
+        return channelName;
     }
 }

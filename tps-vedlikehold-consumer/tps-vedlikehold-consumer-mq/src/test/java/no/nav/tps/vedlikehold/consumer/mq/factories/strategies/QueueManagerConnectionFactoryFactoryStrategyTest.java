@@ -31,7 +31,7 @@ public class QueueManagerConnectionFactoryFactoryStrategyTest {
 
     @Before
     public void setUp() {
-        connectionFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManagerMock, ENVIRONMENT);
+        connectionFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManagerMock, ENVIRONMENT, ENVIRONMENT.toUpperCase() + "_TPSWS");
 
         when(queueManagerMock.getHostname()).thenReturn(QUEUE_MANAGER_HOST_NAME);
         when(queueManagerMock.getName()).thenReturn(QUEUE_MANAGER_NAME);
