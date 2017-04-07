@@ -26,7 +26,6 @@ public class FasitConfig {
         FasitMessageQueueConsumer consumer = new DefaultFasitMessageQueueConsumer(
                 FasitConstants.APPLICATION_NAME,
                 TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
-                FasitConstants.RESPONSE_QUEUE_ALIAS,
                 FasitConstants.QUEUE_MANAGER_ALIAS
         );
 

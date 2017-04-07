@@ -7,15 +7,19 @@ import no.nav.tps.vedlikehold.consumer.rs.fasit.queues.FasitMessageQueueConsumer
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
+import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
+
 /**
  * Consumes information from Fasit and produces MessageQueueServices
  */
 
+@Profile("default")
 @Component
 public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
@@ -39,15 +43,13 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
         fasitMessageQueueConsumer.setRequestQueueAlias(requestQueueAlias);
         QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(environment);
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
-        Queue responseQueue       = fasitMessageQueueConsumer.getResponseQueue(environment);
 
-        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, environment);
+        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, environment, environment.toUpperCase() + CHANNEL_POSTFIX);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 
         return new DefaultMessageQueueConsumer(
                 requestQueue.getName(),
-                responseQueue.getName(),
                 connectionFactory
         );
     }

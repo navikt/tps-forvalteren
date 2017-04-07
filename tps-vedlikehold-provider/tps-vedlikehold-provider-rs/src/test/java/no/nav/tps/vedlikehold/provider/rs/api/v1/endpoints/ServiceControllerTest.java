@@ -2,7 +2,6 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;

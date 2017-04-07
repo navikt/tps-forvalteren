@@ -41,7 +41,6 @@ public class DefaultMessageQueueConsumerFactoryTest {
     @Before
     public void setUp() {
         when(fasitMessageQueueConsumerMock.getRequestQueue(anyString())).thenReturn(mock(Queue.class));
-        when(fasitMessageQueueConsumerMock.getResponseQueue(anyString())).thenReturn(mock(Queue.class));
         when(fasitMessageQueueConsumerMock.getQueueManager(anyString(), anyString())).thenReturn(mock(QueueManager.class));
     }
 
@@ -51,7 +50,6 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
         verify(fasitMessageQueueConsumerMock).getQueueManager(eq(ENVIRONMENT));
         verify(fasitMessageQueueConsumerMock).getRequestQueue(eq(ENVIRONMENT));
-        verify(fasitMessageQueueConsumerMock).getResponseQueue(eq(ENVIRONMENT));
     }
 
     @Test
