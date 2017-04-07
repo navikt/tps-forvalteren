@@ -1,15 +1,15 @@
 
 angular.module('tps-vedlikehold.directives')
     .directive('tpsInputField', ['$templateRequest', '$compile', function($templateRequest, $compile){
-    
+
         var templatesPath = 'app/components/input-fields/';
         var templateSuffix = '-input.html';
-    
+
         var getTemplateUrl = function(inputParamName) {
             console.log("param: " + inputParamName);
             return templatesPath + '' + inputParamName.toLowerCase() + '' + templateSuffix;
         };
-    
+
         var linkerFunction = function(scope, element, attrs) {
             $templateRequest(getTemplateUrl(scope.inputParamName)).then(function(html) {
                 var template = angular.element(html);
@@ -17,7 +17,7 @@ angular.module('tps-vedlikehold.directives')
                 $compile(template)(scope);
             });
         };
-    
+
         return {
             restrict: 'E',
             scope: {
