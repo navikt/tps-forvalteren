@@ -239,13 +239,16 @@
           "fieldData": ["datoStatsborger","statsborgerskap.datoStatsborger"],
           "label": "Dato Statsborger",
           "flex": 20
-        }
-      ],
-      [
+        },
         {
           "fieldData": ["statsbTidspunkt","statsborgerskap.statsbTidspunkt"],
           "label": "Stats B. Tidspunkt",
           "flex": 10
+        },
+        {
+          "fieldData": ["statsbTidspunkt","statsborgerskap.statsbSystem"],
+          "label": "Stats System",
+          "flex": 20
         },
         {
           "fieldData": ["statsbSaksbehandler","statsborgerskap.statsbSaksbehandler"],

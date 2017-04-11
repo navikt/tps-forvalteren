@@ -48,8 +48,8 @@ angular.module('tps-vedlikehold.service-rutine')
                     if(response.data === undefined) return;
                     $scope.personsData = extractPersonsData(response, nonUniqueProperties);
 
-                    var str = JSON.stringify($scope.personsData, null, 2);    
-                //    console.log(str);
+                    var str = JSON.stringify($scope.personsData, null, 2);
+                    console.log(str);
 
                     // capitalizeFirstLetterInPersonsData(response);   //TODO Må kanskje fjernes. Spørs skal se ut
                     var antallTreff = response.antallTotalt;
