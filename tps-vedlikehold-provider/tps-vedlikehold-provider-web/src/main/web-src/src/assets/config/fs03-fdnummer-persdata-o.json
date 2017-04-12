@@ -146,7 +146,9 @@
           "fieldData": ["postAdresse3","postAdresse.postAdresse3"],
           "label": "Post-Adresse 3",
           "flex": 10
-        },
+        }],
+        [
+
         {
           "fieldData": "kommunenr",
           "label": "Kommunenr",
@@ -157,8 +159,8 @@
           "label": "KommuneNavn",
           "flex": 20
         }
-      ],
-
+      ]
+      ,
       [
         {
           "fieldData": ["tknr","tk.tknr"],

@@ -14,6 +14,7 @@ var cssnano = require('gulp-cssnano');
 var sourcemaps = require('gulp-sourcemaps');
 var lessAutoprefix = require('less-plugin-autoprefix');
 var hash = require('gulp-hash');
+var livereload = require('gulp-livereload');
 
 var del = require('del');
 var runSequence = require('run-sequence');
@@ -129,6 +130,7 @@ gulp.task('build.styles.dev', function(){
        }))
        // .pipe(sourcemaps.write())
        .pipe(gulp.dest(tempDest))
+       .pipe(livereload())
 });
 
 gulp.task('build.styles.prod', function() {
@@ -191,6 +193,7 @@ gulp.task('copy.assets.prod', function() {
 
 // -- Watch & reload --
 gulp.task('watch', function(){
+   livereload.listen();
    gulp.watch(sources.scripts, ['reload.scripts']);
    gulp.watch(sources.styles, ['reload.less']);
    gulp.watch(sources.views, ['reload.views']);
@@ -205,7 +208,7 @@ gulp.task('reload.config', function(){
 });
 
 gulp.task('reload.less', function() {
-   runSequence('build.styles.dev', 'build.index', 'copy.to.target', 'reload-browser')
+   runSequence('build.styles.dev', 'copy.to.target')
 });
 
 gulp.task('reload.views', function(){

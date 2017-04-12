@@ -1,5 +1,19 @@
 .tps-vk-service-rutine-dashboard {
 
+  fieldset{
+      border: 0px;
+      padding: 0px;
+      margin: 0px;
+
+    legend{
+    text-indent: -10000px;
+    position: absolute;
+    top: auto;
+    width: 1px;
+    overflow: hidden;
+  }
+  }
+
   .tps-vk-top {
     margin-bottom: 10px;
     background-color: white;
@@ -7,7 +21,7 @@
     position: relative;
 
     .tps-vk-input-container {
-      margin: 8px 0;
+      margin: 8px 10px;
 
       label {
         z-index: auto;
@@ -71,7 +85,7 @@
         .tps-vk-output-data,
         .tps-vk-output-label {
           border-color: rgba(0, 0, 0, 0.12);
-          color: rgba(0, 0, 0, 0.54);
+          color: rgba(0, 0, 0, 0.74);
 
           &.filled,
           &.empty {
@@ -80,6 +94,9 @@
           &.noValue{
             background-color: white;
           }
+        }
+        .tps-vk-output-label{
+          color: #000;
         }
       }
     }

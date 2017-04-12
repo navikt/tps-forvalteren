@@ -17,7 +17,7 @@
                             </div>
                             <div ng-if="paramsToShow.properties" layout="row">
                                 <div flex="{{param.flex}}" class="tps-vk-output-container" ng-repeat="param in paramsToShow.properties">
-                                    <h4 class="tps-vk-output-label"> {{param.label}} </h4>
+                                    <p class="tps-vk-output-label"> {{param.label}} </p>
                                     <p class="tps-vk-output-data">{{resolveDisplayTemplate(param.template,
                                         personData)}}</p>
                                 </div>
@@ -31,29 +31,11 @@
                         <div layout-gt-xs="row" ng-repeat="row in responseFormConfig[serviceRutineName].rows"
                              class="md-title-content" layout-align="start center">
                             <div flex="5"></div>
+
                             <div ng-repeat="field in row" flex="22">
-                              <div>
-                              <tps-output-field
-                              ng-if="!isArray(personData[field.fieldData])"
-                              ng-if="!isArray(field.fieldData)"
-                              ng-show="personData[field.fieldData] != undefined"
-                              label="{{field.label}}"
-                              field-model="personData[field.fieldData]"></tps-output-field>
-
-                              <tps-output-field-no-value
-                              ng-if="!isArray(field.fieldData)"
-                              ng-if="!isArray(personData[field.fieldData])"
-                              ng-show="personData[field.fieldData] === undefined"
-                              label="{{field.label}}"></tps-output-field-no-value>
-                            </div>
-
-
-
-                          <!-- TODO DU MÅ forenkle den koden her - Dlzar  -->
-
                               <div ng-if="isArray(field.fieldData)">
                                 <div ng-repeat="item in field.fieldData">
-                                  <tps-output-field ng-if="personData[item]"
+                                  <tps-output-field
                                   ng-if="!isArray(personData[item])"
                                   ng-show="personData[item] != undefined"
                                   label="{{field.label}}"
@@ -61,6 +43,20 @@
                                 </tps-output-field>
                               </div>
                             </div>
+
+                            <tps-output-field
+                              ng-if="!isArray(personData[field.fieldData])"
+                              ng-if="!isArray(field.fieldData)"
+                              ng-show="personData[field.fieldData] != undefined"
+                              label="{{field.label}}"
+                              field-model="personData[field.fieldData]"></tps-output-field>
+
+
+                            <tps-output-field-no-value
+                            ng-if="!isArray(field.fieldData)"
+                            ng-if="!isArray(personData[field.fieldData])"
+                            ng-show="personData[field.fieldData] === undefined"
+                            label="{{field.label}}"></tps-output-field-no-value>
 
 
                             <!-- Forenkling  -->
