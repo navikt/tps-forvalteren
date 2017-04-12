@@ -28,10 +28,13 @@ angular.module('tps-vedlikehold.service-rutine')
 
             //TODO Må nullstille "buffer" når man tar et nytt søk og ikke bare pager i buffer.
             $scope.submit = function () {
-                var params = createParams($scope.formData);
+            var params = createParams($scope.formData);
+            // var params = {fnr:"110884", aksjonsDato:"2017-04-04", aksjonsKode:"C0", environment:"t0"};
+
                 $scope.loading = true;
 
                 serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
+
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
@@ -44,6 +47,7 @@ angular.module('tps-vedlikehold.service-rutine')
                     $scope.returStatus = response.status.kode;
                     if(response.data === undefined) return;
                     $scope.personsData = extractPersonsData(response, nonUniqueProperties);
+
                     var str = JSON.stringify($scope.personsData, null, 2);
                     console.log(str);
 
@@ -86,9 +90,9 @@ angular.module('tps-vedlikehold.service-rutine')
             //TODO Denne får nullpointer ganske ofte fordi "text" er undefined ofte.
             $scope.resolveDisplayTemplate = function(text, personData) {
                 var pattern = /\$\{(.)*?}/g;
-                console.log("Text: "+ text);
+                // console.log("Text: "+ text);
                 var matches = text.match(pattern);
-                console.log("Matches: " + matches);
+                // console.log("Matches: " + matches);
 
                 angular.forEach(matches, function(val) {
                     var objKey = val.slice(2, -1);

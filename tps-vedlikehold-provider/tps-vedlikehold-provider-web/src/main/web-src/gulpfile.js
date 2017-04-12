@@ -38,6 +38,7 @@ var sources = {
    appEntry: './src/app/app.js',
    lessEntry: './src/styles/master.less',
    scripts: './src/app/**/*.js',
+   config: './src/assets/config/**/*.json',
    views : './src/**/*.html',
    styles : './src/styles/**/*.less',
    cssAssets: './src/assets/lib/**/*.css',
@@ -193,10 +194,14 @@ gulp.task('watch', function(){
    gulp.watch(sources.scripts, ['reload.scripts']);
    gulp.watch(sources.styles, ['reload.less']);
    gulp.watch(sources.views, ['reload.views']);
+   gulp.watch(sources.config, ['reload.config']);
 });
-
 gulp.task('reload.scripts', function() {
    runSequence('build.app.dev', 'build.index', 'copy.to.target', 'reload-browser')
+});
+
+gulp.task('reload.config', function(){
+  runSequence('copy.assets.dev', 'views', 'build.app.dev','build.index','copy.to.target','reload-browser')
 });
 
 gulp.task('reload.less', function() {
@@ -229,6 +234,3 @@ gulp.task('clean.public', function(cb) {
 gulp.task('clean.target', function(cb) {
    return del(folders.targetRoot, {force:true}, cb);
 });
-
-
-

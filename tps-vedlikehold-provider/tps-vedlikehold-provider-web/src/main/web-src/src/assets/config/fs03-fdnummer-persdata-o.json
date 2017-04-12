@@ -59,22 +59,22 @@
       ],
       [
         {
-          "fieldData": "kortnavn",
+          "fieldData": ["kortnavn", "navn.kortnavn"],
           "label": "Forkortet navn",
           "flex": 25
         },
         {
-          "fieldData": "fornavn",
+          "fieldData": ["fornavn", "navn.fornavn"],
           "label": "Fornavn",
           "flex": 25
         },
         {
-          "fieldData": "mellomnavn",
+          "fieldData": ["mellomnavn", "navn.mellomnavn"],
           "label": "Mellomnavn",
           "flex": 20
         },
         {
-          "fieldData": "etternavn",
+          "fieldData": ["etternavn", "navn.etternavn"],
           "label": "Mellomnavn",
           "flex": 20
         }
@@ -105,27 +105,27 @@
 
       [
         {
-          "fieldData": "boAdresse1",
+          "fieldData": ["boAdresse1", "boAdresse.boAdresse1"],
           "label": "Bo-Adresse 1",
           "flex": 25
         },
         {
-          "fieldData": "boAdresse2",
+          "fieldData": ["boAdresse2", "boAdresse.boAdresse2"],
           "label": "Bo- Adresse 2",
           "flex": 25
         },
         {
-          "fieldData": "postnr",
+          "fieldData": ["postnr", "boAdresse.postnr"],
           "label": "Postnummer",
           "flex": 10
         },
         {
-          "fieldData": "boPoststed",
+          "fieldData": ["boPoststed", "boAdresse.boPoststed"],
           "label": "Bo-Poststed",
           "flex": 20
         },
         {
-          "fieldData": "bolignr",
+          "fieldData": ["bolignr", "boAdresse.bolignr"],
           "label": "Bolignummer",
           "flex": 10
         }
@@ -133,17 +133,17 @@
 
       [
         {
-          "fieldData": "postAdresse1",
+          "fieldData": ["postAdresse1","postAdresse.postAdresse1"],
           "label": "Post-Adresse 1",
           "flex": 25
         },
         {
-          "fieldData": "postAdresse2",
+          "fieldData": ["postAdresse2", "postAdresse.postAdresse2"],
           "label": "Post-Adresse 2",
           "flex": 25
         },
         {
-          "fieldData": "postAdresse3",
+          "fieldData": ["postAdresse3","postAdresse.postAdresse3"],
           "label": "Post-Adresse 3",
           "flex": 10
         },
@@ -161,27 +161,27 @@
 
       [
         {
-          "fieldData": "tknr",
+          "fieldData": ["tknr","tk.tknr"],
           "label": "TK-Nummer",
           "flex": 10
         },
         {
-          "fieldData": "tknrNavn",
+          "fieldData": ["tknrNavn","tk.tknrNavn"],
           "label": "Tk Nr Navn",
           "flex": 25
         },
         {
-          "fieldData": "tknrTidspunkt",
+          "fieldData": ["tknrTidspunkt","tk.tknrTidspunkt"],
           "label": "Tk Nr. Tidspunkt",
           "flex": 10
         },
         {
-          "fieldData": "tknrSystem",
+          "fieldData": ["tknrSystem","tk.tknrSystem"],
           "label": "Tk Nr. System",
           "flex": 20
         },
         {
-          "fieldData": "tknrSaksbehandler",
+          "fieldData": ["tknrSaksbehandler","tk.tknrSaksbehandler"],
           "label": "Tk Nr. Saksbehandler",
           "flex": 25
         }
@@ -226,81 +226,64 @@
           "flex": 20
         },
         {
-          "fieldData": "kodeStatsborger",
+          "fieldData": ["kodeStatsborger","statsborgerskap.kodeStatsborger"],
           "label": "Kode statsborger",
           "flex": 15
         },
         {
-          "fieldData": "statsborger",
+          "fieldData": ["statsborger","statsborgerskap.statsborger"],
           "label": "Statsborger",
           "flex": 20
         },
         {
-          "fieldData": "datoStatsborger",
+          "fieldData": ["datoStatsborger","statsborgerskap.datoStatsborger"],
           "label": "Dato Statsborger",
           "flex": 20
-        }
-      ],
-      [
+        },
         {
-          "fieldData": "statsbTidspunkt",
+          "fieldData": ["statsbTidspunkt","statsborgerskap.statsbTidspunkt"],
           "label": "Stats B. Tidspunkt",
           "flex": 10
         },
         {
-          "fieldData": "statsbSaksbehandler",
-          "label": "Stats B Saksbehandler",
+          "fieldData": ["statsbTidspunkt","statsborgerskap.statsbSystem"],
+          "label": "Stats System",
           "flex": 20
         },
         {
-          "fieldData": "statsbSaksbehandler",
-          "label": "StatsBSaksbehandler",
-          "flex": 10
-        },
-        {
-          "fieldData": "sivilstand",
-          "label": "Sivilstand",
-          "flex": 15
-        },
-        {
-          "fieldData": "datoSivilstand",
-          "label": "Dato Sivilstand",
-          "flex": 15
-        },
-        {
-          "fieldData": "datoDo",
-          "label": "Dato Do.",
+          "fieldData": ["statsbSaksbehandler","statsborgerskap.statsbSaksbehandler"],
+          "label": "Stats B Saksbehandler",
           "flex": 20
         }
       ],
       [
         {
-          "fieldData": "kodeSivilstand",
+          "fieldData": ["kodeSivilstand","sivilstandsInfo.kodeSivilstand"],
           "label": "Kode Sivilstand",
           "flex": 10
         },
         {
-          "fieldData": "sivilstand",
+          "fieldData": ["sivilstand","sivilstandsInfo.sivilstand"],
           "label": "Sivilstand",
           "flex": 25
         },
         {
-          "fieldData": "datoSivilstand",
+          "fieldData": ["datoSivilstand","sivilstandsInfo.datoSivilstand"],
           "label": "Dato Sivilstand",
           "flex": 15
         },
         {
-          "fieldData": "sivilstTidspunkt",
+          "fieldData": ["sivilstTidspunkt", "sivilstandsInfo.sivilstTidspunkt"],
           "label": "Sivilst Tidspunkt",
           "flex": 15
         },
         {
-          "fieldData": "sivilstSystem",
+          "fieldData": ["sivilstSystem","sivilstandsInfo.sivilstSystem"],
           "label": "sivilstSystem",
           "flex": 10
         },
         {
-          "fieldData": "sivilstSaksbehandler",
+          "fieldData": ["sivilstSaksbehandler","sivilstandsInfo.sivilstSaksbehandler"],
           "label": "Sivil St. Saksbehandler",
           "flex": 15
         }
@@ -368,115 +351,135 @@
 
       [
         {
-          "fieldData": "giroNummer",
+          "fieldData": "giroInfo.giroNummer",
           "label": "Giro Nummer",
           "flex": 25
         },
         {
-          "fieldData": "giroTidspunktReg",
+          "fieldData": "giroInfo.giroTidspunktReg",
           "label": "giro Tidsp. Reg.",
           "flex": 15
         },
         {
-          "fieldData": "giroTidspunkt",
+          "fieldData": "giroInfo.giroTidspunkt",
           "label": "giro Tidspunkt",
           "flex": 15
         },
         {
-          "fieldData": "giroSystem",
+          "fieldData": "giroInfo.giroSystem",
           "label": "Giro system",
           "flex": 10
         },
         {
-          "fieldData": "giroSaksbehandler",
+          "fieldData": "giroInfo.giroSaksbehandler",
           "label": "Giro Saksbehandler",
           "flex": 25
         }
       ],
       [
         {
-          "fieldData": "tlfPrivat_tlfNummer",
+          "fieldData": "tlfPrivat.tlfNummer",
           "label": "Tlf privat",
           "flex": 20
         },
         {
-          "fieldData": "tlfPrivat_tlfTidspunkt",
+          "fieldData": "tlfPrivat.tlfTidspunkt",
           "label": "Tlf pr. tidspunkt",
           "flex": 20
         },
         {
-          "fieldData": "tlfPrivat_tlfSystem",
+          "fieldData": "tlfPrivat.tlfTidspunktReg",
+          "label": "Tlf pr. tidsp. Reg",
+          "flex": 20
+        },
+        {
+          "fieldData": "tlfPrivat.tlfSystem",
           "label": "Tlf pr. System",
           "flex": 25
         },
         {
-          "fieldData": "tlfPrivat_tlfSaksbehandler",
+          "fieldData": "tlfPrivat.tlfSaksbehandler",
           "label": "Tlf pr. Saksbehandler",
           "flex": 25
         }
       ],
       [
         {
-          "fieldData": "tlfJobb_tlfNummer",
+          "fieldData": "tlfJobb.tlfNummer",
           "label": "Tlf Jobb",
           "flex": 20
         },
         {
-          "fieldData": "tlfJobb_tlfTidspunkt",
+          "fieldData": "tlfJobb.tlfTidspunkt",
           "label": "Tlf jobb. tidspunkt",
           "flex": 20
         },
         {
-          "fieldData": "tlfJobb_tlfSystem",
+          "fieldData": "tlfJobb.tlfTidspunktReg",
+          "label": "Tlf jobb. tidsp. Reg.",
+          "flex": 20
+        },
+        {
+          "fieldData": "tlfJobb.tlfSystem",
           "label": "Tlf jobb. System",
           "flex": 25
         },
         {
-          "fieldData": "tlfJobb_tlfSaksbehandler",
+          "fieldData": "tlfJobb.tlfSaksbehandler",
           "label": "Tlf jobb. Saksbehandler",
           "flex": 25
         }
       ],
       [
         {
-          "fieldData": "tlfMobil_tlfNummer",
+          "fieldData": "tlfMobil.tlfNummer",
           "label": "Tlf mobil",
           "flex": 25
         },
         {
-          "fieldData": "tlfMobil_tlfTidspunkt",
+          "fieldData": "tlfMobil.tlfTidspunkt",
           "label": "Tlf mob. Tidspunkt ",
           "flex": 25
         },
         {
-          "fieldData": "tlfMobil_tlfSystem",
+          "fieldData": "tlfMobil.tlfTidspunktReg",
+          "label": "Tlf mob. Tidsp. Reg. ",
+          "flex": 25
+        },
+        {
+          "fieldData": "tlfMobil.tlfSystem",
           "label": "Tlf mobil System",
           "flex": 20
         },
         {
-          "fieldData": "tlfMobil_tlfSaksbehandler",
+          "fieldData": "tlfMobil.tlfSaksbehandler",
           "label": "Tlf mobil Saksbehandler",
           "flex": 20
         }
       ],
       [
         {
-          "fieldData": "epostAdresse",
+          "fieldData": "epost.epostAdresse",
           "label": "Epostadresse",
           "flex": 25
         },
         {
-          "fieldData": "epostTidspunkt",
+          "fieldData": "epost.epostTidspunkt",
           "label": "Eposttidspunkt ",
           "flex": 25
         },
         {
-          "fieldData": "epostSystem",
+          "fieldData": "epost.epostTidspunktReg",
+          "label": "Eposttidspunkt Reg.",
+          "flex": 25
+        },
+        {
+          "fieldData": "epost.epostSystem",
           "label": "Epostsystem",
           "flex": 20
         },
         {
-          "fieldData": "epostSaksbehandler",
+          "fieldData": "epost.epostSaksbehandler",
           "label": "Epostsaksbehandler",
           "flex": 20
         }
@@ -798,111 +801,131 @@
       }
     ,
       {
-        "fieldData": "giroNummer",
+        "fieldData": "giroInfo.giroNummer",
         "label": "Giro Nummer",
         "flex": 25
       },
       {
-        "fieldData": "giroTidspunktReg",
+        "fieldData": "giroInfo.giroTidspunktReg",
         "label": "giro Tidsp. Reg.",
         "flex": 15
       },
       {
-        "fieldData": "giroTidspunkt",
+        "fieldData": "giroInfo.giroTidspunkt",
         "label": "giro Tidspunkt",
         "flex": 15
       },
       {
-        "fieldData": "giroSystem",
+        "fieldData": "giroInfo.giroSystem",
         "label": "Giro system",
         "flex": 10
       },
       {
-        "fieldData": "giroSaksbehandler",
+        "fieldData": "giroInfo.giroSaksbehandler",
         "label": "Giro Saksbehandler",
         "flex": 25
       }
     ,
       {
-        "fieldData": "tlfPrivat_tlfNummer",
+        "fieldData": "tlfPrivat.tlfNummer",
         "label": "Tlf privat",
         "flex": 20
       },
       {
-        "fieldData": "tlfPrivat_tlfTidspunkt",
+        "fieldData": "tlfPrivat.tlfTidspunkt",
         "label": "Tlf pr. tidspunkt",
         "flex": 20
       },
       {
-        "fieldData": "tlfPrivat_tlfSystem",
+        "fieldData": "tlfPrivat.tlfTidspunktReg",
+        "label": "Tlf pr. tidsp. Reg",
+        "flex": 20
+      },
+      {
+        "fieldData": "tlfPrivat.tlfSystem",
         "label": "Tlf pr. System",
         "flex": 25
       },
       {
-        "fieldData": "tlfPrivat_tlfSaksbehandler",
+        "fieldData": "tlfPrivat.tlfSaksbehandler",
         "label": "Tlf pr. Saksbehandler",
         "flex": 25
       }
     ,
       {
-        "fieldData": "tlfJobb_tlfNummer",
+        "fieldData": "tlfJobb.tlfNummer",
         "label": "Tlf Jobb",
         "flex": 20
       },
       {
-        "fieldData": "tlfJobb_tlfTidspunkt",
+        "fieldData": "tlfJobb.tlfTidspunkt",
         "label": "Tlf jobb. tidspunkt",
         "flex": 20
       },
       {
-        "fieldData": "tlfJobb_tlfSystem",
+        "fieldData": "tlfJobb.tlfTidspunktReg",
+        "label": "Tlf jobb. tidsp. Reg.",
+        "flex": 20
+      },
+      {
+        "fieldData": "tlfJobb.tlfSystem",
         "label": "Tlf jobb. System",
         "flex": 25
       },
       {
-        "fieldData": "tlfJobb_tlfSaksbehandler",
+        "fieldData": "tlfJobb.tlfSaksbehandler",
         "label": "Tlf jobb. Saksbehandler",
         "flex": 25
       }
     ,
       {
-        "fieldData": "tlfMobil_tlfNummer",
+        "fieldData": "tlfMobil.tlfNummer",
         "label": "Tlf mobil",
         "flex": 25
       },
       {
-        "fieldData": "tlfMobil_tlfTidspunkt",
+        "fieldData": "tlfMobil.tlfTidspunkt",
         "label": "Tlf mob. Tidspunkt ",
         "flex": 25
       },
       {
-        "fieldData": "tlfMobil_tlfSystem",
+        "fieldData": "tlfMobil.tlfTidspunktReg",
+        "label": "Tlf mob. Tidsp. Reg. ",
+        "flex": 25
+      },
+      {
+        "fieldData": "tlfMobil.tlfSystem",
         "label": "Tlf mobil System",
         "flex": 20
       },
       {
-        "fieldData": "tlfMobil_tlfSaksbehandler",
+        "fieldData": "tlfMobil.tlfSaksbehandler",
         "label": "Tlf mobil Saksbehandler",
         "flex": 20
       }
     ,
       {
-        "fieldData": "epostAdresse",
+        "fieldData": "epost.epostAdresse",
         "label": "Epostadresse",
         "flex": 25
       },
       {
-        "fieldData": "epostTidspunkt",
+        "fieldData": "epost.epostTidspunkt",
         "label": "Eposttidspunkt ",
         "flex": 25
       },
       {
-        "fieldData": "epostSystem",
+        "fieldData": "epost.epostTidspunktReg",
+        "label": "Eposttidspunkt Reg.",
+        "flex": 25
+      },
+      {
+        "fieldData": "epost.epostSystem",
         "label": "Epostsystem",
         "flex": 20
       },
       {
-        "fieldData": "epostSaksbehandler",
+        "fieldData": "epost.epostSaksbehandler",
         "label": "Epostsaksbehandler",
         "flex": 20
       }

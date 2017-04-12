@@ -17,12 +17,12 @@ import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
-import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyLong;
@@ -41,7 +41,6 @@ import static org.mockito.Mockito.when;
 public class DefaultMessageQueueConsumerTest {
 
     private static final String REQUEST_QUEUE_NAME  = "requestQueueName";
-    private static final String RESPONSE_QUEUE_NAME = "responseQueueName";
 
     private static final String REQUEST_MESSAGE  = "This is a test request";
     private static final String RESPONSE_MESSAGE = "This is a test response";
@@ -64,9 +63,6 @@ public class DefaultMessageQueueConsumerTest {
     private MQQueue requestQueueMock;
 
     @Mock
-    private Queue responseQueueMock;
-
-    @Mock
     private MessageConsumer consumerMock;
 
     @Mock
@@ -76,8 +72,7 @@ public class DefaultMessageQueueConsumerTest {
     private TextMessage textMessageMock;
 
     @InjectMocks
-    private DefaultMessageQueueConsumer messageQueueService = new DefaultMessageQueueConsumer(REQUEST_QUEUE_NAME, RESPONSE_QUEUE_NAME, null);
-
+    private DefaultMessageQueueConsumer messageQueueService = new DefaultMessageQueueConsumer(REQUEST_QUEUE_NAME, null);
 
     @Before
     public void setUp() throws JMSException {
@@ -86,10 +81,8 @@ public class DefaultMessageQueueConsumerTest {
         when(connectionMock.createSession(anyBoolean(), anyInt())).thenReturn(sessionMock);
 
         when(sessionMock.createQueue(eq(REQUEST_QUEUE_NAME))).thenReturn(requestQueueMock);
-        when(sessionMock.createQueue(eq(RESPONSE_QUEUE_NAME))).thenReturn(responseQueueMock);
-
         when(sessionMock.createProducer(eq(requestQueueMock))).thenReturn(producerMock);
-        when(sessionMock.createConsumer(eq(responseQueueMock), anyString())).thenReturn(consumerMock);
+        when(sessionMock.createConsumer(any(), anyString())).thenReturn(consumerMock);
 
         when(sessionMock.createTextMessage(anyString())).thenReturn(textMessageMock);
         when(consumerMock.receive(anyLong())).thenReturn(textMessageMock);
@@ -109,7 +102,6 @@ public class DefaultMessageQueueConsumerTest {
         messageQueueService.sendMessage(REQUEST_MESSAGE);
 
         verify(sessionMock).createQueue(REQUEST_QUEUE_NAME);
-        verify(sessionMock).createQueue(RESPONSE_QUEUE_NAME);
     }
 
     @Test
@@ -134,7 +126,6 @@ public class DefaultMessageQueueConsumerTest {
         messageQueueService.sendMessage(REQUEST_MESSAGE);
 
         verify(sessionMock).createProducer(eq(requestQueueMock));
-        verify(sessionMock).createConsumer(eq(responseQueueMock), anyString());
     }
 
     @Test
@@ -166,13 +157,6 @@ public class DefaultMessageQueueConsumerTest {
         messageQueueService.sendMessage(REQUEST_MESSAGE);
 
         verify(producerMock).send(textMessageMock);
-    }
-
-    @Test
-    public void responseQueueNameIsDefined() throws JMSException {
-        messageQueueService.sendMessage(REQUEST_MESSAGE);
-
-        verify(textMessageMock).setJMSReplyTo(eq(responseQueueMock));
     }
 
     @Test

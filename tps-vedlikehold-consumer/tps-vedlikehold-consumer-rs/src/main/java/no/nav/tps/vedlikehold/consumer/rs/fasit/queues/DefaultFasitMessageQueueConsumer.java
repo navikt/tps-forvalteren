@@ -20,13 +20,11 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
     private String applicationName;
 
     private String requestQueueAlias;
-    private String responseQueueAlias;
     private String queueManagerAlias;
 
-    public DefaultFasitMessageQueueConsumer(String application, String requestQueueAlias, String responseQueueAlias, String queueManagerAlias) {
+    public DefaultFasitMessageQueueConsumer(String application, String requestQueueAlias, String queueManagerAlias) {
         this.applicationName = application;
         this.requestQueueAlias = requestQueueAlias;
-        this.responseQueueAlias = responseQueueAlias;
         this.queueManagerAlias = queueManagerAlias;
     }
 
@@ -38,11 +36,6 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
     @Override
     public Queue getRequestQueue(String environment) {
         return getQueue(requestQueueAlias, environment);
-    }
-
-    @Override
-    public Queue getResponseQueue(String environment) {
-        return getQueue(responseQueueAlias, environment);
     }
 
     @Override

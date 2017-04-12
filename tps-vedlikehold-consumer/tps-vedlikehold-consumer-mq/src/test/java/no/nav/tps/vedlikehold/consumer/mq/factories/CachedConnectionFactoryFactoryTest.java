@@ -34,13 +34,15 @@ public class CachedConnectionFactoryFactoryTest {
     private static final String QUEUE_MANAGER_NAME      = "queueManagerName";
     private static final String QUEUE_MANAGER_HOST_NAME = "queueManagerHostName";
     private static final String QUEUE_MANAGER_PORT      = "1234";
+    private static final String CHANNEL                 = "CHANNEL";
+
 
     @Mock
     private Cache<String, ConnectionFactory> cacheMock;
 
     private ConnectionFactoryFactoryStrategy strategy = new QueueManagerConnectionFactoryFactoryStrategy(
-            new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT),
-            "environment"
+            new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT, CHANNEL),
+            "environment", CHANNEL
     );
 
     @InjectMocks
@@ -65,7 +67,7 @@ public class CachedConnectionFactoryFactoryTest {
 
         connectionFactoryFactory.createConnectionFactory(strategy);
 
-        verify(cacheMock).put(anyString(), (ConnectionFactory) any());
+        verify(cacheMock).put(anyString(), any());
     }
 
     @Test
