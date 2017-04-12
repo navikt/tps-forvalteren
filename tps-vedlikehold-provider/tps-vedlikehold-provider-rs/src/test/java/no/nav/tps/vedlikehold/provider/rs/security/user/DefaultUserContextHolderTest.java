@@ -1,31 +1,7 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import no.nav.tps.vedlikehold.domain.service.user.User;
-
+import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,6 +16,19 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.Mockito.*;
+
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,7 +36,7 @@ public class DefaultUserContextHolderTest {
 
     private static final String USERNAME = "username";
     private static final String DISPLAY_NAME = "displayName";
-    private static final List<? extends GrantedAuthority> ROLES = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T, ROLE_READ_Q, ROLE_WRITE_Q);
+    private static final List<? extends GrantedAuthority> ROLES = Arrays.asList(UserRole.ROLE_ACCESS, UserRole.ROLE_EGEN_ANSATT_READ);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -58,23 +47,26 @@ public class DefaultUserContextHolderTest {
     @Mock
     private SecurityContext securityContextMock;
 
-    @InjectMocks
-    private DefaultUserContextHolder userContextHolder;
-
     @Mock
     private Authentication authenticationMock;
+
+    @InjectMocks
+    private DefaultUserContextHolder userContextHolder;
 
     @Before
     public void setUp() {
         SecurityContextHolder.setContext(securityContextMock);
 
         doReturn(authenticationMock).when(securityContextMock).getAuthentication();
+
         doReturn(userDetailsMock).when(authenticationMock).getPrincipal();
 
         when(authenticationMock.isAuthenticated()).thenReturn(true);
 
+        doReturn(ROLES).when(authenticationMock).getAuthorities();
+
         when(userDetailsMock.getUsername()).thenReturn(USERNAME);
-        doReturn(ROLES).when(userDetailsMock).getAuthorities();
+
         when(userDetailsMock.getDn()).thenReturn(DISPLAY_NAME);
     }
 
@@ -113,7 +105,8 @@ public class DefaultUserContextHolderTest {
 
     @Test
     public void getAuthenticationReturnsObjectFromSecurityContext() {
-        assertThat(userContextHolder.getAuthentication(), is(authenticationMock));
+        userContextHolder.isAuthenticated();
+        verify(authenticationMock).isAuthenticated();
     }
 
     @Test
@@ -143,46 +136,21 @@ public class DefaultUserContextHolderTest {
         assertThat(result.getName(), is(DISPLAY_NAME));
         assertThat(result.getUsername(), is(USERNAME));
         assertThat(result.getToken(), is(nullValue()));
-        assertThat(result.getRoles(), hasSize(4));
     }
 
     @Test
     public void getRolesReturnsRolesFromAuthentication() {
-        doReturn(ROLES).when(userDetailsMock).getAuthorities();
-        assertThat(userContextHolder.getRoles(), containsInAnyOrder((GrantedAuthority) ROLE_READ_T, ROLE_WRITE_T, ROLE_READ_Q, ROLE_WRITE_Q));
+        assertThat(userContextHolder.getRoles(), containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_EGEN_ANSATT_READ));
     }
 
     @Test
-    public void getRolesThrowsExceptionIfPrincipalIsOfWrongType() {
-        Principal principalMock = mock(Principal.class);
-
-        when(authenticationMock.getPrincipal()).thenReturn(principalMock);
-
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage(containsString(principalMock.getClass().toString()));
-
-        userContextHolder.getRoles();
+    public void getUserReturnUserContainingRolesInStringFormat(){
+        userContextHolder.getRoles()
+                .containsAll(
+                Arrays.asList(
+                        UserRole.ROLE_ACCESS.toString(),
+                        UserRole.ROLE_EGEN_ANSATT_READ)
+        );
     }
 
-    @Test
-    public void logoutLogsOutIfAuthenticated() {
-        HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        HttpServletResponse responseMock = mock(HttpServletResponse.class);
-
-        userContextHolder.logout(requestMock, responseMock);
-
-        verify(securityContextMock).setAuthentication(null);
-    }
-
-    @Test
-    public void logoutDoesNothingIfNotAuthenticated() {
-        HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        HttpServletResponse responseMock = mock(HttpServletResponse.class);
-
-        when(authenticationMock.isAuthenticated()).thenReturn(false);
-
-        userContextHolder.logout(requestMock, responseMock);
-
-        verify(securityContextMock, never()).setAuthentication(null);
-    }
 }

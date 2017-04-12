@@ -3,9 +3,10 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattAuthorisation;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
+import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,22 +17,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashSet;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-
-/**
- * Created by F148888 on 14.11.2016.
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultEgenAnsattSecurityStrategyTest {
 
-    private static final String ROLE_READ_EGENANSATT = "0000-GA-GOSYS_UTVIDET";
     private static final String FNR_ANY = "any";
-    private HashSet<String> userRoles = new HashSet<>();
+    private HashSet<UserRole> userRoles = new HashSet<>();
 
     @Mock
     private DiskresjonskodeConsumer diskresjonskodeConsumer;
@@ -40,13 +34,13 @@ public class DefaultEgenAnsattSecurityStrategyTest {
     private MessageProvider messageProvider;
 
     @Mock
-    private DiskresjonskodeAuthorisation diskresjonskodeAuthorisation;
+    private DiskresjonskodeServiceRutineAuthorisation diskresjonskodeAuthorisation;
 
     @Mock
-    private EgenAnsattAuthorisation egenAnsattAuthorisation;
+    private EgenAnsattServiceRutineAuthorisation egenAnsattAuthorisation;
 
     @Mock
-    private ReadAuthorisation readAuthorisation;
+    private ReadServiceRutineAuthorisation readAuthorisation;
 
     @Mock
     private EgenAnsattConsumer egenAnsattConsumer;
@@ -67,31 +61,36 @@ public class DefaultEgenAnsattSecurityStrategyTest {
     }
 
     @Test
-    public void authorise() throws Exception {
-        userRoles.add(ROLE_READ_EGENANSATT);
+    public void isAuthoriseReturnsTrueWhenUserHasRequiredRole() throws Exception {
+        userRoles.add(UserRole.ROLE_EGEN_ANSATT_READ);
         when(egenAnsattConsumer.isEgenAnsatt(anyString())).thenReturn(true);
+
         boolean isAuthorised = defaultEgenAnsattSecurityStrategy.isAuthorised(userRoles, FNR_ANY);
         assertThat(isAuthorised, is(true));
     }
 
     @Test
-    public void isauthorisedReturnsFalseWhenFnrIsEgenansattAndUserDontHaveRole() throws Exception {
+    public void isAuthorisedReturnsFalseWhenFnrIsEgenansattAndUserDontHaveRole() throws Exception {
         when(egenAnsattConsumer.isEgenAnsatt(anyString())).thenReturn(true);
+
         boolean isAuthorised = defaultEgenAnsattSecurityStrategy.isAuthorised(userRoles, FNR_ANY);
         assertThat(isAuthorised, is(false));
     }
 
     @Test
-    public void isAuthoriseReturnsTrueWhenFnrIsNotEgenansattAndUserDontHaveRole() throws Exception {
+    public void isAuthorisedReturnsTrueWhenFnrIsNotEgenansattAndUserDontHaveRole() throws Exception {
         when(egenAnsattConsumer.isEgenAnsatt(anyString())).thenReturn(false);
+
         boolean isAuthorised = defaultEgenAnsattSecurityStrategy.isAuthorised(userRoles, FNR_ANY);
         assertThat(isAuthorised, is(true));
     }
 
     @Test
     public void isAuthoriseReturnsTrueWhenFnrIsNotEgenansattAndUserHaveRole() throws Exception {
-        userRoles.add(ROLE_READ_EGENANSATT);
+        userRoles.add(UserRole.ROLE_EGEN_ANSATT_READ);
+
         when(egenAnsattConsumer.isEgenAnsatt(anyString())).thenReturn(false);
+
         boolean isAuthorised = defaultEgenAnsattSecurityStrategy.isAuthorised(userRoles, FNR_ANY);
         assertThat(isAuthorised, is(true));
     }

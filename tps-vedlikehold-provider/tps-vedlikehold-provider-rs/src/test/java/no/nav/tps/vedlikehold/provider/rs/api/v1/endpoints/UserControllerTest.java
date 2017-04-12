@@ -1,27 +1,23 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_Q;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_READ_T;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_Q;
-import static no.nav.tps.vedlikehold.provider.rs.security.user.UserRole.ROLE_WRITE_T;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import no.nav.tps.vedlikehold.domain.service.user.User;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.user.UserRole;
+import org.springframework.security.core.context.SecurityContext;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,7 +34,7 @@ public class UserControllerTest {
     private static final String DISTINGUISHED_NAME  = "distinguishedName";
     private static final String USERNAME            = "username";
     private static final String SESSION_ID          = "sessionID";
-    private static final List<UserRole> ROLES       = Arrays.asList(ROLE_READ_T, ROLE_WRITE_T,ROLE_READ_Q, ROLE_WRITE_Q);
+    private static final Set<UserRole> ROLES       = new HashSet<>(Arrays.asList(UserRole.ROLE_ACCESS));
 
     @Mock
     private HttpSession httpSessionMock;
@@ -45,13 +42,20 @@ public class UserControllerTest {
     @Mock
     private UserContextHolder userContextHolderMock;
 
+    @Mock
+    private SecurityContext securityContextMock;
+
     @InjectMocks
     private UserController controller;
 
     @Before
     public void setUp() {
+        SecurityContextHolder.setContext(securityContextMock);
+
         doReturn(ROLES).when(userContextHolderMock).getRoles();
+
         when( userContextHolderMock.getUsername() ).thenReturn(USERNAME);
+
         when( userContextHolderMock.getDisplayName() ).thenReturn(DISTINGUISHED_NAME);
 
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
@@ -69,13 +73,27 @@ public class UserControllerTest {
     }
 
     @Test
-    public void logoutCallsLogoutOnUserContextHolder() {
+    public void logoutLogsOutIfAuthenticated() {
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         HttpServletResponse responseMock = mock(HttpServletResponse.class);
 
+        when(userContextHolderMock.isAuthenticated()).thenReturn(true);
         controller.logout(requestMock, responseMock);
 
-        verify(userContextHolderMock).logout(requestMock, responseMock);
+        // Metoden er kalt i SecurityContextLogoutHandler ved logout.
+        verify(securityContextMock).setAuthentication(null);
+    }
+
+    @Test
+    public void logoutDoesNothingIfNotAuthenticated() {
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpServletResponse responseMock = mock(HttpServletResponse.class);
+
+        when(userContextHolderMock.isAuthenticated()).thenReturn(false);
+
+        controller.logout(requestMock, responseMock);
+
+        verify(securityContextMock, never()).setAuthentication(null);
     }
 
 }

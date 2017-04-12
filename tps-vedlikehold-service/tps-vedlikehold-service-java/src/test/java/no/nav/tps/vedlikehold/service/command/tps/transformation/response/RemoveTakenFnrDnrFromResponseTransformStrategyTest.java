@@ -14,9 +14,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-/**
- * Created by Peter Fløgstad on 18.01.2017.
- */
 
 @RunWith(MockitoJUnitRunner.class)
 public class RemoveTakenFnrDnrFromResponseTransformStrategyTest {
@@ -72,7 +69,7 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategyTest {
 
     private TpsRequestContext createContext() {
         TpsRequestContext context = new TpsRequestContext();
-        context.setUser(new User("name", "username", null));
+        context.setUser(new User("name", "username"));
         return context;
     }
 }

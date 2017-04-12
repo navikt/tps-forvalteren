@@ -6,7 +6,7 @@ import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;

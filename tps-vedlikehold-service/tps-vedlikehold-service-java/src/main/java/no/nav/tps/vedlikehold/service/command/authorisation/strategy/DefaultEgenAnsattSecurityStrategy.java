@@ -2,22 +2,18 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.AuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-/**
- * Created by f148888 on 08.11.2016.
- */
 
 @Component
 public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStrategy {
-
-    private static final String ROLE_READ_EGENANSATT = "0000-GA-GOSYS_UTVIDET";
 
     @Autowired
     private EgenAnsattConsumer egenAnsattConsumer;
@@ -26,17 +22,17 @@ public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStra
     private MessageProvider messageProvider;
 
     @Override
-    public boolean isSupported(AuthorisationStrategy a1) {
-        return a1 instanceof EgenAnsattAuthorisation;
+    public boolean isSupported(ServiceRutineAuthorisationStrategy a1) {
+        return a1 instanceof EgenAnsattServiceRutineAuthorisation;
     }
 
     @Override
-    public void handleUnauthorised(Set<String> roles, String fodselsnummer) {
+    public void handleUnauthorised() {
         throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
     }
 
     @Override
-    public boolean isAuthorised(Set<String> roles, String fnr) {
-        return !egenAnsattConsumer.isEgenAnsatt(fnr) || roles.contains(ROLE_READ_EGENANSATT);
+    public boolean isAuthorised(Set<UserRole> roles, String fnr) {
+        return !egenAnsattConsumer.isEgenAnsatt(fnr) || roles.contains(UserRole.ROLE_EGEN_ANSATT_READ);
     }
 }

@@ -2,7 +2,6 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
-import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
@@ -10,7 +9,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.command.tps.TpsRequestService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.FindServiceRoutineByName;
 import org.junit.Before;

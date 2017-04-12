@@ -1,21 +1,18 @@
 package no.nav.tps.vedlikehold.provider.rs.security.user;
 
-import static java.util.stream.Collectors.toSet;
-
-import java.util.Collection;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import no.nav.tps.vedlikehold.domain.service.user.User;
-
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of the UserContextHolder interface using spring security
@@ -35,11 +32,6 @@ public class DefaultUserContextHolder implements UserContextHolder {
     }
 
     @Override
-    public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    @Override
     public boolean isAuthenticated() {
         Authentication authentication = getAuthentication();
         return authentication != null && authentication.isAuthenticated();
@@ -47,23 +39,16 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public User getUser() {
-        Set<String> roles = getRoles().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(toSet());
-
-        return new User(getDisplayName(), getUsername(), roles);
+        return new User(getDisplayName(), getUsername());
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getRoles() {
-        return getUserDetails().getAuthorities();
+    public Set<UserRole> getRoles() {
+        return new HashSet<>((Collection<UserRole>)getAuthentication().getAuthorities());
     }
 
-    @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        if ( isAuthenticated() ) {
-            new SecurityContextLogoutHandler().logout(request, response, getAuthentication());
-        }
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     private LdapUserDetails getUserDetails() {

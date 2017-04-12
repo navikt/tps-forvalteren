@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.AuthorisationStrategy;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.tps.TpsParameter;
 import no.nav.tps.vedlikehold.domain.service.tps.config.TpsRequestConfig;
@@ -24,7 +24,7 @@ public class TpsServiceRoutineDefinitionBuilder {
     private List<Transformer> transformers = new ArrayList<>();
     private TpsRequestConfig requestConfig;
     private Set<String> requiredRoles = new HashSet<>();
-    private List<AuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
+    private List<ServiceRutineAuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
     public TransformerBuilder transformer(){
         return new TransformerBuilder();
@@ -66,7 +66,7 @@ public class TpsServiceRoutineDefinitionBuilder {
         routine.setTransformers(transformers);
         routine.setConfig(requestConfig);
         routine.setRequiredRoles(requiredRoles);
-        routine.setSecurityServiceStrategies(securitySearchAuthorisationStrategies);
+        routine.setRequiredSecurityServiceStrategies(securitySearchAuthorisationStrategies);
         return routine;
     }
 
@@ -76,14 +76,14 @@ public class TpsServiceRoutineDefinitionBuilder {
 
     public class TpsServiceRoutineSecurityBuilder {
         private Set<String> access = new HashSet<>();
-        private List<AuthorisationStrategy> serviceStrategies = new ArrayList<>();
+        private List<ServiceRutineAuthorisationStrategy> serviceStrategies = new ArrayList<>();
 
         public TpsServiceRoutineSecurityBuilder addRequiredRole(String role) {
             this.access.add(role);
             return this;
         }
 
-        public TpsServiceRoutineSecurityBuilder addRequiredSearchAuthorisationStrategy(AuthorisationStrategy serviceStrategy){
+        public TpsServiceRoutineSecurityBuilder addRequiredSearchAuthorisationStrategy(ServiceRutineAuthorisationStrategy serviceStrategy){
             this.serviceStrategies.add(serviceStrategy);
             return this;
         }

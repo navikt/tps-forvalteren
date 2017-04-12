@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.reso
 import no.nav.tps.vedlikehold.domain.service.tps.TpsParameterType;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.hent.TpsHentTKNrEndringerServiceRoutineRequest;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
@@ -49,7 +49,7 @@ public class S100SjekkOmFnrDnrBnrErDefinertITps implements ServiceRoutineResolve
                 .and()
 
                 .securityBuilder()
-                .addRequiredSearchAuthorisationStrategy(ReadAuthorisation.readAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
 
                 .build();

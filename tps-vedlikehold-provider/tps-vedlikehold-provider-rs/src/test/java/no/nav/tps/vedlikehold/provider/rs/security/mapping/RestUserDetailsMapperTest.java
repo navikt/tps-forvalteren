@@ -1,6 +1,6 @@
 package no.nav.tps.vedlikehold.provider.rs.security.mapping;
 
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserRole;
+import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class RestUserDetailsMapperTest {
 
     private static final String DISPLAY_NAME_ATTRIBUTE = "displayname";
 
-    private static final GrantedAuthority ROLE = UserRole.ROLE_READ_Q;
+    private static final GrantedAuthority ROLE = UserRole.ROLE_ACCESS;
     private static final Set<GrantedAuthority> ROLES = newHashSet(ROLE);
     private static final String USERNAME = "username";
     private static final String DISPLAY_NAME = "Display name";

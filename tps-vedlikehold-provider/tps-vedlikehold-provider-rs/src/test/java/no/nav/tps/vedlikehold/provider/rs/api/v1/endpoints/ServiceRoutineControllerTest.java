@@ -1,21 +1,22 @@
 package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.vedlikehold.domain.service.user.User;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.command.authorisation.TpsAuthorisationService;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.util.collections.Sets;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,27 +24,43 @@ import static org.mockito.Mockito.when;
 public class ServiceRoutineControllerTest {
 
     @Mock
-    private GetTpsServiceRutinerService serviceMock;
+    private TpsAuthorisationService tpsAuthorisationServiceMock;
 
     @Mock
-    private UserContextHolder userContextHolderMock;
-
+    private GetTpsServiceRutinerService getTpsServiceRutinerServiceMock;
 
     @InjectMocks
-    private ServiceRoutineController controller;
+    private ServiceRoutineController serviceRoutineController;
 
     @Test
     public void returnsResultFromService() {
-        TpsServiceRoutineDefinition routine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
 
-        List<TpsServiceRoutineDefinition> routines = Collections.singletonList(routine);
-        when(serviceMock.execute()).thenReturn(routines);
+        List<TpsServiceRoutineDefinition> serviceRoutines = Collections.singletonList(serviceRoutine);
+        when(getTpsServiceRutinerServiceMock.execute()).thenReturn(serviceRoutines);
 
-        User user = new User("name", "username", Sets.newSet("rolle"));
-        when(userContextHolderMock.getUser()).thenReturn(user);
+        when(tpsAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutine)).thenReturn(true);
 
-        List<TpsServiceRoutineDefinition> result = controller.getTpsServiceRutiner();
+        List<TpsServiceRoutineDefinition> result = serviceRoutineController.getTpsServiceRutiner();
 
-        assertThat(result, hasItem(routine));
+        assertThat(result, hasItem(serviceRoutine));
+    }
+
+
+    @Test
+    public void getTpsServiceRutinerReturnererBareLovligeServiceRutiner() throws Exception {
+        TpsServiceRoutineDefinition serviceRoutineMock1 = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinition serviceRoutineMock2 = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinition serviceRoutineMock3 = mock(TpsServiceRoutineDefinition.class);
+        when(getTpsServiceRutinerServiceMock.execute()).thenReturn(Arrays.asList(serviceRoutineMock1, serviceRoutineMock2, serviceRoutineMock3));
+
+        when(tpsAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock1)).thenReturn(false);
+        when(tpsAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock2)).thenReturn(true);
+        when(tpsAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock3)).thenReturn(true);
+
+        List<TpsServiceRoutineDefinition> rutiner = serviceRoutineController.getTpsServiceRutiner();
+
+        assertTrue(rutiner.size() == 2);
+        assertThat(rutiner, containsInAnyOrder(serviceRoutineMock2, serviceRoutineMock3));
     }
 }

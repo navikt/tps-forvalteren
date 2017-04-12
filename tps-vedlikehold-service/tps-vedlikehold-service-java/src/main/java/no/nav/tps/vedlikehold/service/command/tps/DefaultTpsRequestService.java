@@ -34,7 +34,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
     @Override
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
 
-        tpsAuthorisationService.authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
+        tpsAuthorisationService.authoriseRestCall(serviceRoutine);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 

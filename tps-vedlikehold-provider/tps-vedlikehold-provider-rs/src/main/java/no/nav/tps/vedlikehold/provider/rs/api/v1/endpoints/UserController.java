@@ -2,8 +2,10 @@ package no.nav.tps.vedlikehold.provider.rs.api.v1.endpoints;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.vedlikehold.domain.service.user.User;
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,7 @@ public class UserController {
     private static final String REST_SERVICE_NAME = "user";
 
     @Autowired
-    public UserContextHolder userContextHolder;
+    private UserContextHolder userContextHolder;
 
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getUser")})
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -37,6 +39,12 @@ public class UserController {
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "logout")})
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public void logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
-        userContextHolder.logout(request, response);
+        logoutUser(request, response);
+    }
+
+    private void logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        if (userContextHolder.isAuthenticated() ) {
+            new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        }
     }
 }

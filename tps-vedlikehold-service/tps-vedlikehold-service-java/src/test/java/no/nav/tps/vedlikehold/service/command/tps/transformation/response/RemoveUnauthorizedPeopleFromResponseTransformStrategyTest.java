@@ -67,8 +67,8 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
                 + "</data>"
         );
 
-        when(tpsAuthorisationServiceMock.isAuthorisedToSeePerson(any(), eq(fnr1), any())).thenReturn(false);
-        when(tpsAuthorisationServiceMock.isAuthorisedToSeePerson(any(), eq(fnr2), any())).thenReturn(true);
+        when(tpsAuthorisationServiceMock.isAuthorisedToSeePerson(any(), eq(fnr1))).thenReturn(false);
+        when(tpsAuthorisationServiceMock.isAuthorisedToSeePerson(any(), eq(fnr2))).thenReturn(true);
 
         strategy.execute(response, transform);
 
@@ -85,7 +85,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
 
     private TpsRequestContext createContext() {
         TpsRequestContext context = new TpsRequestContext();
-        context.setUser(new User("name", "username", null));
+        context.setUser(new User("name", "username"));
         return context;
     }
 

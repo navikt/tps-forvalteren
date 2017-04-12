@@ -13,8 +13,16 @@ import java.util.regex.Pattern;
 @Component
 public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements ResponseTransformStrategy {
 
+    private static final String fodselsnummerPattern = "<fnr>(\\d{11})</fnr>";
+    private static final String personPattern = "<enPersonRes>.+?</enPersonRes>";
+
     @Autowired
     private TpsAuthorisationService tpsAuthorisationService;
+
+    @Override
+    public boolean isSupported(Object o) {
+        return o instanceof RemoveUnauthorizedPeopleFromResponseTransform;
+    }
 
     @Override
     public void execute(Response response, Transformer transformer) {
@@ -22,28 +30,25 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     }
 
     private void removeUnauthorizedPeopleFromResponse(Response response, RemoveUnauthorizedPeopleFromResponseTransform transformer) {
-        String personPattern = "<enPersonRes>.+?</enPersonRes>";
-        String fnrPattern = "<fnr>(\\d{11})</fnr>";
-
-        int noofFnrRemoved = 0;
+        int numberOfFnrRemoved = 0;
 
         Matcher personMatcher = Pattern.compile(personPattern, Pattern.DOTALL).matcher(response.getRawXml());
 
         while (personMatcher.find()) {
             String personXml = personMatcher.group();
 
-            Matcher fnrMatcher = Pattern.compile(fnrPattern, Pattern.DOTALL).matcher(personXml);
+            Matcher fnrMatcher = Pattern.compile(fodselsnummerPattern, Pattern.DOTALL).matcher(personXml);
             if (fnrMatcher.find()) {
                 String fnr = fnrMatcher.group(1);
-                if (!tpsAuthorisationService.isAuthorisedToSeePerson(response.getServiceRoutine(), fnr, response.getContext().getUser())) {
+                if (!tpsAuthorisationService.isAuthorisedToSeePerson(response.getServiceRoutine(), fnr)) {
                     response.setRawXml(response.getRawXml().replace(personXml, ""));
-                    ++noofFnrRemoved;
+                    ++numberOfFnrRemoved;
                 }
             }
         }
-        if (noofFnrRemoved > 0) {
-            subtractNumberInXmlElement(transformer.getTotalHitsXmlElement(), noofFnrRemoved, response);
-            subtractNumberInXmlElement(transformer.getHitsInBufferXmlElement(), noofFnrRemoved, response);
+        if (numberOfFnrRemoved > 0) {
+            subtractNumberInXmlElement(transformer.getTotalHitsXmlElement(), numberOfFnrRemoved, response);
+            subtractNumberInXmlElement(transformer.getHitsInBufferXmlElement(), numberOfFnrRemoved, response);
         }
     }
 
@@ -58,10 +63,5 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
 
             response.setRawXml(matcher.replaceFirst(replacementNumber));
         }
-    }
-
-    @Override
-    public boolean isSupported(Object o) {
-        return o instanceof RemoveUnauthorizedPeopleFromResponseTransform;
     }
 }

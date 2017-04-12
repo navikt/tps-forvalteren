@@ -1,7 +1,6 @@
 package no.nav.tps.vedlikehold.service.command.tps;
 
 import com.fasterxml.jackson.xml.XmlMapper;
-import com.google.common.collect.Sets;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.domain.service.user.User;
@@ -34,18 +33,12 @@ public class DefaultTpsRequestServiceTest {
 
     private static final String ENVIRONMENT         = "environment";
 
-
     private static final String REQUEST_XML = "<request></request>";
     private static final String RESPONSE_XML        = "<responses><response>response</response></responses>";
 
 
     private static final String NAME = "name";
     private static final String USERNAME = "username";
-
-    private static final String ROLE_1 = "role1";
-    private static final String ROLE_2 = "role2";
-
-
 
     @Mock
     private MessageQueueServiceFactory messageQueueServiceFactoryMock;
@@ -80,7 +73,7 @@ public class DefaultTpsRequestServiceTest {
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
 
-        verify(tpsAuthorisationServiceMock).authoriseRestCall(serviceRoutine, context.getEnvironment(), context.getUser());
+        verify(tpsAuthorisationServiceMock).authoriseRestCall(serviceRoutine);
     }
 
 
@@ -124,7 +117,7 @@ public class DefaultTpsRequestServiceTest {
 
     private TpsRequestContext createDefaultContext() {
 
-        User user = new User(NAME, USERNAME, Sets.newHashSet(ROLE_1, ROLE_2));
+        User user = new User(NAME, USERNAME);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(user);

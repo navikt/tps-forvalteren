@@ -23,7 +23,7 @@ public class EnvironmentController {
     private static final String REST_SERVICE_NAME = "environments";
 
     @Autowired
-    public GetEnvironments getEnvironmentsCommand;
+    private GetEnvironments getEnvironmentsCommand;
 
     /**
      * Get a set of available environments from Vera

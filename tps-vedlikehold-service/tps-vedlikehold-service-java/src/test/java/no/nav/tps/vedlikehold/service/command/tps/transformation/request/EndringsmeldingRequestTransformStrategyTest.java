@@ -52,7 +52,7 @@ public class EndringsmeldingRequestTransformStrategyTest {
         when(xmlMapperMock.writeValueAsString(any(TpsSystemInfo.class))).thenReturn(SYS_INFO);
 
         TpsRequestContext context = new TpsRequestContext();
-        context.setUser(new User("name", "username", null));
+        context.setUser(new User("name", "username"));
 
         TpsServiceRoutineEndringRequest serviceRoutine = new TpsServiceRoutineEndringRequest();
         serviceRoutine.setKilde("kilde");

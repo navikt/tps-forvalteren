@@ -1,13 +1,11 @@
 package no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thoughtworks.xstream.XStream;
 import no.nav.tps.vedlikehold.domain.service.tps.Response;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.core.MultivaluedHashMap;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;

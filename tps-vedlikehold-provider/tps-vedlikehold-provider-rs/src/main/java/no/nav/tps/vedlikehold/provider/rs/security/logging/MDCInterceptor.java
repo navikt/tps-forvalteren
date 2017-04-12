@@ -3,7 +3,7 @@ package no.nav.tps.vedlikehold.provider.rs.security.logging;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import no.nav.tps.vedlikehold.provider.rs.security.user.UserContextHolder;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;

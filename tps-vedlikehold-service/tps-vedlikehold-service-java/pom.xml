@@ -46,16 +46,17 @@
             <artifactId>jackson-xml-databind</artifactId>
         </dependency>
 
-        <!-- Org.json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-        </dependency>
-
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>org.apache.directory.studio</groupId>
             <artifactId>org.apache.commons.io</artifactId>
+        </dependency>
+
+        <!-- Spring Security. So UserRole can be placed in the service layer. -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

@@ -2,23 +2,21 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 
 import no.nav.tps.vedlikehold.common.java.message.MessageProvider;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.AuthorisationStrategy;
-import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
+import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-/**
- * Created by f148888 on 08.11.2016.
- */
 
 @Component
 public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSecurityStrategy {
 
-    private static final String ROLE_READ_DISKRESJONSKODE_6 = "0000-GA-GOSYS_KODE6";
-    private static final String ROLE_READ_DISKRESJONSKODE_7 = "0000-GA-GOSYS_KODE7";
+    private static final String KODE_SEKS = "6";
+    private static final String KODE_SYV = "7";
 
     @Autowired
     private DiskresjonskodeConsumer diskresjonskodeConsumer;
@@ -27,24 +25,24 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
     private MessageProvider messageProvider;
 
     @Override
-    public boolean isSupported(AuthorisationStrategy a1) {
-        return a1 instanceof DiskresjonskodeAuthorisation;
+    public boolean isSupported(ServiceRutineAuthorisationStrategy a1) {
+        return a1 instanceof DiskresjonskodeServiceRutineAuthorisation;
     }
 
     @Override
-    public void handleUnauthorised(Set<String> userRoles, String fodselsnummer) {
+    public void handleUnauthorised() {
         throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
     }
 
     @Override
-    public boolean isAuthorised(Set<String> roles, String fnr) {
-        String diskresjonskode = diskresjonskodeConsumer.getDiskresjonskodeResponse(fnr).getDiskresjonskode();
+    public boolean isAuthorised(Set<UserRole> roles, String fnr) {
+        String diskresjonskodeRequired = diskresjonskodeConsumer.getDiskresjonskodeResponse(fnr).getDiskresjonskode();
 
-        if ("6".equals(diskresjonskode) && !roles.contains(ROLE_READ_DISKRESJONSKODE_6)) {
+        if (diskresjonskodeRequired.equals(KODE_SEKS) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)) {
             return false;
         }
 
-        if("7".equals(diskresjonskode) && !roles.contains(ROLE_READ_DISKRESJONSKODE_7)){
+        if(diskresjonskodeRequired.equals(KODE_SYV) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_7_READ)){
             return false;
         }
 
