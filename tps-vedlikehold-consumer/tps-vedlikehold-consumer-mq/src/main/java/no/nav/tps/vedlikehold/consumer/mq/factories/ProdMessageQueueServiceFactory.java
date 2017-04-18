@@ -31,7 +31,7 @@ public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactor
 
         QueueManager queueManager = new QueueManager(QUEUE_MANAGER_ALIAS, HOSTNAME, PORT, "U1_TPS_VEDLIKEHOLD");
 
-        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, "U", CHANNEL_NAME);
+        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, CHANNEL_NAME);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 

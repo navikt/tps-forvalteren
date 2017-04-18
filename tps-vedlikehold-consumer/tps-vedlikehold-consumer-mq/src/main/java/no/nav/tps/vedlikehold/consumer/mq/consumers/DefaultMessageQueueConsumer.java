@@ -74,7 +74,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         MessageConsumer consumer = session.createConsumer(responseDestination, attributes);
 
         TextMessage responseMessage = (TextMessage) consumer.receive(timeout);
-        LOGGER.info("Received message: {}", responseMessage.getText());
+        LOGGER.info("Received message: {}", responseMessage);
 
         /* Close the queues, the session, and the connection */
         connection.close();

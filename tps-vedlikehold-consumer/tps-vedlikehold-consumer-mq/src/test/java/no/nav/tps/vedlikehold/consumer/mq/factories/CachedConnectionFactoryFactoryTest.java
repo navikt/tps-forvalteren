@@ -42,7 +42,7 @@ public class CachedConnectionFactoryFactoryTest {
 
     private ConnectionFactoryFactoryStrategy strategy = new QueueManagerConnectionFactoryFactoryStrategy(
             new QueueManager(QUEUE_MANAGER_NAME, QUEUE_MANAGER_HOST_NAME, QUEUE_MANAGER_PORT, CHANNEL),
-            "environment", CHANNEL
+            CHANNEL
     );
 
     @InjectMocks

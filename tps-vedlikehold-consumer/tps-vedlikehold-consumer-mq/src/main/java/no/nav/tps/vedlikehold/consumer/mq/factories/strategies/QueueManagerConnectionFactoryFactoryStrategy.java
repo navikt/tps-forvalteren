@@ -9,12 +9,10 @@ import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 public class QueueManagerConnectionFactoryFactoryStrategy implements ConnectionFactoryFactoryStrategy {
 
     private QueueManager queueManager;
-    private String environment;
     private String channelName;
 
-    public QueueManagerConnectionFactoryFactoryStrategy(QueueManager queueManager, String environment, String channelName) {
+    public QueueManagerConnectionFactoryFactoryStrategy(QueueManager queueManager , String channelName) {
         this.queueManager = queueManager;
-        this.environment = environment;
         this.channelName = channelName;
     }
 
