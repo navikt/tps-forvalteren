@@ -46,7 +46,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
     @Test
     public void retrievesInformationFromFasit() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        serviceFactory.createMessageQueueConsumer(ENVIRONMENT, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         verify(fasitMessageQueueConsumerMock).getQueueManager(eq(ENVIRONMENT));
         verify(fasitMessageQueueConsumerMock).getRequestQueue(eq(ENVIRONMENT));
@@ -54,7 +54,7 @@ public class DefaultMessageQueueConsumerFactoryTest {
 
     @Test
     public void retrievesAConnectionFactoryFromTheConnectionFactoryFactory() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        serviceFactory.createMessageQueueConsumer(ENVIRONMENT, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         verify(connectionFactoryFactoryMock).createConnectionFactory(isA(ConnectionFactoryFactoryStrategy.class));
     }

@@ -27,7 +27,7 @@ public class ProdMessageQueueServiceFactoryTest {
 
     @Test
     public void retrievesAConnectionFactoryFromTheConnectionFactoryFactory() throws JMSException {
-        serviceFactory.createMessageQueueService(ENVIRONMENT, SERVICE_RUTINE);
+        serviceFactory.createMessageQueueConsumer(ENVIRONMENT, SERVICE_RUTINE);
         verify(connectionFactoryFactoryMock).createConnectionFactory(isA(ConnectionFactoryFactoryStrategy.class));
     }
 

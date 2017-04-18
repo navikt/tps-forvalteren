@@ -55,9 +55,11 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         LOGGER.debug("Creating queue: {}", requestQueueName);
         Destination requestDestination = session.createQueue(requestQueueName);
 
-        Destination responseDestination = session.createTemporaryQueue();
+        Destination responseDestination = createTemporaryQueueFor(session);
 
-        ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
+        if (requestDestination instanceof MQQueue) {
+            ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
+        }
 
         /* Prepare request message */
         TextMessage requestMessage = session.createTextMessage(requestMessageContent);
@@ -81,6 +83,10 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 
         return responseMessage != null ? responseMessage.getText() : "";
 
+    }
+
+    public Destination createTemporaryQueueFor(Session session) throws JMSException {
+        return session.createTemporaryQueue();
     }
 
     @Override

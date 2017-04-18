@@ -60,7 +60,7 @@ public class DefaultTpsRequestServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        when(messageQueueServiceFactoryMock.createMessageQueueService(eq(ENVIRONMENT), eq(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS))).thenReturn(messageQueueConsumerMock);
+        when(messageQueueServiceFactoryMock.createMessageQueueConsumer(eq(ENVIRONMENT), eq(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS))).thenReturn(messageQueueConsumerMock);
     }
 
 

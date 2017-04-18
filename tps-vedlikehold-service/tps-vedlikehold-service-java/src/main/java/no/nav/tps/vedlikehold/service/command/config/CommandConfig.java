@@ -29,7 +29,7 @@ public class CommandConfig {
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        return messageQueueServiceFactory.createMessageQueueService(DEFAULT_ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        return messageQueueServiceFactory.createMessageQueueConsumer(DEFAULT_ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
     @Bean
@@ -80,7 +80,7 @@ public class CommandConfig {
 
     @Bean
     @Order(5)
-    ServiceRoutineResolver hentOppholdsArbeidsTillatlse(){
+    ServiceRoutineResolver hentOppholdsArbeidsTillatelse(){
         return new S101HentOppholdArbeidTillatelseOgUtenlandskId();
     }
 

@@ -15,6 +15,7 @@
     <modules>
         <module>tps-vedlikehold-provider-rs</module>
         <module>tps-vedlikehold-provider-web</module>
+        <module>tps-vedlikehold-provider-integration-test</module>
     </modules>
 
     <dependencies>

@@ -36,7 +36,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
 
         tpsAuthorisationService.authoriseRestCall(serviceRoutine);
 
-        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueService(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
+        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
         String xml = xmlMapper.writeValueAsString(tpsRequest);
 
