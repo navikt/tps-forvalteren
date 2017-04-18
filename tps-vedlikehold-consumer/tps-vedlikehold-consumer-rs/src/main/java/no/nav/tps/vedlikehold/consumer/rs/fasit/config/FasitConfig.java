@@ -1,6 +1,8 @@
 package no.nav.tps.vedlikehold.consumer.rs.fasit.config;
 
+import no.nav.freg.common.autoconfigure.selftest.spi.SelftestCheck;
 import no.nav.tps.vedlikehold.consumer.rs.fasit.FasitClient;
+import no.nav.tps.vedlikehold.consumer.rs.fasit.FasitSelftest;
 import no.nav.tps.vedlikehold.consumer.rs.fasit.queues.DefaultFasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.rs.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants;

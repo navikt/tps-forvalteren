@@ -8,7 +8,7 @@ angular.module('tps-vedlikehold.factory')
         var urlRoutinesBase = 'api/v1/serviceroutine';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
         var urlBaseEnv = 'api/v1/environments';
-        var urlConfig = '/assets/config/';
+        var urlConfig = 'assets/config/';
 
         var serviceRutines = {};
         var endringsmeldinger = {};

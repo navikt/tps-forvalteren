@@ -3,31 +3,31 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
 
-    <name>tps-vedlikehold</name>
+<name>tps-vedlikehold</name>
 
-    <selftest>
-        <path>tps-vedlikehold/internal/selftest?status</path>
-        <humanReadablePath>tps-vedlikehold/internal/selftest</humanReadablePath>
-    </selftest>
+<selftest>
+    <path>/tps-vedlikehold/internal/selftest</path>
+    <humanReadablePath>/tps-vedlikehold/internal/selftest</humanReadablePath>
+</selftest>
 
-    <!--Consumed resources-->
-    <resources>
-        <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="validering.virksomhet.diskresjonskodev1"/>
-        <webservice alias="virksomhet:PipErEgenAnsatt_v1" mapToProperty="validering.virksomhet.egenansattv1"/>
-        <ldap alias="ldap" mapToProperty="ldap"/>
+<!--Consumed resources-->
+<resources>
+    <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="validering.virksomhet.diskresjonskodev1"/>
+    <webservice alias="virksomhet:PipErEgenAnsatt_v1" mapToProperty="validering.virksomhet.egenansattv1"/>
+    <ldap alias="ldap" mapToProperty="ldap"/>
 
-        <datasource alias="tps-vedlikeholdDB" jndi="java:/jboss/datasources/tps-vedlikeholdDB" ></datasource>
+    <datasource alias="tps-vedlikeholdDB" jndi="java:/jboss/datasources/tps-vedlikeholdDB" ></datasource>
 
-        <applicationProperties alias="tps-vedlikeholdProperties"/>
-    </resources>
+    <applicationProperties alias="tps-vedlikeholdProperties"/>
+</resources>
 
-    <security serviceUserResourceAlias="srvtps-vedlikehold">
-        <logins>
-            <saml/>
-        </logins>
-    </security>
+<security serviceUserResourceAlias="srvtps-vedlikehold">
+    <logins>
+        <saml/>
+    </logins>
+</security>
 
-    <artifacts>
-        <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>
-    </artifacts>
+<artifacts>
+    <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>
+</artifacts>
 </application>

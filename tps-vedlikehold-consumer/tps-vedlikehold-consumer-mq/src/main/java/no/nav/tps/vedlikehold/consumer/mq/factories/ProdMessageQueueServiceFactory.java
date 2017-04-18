@@ -29,7 +29,7 @@ public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactor
     @Override
     public MessageQueueConsumer createMessageQueueService(String environment, String requestQueueAlias) throws JMSException {
 
-        QueueManager queueManager = new QueueManager(QUEUE_MANAGER_ALIAS, HOSTNAME, PORT, "U1_TPS_VEDLIKEHOLD");
+        QueueManager queueManager = new QueueManager(QUEUE_MANAGER_ALIAS, HOSTNAME, PORT, CHANNEL_NAME);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, CHANNEL_NAME);
 

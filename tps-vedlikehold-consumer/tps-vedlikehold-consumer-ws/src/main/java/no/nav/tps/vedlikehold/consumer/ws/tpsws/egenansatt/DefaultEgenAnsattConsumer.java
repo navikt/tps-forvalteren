@@ -21,7 +21,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
     static final String EMPTY_FNR_TPSWS_ERROR        = "FNR MÅ FYLLES UT";
 
-    private static final String PING_FNR = "13037999916";
+    private static final String PING_FNR = "10108000398";
 
     @Autowired
     private PipEgenAnsattPortType pipEgenAnsattPortType;

@@ -28,6 +28,12 @@
             <artifactId>tps-vedlikehold-provider-rs</artifactId>
         </dependency>
 
+        <!--SELFTEST-->
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>freg-spring-boot-starter-selftest</artifactId>
+        </dependency>
+
         <!--SPRING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

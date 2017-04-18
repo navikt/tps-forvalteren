@@ -1,25 +1,28 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
-    <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>
-        <div class="tps-vk-top md-whiteframe-z2">
+  <!-- Velkomstsmelding -->
+  <div ng-show="!loadServiceRutineTemplate() && !loadEndringsmeldingTemplate()" layout="column" flex>
+      <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
+  </div>
 
+    <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>
+
+        <!-- Container of upper "card".  Bor kanskje gjore om til Card-view istedenfor whiteframe-->
+        <div class="tps-vk-top md-whiteframe-z2">
+          <h2 class="md-title">{{serviceRutineName}}</h2>
             <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
-                <!-- upper row -->
-                <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields"
-                                     ng-if="$index < 5"></tps-input-field>
-                </div>
+                <!-- Input fields rows -->
+                <fieldset>
+                <legend>Select og inputfelt for {{serviceRutineName}}</legend>
+                <div ng-repeat="field in fields" ng-init="parentIndex = $index" >
+                    <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%4)==0"  >
 
-                <!-- mid-upper row-->
-                <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >4"
-                                     ng-if="$index > 4 && $index < 10"></tps-input-field>
+                        <!-- Array har storrelse 4 bare grunnet ville ha 4 fields i bredden -->
+                        <tps-input-field data-ng-repeat="i in [0,1,2,3]" ng-if="fields[parentIndex+i]"
+                                         form-data="formData" select-values="selectValues" input-param-name="fields[parentIndex+i]"></tps-input-field>
+                    </div>
                 </div>
-                <!-- mid lower row -->
-                <div layout-gt-xs="row" layout="column" layout-wrap>
-                    <tps-input-field field-data="fieldData" ng-repeat="fieldData in fields" ng-show="$index >9"
-                                     ng-if="$index > 9"></tps-input-field>
-                </div>
+              </fieldset>
 
                 <!-- lowest row-->
                 <div class="tps-vk-submit-container" layout-gt-xs="row" layout="column" layout-align>
@@ -98,8 +101,5 @@
         </md-content>
     </div>
 
-    <!-- Velkomstsmelding -->
-    <div ng-show="!loadServiceRutineTemplate() && !loadEndringsmeldingTemplate()" layout="column" flex>
-        <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
-    </div>
+
 </div>

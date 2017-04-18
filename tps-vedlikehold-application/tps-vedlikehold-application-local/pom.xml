@@ -38,6 +38,12 @@
             <artifactId>modig-testcertificates</artifactId>
         </dependency>
 
+        <!--JBOSS-->
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-vfs</artifactId>
+        </dependency>
+
         <!-- Oracle -->
         <dependency>
             <groupId>com.oracle</groupId>
