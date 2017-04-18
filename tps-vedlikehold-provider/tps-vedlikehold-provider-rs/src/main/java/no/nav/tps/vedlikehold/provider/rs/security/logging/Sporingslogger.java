@@ -11,7 +11,7 @@ public class Sporingslogger {
     private static final Logger LOGGER = LoggerFactory.getLogger(NAME);
 
     public static void loggSporing(String serviceRutine,  Map<String, Object> requestParameters) {
-        LOGGER.info("ServiceRutine: {}, Request: {}", serviceRutine, requestParameters);
+        LOGGER.info("ServiceRutine: {}, Request: {}", serviceRutine, requestParameters.toString());
     }
 
 }
