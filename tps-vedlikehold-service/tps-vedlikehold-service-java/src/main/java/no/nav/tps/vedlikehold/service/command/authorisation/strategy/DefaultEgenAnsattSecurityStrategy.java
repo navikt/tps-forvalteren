@@ -5,11 +5,10 @@ import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 
 @Component
@@ -20,6 +19,9 @@ public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStra
 
     @Autowired
     private MessageProvider messageProvider;
+
+    @Autowired
+    private UserContextHolder userContextHolder;
 
     @Override
     public boolean isSupported(ServiceRutineAuthorisationStrategy a1) {
@@ -32,7 +34,7 @@ public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStra
     }
 
     @Override
-    public boolean isAuthorised(Set<UserRole> roles, String fnr) {
-        return !egenAnsattConsumer.isEgenAnsatt(fnr) || roles.contains(UserRole.ROLE_EGEN_ANSATT_READ);
+    public boolean isAuthorised(String fnr) {
+        return !egenAnsattConsumer.isEgenAnsatt(fnr) || userContextHolder.getRoles().contains(UserRole.ROLE_EGEN_ANSATT_READ);
     }
 }

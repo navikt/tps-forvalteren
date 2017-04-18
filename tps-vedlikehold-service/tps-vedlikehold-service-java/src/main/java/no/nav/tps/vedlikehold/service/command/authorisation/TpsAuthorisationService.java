@@ -6,7 +6,10 @@ public interface TpsAuthorisationService {
 
     void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine);
 
+    void authorisePersonSearch(TpsServiceRoutineDefinition serviceRoutine, String fnr);
+
     boolean isAuthorisedToUseServiceRutine(TpsServiceRoutineDefinition serviceRoutine);
 
-    boolean isAuthorisedToSeePerson(TpsServiceRoutineDefinition serviceRoutine, String fnr);
+    boolean isAuthorisedToFetchPersonInfo(TpsServiceRoutineDefinition serviceRoutine, String fnr);
+
 }

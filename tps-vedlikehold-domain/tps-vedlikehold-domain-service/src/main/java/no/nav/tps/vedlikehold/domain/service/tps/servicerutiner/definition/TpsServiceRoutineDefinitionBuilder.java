@@ -23,7 +23,6 @@ public class TpsServiceRoutineDefinitionBuilder {
     private List<TpsParameter> parameters = new ArrayList<>();
     private List<Transformer> transformers = new ArrayList<>();
     private TpsRequestConfig requestConfig;
-    private Set<String> requiredRoles = new HashSet<>();
     private List<ServiceRutineAuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
     public TransformerBuilder transformer(){
@@ -65,7 +64,6 @@ public class TpsServiceRoutineDefinitionBuilder {
         routine.setParameters(parameters);
         routine.setTransformers(transformers);
         routine.setConfig(requestConfig);
-        routine.setRequiredRoles(requiredRoles);
         routine.setRequiredSecurityServiceStrategies(securitySearchAuthorisationStrategies);
         return routine;
     }
@@ -75,13 +73,7 @@ public class TpsServiceRoutineDefinitionBuilder {
     }
 
     public class TpsServiceRoutineSecurityBuilder {
-        private Set<String> access = new HashSet<>();
         private List<ServiceRutineAuthorisationStrategy> serviceStrategies = new ArrayList<>();
-
-        public TpsServiceRoutineSecurityBuilder addRequiredRole(String role) {
-            this.access.add(role);
-            return this;
-        }
 
         public TpsServiceRoutineSecurityBuilder addRequiredSearchAuthorisationStrategy(ServiceRutineAuthorisationStrategy serviceStrategy){
             this.serviceStrategies.add(serviceStrategy);
@@ -89,7 +81,6 @@ public class TpsServiceRoutineDefinitionBuilder {
         }
 
         public TpsServiceRoutineDefinitionBuilder addSecurity() {
-            requiredRoles = this.access;
             securitySearchAuthorisationStrategies = this.serviceStrategies;
             return TpsServiceRoutineDefinitionBuilder.this;
         }

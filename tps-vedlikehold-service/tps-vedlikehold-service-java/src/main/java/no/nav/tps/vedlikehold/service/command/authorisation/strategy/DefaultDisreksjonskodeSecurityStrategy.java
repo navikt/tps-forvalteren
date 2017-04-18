@@ -5,11 +5,10 @@ import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeC
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 
 @Component
@@ -24,6 +23,9 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
     @Autowired
     private MessageProvider messageProvider;
 
+    @Autowired
+    private UserContextHolder userContextHolder;
+
     @Override
     public boolean isSupported(ServiceRutineAuthorisationStrategy a1) {
         return a1 instanceof DiskresjonskodeServiceRutineAuthorisation;
@@ -35,14 +37,14 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
     }
 
     @Override
-    public boolean isAuthorised(Set<UserRole> roles, String fnr) {
+    public boolean isAuthorised(String fnr) {
         String diskresjonskodeRequired = diskresjonskodeConsumer.getDiskresjonskodeResponse(fnr).getDiskresjonskode();
 
-        if (KODE_SEKS.equals(diskresjonskodeRequired) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)) {
+        if (KODE_SEKS.equals(diskresjonskodeRequired) && !userContextHolder.getRoles().contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)) {
             return false;
         }
 
-        if(KODE_SYV.equals(diskresjonskodeRequired) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_7_READ)){
+        if(KODE_SYV.equals(diskresjonskodeRequired) && !userContextHolder.getRoles().contains(UserRole.ROLE_DISKRESJONESKODE_7_READ)){
             return false;
         }
 

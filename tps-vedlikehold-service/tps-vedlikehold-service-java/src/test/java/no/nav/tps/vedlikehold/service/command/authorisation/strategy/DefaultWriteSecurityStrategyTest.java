@@ -6,7 +6,9 @@ import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAn
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.user.UserRole;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -21,12 +23,16 @@ import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultWriteSecurityStrategyTest {
 
 
     private HashSet<UserRole> userRoles = new HashSet<>();
+
+    @Mock
+    private UserContextHolder userContextHolderMock;
 
     @Mock
     private DiskresjonskodeServiceRutineAuthorisation diskresjonskodeAuthorisation;
@@ -49,6 +55,10 @@ public class DefaultWriteSecurityStrategyTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
+    @Before
+    public void before() {
+        when(userContextHolderMock.getRoles()).thenReturn(userRoles);
+    }
 
     @Test
     public void isSupported() {
@@ -60,14 +70,14 @@ public class DefaultWriteSecurityStrategyTest {
 
     @Test
     public void authoriseThrowsUnauthorsiedWriteRolesIsMissing() {
-        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised(userRoles);
+        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised();
         assertThat(isAuthorised, is(false));
     }
 
     @Test
     public void authoriseAcceptedWhenHaveCorrectRole() {
         userRoles.add(UserRole.ROLE_ACCESS);
-        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised(userRoles);
+        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised();
         assertThat(isAuthorised, is(true));
     }
 
@@ -76,7 +86,7 @@ public class DefaultWriteSecurityStrategyTest {
         addAllRolesToUser();
         userRoles.remove(UserRole.ROLE_ACCESS);
 
-        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised(userRoles);
+        boolean isAuthorised = defaultWriteSecurityStrategy.isAuthorised();
         assertThat(isAuthorised, is(false));
     }
 

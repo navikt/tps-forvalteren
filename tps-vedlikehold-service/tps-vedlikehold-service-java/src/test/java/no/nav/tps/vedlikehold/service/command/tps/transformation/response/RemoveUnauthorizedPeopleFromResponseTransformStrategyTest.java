@@ -67,8 +67,8 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
                 + "</data>"
         );
 
-        when(tpsAuthorisationServiceMock.isAuthorisedToSeePerson(any(), eq(fnr1))).thenReturn(false);
-        when(tpsAuthorisationServiceMock.isAuthorisedToSeePerson(any(), eq(fnr2))).thenReturn(true);
+        when(tpsAuthorisationServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr1))).thenReturn(false);
+        when(tpsAuthorisationServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr2))).thenReturn(true);
 
         strategy.execute(response, transform);
 

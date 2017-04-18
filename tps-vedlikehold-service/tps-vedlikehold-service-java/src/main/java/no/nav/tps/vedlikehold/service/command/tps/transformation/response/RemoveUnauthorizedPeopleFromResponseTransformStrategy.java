@@ -40,7 +40,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
             Matcher fnrMatcher = Pattern.compile(FODSELSNUMMER_PATTERN, Pattern.DOTALL).matcher(personXml);
             if (fnrMatcher.find()) {
                 String fnr = fnrMatcher.group(1);
-                if (!tpsAuthorisationService.isAuthorisedToSeePerson(response.getServiceRoutine(), fnr)) {
+                if (!tpsAuthorisationService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
                     response.setRawXml(response.getRawXml().replace(personXml, ""));
                     ++numberOfFnrRemoved;
                 }

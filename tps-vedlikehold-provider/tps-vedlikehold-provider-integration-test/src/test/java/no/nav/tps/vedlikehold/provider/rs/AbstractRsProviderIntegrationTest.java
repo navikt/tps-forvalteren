@@ -6,6 +6,7 @@ import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.provider.rs.api.v1.config.RsProviderIntegrationTestConfig;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -37,6 +38,9 @@ public abstract class AbstractRsProviderIntegrationTest {
     @Autowired
     protected DiskresjonskodePortType diskresjonskodePortTypeMock;
 
+    @Autowired
+    protected EgenAnsattConsumer egenAnsattConsumerMock;
+
     protected MockMvc mvc;
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
@@ -62,5 +66,7 @@ public abstract class AbstractRsProviderIntegrationTest {
 
         HentDiskresjonskodeBolkResponse bolkResponse = new HentDiskresjonskodeBolkResponse();
         when(diskresjonskodeConsumerMock.getDiskresjonskodeBolk(anyListOf(String.class))).thenReturn(bolkResponse);
+
+        when(egenAnsattConsumerMock.isEgenAnsatt(any(String.class))).thenReturn(false);
     }
 }

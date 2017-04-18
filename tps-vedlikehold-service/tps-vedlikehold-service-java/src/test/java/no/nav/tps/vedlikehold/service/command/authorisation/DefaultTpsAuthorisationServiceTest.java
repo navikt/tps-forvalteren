@@ -21,7 +21,12 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,7 +47,7 @@ public class DefaultTpsAuthorisationServiceTest {
     private List<RestSecurityStrategy> restSecurityStrategies = new ArrayList<>();
 
     @InjectMocks
-    private DefaultTpsAuthorisationService command;
+    private DefaultTpsAuthorisationService authorisationService;
 
     @Test
     public void isAuthorisedToSeePersonReturnsTrueIfUserIsAuthorisedForAllSearchStrategies() {
@@ -65,10 +70,10 @@ public class DefaultTpsAuthorisationServiceTest {
         when(s2.isSupported(a1)).thenReturn(false);
         when(s2.isSupported(a2)).thenReturn(true);
 
-        when(s1.isAuthorised(any(), any())).thenReturn(true);
-        when(s2.isAuthorised(any(), any())).thenReturn(true);
+        when(s1.isAuthorised(any())).thenReturn(true);
+        when(s2.isAuthorised(any())).thenReturn(true);
 
-        boolean isAuthorised = command.isAuthorisedToSeePerson(serviceRoutine, FNR);
+        boolean isAuthorised = authorisationService.isAuthorisedToFetchPersonInfo(serviceRoutine, FNR);
 
         assertThat(isAuthorised, is(true));
     }
@@ -94,17 +99,16 @@ public class DefaultTpsAuthorisationServiceTest {
         when(s2.isSupported(a1)).thenReturn(false);
         when(s2.isSupported(a2)).thenReturn(true);
 
-        when(s1.isAuthorised(any(), any())).thenReturn(true);
-        when(s2.isAuthorised(any(), any())).thenReturn(false);
+        when(s1.isAuthorised(any())).thenReturn(true);
+        when(s2.isAuthorised(any())).thenReturn(false);
 
-        boolean isAuthorised = command.isAuthorisedToSeePerson(serviceRoutine, FNR);
+        boolean isAuthorised = authorisationService.isAuthorisedToFetchPersonInfo(serviceRoutine, FNR);
 
         assertThat(isAuthorised, is(false));
     }
 
-
     @Test
-    public void authoriseRestCallsHandleUnauthorizedForStrategiesThatAreSupportedAndNotAuthorised() {
+    public void authoriseRestCallWillCallHandleUnauthorizedForStrategiesThatAreSupportedButNotAuthorised() {
 
         ServiceRutineAuthorisationStrategy a1 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy a2 = mock(ServiceRutineAuthorisationStrategy.class);
@@ -134,11 +138,11 @@ public class DefaultTpsAuthorisationServiceTest {
         when(s3.isSupported(a2)).thenReturn(false);
         when(s3.isSupported(a3)).thenReturn(false);
 
-        when(s1.isAuthorised(any())).thenReturn(true);
-        when(s2.isAuthorised(any())).thenReturn(false);
-        when(s3.isAuthorised(any())).thenReturn(false);
+        when(s1.isAuthorised()).thenReturn(true);
+        when(s2.isAuthorised()).thenReturn(false);
+        when(s3.isAuthorised()).thenReturn(false);
 
-        command.authoriseRestCall(serviceRoutine);
+        authorisationService.authoriseRestCall(serviceRoutine);
 
         verify(s1, times(0)).handleUnauthorised();
         verify(s2, times(1)).handleUnauthorised();
@@ -172,16 +176,96 @@ public class DefaultTpsAuthorisationServiceTest {
         when(restStrat3.isSupported(rutineAuthStrat1)).thenReturn(true);
         when(restStrat3.isSupported(rutineAuthStrat2)).thenReturn(true);
 
-        when(restStrat1.isAuthorised(any())).thenReturn(true);
-        when(restStrat2.isAuthorised(any())).thenReturn(true);
-        when(restStrat3.isAuthorised(any())).thenReturn(true);
+        when(restStrat1.isAuthorised()).thenReturn(true);
+        when(restStrat2.isAuthorised()).thenReturn(true);
+        when(restStrat3.isAuthorised()).thenReturn(true);
 
-        command.authoriseRestCall(serviceRoutine);
+        authorisationService.authoriseRestCall(serviceRoutine);
 
         verify(restStrat1, never()).handleUnauthorised();
         verify(restStrat2, never()).handleUnauthorised();
         verify(restStrat3, never()).handleUnauthorised();
+    }
 
+
+    @Test
+    public void authorisePersonSearchWillCallHandleUnauthorizedForStrategiesThatAreSupportedButNotAuthorised() {
+
+        ServiceRutineAuthorisationStrategy a1 = mock(ServiceRutineAuthorisationStrategy.class);
+        ServiceRutineAuthorisationStrategy a2 = mock(ServiceRutineAuthorisationStrategy.class);
+        ServiceRutineAuthorisationStrategy a3 = mock(ServiceRutineAuthorisationStrategy.class);
+
+        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+
+        when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2, a3));
+
+        SearchSecurityStrategy s1 = mock(SearchSecurityStrategy.class);
+        SearchSecurityStrategy s2 = mock(SearchSecurityStrategy.class);
+        SearchSecurityStrategy s3 = mock(SearchSecurityStrategy.class);
+
+        searchPersonSecurityStrategies.add(s1);
+        searchPersonSecurityStrategies.add(s2);
+        searchPersonSecurityStrategies.add(s3);
+
+        when(s1.isSupported(a1)).thenReturn(true);
+        when(s1.isSupported(a2)).thenReturn(false);
+        when(s1.isSupported(a3)).thenReturn(false);
+
+        when(s2.isSupported(a1)).thenReturn(false);
+        when(s2.isSupported(a2)).thenReturn(true);
+        when(s2.isSupported(a3)).thenReturn(false);
+
+        when(s3.isSupported(a1)).thenReturn(false);
+        when(s3.isSupported(a2)).thenReturn(false);
+        when(s3.isSupported(a3)).thenReturn(false);
+
+        when(s1.isAuthorised(anyString())).thenReturn(true);
+        when(s2.isAuthorised(anyString())).thenReturn(false);
+        when(s3.isAuthorised(anyString())).thenReturn(false);
+
+        authorisationService.authorisePersonSearch(serviceRoutine, FNR);
+
+        verify(s1, times(0)).handleUnauthorised();
+        verify(s2, times(1)).handleUnauthorised();
+        verify(s3, times(0)).handleUnauthorised();
+    }
+
+    @Test
+    public void authorisePersonSearchWillNotTriggerHandleUnauthorisedInAnyStrategyIfUserIsAuthorisedToUserServiceRutine(){
+        ServiceRutineAuthorisationStrategy rutineAuthStrat1 = mock(ServiceRutineAuthorisationStrategy.class);
+        ServiceRutineAuthorisationStrategy rutineAuthStrat2 = mock(ServiceRutineAuthorisationStrategy.class);
+        ServiceRutineAuthorisationStrategy rutineAuthStrat3 = mock(ServiceRutineAuthorisationStrategy.class);
+
+        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+
+        when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(rutineAuthStrat1, rutineAuthStrat2, rutineAuthStrat3));
+
+        SearchSecurityStrategy s1 = mock(SearchSecurityStrategy.class);
+        SearchSecurityStrategy s2 = mock(SearchSecurityStrategy.class);
+        SearchSecurityStrategy s3 = mock(SearchSecurityStrategy.class);
+
+        searchPersonSecurityStrategies.add(s1);
+        searchPersonSecurityStrategies.add(s2);
+        searchPersonSecurityStrategies.add(s3);
+
+        when(s1.isSupported(rutineAuthStrat1)).thenReturn(true);
+        when(s1.isSupported(rutineAuthStrat2)).thenReturn(true);
+
+        when(s2.isSupported(rutineAuthStrat1)).thenReturn(true);
+        when(s2.isSupported(rutineAuthStrat2)).thenReturn(true);
+
+        when(s3.isSupported(rutineAuthStrat1)).thenReturn(true);
+        when(s3.isSupported(rutineAuthStrat2)).thenReturn(true);
+
+        when(s1.isAuthorised(anyString())).thenReturn(true);
+        when(s2.isAuthorised(anyString())).thenReturn(true);
+        when(s3.isAuthorised(anyString())).thenReturn(true);
+
+        authorisationService.authorisePersonSearch(serviceRoutine, FNR);
+
+        verify(s1, never()).handleUnauthorised();
+        verify(s2, never()).handleUnauthorised();
+        verify(s3, never()).handleUnauthorised();
     }
 
     @Test
@@ -198,9 +282,9 @@ public class DefaultTpsAuthorisationServiceTest {
 
         when(s1.isSupported(a1)).thenReturn(true);
 
-        when(s1.isAuthorised(any())).thenReturn(false);
+        when(s1.isAuthorised()).thenReturn(false);
 
-        Boolean res = command.isAuthorisedToUseServiceRutine(serviceRoutine);
+        Boolean res = authorisationService.isAuthorisedToUseServiceRutine(serviceRoutine);
 
         assertThat(res, is(false));
     }
@@ -219,9 +303,9 @@ public class DefaultTpsAuthorisationServiceTest {
 
         when(s1.isSupported(a1)).thenReturn(true);
 
-        when(s1.isAuthorised(any())).thenReturn(true);
+        when(s1.isAuthorised()).thenReturn(true);
 
-        Boolean res = command.isAuthorisedToUseServiceRutine(serviceRoutine);
+        Boolean res = authorisationService.isAuthorisedToUseServiceRutine(serviceRoutine);
 
         assertThat(res, is(true));
     }

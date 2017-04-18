@@ -47,7 +47,6 @@ public class S004HentPersonopplysningerServiceRoutineResolver implements Service
                 .and()
 
                 .securityBuilder()
-                    .addRequiredRole("0000-GA-NORG_Skriv")
                     .addRequiredSearchAuthorisationStrategy(DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation())
                     .addRequiredSearchAuthorisationStrategy(EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation())
                     .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())

@@ -3,6 +3,7 @@ package no.nav.tps.vedlikehold.service.command.authorisation.strategy;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
+import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import no.nav.tps.vedlikehold.service.user.UserRole;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,6 +20,7 @@ import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultReadSecurityStrategyTest {
@@ -37,12 +39,16 @@ public class DefaultReadSecurityStrategyTest {
     @Mock
     private ReadServiceRutineAuthorisation readAuthorisation;
 
+    @Mock
+    private UserContextHolder userContextHolderMock;
+
     @InjectMocks
     private DefaultReadSecurityStrategy defaultReadSecurityStrategy;
 
     @Before
     public void setup(){
         userRoles.clear();
+        when(userContextHolderMock.getRoles()).thenReturn(userRoles);
     }
 
     @Test
@@ -54,14 +60,14 @@ public class DefaultReadSecurityStrategyTest {
 
     @Test
     public void authoriseThrowsUnauthorisedIfMissingRole(){
-        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised();
         assertThat(isAuthorised, is(false));
     }
 
     @Test
     public void authoriseDoesNotThrowExceptionWhenHaveRequiredRoles(){
         userRoles.add(UserRole.ROLE_ACCESS);
-        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised();
         assertThat(isAuthorised, is(true));
 
     }
@@ -71,7 +77,7 @@ public class DefaultReadSecurityStrategyTest {
         addAllRolesToUser();
         userRoles.remove(UserRole.ROLE_ACCESS);
 
-        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised(userRoles);
+        boolean isAuthorised = defaultReadSecurityStrategy.isAuthorised();
         assertThat(isAuthorised, is(false));
 
     }

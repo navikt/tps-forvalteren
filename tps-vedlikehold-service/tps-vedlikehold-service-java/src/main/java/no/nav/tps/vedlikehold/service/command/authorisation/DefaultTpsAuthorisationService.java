@@ -5,7 +5,6 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.vedlikehold.service.command.authorisation.strategy.RestSecurityStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SearchSecurityStrategy;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategy.SecurityStrategy;
-import no.nav.tps.vedlikehold.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,22 +20,20 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     @Autowired
     private List<RestSecurityStrategy> restSecurityStrategies;
 
-    @Autowired
-    private UserContextHolder userContextHolder;
-
     @Override
     public void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine) {
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
-            getUnauthorizedStrategies(authStrategy, restSecurityStrategies)
+            getUnauthorizedRestStrategies(authStrategy, restSecurityStrategies)
                     .forEach(SecurityStrategy::handleUnauthorised);
         }
     }
 
     @Override
-    public boolean isAuthorisedToSeePerson(TpsServiceRoutineDefinition serviceRoutine, String fnr) {
-        return !serviceRoutine.getRequiredSecurityServiceStrategies()
-                .stream()
-                .anyMatch(s -> !isAuthorised(s,  fnr, searchPersonSecurityStrategies));
+    public void authorisePersonSearch(TpsServiceRoutineDefinition serviceRoutine, String fnr){
+        for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
+            getUnauthorizedPersonStrategies(authStrategy, searchPersonSecurityStrategies, fnr)
+                    .forEach(SecurityStrategy::handleUnauthorised);
+        }
     }
 
     @Override
@@ -46,28 +43,41 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
                 .anyMatch(strategy -> !isAuthorised(strategy, restSecurityStrategies));
     }
 
+    @Override
+    public boolean isAuthorisedToFetchPersonInfo(TpsServiceRoutineDefinition serviceRoutine, String fnr) {
+        return !serviceRoutine.getRequiredSecurityServiceStrategies()
+                .stream()
+                .anyMatch(strategy -> !isAuthorised(strategy, searchPersonSecurityStrategies, fnr));
+    }
 
-    private List<SecurityStrategy> getUnauthorizedStrategies(ServiceRutineAuthorisationStrategy srRequiredAuthorisation, List<RestSecurityStrategy> securityStrategies) {
+    private List<SecurityStrategy> getUnauthorizedRestStrategies(ServiceRutineAuthorisationStrategy serviceRutineRequiredAuthorisation, List<RestSecurityStrategy> securityStrategies) {
         return securityStrategies
                 .stream()
-                .filter(strategy -> strategy.isSupported(srRequiredAuthorisation))
-                .filter(strategy -> !strategy.isAuthorised(userContextHolder.getRoles()))
+                .filter(strategy -> strategy.isSupported(serviceRutineRequiredAuthorisation))
+                .filter(strategy -> !strategy.isAuthorised())
                 .collect(Collectors.toList());
     }
 
+    private List<SecurityStrategy> getUnauthorizedPersonStrategies(ServiceRutineAuthorisationStrategy serviceRutineRequiredAuthorisation, List<SearchSecurityStrategy> securityStrategies, String fnr) {
+        return securityStrategies
+                .stream()
+                .filter(strategy -> strategy.isSupported(serviceRutineRequiredAuthorisation))
+                .filter(strategy -> !strategy.isAuthorised(fnr))
+                .collect(Collectors.toList());
+    }
 
     private boolean isAuthorised(ServiceRutineAuthorisationStrategy authorisation, List<RestSecurityStrategy> securityStrategies) {
         return !securityStrategies
                 .stream()
                 .filter(s -> s.isSupported(authorisation))
-                .anyMatch(s -> !s.isAuthorised(userContextHolder.getRoles()));
+                .anyMatch(s -> !s.isAuthorised());
     }
 
-    private boolean isAuthorised(ServiceRutineAuthorisationStrategy authorisation,  String fnr, List<SearchSecurityStrategy> securityStrategies) {
+    private boolean isAuthorised(ServiceRutineAuthorisationStrategy authorisation, List<SearchSecurityStrategy> securityStrategies,  String fnr) {
         return !securityStrategies
                 .stream()
                 .filter(s -> s.isSupported(authorisation))
-                .anyMatch(s -> !s.isAuthorised(userContextHolder.getRoles(), fnr));
+                .anyMatch(s -> !s.isAuthorised(fnr));
     }
 
 

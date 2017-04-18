@@ -35,5 +35,4 @@ public class TpsServiceRoutineDefinition {
     @JsonIgnore
     private List<ServiceRutineAuthorisationStrategy> requiredSecurityServiceStrategies;
 
-    private Set<String> requiredRoles;
 }

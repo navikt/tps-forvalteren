@@ -5,6 +5,7 @@ import no.nav.tps.vedlikehold.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.vedlikehold.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
+import no.nav.tps.vedlikehold.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.vedlikehold.provider.config.IntegrationTestConfig;
 import no.nav.tps.vedlikehold.provider.rs.config.RestProviderConfig;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -57,6 +58,11 @@ public class RsProviderIntegrationTestConfig {
         return new TestUserDetails();
     }
 
+    @Bean
+    @Primary
+    public EgenAnsattConsumer egenAnsattConsumer() {
+        return mock(EgenAnsattConsumer.class);
+    }
 
     @Bean
     @Primary
