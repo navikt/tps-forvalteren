@@ -1,6 +1,5 @@
 package no.nav.tps.vedlikehold.service.command.authorisation;
 
-import no.nav.tps.vedlikehold.domain.service.user.User;
 import no.nav.tps.vedlikehold.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.vedlikehold.service.command.authorisation.strategy.RestSecurityStrategy;
@@ -29,7 +28,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     public void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine) {
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedStrategies(authStrategy, restSecurityStrategies)
-                    .forEach(strategy -> strategy.handleUnauthorised());
+                    .forEach(SecurityStrategy::handleUnauthorised);
         }
     }
 

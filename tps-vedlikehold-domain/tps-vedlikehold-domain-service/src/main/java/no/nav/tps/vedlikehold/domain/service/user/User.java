@@ -1,7 +1,5 @@
 package no.nav.tps.vedlikehold.domain.service.user;
 
-import java.util.Set;
-
 /**
  * Class representing a user
  */

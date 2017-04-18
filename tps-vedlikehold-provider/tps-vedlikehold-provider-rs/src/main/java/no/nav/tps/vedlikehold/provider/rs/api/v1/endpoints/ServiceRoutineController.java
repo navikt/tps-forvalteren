@@ -35,7 +35,7 @@ public class ServiceRoutineController {
     @RequestMapping(value = "/serviceroutine", method = RequestMethod.GET)
     public List<TpsServiceRoutineDefinition> getTpsServiceRutiner() {
         return getTpsServiceRutinerService.execute().stream()
-                .filter(tpsServiceRoutine -> authorisationService.isAuthorisedToUseServiceRutine(tpsServiceRoutine))
+                .filter(authorisationService::isAuthorisedToUseServiceRutine)
                 .collect(Collectors.toList());
     }
 

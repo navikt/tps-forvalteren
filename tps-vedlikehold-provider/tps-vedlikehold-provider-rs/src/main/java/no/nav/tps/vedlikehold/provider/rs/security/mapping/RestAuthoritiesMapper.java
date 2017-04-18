@@ -17,7 +17,7 @@ public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
         return collection.stream()
                 .filter(Objects::nonNull)
                 .map(GrantedAuthority::getAuthority)
-                .map(authority -> UserRole.getEnumFromName(authority))
+                .map(UserRole::getEnumFromName)
                 .filter(Objects::nonNull)
                 .collect(toSet());
     }

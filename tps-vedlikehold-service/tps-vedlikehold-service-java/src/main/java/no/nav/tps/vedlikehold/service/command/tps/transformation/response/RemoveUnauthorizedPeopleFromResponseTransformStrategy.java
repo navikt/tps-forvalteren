@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 @Component
 public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements ResponseTransformStrategy {
 
-    private static final String fodselsnummerPattern = "<fnr>(\\d{11})</fnr>";
-    private static final String personPattern = "<enPersonRes>.+?</enPersonRes>";
+    private static final String FODSELSNUMMER_PATTERN = "<fnr>(\\d{11})</fnr>";
+    private static final String PERSON_PATTERN = "<enPersonRes>.+?</enPersonRes>";
 
     @Autowired
     private TpsAuthorisationService tpsAuthorisationService;
@@ -32,12 +32,12 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     private void removeUnauthorizedPeopleFromResponse(Response response, RemoveUnauthorizedPeopleFromResponseTransform transformer) {
         int numberOfFnrRemoved = 0;
 
-        Matcher personMatcher = Pattern.compile(personPattern, Pattern.DOTALL).matcher(response.getRawXml());
+        Matcher personMatcher = Pattern.compile(PERSON_PATTERN, Pattern.DOTALL).matcher(response.getRawXml());
 
         while (personMatcher.find()) {
             String personXml = personMatcher.group();
 
-            Matcher fnrMatcher = Pattern.compile(fodselsnummerPattern, Pattern.DOTALL).matcher(personXml);
+            Matcher fnrMatcher = Pattern.compile(FODSELSNUMMER_PATTERN, Pattern.DOTALL).matcher(personXml);
             if (fnrMatcher.find()) {
                 String fnr = fnrMatcher.group(1);
                 if (!tpsAuthorisationService.isAuthorisedToSeePerson(response.getServiceRoutine(), fnr)) {

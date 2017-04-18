@@ -38,11 +38,11 @@ public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSe
     public boolean isAuthorised(Set<UserRole> roles, String fnr) {
         String diskresjonskodeRequired = diskresjonskodeConsumer.getDiskresjonskodeResponse(fnr).getDiskresjonskode();
 
-        if (diskresjonskodeRequired.equals(KODE_SEKS) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)) {
+        if (KODE_SEKS.equals(diskresjonskodeRequired) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)) {
             return false;
         }
 
-        if(diskresjonskodeRequired.equals(KODE_SYV) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_7_READ)){
+        if(KODE_SYV.equals(diskresjonskodeRequired) && !roles.contains(UserRole.ROLE_DISKRESJONESKODE_7_READ)){
             return false;
         }
 

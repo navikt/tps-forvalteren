@@ -6,23 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.vedlikehold.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.vedlikehold.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.EndreNavn;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.EndreNorskGironummer;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.EndreTiad;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.EndreUtenlandskGironummer;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.M201HentFnrNavnDiskresjonPaFlerePersoner;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S004HentPersonopplysningerServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S011HentFnrEndringshistorie;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S013HentTKNrEndringshistorie;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S100SjekkOmFnrDnrBnrErDefinertITps;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S101HentOppholdArbeidTillatelseOgUtenlandskId;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S102HentGironummerServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S103HentLinjeadresser;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S120HentBrukerprofil;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.S600HentKontaktinformasjonServiceRoutineResolver;
-import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
+import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.resolvers.*;
 import no.nav.tps.vedlikehold.service.command.Command;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,12 +130,6 @@ public class CommandConfig {
     @Order(10)
     ServiceRoutineResolver endreUtlandskGironummerResolver() {
         return new EndreUtenlandskGironummer();
-    }
-
-    @Bean
-    @Order(10)
-    ServiceRoutineResolver hentMangeFnrHistorier(){
-        return new M201HentFnrNavnDiskresjonPaFlerePersoner();
     }
 
     @Bean
