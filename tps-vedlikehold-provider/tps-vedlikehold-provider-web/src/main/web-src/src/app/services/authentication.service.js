@@ -65,7 +65,6 @@ angular.module('tps-vedlikehold.service')
                     if (callback) {callback(res);}
                 });
             }, function(){
-                console.log("En feil oppstod ved utlogging");
                 self.authenticate(false, function(res){
                     sessionService.setCurrentUser(res.data);
                     if (callback) {callback(res);}

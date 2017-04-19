@@ -29,31 +29,6 @@ angular.module('tps-vedlikehold.service')
             });
         };
 
-        self.capitalizeFirstLetter = function capitalizeFirstLetter(word){
-            return word.charAt(0).toUpperCase() + word.slice(1);
-        };
-
-        //TODO Legg til unntak/keys som skal/skal ikke få stor forbokstav? Som NOR osv.
-        //TODO Har nå sideeffekt av den gjør om Ints til Strings hvis jeg ikke tar feil.
-        self.capitalizeFirstLetterInObjectProperties = function capitalizeFirstLetterInObjectProperties(ObjectToFormat) {
-            for (var key in ObjectToFormat) {
-                if (ObjectToFormat.hasOwnProperty(key)) {
-                    ObjectToFormat[key] = ObjectToFormat[key].toString();
-                    var splittedProperty = ObjectToFormat[key].split(" ");
-                    var keyData = "";
-                    for (var i in splittedProperty) {
-                        keyData = keyData + " " + self.capitalizeFirstLetter(splittedProperty[i].toLowerCase());
-                    }
-                    ObjectToFormat[key] = keyData;
-                }
-            }
-            return ObjectToFormat;
-        };
-
-        self.isNumber = function(n){
-            return !isNaN(parseFloat(n)) && isFinite(n);
-        };
-
         self.flattenObject = function(jsonObject){
             var result = {};
             function recurse(jObject, properties){
@@ -81,77 +56,9 @@ angular.module('tps-vedlikehold.service')
             return result;
         };
 
-        self.lagArray = function (jsonObject){
-            var propertiesArray = [];
-            var propertiesObject = {};
-            var parentPropertiesName = "";
-
-           for(var key in jsonObject) {
-              if(jsonObject.hasOwnProperty(key)) {
-                    var propertiesName = key.toString().split("]");
-                    if(propertiesName.length > 1 && !propertiesObject.hasOwnProperty(propertiesName[0])){
-                        propertiesObject[propertiesName[0]] = _getObjectWithPropertiesOfParentTag(propertiesName[0], jsonObject);
-                        var tempArr= propertiesName[0].split("[");
-                        parentPropertiesName = tempArr[0];
-                    }
-              }
-           }
-            var count = 0;
-            for(var keyProp in propertiesObject){
-               propertiesArray[count] = propertiesObject[keyProp];
-               count++;
-            }
-            jsonObject[parentPropertiesName] = propertiesArray;
+        self.isNumber = function(n){
+            return !isNaN(parseFloat(n)) && isFinite(n);
         };
-
-        function _getObjectWithPropertiesOfParentTag(name, inputObject){
-            var jObject = {};
-            for(var key in inputObject){
-                var propertyNameArray = key.toString().split("]");
-                if(propertyNameArray[0] == name){
-                    var end = propertyNameArray[1].split(".");
-                    jObject[end[1]] = inputObject[key];
-                }
-            }
-           return jObject;
-        }
-
-        //TODO: find a better way to create dynamic output
-        // Flattens a JSON object, adding all key-values at top with just their key as key
-        // Except for the objects with the keys that matches nonUniques,
-        // they are given the name parentKey_childKey
-        self.flattenObject_old = function (jsonObject, nonUniques) {
-            return _flattenObject_old({}, jsonObject, nonUniques);
-        };
-
-        function _flattenObject_old(finalFlatObject, jsonObject, nonUniques) {
-            for(var parentKey in jsonObject){
-                if (!jsonObject.hasOwnProperty(parentKey)) continue;
-                if ((typeof jsonObject[parentKey]) == 'object') {
-                    // Går inn hit ved epost, så i flatter, det som blir returnert, er hele mor objectet! ikke bare den innenfor! Så får med masse ekstra.
-                    var flatterObject = _flattenObject_old({}, jsonObject[parentKey], nonUniques);
-                    for (var childKey in flatterObject) {
-                        if (!flatterObject.hasOwnProperty(childKey)) continue;
-                        if (nonUniques && nonUniques.indexOf(childKey) > -1) {
-                            if(!finalFlatObject.hasOwnProperty(parentKey + '_' + childKey) || finalFlatObject[parentKey + '_' + childKey]=== ""){
-                                finalFlatObject[parentKey + '_' + childKey] = flatterObject[childKey];
-                            }
-                        } else {
-                            if(finalFlatObject[childKey] === ""){
-                                finalFlatObject[childKey] = flatterObject[childKey];
-                            }
-                        }
-                    }
-                } else {
-                    if(!finalFlatObject.hasOwnProperty(parentKey) || finalFlatObject[parentKey] === ""){
-                        finalFlatObject[parentKey] = jsonObject[parentKey];
-                    }
-                }
-            }
-            return finalFlatObject;
-        }
-
-
 
         //TODO: use library for this
         self.formatXml = function (xml) {

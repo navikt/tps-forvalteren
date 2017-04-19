@@ -91,24 +91,12 @@ angular.module('tps-vedlikehold.factory')
             return serviceRutineNames;
         };
 
-        //TODO Prøv å generaliser dette igjen...
         serviceRutineFactory.getServiceRutineInternalName = function (serviceRutineName) {
             return serviceRutines[serviceRutineName].internalName;
         };
 
-
         serviceRutineFactory.getServiceRutineParametersNames = function (serviceRutineName) {
             return getRequestParametersNames(serviceRutines, serviceRutineName);
-        };
-
-        //TODO Fjern. Finner aldri order templates uansett.
-        serviceRutineFactory.getServiceRutineParametersNamesInOrder = function (serviceRutineName) {
-            // want the fields from serviceRutineFieldsTemplate in a certain order
-            // could probably be done in a better way
-            var serviceRutineParametersNamesInOrder = [];
-            var restServiceRutineParametersNames = serviceRutineFactory.getServiceRutineParametersNames(serviceRutineName);
-
-            return serviceRutineParametersNamesInOrder.concat(restServiceRutineParametersNames);
         };
 
         serviceRutineFactory.getServiceRutineRequiredParametersNames = function (serviceRutineName) {

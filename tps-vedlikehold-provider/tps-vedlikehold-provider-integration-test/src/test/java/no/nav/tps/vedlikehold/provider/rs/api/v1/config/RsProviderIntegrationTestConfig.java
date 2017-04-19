@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
@@ -34,7 +33,6 @@ import static org.mockito.Mockito.mock;
         IntegrationTestConfig.class,
         RestProviderConfig.class
 })
-@EnableTransactionManagement
 public class RsProviderIntegrationTestConfig {
 
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
@@ -54,7 +52,7 @@ public class RsProviderIntegrationTestConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new TestUserDetails();
     }
 

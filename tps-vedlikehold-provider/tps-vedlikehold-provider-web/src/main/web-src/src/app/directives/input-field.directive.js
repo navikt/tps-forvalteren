@@ -6,7 +6,6 @@ angular.module('tps-vedlikehold.directives')
         var templateSuffix = '-input.html';
 
         var getTemplateUrl = function(inputParamName) {
-            console.log("param: " + inputParamName);
             return templatesPath + '' + inputParamName.toLowerCase() + '' + templateSuffix;
         };
 
