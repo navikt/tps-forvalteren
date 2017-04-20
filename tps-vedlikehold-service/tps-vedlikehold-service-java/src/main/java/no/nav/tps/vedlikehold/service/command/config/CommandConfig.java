@@ -17,7 +17,6 @@ import org.springframework.core.annotation.Order;
 
 import static no.nav.tps.vedlikehold.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
-
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {

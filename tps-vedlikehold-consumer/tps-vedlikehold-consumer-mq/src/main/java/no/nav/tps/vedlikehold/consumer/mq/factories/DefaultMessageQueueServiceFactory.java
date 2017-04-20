@@ -7,7 +7,7 @@ import no.nav.tps.vedlikehold.consumer.rs.fasit.queues.FasitMessageQueueConsumer
 import no.nav.tps.vedlikehold.domain.ws.fasit.Queue;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.jms.ConnectionFactory;
@@ -18,9 +18,8 @@ import static no.nav.tps.vedlikehold.consumer.mq.config.MessageQueueConsumerCons
 /**
  * Consumes information from Fasit and produces MessageQueueServices
  */
-
-@Profile("default")
 @Component
+@ConditionalOnProperty(prefix = "tps.vedlikehold", name = "production-mode", havingValue = "false", matchIfMissing = true)
 public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
     @Autowired

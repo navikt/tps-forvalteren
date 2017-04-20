@@ -6,37 +6,45 @@ import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.ConnectionFactory
 import no.nav.tps.vedlikehold.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
 import no.nav.tps.vedlikehold.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
-@Profile("prod")
 @Component
+@ConditionalOnProperty(prefix = "tps.vedlikehold", name = "production-mode", havingValue = "true")
 public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
-    public static final String REQUEST_QUEUE_ALIAS = "QA.D8_411.TPS_FORESPORSEL_XML_O";
+    @Value("${TPS_FORESPORSEL_XML_O.queueName}")
+    private String tpsRequestQueue;
 
-    public static final String QUEUE_MANAGER_ALIAS = "MDLCLIENT03";
-    public static final String HOSTNAME = "e26apvl100.test.local";
-    public static final String PORT = "1411";
-    public static final String CHANNEL_NAME = "U1_TPS_VEDLIKEHOLD";
+    @Value("${mqGateway.name}")
+    private String queueManagerAlias;
+
+    @Value("${mqGateway.hostname}")
+    private String hostname;
+
+    @Value("${mqGateway.port}")
+    private String port;
+
+    @Value("${mqGateway.channel}")
+    private String channelName;
 
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
 
     @Override
     public MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias) throws JMSException {
+        QueueManager queueManager = new QueueManager(queueManagerAlias, hostname, port, channelName);
 
-        QueueManager queueManager = new QueueManager(QUEUE_MANAGER_ALIAS, HOSTNAME, PORT, CHANNEL_NAME);
-
-        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, CHANNEL_NAME);
+        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, channelName);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 
         return new DefaultMessageQueueConsumer(
-                REQUEST_QUEUE_ALIAS,
+                tpsRequestQueue,
                 connectionFactory
         );
     }
