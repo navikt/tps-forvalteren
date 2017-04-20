@@ -6,6 +6,7 @@ import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.vedlikehold.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.vedlikehold.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
@@ -20,6 +21,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +43,9 @@ public class ServiceControllerTest {
     private static final String FNR = "12345678910";
     private static final String SERVICE_RUTINE_NAME = "serviceRutineName";
     private static final String ENVIRONMENT_U = "u1";
+    private static final String ENVIRONMENT_PROD = "p";
+    private static final String ENVIRONMENT_PROPERTY_VALUE = "currentEnvironmentIsProd";
+    private static final boolean ENVIRONMENT_NOT_PROD = false;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -89,7 +95,7 @@ public class ServiceControllerTest {
         when(findServiceRoutineByName.execute(anyString())).thenReturn(Optional.of(tpsServiceRoutineDefinitionMock));
         when(serviceRoutineRequestMock.getServiceRutinenavn()).thenReturn(SERVICE_RUTINE_NAME);
 
-
+        ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, ENVIRONMENT_NOT_PROD);
     }
 
     @Test
@@ -118,6 +124,29 @@ public class ServiceControllerTest {
         verify(mappingUtilsMock).convert(parameters, JsonNode.class);
     }
 
+    @Test
+    public void getServiceInProdTryingToCallTestEnvironmentThrowsIllegalEnvironmentException() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("environment", ENVIRONMENT_U);
+
+        ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE,true);
+
+        expectedException.expect(HttpIllegalEnvironmentException.class);
+
+        controller.getService(parameters, SERVICE_RUTINE_NAME);
+
+    }
+
+    @Test
+    public void getServiceInProdTryingToCallProdEnvironmentDoNotThrowIllegalEnvironmentException() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("environment", ENVIRONMENT_PROD);
+
+        ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, true);
+
+        controller.getService(parameters, SERVICE_RUTINE_NAME);
+
+    }
 
     private void mockNodeContent(JsonNode node, String key, Object value) {
         when(node.has(key)).thenReturn(value != null);

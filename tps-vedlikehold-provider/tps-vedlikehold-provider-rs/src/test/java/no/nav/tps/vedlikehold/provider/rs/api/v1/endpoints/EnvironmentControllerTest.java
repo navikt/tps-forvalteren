@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -14,7 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.eventFrom;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 
 
@@ -22,7 +26,9 @@ import static org.mockito.Mockito.when;
 public class EnvironmentControllerTest {
 
     private static final String SESSION_ID = "sessionID";
-    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList("u1", "t4", "p", "q4", "t3", "u5", "u6", "t7") );
+    private static final Set<String> ENVIRONMENTS = new HashSet<>( Arrays.asList(  "p", "q4", "t3", "t4", "t7", "u1","u5", "u6") );
+    private static final String ENVIRONMENT_PROD = "p";
+    private static final String ENVIRONMENT_PROPERTY_VALUE = "currentEnvironmentIsProd";
 
     @Mock
     private HttpSession httpSessionMock;
@@ -37,13 +43,22 @@ public class EnvironmentControllerTest {
     public void setUp() {
         when( getEnvironmentsCommandMock.execute("tpsws") ).thenReturn(ENVIRONMENTS);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
+        ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, false);
     }
 
     @Test
     public void getEnvironmentsReturnsOnlySupportedEnvironments() {
         Set<String> environments = controller.getEnvironments();
 
-        assertThat(environments, containsInAnyOrder("t3", "u1", "t4", "u5", "u6"));
+        assertThat(environments, containsInAnyOrder("t3",  "t4", "u1", "u5", "u6"));
+    }
+
+    @Test
+    public void getEnvironmentReturnsOnlyProdEnvironmentAsSupportedEnvironmentIfCurrentEnvironmentIsProd(){
+        ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, true);
+        Set<String> environments = controller.getEnvironments();
+        assertThat(environments, contains(ENVIRONMENT_PROD));
+        assertThat(environments, hasSize(1));
     }
 
 }

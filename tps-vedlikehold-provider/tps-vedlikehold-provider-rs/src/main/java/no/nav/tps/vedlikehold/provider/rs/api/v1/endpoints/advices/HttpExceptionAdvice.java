@@ -5,6 +5,7 @@ import java.util.Date;
 import no.nav.tps.vedlikehold.service.command.exceptions.ExceptionInformation;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpBadRequestException;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpException;
+import no.nav.tps.vedlikehold.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.vedlikehold.service.command.exceptions.HttpUnauthorisedException;
 
@@ -35,6 +36,13 @@ public class HttpExceptionAdvice {
     @ExceptionHandler(HttpBadRequestException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     ExceptionInformation badRequest(HttpException exception) {
+        return informationForException(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(HttpIllegalEnvironmentException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    ExceptionInformation illegalEnvironment(HttpException exception){
         return informationForException(exception, HttpStatus.BAD_REQUEST);
     }
 
