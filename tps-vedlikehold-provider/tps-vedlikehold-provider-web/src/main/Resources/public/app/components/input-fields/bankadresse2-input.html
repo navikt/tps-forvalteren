@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Bankadresse2</label>
+    <input name="navnInput" md-maxlength="34"  ng-model="formData.bankAdresse2"/>
+    <div ng-messages="requestForm.navnInput.$error" ng-show="requestForm.navnInput$touched">
+        <div ng-message="md-maxlength">Max lengde er 34</div>
+    </div>
+</md-input-container>

@@ -56,12 +56,6 @@ public class CommandConfig {
 
     @Bean
     @Order(2)
-    ServiceRoutineResolver hentKontaktinformasjonRoutineResolver() {
-        return new S600HentKontaktinformasjonServiceRoutineResolver();
-    }
-
-    @Bean
-    @Order(3)
     ServiceRoutineResolver sokPersonRoutineResolver() {
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
@@ -72,64 +66,18 @@ public class CommandConfig {
         return new S102HentGironummerServiceRoutineResolver();
     }
 
+
+
     @Bean
     @Order(4)
-    ServiceRoutineResolver hentLinjeadresseResolver(){
-        return new S103HentLinjeadresser();
-    }
-
-    @Bean
-    @Order(5)
-    ServiceRoutineResolver hentOppholdsArbeidsTillatelse(){
-        return new S101HentOppholdArbeidTillatelseOgUtenlandskId();
-    }
-
-    @Bean
-    @Order(6)
     ServiceRoutineResolver hentTKNrEndringshistorie(){
         return new S013HentTKNrEndringshistorie();
     }
 
     @Bean
-    @Order(7)
-    ServiceRoutineResolver hentBrukerprofil(){
-        return new S120HentBrukerprofil();
-    }
-
-    @Bean
-    @Order(7)
-    ServiceRoutineResolver hentFnrEndringshistorie(){
-        return new S011HentFnrEndringshistorie();
-    }
-
-    @Bean
-    @Order(7)
-    ServiceRoutineResolver sjekkFnrErDefinert(){
-        return new S100SjekkOmFnrDnrBnrErDefinertITps();
-    }
-
-    @Bean
-    @Order(7)
+    @Order(5)
     ServiceRoutineResolver endreNavnResolver() {
         return new EndreNavn();
-    }
-
-    @Bean
-    @Order(8)
-    ServiceRoutineResolver endreTIADResolver() {
-        return new EndreTiad();
-    }
-
-    @Bean
-    @Order(9)
-    ServiceRoutineResolver endreNorskGironummerResolver() {
-        return new EndreNorskGironummer();
-    }
-
-    @Bean
-    @Order(10)
-    ServiceRoutineResolver endreUtlandskGironummerResolver() {
-        return new EndreUtenlandskGironummer();
     }
 
     @Bean

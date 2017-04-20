@@ -1,0 +1,70 @@
+{
+  "EndreUtenlandskGironummer": {
+    "display": {
+      "header": "${offentligIdent}"
+    },
+    "rows": [
+      [
+        {
+          "label": "Offentlig Ident",
+          "fieldData": "offentligIdent",
+          "flex": 30
+        },
+        {
+          "label": "Gironummer Utland",
+          "fieldData": "giroNrUtland",
+          "flex": 30
+        },
+        {
+          "label": "Dato Gironummer",
+          "fieldData": "datoGiroNr",
+          "flex": 30
+        }
+      ],
+      [
+        {
+          "label": "Kode Swift",
+          "fieldData": "kodeSwift",
+          "flex": 20
+        },
+        {
+          "label": "Kode Land",
+          "fieldData": "kodeLand",
+          "flex": 20
+        },
+        {
+          "label": "Banknavn",
+          "fieldData": "bankNavn",
+          "flex": 20
+        },
+        {
+          "label": "Bankkode",
+          "fieldData": "bankkode",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "label": "Valuta",
+          "fieldData": "valuta",
+          "flex": 20
+        },
+        {
+          "label": "Bankadresse1",
+          "fieldData": "bankadresse1",
+          "flex": 20
+        },
+        {
+          "label": "Bankadresse2",
+          "fieldData": "bankadresse2",
+          "flex": 20
+        },
+        {
+          "label": "Bankadresse3",
+          "fieldData": "bankadresse3",
+          "flex": 20
+        }
+      ]
+    ]
+  }
+}
