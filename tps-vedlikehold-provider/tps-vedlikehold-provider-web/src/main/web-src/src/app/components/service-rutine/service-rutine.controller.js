@@ -26,10 +26,8 @@ angular.module('tps-vedlikehold.service-rutine')
                 return isValidServiceRutineName && !apiError;
             };
 
-            //TODO Må nullstille "buffer" når man tar et nytt søk og ikke bare pager i buffer.
             $scope.submit = function () {
             var params = createParams($scope.formData);
-            // var params = {fnr:"110884", aksjonsDato:"2017-04-04", aksjonsKode:"C0", environment:"t0"};
 
                 $scope.loading = true;
 
@@ -45,13 +43,10 @@ angular.module('tps-vedlikehold.service-rutine')
 
                     $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
                     $scope.returStatus = response.status.kode;
+
                     if(response.data === undefined) return;
                     $scope.personsData = extractPersonsData(response, nonUniqueProperties);
 
-                    var str = JSON.stringify($scope.personsData, null, 2);
-                    console.log(str);
-
-                    // capitalizeFirstLetterInPersonsData(response);   //TODO Må kanskje fjernes. Spørs skal se ut
                     var antallTreff = response.antallTotalt;
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
                 }, function (error) {
@@ -90,15 +85,24 @@ angular.module('tps-vedlikehold.service-rutine')
             //TODO Denne får nullpointer ganske ofte fordi "text" er undefined ofte.
             $scope.resolveDisplayTemplate = function(text, personData) {
                 var pattern = /\$\{(.)*?}/g;
-                // console.log("Text: "+ text);
                 var matches = text.match(pattern);
-                // console.log("Matches: " + matches);
 
                 angular.forEach(matches, function(val) {
                     var objKey = val.slice(2, -1);
                     text = text.replace(val, personData[objKey]);
                 });
                 return text;
+            };
+
+            $scope.resolveArray = function(arrayprefix, index, arrayLength, value){
+                if(arrayLength == 1){
+                    return arrayprefix + "." + value;
+                }
+                return arrayprefix + "[" + index + "]" + "." + value;
+            };
+
+            $scope.getNumber = function(antall){
+                return new Array(parseInt(antall));
             };
 
             $scope.pageForward = function pageForward(){
@@ -111,7 +115,6 @@ angular.module('tps-vedlikehold.service-rutine')
                 $scope.submit();
             };
 
-            //TODO Bytt navn til noe mer beskrivende.
             $scope.getStartIndex = function (buffer){
                 var i = parseInt(buffer);
                 return ((i-1)*34 + 1);
@@ -123,23 +126,10 @@ angular.module('tps-vedlikehold.service-rutine')
                 return 34*bufferNummer;
             };
 
-            function capitalizeFirstLetterInPersonsData(responseObject){
-                if (responseObject.antallTotalt === undefined) {
-                    $scope.personsData[0] = utilsService.capitalizeFirstLetterInObjectProperties($scope.personsData[0]);
-                } else {
-                    var i = 0;
-                    while (i < responseObject.antallTotalt) {
-                        $scope.personsData[i] = utilsService.capitalizeFirstLetterInObjectProperties($scope.personsData[i]);
-                        i++;
-                    }
-                }
-            }
-
             function extractPersonsData(responseObject, nonUniqueProperties) {
                 var personsData = {};
                 if (responseObject.antallTotalt === undefined || responseObject.antallTotalt == 1) {
                     personsData[0] = utilsService.flattenObject(responseObject.data[0], nonUniqueProperties);
-                    utilsService.lagArray(personsData[0]);
                 } else {
                     var i = 0;
                     while (i < responseObject.antallTotalt) {
@@ -185,7 +175,7 @@ angular.module('tps-vedlikehold.service-rutine')
             }
 
             function getServiceRutineInputFieldName() {
-                $scope.fields = serviceRutineFactory.getServiceRutineParametersNamesInOrder($scope.serviceRutineName);
+                $scope.fields = serviceRutineFactory.getServiceRutineParametersNames($scope.serviceRutineName);
             }
 
             function setIsValidServiceRutineName() {
@@ -234,10 +224,6 @@ angular.module('tps-vedlikehold.service-rutine')
 
                 });
             }
-
-            // ##################################
-            // These functions will maybe need additions when adding new input fields
-            // See confluence for info
 
             function formatSelectValues() {
                 if ($scope.selectValues.aksjonsKode) {
