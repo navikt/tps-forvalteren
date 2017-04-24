@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultGetTpsServiceRutinerService implements GetTpsServiceRutinerService {
 
-    @Autowired
-    private List<ServiceRoutineResolver> resolvers;
+    @Autowired(required = false)
+    private List<ServiceRoutineResolver> resolvers = new ArrayList<>();
 
     @Override
     public List<TpsServiceRoutineDefinition> execute() {

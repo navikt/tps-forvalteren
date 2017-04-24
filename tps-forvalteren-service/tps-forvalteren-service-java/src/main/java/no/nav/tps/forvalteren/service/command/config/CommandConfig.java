@@ -4,13 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.EndreNavn;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S000TilgangTilTpsServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S004HentPersonopplysningerServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S013HentTKNrEndringshistorie;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S102HentGironummerServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.service.command.Command;
@@ -19,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
@@ -51,44 +43,6 @@ public class CommandConfig {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         return objectMapper;
-    }
-
-    @Bean
-    @Order(1)
-    ServiceRoutineResolver hentPersonServiceRoutineResolver() {
-        return new S004HentPersonopplysningerServiceRoutineResolver();
-    }
-
-    @Bean
-    @Order(2)
-    ServiceRoutineResolver sokPersonRoutineResolver() {
-        return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
-    }
-
-    @Bean
-    @Order(3)
-    ServiceRoutineResolver hentGironummerResolver() {
-        return new S102HentGironummerServiceRoutineResolver();
-    }
-
-
-
-    @Bean
-    @Order(4)
-    ServiceRoutineResolver hentTKNrEndringshistorie(){
-        return new S013HentTKNrEndringshistorie();
-    }
-
-    @Bean
-    @Order(5)
-    ServiceRoutineResolver endreNavnResolver() {
-        return new EndreNavn();
-    }
-
-    @Bean
-    @Order(Integer.MAX_VALUE)
-    ServiceRoutineResolver tilgangTilTpsServiceRoutineResolver() {
-        return new S000TilgangTilTpsServiceRoutineResolver();
     }
 
 }

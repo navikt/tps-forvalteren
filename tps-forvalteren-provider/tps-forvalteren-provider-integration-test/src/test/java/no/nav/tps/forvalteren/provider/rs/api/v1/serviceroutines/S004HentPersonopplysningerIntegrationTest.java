@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.serviceroutines;
 
 import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceControllerIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class S004HentPersonopplysningerIntegrationTest extends AbstractServiceControllerIntegrationTest {
 
     @Override
