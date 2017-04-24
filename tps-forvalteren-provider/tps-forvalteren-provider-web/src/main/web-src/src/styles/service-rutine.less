@@ -1,0 +1,228 @@
+.tps-vk-service-rutine-dashboard {
+
+  fieldset{
+      border: 0px;
+      padding: 0px;
+      margin: 0px;
+
+    legend{
+    text-indent: -10000px;
+    position: absolute;
+    top: auto;
+    width: 1px;
+    overflow: hidden;
+  }
+  }
+
+  .tps-vk-top {
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 25px 35px 25px;
+    position: relative;
+
+    .tps-vk-input-container {
+      margin: 8px 10px 8px 0px;
+
+      label {
+        z-index: auto;
+      }
+    }
+
+    .tps-vk-form-btns {
+      text-align: center;
+
+      @media (min-width: 600px) {
+        text-align: right;
+      }
+
+      .tps-vk-refresh-btn {
+        width: 40px;
+        height: 40px;
+        z-index: auto;
+
+        svg {
+          width: 30px;
+          height: 40px;
+          fill: white;
+        }
+      }
+    }
+
+    md-progress-linear {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+  .tps-vk-bottom {
+
+    .tps-vk-scrollable-tabs {
+      height: 100%;
+    }
+
+    .tps-vk-xml-panel {
+      pre {
+        margin: 0;
+      }
+      .hljs {
+        background-color: white;
+      }
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .tps-vk-response-form {
+      padding: 28px 35px 0;
+
+      .tps-vk-output-container {
+        margin: 3px 0;
+        padding: 2px 3px;
+
+        .tps-vk-output-data,
+        .tps-vk-output-label {
+          border-color: rgba(0, 0, 0, 0.12);
+          color: rgba(0, 0, 0, 0.74);
+
+          &.filled,
+          &.empty {
+            background-color: rgb(250, 255, 189);
+          }
+          &.noValue{
+            background-color: white;
+          }
+        }
+        .tps-vk-output-label{
+          color: #000;
+        }
+      }
+    }
+  }
+
+  .tps-vk-status-container {
+    padding: 0 33px;
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    min-height: 30px;
+
+    .tps-vk-hits {
+      text-align: left;
+      font-size: 12px;
+      color: rgba(0, 0, 0, .54);
+
+      .tps-vk-hits-message {
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .tps-vk-hits-paging {
+
+      }
+    }
+
+    .tps-vk-status {
+      text-align: right;
+      font-size: 12px;
+      color: rgba(0, 0, 0, .54);
+
+      .tps-vk-status-message,
+      .tps-vk-status-icon {
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .tps-vk-status-icon {
+        &.error {
+          svg {
+            fill: red;
+          }
+        }
+        &.success {
+          svg {
+            fill: green;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tps-vk-welcome {
+
+  .tps-vk-top {
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 20px 35px 105px;
+    position: relative;
+  }
+}
+
+.tps-vk-response {
+
+  .tps-vk-response-card {
+    *:focus {
+      outline: none;
+      border: 0;
+    }
+
+    .tps-vk-response-card-header {
+      color: @tps-vk-background-primary-indigo;
+    }
+
+    .tps-vk-response-expanded {
+      border-top: 1px solid lightgrey;
+      padding-top: 30px;
+    }
+  }
+}
+
+.pika-lendar{
+  width: auto;
+
+  .pika-label{
+    font-weight: normal;
+  }
+}
+.pika-table{
+
+  th{
+    font-weight: 100;
+    text-transform: capitalize;
+    color: #737373;
+  }
+
+  td{
+    padding: 0px 6px;
+  }
+
+  .pika-button{
+    background: none;
+    color: #212121;
+    text-align: center;
+    box-shadow:none;
+    width: 34px;
+    height: 34px;
+    padding: 0px;
+    text-indent: 0px;
+
+    &:focus{
+      background: @tps-vk-background-darkgray;
+      color: white;
+      border-radius: 50%;
+    }
+  }
+
+  .is-selected{
+    .pika-button{
+      background: @tps-vk-background-darkgray;
+      border: none;
+      color: white;
+      font-weight: 100;
+      border-radius: 50%;
+    }
+  }
+}
