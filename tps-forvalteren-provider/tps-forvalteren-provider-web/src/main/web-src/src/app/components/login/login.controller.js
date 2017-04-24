@@ -33,6 +33,7 @@ angular.module('tps-forvalteren.login')
                 $scope.authenticationError = false;
                 $scope.serverError = false;
                 authenticationService.authenticate($scope.credentials, callback);
+                return false;
             };
 
             function init() {

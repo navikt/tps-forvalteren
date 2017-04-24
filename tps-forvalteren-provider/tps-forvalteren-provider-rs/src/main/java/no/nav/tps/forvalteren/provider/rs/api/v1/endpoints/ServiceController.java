@@ -72,7 +72,7 @@ public class ServiceController {
     }
 
     private void checkIfAllowedToSendRequestAgainstEnvironment(String environmentParam){
-        if(currentEnvironmentIsProd && !environmentParam.equals(PROD_ENVIRONMENT)){
+        if(currentEnvironmentIsProd && !PROD_ENVIRONMENT.equals(environmentParam)){
             throw new HttpIllegalEnvironmentException(messageProvider.get("rest.service.request.exception.IllegalEnvironment"), "api/v1/service/");
         }
     }
