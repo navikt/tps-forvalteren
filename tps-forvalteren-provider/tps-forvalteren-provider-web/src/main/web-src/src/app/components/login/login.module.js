@@ -1,2 +1,2 @@
 
-angular.module('tps-vedlikehold.login', ['ngMessages']);
+angular.module('tps-forvalteren.login', ['ngMessages']);

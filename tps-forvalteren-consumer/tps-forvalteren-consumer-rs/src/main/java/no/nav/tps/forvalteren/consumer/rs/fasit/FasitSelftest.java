@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(prefix = "tps.vedlikehold", name = "production-mode", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false", matchIfMissing = true)
 public class FasitSelftest implements SelftestCheck {
 
     private static final String RS_ACTION_NAME = "ping";

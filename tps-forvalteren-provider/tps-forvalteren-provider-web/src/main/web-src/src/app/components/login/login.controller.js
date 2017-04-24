@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.login')
+angular.module('tps-forvalteren.login')
     .controller('LoginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
 

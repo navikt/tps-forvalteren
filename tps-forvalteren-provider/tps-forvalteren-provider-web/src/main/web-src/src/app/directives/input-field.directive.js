@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.directives')
+angular.module('tps-forvalteren.directives')
     .directive('tpsInputField', ['$templateRequest', '$compile', function($templateRequest, $compile){
 
         var templatesPath = 'app/components/input-fields/';

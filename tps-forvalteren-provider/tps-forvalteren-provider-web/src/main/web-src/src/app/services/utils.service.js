@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.service')
+angular.module('tps-forvalteren.service')
     .service('utilsService', ['moment', function(moment){
 
         var self = this;

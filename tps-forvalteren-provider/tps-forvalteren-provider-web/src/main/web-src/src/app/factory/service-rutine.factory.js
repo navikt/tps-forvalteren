@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.factory')
+angular.module('tps-forvalteren.factory')
     .factory('serviceRutineFactory', ['$http', function ($http) {
 
         var serviceRutineFactory = {};

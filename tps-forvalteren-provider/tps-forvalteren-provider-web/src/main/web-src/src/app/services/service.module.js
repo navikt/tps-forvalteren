@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.service', []);
+angular.module('tps-forvalteren.service', []);
 
 require('./location.service');
 require('./session.service');

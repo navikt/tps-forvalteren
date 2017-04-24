@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.service')
+angular.module('tps-forvalteren.service')
     .service('authenticationService', ['$http', '$q', '$location', 'sessionService', 'utilsService', 'locationService',
         function($http, $q, $location,  sessionService, utilsService, locationService) {
 

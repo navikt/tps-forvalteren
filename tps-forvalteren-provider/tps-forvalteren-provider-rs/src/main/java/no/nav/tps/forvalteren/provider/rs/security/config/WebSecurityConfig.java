@@ -13,14 +13,11 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Tobias Hansen (Visma Consulting AS)
- */
 
 @Component
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${tps.vedlikehold.cookie.path}")
+    @Value("${tps.forvalteren.cookie.path}")
     private String cookiePath;
 
     @Autowired

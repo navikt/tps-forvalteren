@@ -84,7 +84,7 @@
     <logger name="org.apache.cxf.ws.addressing.ContextUtils" level="ERROR"/>
     <logger name="org.apache.cxf.phase.PhaseInterceptorChain" level="ERROR"/>
 
-    <logger name="no.nav.tps.vedlikehold.provider.rs.Sporingslogger" level="INFO" additivity="false">
+    <logger name="no.nav.tps.forvalteren.provider.rs.Sporingslogger" level="INFO" additivity="false">
         <appender-ref ref="sporingAppender"/>
     </logger>
 

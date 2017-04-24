@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.service-rutine')
+angular.module('tps-forvalteren.service-rutine')
     .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise',
         function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise) {
 

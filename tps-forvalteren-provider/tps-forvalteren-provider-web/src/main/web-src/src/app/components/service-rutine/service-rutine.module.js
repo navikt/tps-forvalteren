@@ -1,2 +1,2 @@
 
-angular.module('tps-vedlikehold.service-rutine', ['ngMessages', 'hljs']);
+angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs']);

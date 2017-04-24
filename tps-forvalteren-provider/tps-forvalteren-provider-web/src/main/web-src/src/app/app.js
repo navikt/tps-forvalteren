@@ -14,8 +14,8 @@ require('./services/service.module');
 require('./directives/directives.module');
 require('./factory/factory.module');
 
-var app = angular.module('tps-vedlikehold', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-vedlikehold.login',
-    'tps-vedlikehold.service', 'tps-vedlikehold.factory', 'tps-vedlikehold.service-rutine', 'tps-vedlikehold.directives','pikaday']);
+var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
+    'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives','pikaday']);
 
 require('./shared/index');
 

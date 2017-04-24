@@ -14,7 +14,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
 @Component
-@ConditionalOnProperty(prefix = "tps.vedlikehold", name = "production-mode", havingValue = "true")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "true")
 public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
     @Value("${TPS_FORESPORSEL_XML_O.queueName}")

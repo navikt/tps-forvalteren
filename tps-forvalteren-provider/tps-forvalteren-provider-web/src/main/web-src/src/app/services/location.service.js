@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.service')
+angular.module('tps-forvalteren.service')
     .service('locationService', ['$state','$location', function($state, $location) {
 
         var self = this;

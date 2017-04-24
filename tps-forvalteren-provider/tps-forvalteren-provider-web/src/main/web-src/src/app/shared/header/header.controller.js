@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold')
+angular.module('tps-forvalteren')
     .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', '$mdSidenav',
         function ($scope, authenticationService, locationService, $mdSidenav) {
 

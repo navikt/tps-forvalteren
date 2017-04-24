@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.directives', []);
+angular.module('tps-forvalteren.directives', []);
 
 require('./input-field.directive');
 require('./output-field.directive');

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Sporingslogger {
 
-    private static final String NAME = "no.nav.tps.vedlikehold.provider.rs.Sporingslogger";
+    private static final String NAME = "no.nav.tps.forvalteren.provider.rs.Sporingslogger";
     private static final Logger LOGGER = LoggerFactory.getLogger(NAME);
 
     public static void loggSporing(String serviceRutine,  Map<String, Object> requestParameters) {

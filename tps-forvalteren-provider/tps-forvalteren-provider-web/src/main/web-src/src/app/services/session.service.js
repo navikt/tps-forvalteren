@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold.service')
+angular.module('tps-forvalteren.service')
     .service('sessionService', ['$rootScope', function($rootScope) {
 
         var self =  this;

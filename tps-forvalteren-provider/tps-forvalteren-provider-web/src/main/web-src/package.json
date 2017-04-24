@@ -1,7 +1,7 @@
 {
-  "name": "tps-vedlikehold",
+  "name": "tps-forvalteren",
   "version": "1.0.0",
-  "description": "tps-vedlikehold client",
+  "description": "tps-forvalteren client",
   "main": "index.js",
   "scripts": {
     "start": "gulp serve.dev --color",
@@ -38,7 +38,7 @@
     "angular-highlightjs": "^0.6.1",
     "angular-material": "^1.0.9",
     "angular-moment": "^1.0.0",
-    "angular-ui-router": "^0.3.1",
+    "angular-ui-router": "^0.4.0",
     "gulp-livereload": "^3.8.1",
     "highlight.js": "^9.8.0",
     "moment": "^2.15.2",

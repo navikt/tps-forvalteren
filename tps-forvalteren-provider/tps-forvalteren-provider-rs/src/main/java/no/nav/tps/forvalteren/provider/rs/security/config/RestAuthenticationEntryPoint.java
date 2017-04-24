@@ -13,7 +13,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint{
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.addHeader("WWW-Authenticate", "xBasic realm=\"tps-vedlikehold\"");
+        httpServletResponse.addHeader("WWW-Authenticate", "xBasic realm=\"tps-forvalteren\"");
         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not authenticated");
     }
 }

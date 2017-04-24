@@ -25,7 +25,7 @@ public class EnvironmentController {
     @Autowired
     private GetEnvironments getEnvironmentsCommand;
 
-    @Value("${tps.vedlikehold.production-mode}")
+    @Value("${tps.forvalteren.production-mode}")
     private boolean currentEnvironmentIsProd;
 
     /**

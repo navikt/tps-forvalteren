@@ -46,7 +46,7 @@ public class ServiceController {
     @Autowired
     private TpsRequestSender tpsRequestSender;
 
-    @Value("${tps.vedlikehold.production-mode}")
+    @Value("${tps.forvalteren.production-mode}")
     private boolean currentEnvironmentIsProd;
 
     @LogExceptions

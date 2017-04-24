@@ -1,5 +1,5 @@
 
-angular.module('tps-vedlikehold')
+angular.module('tps-forvalteren')
     .controller('SideNavigatorCtrl', ['$scope', '$mdDialog', '$state', 'serviceRutineFactory', 'serviceRutinesPromise', 'locationService',
         function($scope, $mdDialog,$state, serviceRutineFactory, serviceRutinesPromise, locationService) {
 
