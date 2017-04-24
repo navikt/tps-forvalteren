@@ -2,11 +2,13 @@ package no.nav.tps.forvalteren.consumer.rs.vera;
 
 import no.nav.freg.common.autoconfigure.selftest.spi.SelftestCheck;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import static no.nav.tps.forvalteren.consumer.rs.vera.DefaultVeraConsumer.BASE_URL;
 
 @Component
+@ConditionalOnProperty(prefix = "tps.vedlikehold", name = "production-mode", havingValue = "false", matchIfMissing = true)
 public class VeraSelftestCheck implements SelftestCheck {
 
     @Autowired
