@@ -3,11 +3,11 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
 
-    <name>tps-vedlikehold</name>
+    <name>tps-forvalteren</name>
 
     <selftest>
-        <path>/tps-vedlikehold/internal/selftest</path>
-        <humanReadablePath>/tps-vedlikehold/internal/selftest</humanReadablePath>
+        <path>/tps-forvalteren/internal/selftest</path>
+        <humanReadablePath>/tps-forvalteren/internal/selftest</humanReadablePath>
     </selftest>
 
     <!--Consumed resources-->
@@ -20,18 +20,18 @@
             <queue alias="TPS_FORESPORSEL_XML_O" jndi="jms/foresporsel_queue"/>
         </queueManager>
 
-        <datasource alias="tps-vedlikeholdDB" jndi="java:/jboss/datasources/tps-vedlikeholdDB"/>
+        <datasource alias="tps-forvalterenDB" jndi="java:/jboss/datasources/tps-forvalterenDB"/>
 
-        <applicationProperties alias="tps-vedlikeholdProperties"/>
+        <applicationProperties alias="tps-forvalterenProperties"/>
     </resources>
 
-    <security serviceUserResourceAlias="srvtps-vedlikehold">
+    <security serviceUserResourceAlias="srvtps-forvalteren">
         <logins>
             <saml/>
         </logins>
     </security>
 
     <artifacts>
-        <ear groupId="no.nav.tps.vedlikehold" artifactId="tps-vedlikehold-application-jee"/>
+        <ear groupId="no.nav.tps.forvalteren" artifactId="tps-forvalteren-application-jee"/>
     </artifacts>
 </application>

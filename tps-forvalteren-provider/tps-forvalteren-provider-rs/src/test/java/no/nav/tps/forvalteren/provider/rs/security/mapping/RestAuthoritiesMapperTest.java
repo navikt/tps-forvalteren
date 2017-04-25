@@ -94,7 +94,7 @@ public class RestAuthoritiesMapperTest {
     }
 
     @Test
-    public void mapAuthoritiesEklsludererRollerIrrelevanteForTPSKSomBrukerInnehar() {
+    public void mapAuthoritiesEklsludererRollerIrrelevanteForTPSFSomBrukerInnehar() {
         List<SimpleGrantedAuthority> currentRoles = asList(
                 CURRENT_DISK_6_ROLE,
                 CURRENT_DISK_7_ROLE,
