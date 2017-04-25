@@ -76,7 +76,7 @@
         <ojdbc6.version>11.2.0.3</ojdbc6.version>
 
         <!--Plugin versions-->
-        <aura-maven-plugin.version>6.1.20</aura-maven-plugin.version>
+        <aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>
         <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
         <maven-remote-resources-plugin.version>1.5</maven-remote-resources-plugin.version>
         <frontend-maven-plugin.version>1.2</frontend-maven-plugin.version>
