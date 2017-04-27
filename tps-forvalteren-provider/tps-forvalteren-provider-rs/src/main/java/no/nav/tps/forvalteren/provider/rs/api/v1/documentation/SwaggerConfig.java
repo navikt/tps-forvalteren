@@ -31,11 +31,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "TPS Maintenance Client",
-                "TPS-Vedlikeholdsklient summer intern project",
-                "1.0.0-SNAPSHOT",
+                "TPS-Forvalteren",
+                "TPS-Forvalteren",
+                "1.0.0",
                 "https://nav.no",
-                new Contact("Visma", "http://stash.devillo.no/projects/FEL/repos/tps-vedlikehold/browse", "nav.no"),
+                new Contact("Visma", "http://stash.devillo.no/projects/FEL/repos/tps-forvalteren/", "nav.no"),
                 "Super Strict Licence",
                 "https://opensource.org/licenses/super-strict-license"
         );
