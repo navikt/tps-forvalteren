@@ -1,0 +1,46 @@
+#tps-vk-header {
+
+  md-toolbar {
+    .md-toolbar-tools{
+      width: auto;
+
+
+      ng-md-icon{
+        svg{
+          fill:white !important;
+        }
+      }
+    }
+
+    .tps-vk-user-info {
+      text-align: right;
+    }
+
+    #tps-vk-logout-button, #tps-vk-rutiner-button {
+      background: rgb(224,224,224);
+      color: #222;
+    }
+
+    @media (max-width: 599px) {
+      padding: 20px 0;
+      border-radius: 0;
+
+      .md-toolbar-tools {
+        display: table;
+
+
+        a {
+          text-align: left;
+          text-decoration: underline;
+        }
+
+        .tps-vk-user-info {
+          margin: 10px 8px;
+          text-align: left !important;
+        }
+      }
+    }
+  }
+
+
+}

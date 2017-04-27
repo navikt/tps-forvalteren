@@ -1,0 +1,185 @@
+{
+
+
+  "FS03-FDNUMMER-KONTINFO-O": {
+    "display": {
+      "header": "${etternavn}, ${fornavn}",
+      "properties": [
+        {
+          "label": "Addresse",
+          "template": "${boAdresse1}, ${postnr} ${boPoststed}",
+          "flex": 30
+        },
+        {
+          "label": "Fødselsnummer",
+          "template": "${fodselsnummer}",
+          "flex": 15
+        },
+        {
+          "label": "TK-nummer",
+          "template": "${tknr}",
+          "flex": 15
+        },
+        {
+          "label": "Kommune",
+          "template": "${kommunenr}",
+          "flex": 15
+        },
+        {
+          "label": "NAV-enhet",
+          "template": "${kodeNAVenhet} ${kodeNAVenhetBeskr}",
+          "flex": 15
+        }
+      ]
+    },
+
+    "nonUniqueProperties":
+    [
+      "tlfPrivat",
+      "tlfJobb",
+      "tlfMobil"
+    ],
+
+    "rows": [
+      [
+        {
+          "fieldData": "fodselsnummer",
+          "label": "Fødselsnummer",
+          "flex": 20
+        },
+        {
+          "fieldData": "fodselsdato",
+          "label": "Fødselsdato",
+          "flex": 20
+        },
+        {
+          "fieldData": "personstatus",
+          "label": "Person status",
+          "flex": 20
+        },
+        {
+          "fieldData": "gjeldendePersonnavn",
+          "label": "Gjeldende Personnavn",
+          "flex": 20
+        },
+        {
+          "fieldData": "kortnavn",
+          "label": "Kortnavn",
+          "flex": 20
+        }
+      ],
+
+      [
+        {
+          "fieldData": "fornavn",
+          "label": "Fornavn",
+          "flex": 20
+        },
+        {
+          "fieldData": "mellomnavn",
+          "label": "Mellomnavn",
+          "flex": 20
+        },
+        {
+          "fieldData": "etternavn",
+          "label": "Etternavn",
+          "flex": 20
+        },
+        {
+          "fieldData": "navnTidspunkt",
+          "label": "Navn tidspunkt",
+          "flex": 20
+        },
+        {
+          "fieldData": "navnSystem",
+          "label": "Navnsystem",
+          "flex": 20
+        }
+      ],
+      [
+        {
+          "fieldData": "navnSaksbehandler",
+          "label": "Navn saksbehandler",
+          "flex": 20
+        },
+        {
+          "fieldData": "kontoNummer",
+          "label": "Kontonummer",
+          "flex": 20
+        },
+        {
+          "fieldData": "banknavn",
+          "label": "Banknavn",
+          "flex": 20
+        },
+        {
+          "fieldData": "regTidspunkt",
+          "label": "Reg. Tidspunkt",
+          "flex": 20
+        },
+        {
+          "fieldData": "regSystem",
+          "label": "Reg. System",
+          "flex": 20
+        }
+      ],
+
+      [
+        {
+          "fieldData": "regSaksbehandler",
+          "label": "Reg. Saksbehandler",
+          "flex": 20
+        },
+        {
+          "fieldData": "boAdresse1",
+          "label": "Bo-adresse 1",
+          "flex": 20
+        },
+        {
+          "fieldData": "boAdresse2",
+          "label": "Bo-adresse 2",
+          "flex": 20
+        },
+        {
+          "fieldData": "boPostnr",
+          "label": "Bo-postnummer",
+          "flex": 20
+        },
+        {
+          "fieldData": "boPoststed",
+          "label": "Bo-poststed",
+          "flex": 20
+        }
+      ],
+
+      [
+        {
+          "fieldData": "datoFom",
+          "label": "Bo-Dato Fra og Med",
+          "flex": 20
+        },
+        {
+          "fieldData": "datoTom",
+          "label": "Bo-Dato Til og Med",
+          "flex": 20
+        },
+        {
+          "fieldData": "adresse1",
+          "label": "Full Bo-adresse 2",
+          "flex": 20
+        },
+        {
+          "fieldData": "adresse2",
+          "label": "Full Bo-adresse 2",
+          "flex": 20
+        },
+        {
+          "fieldData": "tilleggsAdresseSKD",
+          "label": "Tilleggsadresse SKD",
+          "flex": 20
+        }
+      ]
+    ]
+  }
+
+}

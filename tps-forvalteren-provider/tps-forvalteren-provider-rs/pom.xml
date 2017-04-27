@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>tps-forvalteren-provider</artifactId>
+        <groupId>no.nav.tps.forvalteren</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>tps-forvalteren-provider-rs</artifactId>
+    <name>TPS Forvalteren :: Provider :: RS</name>
+
+    <dependencies>
+        <!--INTERNAL-->
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-common-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-service-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>freg-spring-boot-starter-log-exceptions</artifactId>
+        </dependency>
+
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+        </dependency>
+
+        <!--DOCUMENTATION-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+        </dependency>
+
+        <!-- Interne -->
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>metrics-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>metrics-spring</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

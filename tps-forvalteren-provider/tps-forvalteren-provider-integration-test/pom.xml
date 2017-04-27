@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>tps-forvalteren-provider</artifactId>
+        <groupId>no.nav.tps.forvalteren</groupId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>tps-forvalteren-provider-integration-test</artifactId>
+
+    <name>TPS Forvalteren :: Provider :: Integration test</name>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-service</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-common-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-service-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-provider-rs</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-ws</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-consumer-ws</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

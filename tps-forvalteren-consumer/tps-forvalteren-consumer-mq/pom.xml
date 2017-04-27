@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>tps-forvalteren-consumer</artifactId>
+        <groupId>no.nav.tps.forvalteren</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>tps-forvalteren-consumer-mq</artifactId>
+    <name>TPS Forvalteren :: Consumer :: MQ</name>
+
+    <dependencies>
+        <!--INTERNAL-->
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-consumer-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-consumer-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-service</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--SELFTEST-->
+        <dependency>
+            <groupId>no.nav.freg</groupId>
+            <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
+        </dependency>
+
+        <!--SPRING-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--JMS AND MQ-->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>mqjms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>jmqi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.disthub2</groupId>
+            <artifactId>dhbcore</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
