@@ -82,7 +82,6 @@ angular.module('tps-forvalteren.service-rutine')
                 return count;
             };
 
-            //TODO Denne får nullpointer ganske ofte fordi "text" er undefined ofte.
             $scope.resolveDisplayTemplate = function(text, personData) {
                 var pattern = /\$\{(.)*?}/g;
                 var matches = text.match(pattern);
@@ -225,12 +224,6 @@ angular.module('tps-forvalteren.service-rutine')
                 });
             }
 
-            function formatSelectValues() {
-                if ($scope.selectValues.aksjonsKode) {
-                    $scope.selectValues.aksjonsKode.sort();
-                }
-            }
-
             function initRequestForm() {
                 for (var i = 0; i < $scope.fields.length; i++) {
                     var parameter = $scope.fields[i];
@@ -289,7 +282,6 @@ angular.module('tps-forvalteren.service-rutine')
                 getServiceRutineRequiredParametersNames();
 
                 setSelectValues();
-                //formatSelectValues();
 
                 initRequestForm();
                 overwriteTabFocusBehaviour();

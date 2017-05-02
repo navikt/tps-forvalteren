@@ -6,9 +6,6 @@ import org.hamcrest.Description;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-/**
- * @author Kenneth Gunnerud (Visma Consulting AS).
- */
 class MethodMatchers {
 
     static BaseMatcher<Method> hasAnnotation(final Class<? extends Annotation> annotationClass) {

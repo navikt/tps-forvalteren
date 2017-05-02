@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${tps.forvalteren.cookie.path}")
-    private String cookiePath;
+    private String cookiePath="/";
 
     @Autowired
     private ActiveDirectoryLdapAuthenticationProvider authenticationProvider;
