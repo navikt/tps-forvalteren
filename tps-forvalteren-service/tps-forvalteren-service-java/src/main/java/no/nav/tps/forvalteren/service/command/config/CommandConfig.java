@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S015HentAdresselinjehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S610HentGT;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.service.command.Command;
@@ -50,6 +51,11 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver hentGT(){
         return new S610HentGT();
+    }
+
+    @Bean
+    ServiceRoutineResolver hentAd(){
+        return new S015HentAdresselinjehistorikk();
     }
 
 }
