@@ -1,0 +1,22 @@
+<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+
+    <div class="tps-vk-top md-whiteframe-z2">
+        <h2>Geografisk Tilknytning</h2>
+        <form name="requestForm" ng-submit="requestForm.$valid && submit()">
+            <tps-input-field input-param-name="'fnr'" form-data="formData" select-values=""></tps-input-field>
+
+            <md-input-container flex-gt-xs flex="20" class="tps-vk-input-container">
+                <label>Miljø</label>
+                <md-select ng-model="formData.environment" required>
+                    <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn">
+                Finn GT
+            </md-button>
+        </form>
+
+    </div>
+
+</div>
