@@ -25,4 +25,8 @@ angular.module('tps-forvalteren.service')
             return $state.current.name === 'servicerutine';
         };
 
+        self.redirectToGT = function() {
+            $state.go("gt");
+        }
+
     }]);
