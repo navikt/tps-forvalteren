@@ -19,15 +19,12 @@ angular.module('tps-forvalteren.service-rutine')
             var isValidServiceRutineName = false;
             var apiError = true;
 
-            $scope.isArrays = function(arr){
-            };
-
             $scope.loadServiceRutineTemplate = function () {
                 return isValidServiceRutineName && !apiError;
             };
 
             $scope.submit = function () {
-            var params = createParams($scope.formData);
+            var params = utilsService.createParametersFromFormData($scope.formData);
 
                 $scope.loading = true;
 
@@ -183,16 +180,6 @@ angular.module('tps-forvalteren.service-rutine')
 
             function getServiceRutineRequiredParametersNames() {
                 requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
-            }
-
-            function createParams(formData) {
-                var params = {};
-                for (var key in formData) {
-                    if (formData.hasOwnProperty(key) && formData[key]) {
-                        params[key] = formData[key];
-                    }
-                }
-                return params;
             }
 
             function setSelectValues() {

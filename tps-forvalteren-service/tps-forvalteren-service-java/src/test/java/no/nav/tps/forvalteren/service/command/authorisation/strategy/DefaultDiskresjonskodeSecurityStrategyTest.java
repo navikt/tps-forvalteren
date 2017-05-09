@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultDisreksjonskodeSecurityStrategyTest {
+public class DefaultDiskresjonskodeSecurityStrategyTest {
 
     private static final String KODE_SEKS = "6";
     private static final String KODE_SYV = "7";
@@ -55,7 +55,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
     private UserContextHolder userContextHolderMock;
 
     @InjectMocks
-    private DefaultDisreksjonskodeSecurityStrategy defaultDisreksjonskodeSecurityStrategy;
+    private DefaultDiskresjonskodeSecurityStrategy defaultDiskresjonskodeSecurityStrategy;
 
     @Before
     public void setup(){
@@ -65,9 +65,9 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
 
     @Test
     public void isSupported() throws Exception {
-        assertTrue(defaultDisreksjonskodeSecurityStrategy.isSupported(diskresjonskodeAuthorisation));
-        assertFalse(defaultDisreksjonskodeSecurityStrategy.isSupported(egenAnsattAuthorisation));
-        assertFalse(defaultDisreksjonskodeSecurityStrategy.isSupported(readAuthorisation));
+        assertTrue(defaultDiskresjonskodeSecurityStrategy.isSupported(diskresjonskodeAuthorisation));
+        assertFalse(defaultDiskresjonskodeSecurityStrategy.isSupported(egenAnsattAuthorisation));
+        assertFalse(defaultDiskresjonskodeSecurityStrategy.isSupported(readAuthorisation));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn(KODE_SEKS);
 
         userRoles.add(UserRole.ROLE_DISKRESJONESKODE_6_READ);
-        boolean isAuthorised = defaultDisreksjonskodeSecurityStrategy.isAuthorised( "any");
+        boolean isAuthorised = defaultDiskresjonskodeSecurityStrategy.isAuthorised( "any");
         assertThat(isAuthorised, is(true));
     }
 
@@ -86,7 +86,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn(KODE_SYV);
 
         userRoles.add(UserRole.ROLE_DISKRESJONESKODE_7_READ);
-        boolean isAuthorised = defaultDisreksjonskodeSecurityStrategy.isAuthorised( "any");
+        boolean isAuthorised = defaultDiskresjonskodeSecurityStrategy.isAuthorised( "any");
         assertThat(isAuthorised, is(true));
     }
 
@@ -95,7 +95,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
         when(diskresjonskodeConsumer.getDiskresjonskodeResponse(anyString())).thenReturn(hentDiskresjonskodeResponse);
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn(KODE_SEKS);
 
-        boolean isAuthorised = defaultDisreksjonskodeSecurityStrategy.isAuthorised( "any");
+        boolean isAuthorised = defaultDiskresjonskodeSecurityStrategy.isAuthorised( "any");
         assertThat(isAuthorised, is(false));
     }
 
@@ -104,7 +104,7 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
         when(diskresjonskodeConsumer.getDiskresjonskodeResponse(anyString())).thenReturn(hentDiskresjonskodeResponse);
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn(KODE_SYV);
 
-        boolean isAuthorised = defaultDisreksjonskodeSecurityStrategy.isAuthorised("any");
+        boolean isAuthorised = defaultDiskresjonskodeSecurityStrategy.isAuthorised("any");
         assertThat(isAuthorised, is(false));
     }
 
@@ -112,20 +112,20 @@ public class DefaultDisreksjonskodeSecurityStrategyTest {
         when(diskresjonskodeConsumer.getDiskresjonskodeResponse(anyString())).thenReturn(hentDiskresjonskodeResponse);
         when(hentDiskresjonskodeResponse.getDiskresjonskode()).thenReturn("");
 
-        assertThat(defaultDisreksjonskodeSecurityStrategy.isAuthorised("any"), is(true));
+        assertThat(defaultDiskresjonskodeSecurityStrategy.isAuthorised("any"), is(true));
 
         userRoles.add(UserRole.ROLE_DISKRESJONESKODE_6_READ);
-        assertThat(defaultDisreksjonskodeSecurityStrategy.isAuthorised("any"), is(true));
+        assertThat(defaultDiskresjonskodeSecurityStrategy.isAuthorised("any"), is(true));
 
         userRoles.remove(UserRole.ROLE_DISKRESJONESKODE_6_READ);
 
         userRoles.add(UserRole.ROLE_DISKRESJONESKODE_7_READ);
-        assertThat(defaultDisreksjonskodeSecurityStrategy.isAuthorised("any"), is(true));
+        assertThat(defaultDiskresjonskodeSecurityStrategy.isAuthorised("any"), is(true));
 
         userRoles.remove(UserRole.ROLE_DISKRESJONESKODE_7_READ);
 
         userRoles.add(UserRole.ROLE_DISKRESJONESKODE_7_READ);
         userRoles.add(UserRole.ROLE_DISKRESJONESKODE_6_READ);
-        assertThat(defaultDisreksjonskodeSecurityStrategy.isAuthorised("any"), is(true));
+        assertThat(defaultDiskresjonskodeSecurityStrategy.isAuthorised("any"), is(true));
     }
 }
