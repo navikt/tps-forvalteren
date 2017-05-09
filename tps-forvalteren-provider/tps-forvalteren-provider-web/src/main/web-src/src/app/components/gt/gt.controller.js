@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.gt')
-    .controller('GTCtrl', ['$scope', '$mdDialog', '$state', 'utilsService', 'environmentsPromise',
-        function ($scope, $mdDialog, $state,  utilsService, environmentsPromise) {
+    .controller('GTCtrl', ['$scope', '$mdDialog', '$state', 'utilsService', 'environmentsPromise','serviceRutineFactory',
+        function ($scope, $mdDialog, $state,  utilsService, environmentsPromise, serviceRutineFactory) {
 
             $scope.submit = function () {
                 $scope.formData.aksjonsKode = "B1";
