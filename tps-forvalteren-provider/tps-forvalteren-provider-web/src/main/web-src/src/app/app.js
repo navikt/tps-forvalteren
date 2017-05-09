@@ -129,9 +129,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                         user: ['authenticationService', function (authenticationService) {
                             return authenticationService.loadUser();
                         }],
-                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                            return serviceRutineFactory.loadFromServerServiceRutines();
-                        }],
                         environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                             return serviceRutineFactory.loadFromServerEnvironments();
                         }]

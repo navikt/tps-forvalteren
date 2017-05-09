@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.gt')
-    .controller('GTCtrl', ['$scope', '$mdDialog', '$state', 'serviceRutineFactory', 'serviceRutinesPromise', 'utilsService', 'environmentsPromise', 'locationService',
-        function ($scope, $mdDialog, $state, serviceRutineFactory, serviceRutinesPromise, utilsService, environmentsPromise, locationService) {
+    .controller('GTCtrl', ['$scope', '$mdDialog', '$state', 'utilsService', 'environmentsPromise',
+        function ($scope, $mdDialog, $state,  utilsService, environmentsPromise) {
 
             $scope.isServicerutineState = function () {
                 return locationService.isServicerutineState();
@@ -15,7 +15,7 @@ angular.module('tps-forvalteren.gt')
                     var xml = res.data.xml;
 
                     }, function (error) {
-                        console.log(error);
+                        console.error(error);
                     }
                 );
             };
