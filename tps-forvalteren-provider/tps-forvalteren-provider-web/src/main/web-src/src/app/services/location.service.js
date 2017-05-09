@@ -21,12 +21,12 @@ angular.module('tps-forvalteren.service')
             $state.go('servicerutine');
         };
 
+        self.redirectToGT = function() {
+            $state.go("gt");
+        };
+
         self.isServicerutineState = function(){
             return $state.current.name === 'servicerutine';
         };
-
-        self.redirectToGT = function() {
-            $state.go("gt");
-        }
 
     }]);

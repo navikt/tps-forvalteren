@@ -1,4 +1,4 @@
-angular.module('tps-forvalteren')
+angular.module('tps-forvalteren.gt')
     .controller('GTCtrl', ['$scope', '$mdDialog', '$state', 'serviceRutineFactory', 'serviceRutinesPromise', 'utilsService', 'environmentsPromise', 'locationService',
         function ($scope, $mdDialog, $state, serviceRutineFactory, serviceRutinesPromise, utilsService, environmentsPromise, locationService) {
 
@@ -6,22 +6,19 @@ angular.module('tps-forvalteren')
                 return locationService.isServicerutineState();
             };
 
-            $scope.formData = {
-                "environment": "",
-                "fnr": "",
-                "aksjonsKode": "A0"
-            };
-
             $scope.submit = function () {
-                serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", $scope.formData).then(function (res) {
+                $scope.formData.aksjonsKode = "B1";
+                var params = utilsService.createParametersFromFormData($scope.formData);
+                serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params).then(function (res) {
 
-                    //console.log(res.)
+                    var response = res.data.response;
+                    var xml = res.data.xml;
 
                     }, function (error) {
-                        console.log(error)
+                        console.log(error);
                     }
                 );
-            }
+            };
 
             function init() {
                 if (environmentsPromise) {

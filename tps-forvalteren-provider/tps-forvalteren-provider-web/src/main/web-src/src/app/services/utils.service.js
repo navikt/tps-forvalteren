@@ -12,6 +12,16 @@ angular.module('tps-forvalteren.service')
             return moment().format('YYYY-MM-DD');
         };
 
+        self.createParametersFromFormData = function(formData){
+            var params = {};
+            for (var key in formData) {
+                if (formData.hasOwnProperty(key) && formData[key]) {
+                    params[key] = formData[key];
+                }
+            }
+            return params;
+        };
+
         self.sortEnvironments = function(env) {
             if (env.length < 2) { return env; }
             return env.sort(function(a, b) {

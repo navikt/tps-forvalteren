@@ -15,7 +15,8 @@ require('./directives/directives.module');
 require('./factory/factory.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
-    'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives','pikaday']);
+    'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
+    'pikaday']);
 
 require('./shared/index');
 
@@ -76,7 +77,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 },
                 views: {
                     'content@': {
-                        templateUrl: "app/shared/gt/gt.html",
+                        templateUrl: "app/components/gt/gt.html",
                         controller: 'GTCtrl'
                     },
                     'header@': {
