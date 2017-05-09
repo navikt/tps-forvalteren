@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class DefaultDisreksjonskodeSecurityStrategy implements DiskresjonskodeSecurityStrategy {
+public class DefaultDiskresjonskodeSecurityStrategy implements DiskresjonskodeSecurityStrategy {
 
     private static final String KODE_SEKS = "6";
     private static final String KODE_SYV = "7";
