@@ -15,7 +15,8 @@ require('./directives/directives.module');
 require('./factory/factory.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
-    'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives','pikaday']);
+    'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
+    'pikaday']);
 
 require('./shared/index');
 
@@ -57,6 +58,39 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     }
                 }
             })
+
+            .state('gt', {
+                url: "/gt",
+                params: {
+                    serviceRutineName: null
+                },
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/gt/gt.html",
+                        controller: 'GTCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
             .state('servicerutine', {
                 url: "/{serviceRutineName}",
                 params: {
@@ -94,9 +128,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     resolve: {
                         user: ['authenticationService', function (authenticationService) {
                             return authenticationService.loadUser();
-                        }],
-                        serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                            return serviceRutineFactory.loadFromServerServiceRutines();
                         }],
                         environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                             return serviceRutineFactory.loadFromServerEnvironments();

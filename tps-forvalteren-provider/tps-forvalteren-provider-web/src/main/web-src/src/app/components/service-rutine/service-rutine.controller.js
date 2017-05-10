@@ -19,15 +19,12 @@ angular.module('tps-forvalteren.service-rutine')
             var isValidServiceRutineName = false;
             var apiError = true;
 
-            $scope.isArrays = function(arr){
-            };
-
             $scope.loadServiceRutineTemplate = function () {
                 return isValidServiceRutineName && !apiError;
             };
 
             $scope.submit = function () {
-            var params = createParams($scope.formData);
+            var params = utilsService.createParametersFromFormData($scope.formData);
 
                 $scope.loading = true;
 
@@ -82,7 +79,6 @@ angular.module('tps-forvalteren.service-rutine')
                 return count;
             };
 
-            //TODO Denne får nullpointer ganske ofte fordi "text" er undefined ofte.
             $scope.resolveDisplayTemplate = function(text, personData) {
                 var pattern = /\$\{(.)*?}/g;
                 var matches = text.match(pattern);
@@ -186,16 +182,6 @@ angular.module('tps-forvalteren.service-rutine')
                 requiredParameters = serviceRutineFactory.getServiceRutineRequiredParametersNames($scope.serviceRutineName);
             }
 
-            function createParams(formData) {
-                var params = {};
-                for (var key in formData) {
-                    if (formData.hasOwnProperty(key) && formData[key]) {
-                        params[key] = formData[key];
-                    }
-                }
-                return params;
-            }
-
             function setSelectValues() {
                 var selectValues = serviceRutineFactory.getSelectValuesServiceRutine($scope.serviceRutineName);
 
@@ -223,12 +209,6 @@ angular.module('tps-forvalteren.service-rutine')
                     });
 
                 });
-            }
-
-            function formatSelectValues() {
-                if ($scope.selectValues.aksjonsKode) {
-                    $scope.selectValues.aksjonsKode.sort();
-                }
             }
 
             function initRequestForm() {
@@ -289,7 +269,6 @@ angular.module('tps-forvalteren.service-rutine')
                 getServiceRutineRequiredParametersNames();
 
                 setSelectValues();
-                //formatSelectValues();
 
                 initRequestForm();
                 overwriteTabFocusBehaviour();

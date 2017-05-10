@@ -21,4 +21,8 @@ angular.module('tps-forvalteren')
                 locationService.redirectToServiceRutineState();
             };
 
+            $scope.openGT = function () {
+                locationService.redirectToGT();
+            };
+
         }]);

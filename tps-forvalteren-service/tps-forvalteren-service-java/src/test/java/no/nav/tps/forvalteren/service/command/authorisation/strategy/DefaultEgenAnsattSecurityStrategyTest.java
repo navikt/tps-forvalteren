@@ -1,15 +1,17 @@
 package no.nav.tps.forvalteren.service.command.authorisation.strategy;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.service.user.UserRole;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,14 +33,14 @@ public class DefaultEgenAnsattSecurityStrategyTest {
     private static final String FNR_ANY = "any";
     private HashSet<UserRole> userRoles = new HashSet<>();
 
-    @Mock
-    private DiskresjonskodeConsumer diskresjonskodeConsumer;
-
-    @Mock
-    private MessageProvider messageProvider;
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private UserContextHolder userContextHolder;
+
+    @Mock
+    private MessageProvider messageProvider;
 
     @Mock
     private DiskresjonskodeServiceRutineAuthorisation diskresjonskodeAuthorisation;
@@ -100,5 +103,13 @@ public class DefaultEgenAnsattSecurityStrategyTest {
 
         boolean isAuthorised = defaultEgenAnsattSecurityStrategy.isAuthorised( FNR_ANY);
         assertThat(isAuthorised, is(true));
+    }
+
+    @Test
+    public void handleUnauthorisedThrowsHttpUnauthorisedException() throws Exception{
+        expectedException.expect(HttpUnauthorisedException.class);
+
+        defaultEgenAnsattSecurityStrategy.handleUnauthorised();
+        verify(messageProvider).get(anyString());
     }
 }
