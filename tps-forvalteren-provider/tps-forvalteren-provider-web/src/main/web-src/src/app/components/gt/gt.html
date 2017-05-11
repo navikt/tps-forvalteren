@@ -16,7 +16,24 @@
                 Finn GT
             </md-button>
         </form>
+    </div>
+    <div class="tps-vk-top md-whiteframe-z2">
+        <h2>Geografisk Tilknytning</h2>
+        <form name="responseForm" layout-align="start start" flex="60">
+            <tps-output-field label="Regel" field-model="gt.bruker.regelForGeografiskTilknytning" ><br></tps-output-field>
+            <tps-output-field label="Landkode" field-model="gt.bruker.geografiskTilknytning.landkode" ></tps-output-field>
+            <tps-output-field label="Kommunennr" field-model="gt.bruker.geografiskTilknytning.kommunenr" ></tps-output-field>
+            <tps-output-field label="Bydel" field-model="gt.bruker.geografiskTilknytning.bydel" ></tps-output-field>
+
+            <h2>Person</h2>
+            <tps-output-field label="Personnavn" field-model="gt.personnavn.gjeldendePersonnavn"></tps-output-field>
+            <tps-output-field label="ID" field-model="gt.fodselsnummer"></tps-output-field>
+            <tps-output-field label="Identtype" field-model="gt.identType"></tps-output-field>
+            <tps-output-field label="Personstatus" field-model="gt.personstatusDetalj.kodePersonstatus"
+                              title="{{gt.personstatusDetalj.kodePersonstatusBeskr}}"></tps-output-field>
+            <tps-output-field label="Spesreg" field-model="gt.bruker.diskresjonDetalj.kodeDiskresjon"
+                              title="{{gt.bruker.diskresjonDetalj.kodeDiskresjonBeskr}}"></tps-output-field>
+        </form>
 
     </div>
-
 </div>
