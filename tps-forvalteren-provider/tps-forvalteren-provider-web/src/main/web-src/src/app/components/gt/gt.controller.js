@@ -10,6 +10,7 @@ angular.module('tps-forvalteren.gt')
                         $scope.xmlForm = utilsService.formatXml(res.data.xml);
                         prepStatus(res.data.response);
                     }, function (error) {
+                        nullstill();
                         console.error(error);
                     }
                 );
@@ -26,6 +27,13 @@ angular.module('tps-forvalteren.gt')
                 $scope.antallTreff = $scope.okStatus ? response.data.length : 0;
             };
 
+            var nullstill = function() {
+                $scope.gt = undefined;
+                $scope.xmlForm = undefined;
+                $scope.okStatus = undefined;
+                $scope.statusMld = undefined;
+                $scope.antallTreff = undefined;
+            };
 
             if (environmentsPromise) {
                 $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
