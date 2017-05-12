@@ -4,6 +4,7 @@ angular.module('tps-forvalteren.gt')
 
             $scope.submit = function () {
                 $scope.formData.aksjonsKode = "B0";
+                nullstill();
                 var params = utilsService.createParametersFromFormData($scope.formData);
                 serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params).then(function (res) {
                         $scope.gt = res.data.response.data[0];
