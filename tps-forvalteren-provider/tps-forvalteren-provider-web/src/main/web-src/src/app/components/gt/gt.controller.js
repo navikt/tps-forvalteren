@@ -2,27 +2,34 @@ angular.module('tps-forvalteren.gt')
     .controller('GTCtrl', ['$scope', '$mdDialog', '$state', 'utilsService', 'environmentsPromise','serviceRutineFactory',
         function ($scope, $mdDialog, $state,  utilsService, environmentsPromise, serviceRutineFactory) {
 
-            $scope.okStatus = true;
             $scope.submit = function () {
                 $scope.formData.aksjonsKode = "B0";
                 var params = utilsService.createParametersFromFormData($scope.formData);
                 serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params).then(function (res) {
-                        $scope.gt = res.data.response.data[0];
-                        $scope.xml = res.data.response.xml;
-                        $scope.status = res.data.response.status;
-                        $scope.okStatus = $scope.status.kode == '00'
+                        var response = res.data.response;
+                        $scope.gt = response.data[0];
+                        $scope.xml = response.xml;
+                        prepStatus(response);
                     }, function (error) {
                         console.error(error);
                     }
                 );
             };
 
-            function init() {
-                if (environmentsPromise) {
-                    $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
-                }
-            }
+            var prepStatus = function (response) {
+                $scope.okStatus = response.status.kode == '00';
 
-            init();
+                var svarStatus = "Status: " + response.status.kode;
+                if (!$scope.okStatus) {
+                    svarStatus += "; Melding: " + response.status.melding + ": " + response.status.utfyllendeMelding;
+                }
+                $scope.statusMld = svarStatus;
+                $scope.antallTreff = $scope.okStatus ? response.data.length : 0;
+            };
+
+
+            if (environmentsPromise) {
+                $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
+            }
         }]);
 
