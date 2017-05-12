@@ -17,46 +17,64 @@
             </md-button>
         </form>
     </div>
-    <div class="tps-vk-top md-whiteframe-z2">
-        <form name="responseForm" layout="column" layout-align="start start" flex="60">
-            <div ng-if="okStatus">
-                <h2>Utledet GT</h2>
-                <div layout="row">
-                    <tps-output-field flex="40" label="Regel" field-model="gt.bruker.regelForGeografiskTilknytning"></tps-output-field>
-                    <span flex="40"></span>
-                    <a flex="40" target="_blank" title="Beskrivelse av regler for Geografisk Tilknytning"
-                       href="https://confluence.adeo.no/display/FEL/K411GETI+Utlede+Geografisk+Tilknytning">GT regelverk</a>
-                </div>
-                <div layout="row">
-                    <tps-output-field label="Landkode" field-model="gt.bruker.geografiskTilknytning.landkode"></tps-output-field>
-                    <tps-output-field label="Kommunennr" field-model="gt.bruker.geografiskTilknytning.kommunenr"></tps-output-field>
-                    <tps-output-field flex="40" label="Bydel" field-model="gt.bruker.geografiskTilknytning.bydel"></tps-output-field>
-                </div>
 
-                <h2>Person</h2>
-                <div layout="row">
-                    <tps-output-field label="Personnavn" field-model="gt.personnavn.gjeldendePersonnavn"></tps-output-field>
-                </div>
-                <div layout="row">
-                    <tps-output-field label="ID" field-model="gt.fodselsnummer"></tps-output-field>
-                    <tps-output-field label="Identtype" field-model="gt.identType"></tps-output-field>
-                </div>
-                <div layout="row">
-                    <tps-output-field label="Personstatus" field-model="gt.personstatusDetalj.kodePersonstatus"
-                                      title="{{gt.personstatusDetalj.kodePersonstatusBeskr}}"></tps-output-field>
-                    <tps-output-field label="Spesreg" field-model="gt.bruker.diskresjonDetalj.kodeDiskresjon"
-                                      title="{{gt.bruker.diskresjonDetalj.kodeDiskresjonBeskr}}"></tps-output-field>
-                </div>
-            </div>
 
-            <div ng-if="!okStatus">
-                <h2>Status</h2>
-                <div layout="column">
-                    <tps-output-field label="Kode" field-model="status.kode"></tps-output-field>
-                    <tps-output-field label="Melding" field-model="status.melding"></tps-output-field>
-                    <tps-output-field label="Utfyllende Melding" field-model="status.utfyllendeMelding"></tps-output-field>
-                </div>
-            </div>
-        </form>
-    </div>
+        <!-- Resulting Response -->
+        <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
+            <!-- Setup Tabs -->
+            <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
+                <!-- Tab Readable Result -->
+                <md-tab label="Resultat" style="background-color: rgb(250,250,250)">
+                    <!-- Include HTML file "response.html" -->
+                    <div class="tps-vk-top md-whiteframe-z2">
+                        <form name="responseForm" layout="column" layout-align="start start" flex="60">
+                            <div ng-if="okStatus">
+                                <h2>Utledet GT</h2>
+                                <div layout="row">
+                                    <tps-output-field flex="20" label="Regel" field-model="gt.bruker.regelForGeografiskTilknytning"></tps-output-field>
+                                    <span flex="40"></span>
+                                    <a flex="40" target="_blank" title="Beskrivelse av regler for Geografisk Tilknytning"
+                                       href="https://confluence.adeo.no/display/FEL/K411GETI+Utlede+Geografisk+Tilknytning">GT regelverk</a>
+                                </div>
+                                <div layout="row">
+                                    <tps-output-field label="Landkode" flex="20" field-model="gt.bruker.geografiskTilknytning.landkode"></tps-output-field>
+                                    <tps-output-field label="Kommunennr" flex="20" field-model="gt.bruker.geografiskTilknytning.kommunenr"></tps-output-field>
+                                    <tps-output-field label="Bydel" flex="20" field-model="gt.bruker.geografiskTilknytning.bydel"></tps-output-field>
+                                </div>
+
+                                <h2>Person</h2>
+                                <div layout="row">
+                                    <tps-output-field label="Personnavn" flex="80" field-model="gt.personnavn.gjeldendePersonnavn"></tps-output-field>
+                                </div>
+                                <div layout="row">
+                                    <tps-output-field label="ID" field-model="gt.fodselsnummer"></tps-output-field>
+                                    <tps-output-field label="Identtype" flex="20" field-model="gt.identType"></tps-output-field>
+                                </div>
+                                <div layout="row">
+                                    <tps-output-field label="Personstatus" flex="20" field-model="gt.personstatusDetalj.kodePersonstatus"
+                                                      title="{{gt.personstatusDetalj.kodePersonstatusBeskr}}"></tps-output-field>
+                                    <tps-output-field label="Spesreg" flex="20" field-model="gt.bruker.diskresjonDetalj.kodeDiskresjon"
+                                                      title="{{gt.bruker.diskresjonDetalj.kodeDiskresjonBeskr}}"></tps-output-field>
+                                </div>
+                            </div>
+
+                            <div ng-if="!okStatus">
+                                <h2>Status</h2>
+                                <div layout="column">
+                                    <tps-output-field label="Kode" field-model="status.kode"></tps-output-field>
+                                    <tps-output-field label="Melding" field-model="status.melding"></tps-output-field>
+                                    <tps-output-field flex="40" label="Utfyllende Melding" field-model="status.utfyllendeMelding"></tps-output-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </md-tab>
+                <!-- Tab XML Result -->
+                <md-tab label="XML">
+                    <div class="tps-vk-xml-panel" hljs hljs-source="xmlForm" hljs-language="xml">
+                        {{xml}}
+                    </div>
+                </md-tab>
+            </md-tabs>
+        </md-content>
 </div>
