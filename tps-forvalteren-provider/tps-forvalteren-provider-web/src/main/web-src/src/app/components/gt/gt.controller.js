@@ -11,7 +11,7 @@ angular.module('tps-forvalteren.gt')
                         $scope.xmlForm = utilsService.formatXml(res.data.xml);
                         prepStatus(res.data.response);
                     }, function (error) {
-                        nullstill();
+                        showAlertTPSError(error);
                         console.error(error);
                     }
                 );
@@ -35,6 +35,30 @@ angular.module('tps-forvalteren.gt')
                 $scope.statusMld = undefined;
                 $scope.antallTreff = undefined;
             };
+
+            function showAlertTPSError(error) {
+                var errorMessages = {
+                    401: {
+                        title: 'Ikke autorisert',
+                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                    },
+                    500: {
+                        title: 'Serverfeil',
+                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
+                        ariaLabel: 'Feil ved henting av data fra TPS'
+                    }
+                };
+
+                var errorObj = error.status == 401 ? errorMessages[401] : errorMessages[500];
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title(errorObj.title)
+                        .textContent(errorObj.text)
+                        .ariaLabel(errorObj.ariaLabel)
+                        .ok('OK')
+                );
+            }
 
             if (environmentsPromise) {
                 $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
