@@ -8,20 +8,6 @@ angular.module('tps-forvalteren.gt')
                 hentServiceRutinePromise();
             };
 
-            function hentServiceRutine(serviceRutineNavn) {
-                $scope.formData.aksjonsKode = "B0";
-                nullstill();
-                var params = utilsService.createParametersFromFormData($scope.formData);
-                serviceRutineFactory.getServiceRutineResponse(serviceRutineNavn, params).then(function (res) {
-                        $scope.gt = res.data.response.data[0];
-                        $scope.xmlForm = utilsService.formatXml(res.data.xml);
-                        prepFooter(res.data.response);
-                    }, function (error) {
-                        showAlertTPSError(error);
-                    }
-                );
-            }
-
             function hentServiceRutinePromise() {
                 nullstill();
                 $scope.formData.aksjonsKode = "B0";
