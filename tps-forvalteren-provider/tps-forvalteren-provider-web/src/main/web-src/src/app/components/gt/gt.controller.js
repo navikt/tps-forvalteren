@@ -5,11 +5,11 @@ angular.module('tps-forvalteren.gt')
             $scope.isArray = angular.isArray;
 
             $scope.submit = function () {
-                hentServiceRutinePromise();
+                executeServiceRutiner();
             };
 
-            function hentServiceRutinePromise() {
-                nullstill();
+            function executeServiceRutiner() {
+                nullstillOutputFields();
                 $scope.formData.aksjonsKode = "B0";
                 var params = utilsService.createParametersFromFormData($scope.formData);
                 var kjernePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params);
@@ -59,7 +59,7 @@ angular.module('tps-forvalteren.gt')
                 $scope.treff = response.data ? response.data.length : 0;
             };
 
-            var nullstill = function() {
+            var nullstillOutputFields = function() {
                 $scope.gt = undefined;
                 $scope.xmlForm = undefined;
                 $scope.status = undefined;
