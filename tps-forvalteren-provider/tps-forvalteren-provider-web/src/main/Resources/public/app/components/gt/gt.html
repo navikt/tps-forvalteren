@@ -29,7 +29,11 @@
                 <!-- Include HTML file "response.html" -->
                 <div class="tps-vk-top">
                     <form name="responseForm" layout-align="start start">
-                        <h2>Utledet GT</h2>
+                        <div layout="row">
+                            <h2>Utledet GT</h2>
+                            <span></span>
+                            <status-field status="gtStatus"></status-field>
+                        </div>
                         <div layout="row">
                             <tps-output-field flex="5" label="Regel" field-model="gt.bruker.regelForGeografiskTilknytning"></tps-output-field>
                             <span flex="20"></span>
@@ -61,20 +65,12 @@
                                               title="{{gt.bruker.diskresjonDetalj.kodeDiskresjonBeskr}}"></tps-output-field>
                         </div>
 
-                        <div layout="row">
+                        <div layout="row"  layout-align="start center">
                             <h2>Boadresse Historikk</h2>
+                            <span></span>
                             <status-field status="adrHistStatus"></status-field>
                         </div>
                         <div layout="column">
-                            <div layout="row" >
-                                <tps-output-field label="Boadresse 1" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].boAdresse1" title="Boadresse"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse[1].postnr" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].poststed" title="Poststed"></tps-output-field>
-                                <tps-output-field label="TK Nummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse[1].tknr" title="tknr"></tps-output-field>
-                                <tps-output-field label="Endringstype" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse[1].endringsType" title="Endringstype"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].adresseFom" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].adresseTom" title="Dato TOM"></tps-output-field>
-                            </div>
                             <div layout="row"
                                  ng-if="isArray(adresseHistorikk['boAdresser']['boAdresse'][0])"
                                  ng-repeat="adresse in adresseHistorikk.boAdresser.boAdresse[0]">
@@ -86,9 +82,22 @@
                                 <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.adresseFom" title="Dato FOM"></tps-output-field>
                                 <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.adresseTom" title="Dato TOM"></tps-output-field>
                             </div>
+                            <div layout="row" >
+                                <tps-output-field label="Boadresse 1" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].boAdresse1" title="Boadresse"></tps-output-field>
+                                <tps-output-field label="Postnummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse[1].postnr" title="Postnummer"></tps-output-field>
+                                <tps-output-field label="Poststed" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].poststed" title="Poststed"></tps-output-field>
+                                <tps-output-field label="TK Nummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse[1].tknr" title="tknr"></tps-output-field>
+                                <tps-output-field label="Endringstype" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse[1].endringsType" title="Endringstype"></tps-output-field>
+                                <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].adresseFom" title="Dato FOM"></tps-output-field>
+                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse[1].adresseTom" title="Dato TOM"></tps-output-field>
+                            </div>
                         </div>
 
-                        <h2>Adresselinje Historikk</h2>
+                        <div layout="row">
+                            <h2>Adresselinje Historikk</h2>
+                            <span></span>
+                            <status-field status="adrLinjeStatus"></status-field>
+                        </div>
                         <div layout="column">
                             <div layout="row" >
                                 <tps-output-field label="Adresse 1" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.adresse1" title="Adresse 1"></tps-output-field>
@@ -111,7 +120,11 @@
                             </div>
                         </div>
 
-                        <h2>Utvandring Historikk</h2>
+                        <div layout="row">
+                            <h2>Utvandring Historikk</h2>
+                            <span></span>
+                            <status-field status="utvandringStatus"></status-field>
+                        </div>
                         <div layout="row">
                             <tps-output-field label="Antall Utvandringer" flex="30" field-model="utvandring.antallUtvandring" title="AntallUtvandring"></tps-output-field>
                         </div>
