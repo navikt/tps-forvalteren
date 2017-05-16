@@ -23,6 +23,7 @@ angular.module('tps-forvalteren.gt')
             }
 
             function hentServiceRutinePromise() {
+                nullstill();
                 $scope.formData.aksjonsKode = "B0";
                 var params = utilsService.createParametersFromFormData($scope.formData);
                 var kjernePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params);
@@ -61,6 +62,8 @@ angular.module('tps-forvalteren.gt')
                     $scope.xmlFormUtvandring = utilsService.formatXml(res[3].data.xml);
                     $scope.utvandringStatus = utvandringResult.status;
 
+                }).then(function (error) {
+                    showAlertTPSError(error);
                 });
             }
 
@@ -75,6 +78,15 @@ angular.module('tps-forvalteren.gt')
                 $scope.xmlForm = undefined;
                 $scope.status = undefined;
                 $scope.treff = undefined;
+                $scope.adresseHistorikk = undefined;
+                $scope.xmlFormAdrHist = undefined;
+                $scope.adrHistStatus = undefined;
+                $scope.adresseLinjer = undefined;
+                $scope.xmlFormAdrLinje = undefined;
+                $scope.adrLinjeStatus = undefined;
+                $scope.utvandring = undefined;
+                $scope.xmlFormUtvandring = undefined;
+                $scope.utvandringStatus = undefined;
             };
 
             function showAlertTPSError(error) {
