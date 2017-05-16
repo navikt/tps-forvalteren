@@ -1,6 +1,7 @@
 
 angular.module('tps-forvalteren.directives', []);
 
-require('./input-field.directive');
-require('./output-field.directive');
+require('./tps-input-field.directive');
+require('./tps-output-field.directive');
 require('./output-field-empty.directive');
+require('./footer-status.directive');

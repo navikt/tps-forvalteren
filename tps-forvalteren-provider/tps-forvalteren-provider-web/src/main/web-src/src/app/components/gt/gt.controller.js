@@ -9,13 +9,15 @@ angular.module('tps-forvalteren.gt')
             };
 
             function hentServiceRutine(serviceRutineNavn) {
+                $scope.formData.aksjonsKode = "B0";
+                nullstill();
                 var params = utilsService.createParametersFromFormData($scope.formData);
                 serviceRutineFactory.getServiceRutineResponse(serviceRutineNavn, params).then(function (res) {
                         $scope.gt = res.data.response.data[0];
                         $scope.xmlForm = utilsService.formatXml(res.data.xml);
-                        prepStatus(res.data.response);
+                        prepFooter(res.data.response);
                     }, function (error) {
-                        console.error(error);
+                        showAlertTPSError(error);
                     }
                 );
             }
@@ -56,16 +58,41 @@ angular.module('tps-forvalteren.gt')
             }
 
 
-            var prepStatus = function (response) {
-                $scope.okStatus = response.status.kode == '00';
-
-                var svarStatus = "Status: " + response.status.kode;
-                if (!$scope.okStatus) {
-                    svarStatus += "; Melding: " + response.status.melding + ": " + response.status.utfyllendeMelding;
-                }
-                $scope.statusMld = svarStatus;
-                $scope.antallTreff = $scope.okStatus ? response.data.length : 0;
+            var prepFooter = function (response) {
+                $scope.status = response.status;
+                $scope.treff = response.data ? response.data.length : 0;
             };
+
+            var nullstill = function() {
+                $scope.gt = undefined;
+                $scope.xmlForm = undefined;
+                $scope.status = undefined;
+                $scope.treff = undefined;
+            };
+
+            function showAlertTPSError(error) {
+                var errorMessages = {
+                    401: {
+                        title: 'Ikke autorisert',
+                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                    },
+                    500: {
+                        title: 'Serverfeil',
+                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
+                        ariaLabel: 'Feil ved henting av data fra TPS'
+                    }
+                };
+
+                var errorObj = error.status == 401 ? errorMessages[401] : errorMessages[500];
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title(errorObj.title)
+                        .textContent(errorObj.text)
+                        .ariaLabel(errorObj.ariaLabel)
+                        .ok('OK')
+                );
+            }
 
             if (environmentsPromise) {
                 $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
