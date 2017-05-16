@@ -48,9 +48,9 @@ angular.module('tps-forvalteren.gt')
                     $scope.xmlFormUtvandring = utilsService.formatXml(res[3].data.xml);
                     $scope.utvandringStatus = utvandringResult.status;
 
-                }).then(function (error) {
+                }).catch(function (error) {
                     showAlertTPSError(error);
-                });
+                }).done();
             }
 
 
