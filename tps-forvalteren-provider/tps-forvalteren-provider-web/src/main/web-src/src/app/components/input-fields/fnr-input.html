@@ -1,6 +1,7 @@
 <md-input-container class="tps-vk-input-container" flex>
     <label>FNR/DNR/BNR</label>
-    <input name="fnrInput" ng-required="isRequired('fnr')" md-maxlength="11" pattern="[0-9]{11}" ng-model="formData.fnr"/>
+    <input name="fnrInput" id="fnrInput" ng-required="isRequired('fnr')" md-maxlength="11" pattern="[0-9]{11}" ng-model="formData.fnr"
+           onkeyup="document.getElementById('fnrInput').value = document.getElementById('fnrInput').value.trim()" />
     <div ng-messages="requestForm.fnrInput.$error" ng-show="requestForm.fnrInput.$touched">
         <div ng-message="pattern">Feltet kan kun inneholde tall</div>
         <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>

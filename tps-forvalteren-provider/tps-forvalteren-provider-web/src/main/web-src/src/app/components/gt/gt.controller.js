@@ -9,31 +9,23 @@ angular.module('tps-forvalteren.gt')
                 serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params).then(function (res) {
                         $scope.gt = res.data.response.data[0];
                         $scope.xmlForm = utilsService.formatXml(res.data.xml);
-                        prepStatus(res.data.response);
+                        prepFooter(res.data.response);
                     }, function (error) {
                         showAlertTPSError(error);
-                        console.error(error);
                     }
                 );
             };
 
-            var prepStatus = function (response) {
-                $scope.okStatus = response.status.kode == '00';
-
-                var svarStatus = "Status: " + response.status.kode;
-                if (!$scope.okStatus) {
-                    svarStatus += "; Melding: " + response.status.melding + ": " + response.status.utfyllendeMelding;
-                }
-                $scope.statusMld = svarStatus;
-                $scope.antallTreff = $scope.okStatus ? response.data.length : 0;
+            var prepFooter = function (response) {
+                $scope.status = response.status;
+                $scope.treff = response.data ? response.data.length : 0;
             };
 
             var nullstill = function() {
                 $scope.gt = undefined;
                 $scope.xmlForm = undefined;
-                $scope.okStatus = undefined;
-                $scope.statusMld = undefined;
-                $scope.antallTreff = undefined;
+                $scope.status = undefined;
+                $scope.treff = undefined;
             };
 
             function showAlertTPSError(error) {
