@@ -21,7 +21,7 @@ public class ServiceRoutineControllerIntegrationTest extends AbstractRsProviderI
 
         mvc.perform(get(URL))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$", hasSize(4)))
         ;
 
     }
