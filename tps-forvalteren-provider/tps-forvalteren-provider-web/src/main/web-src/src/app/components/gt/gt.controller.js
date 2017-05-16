@@ -42,17 +42,20 @@ angular.module('tps-forvalteren.gt')
 
                     var gtResult = res[0].data.response;
                     $scope.gt = gtResult.data[0];
+                    $scope.xmlFormGT = utilsService.formatXml(res[0].data.xml);
+                    prepFooter(gtResult);
 
                     var hisResult = res[1].data.response;
                     $scope.adresseHistorikk = hisResult.data[0];
+                    $scope.xmlFormAdrHist = utilsService.formatXml(res[0].data.xml);
 
                     var adresseLinjeResult = res[2].data.response;
                     $scope.adresseLinjer = adresseLinjeResult.data[0];
-                    console.log($scope.adresseLinjer);
+                    $scope.xmlFormAdrLinje = utilsService.formatXml(res[0].data.xml);
 
                     var utvandringResult = res[3].data.response;
                     $scope.utvandring = utvandringResult.data[0];
-                    console.log($scope.utvandring);
+                    $scope.xmlFormUtvandring = utilsService.formatXml(res[0].data.xml);
 
                 });
             }
