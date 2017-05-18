@@ -1,6 +1,6 @@
 
 angular.module('tps-forvalteren.service')
-    .service('utilsService', ['moment', function(moment){
+    .service('utilsService', ['moment', '$mdDialog', function(moment, $mdDialog){
 
         var self = this;
 
@@ -124,4 +124,33 @@ angular.module('tps-forvalteren.service')
                 return formatted;
             }
         };
+
+        self.showAlertError = function (error) {
+            var errorMessages = {
+                401: {
+                    title: 'Ikke autorisert',
+                    text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                    ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                },
+                404: {
+                    title: 'Ukjent side',
+                    text: error.config.url + ' finnes ikke',
+                    ariaLabel: 'Opprett siden på server og forsøk igjen.'
+                },
+                500: {
+                    title: 'Serverfeil',
+                    text: 'Fikk ikke hentet informasjon fra server.',
+                    ariaLabel: 'Feil ved henting av data fra server'
+                }
+            };
+
+            var errorObj = errorMessages[error.status];
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .title(errorObj.title)
+                    .textContent(errorObj.text)
+                    .ariaLabel(errorObj.ariaLabel)
+                    .ok('OK')
+            );
+        }
     }]);

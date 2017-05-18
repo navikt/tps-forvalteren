@@ -1,0 +1,25 @@
+<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+
+    <div class="tps-vk-top md-whiteframe-z2">
+        <h2>Testdata</h2>
+
+
+        <a ng-href="http:vg.no">Opprett ny testperson</a>
+        <md-input-container class="tps-vk-input-container" layout="col">
+            <md-checkbox md-tab-label="Velg alle" data-ng-model="allePersoner" ng-click="velgAlle()"></md-checkbox>
+            Velg alle
+        </md-input-container>
+
+        <div ng-repeat="person in personer" ng-class="table" ng-click="selected = $index" layout="row" flex="100">
+            <md-input-container class="tps-vk-input-container" layout="col">
+                <md-checkbox md-tab-label="Velg" data-ng-model="person.velg"></md-checkbox>
+            </md-input-container>
+            <tps-output-field label="Ident" layout="col" flex="10" field-model="person.ident" title="Identitet"></tps-output-field>
+            <tps-output-field label="Type" layout="col" flex="5" field-model="person.identtype" title="Type av identitet"></tps-output-field>
+            <tps-output-field label="Fornavn" layout="col" flex="15" field-model="person.fornavn" title="Fornavn"></tps-output-field>
+            <tps-output-field label="Mellomnavn" layout="col" flex="15" field-model="person.mellomnavn" title="Mellomnavn"></tps-output-field>
+            <tps-output-field label="Etternavn" layout="col" flex="15" field-model="person.etternavn" title="Etternavn"></tps-output-field>
+            <tps-output-field label="Kjønn" layout="col" flex="5" field-model="person.kjonn" title="Kjønn"></tps-output-field>
+        </div>
+    </div>
+</div>
