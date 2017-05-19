@@ -7,7 +7,7 @@ angular.module('tps-forvalteren.service')
 
         self.getTestpersoner = function(){
             var defer = $q.defer();
-            $http.get(url + "getTestpersoner").then(
+            $http.get(url + "personer").then(
                 function (data) {
                     defer.resolve(data);
                 },
