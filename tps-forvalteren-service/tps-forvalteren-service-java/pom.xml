@@ -46,6 +46,12 @@
             <artifactId>jackson-xml-databind</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>org.apache.directory.studio</groupId>

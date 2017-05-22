@@ -9,6 +9,7 @@ angular.module('tps-forvalteren.gt')
             };
 
             function executeServiceRutiner() {
+                $scope.loading = true;
                 nullstillOutputFields();
                 $scope.formData.aksjonsKode = "B0";
                 var params = utilsService.createParametersFromFormData($scope.formData);
@@ -27,30 +28,32 @@ angular.module('tps-forvalteren.gt')
 
                 $q.all([kjernePromise, adressePromise, adresseLinjePromise, utvandringPromise]).then(function (res) {
 
+                    $scope.loading = false;
+
                     var gtResult = res[0].data.response;
-                    $scope.gt = gtResult.data[0];
+                    $scope.gt = gtResult.data1;
                     $scope.xmlFormGT = utilsService.formatXml(res[0].data.xml);
                     $scope.gtStatus = gtResult.status;
                     prepFooter(gtResult);
 
                     var hisResult = res[1].data.response;
-                    $scope.adresseHistorikk = hisResult.data[0];
+                    $scope.adresseHistorikk = hisResult.data1;
                     $scope.xmlFormAdrHist = utilsService.formatXml(res[1].data.xml);
                     $scope.adrHistStatus = hisResult.status;
 
                     var adresseLinjeResult = res[2].data.response;
-                    $scope.adresseLinjer = adresseLinjeResult.data[0];
+                    $scope.adresseLinjer = adresseLinjeResult.data1;
                     $scope.xmlFormAdrLinje = utilsService.formatXml(res[2].data.xml);
                     $scope.adrLinjeStatus = adresseLinjeResult.status;
 
                     var utvandringResult = res[3].data.response;
-                    $scope.utvandring = utvandringResult.data[0];
+                    $scope.utvandring = utvandringResult.data1;
                     $scope.xmlFormUtvandring = utilsService.formatXml(res[3].data.xml);
                     $scope.utvandringStatus = utvandringResult.status;
 
-                }).catch(function (error) {
+                },function (error) {
                     showAlertTPSError(error);
-                }).done();
+                });
             }
 
 

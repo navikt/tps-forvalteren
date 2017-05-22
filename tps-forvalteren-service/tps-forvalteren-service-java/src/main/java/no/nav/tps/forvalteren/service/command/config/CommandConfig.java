@@ -9,6 +9,7 @@ import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S010Adressehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S015HentAdresselinjehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S016Utvandring;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S610HentGT;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.service.command.Command;
@@ -68,6 +69,11 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver hentUtvandring(){
         return new S016Utvandring();
+    }
+
+    @Bean
+    ServiceRoutineResolver sokPersoner(){
+        return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
 
 }

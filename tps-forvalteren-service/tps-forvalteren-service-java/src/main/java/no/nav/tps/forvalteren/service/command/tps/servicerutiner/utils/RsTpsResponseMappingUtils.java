@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,35 @@ public class RsTpsResponseMappingUtils {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response response) throws IOException {
+        TpsServiceRoutineResponse tpsServiceRutineResponse = new TpsServiceRoutineResponse();
+
+        tpsServiceRutineResponse.setXml(response.getRawXml());
+
+        JSONObject jsonObject = new JSONObject();
+        if (response.getDataXmls() != null) {
+            List<JSONObject> data = response.getDataXmls()
+                    .stream()
+                    .map(xml -> XML.toJSONObject(xml))
+                    .collect(Collectors.toList());
+
+            for(int i = 0; i < data.size(); i++){
+                jsonObject.put("data"+(i+1), data.get(i));
+            }
+        }
+
+        if (response.getTotalHits() != null) {
+            jsonObject.put("antallTotalt", response.getTotalHits());
+        }
+
+        Map data = objectMapper.readValue(jsonObject.toString(), Map.class);
+        tpsServiceRutineResponse.setResponse(data);
+
+        return tpsServiceRutineResponse;
+    }
+
+    public TpsServiceRoutineResponse convertToTpsServiceRutineResponseRecursively(Response response) throws IOException {
         TpsServiceRoutineResponse tpsServiceRutineResponse = new TpsServiceRoutineResponse();
 
         tpsServiceRutineResponse.setXml(response.getRawXml());
@@ -33,12 +63,12 @@ public class RsTpsResponseMappingUtils {
 
 
         if(response.getDataXmls() != null){
-           List<Map> data = response.getDataXmls()
-                   .stream()
-                   .map(this::xmlToLinkedHashMap)
-                   .collect(Collectors.toList());
+            List<Map> data = response.getDataXmls()
+                    .stream()
+                    .map(this::xmlToLinkedHashMap)
+                    .collect(Collectors.toList());
 
-           responseMap.put("data", data);
+            responseMap.put("data", data);
         }
 
         if(response.getTotalHits() != null){
@@ -51,7 +81,6 @@ public class RsTpsResponseMappingUtils {
 
         return tpsServiceRutineResponse;
     }
-
 
     private Map<String, Object> xmlToLinkedHashMap(String xml){
         Map<String, Object> responseMap = new LinkedHashMap<>();

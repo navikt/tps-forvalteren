@@ -194,6 +194,12 @@ app.filter('startFromKey', function () {
     };
 });
 
+app.filter('nospace', function () {
+    return function (value) {
+        return (!value) ? '' : value.replace(/ /g, '');
+    };
+});
+
 app.filter('startFromIndex', function () {
     return function (inputObject, startIndex) {
         return inputObject.slice(startIndex);
