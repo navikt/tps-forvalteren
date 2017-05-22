@@ -91,8 +91,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
-            .state('testdata', {
-                url: "/testdata",
+            .state('show-testdata', {
+                url: "/show-testdata",
                 params: {
                     serviceRutineName: null
                 },
@@ -109,8 +109,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 },
                 views: {
                     'content@': {
-                        templateUrl: "app/components/testdata/testdata.html",
-                        controller: 'TestdataCtrl'
+                        templateUrl: "app/components/show-testdata/show-testdata.html",
+                        controller: 'ShowTestdataCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",
