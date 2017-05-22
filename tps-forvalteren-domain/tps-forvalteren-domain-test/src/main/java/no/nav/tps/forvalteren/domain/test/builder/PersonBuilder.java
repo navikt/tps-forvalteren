@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.domain.test.builder;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import org.joda.time.DateTime;
 
-public class PersonBuilder extends DomainObjectBuilder<Person> {
+public final class PersonBuilder extends DomainObjectBuilder<Person> {
 
     private Long id;
     private String ident;

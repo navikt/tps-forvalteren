@@ -5,6 +5,7 @@ import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
+@FunctionalInterface
 public interface PersonRepository extends Repository<Person, Long> {
 
     List<Person> findAll();
