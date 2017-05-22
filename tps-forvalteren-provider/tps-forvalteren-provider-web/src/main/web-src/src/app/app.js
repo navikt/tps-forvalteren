@@ -91,8 +91,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
-            .state('show-testdata', {
-                url: "/show-testdata",
+            .state('vis-testdata', {
+                url: "/vis-testdata",
                 params: {
                     serviceRutineName: null
                 },
@@ -109,8 +109,40 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 },
                 views: {
                     'content@': {
-                        templateUrl: "app/components/show-testdata/show-testdata.html",
-                        controller: 'ShowTestdataCtrl'
+                        templateUrl: "app/components/vis-testdata/vis-testdata.html",
+                        controller: 'VisTestdataCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('opprett-testdata', {
+                url: "/opprett-testdata",
+                params: {
+                    serviceRutineName: null
+                },
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/opprett-testdata/opprett-testdata.html",
+                        controller: 'OpprettTestdataCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",

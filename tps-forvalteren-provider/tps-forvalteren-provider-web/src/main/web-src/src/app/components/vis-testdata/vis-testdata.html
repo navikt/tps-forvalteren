@@ -3,7 +3,9 @@
     <div class="tps-vk-top md-whiteframe-z2">
         <h2>Testdata</h2>
 
-        <a ng-href="http:vg.no">Opprett ny testperson</a>
+        <md-input-container class="tps-vk-input-container">
+            <md-button ng-click="opprettPersoner()">Opprett ny testperson</md-button>
+        </md-input-container>
         <md-input-container class="tps-vk-input-container" layout="col">
             <md-checkbox md-tab-label="Velg alle" data-ng-model="allePersoner" ng-click="velgAlle()"></md-checkbox>
             Velg alle

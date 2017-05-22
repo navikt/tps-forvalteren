@@ -1,5 +1,5 @@
 angular.module('tps-forvalteren.gt')
-    .controller('ShowTestdataCtrl', ['$scope', 'testdataService', 'utilsService',
+    .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService',
         function ($scope, testdataService, utilsService) {
 
             $scope.allePersoner = false;
