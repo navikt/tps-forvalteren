@@ -8,8 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -18,14 +16,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 
@@ -48,9 +48,6 @@ public class RsTpsResponseMappingUtilsTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
-    @Captor
-    private ArgumentCaptor<List<String>> jsonObjectCaptor;
 
     @Mock
     private ObjectMapper objectMapperMock;
@@ -77,38 +74,76 @@ public class RsTpsResponseMappingUtilsTest {
         Response response = new Response();
         response.setDataXmls(Collections.singletonList(XML_PERSON1));
         response.setStatus(new ResponseStatus());
-        Map<Object, Object> mapResponse = new LinkedHashMap<>();
-        String mappedJsonObjectStringFromXml = "{\"data1\":{\"navn\":\"en\",\"fnr\":\"01018012345\"}}";
-        when(objectMapperMock.readValue(mappedJsonObjectStringFromXml, Map.class)).thenReturn(mapResponse);
 
         TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
-        assertThat(result.getResponse(), is(notNullValue()));
-        assertThat(result.getResponse(), is(instanceOf(LinkedHashMap.class)));
-        assertThat(result.getResponse(), is(mapResponse));
+        LinkedHashMap map = (LinkedHashMap)result.getResponse();
+        LinkedHashMap data = ((LinkedHashMap)(map.get("data1")));
+        assertThat(data.get("navn"), is(NAVN_1));
+        assertThat(data.get("fnr"), is(FNR_1));
     }
-/*
+
     @Test
     public void mapsXmlDataWithMultiplePersonResultsInResponse() throws Exception {
 
         Response response = new Response();
         response.setDataXmls(Arrays.asList(XML_PERSON1, XML_PERSON2));
         response.setStatus(new ResponseStatus());
-        String mappedJsonObjectStringFromXml = "{\"data1\":{\"navn\":\"en\",\"fnr\":\"01018012345\"}, \"data2\":{\"navn\":\"en\",\"fnr\":\"02028012345\"}}";
 
         TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
         assertThat(result.getResponse(), is(notNullValue()));
+        assertThat(result.getResponse(), is(instanceOf(LinkedHashMap.class)));
 
         LinkedHashMap map = (LinkedHashMap)result.getResponse();
-        LinkedHashMap data = ((LinkedHashMap)((ArrayList)map.get("data")).get(0));
-        LinkedHashMap data2 = ((LinkedHashMap)((ArrayList)map.get("data")).get(1));
+        LinkedHashMap data = ((LinkedHashMap)(map.get("data1")));
+        LinkedHashMap data2 = ((LinkedHashMap)(map.get("data2")));
 
-        assertThat(((ArrayList) map.get("data")).size(), is(2));
+        assertThat(map.get("data2"), is(notNullValue()));
+        assertNull(map.get("data3"));
+
         assertThat(data.get("navn"), is(NAVN_1));
         assertThat(data.get("fnr"), is(FNR_1));
         assertThat(data2.get("navn"), is(NAVN_2));
         assertThat(data2.get("fnr"), is(FNR_2));
+    }
+
+    @Test
+    public void mapsXMLContainingArrayToArrayInMap() throws Exception {
+        Response response = new Response();
+
+        /* SIMPLE */
+        String xmlArraySmall = "<fodsel><fnr>1234</fnr><fnr>4321</fnr><fnr>2314</fnr></fodsel>";
+        response.setDataXmls(Arrays.asList(xmlArraySmall));
+
+        TpsServiceRoutineResponse resultSimple = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
+
+        LinkedHashMap mapSimple = (LinkedHashMap) resultSimple.getResponse();
+        LinkedHashMap dataSimple = ((LinkedHashMap)(mapSimple.get("data1")));
+
+        LinkedHashMap fodsel = (LinkedHashMap) dataSimple.get("fodsel");
+        ArrayList fnr = (ArrayList) fodsel.get("fnr");
+
+        assertTrue(fnr.size() == 3);
+        assertEquals(fnr.get(2), 2314);
+
+
+        /* FULL TPS RESPONSE */
+        response.setDataXmls(Arrays.asList(XML_ARRAY));
+
+        TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
+
+        LinkedHashMap map = (LinkedHashMap)result.getResponse();
+        LinkedHashMap data = ((LinkedHashMap)(map.get("data1")));
+
+        LinkedHashMap personData = (LinkedHashMap) data.get("tpsPersonData");
+        LinkedHashMap svar =(LinkedHashMap) personData.get("tpsSvar");
+        LinkedHashMap persData =(LinkedHashMap) svar.get("personDataS010");
+        LinkedHashMap boAdresser =(LinkedHashMap) persData.get("boAdresser");
+        ArrayList boAdresseList =(ArrayList) boAdresser.get("boAdresse");
+
+        assertTrue(boAdresseList.size() == 8);
+
     }
 
     @Test
@@ -134,11 +169,11 @@ public class RsTpsResponseMappingUtilsTest {
         TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 
         LinkedHashMap map = (LinkedHashMap)result.getResponse();
-        LinkedHashMap status = (LinkedHashMap)map.get("status");
+        ResponseStatus status = (ResponseStatus) map.get("status");
 
-        assertThat(status.get("kode"), is("00"));
-        assertThat(status.get("melding"), is("melding"));
-        assertThat(status.get("utfyllendeMelding"), is("utfyllende melding"));
+        assertThat(status.getKode(), is("00"));
+        assertThat(status.getMelding(), is("melding"));
+        assertThat(status.getUtfyllendeMelding(), is("utfyllende melding"));
 
     }
 
@@ -157,5 +192,5 @@ public class RsTpsResponseMappingUtilsTest {
 
         assertThat(map.get("antallTotalt"), is(2));
     }
-*/
+
 }

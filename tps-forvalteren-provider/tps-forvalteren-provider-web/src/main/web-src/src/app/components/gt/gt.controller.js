@@ -47,7 +47,7 @@ angular.module('tps-forvalteren.gt')
                     $scope.adrLinjeStatus = adresseLinjeResult.status;
 
                     var utvandringResult = res[3].data.response;
-                    $scope.utvandring = utvandringResult.data1;
+                    $scope.utvandring = utvandringResult.data;
                     $scope.xmlFormUtvandring = utilsService.formatXml(res[3].data.xml);
                     $scope.utvandringStatus = utvandringResult.status;
 
@@ -58,7 +58,7 @@ angular.module('tps-forvalteren.gt')
 
 
             var prepFooter = function (response) {
-                $scope.status = response.status;
+                $scope.status = $scope.gtStatus;
                 $scope.treff = response.data ? response.data.length : 0;
             };
 

@@ -23,7 +23,7 @@ angular.module('tps-forvalteren.directives')
         template:
             '<md-content class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="start center">' +
                 '<div class="tps-vk-hits" flex="50" layout="row" layout-align="start center">' +
-                    '<div class="tps-vk-hits-meesage" flex="20" layout-align="center center" ng-if="status">' +
+                    '<div class="tps-vk-hits-meesage" flex="20" layout-align="center center" ng-if="status && antallTreff">' +
                         'Treff: {{antallTreff}}' +
                     '</div>' +
                 '</div>' +
