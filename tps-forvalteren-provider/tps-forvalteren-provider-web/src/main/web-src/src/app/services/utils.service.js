@@ -152,5 +152,5 @@ angular.module('tps-forvalteren.service')
                     .ariaLabel(errorObj.ariaLabel)
                     .ok('OK')
             );
-        }
+        };
     }]);
