@@ -33,7 +33,7 @@
                             </div>
                             <div layout="column" flex="5">{{person.kjonn}}</div>
                             <div layout-align="end center" layout="row" flex="5">
-                                <md-button id="cancel" ng-class="{flipped: isEditing}"
+                                <md-button id="cancel" ng-class="{flipped: isEditing && selected == $index}"
                                            class="md-icon-button"
                                            type="button"
                                            aria-label="Vis testdata detaljer"
