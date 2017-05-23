@@ -4,11 +4,6 @@ angular.module('tps-forvalteren.service')
 
         var self = this;
 
-        self.trimFunc = function(trimString){
-            console.log("Called!");
-            return trimString.substring(0,11);
-        };
-
         self.authHeaders = function(credentials) {
             return {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)};
         };
