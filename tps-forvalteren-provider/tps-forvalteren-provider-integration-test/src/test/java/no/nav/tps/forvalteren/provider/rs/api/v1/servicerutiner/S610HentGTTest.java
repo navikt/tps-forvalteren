@@ -38,10 +38,12 @@ public class S610HentGTTest extends AbstractServiceControllerIntegrationTest{
         MvcResult result = mvc.perform(get(getUrl()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.xml", is(equalTo(tpsResponseXml))))
-                //.andExpect(jsonPath("$.response.data1.fodselsnummer", is(equalTo(fnrTest))))
+                .andExpect(jsonPath("$.response.data1.identType", is(equalTo("FNR"))))
+                .andExpect(jsonPath("$.response.data1.fodselsnummer", is(equalTo(Long.parseLong(fnrTest)))))
                 .andReturn();
 
 
+        String content = result.getResponse().getContentAsString();
     }
 
 }

@@ -53,6 +53,7 @@ angular.module('tps-forvalteren.gt')
 
                 },function (error) {
                     showAlertTPSError(error);
+                    $scope.loading = false;
                 });
             }
 

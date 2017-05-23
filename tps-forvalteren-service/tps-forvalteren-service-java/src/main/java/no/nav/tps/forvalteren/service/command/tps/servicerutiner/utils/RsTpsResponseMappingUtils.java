@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 @Component
 public class RsTpsResponseMappingUtils {
 
-    private static final String HTML_TAG_WITH_CONTENT_PATTERN ="<(\\w+?)>(.*?)</\\1>";
-
     public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response response) throws IOException {
         TpsServiceRoutineResponse tpsServiceRutineResponse = new TpsServiceRoutineResponse();
 
