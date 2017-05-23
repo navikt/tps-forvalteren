@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.utils;
+package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -17,7 +17,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.Tp
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

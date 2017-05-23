@@ -25,7 +25,7 @@ public class RestAuthoritiesMapperTest {
     private static final SimpleGrantedAuthority CURRENT_ACCESS_ROLE_O = new SimpleGrantedAuthority("0000-GA-NORG_Skriv");
     private static final SimpleGrantedAuthority CURRENT_DISK_6_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_KODE6");
     private static final SimpleGrantedAuthority CURRENT_DISK_7_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_KODE7");
-    private static final SimpleGrantedAuthority CURRENT_EGEN_ANSATT_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_UTVIDET");
+    private static final SimpleGrantedAuthority CURRENT_EGEN_ANSATT_ROLE = new SimpleGrantedAuthority("0000-GA-PIP_EGENANSATT");
 
     @InjectMocks
     private RestAuthoritiesMapper mapper;
