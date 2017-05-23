@@ -1,30 +1,26 @@
 package no.nav.tps.forvalteren.domain.test.provider;
 
-import no.nav.tps.forvalteren.domain.test.builder.PersonBuilder;
-
-import static no.nav.tps.forvalteren.domain.test.builder.PersonBuilder.aPerson;
+import no.nav.tps.forvalteren.domain.jpa.Person;
 
 public class PersonProvider {
 
-    public static PersonBuilder aMalePerson() {
-        return aPerson()
-                .withIdent("12345678910")
-                .withIdenttype("FNR")
-                .withKjonn('M')
-                .withFornavn("Ola")
-                .withMellomnavn("0")
-                .withEtternavn("Nordmann")
-                .withKortnavn("Ola O Nordmann");
+    public static Person.PersonBuilder aMalePerson() {
+        return Person.builder()
+                .ident("12345678910")
+                .identtype("FNR")
+                .kjonn('M')
+                .fornavn("Ola")
+                .mellomnavn("0")
+                .etternavn("Nordmann");
     }
 
-    public static PersonBuilder aFemalePerson() {
-        return aPerson()
-                .withIdent("22245678910")
-                .withIdenttype("FNR")
-                .withKjonn('K')
-                .withFornavn("Kari")
-                .withMellomnavn("0")
-                .withEtternavn("Nordmann")
-                .withKortnavn("Kari O Nordmann");
+    public static Person.PersonBuilder aFemalePerson() {
+        return Person.builder()
+                .ident("22245678910")
+                .identtype("FNR")
+                .kjonn('K')
+                .fornavn("Kari")
+                .mellomnavn("0")
+                .etternavn("Nordmann");
     }
 }
