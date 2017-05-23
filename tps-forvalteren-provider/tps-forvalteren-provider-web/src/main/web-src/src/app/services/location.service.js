@@ -1,6 +1,6 @@
 
 angular.module('tps-forvalteren.service')
-    .service('locationService', ['$state','$location', function($state, $location) {
+    .service('locationService', ['$state', function($state) {
 
         var self = this;
         var returnState = 'servicerutine';
@@ -23,6 +23,10 @@ angular.module('tps-forvalteren.service')
 
         self.redirectToGT = function() {
             $state.go("gt");
+        };
+
+        self.redirectToTestdata = function() {
+            $state.go("testdata");
         };
 
         self.isServicerutineState = function(){

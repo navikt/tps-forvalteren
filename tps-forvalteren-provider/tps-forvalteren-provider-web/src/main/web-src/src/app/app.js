@@ -91,6 +91,38 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
+            .state('testdata', {
+                url: "/testdata",
+                params: {
+                    serviceRutineName: null
+                },
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/testdata/testdata.html",
+                        controller: 'TestdataCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
             .state('servicerutine', {
                 url: "/{serviceRutineName}",
                 params: {

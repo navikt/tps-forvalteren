@@ -20,8 +20,7 @@
             <queue alias="TPS_FORESPORSEL_XML_O" jndi="jms/foresporsel_queue"/>
         </queueManager>
 
-        <!-- DB trengs ikke i naavarende versjon. -->
-        <!-- <datasource alias="tps-forvalterenDB" jndi="java:/jboss/datasources/tps-forvalterenDB"/> -->
+        <datasource alias="tpsforvalterenDB" mapToProperty="TPSFDatasource" jndi="java:/jboss/datasources/tpsforvalterenDB"/>
 
         <applicationProperties alias="tps-forvalterenProperties"/>
     </resources>
