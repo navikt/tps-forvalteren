@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedBy;
@@ -24,6 +27,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "T_PERSON")
 @EntityListeners(AuditingEntityListener.class)
 public class Person {
@@ -48,17 +54,16 @@ public class Person {
     @Column(name = "KJONN", nullable = false)
     private Character kjonn;
 
-    @Column(name = "FORNAVN", length = 50)
+    @NotNull
+    @Column(name = "FORNAVN", nullable = false, length = 50)
     private String fornavn;
 
     @Column(name = "MELLOMNAVN", length = 50)
     private String mellomnavn;
 
-    @Column(name = "ETTERNAVN", length = 50)
+    @NotNull
+    @Column(name = "ETTERNAVN", nullable = false, length = 50)
     private String etternavn;
-
-    @Column(name = "KORTNAVN", length = 50)
-    private String kortnavn;
 
     @NotNull
     @CreatedDate

@@ -1,9 +1,0 @@
-<md-input-container class="tps-vk-input-container" flex>
-    <label>Antall brukere</label>
-    <!-- TODO Max length kan gjøres om når vi vet faktisk max antall testbrukere som skal kunne opprettes -->
-    <input name="antallInput" ng-required="isRequired('antall')" md-maxlength="2" ng-pattern="/^[0-9]{1,2}$/" ng-model="formData.antall"/>
-    <div ng-messages="requestForm.antallInput.$error" ng-show="requestForm.antallInput.$touched">
-        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
-        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde to siffer</div>
-    </div>
-</md-input-container>
