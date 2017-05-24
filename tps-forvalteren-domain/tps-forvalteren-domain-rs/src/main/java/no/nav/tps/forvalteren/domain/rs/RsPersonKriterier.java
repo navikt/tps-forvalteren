@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.domain.rs;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
