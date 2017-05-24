@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static no.nav.tps.forvalteren.domain.test.builder.DomainObjectBuilder.build;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,9 +23,9 @@ import static org.hamcrest.Matchers.hasSize;
 @Transactional
 public class PersonRepositoryComponentTest {
 
-    private Person personOla = build(aMalePerson());
+    private Person personOla = aMalePerson().build();
 
-    private Person personKari = build(aFemalePerson());
+    private Person personKari = aFemalePerson().build();
 
     @Autowired
     private PersonTestRepository testRepository;

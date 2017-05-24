@@ -16,7 +16,7 @@ require('./factory/factory.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
-    'tps-forvalteren.directives', 'pikaday']);
+    'pikaday']);
 
 require('./shared/index');
 
