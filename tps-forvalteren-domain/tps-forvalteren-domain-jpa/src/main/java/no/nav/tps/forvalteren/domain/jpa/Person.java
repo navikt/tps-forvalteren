@@ -54,13 +54,15 @@ public class Person {
     @Column(name = "KJONN", nullable = false)
     private Character kjonn;
 
-    @Column(name = "FORNAVN", length = 50)
+    @NotNull
+    @Column(name = "FORNAVN", nullable = false, length = 50)
     private String fornavn;
 
     @Column(name = "MELLOMNAVN", length = 50)
     private String mellomnavn;
 
-    @Column(name = "ETTERNAVN", length = 50)
+    @NotNull
+    @Column(name = "ETTERNAVN", nullable = false, length = 50)
     private String etternavn;
 
     @NotNull
