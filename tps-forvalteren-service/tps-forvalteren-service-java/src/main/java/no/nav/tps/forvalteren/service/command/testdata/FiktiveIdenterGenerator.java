@@ -4,6 +4,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -79,8 +80,8 @@ public class FiktiveIdenterGenerator {
     }
 
     private String localDateToDDMMYYStringFormat(LocalDate date) {
-        String dateString = date.toString();
-        return dateString.substring(8, 10) + dateString.substring(5, 7) + dateString.substring(2, 4); //1988-01-01
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
+        return date.format(formatter);
     }
 
     private List<String> genererIdenter(RsPersonKriterier kriterie, String fodselsdato) {
