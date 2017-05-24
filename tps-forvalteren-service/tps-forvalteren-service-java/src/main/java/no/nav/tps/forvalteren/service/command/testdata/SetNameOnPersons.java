@@ -4,8 +4,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.Command;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class SetNameOnPersons implements Command {
@@ -13,7 +13,7 @@ public class SetNameOnPersons implements Command {
     private static String[] fornavn = {"Blå", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell"};
     private static String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin"};
 
-    private static Random randGenerator = new Random();
+    private static SecureRandom randGenerator = new SecureRandom();
 
     public void execute(List<Person> personer) {
         for(Person person : personer) {
