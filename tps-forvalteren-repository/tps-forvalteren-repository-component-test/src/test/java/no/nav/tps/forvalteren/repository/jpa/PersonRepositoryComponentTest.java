@@ -45,4 +45,18 @@ public class PersonRepositoryComponentTest {
         assertThat(result, hasItem(personKari));
     }
 
+    @Test
+    @Rollback
+    public void deleteByIdInDeletesAll() {
+        Person ola = testRepository.save(personOla);
+        Person kari = testRepository.save(personKari);
+
+        Long[] ids = {ola.getId(), kari.getId()};
+        repository.deleteByIdIn(ids);
+
+        List<Person> result = repository.findAll();
+        assertThat(result, hasSize(0));
+
+    }
+
 }
