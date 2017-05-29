@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.service.command.testdata.utils.BiasedRandom;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -9,33 +10,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class FiktiveIdenterGenerator {
 
-    private static final int CATEGORY1_RANGE_START = 0;
-    private static final int CATEGORY1_RANGE_END = 499;
-    private static final int CATEGORY1_PERIOD_START = 1900;
-    private static final int CATEGORY1_PERIOD_END = 1999;
+    private static final int CATEGORY1_NUMBER_RANGE_START = 0;
+    private static final int CATEGORY1_NUMBER_RANGE_END = 499;
+    private static final int CATEGORY1_TIME_PERIOD_START = 1900;
+    private static final int CATEGORY1_TIME_PERIOD_END = 1999;
 
-    private static final int CATEGORY2_RANGE_START = 500;
-    private static final int CATEGORY2_RANGE_END = 749;
-    private static final int CATEGORY2_PERIOD_START = 1854;
-    private static final int CATEGORY2_PERIOD_END = 1899;
+    private static final int CATEGORY2_NUMBER_RANGE_START = 500;
+    private static final int CATEGORY2_NUMBER_RANGE_END = 749;
+    private static final int CATEGORY2_TIME_PERIOD_START = 1854;
+    private static final int CATEGORY2_TIME_PERIOD_END = 1899;
 
-    private static final int CATEGORY_3_RANGE_START = 500;
-    private static final int CATEGORY_3_RANGE_END = 999;
-    private static final int CATEGORY_3_PERIOD_START = 2000;
-    private static final int CATEGORY_3_PERIOD_END = 2039;
+    private static final int CATEGORY_3_NUMBER_RANGE_START = 500;
+    private static final int CATEGORY_3_NUMBER_RANGE_END = 999;
+    private static final int CATEGORY_3_TIME_PERIOD_START = 2000;
+    private static final int CATEGORY_3_TIME_PERIOD_END = 2039;
 
-    private static final int CATEGORY4_RANGE_START = 900;
-    private static final int CATEGORY4_RANGE_END = 999;
-    private static final int CATEGORY4_PERIOD_START = 1949;
-    private static final int CATEGORY4_PERIOD_END = 1999;
+    private static final int CATEGORY4_NUMBER_RANGE_START = 900;
+    private static final int CATEGORY4_NUMBER_RANGE_END = 999;
+    private static final int CATEGORY4_TIME_PERIOD_START = 1949;
+    private static final int CATEGORY4_TIME_PERIOD_END = 1999;
 
-    final private int[] KONTROLL_SIFFER_C1 = {3, 7, 6, 1, 8, 9, 4, 5, 2};
-    final private int[] KONTROLL_SIFFER_C2 = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
+    private static final int[] KONTROLL_SIFFER_C1 = {3, 7, 6, 1, 8, 9, 4, 5, 2};
+    private static final int[] KONTROLL_SIFFER_C2 = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
 
     public List<String> genererFiktiveIdenter(List<RsPersonKriterier> personKriterierListe){
         ArrayList<String> fiktiveIdenter = new ArrayList<>();
@@ -56,13 +56,16 @@ public class FiktiveIdenterGenerator {
         }
     }
 
+
+    //TODO Lag en random dato i et intervall! Og deretter bare bruk hele klassen.
+
     private List<String> genererNyttFnr(RsPersonKriterier kriterie) {
-        String fodselsdatodato = localDateToDDMMYYStringFormat(kriterie.getFodtEtter());
+        String fodselsdatodato = localDateToDDmmYYStringFormat(kriterie.getFodtEtter());
         return genererIdenter(kriterie, fodselsdatodato);
     }
 
     private List<String> genererNyttDnummer(RsPersonKriterier kriterie) {
-        String fodselsdato = localDateToDDMMYYStringFormat(kriterie.getFodtEtter());
+        String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFodtEtter());
 
         int forsteSiffer = Character.getNumericValue(fodselsdato.charAt(0)) + 4;
         String dfdato = Integer.toString(forsteSiffer) + fodselsdato.substring(1);
@@ -71,7 +74,7 @@ public class FiktiveIdenterGenerator {
     }
 
     private List<String> genererNyttBNummer(RsPersonKriterier kriterie) {
-        String fodselsdato = localDateToDDMMYYStringFormat(kriterie.getFodtEtter());
+        String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFodtEtter());
 
         int maanedSiffer = Character.getNumericValue(fodselsdato.charAt(2)) + 2;
         String bNummerDato = fodselsdato.substring(0,2) + Integer.toString(maanedSiffer) + fodselsdato.substring(3);
@@ -79,7 +82,7 @@ public class FiktiveIdenterGenerator {
         return genererIdenter(kriterie, bNummerDato);
     }
 
-    private String localDateToDDMMYYStringFormat(LocalDate date) {
+    private String localDateToDDmmYYStringFormat(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
         return date.format(formatter);
     }
@@ -110,38 +113,44 @@ public class FiktiveIdenterGenerator {
 
     private List<Integer> hentKategoriIntervallForDato(LocalDate date) {
         List<Integer> rangeList = new ArrayList<>();
-        if (isInYearRange(date, CATEGORY1_PERIOD_START, CATEGORY1_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY1_RANGE_START, CATEGORY1_RANGE_END));
-        } else if (isInYearRange(date, CATEGORY2_PERIOD_START, CATEGORY2_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY2_RANGE_START, CATEGORY2_RANGE_END));
-        } else if (isInYearRange(date, CATEGORY_3_PERIOD_START, CATEGORY_3_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY_3_RANGE_START, CATEGORY_3_RANGE_END));
-        } else if (isInYearRange(date, CATEGORY4_PERIOD_START, CATEGORY4_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY4_RANGE_START, CATEGORY4_RANGE_END));
+        if (isInYearRange(date, CATEGORY1_TIME_PERIOD_START, CATEGORY1_TIME_PERIOD_END)) {
+            rangeList.addAll(Arrays.asList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END));
+        } else if (isInYearRange(date, CATEGORY2_TIME_PERIOD_START, CATEGORY2_TIME_PERIOD_END)) {
+            rangeList.addAll(Arrays.asList(CATEGORY2_NUMBER_RANGE_START, CATEGORY2_NUMBER_RANGE_END));
+        } else if (isInYearRange(date, CATEGORY_3_TIME_PERIOD_START, CATEGORY_3_TIME_PERIOD_END)) {
+            rangeList.addAll(Arrays.asList(CATEGORY_3_NUMBER_RANGE_START, CATEGORY_3_NUMBER_RANGE_END));
+        } else if (isInYearRange(date, CATEGORY4_TIME_PERIOD_START, CATEGORY4_TIME_PERIOD_END)) {
+            rangeList.addAll(Arrays.asList(CATEGORY4_NUMBER_RANGE_START, CATEGORY4_NUMBER_RANGE_END));
         }
         return rangeList;
     }
 
-    private String genererIndividnummer(int range_start, int range_end, Character kjonn) {
+    private String genererIndividnummer(int rangeStart, int rangeSlutt, Character kjonn) {
         int individNummber;
         if (erKvinne(kjonn)) {         //KVINNE: Individnummer avsluttes med partall
-            individNummber = ThreadLocalRandom.current().nextInt(range_start, range_end + 1);
-            if (individNummber % 2 > 0) individNummber = individNummber + 1;
+            individNummber = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt);
+            if (individNummber % 2 > 0){
+                individNummber = individNummber + 1;
+            }
         } else {                                  // MANN: Individnummer avsluttes med oddetall
-            individNummber = ThreadLocalRandom.current().nextInt(range_start, range_end + 1);
-            if (individNummber % 2 == 0) individNummber = individNummber + 1;
+            individNummber = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt );
+            if (individNummber % 2 == 0){
+                individNummber = individNummber + 1;
+            }
         }
-        if (individNummber > range_end){
+        if (individNummber > rangeSlutt){
             individNummber = individNummber - 2;
         }
-        String individNummerString = Integer.toString(individNummber);
+
+        StringBuilder individNummerBuilder = new StringBuilder(Integer.toString(individNummber));
+        individNummerBuilder.reverse();
         if (individNummber < 10){
-            individNummerString = 0 + individNummerString;
+            individNummerBuilder.append(0);
         }
         if (individNummber < 100){
-            individNummerString = 0 + individNummerString;
+            individNummerBuilder.append(0);
         }
-        return individNummerString;
+        return individNummerBuilder.reverse().toString();
     }
 
     private int hentForsteKontrollSiffer(String fnrCharacters) {
@@ -163,7 +172,7 @@ public class FiktiveIdenterGenerator {
      * @param formelMultiplierSifferListe Array med tallene som skal multipliseres med fodselsnummer i kontrollsifferformelen
      * @return Kontrollsiffer
      */
-    private int getKontrollSiffer(String fnrCharacters, int[] formelMultiplierSifferListe) {
+    private int getKontrollSiffer(String fnrCharacters, int... formelMultiplierSifferListe) {
         int kontrollSiffer;
         int kontrollSifferFormelSum = 0;
         for (int i = 0; i < formelMultiplierSifferListe.length; i++) {
