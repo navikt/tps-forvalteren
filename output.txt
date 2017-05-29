@@ -1,1174 +1,0 @@
-[WARNING] 
-[WARNING] Some problems were encountered while building the effective settings
-[WARNING] Unrecognised tag: 'properties' (position: START_TAG seen ...</profiles>\r\n\r\n\t<properties>... @92:14)  @ C:\Users\f148888\.m2\settings.xml, line 92, column 14
-[WARNING] 
-[INFO] Scanning for projects...
-[INFO] ------------------------------------------------------------------------
-[INFO] Reactor Build Order:
-[INFO] 
-[INFO] TPS Vedlikeholdsklient
-[INFO] TPS Vedlikeholdsklient :: Common
-[INFO] TPS Vedlikeholdsklient :: Common :: Test
-[INFO] TPS Vedlikeholdsklient :: Domain
-[INFO] TPS Vedlikeholdsklient :: Domain :: Service
-[INFO] TPS Vedlikeholdsklient :: Common :: Java
-[INFO] TPS Vedlikeholdsklient :: Domain :: WS
-[INFO] TPS Vedlikeholdsklient :: Consumer
-[INFO] TPS Vedlikeholdsklient :: Consumer :: WS
-[INFO] TPS Vedlikeholdsklient :: Consumer :: MQ
-[INFO] TPS Vedlikeholdsklient :: Consumer :: RS
-[INFO] TPS Vedlikeholdsklient :: Repository
-[INFO] TPS Vedlikeholdsklient :: Repository :: Jpa
-[INFO] TPS Vedlikeholdsklient :: Service
-[INFO] TPS Vedlikeholdsklient :: Service :: Java
-[INFO] tps-vedlikehold-domain-rs
-[INFO] TPS Vedlikeholdsklient :: Config
-[INFO] TPS Vedlikeholdsklient :: Provider
-[INFO] TPS Vedlikeholdsklient :: Provider :: RS
-[INFO] TPS Vedlikeholdsklient :: Provider :: Web
-[INFO] TPS Vedlikeholdsklient :: Application
-[INFO] TPS Vedlikeholdsklient :: Application :: JEE
-[INFO] TPS Vedlikeholdsklient :: Application :: Local
-[INFO] tps-vedlikehold-repository-intergration-test
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/jooq/jooq-codegen-maven/3.9.1/jooq-codegen-maven-3.9.1.pom
-3/3 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/jooq/jooq-codegen-maven/3.9.1/jooq-codegen-maven-3.9.1.pom (3 KB at 6.6 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/jooq/jooq-parent/3.9.1/jooq-parent-3.9.1.pom
-4/10 KB   8/10 KB   10/10 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/jooq/jooq-parent/3.9.1/jooq-parent-3.9.1.pom (10 KB at 51.0 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/jooq/jooq-codegen-maven/3.9.1/jooq-codegen-maven-3.9.1.jar
-2/16 KB    6/16 KB   10/16 KB   14/16 KB   16/16 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/jooq/jooq-codegen-maven/3.9.1/jooq-codegen-maven-3.9.1.jar (16 KB at 12.2 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/springframework/boot/spring-boot-maven-plugin/1.5.2.RELEASE/spring-boot-maven-plugin-1.5.2.RELEASE.pom
-2/7 KB     6/7 KB   7/7 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/springframework/boot/spring-boot-maven-plugin/1.5.2.RELEASE/spring-boot-maven-plugin-1.5.2.RELEASE.pom (7 KB at 23.5 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/springframework/boot/spring-boot-tools/1.5.2.RELEASE/spring-boot-tools-1.5.2.RELEASE.pom
-2/2 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/springframework/boot/spring-boot-tools/1.5.2.RELEASE/spring-boot-tools-1.5.2.RELEASE.pom (2 KB at 7.0 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/springframework/boot/spring-boot-maven-plugin/1.5.2.RELEASE/spring-boot-maven-plugin-1.5.2.RELEASE.jar
-4/64 KB   8/64 KB   12/64 KB   16/64 KB   20/64 KB   24/64 KB   28/64 KB   32/64 KB   36/64 KB   40/64 KB   44/64 KB   48/64 KB   52/64 KB   56/64 KB   60/64 KB   64/64 KB   64/64 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/springframework/boot/spring-boot-maven-plugin/1.5.2.RELEASE/spring-boot-maven-plugin-1.5.2.RELEASE.jar (64 KB at 244.2 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.8/maven-antrun-plugin-1.8.pom
-2/4 KB     4/4 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.8/maven-antrun-plugin-1.8.pom (4 KB at 18.8 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.8/maven-antrun-plugin-1.8.jar
-4/36 KB   8/36 KB   12/36 KB   16/36 KB   20/36 KB   24/36 KB   28/36 KB   32/36 KB   36/36 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.8/maven-antrun-plugin-1.8.jar (36 KB at 132.7 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-assembly-plugin/2.6/maven-assembly-plugin-2.6.pom
-2/17 KB    6/17 KB   10/17 KB   14/17 KB   17/17 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-assembly-plugin/2.6/maven-assembly-plugin-2.6.pom (17 KB at 13.9 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-assembly-plugin/2.6/maven-assembly-plugin-2.6.jar
-3/240 KB   7/240 KB   11/240 KB   15/240 KB   19/240 KB   23/240 KB   27/240 KB   31/240 KB   35/240 KB   39/240 KB   43/240 KB   47/240 KB   51/240 KB   55/240 KB   59/240 KB   63/240 KB   67/240 KB   71/240 KB   75/240 KB   79/240 KB   83/240 KB   87/240 KB   91/240 KB   95/240 KB   99/240 KB   103/240 KB   107/240 KB   111/240 KB   115/240 KB   119/240 KB   123/240 KB   127/240 KB   131/240 KB   135/240 KB   139/240 KB   143/240 KB   147/240 KB   151/240 KB   155/240 KB   159/240 KB   163/240 KB   167/240 KB   171/240 KB   175/240 KB   179/240 KB   183/240 KB   187/240 KB   191/240 KB   195/240 KB   199/240 KB   203/240 KB   207/240 KB   211/240 KB   215/240 KB   219/240 KB   223/240 KB   227/240 KB   231/240 KB   235/240 KB   239/240 KB   240/240 KB                Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-assembly-plugin/2.6/maven-assembly-plugin-2.6.jar (240 KB at 1181.9 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.10/maven-dependency-plugin-2.10.pom
-4/12 KB      8/12 KB   12/12 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.10/maven-dependency-plugin-2.10.pom (12 KB at 68.1 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.10/maven-dependency-plugin-2.10.jar
-2/157 KB   6/157 KB   10/157 KB   14/157 KB   18/157 KB   22/157 KB   26/157 KB   30/157 KB   34/157 KB   38/157 KB   42/157 KB   46/157 KB   50/157 KB   54/157 KB   58/157 KB   62/157 KB   66/157 KB   70/157 KB   74/157 KB   78/157 KB   82/157 KB   86/157 KB   90/157 KB   94/157 KB   98/157 KB   102/157 KB   106/157 KB   110/157 KB   114/157 KB   118/157 KB   122/157 KB   126/157 KB   130/157 KB   134/157 KB   138/157 KB   142/157 KB   146/157 KB   150/157 KB   154/157 KB   157/157 KB                Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.10/maven-dependency-plugin-2.10.jar (157 KB at 908.1 KB/sec)
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold ---
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/reporting/maven-reporting-impl/2.2/maven-reporting-impl-2.2.pom
-2/5 KB       5/5 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/reporting/maven-reporting-impl/2.2/maven-reporting-impl-2.2.pom (5 KB at 29.6 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sink-api/1.2/doxia-sink-api-1.2.pom
-2/2 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sink-api/1.2/doxia-sink-api-1.2.pom (2 KB at 10.3 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia/1.2/doxia-1.2.pom
-4/19 KB   8/19 KB   12/19 KB   16/19 KB   19/19 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia/1.2/doxia-1.2.pom (19 KB at 78.6 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-logging-api/1.2/doxia-logging-api-1.2.pom
-2/2 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-logging-api/1.2/doxia-logging-api-1.2.pom (2 KB at 6.9 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-core/1.2/doxia-core-1.2.pom
-4/4 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-core/1.2/doxia-core-1.2.pom (4 KB at 2.6 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-site-renderer/1.2/doxia-site-renderer-1.2.pom
-4/7 KB   7/7 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-site-renderer/1.2/doxia-site-renderer-1.2.pom (7 KB at 5.3 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sitetools/1.2/doxia-sitetools-1.2.pom
-4/16 KB   8/16 KB   12/16 KB   16/16 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sitetools/1.2/doxia-sitetools-1.2.pom (16 KB at 111.3 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-decoration-model/1.2/doxia-decoration-model-1.2.pom
-3/3 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-decoration-model/1.2/doxia-decoration-model-1.2.pom (3 KB at 27.1 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-xhtml/1.2/doxia-module-xhtml-1.2.pom
-2/2 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-xhtml/1.2/doxia-module-xhtml-1.2.pom (2 KB at 12.3 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-modules/1.2/doxia-modules-1.2.pom
-3/3 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-modules/1.2/doxia-modules-1.2.pom (3 KB at 19.5 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-fml/1.2/doxia-module-fml-1.2.pom
-2/6 KB   6/6 KB   6/6 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-fml/1.2/doxia-module-fml-1.2.pom (6 KB at 35.0 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sink-api/1.4/doxia-sink-api-1.4.pom
-2/2 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sink-api/1.4/doxia-sink-api-1.4.pom (2 KB at 8.0 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia/1.4/doxia-1.4.pom
-2/18 KB   6/18 KB   10/18 KB   14/18 KB   18/18 KB   18/18 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia/1.4/doxia-1.4.pom (18 KB at 112.4 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-logging-api/1.4/doxia-logging-api-1.4.pom
-2/2 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-logging-api/1.4/doxia-logging-api-1.4.pom (2 KB at 3.6 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-site-renderer/1.4/doxia-site-renderer-1.4.pom
-4/6 KB   6/6 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-site-renderer/1.4/doxia-site-renderer-1.4.pom (6 KB at 45.9 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sitetools/1.4/doxia-sitetools-1.4.pom
-4/17 KB   8/17 KB   12/17 KB   16/17 KB   17/17 KB              Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sitetools/1.4/doxia-sitetools-1.4.pom (17 KB at 143.3 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-core/1.4/doxia-core-1.4.pom
-4/4 KB     4/4 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-core/1.4/doxia-core-1.4.pom (4 KB at 32.0 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-decoration-model/1.4/doxia-decoration-model-1.4.pom
-3/3 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-decoration-model/1.4/doxia-decoration-model-1.4.pom (3 KB at 27.8 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-xhtml/1.4/doxia-module-xhtml-1.4.pom
-2/2 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-xhtml/1.4/doxia-module-xhtml-1.4.pom (2 KB at 10.2 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-modules/1.4/doxia-modules-1.4.pom
-3/3 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-modules/1.4/doxia-modules-1.4.pom (3 KB at 18.2 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-fml/1.4/doxia-module-fml-1.4.pom
-4/5 KB   5/5 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-fml/1.4/doxia-module-fml-1.4.pom (5 KB at 33.5 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-dependency-analyzer/1.6/maven-dependency-analyzer-1.6.pom
-3/6 KB   6/6 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-dependency-analyzer/1.6/maven-dependency-analyzer-1.6.pom (6 KB at 34.1 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-shared-components/21/maven-shared-components-21.pom
-3/5 KB   5/5 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-shared-components/21/maven-shared-components-21.pom (5 KB at 35.1 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/ow2/asm/asm/5.0.2/asm-5.0.2.pom
-2/2 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/ow2/asm/asm/5.0.2/asm-5.0.2.pom (2 KB at 11.6 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/ow2/asm/asm-parent/5.0.2/asm-parent-5.0.2.pom
-3/6 KB   6/6 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/ow2/asm/asm-parent/5.0.2/asm-parent-5.0.2.pom (6 KB at 31.2 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-invoker/2.1.1/maven-invoker-2.1.1.pom
-2/6 KB   6/6 KB   6/6 KB            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-invoker/2.1.1/maven-invoker-2.1.1.pom (6 KB at 34.8 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/reporting/maven-reporting-impl/2.2/maven-reporting-impl-2.2.jar
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-site-renderer/1.4/doxia-site-renderer-1.4.jar
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-logging-api/1.4/doxia-logging-api-1.4.jar
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-core/1.2/doxia-core-1.2.jar
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sink-api/1.4/doxia-sink-api-1.4.jar
-2/151 KB   6/151 KB   10/151 KB   4/12 KB   10/151 KB   4/12 KB   14/151 KB   8/12 KB   14/151 KB   8/12 KB   18/151 KB   12/12 KB   18/151 KB   12/12 KB   22/151 KB   12/12 KB   26/151 KB   12/12 KB   30/151 KB   12/12 KB   34/151 KB   12/12 KB   4/52 KB   34/151 KB   12/12 KB   8/52 KB   38/151 KB   12/12 KB   12/52 KB   38/151 KB   4/11 KB   12/12 KB   16/52 KB   38/151 KB   4/11 KB   12/12 KB   20/52 KB   38/151 KB   2/17 KB   4/11 KB   12/12 KB   20/52 KB   38/151 KB   6/17 KB   4/11 KB   12/12 KB   24/52 KB   38/151 KB   12/12 KB   4/52 KB   38/151 KB   10/17 KB   4/11 KB   12/12 KB   24/52 KB   38/151 KB   2/17 KB   4/11 KB   12/12 KB   24/52 KB   38/151 KB   4/11 KB   12/12 KB   12/52 KB   38/151 KB   14/17 KB   4/11 KB   12/12 KB   28/52 KB   42/151 KB   14/17 KB   4/11 KB   12/12 KB   32/52 KB   42/151 KB   14/17 KB   8/11 KB   12/12 KB   36/52 KB   42/151 KB   14/17 KB   4/11 KB   12/12 KB   24/52 KB   42/151 KB   10/17 KB   4/11 KB   12/12 KB   24/52 KB   42/151 KB   17/17 KB   8/11 KB   12/12 KB   40/52 KB   46/151 KB   17/17 KB   8/11 KB   12/12 KB   40/52 KB   50/151 KB   17/17 KB   8/11 KB   12/12 KB   40/52 KB   42/151 KB   14/17 KB   8/11 KB   12/12 KB   40/52 KB   42/151 KB   17/17 KB   8/11 KB   12/12 KB   44/52 KB   54/151 KB   14/17 KB   8/11 KB   12/12 KB   32/52 KB   42/151 KB   17/17 KB   8/11 KB   12/12 KB   48/52 KB   54/151 KB   17/17 KB   8/11 KB   12/12 KB   40/52 KB   54/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   54/151 KB   17/17 KB   11/11 KB   12/12 KB   48/52 KB   54/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   58/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   62/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   66/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   70/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   74/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   78/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   82/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   86/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   90/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   94/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   98/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   102/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   106/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   110/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   114/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   118/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   122/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   126/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   130/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   134/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   138/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   142/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   146/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   150/151 KB   17/17 KB   11/11 KB   12/12 KB   52/52 KB   151/151 KB                                                            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-core/1.2/doxia-core-1.2.jar (151 KB at 493.5 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-decoration-model/1.4/doxia-decoration-model-1.4.jar
-                                                         Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-site-renderer/1.4/doxia-site-renderer-1.4.jar (52 KB at 162.0 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-xhtml/1.4/doxia-module-xhtml-1.4.jar
-                                                         Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-logging-api/1.4/doxia-logging-api-1.4.jar (12 KB at 32.9 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-fml/1.4/doxia-module-fml-1.4.jar
-                                                         Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/reporting/maven-reporting-impl/2.2/maven-reporting-impl-2.2.jar (17 KB at 44.9 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-dependency-analyzer/1.6/maven-dependency-analyzer-1.6.jar
-                                                         Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-sink-api/1.4/doxia-sink-api-1.4.jar (11 KB at 29.8 KB/sec)
-Downloading: http://maven.adeo.no/nexus/content/groups/public/org/ow2/asm/asm/5.0.2/asm-5.0.2.jar
-2/60 KB                                                  6/60 KB   10/60 KB   14/60 KB   18/60 KB   22/60 KB   26/60 KB   30/60 KB   34/60 KB   38/60 KB   42/60 KB   46/60 KB   50/60 KB   54/60 KB   58/60 KB   60/60 KB   60/60 KB   4/16 KB   60/60 KB   8/16 KB   60/60 KB   12/16 KB   60/60 KB   16/16 KB   60/60 KB   16/16 KB   4/37 KB   60/60 KB   16/16 KB   8/37 KB   60/60 KB   16/16 KB   12/37 KB   60/60 KB   16/16 KB   16/37 KB   60/60 KB   16/16 KB   20/37 KB   60/60 KB   16/16 KB   24/37 KB   60/60 KB   16/16 KB   28/37 KB   60/60 KB   16/16 KB   32/37 KB   60/60 KB   16/16 KB   36/37 KB   60/60 KB   16/16 KB   37/37 KB                                    16/16 KB   3/31 KB   37/37 KB    16/16 KB   7/31 KB   37/37 KB   16/16 KB   11/31 KB   37/37 KB   Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-decoration-model/1.4/doxia-decoration-model-1.4.jar (60 KB at 121.6 KB/sec)
-16/16 KB   15/31 KB   37/37 KB   16/16 KB   19/31 KB   37/37 KB   16/16 KB   23/31 KB   37/37 KB   Downloading: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-invoker/2.1.1/maven-invoker-2.1.1.jar
-16/16 KB   27/31 KB   37/37 KB   16/16 KB   31/31 KB   37/37 KB   16/16 KB   31/31 KB   37/37 KB   16/16 KB   31/31 KB   37/37 KB   4/52 KB   16/16 KB   31/31 KB   37/37 KB   8/52 KB   16/16 KB   31/31 KB   37/37 KB   12/52 KB   16/16 KB   31/31 KB   37/37 KB   16/52 KB   16/16 KB   31/31 KB   37/37 KB   20/52 KB   16/16 KB   31/31 KB   37/37 KB   24/52 KB   16/16 KB   31/31 KB   37/37 KB   28/52 KB   16/16 KB   31/31 KB   37/37 KB   32/52 KB   16/16 KB   31/31 KB   37/37 KB   36/52 KB   16/16 KB   31/31 KB   37/37 KB   40/52 KB   16/16 KB   31/31 KB   37/37 KB   44/52 KB   16/16 KB   31/31 KB   37/37 KB   48/52 KB   16/16 KB   31/31 KB   37/37 KB   52/52 KB   16/16 KB   31/31 KB   37/37 KB   52/52 KB                                               Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-xhtml/1.4/doxia-module-xhtml-1.4.jar (16 KB at 26.4 KB/sec)
-31/31 KB   4/30 KB   37/37 KB   52/52 KB    31/31 KB   8/30 KB   37/37 KB   52/52 KB   31/31 KB   12/30 KB   37/37 KB   52/52 KB   31/31 KB   16/30 KB   37/37 KB   52/52 KB   31/31 KB   20/30 KB   37/37 KB   52/52 KB   31/31 KB   24/30 KB   37/37 KB   52/52 KB   31/31 KB   28/30 KB   37/37 KB   52/52 KB   31/31 KB   30/30 KB   37/37 KB   52/52 KB                                               Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/ow2/asm/asm/5.0.2/asm-5.0.2.jar (52 KB at 82.1 KB/sec)
-                                            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/doxia/doxia-module-fml/1.4/doxia-module-fml-1.4.jar (37 KB at 58.4 KB/sec)
-                                            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-dependency-analyzer/1.6/maven-dependency-analyzer-1.6.jar (31 KB at 45.2 KB/sec)
-                                            Downloaded: http://maven.adeo.no/nexus/content/groups/public/org/apache/maven/shared/maven-invoker/2.1.1/maven-invoker-2.1.1.jar (30 KB at 39.1 KB/sec)
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold:pom:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Common 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-common ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-common:pom:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Common :: Test 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-common-test ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT
-[INFO] +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  +- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  \- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |     \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  |        +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |        +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |        \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.2.0:compile
-[INFO] |  |  \- net.minidev:json-smart:jar:2.2.1:compile
-[INFO] |  |     \- net.minidev:accessors-smart:jar:1.1:compile
-[INFO] |  |        \- org.ow2.asm:asm:jar:5.0.3:compile
-[INFO] |  +- org.assertj:assertj-core:jar:2.6.0:compile
-[INFO] |  +- org.mockito:mockito-core:jar:1.10.19:compile
-[INFO] |  |  \- org.objenesis:objenesis:jar:2.1:runtime
-[INFO] |  +- org.hamcrest:hamcrest-core:jar:1.3:compile
-[INFO] |  +- org.hamcrest:hamcrest-library:jar:1.3:compile
-[INFO] |  +- org.skyscreamer:jsonassert:jar:1.4.0:compile
-[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:compile
-[INFO] |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-test:jar:4.3.7.RELEASE:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Domain 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-domain ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-domain:pom:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Domain :: Service 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-domain-service ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-domain-service:jar:1.1.0-SNAPSHOT
-[INFO] +- com.fasterxml:jackson-xml-databind:jar:0.6.2:compile
-[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
-[INFO] |  |  \- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
-[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
-[INFO] |  \- org.codehaus.woodstox:stax2-api:jar:3.1.0:compile
-[INFO] |     \- javax.xml.stream:stax-api:jar:1.0-2:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.2.RELEASE:provided
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:provided
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:provided
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:provided
-[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:provided
-[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:provided
-[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:provided
-[INFO] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:provided
-[INFO] |  |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:provided
-[INFO] |  |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:provided
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:provided
-[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:1.5.2.RELEASE:provided
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:provided
-[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.8.9:provided
-[INFO] |  +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.2.RELEASE:provided
-[INFO] |  |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.11:provided
-[INFO] |  |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.11:provided
-[INFO] |  |  \- org.springframework:spring-jdbc:jar:4.3.7.RELEASE:provided
-[INFO] |  +- org.hibernate:hibernate-core:jar:5.0.12.Final:provided
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:provided
-[INFO] |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:provided
-[INFO] |  |  +- org.javassist:javassist:jar:3.21.0-GA:provided
-[INFO] |  |  +- antlr:antlr:jar:2.7.7:provided
-[INFO] |  |  +- org.jboss:jandex:jar:2.0.0.Final:provided
-[INFO] |  |  +- dom4j:dom4j:jar:1.6.1:provided
-[INFO] |  |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:provided
-[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:5.0.12.Final:provided
-[INFO] |  +- javax.transaction:javax.transaction-api:jar:1.2:provided
-[INFO] |  +- org.springframework.data:spring-data-jpa:jar:1.11.1.RELEASE:provided
-[INFO] |  |  +- org.springframework.data:spring-data-commons:jar:1.13.1.RELEASE:provided
-[INFO] |  |  +- org.springframework:spring-orm:jar:4.3.7.RELEASE:provided
-[INFO] |  |  +- org.springframework:spring-context:jar:4.3.7.RELEASE:provided
-[INFO] |  |  |  \- org.springframework:spring-expression:jar:4.3.7.RELEASE:provided
-[INFO] |  |  +- org.springframework:spring-tx:jar:4.3.7.RELEASE:provided
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:provided
-[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.24:provided
-[INFO] |  |  \- org.slf4j:jcl-over-slf4j:jar:1.7.24:provided
-[INFO] |  \- org.springframework:spring-aspects:jar:4.3.7.RELEASE:provided
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Common :: Java 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-common-test/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            [INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-common-java ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-common-java:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT:test
-[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  +- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:test
-[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.2.0:test
-[INFO] |     |  \- net.minidev:json-smart:jar:2.2.1:test
-[INFO] |     |     \- net.minidev:accessors-smart:jar:1.1:test
-[INFO] |     |        \- org.ow2.asm:asm:jar:5.0.3:test
-[INFO] |     +- org.assertj:assertj-core:jar:2.6.0:test
-[INFO] |     +- org.mockito:mockito-core:jar:1.10.19:test
-[INFO] |     |  \- org.objenesis:objenesis:jar:2.1:test
-[INFO] |     +- org.hamcrest:hamcrest-library:jar:1.3:test
-[INFO] |     +- org.skyscreamer:jsonassert:jar:1.4.0:test
-[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
-[INFO] |     +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-test:jar:4.3.7.RELEASE:test
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Domain :: WS 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-domain-ws ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-domain-ws:jar:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Consumer 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-consumer ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-consumer:pom:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Consumer :: WS 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-domain-ws/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-domain-service/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            [INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-consumer-ws ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-consumer-ws:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT:test
-[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:test
-[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.2.0:test
-[INFO] |     |  \- net.minidev:json-smart:jar:2.2.1:test
-[INFO] |     |     \- net.minidev:accessors-smart:jar:1.1:test
-[INFO] |     |        \- org.ow2.asm:asm:jar:5.0.3:test
-[INFO] |     +- org.assertj:assertj-core:jar:2.6.0:test
-[INFO] |     +- org.mockito:mockito-core:jar:1.10.19:test
-[INFO] |     |  \- org.objenesis:objenesis:jar:2.1:test
-[INFO] |     +- org.hamcrest:hamcrest-library:jar:1.3:test
-[INFO] |     +- org.skyscreamer:jsonassert:jar:1.4.0:test
-[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
-[INFO] |     +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-test:jar:4.3.7.RELEASE:test
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-service:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  \- com.fasterxml:jackson-xml-databind:jar:0.6.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
-[INFO] |     |  \- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
-[INFO] |     \- org.codehaus.woodstox:stax2-api:jar:3.1.0:compile
-[INFO] |        \- javax.xml.stream:stax-api:jar:1.0-2:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- no.nav.tjenester.pip:nav-pip-diskresjonskode-v1-tjenestespesifikasjon:jar:jaxws:1.1.0:compile
-[INFO] +- no.nav.tjenester.pip:nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon:jar:jaxws:1.0.0:compile
-[INFO] +- no.nav.modig:modig-security-ws:jar:2.0.0-alpha.2:compile
-[INFO] |  +- no.nav.modig:modig-security-core:jar:2.0.0-alpha.2:compile
-[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  +- org.apache.ws.security:wss4j:jar:1.6.12:compile
-[INFO] |  |  \- org.apache.santuario:xmlsec:jar:1.5.5:compile
-[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  +- org.opensaml:opensaml:jar:2.5.1-1:compile
-[INFO] |  |  \- org.opensaml:openws:jar:1.4.2-1:compile
-[INFO] |  |     \- org.opensaml:xmltooling:jar:1.3.2-1:compile
-[INFO] |  +- joda-time:joda-time:jar:2.9.7:compile
-[INFO] |  +- xml-apis:xml-apis:jar:1.4.01:compile
-[INFO] |  +- org.apache.cxf:cxf-api:jar:2.7.6:compile
-[INFO] |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
-[INFO] |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.0.3:compile
-[INFO] |  |  +- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:jar:1.7.1:compile
-[INFO] |  |  \- wsdl4j:wsdl4j:jar:1.6.3:compile
-[INFO] |  +- org.apache.cxf:cxf-rt-core:jar:2.7.6:compile
-[INFO] |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.1.13:compile
-[INFO] |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:2.7.6:compile
-[INFO] |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:2.7.6:compile
-[INFO] |  +- org.apache.cxf:cxf-rt-ws-security:jar:2.7.6:compile
-[INFO] |  \- org.apache.cxf:cxf-rt-transports-http:jar:2.7.6:compile
-[INFO] +- no.nav.modig:modig-log-jaxws:jar:1.1.3:compile
-[INFO] |  \- no.nav.modig:modig-log-common:jar:1.1.3:compile
-[INFO] +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:2.7.5:compile
-[INFO] |  +- xml-resolver:xml-resolver:jar:1.2:compile
-[INFO] |  +- asm:asm:jar:3.3.1:compile
-[INFO] |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:2.7.5:compile
-[INFO] |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:2.7.5:compile
-[INFO] |  \- org.apache.cxf:cxf-rt-ws-addr:jar:2.7.5:compile
-[INFO] |     \- org.apache.cxf:cxf-rt-ws-policy:jar:2.7.5:compile
-[INFO] |        \- org.apache.neethi:neethi:jar:3.0.2:compile
-[INFO] +- no.nav.aura.fasit:fasit-client-api:jar:5.8.1:compile
-[INFO] |  +- no.nav.aura.app-config:app-config:jar:6.1.0:compile
-[INFO] |  +- org.jboss.resteasy:resteasy-jaxrs:jar:3.0.16.Final:compile
-[INFO] |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:jar:1.0.0.Final:compile
-[INFO] |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
-[INFO] |  |  +- javax.activation:activation:jar:1.1.1:compile
-[INFO] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
-[INFO] |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
-[INFO] |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
-[INFO] |  |  +- commons-io:commons-io:jar:2.1:compile
-[INFO] |  |  \- net.jcip:jcip-annotations:jar:1.0:compile
-[INFO] |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:3.0.16.Final:compile
-[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:3.0.16.Final:compile
-[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:3.0.16.Final:compile
-[INFO] |  |  +- javax.mail:mail:jar:1.5.0-b01:compile
-[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
-[INFO] |  +- com.google.code.gson:gson:jar:2.8.0:compile
-[INFO] |  +- commons-logging:commons-logging:jar:1.1.1:compile
-[INFO] |  \- org.codehaus.plexus:plexus-utils:jar:3.0.10:compile
-[INFO] +- com.google.guava:guava:jar:19.0:compile
-[INFO] +- javax:javaee-api:jar:7.0:compile
-[INFO] |  \- com.sun.mail:javax.mail:jar:1.5.6:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Consumer :: MQ 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-consumer-ws/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            [INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-consumer-mq ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-consumer-mq:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |  |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  |  \- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |  |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] |  +- no.nav.tjenester.pip:nav-pip-diskresjonskode-v1-tjenestespesifikasjon:jar:jaxws:1.1.0:compile
-[INFO] |  +- no.nav.tjenester.pip:nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon:jar:jaxws:1.0.0:compile
-[INFO] |  +- no.nav.modig:modig-security-ws:jar:2.0.0-alpha.2:compile
-[INFO] |  |  +- no.nav.modig:modig-security-core:jar:2.0.0-alpha.2:compile
-[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  |  +- org.apache.ws.security:wss4j:jar:1.6.12:compile
-[INFO] |  |  |  \- org.apache.santuario:xmlsec:jar:1.5.5:compile
-[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.opensaml:opensaml:jar:2.5.1-1:compile
-[INFO] |  |  |  \- org.opensaml:openws:jar:1.4.2-1:compile
-[INFO] |  |  |     \- org.opensaml:xmltooling:jar:1.3.2-1:compile
-[INFO] |  |  +- joda-time:joda-time:jar:2.9.7:compile
-[INFO] |  |  +- xml-apis:xml-apis:jar:1.4.01:compile
-[INFO] |  |  +- org.apache.cxf:cxf-api:jar:2.7.6:compile
-[INFO] |  |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
-[INFO] |  |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.0.3:compile
-[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:jar:1.7.1:compile
-[INFO] |  |  |  \- wsdl4j:wsdl4j:jar:1.6.3:compile
-[INFO] |  |  +- org.apache.cxf:cxf-rt-core:jar:2.7.6:compile
-[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.1.13:compile
-[INFO] |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:2.7.6:compile
-[INFO] |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:2.7.6:compile
-[INFO] |  |  +- org.apache.cxf:cxf-rt-ws-security:jar:2.7.6:compile
-[INFO] |  |  \- org.apache.cxf:cxf-rt-transports-http:jar:2.7.6:compile
-[INFO] |  +- no.nav.modig:modig-log-jaxws:jar:1.1.3:compile
-[INFO] |  |  \- no.nav.modig:modig-log-common:jar:1.1.3:compile
-[INFO] |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:2.7.5:compile
-[INFO] |  |  +- xml-resolver:xml-resolver:jar:1.2:compile
-[INFO] |  |  +- asm:asm:jar:3.3.1:compile
-[INFO] |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:2.7.5:compile
-[INFO] |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:2.7.5:compile
-[INFO] |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:2.7.5:compile
-[INFO] |  |     \- org.apache.cxf:cxf-rt-ws-policy:jar:2.7.5:compile
-[INFO] |  |        \- org.apache.neethi:neethi:jar:3.0.2:compile
-[INFO] |  +- no.nav.aura.fasit:fasit-client-api:jar:5.8.1:compile
-[INFO] |  |  +- no.nav.aura.app-config:app-config:jar:6.1.0:compile
-[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:3.0.16.Final:compile
-[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:jar:1.0.0.Final:compile
-[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
-[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:compile
-[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
-[INFO] |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
-[INFO] |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
-[INFO] |  |  |  +- commons-io:commons-io:jar:2.1:compile
-[INFO] |  |  |  \- net.jcip:jcip-annotations:jar:1.0:compile
-[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:3.0.16.Final:compile
-[INFO] |  |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:3.0.16.Final:compile
-[INFO] |  |  |  +- org.jboss.resteasy:resteasy-client:jar:3.0.16.Final:compile
-[INFO] |  |  |  +- javax.mail:mail:jar:1.5.0-b01:compile
-[INFO] |  |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
-[INFO] |  |  +- com.google.code.gson:gson:jar:2.8.0:compile
-[INFO] |  |  +- commons-logging:commons-logging:jar:1.1.1:compile
-[INFO] |  |  \- org.codehaus.plexus:plexus-utils:jar:3.0.10:compile
-[INFO] |  +- com.google.guava:guava:jar:19.0:compile
-[INFO] |  \- javax:javaee-api:jar:7.0:compile
-[INFO] |     \- com.sun.mail:javax.mail:jar:1.5.6:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-service:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  \- com.fasterxml:jackson-xml-databind:jar:0.6.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
-[INFO] |     |  \- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
-[INFO] |     \- org.codehaus.woodstox:stax2-api:jar:3.1.0:compile
-[INFO] |        \- javax.xml.stream:stax-api:jar:1.0-2:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT:test
-[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:test
-[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.2.0:test
-[INFO] |     |  \- net.minidev:json-smart:jar:2.2.1:test
-[INFO] |     |     \- net.minidev:accessors-smart:jar:1.1:test
-[INFO] |     |        \- org.ow2.asm:asm:jar:5.0.3:test
-[INFO] |     +- org.assertj:assertj-core:jar:2.6.0:test
-[INFO] |     +- org.mockito:mockito-core:jar:1.10.19:test
-[INFO] |     |  \- org.objenesis:objenesis:jar:2.1:test
-[INFO] |     +- org.hamcrest:hamcrest-library:jar:1.3:test
-[INFO] |     +- org.skyscreamer:jsonassert:jar:1.4.0:test
-[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
-[INFO] |     \- org.springframework:spring-test:jar:4.3.7.RELEASE:test
-[INFO] +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] +- javax.jms:jms:jar:1.1:compile
-[INFO] +- com.ibm:mqjms:jar:7.1:compile
-[INFO] +- com.ibm.mq:jmqi:jar:7.1.0.0:compile
-[INFO] +- com.ibm.disthub2:dhbcore:jar:DH610-GOLD:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Consumer :: RS 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-consumer-rs ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-consumer-rs:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT:test
-[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  +- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:test
-[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.2.0:test
-[INFO] |     |  \- net.minidev:json-smart:jar:2.2.1:test
-[INFO] |     |     \- net.minidev:accessors-smart:jar:1.1:test
-[INFO] |     |        \- org.ow2.asm:asm:jar:5.0.3:test
-[INFO] |     +- org.assertj:assertj-core:jar:2.6.0:test
-[INFO] |     +- org.mockito:mockito-core:jar:1.10.19:test
-[INFO] |     |  \- org.objenesis:objenesis:jar:2.1:test
-[INFO] |     +- org.hamcrest:hamcrest-library:jar:1.3:test
-[INFO] |     +- org.skyscreamer:jsonassert:jar:1.4.0:test
-[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
-[INFO] |     +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-test:jar:4.3.7.RELEASE:test
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] +- com.google.guava:guava:jar:19.0:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Repository 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-repository ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-repository:pom:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Repository :: Jpa 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-repository-jpa ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-repository-jpa:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-service:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  \- com.fasterxml:jackson-xml-databind:jar:0.6.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
-[INFO] |     |  \- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
-[INFO] |     \- org.codehaus.woodstox:stax2-api:jar:3.1.0:compile
-[INFO] |        \- javax.xml.stream:stax-api:jar:1.0-2:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.8.9:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.11:compile
-[INFO] |  |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.11:compile
-[INFO] |  |  \- org.springframework:spring-jdbc:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.hibernate:hibernate-core:jar:5.0.12.Final:compile
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
-[INFO] |  |  +- org.javassist:javassist:jar:3.21.0-GA:compile
-[INFO] |  |  +- antlr:antlr:jar:2.7.7:compile
-[INFO] |  |  +- org.jboss:jandex:jar:2.0.0.Final:compile
-[INFO] |  |  +- dom4j:dom4j:jar:1.6.1:compile
-[INFO] |  |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
-[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:5.0.12.Final:compile
-[INFO] |  +- javax.transaction:javax.transaction-api:jar:1.2:compile
-[INFO] |  +- org.springframework.data:spring-data-jpa:jar:1.11.1.RELEASE:compile
-[INFO] |  |  +- org.springframework.data:spring-data-commons:jar:1.13.1.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-orm:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  |  |  \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-tx:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework:spring-aspects:jar:4.3.7.RELEASE:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Service 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-service ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-service:pom:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Service :: Java 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-consumer-mq/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-consumer-rs/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-common-java/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-repository-jpa/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            [INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-service-java ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-service-java:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-mq:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  |  +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  |  +- no.nav.tjenester.pip:nav-pip-diskresjonskode-v1-tjenestespesifikasjon:jar:jaxws:1.1.0:compile
-[INFO] |  |  +- no.nav.tjenester.pip:nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon:jar:jaxws:1.0.0:compile
-[INFO] |  |  +- no.nav.modig:modig-security-ws:jar:2.0.0-alpha.2:compile
-[INFO] |  |  |  +- no.nav.modig:modig-security-core:jar:2.0.0-alpha.2:compile
-[INFO] |  |  |  +- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  |  |  +- org.apache.ws.security:wss4j:jar:1.6.12:compile
-[INFO] |  |  |  |  \- org.apache.santuario:xmlsec:jar:1.5.5:compile
-[INFO] |  |  |  +- org.opensaml:opensaml:jar:2.5.1-1:compile
-[INFO] |  |  |  |  \- org.opensaml:openws:jar:1.4.2-1:compile
-[INFO] |  |  |  |     \- org.opensaml:xmltooling:jar:1.3.2-1:compile
-[INFO] |  |  |  +- joda-time:joda-time:jar:2.9.7:compile
-[INFO] |  |  |  +- xml-apis:xml-apis:jar:1.4.01:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-api:jar:2.7.6:compile
-[INFO] |  |  |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
-[INFO] |  |  |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.0.3:compile
-[INFO] |  |  |  |  +- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:jar:1.7.1:compile
-[INFO] |  |  |  |  \- wsdl4j:wsdl4j:jar:1.6.3:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-rt-core:jar:2.7.6:compile
-[INFO] |  |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.1.13:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:2.7.6:compile
-[INFO] |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:2.7.6:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-rt-ws-security:jar:2.7.6:compile
-[INFO] |  |  |  \- org.apache.cxf:cxf-rt-transports-http:jar:2.7.6:compile
-[INFO] |  |  +- no.nav.modig:modig-log-jaxws:jar:1.1.3:compile
-[INFO] |  |  |  \- no.nav.modig:modig-log-common:jar:1.1.3:compile
-[INFO] |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:2.7.5:compile
-[INFO] |  |  |  +- xml-resolver:xml-resolver:jar:1.2:compile
-[INFO] |  |  |  +- asm:asm:jar:3.3.1:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:2.7.5:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:2.7.5:compile
-[INFO] |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:2.7.5:compile
-[INFO] |  |  |     \- org.apache.cxf:cxf-rt-ws-policy:jar:2.7.5:compile
-[INFO] |  |  |        \- org.apache.neethi:neethi:jar:3.0.2:compile
-[INFO] |  |  +- no.nav.aura.fasit:fasit-client-api:jar:5.8.1:compile
-[INFO] |  |  |  +- no.nav.aura.app-config:app-config:jar:6.1.0:compile
-[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:jar:1.0.0.Final:compile
-[INFO] |  |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
-[INFO] |  |  |  |  +- javax.activation:activation:jar:1.1.1:compile
-[INFO] |  |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
-[INFO] |  |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
-[INFO] |  |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
-[INFO] |  |  |  |  \- net.jcip:jcip-annotations:jar:1.0:compile
-[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:3.0.16.Final:compile
-[INFO] |  |  |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  +- org.jboss.resteasy:resteasy-client:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  +- javax.mail:mail:jar:1.5.0-b01:compile
-[INFO] |  |  |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
-[INFO] |  |  |  +- com.google.code.gson:gson:jar:2.8.0:compile
-[INFO] |  |  |  +- commons-logging:commons-logging:jar:1.1.1:compile
-[INFO] |  |  |  \- org.codehaus.plexus:plexus-utils:jar:3.0.10:compile
-[INFO] |  |  \- javax:javaee-api:jar:7.0:compile
-[INFO] |  |     \- com.sun.mail:javax.mail:jar:1.5.6:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- javax.jms:jms:jar:1.1:compile
-[INFO] |  +- com.ibm:mqjms:jar:7.1:compile
-[INFO] |  +- com.ibm.mq:jmqi:jar:7.1.0.0:compile
-[INFO] |  \- com.ibm.disthub2:dhbcore:jar:DH610-GOLD:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-rs:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |  \- com.google.guava:guava:jar:19.0:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-service:jar:1.1.0-SNAPSHOT:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT:test
-[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:test
-[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.2.0:test
-[INFO] |     |  \- net.minidev:json-smart:jar:2.2.1:test
-[INFO] |     |     \- net.minidev:accessors-smart:jar:1.1:test
-[INFO] |     |        \- org.ow2.asm:asm:jar:5.0.3:test
-[INFO] |     +- org.assertj:assertj-core:jar:2.6.0:test
-[INFO] |     +- org.mockito:mockito-core:jar:1.10.19:test
-[INFO] |     |  \- org.objenesis:objenesis:jar:2.1:test
-[INFO] |     +- org.hamcrest:hamcrest-library:jar:1.3:test
-[INFO] |     +- org.skyscreamer:jsonassert:jar:1.4.0:test
-[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
-[INFO] |     \- org.springframework:spring-test:jar:4.3.7.RELEASE:test
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-java:jar:1.1.0-SNAPSHOT:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-repository-jpa:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.2.RELEASE:compile
-[INFO] |     +- org.springframework.boot:spring-boot-starter-aop:jar:1.5.2.RELEASE:compile
-[INFO] |     |  \- org.aspectj:aspectjweaver:jar:1.8.9:compile
-[INFO] |     +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.2.RELEASE:compile
-[INFO] |     |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.11:compile
-[INFO] |     |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.11:compile
-[INFO] |     |  \- org.springframework:spring-jdbc:jar:4.3.7.RELEASE:compile
-[INFO] |     +- org.hibernate:hibernate-core:jar:5.0.12.Final:compile
-[INFO] |     |  +- org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
-[INFO] |     |  +- org.javassist:javassist:jar:3.21.0-GA:compile
-[INFO] |     |  +- antlr:antlr:jar:2.7.7:compile
-[INFO] |     |  +- org.jboss:jandex:jar:2.0.0.Final:compile
-[INFO] |     |  +- dom4j:dom4j:jar:1.6.1:compile
-[INFO] |     |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
-[INFO] |     +- org.hibernate:hibernate-entitymanager:jar:5.0.12.Final:compile
-[INFO] |     +- javax.transaction:javax.transaction-api:jar:1.2:compile
-[INFO] |     +- org.springframework.data:spring-data-jpa:jar:1.11.1.RELEASE:compile
-[INFO] |     |  +- org.springframework.data:spring-data-commons:jar:1.13.1.RELEASE:compile
-[INFO] |     |  +- org.springframework:spring-orm:jar:4.3.7.RELEASE:compile
-[INFO] |     |  \- org.springframework:spring-tx:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-aspects:jar:4.3.7.RELEASE:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- com.fasterxml:jackson-xml-databind:jar:0.6.2:compile
-[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
-[INFO] |  |  \- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
-[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
-[INFO] |  \- org.codehaus.woodstox:stax2-api:jar:3.1.0:compile
-[INFO] |     \- javax.xml.stream:stax-api:jar:1.0-2:compile
-[INFO] +- org.json:json:jar:20140107:compile
-[INFO] +- org.apache.directory.studio:org.apache.commons.io:jar:2.4:compile
-[INFO] |  \- commons-io:commons-io:jar:2.4:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building tps-vedlikehold-domain-rs 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-domain-rs ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-domain-rs:jar:1.1.0-SNAPSHOT
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Config 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-config ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-config:jar:1.1.0-SNAPSHOT
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  |  +- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  |  |  \- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Provider 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-config/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            [INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-provider ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-provider:pom:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-config:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |     +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |     |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |     |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |     |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |     |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |     |  |  |  +- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |     |  |  |  \- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |     |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |     |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |     |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |     |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |     |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |     +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |     |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |     |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |     |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |     +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |     |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |     |  +- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |     |  \- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |     |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |     +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |     |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |     |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |     |  \- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |        \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- com.google.guava:guava:jar:19.0:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Provider :: RS 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-service-java/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-domain-rs/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            [INFO] 
-[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ tps-vedlikehold-provider-rs ---
-[INFO] no.nav.tps.vedlikehold:tps-vedlikehold-provider-rs:jar:1.1.0-SNAPSHOT
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-test:jar:1.1.0-SNAPSHOT:test
-[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
-[INFO] |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
-[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.24:compile
-[INFO] |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.24:compile
-[INFO] |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.24:compile
-[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test:jar:1.5.2.RELEASE:test
-[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.2.RELEASE:test
-[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.2.0:test
-[INFO] |     |  \- net.minidev:json-smart:jar:2.2.1:test
-[INFO] |     |     \- net.minidev:accessors-smart:jar:1.1:test
-[INFO] |     |        \- org.ow2.asm:asm:jar:5.0.3:test
-[INFO] |     +- org.assertj:assertj-core:jar:2.6.0:test
-[INFO] |     +- org.mockito:mockito-core:jar:1.10.19:test
-[INFO] |     |  \- org.objenesis:objenesis:jar:2.1:test
-[INFO] |     +- org.hamcrest:hamcrest-library:jar:1.3:test
-[INFO] |     +- org.skyscreamer:jsonassert:jar:1.4.0:test
-[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
-[INFO] |     \- org.springframework:spring-test:jar:4.3.7.RELEASE:test
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-service:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  \- com.fasterxml:jackson-xml-databind:jar:0.6.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
-[INFO] |     |  \- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
-[INFO] |     +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
-[INFO] |     \- org.codehaus.woodstox:stax2-api:jar:3.1.0:compile
-[INFO] |        \- javax.xml.stream:stax-api:jar:1.0-2:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-common-java:jar:1.1.0-SNAPSHOT:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-service-java:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-mq:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  |  +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  |  |  +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-ws:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  |  |  +- no.nav.tjenester.pip:nav-pip-diskresjonskode-v1-tjenestespesifikasjon:jar:jaxws:1.1.0:compile
-[INFO] |  |  |  +- no.nav.tjenester.pip:nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon:jar:jaxws:1.0.0:compile
-[INFO] |  |  |  +- no.nav.modig:modig-security-ws:jar:2.0.0-alpha.2:compile
-[INFO] |  |  |  |  +- no.nav.modig:modig-security-core:jar:2.0.0-alpha.2:compile
-[INFO] |  |  |  |  +- org.apache.ws.security:wss4j:jar:1.6.12:compile
-[INFO] |  |  |  |  |  \- org.apache.santuario:xmlsec:jar:1.5.5:compile
-[INFO] |  |  |  |  +- org.opensaml:opensaml:jar:2.5.1-1:compile
-[INFO] |  |  |  |  |  \- org.opensaml:openws:jar:1.4.2-1:compile
-[INFO] |  |  |  |  |     \- org.opensaml:xmltooling:jar:1.3.2-1:compile
-[INFO] |  |  |  |  +- joda-time:joda-time:jar:2.9.7:compile
-[INFO] |  |  |  |  +- xml-apis:xml-apis:jar:1.4.01:compile
-[INFO] |  |  |  |  +- org.apache.cxf:cxf-api:jar:2.7.6:compile
-[INFO] |  |  |  |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
-[INFO] |  |  |  |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.0.3:compile
-[INFO] |  |  |  |  |  +- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:jar:1.7.1:compile
-[INFO] |  |  |  |  |  \- wsdl4j:wsdl4j:jar:1.6.3:compile
-[INFO] |  |  |  |  +- org.apache.cxf:cxf-rt-core:jar:2.7.6:compile
-[INFO] |  |  |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.1.13:compile
-[INFO] |  |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:2.7.6:compile
-[INFO] |  |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:2.7.6:compile
-[INFO] |  |  |  |  +- org.apache.cxf:cxf-rt-ws-security:jar:2.7.6:compile
-[INFO] |  |  |  |  \- org.apache.cxf:cxf-rt-transports-http:jar:2.7.6:compile
-[INFO] |  |  |  +- no.nav.modig:modig-log-jaxws:jar:1.1.3:compile
-[INFO] |  |  |  |  \- no.nav.modig:modig-log-common:jar:1.1.3:compile
-[INFO] |  |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:2.7.5:compile
-[INFO] |  |  |  |  +- xml-resolver:xml-resolver:jar:1.2:compile
-[INFO] |  |  |  |  +- asm:asm:jar:3.3.1:compile
-[INFO] |  |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:2.7.5:compile
-[INFO] |  |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:2.7.5:compile
-[INFO] |  |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:2.7.5:compile
-[INFO] |  |  |  |     \- org.apache.cxf:cxf-rt-ws-policy:jar:2.7.5:compile
-[INFO] |  |  |  |        \- org.apache.neethi:neethi:jar:3.0.2:compile
-[INFO] |  |  |  +- no.nav.aura.fasit:fasit-client-api:jar:5.8.1:compile
-[INFO] |  |  |  |  +- no.nav.aura.app-config:app-config:jar:6.1.0:compile
-[INFO] |  |  |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:jar:1.0.0.Final:compile
-[INFO] |  |  |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
-[INFO] |  |  |  |  |  +- javax.activation:activation:jar:1.1.1:compile
-[INFO] |  |  |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
-[INFO] |  |  |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
-[INFO] |  |  |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
-[INFO] |  |  |  |  |  \- net.jcip:jcip-annotations:jar:1.0:compile
-[INFO] |  |  |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  |  +- org.jboss.resteasy:resteasy-client:jar:3.0.16.Final:compile
-[INFO] |  |  |  |  |  +- javax.mail:mail:jar:1.5.0-b01:compile
-[INFO] |  |  |  |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
-[INFO] |  |  |  |  +- com.google.code.gson:gson:jar:2.8.0:compile
-[INFO] |  |  |  |  +- commons-logging:commons-logging:jar:1.1.1:compile
-[INFO] |  |  |  |  \- org.codehaus.plexus:plexus-utils:jar:3.0.10:compile
-[INFO] |  |  |  \- javax:javaee-api:jar:7.0:compile
-[INFO] |  |  |     \- com.sun.mail:javax.mail:jar:1.5.6:compile
-[INFO] |  |  +- javax.jms:jms:jar:1.1:compile
-[INFO] |  |  +- com.ibm:mqjms:jar:7.1:compile
-[INFO] |  |  +- com.ibm.mq:jmqi:jar:7.1.0.0:compile
-[INFO] |  |  \- com.ibm.disthub2:dhbcore:jar:DH610-GOLD:compile
-[INFO] |  +- no.nav.tps.vedlikehold:tps-vedlikehold-consumer-rs:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  +- no.nav.tps.vedlikehold:tps-vedlikehold-repository-jpa:jar:1.1.0-SNAPSHOT:compile
-[INFO] |  |  \- org.springframework.boot:spring-boot-starter-data-jpa:jar:1.5.2.RELEASE:compile
-[INFO] |  |     +- org.springframework.boot:spring-boot-starter-aop:jar:1.5.2.RELEASE:compile
-[INFO] |  |     |  \- org.aspectj:aspectjweaver:jar:1.8.9:compile
-[INFO] |  |     +- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.2.RELEASE:compile
-[INFO] |  |     |  +- org.apache.tomcat:tomcat-jdbc:jar:8.5.11:compile
-[INFO] |  |     |  |  \- org.apache.tomcat:tomcat-juli:jar:8.5.11:compile
-[INFO] |  |     |  \- org.springframework:spring-jdbc:jar:4.3.7.RELEASE:compile
-[INFO] |  |     +- org.hibernate:hibernate-core:jar:5.0.12.Final:compile
-[INFO] |  |     |  +- org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile
-[INFO] |  |     |  +- antlr:antlr:jar:2.7.7:compile
-[INFO] |  |     |  +- org.jboss:jandex:jar:2.0.0.Final:compile
-[INFO] |  |     |  +- dom4j:dom4j:jar:1.6.1:compile
-[INFO] |  |     |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.1.Final:compile
-[INFO] |  |     +- org.hibernate:hibernate-entitymanager:jar:5.0.12.Final:compile
-[INFO] |  |     +- javax.transaction:javax.transaction-api:jar:1.2:compile
-[INFO] |  |     +- org.springframework.data:spring-data-jpa:jar:1.11.1.RELEASE:compile
-[INFO] |  |     |  +- org.springframework.data:spring-data-commons:jar:1.13.1.RELEASE:compile
-[INFO] |  |     |  \- org.springframework:spring-orm:jar:4.3.7.RELEASE:compile
-[INFO] |  |     \- org.springframework:spring-aspects:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.json:json:jar:20140107:compile
-[INFO] |  \- org.apache.directory.studio:org.apache.commons.io:jar:2.4:compile
-[INFO] |     \- commons-io:commons-io:jar:2.4:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-domain-rs:jar:1.1.0-SNAPSHOT:compile
-[INFO] +- no.nav.freg:freg-spring-boot-starters-log-exceptions:jar:1.0.0:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.2.RELEASE:compile
-[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
-[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:1.5.2.RELEASE:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:8.5.11:compile
-[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:8.5.11:compile
-[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.5.11:compile
-[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.4.Final:compile
-[INFO] |  |  +- javax.validation:validation-api:jar:1.1.0.Final:compile
-[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.7:compile
-[INFO] |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
-[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.7:compile
-[INFO] |  +- org.springframework:spring-web:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.7.RELEASE:compile
-[INFO] |     \- org.springframework:spring-expression:jar:4.3.7.RELEASE:compile
-[INFO] +- org.springframework.boot:spring-boot-starter-security:jar:1.5.2.RELEASE:compile
-[INFO] |  +- org.springframework:spring-aop:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.springframework.security:spring-security-config:jar:4.2.2.RELEASE:compile
-[INFO] |  \- org.springframework.security:spring-security-web:jar:4.2.2.RELEASE:compile
-[INFO] +- org.springframework.security:spring-security-ldap:jar:4.0.4.RELEASE:compile
-[INFO] |  +- org.springframework.ldap:spring-ldap-core:jar:2.3.1.RELEASE:compile
-[INFO] |  +- org.springframework.security:spring-security-core:jar:4.2.2.RELEASE:compile
-[INFO] |  |  \- aopalliance:aopalliance:jar:1.0:compile
-[INFO] |  +- org.springframework:spring-beans:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.springframework:spring-context:jar:4.3.7.RELEASE:compile
-[INFO] |  +- org.springframework:spring-core:jar:4.3.7.RELEASE:compile
-[INFO] |  \- org.springframework:spring-tx:jar:4.3.7.RELEASE:compile
-[INFO] +- io.springfox:springfox-swagger2:jar:2.4.0:compile
-[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.6:compile
-[INFO] |  +- io.swagger:swagger-models:jar:1.5.6:compile
-[INFO] |  +- io.springfox:springfox-spi:jar:2.4.0:compile
-[INFO] |  |  \- io.springfox:springfox-core:jar:2.4.0:compile
-[INFO] |  +- io.springfox:springfox-schema:jar:2.4.0:compile
-[INFO] |  +- io.springfox:springfox-swagger-common:jar:2.4.0:compile
-[INFO] |  +- io.springfox:springfox-spring-web:jar:2.4.0:compile
-[INFO] |  +- com.fasterxml:classmate:jar:1.3.3:compile
-[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.24:compile
-[INFO] |  +- org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile
-[INFO] |  \- org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile
-[INFO] +- io.springfox:springfox-swagger-ui:jar:2.4.0:compile
-[INFO] +- ma.glasnost.orika:orika-core:jar:1.4.5:compile
-[INFO] |  +- org.javassist:javassist:jar:3.21.0-GA:compile
-[INFO] |  +- com.thoughtworks.paranamer:paranamer:jar:2.3:compile
-[INFO] |  +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.2_jdk5:compile
-[INFO] |  \- com.carrotsearch:java-sizeof:jar:0.0.4:compile
-[INFO] +- no.nav.tps.vedlikehold:tps-vedlikehold-config:jar:1.1.0-SNAPSHOT:compile
-[INFO] +- com.google.guava:guava:jar:19.0:compile
-[INFO] +- org.projectlombok:lombok:jar:1.16.10:compile
-[INFO] \- junit:junit:jar:4.12:test
-[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building TPS Vedlikeholdsklient :: Provider :: Web 1.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-provider-rs/1.1.0-SNAPSHOT/maven-metadata.xml
-                                            Downloading: http://maven.adeo.no/nexus/content/groups/public-snapshots/no/nav/tps/vedlikehold/tps-vedlikehold-provider-rs/1.1.0-SNAPSHOT/tps-vedlikehold-provider-rs-1.1.0-SNAPSHOT.jar
-                                            [INFO] ------------------------------------------------------------------------
-[INFO] Reactor Summary:
-[INFO] 
-[INFO] TPS Vedlikeholdsklient ............................. SUCCESS [ 11.143 s]
-[INFO] TPS Vedlikeholdsklient :: Common ................... SUCCESS [  0.031 s]
-[INFO] TPS Vedlikeholdsklient :: Common :: Test ........... SUCCESS [  0.402 s]
-[INFO] TPS Vedlikeholdsklient :: Domain ................... SUCCESS [  0.012 s]
-[INFO] TPS Vedlikeholdsklient :: Domain :: Service ........ SUCCESS [  0.203 s]
-[INFO] TPS Vedlikeholdsklient :: Common :: Java ........... SUCCESS [  1.297 s]
-[INFO] TPS Vedlikeholdsklient :: Domain :: WS ............. SUCCESS [  0.047 s]
-[INFO] TPS Vedlikeholdsklient :: Consumer ................. SUCCESS [  0.015 s]
-[INFO] TPS Vedlikeholdsklient :: Consumer :: WS ........... SUCCESS [  2.141 s]
-[INFO] TPS Vedlikeholdsklient :: Consumer :: MQ ........... SUCCESS [  1.063 s]
-[INFO] TPS Vedlikeholdsklient :: Consumer :: RS ........... SUCCESS [  0.109 s]
-[INFO] TPS Vedlikeholdsklient :: Repository ............... SUCCESS [  0.016 s]
-[INFO] TPS Vedlikeholdsklient :: Repository :: Jpa ........ SUCCESS [  0.106 s]
-[INFO] TPS Vedlikeholdsklient :: Service .................. SUCCESS [  0.033 s]
-[INFO] TPS Vedlikeholdsklient :: Service :: Java .......... SUCCESS [  2.682 s]
-[INFO] tps-vedlikehold-domain-rs .......................... SUCCESS [  0.016 s]
-[INFO] TPS Vedlikeholdsklient :: Config ................... SUCCESS [  0.078 s]
-[INFO] TPS Vedlikeholdsklient :: Provider ................. SUCCESS [  0.890 s]
-[INFO] TPS Vedlikeholdsklient :: Provider :: RS ........... SUCCESS [  1.219 s]
-[INFO] TPS Vedlikeholdsklient :: Provider :: Web .......... FAILURE [  1.684 s]
-[INFO] TPS Vedlikeholdsklient :: Application .............. SKIPPED
-[INFO] TPS Vedlikeholdsklient :: Application :: JEE ....... SKIPPED
-[INFO] TPS Vedlikeholdsklient :: Application :: Local ..... SKIPPED
-[INFO] tps-vedlikehold-repository-intergration-test ....... SKIPPED
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 32.388 s
-[INFO] Finished at: 2017-03-31T07:57:18+02:00
-[INFO] Final Memory: 59M/487M
-[INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal on project tps-vedlikehold-provider-web: Could not resolve dependencies for project no.nav.tps.vedlikehold:tps-vedlikehold-provider-web:war:1.1.0-SNAPSHOT: Could not find artifact no.nav.tps.vedlikehold:tps-vedlikehold-provider-rs:jar:1.1.0-SNAPSHOT in public-snapshots (http://maven.adeo.no/nexus/content/groups/public-snapshots) -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
-[ERROR] 
-[ERROR] After correcting the problems, you can resume the build with the command
-[ERROR]   mvn <goals> -rf :tps-vedlikehold-provider-web
