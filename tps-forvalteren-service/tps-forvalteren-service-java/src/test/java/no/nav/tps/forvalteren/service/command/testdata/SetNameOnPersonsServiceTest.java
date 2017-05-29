@@ -17,9 +17,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SetNameOnPersonsTest {
+public class SetNameOnPersonsServiceTest {
 
-    private SetNameOnPersons command;
+    private SetNameOnPersonsService command;
 
     @Captor
     private ArgumentCaptor<String> stringCaptor;
@@ -30,7 +30,7 @@ public class SetNameOnPersonsTest {
 
     @Before
     public void before() {
-        command = new SetNameOnPersons();
+        command = new SetNameOnPersonsService();
         personMock1 = mock(Person.class);
         personMock2 = mock(Person.class);
 

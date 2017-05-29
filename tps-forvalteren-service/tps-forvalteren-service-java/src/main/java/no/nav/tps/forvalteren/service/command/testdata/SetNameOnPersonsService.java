@@ -1,17 +1,16 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.Command;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
 
 @Service
-public class SetNameOnPersons implements Command {
+public class SetNameOnPersonsService {
 
-    private static String[] fornavn = {"Blå", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell"};
-    private static String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin"};
+    private static final String[] fornavn = {"Blå", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell"};
+    private static final String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake"};
 
     private static SecureRandom randGenerator = new SecureRandom();
 

@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.hasSize;
 public class PersonRepositoryComponentTest {
 
     private Person personOla = aMalePerson().build();
-
     private Person personKari = aFemalePerson().build();
 
     @Autowired
