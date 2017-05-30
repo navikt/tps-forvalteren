@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.hasSize;
 public class PersonRepositoryComponentTest {
 
     private Person personOla = aMalePerson().build();
-
     private Person personKari = aFemalePerson().build();
 
     @Autowired
@@ -44,6 +43,20 @@ public class PersonRepositoryComponentTest {
         assertThat(result, hasSize(2));
         assertThat(result, hasItem(personOla));
         assertThat(result, hasItem(personKari));
+    }
+
+    @Test
+    @Rollback
+    public void deleteByIdInDeletesAll() {
+        Person ola = testRepository.save(personOla);
+        Person kari = testRepository.save(personKari);
+
+        Long[] ids = {ola.getId(), kari.getId()};
+        repository.deleteByIdIn(ids);
+
+        List<Person> result = repository.findAll();
+        assertThat(result, hasSize(0));
+
     }
 
 }

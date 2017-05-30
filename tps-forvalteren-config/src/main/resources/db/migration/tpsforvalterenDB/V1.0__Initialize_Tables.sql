@@ -2,17 +2,19 @@
 -- T A B L E S --
 -----------------
 CREATE TABLE T_PERSON (
-  PERSON_ID      NUMBER                 NOT NULL,
-  IDENT          CHAR(11)               NOT NULL,
-  IDENTTYPE      CHAR(3)                NOT NULL,
-  KJONN          CHAR(1)                NOT NULL,
-  FORNAVN        VARCHAR2(50)           NOT NULL,
-  MELLOMNAVN     VARCHAR2(50),
-  ETTERNAVN      VARCHAR2(50)           NOT NULL,
-  OPPRETTET_DATO TIMESTAMP(6)           NOT NULL,
-  OPPRETTET_AV   VARCHAR2(20)           NOT NULL,
-  ENDRET_DATO    TIMESTAMP(6)           NOT NULL,
-  ENDRET_AV      VARCHAR2(20)           NOT NULL
+  PERSON_ID       NUMBER                 NOT NULL,
+  IDENT           CHAR(11)               NOT NULL,
+  IDENTTYPE       CHAR(3)                NOT NULL,
+  KJONN           CHAR(1)                NOT NULL,
+  FORNAVN         VARCHAR2(50)           NOT NULL,
+  MELLOMNAVN      VARCHAR2(50),
+  ETTERNAVN       VARCHAR2(50)           NOT NULL,
+  STATSBORGERSKAP CHAR(3),
+  REGDATO         TIMESTAMP(6)           NOT NULL,
+  OPPRETTET_DATO  TIMESTAMP(6)           NOT NULL,
+  OPPRETTET_AV    VARCHAR2(20)           NOT NULL,
+  ENDRET_DATO     TIMESTAMP(6)           NOT NULL,
+  ENDRET_AV       VARCHAR2(20)           NOT NULL
 );
 
 ---------------------------------------------------

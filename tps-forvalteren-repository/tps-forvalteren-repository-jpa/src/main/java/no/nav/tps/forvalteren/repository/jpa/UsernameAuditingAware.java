@@ -10,7 +10,8 @@ public class UsernameAuditingAware implements AuditorAware<String> {
     @Autowired
     private UsernameResolver resolver;
 
-    @Override public String getCurrentAuditor() {
+    @Override
+    public String getCurrentAuditor() {
         return resolver.getUsername();
     }
 }

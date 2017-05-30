@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -23,6 +22,8 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -65,10 +66,17 @@ public class Person {
     @Column(name = "ETTERNAVN", nullable = false, length = 50)
     private String etternavn;
 
+    @Column(name = "STATSBORGERSKAP", length = 3)
+    private String statsborgerskap;
+
+    @NotNull
+    @Column(name = "REGDATO", nullable = false)
+    private LocalDateTime regdato;
+
     @NotNull
     @CreatedDate
     @Column(name = "OPPRETTET_DATO", nullable = false, updatable = false)
-    private DateTime opprettetDato;
+    private LocalDateTime opprettetDato;
 
     @NotBlank
     @CreatedBy
@@ -78,7 +86,7 @@ public class Person {
     @NotNull
     @LastModifiedDate
     @Column(name = "ENDRET_DATO", nullable = false)
-    private DateTime endretDato;
+    private LocalDateTime endretDato;
 
     @NotBlank
     @LastModifiedBy

@@ -13,6 +13,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,16 +76,16 @@ public class FiktiveIdenterGeneratorTest {
         testpersonKriterieListe.add(testpersonKriterie);
 
         List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterieListe);
-        assertTrue(fnrList.size() == 100);
+        assertSame(fnrList.size() , 100);
         for (String fnr : fnrList) {
-            assertTrue(fnr.length() == 11);
+            assertSame(fnr.length(), 11);
         }
 
         testpersonKriterie.setAntall(5);
         fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterieListe);
-        assertTrue(fnrList.size() == 5);
+        assertSame(fnrList.size() , 5);
         for (String fnr : fnrList) {
-            assertTrue(fnr.length() == 11);
+            assertSame(fnr.length() ,11);
         }
     }
 
@@ -99,7 +100,7 @@ public class FiktiveIdenterGeneratorTest {
         List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterieListe);
         for (String fnr : fnrList) {
             int kjonnNummer = Integer.parseInt(fnr.substring(8, 9));
-            assertTrue(kjonnNummer % 2 == 0);
+            assertSame(kjonnNummer % 2 , 0);
         }
     }
 
@@ -114,7 +115,7 @@ public class FiktiveIdenterGeneratorTest {
         List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterieListe);
         for (String fnr : fnrList) {
             int kjonnNummer = Integer.parseInt(fnr.substring(8, 9));
-            assertTrue(kjonnNummer % 2 == 1);
+            assertSame(kjonnNummer % 2 , 1);
         }
     }
 
@@ -132,7 +133,7 @@ public class FiktiveIdenterGeneratorTest {
             assertTrue(statsborgerskapNummer >= 4);
             String fodselsNr = Integer.toString(date.getDayOfMonth());
             int forsteSifferFodselsnummerPreConvertToDNummer = Integer.parseInt(fodselsNr.substring(0, 1));
-            assertTrue(forsteSifferFodselsnummerPreConvertToDNummer + 4 == statsborgerskapNummer);
+            assertSame(forsteSifferFodselsnummerPreConvertToDNummer + 4, statsborgerskapNummer);
         }
     }
 
