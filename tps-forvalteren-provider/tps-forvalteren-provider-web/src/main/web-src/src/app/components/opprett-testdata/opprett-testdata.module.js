@@ -1,2 +1,2 @@
-angular.module('tps-forvalteren.show-testdata', ['ngMessages', 'hljs']);
+angular.module('tps-forvalteren.opprett-testdata', ['ngMessages', 'hljs']);
 

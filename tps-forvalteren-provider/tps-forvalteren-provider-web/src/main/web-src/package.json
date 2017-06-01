@@ -19,7 +19,7 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.1.2",
-    "gulp-hash": "^3.1.0",
+    "gulp-hash": "^4.1.1",
     "gulp-inject": "^4.1.0",
     "gulp-jshint": "^2.0.2",
     "gulp-less": "^3.1.0",
@@ -29,19 +29,23 @@
     "jshint-stylish": "^2.2.1",
     "less-plugin-autoprefix": "^1.5.1",
     "run-sequence": "^1.2.2",
-    "webpack": "^1.13.3"
+    "webpack": "^2.6.1"
   },
   "dependencies": {
     "angular": "^1.6.4",
     "angular-animate": "^1.5.7",
     "angular-aria": "^1.5.7",
-    "angular-highlightjs": "^0.6.1",
+    "angular-highlightjs": "^0.7.1",
     "angular-material": "^1.1.4",
     "angular-moment": "^1.0.0",
     "angular-ui-router": "^0.4.0",
     "gulp-livereload": "^3.8.1",
     "highlight.js": "^9.8.0",
     "moment": "^2.15.2",
+    "nav-frontend-core": "^3.0.5",
+    "nav-frontend-knapper-style": "^0.1.8",
+    "nav-frontend-skjema-style": "^0.1.11",
+    "nav-frontend-typografi-style": "^0.1.10",
     "pikaday": "^1.5.1",
     "pikaday-angular": "^2.0.0"
   }

@@ -1,5 +1,6 @@
 require('angular');
 require('angular-ui-router');
+require('angular-aria');
 require('angular-animate');
 require('angular-material');
 require('angular-messages');
@@ -14,13 +15,13 @@ require('./services/service.module');
 require('./directives/directives.module');
 require('./factory/factory.module');
 
-var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
+var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
-    'pikaday']);
+    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday']);
 
 require('./shared/index');
 
-app.config(['pikadayConfigProvider', 'moment', function (pikaday, moment) {
+app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function (pikaday, moment, $mdDateLocaleProvider) {
 
     moment.locale("nb");
     var locales = {
@@ -41,6 +42,19 @@ app.config(['pikadayConfigProvider', 'moment', function (pikaday, moment) {
         i18n: locales.nb,
         locales: locales
     });
+
+    $mdDateLocaleProvider.shortMonths = ['jan','feb', 'mar,', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
+    $mdDateLocaleProvider.msgCalendar = 'Kalender';
+    $mdDateLocaleProvider.lastRenderableDate = new Date();
+    $mdDateLocaleProvider.firstDayOfWeek = 1;
+    $mdDateLocaleProvider.formatDate = function(date) {
+        var m = moment(date);
+        return m.isValid() ? m.format('DD-MM-YYYY') : new Date(NaN);
+    };
+    $mdDateLocaleProvider.parseDate = function(dateString) {
+        var m = moment(dateString, 'DD-MM-YYYY', true);
+        return m.isValid() ? m.toDate() : new Date(NaN);
+    };
 }]);
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',

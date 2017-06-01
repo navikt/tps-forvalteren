@@ -3,9 +3,8 @@
     <div class="tps-vk-top md-whiteframe-z2">
         <h2>Testdata</h2>
 
-        <md-input-container class="tps-vk-input-container">
-            <md-button ng-click="opprettPersoner()">Opprett ny testperson</md-button>
-        </md-input-container>
+        <md-button ng-click="opprettPersoner()" class="md-accent">Opprett ny testperson</md-button>
+
         <md-input-container class="tps-vk-input-container" layout="col">
             <md-checkbox md-tab-label="Velg alle" data-ng-model="allePersoner" ng-click="velgAlle()"></md-checkbox>
             Velg alle
@@ -50,16 +49,16 @@
                             <br>
                             <div layout="row" flex>
                                 <md-input-container class="tps-vk-input-container" flex="15">
-                                    <label>Ident</label>
-                                    <input name="ident" ng-required="true" md-maxlength="11" pattern="[0-9]{11}" ng-model="person.ident"/>
+                                    <label for="ident">Ident</label>
+                                    <input id="ident" ng-required="true" md-maxlength="11" pattern="[0-9]{11}" ng-model="person.ident"/>
                                     <div ng-messages="testdataForm.ident.$error" ng-show="testdataFrom.ident.$touched">
                                         <div ng-message="pattern">Feltet kan kun inneholde tall</div>
                                         <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
                                     </div>
                                 </md-input-container>
                                 <md-input-container class="tps-vk-input-container" flex="25">
-                                    <label>Type</label>
-                                    <md-select data-ng-model="person.identtype">
+                                    <label for="identtype">Type</label>
+                                    <md-select id="identtype" data-ng-model="person.identtype">
                                         <md-option value="FNR">FNR</md-option>
                                         <md-option value="DNR">DNR</md-option>
                                         <md-option value="BNR">BNR</md-option>
@@ -68,34 +67,22 @@
                             </div>
                             <div layout="row">
                                 <md-input-container class="tps-vk-input-container" flex>
-                                    <label>Fornavn</label>
-                                    <input name="fornavn" ng-required="true" md-maxlength="50" ng-model="person.fornavn"/>
-                                    <div ng-messages="testdataForm.fornavn.$error" ng-show="testdataForm.fornavn.$touched">
-                                        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
-                                        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
-                                    </div>
+                                    <label for="fornavn">Fornavn</label>
+                                    <input id="fornavn" ng-required="true" md-maxlength="50" ng-model="person.fornavn"/>
                                 </md-input-container>
                                 <md-input-container class="tps-vk-input-container" flex>
-                                    <label>Mellomnavn</label>
-                                    <input name="mellomnavn" ng-required="false" md-maxlength="50" ng-model="person.mellomnavn"/>
-                                    <div ng-messages="testdataForm.mellomnavn.$error" ng-show="testdataForm.mellomnavn.$touched">
-                                        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
-                                        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
-                                    </div>
+                                    <label for="mellomnavn">Mellomnavn</label>
+                                    <input id="mellomnavn" ng-required="false" md-maxlength="50" ng-model="person.mellomnavn"/>
                                 </md-input-container>
                                 <md-input-container class="tps-vk-input-container" flex>
-                                    <label>Etternavn</label>
-                                    <input name="etternavn" ng-required="true" md-maxlength="50" ng-model="person.etternavn"/>
-                                    <div ng-messages="testdataForm.etternavn.$error" ng-show="testdataForm.etternavn.$touched">
-                                        <div ng-message="pattern">Feltet kan kun inneholde bokstaver</div>
-                                        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
-                                    </div>
+                                    <label for="etternavn">Etternavn</label>
+                                    <input id="etternavn" ng-required="true" md-maxlength="50" ng-model="person.etternavn"/>
                                 </md-input-container>
                             </div>
                             <div layout="row">
                                 <md-input-container layout="col" class="tps-vk-input-container" flex="15">
-                                    <label>Kjønn</label>
-                                    <md-select data-ng-model="person.kjonn">
+                                    <label for="kjonn">Kjønn</label>
+                                    <md-select id="kjonn" data-ng-model="person.kjonn">
                                         <md-option value="K">K</md-option>
                                         <md-option value="M">M</md-option>
                                     </md-select>

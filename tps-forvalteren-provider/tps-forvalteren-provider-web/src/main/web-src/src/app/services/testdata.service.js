@@ -17,4 +17,17 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.postTestpersoner = function(kriterier){
+            var defer = $q.defer();
+            $http.post(url + "personer", kriterier).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
     }]);
