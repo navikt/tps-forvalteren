@@ -43,7 +43,7 @@ public class EnvironmentController {
             return environments;
 
         } else {
-            Set<String> environments = getEnvironmentsCommand.execute("tpsws");
+            Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
 
             return EnvironmentsFilter.create()
                     .include("u*")

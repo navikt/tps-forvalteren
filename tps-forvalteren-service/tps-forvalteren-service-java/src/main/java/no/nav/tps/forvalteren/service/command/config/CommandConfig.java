@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.M201HentFnrNavnDiskresjonPaFlerePersoner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S010Adressehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S015HentAdresselinjehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S016Utvandring;
@@ -70,4 +71,8 @@ public class CommandConfig {
         return new S016Utvandring();
     }
 
+    @Bean
+    ServiceRoutineResolver hentHistorieForFlereFnr(){
+        return new M201HentFnrNavnDiskresjonPaFlerePersoner();
+    }
 }

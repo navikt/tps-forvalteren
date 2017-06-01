@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertSame;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -124,7 +125,7 @@ public class RsTpsResponseMappingUtilsTest {
         LinkedHashMap fodsel = (LinkedHashMap) dataSimple.get("fodsel");
         ArrayList fnr = (ArrayList) fodsel.get("fnr");
 
-        assertTrue(fnr.size() == 3);
+        assertSame(fnr.size(), 3);
         assertEquals(fnr.get(2), 2314);
 
 
@@ -142,7 +143,7 @@ public class RsTpsResponseMappingUtilsTest {
         LinkedHashMap boAdresser =(LinkedHashMap) persData.get("boAdresser");
         ArrayList boAdresseList =(ArrayList) boAdresser.get("boAdresse");
 
-        assertTrue(boAdresseList.size() == 8);
+        assertSame(boAdresseList.size(), 8);
 
     }
 

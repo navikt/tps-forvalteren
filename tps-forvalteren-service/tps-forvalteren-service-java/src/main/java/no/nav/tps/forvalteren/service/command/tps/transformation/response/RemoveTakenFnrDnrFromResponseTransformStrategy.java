@@ -12,6 +12,10 @@ import java.util.regex.Pattern;
 @Component
 public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseTransformStrategy{
 
+    private static final String fnrPattern = "<EFnr>.+?</EFnr>";
+    private static final String feilmldPattern = "<returMelding>S201005F</returMelding>";
+
+
     @Override
     public boolean isSupported(Object o) {
         return o instanceof RemoveTakenFnrFromResponseTransform;
@@ -19,12 +23,10 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseT
 
     @Override
     public void execute(Response response, Transformer transformer) {
-        removeTakenFnrDnrFromResponse(response, (RemoveTakenFnrFromResponseTransform) transformer);
+        fjernUtilgjengeligeIdenterFraResponse(response, (RemoveTakenFnrFromResponseTransform) transformer);
     }
 
-    private void removeTakenFnrDnrFromResponse(Response response, RemoveTakenFnrFromResponseTransform transformer) {
-        String fnrPattern = "<EFnr>.+?</EFnr>";
-        String feilmldPattern = "<returMelding>S201005F</returMelding>";
+    private void fjernUtilgjengeligeIdenterFraResponse(Response response, RemoveTakenFnrFromResponseTransform transformer) {
         Matcher fnrMatcher = Pattern.compile(fnrPattern, Pattern.DOTALL).matcher(response.getRawXml());
 
         int fnrDnrRemoved = 0;

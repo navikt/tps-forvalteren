@@ -41,7 +41,7 @@ public class EnvironmentControllerTest {
 
     @Before
     public void setUp() {
-        when( getEnvironmentsCommandMock.execute("tpsws") ).thenReturn(ENVIRONMENTS);
+        when( getEnvironmentsCommandMock.getEnvironmentsFromVera("tpsws") ).thenReturn(ENVIRONMENTS);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
         ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, false);
     }

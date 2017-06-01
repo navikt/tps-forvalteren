@@ -14,10 +14,10 @@ public class BiasedRandom {
     }
 
     public static int lagTopptungRandom(int low, int high){
-        return lagBiasedRandom(low, high, 0.3f);
+        return lagBiasedRandom(low, high, 0.3F);
     }
 
     public static int lagBunntungRandom(int low, int high){
-        return lagBiasedRandom(low, high, 3.0f);
+        return lagBiasedRandom(low, high, 3.0F);
     }
 }

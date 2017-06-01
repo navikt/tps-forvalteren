@@ -25,7 +25,7 @@ public class GetEnvironmentsTest {
 
     @Test
     public void callsGetEnvironmentsOnVeraConsumer() {
-        getEnvironments.execute(APPLICATION);
+        getEnvironments.getEnvironmentsFromVera(APPLICATION);
 
         verify(veraConsumerMock).getEnvironments(eq(APPLICATION));
     }
