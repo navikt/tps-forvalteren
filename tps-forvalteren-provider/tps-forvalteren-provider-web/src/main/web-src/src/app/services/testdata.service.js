@@ -20,7 +20,7 @@ angular.module('tps-forvalteren.service')
 
         self.postTestpersoner = function(kriterier){
             var defer = $q.defer();
-            $http.post(url + "personer", kriterier).then(
+            $http.post(url + "personer", {data: kriterier}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -33,7 +33,7 @@ angular.module('tps-forvalteren.service')
 
         self.deleteTestpersoner = function(identer){
             var defer = $q.defer();
-            $http.post(url + "deletePersoner", {ids: identer, headers: {"Content-Type": "application/json;charset=utf-8"}}).then(
+            $http.post(url + "deletePersoner", {ids: identer}).then(
                 function (data) {
                     defer.resolve(data);
                 },
