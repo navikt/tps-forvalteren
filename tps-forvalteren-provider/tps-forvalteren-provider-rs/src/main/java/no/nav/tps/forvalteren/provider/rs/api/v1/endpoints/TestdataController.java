@@ -55,10 +55,9 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons")})
-    @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deletePersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
 
         deletePersonsByIdService.execute(personIdListe.getIds());
-
     }
 }
