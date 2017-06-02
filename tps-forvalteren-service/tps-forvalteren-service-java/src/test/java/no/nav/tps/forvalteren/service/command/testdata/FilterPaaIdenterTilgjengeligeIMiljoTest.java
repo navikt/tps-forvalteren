@@ -27,13 +27,11 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FilterPåIdenterTilgjengeligeIMiljoTest {
+public class FilterPaaIdenterTilgjengeligeIMiljoTest {
 
     private TpsServiceRoutineRequest tpsServiceRoutineRequestTom;
     private TpsServiceRoutineResponse tpsResponse2Identer, tpsResponse3Identer;
@@ -55,7 +53,7 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
     private RsTpsRequestMappingUtils mappingUtilsMock;
 
     @InjectMocks
-    private FilterPåIdenterTilgjengeligeIMiljo filterPåIdenterTilgjengeligeIMiljo;
+    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
 
     @Before
     public void setup() {
@@ -68,7 +66,7 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
         tpsResponse3Identer.setXml("test");
 
         when(userContextHolderMock.getUser()).thenReturn(user);
-        when(mappingUtilsMock.convertToTpsServiceRoutineRequest(anyString(), any(JsonNode.class)))
+        when(mappingUtilsMock.convertToTpsServiceRoutineRequest(anyString(), any(Map.class)))
                 .thenReturn(tpsServiceRoutineRequestTom);
         when(mappingUtilsMock.convert(any(Map.class), eq(JsonNode.class))).thenReturn(jsonNodeTom);
 
@@ -104,7 +102,7 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPåIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertThat(filtrerteIdenter, hasItem(FNR_1));
         assertFalse(filtrerteIdenter.contains(FNR_2));
@@ -113,7 +111,7 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
     }
 
     @Test
-    public void returnererIngenIdenterHvisIngenIdenterErÅFinneIAlleMiljoerKunINoenBestemteMiljoer() throws Exception {
+    public void returnererIngenIdenterHvisIngenIdenterErAaFinneIAlleMiljoerKunINoenBestemteMiljoer() throws Exception {
         LinkedHashMap responseMapT1 = new LinkedHashMap();
         responseMapT1.put("data1", data1);
         responseMapT1.put("data2", data2);
@@ -131,7 +129,7 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPåIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertTrue(filtrerteIdenter.isEmpty());
     }
@@ -156,7 +154,7 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPåIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertThat(filtrerteIdenter, hasItems(FNR_1,FNR_2));
     }
@@ -176,28 +174,8 @@ public class FilterPåIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPåIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertTrue(filtrerteIdenter.isEmpty());
     }
-
-    @Test
-    public void serviceRoutineRequestBlirMappedVedÅBrukeM201ServiceRutine() throws Exception{
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
-        responseMapT1.put("antallTotalt", 0);
-
-        tpsResponse2Identer.setResponse(responseMapT1);
-
-        LinkedHashMap responseMapT2 = new LinkedHashMap();
-        responseMapT2.put("antallTotalt", 0);
-
-        tpsResponse3Identer.setResponse(responseMapT2);
-
-        when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
-                .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
-
-        filterPåIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
-        verify(mappingUtilsMock, atLeastOnce()).convertToTpsServiceRoutineRequest("FS03-FDLISTER-DISKNAVN-M", jsonNodeTom);
-    }
-
 }

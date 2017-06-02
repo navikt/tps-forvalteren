@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -14,9 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
-public class FilterPåIdenterTilgjengeligeIMiljo {
+public class FilterPaaIdenterTilgjengeligeIMiljo {
+
+    private static final int HIGHEST_T_ENVIRONMENT = 13;
+    private static final int LOWEST_T_ENVIRONMENT = 0;
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -28,27 +31,26 @@ public class FilterPåIdenterTilgjengeligeIMiljo {
     private RsTpsRequestMappingUtils mappingUtils;
 
     public List<String> filtrer(List<String> identer){
-        List<String> tilgjengeligeIdenterAlleMiljøer = new ArrayList<>();
 
-        HashMap<String, Object> tpsRequestParameters = new HashMap<>();
-        tpsRequestParameters.put("serviceRutinenavn","FS03-FDLISTER-DISKNAVN-M");
-        tpsRequestParameters.put("fnr", identer);
-        tpsRequestParameters.put("antallFnr", identer.size());
-        tpsRequestParameters.put("aksjonsKode","A0");
+        Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
 
-        // Sjekker nå kun T-miljøer
-        for(int i=0; i<11; i++){
+        return hentIdenterSomErTilgjengeligeIAlleMiljoer(tpsRequestParameters, context);
+    }
+
+    private List<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
+
+        List<String> tilgjengeligeIdenterAlleMiljøer = new ArrayList<>();
+
+        for(int i=LOWEST_T_ENVIRONMENT; i<HIGHEST_T_ENVIRONMENT; i++){
             if(i == 7){
-                continue;       // The queue manager channel 'T7_TPSWS' for this env does not exist. Og T1 er virker ikke? Får ikke sendt melding..
+                continue;       // The queue manager channel 'T7_TPSWS' for this env does not exist.
             }
             context.setEnvironment("t"+i);
 
-            JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
-
-            TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsRequestParameters.get("serviceRutinenavn").toString(), body);
+            TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
 
             if(kunneIkkeLeggeMeldingPåKø(tpsResponse)){
@@ -63,7 +65,6 @@ public class FilterPåIdenterTilgjengeligeIMiljo {
                 tilgjengeligeIdenterAlleMiljøer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljø);
             }
         }
-
         return tilgjengeligeIdenterAlleMiljøer;
     }
 
@@ -71,6 +72,14 @@ public class FilterPåIdenterTilgjengeligeIMiljo {
         return response.getXml().isEmpty();
     }
 
+    private Map<String,Object> opprettParametereForM201TpsRequest(List<String> identer){
+        Map<String, Object> tpsRequestParameters = new HashMap<>();
+        tpsRequestParameters.put("serviceRutinenavn","FS03-FDLISTER-DISKNAVN-M");
+        tpsRequestParameters.put("fnr", identer);
+        tpsRequestParameters.put("antallFnr", identer.size());
+        tpsRequestParameters.put("aksjonsKode","A0");
+        return tpsRequestParameters;
+    }
 
     private List<String> trekkUtIdenterFraResponse(TpsServiceRoutineResponse tpsResponse){
         LinkedHashMap responseMap = (LinkedHashMap)tpsResponse.getResponse();

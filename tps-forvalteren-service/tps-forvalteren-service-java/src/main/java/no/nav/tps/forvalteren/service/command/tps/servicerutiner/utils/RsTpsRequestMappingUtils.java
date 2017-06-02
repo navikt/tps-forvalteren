@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
@@ -22,13 +21,13 @@ public class RsTpsRequestMappingUtils {
         return objectMapper.convertValue(params, type);
     }
 
-    public TpsServiceRoutineRequest convertToTpsServiceRoutineRequest(String serviceRutineNavn, JsonNode node) {
+    public TpsServiceRoutineRequest convertToTpsServiceRoutineRequest(String serviceRutineNavn, Map<String, Object> map) {
         Class<?> requestClass = getTpsServiceRutinerService.execute()
                 .stream()
                 .filter(request -> request.getName().equalsIgnoreCase(serviceRutineNavn))
                 .findFirst().get()
                 .getJavaClass();
 
-        return (TpsServiceRoutineRequest)objectMapper.convertValue(node, requestClass);
+        return (TpsServiceRoutineRequest)objectMapper.convertValue(map, requestClass);
     }
 }
