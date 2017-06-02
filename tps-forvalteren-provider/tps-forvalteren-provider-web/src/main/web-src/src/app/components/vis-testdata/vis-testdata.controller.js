@@ -18,12 +18,13 @@ angular.module('tps-forvalteren.vis-testdata')
                 testdataService.getTestpersoner().then(
                     function (result) {
                         $scope.personer = result.data;
+                        $scope.showDelete = false;
                     },
                     function (error) {
                         utilsService.showAlertError(error);
                     }
                 );
-            }();
+            };
 
             $scope.isEditing = false;
             var currentIndex = undefined;
@@ -51,7 +52,6 @@ angular.module('tps-forvalteren.vis-testdata')
             };
 
             $scope.removeDialog = function(index) {
-
                 var confirm = $mdDialog.confirm()
                     .title('Bekreft sletting')
                     .textContent('Bekreft sletting av valgte personer')
@@ -61,18 +61,6 @@ angular.module('tps-forvalteren.vis-testdata')
 
                 $mdDialog.show(confirm).then(function() {
                     deleteTestpersoner();
-                });
-            };
-
-            var removeConfirmDialog = function(index) {
-                var confirm = $mdDialog.dialog()
-                    .title('Sletting utført')
-                    .textContent('Sletting har blitt utført!')
-                    .ariaLabel('Bekrefter sletting utført')
-                    .ok('OK');
-
-                $mdDialog.show(confirm).then(function() {
-                    hentTestpersoner();
                 });
             };
 
@@ -99,11 +87,13 @@ angular.module('tps-forvalteren.vis-testdata')
                 }
                 testdataService.deleteTestpersoner(identer).then(
                     function (result) {
-                        removeConfirmDialog();
+                        hentTestpersoner();
                     },
                     function (error) {
                         utilsService.showAlertError(error);
                     }
                 );
             };
+
+            hentTestpersoner();
         }]);
