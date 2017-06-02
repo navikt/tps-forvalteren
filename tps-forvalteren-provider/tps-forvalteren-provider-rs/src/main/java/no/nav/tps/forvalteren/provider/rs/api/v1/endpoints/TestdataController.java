@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -55,9 +56,9 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons")})
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
-    public void deletePersons(@RequestBody List<Long> personIdListe) {
+    public void deletePersons(@RequestParam Long[] personIdListe) {
 
-        deletePersonsByIdService.execute((Long[]) personIdListe.toArray());
+        deletePersonsByIdService.execute(personIdListe);
 
     }
 }

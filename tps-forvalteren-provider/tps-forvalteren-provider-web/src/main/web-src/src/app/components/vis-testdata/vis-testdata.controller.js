@@ -93,7 +93,9 @@ angular.module('tps-forvalteren.vis-testdata')
             var deleteTestpersoner = function () {
                 var identer = [];
                 for (var i = 0; i < $scope.personer.length; i++) {
-                    identer.push($scope.personer[i].ident);
+                    if ($scope.personer[i].velg) {
+                        identer.push($scope.personer[i].id);
+                    }
                 }
                 testdataService.deleteTestpersoner(identer).then(
                     function (result) {
