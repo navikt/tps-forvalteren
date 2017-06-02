@@ -42,7 +42,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
 
     private List<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
 
-        List<String> tilgjengeligeIdenterAlleMiljøer = new ArrayList<>();
+        List<String> tilgjengeligeIdenterAlleMiljoer = new ArrayList<>();
 
         for(int i=LOWEST_T_ENVIRONMENT; i<HIGHEST_T_ENVIRONMENT; i++){
             if(i == 7){
@@ -53,22 +53,22 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
             TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
 
-            if(kunneIkkeLeggeMeldingPåKø(tpsResponse)){
+            if(kunneIkkeLeggeMeldingPåKoe(tpsResponse)){
                 continue;
             }
 
-            List<String> tilgjengeligeIdenterFraEtBestemtMiljø = trekkUtIdenterFraResponse(tpsResponse);
+            List<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterFraResponse(tpsResponse);
 
             if(i == 0){
-                tilgjengeligeIdenterAlleMiljøer.addAll(tilgjengeligeIdenterFraEtBestemtMiljø);
+                tilgjengeligeIdenterAlleMiljoer.addAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
             } else {
-                tilgjengeligeIdenterAlleMiljøer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljø);
+                tilgjengeligeIdenterAlleMiljoer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
             }
         }
-        return tilgjengeligeIdenterAlleMiljøer;
+        return tilgjengeligeIdenterAlleMiljoer;
     }
 
-    private boolean kunneIkkeLeggeMeldingPåKø(TpsServiceRoutineResponse response){
+    private boolean kunneIkkeLeggeMeldingPåKoe(TpsServiceRoutineResponse response){
         return response.getXml().isEmpty();
     }
 
