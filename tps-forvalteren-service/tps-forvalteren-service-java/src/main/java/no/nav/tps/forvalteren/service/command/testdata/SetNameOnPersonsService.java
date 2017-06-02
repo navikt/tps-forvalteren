@@ -10,7 +10,7 @@ import java.util.List;
 public class SetNameOnPersonsService {
 
     private static final String[] fornavn = {"Blå", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell"};
-    private static final String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake"};
+    private static final String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake", "Fylkestrafikksikkerhetsutvalgssekretariatsleder"};
 
     private static SecureRandom randGenerator = new SecureRandom();
 
