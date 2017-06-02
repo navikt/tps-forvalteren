@@ -33,7 +33,7 @@ angular.module('tps-forvalteren.service')
 
         self.deleteTestpersoner = function(identer){
             var defer = $q.defer();
-            $http.delete(url + "personer", {params: {personIdListe: identer}}).then(
+            $http.delete(url + "personer", {data: {ids: identer}, headers:{"Content-Type": "application/json;charset=utf-8"} }).then(
                 function (data) {
                     defer.resolve(data);
                 },
