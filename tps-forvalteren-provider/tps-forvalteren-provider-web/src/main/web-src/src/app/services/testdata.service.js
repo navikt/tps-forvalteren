@@ -30,4 +30,17 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.deleteTestpersoner = function(identer){
+            var defer = $q.defer();
+            $http.delete(url + "personer", identer).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
     }]);

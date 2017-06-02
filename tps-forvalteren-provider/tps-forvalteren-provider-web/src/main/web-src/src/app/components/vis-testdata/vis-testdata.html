@@ -5,10 +5,18 @@
 
         <md-button ng-click="opprettPersoner()" class="md-accent">Opprett ny testperson</md-button>
 
-        <md-input-container class="tps-vk-input-container" layout="col">
-            <md-checkbox md-tab-label="Velg alle" data-ng-model="allePersoner" ng-click="velgAlle()"></md-checkbox>
-            Velg alle
-        </md-input-container>
+        <div layout="row" flex>
+            <md-input-container layout="column"
+                                title="Velg alle testpersoner" aria-label="Velg alle testpersoner">
+                <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()">Velg alle</md-checkbox>
+            </md-input-container>
+            <md-input-container class="tps-vk-input-container md-icon-float md-block md-title" layout="column">
+                <md-button class="md-icon" ng-click="removeDialog()" ng-if="showDelete"
+                           title="Slett valgte rader" aria-label="Slett valgte rader">
+                    <md-icon md-svg-icon="assets/icons/ic_delete_forever_black_24px.svg"></md-icon>
+                </md-button>
+            </md-input-container>
+        </div>
 
         <div layout="row" flex>
             <div layout="column" flex="5" class="header-label"></div>
@@ -20,8 +28,8 @@
         <div ng-repeat="person in personer">
             <div layout="row">
             <md-checkbox layout="column" flex="5" class="marker-inntekt-sjekkboks"
-                         ng-change="inntektSelectionChanged()"
                          ng-model="person.velg"
+                         ng-change="oppdaterStatus()"
                          aria-label="Marker person{{person.ident}} for sletting">
             </md-checkbox>
             <md-card flex>

@@ -4,8 +4,6 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
@@ -54,9 +52,9 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons")})
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
-    public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
+    public void deletePersons(@RequestBody List<Long> personIdListe) {
 
-        deletePersonsByIdService.execute(personIdListe.getIds());
+        deletePersonsByIdService.execute((Long[]) personIdListe.toArray());
 
     }
 }

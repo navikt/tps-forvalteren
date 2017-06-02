@@ -132,6 +132,11 @@ angular.module('tps-forvalteren.service')
                     text: 'Din bruker har ikke tillatelse til denne spørringen.',
                     ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
                 },
+                403: {
+                    title: 'Forbudt',
+                    text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                    ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                },
                 404: {
                     title: 'Ukjent side',
                     text: error.config.url + ' finnes ikke',
