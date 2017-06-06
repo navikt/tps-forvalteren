@@ -18,9 +18,9 @@ angular.module('tps-forvalteren.service')
             return defer.promise;
         };
 
-        self.postTestpersoner = function(kriterier){
+        self.opprettTestpersoner = function(kriterier){
             var defer = $q.defer();
-            $http.post(url + "personer", {data: kriterier}).then(
+            $http.post(url + "personer", {personKriterierListe: kriterier}).then(
                 function (data) {
                     defer.resolve(data);
                 },
