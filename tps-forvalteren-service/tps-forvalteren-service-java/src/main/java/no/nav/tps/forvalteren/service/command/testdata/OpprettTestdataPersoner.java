@@ -23,7 +23,7 @@ public class OpprettTestdataPersoner {
     private SetNameOnPersonsService setNameOnPersonsService;
 
     @Autowired
-    private savePersonListService savePersonListService;
+    private SavePersonListService SavePersonListService;
 
     public void opprettPersoner(RsPersonKriterierListe personKriterierListe) {
 
@@ -32,14 +32,14 @@ public class OpprettTestdataPersoner {
 
         int genererOgSjekkNyeIdenterCounter = 0;
         List<Integer> kriterierSomManglerTilgjengligeIdenter = manglerTilgjengligeIdenter(personKriterierListe, alleGyldigeIdenter);
-        while (kriterierSomManglerTilgjengligeIdenter.size() > 0 && genererOgSjekkNyeIdenterCounter < 10) {
+        while (!kriterierSomManglerTilgjengligeIdenter.isEmpty() && genererOgSjekkNyeIdenterCounter < 10) {
             manglerTilgjengligeIdenter(personKriterierListe, alleGyldigeIdenter);
             genererOgSjekkNyeIdenterCounter++;
         }
 
         List<Person> personer = opprettPersonObjekter(personKriterierListe, alleGyldigeIdenter);
         setNameOnPersonsService.execute(personer);
-        savePersonListService.save(personer);
+        SavePersonListService.save(personer);
 
     }
 
