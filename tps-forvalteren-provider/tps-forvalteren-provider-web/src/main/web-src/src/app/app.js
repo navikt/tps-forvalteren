@@ -75,9 +75,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 
             .state('gt', {
                 url: "/gt",
-                params: {
-                    serviceRutineName: null
-                },
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -107,9 +104,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 
             .state('vis-testdata', {
                 url: "/vis-testdata",
-                params: {
-                    serviceRutineName: null
-                },
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -139,9 +133,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 
             .state('opprett-testdata', {
                 url: "/opprett-testdata",
-                params: {
-                    serviceRutineName: null
-                },
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
