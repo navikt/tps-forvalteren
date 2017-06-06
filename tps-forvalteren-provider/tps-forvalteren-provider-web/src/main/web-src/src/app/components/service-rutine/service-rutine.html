@@ -63,8 +63,10 @@
                 <!-- Tab Readable Result -->
                 <md-tab label="Resultat" style="background-color: rgb(250,250,250)">
                     <!-- Include HTML file "response.html" -->
-                    <div ng-include="'app/components/service-rutine/response.html'" class="tps-vk-response-form">
+                    <div class="tps-vk-response-form">
+                        <ng-include src="serviceRutineNameHtmlUrl"></ng-include>
                     </div>
+
                 </md-tab>
                 <!-- Tab XML Result -->
                 <md-tab label="XML">
