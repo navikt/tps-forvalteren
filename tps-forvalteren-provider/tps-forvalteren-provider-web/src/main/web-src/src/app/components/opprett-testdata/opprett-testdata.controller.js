@@ -26,7 +26,7 @@ angular.module('tps-forvalteren.opprett-testdata')
             $scope.opprettTestpersoner = function () {
                 $scope.editMode = false;
                 $scope.showSpinner = true;
-                testdataService.postTestpersoner($scope.kriterier).then(
+                testdataService.opprettTestpersoner($scope.kriterier).then(
                     function (result) {
                         $scope.showSpinner = false;
                         opprettComplete();

@@ -6,7 +6,7 @@
         <md-button ng-click="opprettPersoner()" class="md-accent">Opprett ny testperson</md-button>
 
         <div layout="row" flex>
-            <md-input-container layout="column"
+            <md-input-container layout="column" ng-show="personer.length > 0"
                                 title="Velg alle testpersoner" aria-label="Velg alle testpersoner">
                 <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()">Velg alle</md-checkbox>
             </md-input-container>
