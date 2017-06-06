@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
@@ -51,7 +52,9 @@ public class PersonRepositoryComponentTest {
         Person ola = testRepository.save(personOla);
         Person kari = testRepository.save(personKari);
 
-        Long[] ids = {ola.getId(), kari.getId()};
+        List<Long> ids = new ArrayList<>();
+        ids.add(ola.getId());
+        ids.add(kari.getId());
         repository.deleteByIdIn(ids);
 
         List<Person> result = repository.findAll();

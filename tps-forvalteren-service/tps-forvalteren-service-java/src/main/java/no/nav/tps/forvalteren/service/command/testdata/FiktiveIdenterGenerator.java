@@ -37,35 +37,28 @@ public class FiktiveIdenterGenerator {
     private static final int[] KONTROLL_SIFFER_C1 = {3, 7, 6, 1, 8, 9, 4, 5, 2};
     private static final int[] KONTROLL_SIFFER_C2 = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
 
-    public List<String> genererFiktiveIdenter(List<RsPersonKriterier> personKriterierListe){
-        ArrayList<String> fiktiveIdenter = new ArrayList<>();
-        for(RsPersonKriterier kriterier : personKriterierListe){
-            fiktiveIdenter.addAll(this.genererFiktiveIdenter(kriterier));
-        }
-        return fiktiveIdenter;
-    }
-
-    private List<String> genererFiktiveIdenter(RsPersonKriterier personKriterie) {
-        switch (personKriterie.getIdenttype()) {
-            case "DNR":
-                return genererNyttDnummer(personKriterie);
-            case "BNR":
-                return genererNyttBNummer(personKriterie);
-            default:
-                return genererNyttFnr(personKriterie);
+    public List<String> genererFiktiveIdenter(RsPersonKriterier personKriterier){
+        int antall = personKriterier.getAntall() * 2;
+        personKriterier.setAntall(antall);
+        switch (personKriterier.getIdenttype()) {
+        case "DNR":
+            return genererNyttDnummer(personKriterier);
+        case "BNR":
+            return genererNyttBNummer(personKriterier);
+        default:
+            return genererNyttFnr(personKriterier);
         }
     }
-
 
     //TODO Lag en random dato i et intervall! Og deretter bare bruk hele klassen.
 
     private List<String> genererNyttFnr(RsPersonKriterier kriterie) {
-        String fodselsdatodato = localDateToDDmmYYStringFormat(kriterie.getFodtEtter());
+        String fodselsdatodato = localDateToDDmmYYStringFormat(kriterie.getFoedtEtter());
         return genererIdenter(kriterie, fodselsdatodato);
     }
 
     private List<String> genererNyttDnummer(RsPersonKriterier kriterie) {
-        String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFodtEtter());
+        String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFoedtEtter());
 
         int forsteSiffer = Character.getNumericValue(fodselsdato.charAt(0)) + 4;
         String dfdato = Integer.toString(forsteSiffer) + fodselsdato.substring(1);
@@ -74,7 +67,7 @@ public class FiktiveIdenterGenerator {
     }
 
     private List<String> genererNyttBNummer(RsPersonKriterier kriterie) {
-        String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFodtEtter());
+        String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFoedtEtter());
 
         int maanedSiffer = Character.getNumericValue(fodselsdato.charAt(2)) + 2;
         String bNummerDato = fodselsdato.substring(0,2) + Integer.toString(maanedSiffer) + fodselsdato.substring(3);
@@ -92,7 +85,7 @@ public class FiktiveIdenterGenerator {
         HashSet<String> identSet = new HashSet<>();
         while(identSet.size() != kriterie.getAntall()){
             identitetBuilder = new StringBuilder();
-            List<Integer> rangeList = hentKategoriIntervallForDato(kriterie.getFodtEtter());
+            List<Integer> rangeList = hentKategoriIntervallForDato(kriterie.getFoedtEtter());
             identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), kriterie.getKjonn()));
             int forsteKontrollSiffer = hentForsteKontrollSiffer(identitetBuilder.toString());
             if(forsteKontrollSiffer == 10){

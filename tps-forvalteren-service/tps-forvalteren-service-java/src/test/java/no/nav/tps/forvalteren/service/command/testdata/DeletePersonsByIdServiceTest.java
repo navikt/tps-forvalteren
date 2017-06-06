@@ -1,11 +1,15 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.verify;
 
@@ -18,7 +22,15 @@ public class DeletePersonsByIdServiceTest {
     @InjectMocks
     private DeletePersonsByIdService command;
 
-    private static final Long[] ids = {1L, 2L, 3L};
+    private List<Long> ids;
+
+    @Before
+    public void before() {
+        ids = new ArrayList<>();
+        ids.add(1L);
+        ids.add(2L);
+        ids.add(3L);
+    }
 
     @Test
     public void callsPersonRepository() {

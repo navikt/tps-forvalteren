@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +15,6 @@ public class RsPersonIdListe {
 
     @NotNull
     @Size(min = 1)
-    private Long[] ids;
+    private List<Long> ids;
 
 }
