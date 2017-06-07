@@ -6,9 +6,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterierListe;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
-import no.nav.tps.forvalteren.service.command.testdata.FilterPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
+import no.nav.tps.forvalteren.service.command.testdata.OpprettTestdataPersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +33,7 @@ public class TestdataController {
     private DeletePersonsByIdService deletePersonsByIdService;
 
     @Autowired
-    private FiktiveIdenterGenerator fiktiveIdenterGenerator;
-
-    @Autowired
-    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
+    private OpprettTestdataPersoner opprettTestdataPersoner;
 
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons")})
@@ -50,7 +46,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons")})
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
     public void createNewPersons(@RequestBody RsPersonKriterierListe personKriterierListe) {
-
+        opprettTestdataPersoner.opprettPersoner(personKriterierListe);
     }
 
     @LogExceptions

@@ -43,7 +43,8 @@ app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function
         locales: locales
     });
 
-    $mdDateLocaleProvider.shortMonths = ['jan','feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
+    $mdDateLocaleProvider.shortMonths = ['Jan','Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
+    $mdDateLocaleProvider.shortDays = ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø'];
     $mdDateLocaleProvider.msgCalendar = 'Kalender';
     $mdDateLocaleProvider.lastRenderableDate = new Date();
     $mdDateLocaleProvider.firstDayOfWeek = 1;

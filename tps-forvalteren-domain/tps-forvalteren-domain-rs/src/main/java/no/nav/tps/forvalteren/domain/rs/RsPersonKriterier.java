@@ -2,11 +2,11 @@ package no.nav.tps.forvalteren.domain.rs;
 
 import lombok.Getter;
 import lombok.Setter;
-import java.time.LocalDate;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,9 +17,9 @@ public class RsPersonKriterier {
 
     private Character kjonn;
 
-    private LocalDate fodtEtter;
+    private LocalDate foedtEtter;
 
-    private LocalDate fodtFor;
+    private LocalDate foedtFoer;
 
     private String fornavn;
 

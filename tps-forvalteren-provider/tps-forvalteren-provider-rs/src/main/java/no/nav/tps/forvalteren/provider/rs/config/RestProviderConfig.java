@@ -33,6 +33,7 @@ public class RestProviderConfig {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        mapper.findAndRegisterModules();
         return mapper;
     }
 }

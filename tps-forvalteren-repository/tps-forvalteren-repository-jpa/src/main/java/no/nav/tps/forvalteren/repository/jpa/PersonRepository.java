@@ -11,6 +11,9 @@ public interface PersonRepository extends Repository<Person, Long> {
     List<Person> findAll();
 
     @Transactional
-    void deleteByIdIn(Long[] ids);
+    void deleteByIdIn(List<Long> ids);
+
+    @Transactional
+    void save(Iterable<Person> personer);
 
 }

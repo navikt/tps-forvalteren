@@ -12,7 +12,8 @@
                         <!-- Include HTML file "response.html" -->
                         <div layout="row" style="margin-top: 60px; margin-left: 30px;">
                             <md-input-container class="tps-vk-input-container" layout="column" flex="5"
-                                                title="Velg ident type" flex aria-label="Velg identtype">
+                                                flex aria-label="Velg identtype">
+                                <md-tooltip>Velg ident type</md-tooltip>
                                 <label for="identtype">Type</label>
                                 <md-select id="identtype" ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
                                     <md-option selected value="FNR">FNR</md-option>
@@ -22,43 +23,21 @@
                             </md-input-container>
 
                             <div layout="column" flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="5"
-                                                title="Velg kjønn" aria-label="Velg kjønn">
+                            <md-input-container class="tps-vk-input-container" layout="column" flex="10"
+                                                aria-label="Velg kjønn">
+                                <md-tooltip>Velg kjønn</md-tooltip>
                                 <label for="kjonn">Kjønn</label>
-                                <md-select id="kjonn" ng-model="kriterium.kjonn" class="md-no-underline" ng-disabled="!editMode">
-                                    <md-option selected value=" "></md-option>
-                                    <md-option value="K">K</md-option>
-                                    <md-option value="M">M</md-option>
+                                <md-select id="kjonn" ng-model="kriterium.kjonn" placeholder="Velg kjønn"
+                                           class="md-no-underline" ng-disabled="!editMode">
+                                    <md-option value="K">Kvinne</md-option>
+                                    <md-option value="M">Mann</md-option>
                                 </md-select>
                             </md-input-container>
 
-                            <!--<md-input-container class="tps-vk-input-container">-->
-                                <!--<md-tooltip md-direction="top">-->
-                                    <!--Tom eller en fremtidig dato, oppfattes av TPS som dagens dato-->
-                                <!--</md-tooltip>-->
-                                <!--<label for="dato">Dato</label>-->
-                                <!--<input name="dato"-->
-                                       <!--id="dato"-->
-                                       <!--type="text"-->
-                                       <!--pikaday="dato"-->
-                                       <!--set-default-date="false"-->
-                                       <!--autocomplete="off"-->
-                                       <!--ng-model="formData.datoGiroNr"-->
-                                       <!--on-open="repositionDatePicker(dato)"-->
-                                       <!--change-year="true"-->
-                                       <!--fdate>-->
-                                <!--<ng-messages for="requestForm.dato.$error">-->
-                                    <!--<ng-message when="isRequired('datoGiroNr')" ng-show="requestForm.dato.$touched">-->
-                                        <!--Gyldig dato er påkrevd-->
-                                    <!--</ng-message>-->
-                                    <!--<ng-message when="pattern">-->
-                                        <!--Ugyldig datoformat (YYYY-MM-DD)-->
-                                    <!--</ng-message>-->
-                                <!--</ng-messages>-->
-                            <!--</md-input-container>-->
                             <div layout="column" flex="5"></div>
                             <md-input-container class="tps-vk-input-container" layout="column" flex="10"
-                                                title='Bestem "Født etter" dato' aria-label="Legg til dato født etter">
+                                                aria-label="Legg til dato født etter">
+                                <md-tooltip>Bestem "Født etter" dato</md-tooltip>
                                 <label for="foedtEtter">Født etter</label>
                                 <md-datepicker id="foedtEtter" name="foedtEtter"
                                                md-placeholder="Angi dato"
@@ -78,10 +57,11 @@
 
                             <div layout="column" flex="5"></div>
                             <md-input-container class="tps-vk-input-container" layout="column" flex="10"
-                                                title='Bestem "Født før" dato' aria-label="Legg til dato født før">
+                                                aria-label="Legg til dato født før">
+                                <md-tooltip>Bestem "Født før" dato</md-tooltip>
                                 <label for="foedtFoer">Født før</label>
                                 <md-datepicker
-                                        id="foedtFoer" name="foedtFoer"
+                                        id="foedtFoer"
                                         md-placeholder="Angi dato"
                                         md-current-view="year"
                                         ng-model="kriterium.foedtFoer"
@@ -98,9 +78,9 @@
                             </md-input-container>
 
                             <div layout="column" flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="10" aria-label="Sett antall personer"
-                                                title="Antall testpersoner som skal genereres">
-                                <label for="antall">Antall</label>
+                            <md-input-container class="tps-vk-input-container" aria-label="Sett antall personer">
+                                <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
+                                <label for="antall">Antall*</label>
                                 <input id="antall" name="antall" placeholder="Antall personer" ng-model="kriterium.antall"
                                        maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
                                 <div class="validation-messages" ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$touched">
@@ -110,7 +90,8 @@
 
                             <div layout="column" flex="5"></div>
                             <md-input-container class="tps-vk-input-container" layout="column" flex="5"
-                                                title="Legg til kriterium" aria-label="Legg til kriterium">
+                                                aria-label="Legg til kriterium">
+                                <md-tooltip>Legg til kriterium</md-tooltip>
                                 <div layout="column">
                                     <md-button ng-disabled="!requestForm.$valid || !kriterium.antall || kriterium.antall == 0 || !editMode"
                                                ng-click="addKriterium()" class="md-raised">Legg til</md-button>
@@ -119,7 +100,8 @@
                         </div>
                         <div style="margin-left: 30px;" flex>
                             <div layout="row" style="margin-bottom: 10px;" ng-repeat="kriterium in kriterier">
-                                <div layout="column" title="Slett denne raden" aria-label="Slett denne raden">
+                                <div layout="column" aria-label="Slett denne raden">
+                                    <md-tooltip>Slett denne raden</md-tooltip>
                                     <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="removeDialog($index)"></md-icon>
                                 </div>
                                 <div layout="column">Type = "{{kriterium.identtype}}"</div>
@@ -136,13 +118,17 @@
                             <div layout="row" layout-sm="column" flex="100" ng-show="showSpinner">
                                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>
                             </div>
-                            <md-button class="md-raised" ng-disabled="!editMode" ng-click="avbryt()"
-                                       title='Avbryt operasjon "Legg til testpersoner"'
+                            <div>
+                                <md-tooltip>Avbryt operasjon "Legg til testpersoner"</md-tooltip>
+                                <md-button class="md-raised" ng-disabled="!editMode" ng-click="avbryt()"
                                        aria-label='Avbryt operasjon "Legg til testpersoner"'>Avbryt</md-button>
-                            <md-button style="margin-right: 10px;" class="md-raised md-accent" ng-disabled="kriterier.length == 0 || !editMode"
-                                       title='Utfør operasjon "Legg til testpersoner"'
+                            </div>
+                            <div>
+                                <md-tooltip>Utfør operasjon "Legg til testpersoner"</md-tooltip>
+                                <md-button style="margin-right: 10px;" class="md-raised md-accent" ng-disabled="kriterier.length == 0 || !editMode"
                                        aria-label='Utfør operasjon "Legg til testpersoner"'
                                        ng-click="opprettTestpersoner()">Opprett</md-button>
+                            </div>
                         </md-toolbar>
                     </form>
                 </md-tab>
