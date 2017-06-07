@@ -6,7 +6,7 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAn
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentByFnrRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentAdresselinjeHistorikkRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
@@ -20,7 +20,7 @@ public class S015HentAdresselinjehistorikk implements ServiceRoutineResolver{
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-ADLIHIST-O")
                 .internalName("Hent Adresselinjehistorikk")
-                .javaClass(TpsServiceRoutineHentByFnrRequest.class)
+                .javaClass(TpsHentAdresselinjeHistorikkRequest.class)
                 .config()
                     .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
                 .and()
@@ -42,9 +42,15 @@ public class S015HentAdresselinjehistorikk implements ServiceRoutineResolver{
                     .type(TpsParameterType.DATE)
                 .and()
 
+                .parameter()
+                    .name("adresseType")
+                    .required()
+                    .type(TpsParameterType.STRING)
+                .and()
+
                 .transformer()
                     .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
-                    .postSend(ResponseDataTransformer.extractDataFromXmlElement("person"))
+                    .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataS015"))
                     .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 

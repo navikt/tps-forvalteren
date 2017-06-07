@@ -11,7 +11,7 @@
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
 
 
     <packaging>pom</packaging>
@@ -24,6 +24,7 @@
         <module>tps-forvalteren-domain</module>
         <module>tps-forvalteren-provider</module>
         <module>tps-forvalteren-service</module>
+        <module>tps-forvalteren-repository</module>
     </modules>
 
     <prerequisites>
@@ -65,6 +66,7 @@
         <jms.version>1.1</jms.version>
         <guava.version>19.0</guava.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
+        <ojdbc.version>11.2.0.3</ojdbc.version>
         <orika.version>1.4.5</orika.version>
         <mqjms.version>7.1</mqjms.version>
         <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
@@ -143,17 +145,27 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
-                <artifactId>tps-forvalteren-domain-service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.forvalteren</groupId>
-                <artifactId>tps-forvalteren-domain-ws</artifactId>
+                <artifactId>tps-forvalteren-domain-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-domain-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.forvalteren</groupId>
+                <artifactId>tps-forvalteren-domain-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.forvalteren</groupId>
+                <artifactId>tps-forvalteren-domain-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.forvalteren</groupId>
+                <artifactId>tps-forvalteren-domain-ws</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -169,9 +181,20 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
+                <artifactId>tps-forvalteren-repository-component-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.forvalteren</groupId>
+                <artifactId>tps-forvalteren-repository-jpa</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>no.nav.freg</groupId>
                 <artifactId>freg-spring-boot-starter-dependencies</artifactId>
@@ -202,6 +225,11 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jms</artifactId>
                 <version>${spring-jms.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>1.5.2.RELEASE</version>
             </dependency>
 
             <!--SERVICES-->

@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.provider.config;
 
 import no.nav.tps.forvalteren.common.java.config.CommonConfig;
+import no.nav.tps.forvalteren.repository.jpa.config.RepositoryConfig;
 import no.nav.tps.forvalteren.service.config.ServiceConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,8 @@ import org.springframework.context.annotation.Import;
 @EnableAutoConfiguration
 @Import({
         ServiceConfig.class,
-        CommonConfig.class
+        CommonConfig.class,
+        RepositoryConfig.class
 })
 public class IntegrationTestConfig {
 

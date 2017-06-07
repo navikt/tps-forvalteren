@@ -1,9 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.security.config;
 
 import no.nav.tps.forvalteren.provider.rs.security.csrf.CsrfHeaderFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -48,5 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.exceptionHandling().authenticationEntryPoint(authentificationEntryPoint);
 
+        http.csrf().disable();
     }
 }
