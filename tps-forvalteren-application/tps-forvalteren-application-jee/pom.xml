@@ -19,6 +19,11 @@
             <artifactId>tps-forvalteren-provider-web</artifactId>
             <type>war</type>
         </dependency>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
