@@ -11,7 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
@@ -60,6 +62,38 @@ public class PersonRepositoryComponentTest {
         List<Person> result = repository.findAll();
         assertThat(result, hasSize(0));
 
+    }
+
+    @Test
+    @Rollback
+    public void saveSavesAll() {
+        List<Person> persons = Arrays.asList(personOla, personKari);
+        repository.save(persons);
+
+        Iterable<Person> result = testRepository.findAll();
+        List<Person> resultList = new ArrayList<>();
+
+        result.forEach(resultList::add);
+        assertThat(resultList, hasSize(2));
+        assertThat(resultList, hasItem(personOla));
+        assertThat(resultList, hasItem(personKari));
+    }
+
+    @Test
+    @Rollback
+    public void FindByIdentInReturnsAll() {
+        List<Person> persons = Arrays.asList(personOla, personKari);
+        testRepository.save(persons);
+
+        List<String> identList = persons.stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toList());
+
+        List<Person> result = repository.findByIdentIn(identList);
+
+        assertThat(result, hasSize(2));
+        assertThat(result, hasItem(persons.get(0)));
+        assertThat(result, hasItem(persons.get(1)));
     }
 
 }
