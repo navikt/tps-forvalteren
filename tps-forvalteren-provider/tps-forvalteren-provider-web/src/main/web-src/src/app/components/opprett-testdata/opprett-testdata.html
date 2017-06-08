@@ -1,7 +1,7 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
 
         <!-- Resulting Response -->
-        <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2" layout="column">
+        <md-content flex="100" class="tps-vk-bottom md-whiteframe-z2">
 
             <h2>Legg til testpersoner</h2>
             <!-- Setup Tabs -->
@@ -9,37 +9,36 @@
                 <!-- Tab Readable Result -->
                 <md-tab label="Opprett person fra kriterier">
                     <form name="requestForm" class="tps-vk-form">
-                        <!-- Include HTML file "response.html" -->
                         <div layout="row" style="margin-top: 60px; margin-left: 30px;">
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="5"
+                            <md-input-container class="tps-vk-input-container" flex="5"
                                                 flex aria-label="Velg identtype">
                                 <md-tooltip>Velg ident type</md-tooltip>
-                                <label for="identtype">Type</label>
-                                <md-select id="identtype" ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
+                                <label>Type</label>
+                                <md-select ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
                                     <md-option selected value="FNR">FNR</md-option>
                                     <md-option value="DNR">DNR</md-option>
                                     <md-option value="BNR">BNR</md-option>
                                 </md-select>
                             </md-input-container>
 
-                            <div layout="column" flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="10"
+                            <div flex="5"></div>
+                            <md-input-container class="tps-vk-input-container" flex="10"
                                                 aria-label="Velg kjønn">
                                 <md-tooltip>Velg kjønn</md-tooltip>
-                                <label for="kjonn">Kjønn</label>
-                                <md-select id="kjonn" ng-model="kriterium.kjonn" placeholder="Velg kjønn"
+                                <label>Kjønn</label>
+                                <md-select ng-model="kriterium.kjonn" placeholder="Velg kjønn"
                                            class="md-no-underline" ng-disabled="!editMode">
                                     <md-option value="K">Kvinne</md-option>
                                     <md-option value="M">Mann</md-option>
                                 </md-select>
                             </md-input-container>
 
-                            <div layout="column" flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="10"
+                            <div flex="5"></div>
+                            <md-input-container class="tps-vk-input-container" flex="15"
                                                 aria-label="Legg til dato født etter">
                                 <md-tooltip>Bestem "Født etter" dato</md-tooltip>
-                                <label for="foedtEtter">Født etter</label>
-                                <md-datepicker id="foedtEtter" name="foedtEtter"
+                                <label>Født etter</label>
+                                <md-datepicker name="foedtEtter"
                                                md-placeholder="Angi dato"
                                                md-current-view="year"
                                                ng-model="kriterium.foedtEtter"
@@ -55,13 +54,12 @@
                                 </div>
                             </md-input-container>
 
-                            <div layout="column" flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="10"
+                            <div flex="5"></div>
+                            <md-input-container class="tps-vk-input-container" flex="15"
                                                 aria-label="Legg til dato født før">
                                 <md-tooltip>Bestem "Født før" dato</md-tooltip>
-                                <label for="foedtFoer">Født før</label>
-                                <md-datepicker
-                                        id="foedtFoer"
+                                <label>Født før</label>
+                                <md-datepicker name="foedtFoer"
                                         md-placeholder="Angi dato"
                                         md-current-view="year"
                                         ng-model="kriterium.foedtFoer"
@@ -77,43 +75,43 @@
                                 </div>
                             </md-input-container>
 
-                            <div layout="column" flex="5"></div>
+                            <div flex="5"></div>
                             <md-input-container class="tps-vk-input-container" aria-label="Sett antall personer">
                                 <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
-                                <label for="antall">Antall*</label>
-                                <input id="antall" name="antall" placeholder="Antall personer" ng-model="kriterium.antall"
+                                <label>Antall*</label>
+                                <input name="antall" placeholder="Antall personer" ng-model="kriterium.antall"
                                        maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
                                 <div class="validation-messages" ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$touched">
                                     <div ng-message="pattern">Ugyldig tallverdi</div>
                                 </div>
                             </md-input-container>
 
-                            <div layout="column" flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" layout="column" flex="5"
+                            <div flex="5"></div>
+                            <md-input-container class="tps-vk-input-container" flex="5"
                                                 aria-label="Legg til kriterium">
                                 <md-tooltip>Legg til kriterium</md-tooltip>
-                                <div layout="column">
+                                <div>
                                     <md-button ng-disabled="!requestForm.$valid || !kriterium.antall || kriterium.antall == 0 || !editMode"
                                                ng-click="addKriterium()" class="md-raised">Legg til</md-button>
                                 </div>
                             </md-input-container>
                         </div>
-                        <div style="margin-left: 30px;" flex>
+                        <div style="margin-left: 30px; margin-top: 30px;" flex>
                             <div layout="row" style="margin-bottom: 10px;" ng-repeat="kriterium in kriterier">
-                                <div layout="column" aria-label="Slett denne raden">
+                                <div aria-label="Slett denne raden">
                                     <md-tooltip>Slett denne raden</md-tooltip>
                                     <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="removeDialog($index)"></md-icon>
                                 </div>
-                                <div layout="column">Type = "{{kriterium.identtype}}"</div>
-                                <div layout="column" ng-if="kriterium.kjonn != ' '">, Kjonn = "{{kriterium.kjonn}}"</div>
-                                <div layout="column" ng-if="kriterium.foedtEtter">, Født etter = "{{kriterium.foedtEtter | date:'dd-MM-yyyy'}}"</div>
-                                <div layout="column" ng-if="kriterium.foedtFoer">, Født før = "{{kriterium.foedtFoer | date:'dd-MM-yyyy'}}"</div>
-                                <div layout="column" ng-if="kriterium.antall">, Antall = "{{kriterium.antall}}"</div>
+                                <div >Type = "{{kriterium.identtype}}"</div>
+                                <div ng-if="kriterium.kjonn != ' '">, Kjonn = "{{kriterium.kjonn}}"</div>
+                                <div ng-if="kriterium.foedtEtter">, Født etter = "{{kriterium.foedtEtter | date:'dd-MM-yyyy'}}"</div>
+                                <div ng-if="kriterium.foedtFoer">, Født før = "{{kriterium.foedtFoer | date:'dd-MM-yyyy'}}"</div>
+                                <div ng-if="kriterium.antall">, Antall = "{{kriterium.antall}}"</div>
                             </div>
 
-                            <div layout="row" style="margin-top: 30px;" layout-align="center center" flex="75" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
+                            <div layout="row" layout-align="center center" flex="75" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
                         </div>
-                        <md-toolbar class="md-toolbar-tools" layout="row" style="margin-left: 30px; margin-top: 50px;" flex="75">
+                        <md-toolbar class="md-toolbar-tools" layout="row" style="margin-left: 30px; margin-top: 50px;" flex="90">
                             <span flex></span>
                             <div layout="row" layout-sm="column" flex="100" ng-show="showSpinner">
                                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>
@@ -133,7 +131,7 @@
                     </form>
                 </md-tab>
                 <md-tab label="Opprett person fra liste over identer" style="background-color: rgb(250,250,250)">
-                    <!-- Include HTML file "response.html" -->
+
                     <div class="tps-vk-top">
 
                     </div>

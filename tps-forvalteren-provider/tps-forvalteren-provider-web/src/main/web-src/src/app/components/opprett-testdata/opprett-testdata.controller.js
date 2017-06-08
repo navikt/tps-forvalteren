@@ -91,14 +91,15 @@ angular.module('tps-forvalteren.opprett-testdata')
                 }
             };
 
-            var getRow = function (krit) {
-                return 'Type = "' + krit.identtype + '"' +
-                    (krit.kjonn != ' ' ? ', Kjonn = "' + krit.kjonn + '"' : '') +
-                    (krit.foedtEtter ? ', Født etter =" ' + $filter('date')(krit.foedtEtter, 'dd-MM-yyyy') + '"' : '') +
-                    (krit.foedtFoer ? ', Født før = "' + $filter('date')(krit.foedtFoer, 'dd-MM-yyyy') + '"' : '') +
-                    (krit.antall ? ', Antall = "' + krit.antall + '"' : '');
+            var getRow = function (kriterium) {
+                return 'Type = "' + kriterium.identtype + '"' +
+                    (kriterium.kjonn != ' ' ? ', Kjonn = "' + kriterium.kjonn + '"' : '') +
+                    (kriterium.foedtEtter ? ', Født etter =" ' + $filter('date')(kriterium.foedtEtter, 'dd-MM-yyyy') + '"' : '') +
+                    (kriterium.foedtFoer ? ', Født før = "' + $filter('date')(kriterium.foedtFoer, 'dd-MM-yyyy') + '"' : '') +
+                    (kriterium.antall ? ', Antall = "' + kriterium.antall + '"' : '');
             };
 
             // Prep for unbiased row
             cleanupRow();
+
         }]);
