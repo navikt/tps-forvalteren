@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.BiasedRandom;
 import no.nav.tps.forvalteren.service.command.testdata.utils.DateGenerator;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -43,6 +44,8 @@ public class FiktiveIdenterGenerator {
 
     private static final int[] KONTROLL_SIFFER_C1 = {3, 7, 6, 1, 8, 9, 4, 5, 2};
     private static final int[] KONTROLL_SIFFER_C2 = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
+
+    private static final SecureRandom randomNumberProvider = new SecureRandom();
 
     private String genererFnrDnrBnrStringified(RsPersonKriterier personKriterier, LocalDate date){
         switch (personKriterier.getIdenttype()) {
@@ -208,7 +211,7 @@ public class FiktiveIdenterGenerator {
     }
 
     private char lagTilfeldigKvinneEllerMann(){
-        if(Math.random() < 0.5){
+        if(randomNumberProvider.nextDouble() < 0.5){
             return 'K';
         }
         return 'M';
