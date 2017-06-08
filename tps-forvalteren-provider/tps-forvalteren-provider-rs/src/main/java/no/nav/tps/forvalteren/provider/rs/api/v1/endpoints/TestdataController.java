@@ -4,10 +4,12 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterierListe;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettTestdataPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
+import no.nav.tps.forvalteren.service.command.testdata.SetNameOnPersonsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,12 @@ public class TestdataController {
     @Autowired
     private OpprettTestdataPersoner opprettTestdataPersoner;
 
+    @Autowired
+    private SetNameOnPersonsService setNameOnPersonsService;
+
+    @Autowired
+    private SavePersonListService savePersonListService;
+
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons")})
     @RequestMapping(value = "/personer", method = RequestMethod.GET)
@@ -45,8 +53,10 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons")})
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
-    public void createNewPersons(@RequestBody RsPersonKriterierListe personKriterierListe) {
-        opprettTestdataPersoner.opprettPersoner(personKriterierListe);
+    public void createNewPersons(@RequestBody RsPersonKriterieRequest personKriterierListe) {
+        List<Person> personerSomSkalPersisteres = opprettTestdataPersoner.hentIdenterSomSkalBliPersoner(personKriterierListe);
+        setNameOnPersonsService.execute(personerSomSkalPersisteres);
+        savePersonListService.save(personerSomSkalPersisteres);
     }
 
     @LogExceptions

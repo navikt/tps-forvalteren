@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class FiktiveIdenterGenerator {
+
+    private static final int MULTIPLY_ANT_IDENTER = 2;
 
     private static final int CATEGORY1_NUMBER_RANGE_START = 0;
     private static final int CATEGORY1_NUMBER_RANGE_END = 499;
@@ -37,9 +40,7 @@ public class FiktiveIdenterGenerator {
     private static final int[] KONTROLL_SIFFER_C1 = {3, 7, 6, 1, 8, 9, 4, 5, 2};
     private static final int[] KONTROLL_SIFFER_C2 = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
 
-    public List<String> genererFiktiveIdenter(RsPersonKriterier personKriterier){
-        int antall = personKriterier.getAntall() * 2;
-        personKriterier.setAntall(antall);
+    public Set<String> genererFiktiveIdenter(RsPersonKriterier personKriterier){
         switch (personKriterier.getIdenttype()) {
         case "DNR":
             return genererNyttDnummer(personKriterier);
@@ -52,12 +53,12 @@ public class FiktiveIdenterGenerator {
 
     //TODO Lag en random dato i et intervall! Og deretter bare bruk hele klassen.
 
-    private List<String> genererNyttFnr(RsPersonKriterier kriterie) {
+    private Set<String> genererNyttFnr(RsPersonKriterier kriterie) {
         String fodselsdatodato = localDateToDDmmYYStringFormat(kriterie.getFoedtEtter());
         return genererIdenter(kriterie, fodselsdatodato);
     }
 
-    private List<String> genererNyttDnummer(RsPersonKriterier kriterie) {
+    private Set<String> genererNyttDnummer(RsPersonKriterier kriterie) {
         String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFoedtEtter());
 
         int forsteSiffer = Character.getNumericValue(fodselsdato.charAt(0)) + 4;
@@ -66,7 +67,7 @@ public class FiktiveIdenterGenerator {
         return genererIdenter(kriterie, dfdato);
     }
 
-    private List<String> genererNyttBNummer(RsPersonKriterier kriterie) {
+    private Set<String> genererNyttBNummer(RsPersonKriterier kriterie) {
         String fodselsdato = localDateToDDmmYYStringFormat(kriterie.getFoedtEtter());
 
         int maanedSiffer = Character.getNumericValue(fodselsdato.charAt(2)) + 2;
@@ -80,11 +81,16 @@ public class FiktiveIdenterGenerator {
         return date.format(formatter);
     }
 
-    private List<String> genererIdenter(RsPersonKriterier kriterie, String fodselsdato) {
+//    private LocalDate genererRandomDate(RsPersonKriterier kriterier){
+//        int days = Days.daysBetween(kriterier.getFoedtEtter(), kriterier.getFoedtFoer())
+//    }
+
+    private Set<String> genererIdenter(RsPersonKriterier kriterie, String fodselsdato) {
         StringBuilder identitetBuilder;
         HashSet<String> identSet = new HashSet<>();
-        while(identSet.size() != kriterie.getAntall()){
+        while(identSet.size() != (kriterie.getAntall() * MULTIPLY_ANT_IDENTER)){
             identitetBuilder = new StringBuilder();
+            //String fodsel = genererNyttBNummer(kriterie, )
             List<Integer> rangeList = hentKategoriIntervallForDato(kriterie.getFoedtEtter());
             identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), kriterie.getKjonn()));
             int forsteKontrollSiffer = hentForsteKontrollSiffer(identitetBuilder.toString());
@@ -101,7 +107,7 @@ public class FiktiveIdenterGenerator {
             String fnr = identitetBuilder.toString();
             identSet.add(fnr);
         }
-        return new ArrayList<>(identSet);
+        return identSet;
     }
 
     private List<Integer> hentKategoriIntervallForDato(LocalDate date) {
@@ -120,6 +126,11 @@ public class FiktiveIdenterGenerator {
 
     private String genererIndividnummer(int rangeStart, int rangeSlutt, Character kjonn) {
         int individNummber;
+
+        if(kjonn == null) {
+            kjonn = lagTilfeldigKvinneEllerMann();
+        }
+
         if (erKvinne(kjonn)) {         //KVINNE: Individnummer avsluttes med partall
             individNummber = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt);
             if (individNummber % 2 > 0){
@@ -185,4 +196,12 @@ public class FiktiveIdenterGenerator {
     private boolean erKvinne(Character kjonn){
         return kjonn == 'K';
     }
+
+    private char lagTilfeldigKvinneEllerMann(){
+        if(Math.random() < 0.5){
+            return 'K';
+        }
+        return 'M';
+    }
+
 }

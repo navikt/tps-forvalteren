@@ -9,7 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +39,7 @@ public class FiktiveIdenterGeneratorTest {
         LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
         testpersonKriterie.setFoedtEtter(date);
 
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : fnrList) {
             int individNummer = Integer.parseInt(fnr.substring(6, 9));
             assertTrue((individNummer >= 0 && individNummer <= 499) || (individNummer >= 900 && individNummer <= 999));
@@ -53,7 +53,7 @@ public class FiktiveIdenterGeneratorTest {
         testpersonKriterie.setKjonn('M');
         LocalDate date = LocalDate.of(1899, Month.MAY, 15);
         testpersonKriterie.setFoedtEtter(date);
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : fnrList) {
             int individNummer = Integer.parseInt(fnr.substring(6, 9));
             assertTrue(individNummer >= 500 && individNummer <= 749);
@@ -66,7 +66,7 @@ public class FiktiveIdenterGeneratorTest {
         testpersonKriterie.setKjonn('M');
         LocalDate date = LocalDate.of(2000, Month.MAY, 15);
         testpersonKriterie.setFoedtEtter(date);
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : fnrList) {
             int individNummer = Integer.parseInt(fnr.substring(6, 9));
             assertTrue(individNummer >= 500 && individNummer <= 999);
@@ -80,7 +80,7 @@ public class FiktiveIdenterGeneratorTest {
         LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
         testpersonKriterie.setFoedtEtter(date);
 
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         assertSame(fnrList.size() , 80);
         for (String fnr : fnrList) {
             assertSame(fnr.length(), 11);
@@ -101,7 +101,7 @@ public class FiktiveIdenterGeneratorTest {
         LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
         testpersonKriterie.setFoedtEtter(date);
 
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : fnrList) {
             int kjonnNummer = Integer.parseInt(fnr.substring(8, 9));
             assertSame(kjonnNummer % 2 , 0);
@@ -115,7 +115,7 @@ public class FiktiveIdenterGeneratorTest {
         LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
         testpersonKriterie.setFoedtEtter(date);
 
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : fnrList) {
             int kjonnNummer = Integer.parseInt(fnr.substring(8, 9));
             assertSame(kjonnNummer % 2 , 1);
@@ -129,7 +129,7 @@ public class FiktiveIdenterGeneratorTest {
         LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
         testpersonKriterie.setFoedtEtter(date);
 
-        List<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : fnrList) {
             int statsborgerskapNummer = Integer.parseInt(fnr.substring(0, 1));
             assertTrue(statsborgerskapNummer >= 4);
@@ -146,7 +146,7 @@ public class FiktiveIdenterGeneratorTest {
         LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
         testpersonKriterie.setFoedtEtter(date);
 
-        List<String> bNummerList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        Set<String> bNummerList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
         for (String fnr : bNummerList) {
             int mndNummer = Integer.parseInt(fnr.substring(2, 3));
             assertTrue(mndNummer >= 2);

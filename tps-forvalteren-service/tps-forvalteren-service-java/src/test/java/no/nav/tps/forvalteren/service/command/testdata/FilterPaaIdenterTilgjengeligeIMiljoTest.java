@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
@@ -102,7 +103,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertThat(filtrerteIdenter, hasItem(FNR_1));
         assertFalse(filtrerteIdenter.contains(FNR_2));
@@ -129,7 +130,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertTrue(filtrerteIdenter.isEmpty());
     }
@@ -154,7 +155,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertThat(filtrerteIdenter, hasItems(FNR_1,FNR_2));
     }
@@ -174,7 +175,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        List<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertTrue(filtrerteIdenter.isEmpty());
     }

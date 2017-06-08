@@ -9,11 +9,12 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class FilterPaaIdenterTilgjengeligeIMiljo {
@@ -30,7 +31,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
 
-    public List<String> filtrer(List<String> identer){
+    public Set<String> filtrer(Collection<String> identer){
 
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer);
 
@@ -40,9 +41,9 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
         return hentIdenterSomErTilgjengeligeIAlleMiljoer(tpsRequestParameters, context);
     }
 
-    private List<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
+    private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
 
-        List<String> tilgjengeligeIdenterAlleMiljoer = new ArrayList<>();
+        Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>();
 
         for(int i=LOWEST_T_ENVIRONMENT; i<HIGHEST_T_ENVIRONMENT; i++){
             if(i == 7){
@@ -57,7 +58,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
                 continue;
             }
 
-            List<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterFraResponse(tpsResponse);
+            Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterFraResponse(tpsResponse);
 
             if(i == 0){
                 tilgjengeligeIdenterAlleMiljoer.addAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
@@ -72,7 +73,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
         return response.getXml().isEmpty();
     }
 
-    private Map<String,Object> opprettParametereForM201TpsRequest(List<String> identer){
+    private Map<String,Object> opprettParametereForM201TpsRequest(Collection<String> identer){
         Map<String, Object> tpsRequestParameters = new HashMap<>();
         tpsRequestParameters.put("serviceRutinenavn","FS03-FDLISTER-DISKNAVN-M");
         tpsRequestParameters.put("fnr", identer);
@@ -81,9 +82,9 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
         return tpsRequestParameters;
     }
 
-    private List<String> trekkUtIdenterFraResponse(TpsServiceRoutineResponse tpsResponse){
+    private Set<String> trekkUtIdenterFraResponse(TpsServiceRoutineResponse tpsResponse){
         LinkedHashMap responseMap = (LinkedHashMap)tpsResponse.getResponse();
-        List<String> tilgjengeligeIdenter = new ArrayList<>();
+        Set<String> tilgjengeligeIdenter = new HashSet<>();
 
         int antallIdenter = (int) responseMap.get("antallTotalt");
 

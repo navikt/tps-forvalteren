@@ -1,17 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterierListe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class OpprettTestdataPersoner {
+
+    private static final int MAX_TRIES = 20;
 
     @Autowired
     private FiktiveIdenterGenerator fiktiveIdenterGenerator;
@@ -19,89 +25,108 @@ public class OpprettTestdataPersoner {
     @Autowired
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
 
-    @Autowired
-    private SetNameOnPersonsService setNameOnPersonsService;
+    public List<Person> hentIdenterSomSkalBliPersoner(RsPersonKriterieRequest personKriterierRequest) {
+        Map<Integer, Set<String>> kriterierNummerert = genererIdenterForAlleKriterier(personKriterierRequest);
+        taBortOpptatteIdenter(kriterierNummerert);
 
-    @Autowired
-    private SavePersonListService SavePersonListService;
-
-    public void opprettPersoner(RsPersonKriterierListe personKriterierListe) {
-
-        List<List<String>> alleMuligeIdenter = genererMuligeIdenter(personKriterierListe);
-        List<List<String>> alleGyldigeIdenter = tilgjengligeIdenter(alleMuligeIdenter);
-
-        int genererOgSjekkNyeIdenterCounter = 0;
-        List<Integer> kriterierSomManglerTilgjengligeIdenter = manglerTilgjengligeIdenter(personKriterierListe, alleGyldigeIdenter);
-        while (!kriterierSomManglerTilgjengligeIdenter.isEmpty() && genererOgSjekkNyeIdenterCounter < 10) {
-            manglerTilgjengligeIdenter(personKriterierListe, alleGyldigeIdenter);
-            genererOgSjekkNyeIdenterCounter++;
+        if (!erAlleKriterieOppfylt(kriterierNummerert, personKriterierRequest)) {
+            oppdaterMapMedIdenterTilManglendeKriterier(kriterierNummerert, personKriterierRequest);
         }
 
-        List<Person> personer = opprettPersonObjekter(personKriterierListe, alleGyldigeIdenter);
-        setNameOnPersonsService.execute(personer);
-        SavePersonListService.save(personer);
-
+        return opprettPersonerBasertPaaLedigeIdenter(kriterierNummerert, personKriterierRequest);
     }
 
-    public List<Person> opprettPersonObjekter(RsPersonKriterierListe personKriterierListe, List<List<String>> alleGyldigeIdenter) {
+    private Map<Integer, Set<String>> genererIdenterForAlleKriterier(RsPersonKriterieRequest kriterierRequest) {
+        Map<Integer, Set<String>> kritererMap = new HashMap<>();
+        for (int i = 0; i < kriterierRequest.getPersonKriterierListe().size(); i++) {
+            Set<String> identerForKritere = fiktiveIdenterGenerator.genererFiktiveIdenter(kriterierRequest.getPersonKriterierListe().get(i));
+            taBortIdenterLagtTilIAndreKriterier(kritererMap, identerForKritere);
+            kritererMap.put(i, identerForKritere);
+        }
+        return kritererMap;
+    }
+
+    private void taBortOpptatteIdenter(Map<Integer, Set<String>> identMap) {
+        Set<String> alleGenererteIdenter = new HashSet<>();
+        for (Map.Entry<Integer, Set<String>> fnrs : identMap.entrySet()) {
+            alleGenererteIdenter.addAll(fnrs.getValue());
+        }
+        Set<String> alleTilgjengeligIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter);
+        taBortOpptatteIdenterFraMap(identMap, alleTilgjengeligIdenter);
+    }
+
+
+    private void taBortIdenterLagtTilIAndreKriterier(Map<Integer, Set<String>> identMap, Set<String> identerForKritere) {
+        for (String ident : new HashSet<>(identerForKritere)) {
+            for(int i = 0; i<identMap.size(); i++){
+                if(identMap.get(i).contains(ident)){
+                    identerForKritere.remove(ident);
+                }
+            }
+        }
+    }
+
+    private void taBortOpptatteIdenterFraMap(Map<Integer, Set<String>> identMap, Set<String> alleTilgjengligIdenter) {
+        for (int i = 0; i < identMap.size(); i++) {
+            identMap.get(i).retainAll(alleTilgjengligIdenter);
+        }
+    }
+
+    private List<Person> opprettPersonerBasertPaaLedigeIdenter(Map<Integer, Set<String>> identMap, RsPersonKriterieRequest personKriterierRequest) {
+        List<Person> personerSomSkalPersisteres = new ArrayList<>();
+        for (int i = 0; i < identMap.size(); i++) {
+            List<Person> personer = opprettPersoner(identMap.get(i), personKriterierRequest.getPersonKriterierListe().get(i));
+            personerSomSkalPersisteres.addAll(personer);
+        }
+        return personerSomSkalPersisteres;
+    }
+
+    private List<Person> opprettPersoner(Set<String> tilgjengeligIdenter, RsPersonKriterier kriterie) {
         List<Person> personer = new ArrayList<>();
-
-        for (int kriterieIndex = 0; kriterieIndex < personKriterierListe.getPersonKriterierListe().size(); kriterieIndex++) {
-            RsPersonKriterier kriterie = personKriterierListe.getPersonKriterierListe().get(kriterieIndex);
-
-            for (int kriterieAntallIndex = 0; kriterieAntallIndex < kriterie.getAntall(); kriterieAntallIndex++) {
-                Person newPerson = new Person();
-                newPerson.setIdenttype(kriterie.getIdenttype());
-                newPerson.setIdent(alleGyldigeIdenter.get(kriterieIndex).get(kriterieAntallIndex));
-                newPerson.setKjonn(kriterie.getKjonn());
-                newPerson.setRegdato(LocalDateTime.now());
-                personer.add(newPerson);
+        for (String ident : tilgjengeligIdenter) {
+            Person newPerson = new Person();
+            newPerson.setIdenttype(kriterie.getIdenttype());
+            newPerson.setIdent(ident);
+            newPerson.setKjonn(kriterie.getKjonn());
+            newPerson.setRegdato(LocalDateTime.now());
+            personer.add(newPerson);
+            if (kriterie.getAntall() == personer.size()) {
+                break;
             }
         }
         return personer;
     }
 
-    public List<Integer> manglerTilgjengligeIdenter(RsPersonKriterierListe personKriterierListe, List<List<String>> alleGyldigeIdenter) {
-        List<Integer> kriterierSomManglerIdenter = sjekkOmNokGyldigeIdenter(personKriterierListe, alleGyldigeIdenter);
-
-        for (Integer kriterieIndex : kriterierSomManglerIdenter) {
-            List<String> muligeIdenter = fiktiveIdenterGenerator.genererFiktiveIdenter(personKriterierListe.getPersonKriterierListe().get(kriterieIndex));
-            List<String> gyldigeIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(muligeIdenter);
-            alleGyldigeIdenter.get(kriterieIndex).addAll(gyldigeIdenter);
-        }
-        return kriterierSomManglerIdenter;
-    }
-
-    public List<List<String>> genererMuligeIdenter(RsPersonKriterierListe personKriterierListe) {
-        List<List<String>> alleMuligeIdenter = new ArrayList<>();
-        for (RsPersonKriterier kriterie : personKriterierListe.getPersonKriterierListe()) {
-            List<String> identer = fiktiveIdenterGenerator.genererFiktiveIdenter(kriterie);
-            alleMuligeIdenter.add(identer);
-        }
-        return alleMuligeIdenter;
-    }
-
-    public List<List<String>> tilgjengligeIdenter(List<List<String>> alleMuligeIdenter) {
-        List<List<String>> alleGyldigeIdenter = new ArrayList<>();
-        for (List<String> muligeIdenter : alleMuligeIdenter) {
-            List<String> gyldigeIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(muligeIdenter);
-            alleGyldigeIdenter.add(gyldigeIdenter);
-        }
-        return alleGyldigeIdenter;
-    }
-
-    public List<Integer> sjekkOmNokGyldigeIdenter(RsPersonKriterierListe personKriterierListe, List<List<String>> alleGyldigeIdenter) {
-
-        List<Integer> kriterierSomManglerIdenter = new ArrayList<>();
-
-        for (int kriterieIndex = 0; kriterieIndex < personKriterierListe.getPersonKriterierListe().size(); kriterieIndex++) {
-            int personKriterierSize = personKriterierListe.getPersonKriterierListe().get(kriterieIndex).getAntall();
-            int gyldigeIdenterSize = alleGyldigeIdenter.get(kriterieIndex).size();
-            if (personKriterierSize > gyldigeIdenterSize) {
-                kriterierSomManglerIdenter.add(kriterieIndex);
+    private void oppdaterMapMedIdenterTilManglendeKriterier(Map<Integer, Set<String>> identMap, RsPersonKriterieRequest personKriterierRequest) {
+        for (int i = 0; i < identMap.size(); i++) {
+            if (!harNokIdenterForKritere(personKriterierRequest.getPersonKriterierListe().get(i), identMap.get(i).size())) {
+                int counter = 0;
+                while (!harNokIdenterForKritere(personKriterierRequest.getPersonKriterierListe().get(i), identMap.get(i).size()) && (counter < MAX_TRIES)) {
+                    RsPersonKriterieRequest singelKriterieListe = new RsPersonKriterieRequest();
+                    singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
+                    singelKriterieListe.getPersonKriterierListe().add(personKriterierRequest.getPersonKriterierListe().get(i));
+                    Map<Integer, Set<String>> nyeIdenterMap = genererIdenterForAlleKriterier(singelKriterieListe);
+                    identMap.get(i).addAll(nyeIdenterMap.get(0));
+                    counter++;
+                }
+                //TODO Throw exception hvis ikk går på 5 forsøk.
             }
         }
-        return kriterierSomManglerIdenter;
     }
 
+    private boolean erAlleKriterieOppfylt(Map<Integer, Set<String>> identMap, RsPersonKriterieRequest personKriterierRequest) {
+        for (int i = 0; i < identMap.size(); i++) {
+            if (!harNokIdenterForKritere(personKriterierRequest.getPersonKriterierListe().get(i), identMap.get(i).size())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean harNokIdenterForKritere(RsPersonKriterier kriterier, int antallIdentManHar) {
+        return antallIdentManHar >= kriterier.getAntall();
+    }
+
+
 }
+
