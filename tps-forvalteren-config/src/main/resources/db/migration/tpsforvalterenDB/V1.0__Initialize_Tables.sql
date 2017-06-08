@@ -2,8 +2,8 @@
 -- T A B L E S --
 -----------------
 CREATE TABLE T_PERSON (
-  PERSON_ID       NUMBER(11)             NOT NULL,
-  IDENT           VARCHAR2(11)           NOT NULL,
+  PERSON_ID       NUMBER(9)              NOT NULL,
+  IDENT           NUMBER(11)             NOT NULL,
   IDENTTYPE       VARCHAR2(3)            NOT NULL,
   KJONN           VARCHAR2(1)            NOT NULL,
   FORNAVN         VARCHAR2(50)           NOT NULL,
@@ -23,10 +23,10 @@ CREATE TABLE T_PERSON (
   BO_POSTNUMMER   NUMBER(4),
   BO_KOMMUNENR    NUMBER(4),
   BO_FLYTTE_DATO  DATE,
-  POST_LINJE_1    VARCHAR2(50),
-  POST_LINJE_2    VARCHAR2(50),
-  POST_LINJE_3    VARCHAR2(50),
-  POST_LAND       VARCHAR2(50)
+  POST_LINJE_1    VARCHAR2(30),
+  POST_LINJE_2    VARCHAR2(30),
+  POST_LINJE_3    VARCHAR2(30),
+  POST_LAND       NUMBER(3)
 );
 
 ---------------------------------------------------
