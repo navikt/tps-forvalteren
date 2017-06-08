@@ -101,7 +101,7 @@ public class OpprettTestdataPersoner {
         for (int i = 0; i < identMap.size(); i++) {
             if (!harNokIdenterForKritere(personKriterierRequest.getPersonKriterierListe().get(i), identMap.get(i).size())) {
                 int counter = 0;
-                while (!harNokIdenterForKritere(personKriterierRequest.getPersonKriterierListe().get(i), identMap.get(i).size()) && (counter < MAX_TRIES)) {
+                while ((counter < MAX_TRIES) && !harNokIdenterForKritere(personKriterierRequest.getPersonKriterierListe().get(i), identMap.get(i).size())) {
                     RsPersonKriterieRequest singelKriterieListe = new RsPersonKriterieRequest();
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
                     singelKriterieListe.getPersonKriterierListe().add(personKriterierRequest.getPersonKriterierListe().get(i));
