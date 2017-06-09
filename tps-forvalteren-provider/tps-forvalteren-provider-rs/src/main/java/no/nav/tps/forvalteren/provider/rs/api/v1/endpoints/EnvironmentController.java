@@ -52,7 +52,6 @@ public class EnvironmentController {
     }
 
     private Set<String> filterEnvironments(Set<String> environments){
-        System.out.print("Environment: " + deployedEnvironment);
         switch (deployedEnvironment){
             case "u":
                 return EnvironmentsFilter.create()
