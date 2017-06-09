@@ -18,7 +18,7 @@ import java.util.Set;
 @Service
 public class OpprettTestdataPersoner {
 
-    private static final int MAX_TRIES = 20;
+    private static final int MAX_TRIES = 50;
 
     @Autowired
     private HentKjoennFraIdent hentKjoennFraIdent;
@@ -129,7 +129,7 @@ public class OpprettTestdataPersoner {
                     identMap.get(i).addAll(nyeIdenterMap.get(0));
                     counter++;
                 }
-                //TODO Throw exception hvis ikk går på 5 forsøk.
+                //TODO Throw exception hvis ikk går på MAX_TRIES forsøk.
             }
         }
     }
