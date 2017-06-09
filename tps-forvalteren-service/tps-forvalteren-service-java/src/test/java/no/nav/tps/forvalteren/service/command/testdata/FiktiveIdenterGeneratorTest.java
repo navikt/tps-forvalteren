@@ -197,6 +197,6 @@ public class FiktiveIdenterGeneratorTest {
     public void hvisKjonnIkkeErSattSettesEtRandomKjonn() throws Exception {
         // Hvis den ikke krasjer saa vil et kjonn ha blitt valgt.
         testpersonKriterie.setIdenttype(FNR);
-        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
+        fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterie);
     }
 }

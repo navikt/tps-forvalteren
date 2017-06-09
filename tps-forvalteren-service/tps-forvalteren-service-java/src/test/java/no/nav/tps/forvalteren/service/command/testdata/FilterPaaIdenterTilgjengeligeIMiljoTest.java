@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,6 +30,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -80,6 +83,49 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         data3.put("fnr", FNR_3);
         data4.put("fnr", FNR_4);
 
+    }
+
+    @Test
+    public void hvisIdenterForSjekkErStorreEnnMaxAntallForRequestSaaKjoresRequestFlereGanger() throws Exception {
+        tpsServiceRoutineRequestTom = new TpsServiceRoutineRequest();
+
+        tpsResponse2Identer.setXml("");
+
+        LinkedHashMap responseMapT1 = new LinkedHashMap();
+
+        tpsResponse2Identer.setResponse(responseMapT1);
+
+        when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
+                .thenReturn(tpsResponse2Identer);
+
+        filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(100));
+        verify(tpsRequestSenderMock, times(24)).sendTpsRequest(any(),any());
+    }
+
+    @Test
+    public void edgeCasesTestHvisIdenterForSjekkErStorreEnnMaxAntallForRequestSaaKjoresRequestFlereGanger() throws Exception {
+        tpsServiceRoutineRequestTom = new TpsServiceRoutineRequest();
+
+        tpsResponse2Identer.setXml("");
+
+        LinkedHashMap responseMapT1 = new LinkedHashMap();
+
+        tpsResponse2Identer.setResponse(responseMapT1);
+
+        when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
+                .thenReturn(tpsResponse2Identer);
+
+        filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(80));
+        verify(tpsRequestSenderMock, times(12)).sendTpsRequest(any(),any());
+
+        filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(81));
+        verify(tpsRequestSenderMock, times(12 + 24)).sendTpsRequest(any(),any());
+
+        filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(160));
+        verify(tpsRequestSenderMock, times(36+24)).sendTpsRequest(any(),any());
+
+        filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(161));
+        verify(tpsRequestSenderMock, times(60+36)).sendTpsRequest(any(),any());
     }
 
     @Test
@@ -178,5 +224,13 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
 
         assertTrue(filtrerteIdenter.isEmpty());
+    }
+
+    private List<String> lagIdenterListe(int antallIdenter){
+        List<String> identer = new ArrayList<>();
+        for(int i = 0; i<antallIdenter; i++){
+            identer.add(String.valueOf(i));
+        }
+        return identer;
     }
 }
