@@ -3,7 +3,7 @@
 -----------------
 CREATE TABLE T_PERSON (
   PERSON_ID       NUMBER(9)              NOT NULL,
-  IDENT           NUMBER(11)             NOT NULL,
+  IDENT           VARCHAR2(11)           NOT NULL,
   IDENTTYPE       VARCHAR2(3)            NOT NULL,
   KJONN           VARCHAR2(1)            NOT NULL,
   FORNAVN         VARCHAR2(50)           NOT NULL,
