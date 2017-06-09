@@ -26,7 +26,7 @@ CREATE TABLE T_PERSON (
   POST_LINJE_1    VARCHAR2(30),
   POST_LINJE_2    VARCHAR2(30),
   POST_LINJE_3    VARCHAR2(30),
-  POST_LAND       NUMBER(3)
+  POST_LAND       VARCHAR2(3)
 );
 
 ---------------------------------------------------
