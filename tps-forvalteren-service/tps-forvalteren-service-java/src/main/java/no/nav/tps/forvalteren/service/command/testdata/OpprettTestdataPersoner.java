@@ -29,9 +29,13 @@ public class OpprettTestdataPersoner {
     @Autowired
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
 
+    @Autowired
+    FindAllExistingIdenterInDB findAllExistingIdenterInDB;
+
     public List<Person> hentIdenterSomSkalBliPersoner(RsPersonKriterieRequest personKriterierRequest) {
         Map<Integer, Set<String>> kriterierNummerert = genererIdenterForAlleKriterier(personKriterierRequest);
         taBortOpptatteIdenter(kriterierNummerert);
+        taBortIdenterSomFinnesIDatabasen(kriterierNummerert);
 
         if (!erAlleKriterieOppfylt(kriterierNummerert, personKriterierRequest)) {
             oppdaterMapMedIdenterTilManglendeKriterier(kriterierNummerert, personKriterierRequest);
@@ -74,6 +78,15 @@ public class OpprettTestdataPersoner {
         for (int i = 0; i < identMap.size(); i++) {
             identMap.get(i).retainAll(alleTilgjengligIdenter);
         }
+    }
+
+    private void taBortIdenterSomFinnesIDatabasen(Map<Integer, Set<String>> identMap) {
+        Set<String> alleGenererteIdenter = new HashSet<>();
+        for (Map.Entry<Integer, Set<String>> fnrs : identMap.entrySet()) {
+            alleGenererteIdenter.addAll(fnrs.getValue());
+        }
+        Set<String> alleTilgjengeligIdenter = findAllExistingIdenterInDB.filtrer(alleGenererteIdenter);
+        taBortOpptatteIdenterFraMap(identMap, alleTilgjengeligIdenter);
     }
 
     private List<Person> opprettPersonerBasertPaaLedigeIdenter(Map<Integer, Set<String>> identMap, RsPersonKriterieRequest personKriterierRequest) {
