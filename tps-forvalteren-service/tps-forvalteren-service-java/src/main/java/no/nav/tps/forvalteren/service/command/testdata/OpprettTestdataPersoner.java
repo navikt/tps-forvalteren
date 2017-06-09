@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ import java.util.Set;
 public class OpprettTestdataPersoner {
 
     private static final int MAX_TRIES = 20;
+
+    @Autowired
+    private HentKjoennFraIdent hentKjoennFraIdent;
 
     @Autowired
     private FiktiveIdenterGenerator fiktiveIdenterGenerator;
@@ -87,7 +91,7 @@ public class OpprettTestdataPersoner {
             Person newPerson = new Person();
             newPerson.setIdenttype(kriterie.getIdenttype());
             newPerson.setIdent(ident);
-            newPerson.setKjonn(kriterie.getKjonn());
+            newPerson.setKjonn(hentKjoennFraIdent.execute(ident));
             newPerson.setRegdato(LocalDateTime.now());
             personer.add(newPerson);
             if (kriterie.getAntall() == personer.size()) {

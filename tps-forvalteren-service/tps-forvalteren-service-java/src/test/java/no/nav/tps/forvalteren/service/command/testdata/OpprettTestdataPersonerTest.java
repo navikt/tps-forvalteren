@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,8 +49,16 @@ public class OpprettTestdataPersonerTest {
     @Mock
     private SavePersonListService savePersonListServiceMock;
 
+    @Mock
+    private HentKjoennFraIdent hentKjoennFraIdentMock;
+
     @InjectMocks
     private OpprettTestdataPersoner opprettTestdataPersoner;
+
+    @Before
+    public void setup(){
+        when(hentKjoennFraIdentMock.execute(anyString())).thenReturn('K');
+    }
 
     @Test
     public void manOppretterLikeMangePersonerSomManSpoerOmHvisAltGaarGreit() throws Exception {
