@@ -25,7 +25,8 @@ public class OpprettTestdataPersoner {
     @Autowired
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
 
-    @Autowired FindAllExistingIdenterInDB findAllExistingIdenterInDB;
+    @Autowired
+    FindAllExistingIdenterInDB findAllExistingIdenterInDB;
 
     public List<Person> hentIdenterSomSkalBliPersoner(RsPersonKriterieRequest personKriterierRequest) {
         Map<Integer, Set<String>> kriterierNummerert = genererIdenterForAlleKriterier(personKriterierRequest);
