@@ -27,7 +27,7 @@ public class FindAllExistingIdenterInDBTest {
     private PersonRepository repository;
 
     @InjectMocks
-    private FindAllExistingIdenterInDB findAllExistingIdenterInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     private List<Person> existingIdenterInDB;
     private List<String> newIdenter;
@@ -51,7 +51,7 @@ public class FindAllExistingIdenterInDBTest {
     @Test
     public void removesExistingIdenter() {
         when(repository.findByIdentIn(any(List.class))).thenReturn(existingIdenterInDB);
-        Set<String> result = findAllExistingIdenterInDB.filtrer(new HashSet<>(newIdenter));
+        Set<String> result = findIdenterNotUsedInDB.filtrer(new HashSet<>(newIdenter));
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(newIdenter.get(2)));
     }

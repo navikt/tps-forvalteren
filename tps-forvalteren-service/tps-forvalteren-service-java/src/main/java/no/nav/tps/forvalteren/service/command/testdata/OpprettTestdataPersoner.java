@@ -30,8 +30,9 @@ public class OpprettTestdataPersoner {
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
 
     @Autowired
-    FindAllExistingIdenterInDB findAllExistingIdenterInDB;
+    FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
+    //TODO Trenger en refaktor en gang...
     public List<Person> hentIdenterSomSkalBliPersoner(RsPersonKriterieRequest personKriterierRequest) {
         Map<Integer, Set<String>> kriterierNummerert = genererIdenterForAlleKriterier(personKriterierRequest);
         taBortOpptatteIdenter(kriterierNummerert);
@@ -85,7 +86,7 @@ public class OpprettTestdataPersoner {
         for (Map.Entry<Integer, Set<String>> fnrs : identMap.entrySet()) {
             alleGenererteIdenter.addAll(fnrs.getValue());
         }
-        Set<String> alleTilgjengeligIdenter = findAllExistingIdenterInDB.filtrer(alleGenererteIdenter);
+        Set<String> alleTilgjengeligIdenter = findIdenterNotUsedInDB.filtrer(alleGenererteIdenter);
         taBortOpptatteIdenterFraMap(identMap, alleTilgjengeligIdenter);
     }
 
@@ -123,6 +124,8 @@ public class OpprettTestdataPersoner {
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
                     singelKriterieListe.getPersonKriterierListe().add(personKriterierRequest.getPersonKriterierListe().get(i));
                     Map<Integer, Set<String>> nyeIdenterMap = genererIdenterForAlleKriterier(singelKriterieListe);
+                    taBortOpptatteIdenter(nyeIdenterMap);
+                    taBortIdenterSomFinnesIDatabasen(nyeIdenterMap);
                     identMap.get(i).addAll(nyeIdenterMap.get(0));
                     counter++;
                 }
