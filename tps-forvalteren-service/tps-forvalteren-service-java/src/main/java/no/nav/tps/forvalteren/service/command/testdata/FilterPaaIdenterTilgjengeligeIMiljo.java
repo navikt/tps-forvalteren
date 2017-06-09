@@ -9,10 +9,12 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +23,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
 
     private static final int HIGHEST_T_ENVIRONMENT = 13;
     private static final int LOWEST_T_ENVIRONMENT = 0;
+    private static final int MAX_ANTALL_IDENTER_TIL_REQUEST_M201 = 80;
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -32,6 +35,29 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     private RsTpsRequestMappingUtils mappingUtils;
 
     public Set<String> filtrer(Collection<String> identer){
+        if(!(identer.size() > MAX_ANTALL_IDENTER_TIL_REQUEST_M201)){
+
+            return filtrerPaaIdenter(identer);
+
+        } else {
+
+            Set<String> tilgjengeligeIdenter = new HashSet<>();
+            List<String> identerListe = new ArrayList<>(identer);
+            int batchStart = 0;
+            int batchStop;
+            while(batchStart < identer.size()){
+                batchStop = (identer.size() <= batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
+                            ? identer.size() : (batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
+
+                Set<String> tilgjengeligeIdenterFraEnJobb = filtrerPaaIdenter(identerListe.subList(batchStart, batchStop));
+                tilgjengeligeIdenter.addAll(tilgjengeligeIdenterFraEnJobb);
+                batchStart = batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201;
+            }
+            return tilgjengeligeIdenter;
+        }
+    }
+
+    private Set<String> filtrerPaaIdenter(Collection<String> identer){
 
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer);
 
