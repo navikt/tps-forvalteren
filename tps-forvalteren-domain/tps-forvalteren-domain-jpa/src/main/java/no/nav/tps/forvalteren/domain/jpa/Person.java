@@ -27,11 +27,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_PERSON")
+@Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Person {
 
@@ -92,4 +92,41 @@ public class Person {
     @LastModifiedBy
     @Column(name = "ENDRET_AV", nullable = false)
     private String endretAv;
+
+    @Column(name = "SPESREG", length = 4)
+    private String spesreg;
+
+    @Column(name = "SPESREG_DATO")
+    private LocalDateTime spesregDato;
+
+    @Column(name = "BO_GATEADRESSE", length = 50)
+    private String boGateadresse;
+
+    @Column(name = "BO_HUSNUMMER", length = 4)
+    private String boHusnummer;
+
+    @Column(name = "BO_GATEKODE", length = 5)
+    private String boGatekode;
+
+    @Column(name = "BO_POSTNUMMER", length = 4)
+    private String boPostnummer;
+
+    @Column(name = "BO_KOMMUNENR", length = 4)
+    private String boKommunenr;
+
+    @Column(name = "BO_FLYTTE_DATO")
+    private LocalDateTime boFlytteDato;
+
+    @Column(name = "POST_LINJE_1", length = 30)
+    private String postLinje1;
+
+    @Column(name = "POST_LINJE_2", length = 30)
+    private String postLinje2;
+
+    @Column(name = "POST_LINJE_3", length = 30)
+    private String postLinje3;
+
+    @Column(name = "POST_LAND", length = 3)
+    private String postLand;
+
 }

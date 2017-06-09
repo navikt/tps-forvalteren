@@ -31,18 +31,18 @@ public class FindAllPersonServiceTest {
 
     @Before
     public void setup() {
-        when(repositoryMock.findAll()).thenReturn(personResultMock);
+        when(repositoryMock.findAllByOrderByIdAsc()).thenReturn(personResultMock);
     }
 
     @Test
     public void callsPersonRepository() {
         command.execute();
-        verify(repositoryMock).findAll();
+        verify(repositoryMock).findAllByOrderByIdAsc();
     }
 
     @Test
     public void returnsAllPersonsFromRepository() {
-        List<Person> result = repositoryMock.findAll();
+        List<Person> result = repositoryMock.findAllByOrderByIdAsc();
         assertThat(result, is(sameInstance(personResultMock)));
     }
 

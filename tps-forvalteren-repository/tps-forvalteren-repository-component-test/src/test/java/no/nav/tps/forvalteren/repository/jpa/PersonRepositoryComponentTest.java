@@ -39,7 +39,7 @@ public class PersonRepositoryComponentTest {
         testRepository.save(personOla);
         testRepository.save(personKari);
 
-        List<Person> result = repository.findAll();
+        List<Person> result = repository.findAllByOrderByIdAsc();
 
         assertThat(result, hasSize(2));
         assertThat(result, hasItem(personOla));
@@ -57,7 +57,7 @@ public class PersonRepositoryComponentTest {
         ids.add(kari.getId());
         repository.deleteByIdIn(ids);
 
-        List<Person> result = repository.findAll();
+        List<Person> result = repository.findAllByOrderByIdAsc();
         assertThat(result, hasSize(0));
 
     }
