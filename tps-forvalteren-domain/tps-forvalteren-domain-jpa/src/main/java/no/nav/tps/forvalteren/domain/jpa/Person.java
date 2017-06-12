@@ -2,7 +2,9 @@ package no.nav.tps.forvalteren.domain.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,20 +12,20 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -99,34 +101,10 @@ public class Person {
     @Column(name = "SPESREG_DATO")
     private LocalDateTime spesregDato;
 
-    @Column(name = "BO_GATEADRESSE", length = 50)
-    private String boGateadresse;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.REMOVE)
+    private List<Gateadresse> gateadresse;
 
-    @Column(name = "BO_HUSNUMMER", length = 4)
-    private String boHusnummer;
-
-    @Column(name = "BO_GATEKODE", length = 5)
-    private String boGatekode;
-
-    @Column(name = "BO_POSTNUMMER", length = 4)
-    private String boPostnummer;
-
-    @Column(name = "BO_KOMMUNENR", length = 4)
-    private String boKommunenr;
-
-    @Column(name = "BO_FLYTTE_DATO")
-    private LocalDateTime boFlytteDato;
-
-    @Column(name = "POST_LINJE_1", length = 30)
-    private String postLinje1;
-
-    @Column(name = "POST_LINJE_2", length = 30)
-    private String postLinje2;
-
-    @Column(name = "POST_LINJE_3", length = 30)
-    private String postLinje3;
-
-    @Column(name = "POST_LAND", length = 3)
-    private String postLand;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.REMOVE)
+    private List<Postadresse> postadresse;
 
 }
