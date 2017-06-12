@@ -52,24 +52,25 @@ public class EnvironmentController {
     }
 
     private Set<String> filterEnvironments(Set<String> environments){
-        switch (deployedEnvironment){
-            case "u":
+        char env = deployedEnvironment.charAt(0);
+        switch (env){
+            case 'u':
                 return EnvironmentsFilter.create()
                         .include("u*")
                         .include("t*")
                         .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
                         .filter(environments);
-            case "t":
+            case 't':
                 return EnvironmentsFilter.create()
                         .include("u*")
                         .include("t*")
                         .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
                         .filter(environments);
-            case "q":
+            case 'q':
                 return EnvironmentsFilter.create()
                         .include("q*")
                         .filter(environments);
-            case "p":
+            case 'p':
                 return EnvironmentsFilter.create()
                         .include("p*")
                         .filter(environments);
