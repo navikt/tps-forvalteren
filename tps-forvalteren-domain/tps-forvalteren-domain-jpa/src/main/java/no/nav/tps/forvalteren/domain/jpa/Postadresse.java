@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +35,8 @@ public class Postadresse {
     @Column(name = "POSTADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("postadresse")
     @JoinColumn(name = "K_PERSON_ID", nullable = false)
     private Person person;
 

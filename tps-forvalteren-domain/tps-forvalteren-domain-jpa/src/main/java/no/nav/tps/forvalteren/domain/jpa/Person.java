@@ -74,7 +74,7 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private List<Gateadresse> gateadresse = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private List<Postadresse> postadresse = new ArrayList<>();
 
     @NotNull
