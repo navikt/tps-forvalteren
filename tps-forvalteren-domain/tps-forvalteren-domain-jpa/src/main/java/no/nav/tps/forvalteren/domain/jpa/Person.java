@@ -5,17 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,15 +22,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_PERSON")
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-public class Person {
+public class Person extends ChangeStamp {
 
     private static final String SEQ = "T_PERSON_SEQ";
 
@@ -87,25 +80,5 @@ public class Person {
     @NotNull
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
-
-    @NotNull
-    @CreatedDate
-    @Column(name = "OPPRETTET_DATO", nullable = false, updatable = false)
-    private LocalDateTime opprettetDato;
-
-    @NotBlank
-    @CreatedBy
-    @Column(name = "OPPRETTET_AV", nullable = false, updatable = false)
-    private String opprettetAv;
-
-    @NotNull
-    @LastModifiedDate
-    @Column(name = "ENDRET_DATO", nullable = false)
-    private LocalDateTime endretDato;
-
-    @NotBlank
-    @LastModifiedBy
-    @Column(name = "ENDRET_AV", nullable = false)
-    private String endretAv;
 
 }
