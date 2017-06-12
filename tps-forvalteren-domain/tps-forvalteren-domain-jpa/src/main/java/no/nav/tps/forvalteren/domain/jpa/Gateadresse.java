@@ -35,7 +35,6 @@ public class Gateadresse {
     @Column(name = "GATEADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "K_PERSON_ID", nullable = false)
     private Person person;

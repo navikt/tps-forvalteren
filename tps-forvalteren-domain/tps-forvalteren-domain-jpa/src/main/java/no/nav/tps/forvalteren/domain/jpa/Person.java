@@ -20,11 +20,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -71,6 +73,18 @@ public class Person {
     @Column(name = "STATSBORGERSKAP", length = 3)
     private String statsborgerskap;
 
+    @Column(name = "SPESREG", length = 4)
+    private String spesreg;
+
+    @Column(name = "SPESREG_DATO")
+    private LocalDateTime spesregDato;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
+    private List<Gateadresse> gateadresse = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.PERSIST)
+    private List<Postadresse> postadresse = new ArrayList<>();
+
     @NotNull
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
@@ -94,17 +108,5 @@ public class Person {
     @LastModifiedBy
     @Column(name = "ENDRET_AV", nullable = false)
     private String endretAv;
-
-    @Column(name = "SPESREG", length = 4)
-    private String spesreg;
-
-    @Column(name = "SPESREG_DATO")
-    private LocalDateTime spesregDato;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.REMOVE)
-    private List<Gateadresse> gateadresse;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.REMOVE)
-    private List<Postadresse> postadresse;
 
 }

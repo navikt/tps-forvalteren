@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
@@ -22,6 +23,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
+@Transactional
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
