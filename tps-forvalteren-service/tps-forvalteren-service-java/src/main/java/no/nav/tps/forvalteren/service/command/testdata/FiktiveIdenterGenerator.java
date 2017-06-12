@@ -140,11 +140,12 @@ public class FiktiveIdenterGenerator {
     private String genererIndividnummer(int rangeStart, int rangeSlutt, Character kjonn) {
         int individNummber;
 
+        char kjoennForIdent = kjonn;
         if(kjonn == null || (kjonn != 'K' && kjonn != 'M') ) {
-            kjonn = lagTilfeldigKvinneEllerMann();
+            kjoennForIdent = lagTilfeldigKvinneEllerMann();
         }
 
-        if (erKvinne(kjonn)) {         //KVINNE: Individnummer avsluttes med partall
+        if (erKvinne(kjoennForIdent)) {         //KVINNE: Individnummer avsluttes med partall
             individNummber = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt);
             if (individNummber % 2 > 0){
                 individNummber = individNummber + 1;

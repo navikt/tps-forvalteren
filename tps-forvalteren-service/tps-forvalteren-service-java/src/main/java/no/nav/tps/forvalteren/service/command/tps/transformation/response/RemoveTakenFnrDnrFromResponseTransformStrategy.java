@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 @Component
 public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseTransformStrategy{
 
-    private static final String fnrPattern = "<EFnr>.+?</EFnr>";
-    private static final String feilmldPattern = "<returMelding>S201005F</returMelding>";
+    private static final String FNR_PATTERN = "<EFnr>.+?</EFnr>";
+    private static final String FEIL_MLD_PATTERN = "<returMelding>S201005F</returMelding>";
 
 
     @Override
@@ -27,13 +27,13 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseT
     }
 
     private void fjernUtilgjengeligeIdenterFraResponse(Response response, RemoveTakenFnrFromResponseTransform transformer) {
-        Matcher fnrMatcher = Pattern.compile(fnrPattern, Pattern.DOTALL).matcher(response.getRawXml());
+        Matcher fnrMatcher = Pattern.compile(FNR_PATTERN, Pattern.DOTALL).matcher(response.getRawXml());
 
         int fnrDnrRemoved = 0;
 
         while (fnrMatcher.find()){
            String fnrXml = fnrMatcher.group();
-           Matcher feilmeldingMatcher = Pattern.compile(feilmldPattern, Pattern.DOTALL).matcher(fnrXml);
+           Matcher feilmeldingMatcher = Pattern.compile(FEIL_MLD_PATTERN, Pattern.DOTALL).matcher(fnrXml);
            if(!feilmeldingMatcher.find()){
                response.setRawXml(response.getRawXml().replace(fnrXml, ""));
                fnrDnrRemoved++;

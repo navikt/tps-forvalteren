@@ -18,10 +18,10 @@ public enum UserRole implements GrantedAuthority {
     ROLE_DISKRESJONESKODE_7_READ("0000-GA-GOSYS_KODE7"),
     ROLE_EGEN_ANSATT_READ("0000-GA-PIP_EGENANSATT");
 
-    private final ArrayList<String> AD_STRINGS = new ArrayList<>();
+    private ArrayList<String> adRoles = new ArrayList<>();
 
     UserRole(String... name){
-        AD_STRINGS.addAll(Arrays.asList(name));
+        adRoles.addAll(Arrays.asList(name));
     }
 
     @Override
@@ -30,6 +30,6 @@ public enum UserRole implements GrantedAuthority {
     }
 
     public List<String> getADRolesForEnum(){
-        return AD_STRINGS;
+        return adRoles;
     }
 }
