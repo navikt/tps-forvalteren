@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

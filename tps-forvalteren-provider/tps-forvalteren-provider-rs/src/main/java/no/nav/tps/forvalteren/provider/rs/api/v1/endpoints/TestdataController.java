@@ -6,10 +6,13 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
-import no.nav.tps.forvalteren.service.command.testdata.OpprettTestdataPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
-import no.nav.tps.forvalteren.service.command.testdata.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +30,6 @@ public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
 
-
     @Autowired
     private FindAllPersonService findAllPersonService;
 
@@ -35,13 +37,20 @@ public class TestdataController {
     private DeletePersonsByIdService deletePersonsByIdService;
 
     @Autowired
-    private OpprettTestdataPersoner opprettTestdataPersoner;
-
-    @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
 
     @Autowired
     private SavePersonListService savePersonListService;
+
+    @Autowired
+    private OpprettPersoner opprettPersonerFraIdenter;
+
+    @Autowired
+    private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
+
+    @Autowired
+    private TestdataIdenterFetcher testdataIdenterFetcher;
+
 
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons")})
@@ -54,7 +63,9 @@ public class TestdataController {
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons")})
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
     public void createNewPersons(@RequestBody RsPersonKriterieRequest personKriterierListe) {
-        List<Person> personerSomSkalPersisteres = opprettTestdataPersoner.hentIdenterSomSkalBliPersoner(personKriterierListe);
+        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
+        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(ekstraherIdenterFraTestdataRequests.execute(testdataRequests));
+
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         savePersonListService.save(personerSomSkalPersisteres);
     }
