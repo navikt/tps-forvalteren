@@ -14,7 +14,7 @@ public class FindAllPersonService {
     private PersonRepository repository;
 
     public List<Person> execute(){
-        return repository.findAll();
+        return repository.findAllByOrderByIdAsc();
     }
 
 }
