@@ -18,13 +18,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_POSTADRESSE")
-@Entity
 public class Postadresse {
 
     private static final String SEQ = "T_POSTADRESSE_SEQ";

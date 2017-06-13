@@ -19,13 +19,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_GATEADRESSE")
-@Entity
 public class Gateadresse {
 
     private static final String SEQ = "T_GATEADRESSE_SEQ";
