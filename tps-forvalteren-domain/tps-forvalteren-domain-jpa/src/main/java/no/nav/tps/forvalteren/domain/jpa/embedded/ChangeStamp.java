@@ -25,21 +25,25 @@ import java.time.LocalDateTime;
 public class ChangeStamp {
 
     @NotNull
+    @JsonIgnore
     @CreatedDate
     @Column(name = "OPPRETTET_DATO", nullable = false, updatable = false)
     private LocalDateTime opprettetDato;
 
     @NotBlank
     @CreatedBy
+    @JsonIgnore
     @Column(name = "OPPRETTET_AV", nullable = false, updatable = false)
     private String opprettetAv;
 
     @NotNull
+    @JsonIgnore
     @LastModifiedDate
     @Column(name = "ENDRET_DATO", nullable = false)
     private LocalDateTime endretDato;
 
     @NotBlank
+    @JsonIgnore
     @LastModifiedBy
     @Column(name = "ENDRET_AV", nullable = false)
     private String endretAv;

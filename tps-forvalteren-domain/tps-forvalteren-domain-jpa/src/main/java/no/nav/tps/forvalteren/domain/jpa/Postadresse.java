@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,9 +35,9 @@ public class Postadresse {
     @Column(name = "POSTADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
+    @Getter(AccessLevel.NONE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("postadresse")
-    @JoinColumn(name = "K_PERSON_ID", nullable = false)
+    @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
     @Column(name = "POST_LINJE_1", length = 30)
