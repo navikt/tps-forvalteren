@@ -9,8 +9,8 @@ import java.util.List;
 @Service
 public class SetNameOnPersonsService {
 
-    private static final String[] fornavn = {"Blå", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell"};
-    private static final String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake", "Fylkestrafikksikkerhetsutvalgssekretariatsleder"};
+    private static final String[] fornavn = {"Blå", "Gul", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell", "Luguber", "Smekker", "Glitrende", "Raus", "Naturlig", "Smart", "Kreativ"};
+    private static final String[] etternavn = {"Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake", "Potet", "Konsoll", "Bærepose", "Blyant", "Penn", "Bolle", "Saks", "Kopp"};
 
     private static SecureRandom randGenerator = new SecureRandom();
 
