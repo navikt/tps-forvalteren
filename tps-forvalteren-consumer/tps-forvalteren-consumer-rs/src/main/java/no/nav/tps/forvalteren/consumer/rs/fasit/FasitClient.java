@@ -81,7 +81,7 @@ public class FasitClient {
     public boolean ping() {
         try {
             String pingEnvironment;
-            if(deployedEnvironment.contains("p")){
+            if("p".equals(deployedEnvironment)){
                 pingEnvironment = "p";
             } else {
                 pingEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
