@@ -2,7 +2,6 @@ angular.module('tps-forvalteren.vis-testdata')
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
         function ($scope, testdataService, utilsService, locationService, $mdDialog) {
 
-            $scope.visSletteknapp = false;
             $scope.allePersoner = false;
             $scope.personer = [];
             var originalPersoner = [];
@@ -84,7 +83,6 @@ angular.module('tps-forvalteren.vis-testdata')
 
             $scope.oppdaterValgt = function() {
                 oppdaterFane = true;
-                oppdaterFunksjonsknapper();
 
                 var endret = 0;
                 for (var i = 0; i < $scope.personer.length; i++) {
@@ -114,6 +112,7 @@ angular.module('tps-forvalteren.vis-testdata')
                     (endret > 0 && endret == valgt);
                 $scope.antallEndret = endret;
                 $scope.antallValgt = valgt;
+                $scope.visEndret = endret > 0;
             };
 
             var sletteTestpersoner = function () {
@@ -152,9 +151,7 @@ angular.module('tps-forvalteren.vis-testdata')
                     function (result) {
                         for (var i = 0; i < $scope.personer.length; i++) {
                             if ($scope.control[i] && $scope.control[i].velg) {
-                                $scope.control[i].endret = false;
-                                $scope.control[i].velg = false;
-                                $scope.control[i].aapen = false;
+                                nullstillControl(i);
                             }
                         }
                         $scope.oppdaterValgt();
@@ -168,25 +165,15 @@ angular.module('tps-forvalteren.vis-testdata')
 
             var oppdaterFunksjonsknapper = function() {
                 var endret = false;
-                var valgt = false;
                 for (var i = 0; i < $scope.control.length; i++) {
                     if ($scope.control[i]) {
-                        if ($scope.control[i].velg) {
-                            valgt = true;
-                        }
                         if ($scope.control[i].endret) {
                             endret = true;
                         }
                     }
                 }
 
-                if (endret) {
-                    $scope.visEndret = true;
-                    $scope.visSletteknapp = false;
-                } else {
-                    $scope.visEndret = false;
-                    $scope.visSletteknapp = valgt;
-                }
+                $scope.visEndret = endret;
             };
 
             $scope.endret = function (index) {
@@ -203,12 +190,16 @@ angular.module('tps-forvalteren.vis-testdata')
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
                         $scope.personer[i]= JSON.parse(JSON.stringify(originalPersoner[i]));
-                        $scope.control[i].endret = false;
-                        $scope.control[i].velg = false;
-                        $scope.control[i].aapen = false;
+                        nullstillControl(i);
                     }
                 }
                 $scope.oppdaterValgt();
+            };
+
+            var nullstillControl = function (index) {
+                $scope.control[index].endret = false;
+                $scope.control[index].velg = false;
+                $scope.control[index].aapen = false;
             };
 
             var bekrefterLagring = function(index) {

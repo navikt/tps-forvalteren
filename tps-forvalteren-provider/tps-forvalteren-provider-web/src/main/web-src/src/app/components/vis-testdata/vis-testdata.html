@@ -25,7 +25,7 @@
             <div flex></div>
             <md-input-container class="tps-vk-input-container">
                 <md-tooltip>Slett valgte rader</md-tooltip>
-                <md-button class="md-primary md-accent md-raised md-title" ng-click="sletteDialog()" ng-disabled="antallValgt == 0" ng-if="!visEndret"
+                <md-button class="md-primary md-accent md-raised md-title" ng-click="sletteDialog()" ng-disabled="antallValgt == 0" ng-if="!visEndret && personer.length > 0"
                            aria-label="Slett valgte rader">Slett
                 </md-button>
             </md-input-container>
@@ -44,7 +44,7 @@
         </div>
 
         <form name="requestForm" class="tps-vk-form">
-        <div layout="row">
+        <div layout="row" ng-show="personer.length > 0">
             <div flex="5"></div>
             <div>Antall valgt: {{antallValgt}}</div>
             <div flex></div>
