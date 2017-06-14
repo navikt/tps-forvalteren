@@ -47,7 +47,7 @@
                                                ng-disabled="!editMode"
                                                ng-change="foedtEtterChanged()">
                                 </md-datepicker>
-                                <div ng-messages="requestForm.foedtEtter.$error">
+                                <div ng-messages="requestForm.foedtEtter.$error" ng-messages-multiple>
                                     <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     <div ng-message="mindate">Dato kan ikke være før 01-01-1900</div>
                                     <div ng-message="maxdate">Dato kan ikke være etter "Født før", eventuelt dagens dato</div>
@@ -68,7 +68,7 @@
                                         ng-disabled="!editMode"
                                         ng-change="foedtFoerChanged()">
                                 </md-datepicker>
-                                <div ng-messages="requestForm.foedtFoer.$error">
+                                <div ng-messages="requestForm.foedtFoer.$error" ng-messages-multiple>
                                     <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     <div ng-message="mindate">Dato må være større enn "Født etter", eventuelt tidligst 01-01-1990</div>
                                     <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
