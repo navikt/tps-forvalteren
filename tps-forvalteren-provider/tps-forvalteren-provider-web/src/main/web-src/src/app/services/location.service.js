@@ -1,6 +1,6 @@
 
 angular.module('tps-forvalteren.service')
-    .service('locationService', ['$state', function($state) {
+    .service('locationService', ['$state', '$rootScope', function($state, $rootScope) {
 
         var self = this;
         var returnState = 'servicerutine';
@@ -38,4 +38,7 @@ angular.module('tps-forvalteren.service')
             return $state.current.name === 'servicerutine';
         };
 
+        self.redirectUrl = function(url) {
+            $state.go(url.substring(1)); // Ta bort ledende "/"
+        }
     }]);

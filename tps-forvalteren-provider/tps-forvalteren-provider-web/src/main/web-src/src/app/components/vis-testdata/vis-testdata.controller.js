@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.vis-testdata')
-    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog) {
+    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope) {
 
             $scope.allePersoner = false;
             $scope.personer = [];
@@ -217,7 +217,7 @@ angular.module('tps-forvalteren.vis-testdata')
                 });
             };
 
-            $scope.avbryteDialog = function(index) {
+            $scope.avbryteDialog = function() {
                 var confirm = $mdDialog.confirm()
                     .title('Bekreft avbryt endring')
                     .textContent('Endringer som er gjort vil gå tapt')
@@ -230,11 +230,38 @@ angular.module('tps-forvalteren.vis-testdata')
                 });
             };
 
+            var bekreftRelokasjon = function(next) {
+                var confirm = $mdDialog.confirm()
+                    .title('Du har endringer som ikke er lagret')
+                    .textContent('Trykk OK for å forlate siden.')
+                    .ariaLabel('Bekreftelse på relokasjon og endringer ikke lagret')
+                    .ok('OK')
+                    .cancel('Avbryt');
+
+                $mdDialog.show(confirm).then(function() {
+                    $scope.visEndret = false;
+                    locationService.redirectUrl(next.url);
+                });
+            };
+
             $scope.spesregChanged = function (index) {
                 if ($scope.personer[index].spesreg == ' ') {
                     $scope.personer[index].spesreg = undefined;
                 }
                 $scope.endret(index);
+            };
+
+            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+                if ($scope.visEndret) {
+                    event.preventDefault();
+                    bekreftRelokasjon(next);
+                }
+            });
+
+            window.onbeforeunload = function (event) {
+                if ($scope.visEndret){
+                    return true; // Trigger nettlesers visning av dialogboks for avslutning
+                }
             };
 
             hentTestpersoner();
