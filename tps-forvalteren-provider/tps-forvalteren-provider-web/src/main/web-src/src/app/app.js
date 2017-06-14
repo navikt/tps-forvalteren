@@ -50,11 +50,11 @@ app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function
     $mdDateLocaleProvider.firstDayOfWeek = 1;
     $mdDateLocaleProvider.formatDate = function(date) {
         var m = moment(date);
-        return m.isValid() ? m.format('DD-MM-YYYY') : new Date(NaN);
+        return m.isValid() ? m.format('DD-MM-YYYY') : ' ';
     };
     $mdDateLocaleProvider.parseDate = function(dateString) {
         var m = moment(dateString, 'DD-MM-YYYY', true);
-        return m.isValid() ? m.toDate() : '';
+        return m.isValid() ? m.toDate() : ' ';
     };
 }]);
 

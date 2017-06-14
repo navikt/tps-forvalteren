@@ -136,7 +136,7 @@ angular.module('tps-forvalteren.vis-testdata')
                 if (kjonn) {
                     return kjonn == 'K' ? 'Kvinne' : 'Mann';
                 } else {
-                    '';
+                    return '';
                 }
             };
 
@@ -177,9 +177,13 @@ angular.module('tps-forvalteren.vis-testdata')
             };
 
             $scope.endret = function (index) {
-                var originalPerson = JSON.stringify(originalPersoner[index]).replace(/null/g,'""'); // original har null
-                // Angular legger på $$hashKey, fjerner den
-                var endretPerson = JSON.stringify($scope.personer[index]).replace(/null/g,'""').replace(/,"\$\$hashKey":"[a-z0-9:]+"/g,'');
+                var originalPerson = JSON.stringify(originalPersoner[index]).replace(/null/g,'""') // Angular legger på $$hashKey, fjerner den
+                    .replace(/,*"[A-Za-z0-9_]+":""/g,'')
+                    .replace(/{}/g,'');
+                var endretPerson = JSON.stringify($scope.personer[index]).replace(/null/g,'""')
+                    .replace(/,*"\$\$hashKey":"[A-Za-z0-9_:]+"/g,'')
+                    .replace(/,*"[A-Za-z0-9_]+":""/g,'')
+                    .replace(/{}/g,'');
 
                 $scope.control[index].endret = originalPerson != endretPerson;
                 $scope.control[index].velg = $scope.control[index].endret;

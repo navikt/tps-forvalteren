@@ -163,12 +163,12 @@
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Spesialregister dato</md-tooltip>
                                     <label>Spesreg. dato</label>
-                                    <md-datepicker name="spesreg_dato"
+                                    <md-datepicker name="spesregDato"
                                                    md-current-view="year"
-                                                   ng-model="person.spesreg_dato"
+                                                   ng-model="person.spesregDato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.spesreg_dato.$error">
+                                    <div ng-messages="requestForm.spesregDato.$error">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -228,25 +228,25 @@
                                 <md-input-container class="tps-vk-input-container" flex="15">
                                     <md-tooltip>Flyttedato</md-tooltip>
                                     <label>Flyttedato</label>
-                                    <md-datepicker name="boFlyttedato"
+                                    <md-datepicker name="boFlytteDato"
                                                    md-current-view="year"
-                                                   ng-model="person.gateadresse[0].boFlyttedato"
+                                                   ng-model="person.gateadresse[0].boFlytteDato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.boFlyttedato.$error">
+                                    <div ng-messages="requestForm.boFlytteDato.$error">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
 
                                 <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex="10">
-                                    <md-tooltip>Kommunenummer</md-tooltip>
-                                    <label>Kommunenummer</label>
-                                    <input name="boKommmunenummer" ng-required="false" pattern="[0-9]*" md-maxlength="4"
+                                    <md-tooltip>Kommunenr</md-tooltip>
+                                    <label>Kommunenr</label>
+                                    <input name="boKommunenr" ng-required="false" pattern="[0-9]*" md-maxlength="4"
                                            minlength="4"
-                                           ng-model="person.gateadresse[0].boKommmunenummer"
+                                           ng-model="person.gateadresse[0].boKommunenr"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.gateadresse[0].boKommmunenummer.$error" ng-messages-multiple>
+                                    <div ng-messages="requestForm.boKommunenr.$error" ng-messages-multiple>
                                         <div ng-message="pattern">Ugyldig numerisk verdi</div>
                                         <div ng-message="minlength">Verdi har for få tegn, 4 siffer forventet</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
