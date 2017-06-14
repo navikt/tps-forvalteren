@@ -10,7 +10,7 @@ angular.module('tps-forvalteren.opprett-testdata')
             $scope.showSpinner = false;
 
             var cleanupRow = function () {
-                $scope.kriterium = {identtype: "FNR", kjonn: " ", foedtEtter: undefined, foedtFoer: undefined, antall: undefined};
+                $scope.kriterium = {identtype: "FNR", kjonn: " ", foedtEtter: null, foedtFoer: null, antall: undefined};
                 $scope.foedtEtterMax = $scope.startOfEra;
                 $scope.foedtFoerMin = $scope.today;
             };
