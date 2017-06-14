@@ -80,7 +80,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
             TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
 
-            if(kunneIkkeLeggeMeldingPåKoe(tpsResponse)){
+            if(kunneIkkeLeggeMeldingPaaKoe(tpsResponse)){
                 continue;
             }
 
@@ -95,7 +95,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
         return tilgjengeligeIdenterAlleMiljoer;
     }
 
-    private boolean kunneIkkeLeggeMeldingPåKoe(TpsServiceRoutineResponse response){
+    private boolean kunneIkkeLeggeMeldingPaaKoe(TpsServiceRoutineResponse response){
         return response.getXml().isEmpty();
     }
 
