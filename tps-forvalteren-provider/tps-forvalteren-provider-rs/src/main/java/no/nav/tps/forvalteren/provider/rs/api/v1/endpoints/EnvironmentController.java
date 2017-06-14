@@ -44,7 +44,6 @@ public class EnvironmentController {
             Set<String> environments = new HashSet<>();
             environments.add("p");
             return environments;
-
         } else {
             Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
             return filterEnvironments(environments);
