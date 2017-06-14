@@ -22,7 +22,8 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestAuthoritiesMapperTest {
-    private static final SimpleGrantedAuthority CURRENT_ACCESS_ROLE_O = new SimpleGrantedAuthority("0000-GA-NORG_Skriv");
+    private static final SimpleGrantedAuthority CURRENT_TPSF_LES_ROLE = new SimpleGrantedAuthority("0000-GA-TPSF-LES");
+    private static final SimpleGrantedAuthority CURRENT_TPSF_SKRIV_ROLE = new SimpleGrantedAuthority("0000-GA-TPSF-SKRIV");
     private static final SimpleGrantedAuthority CURRENT_DISK_6_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_KODE6");
     private static final SimpleGrantedAuthority CURRENT_DISK_7_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_KODE7");
     private static final SimpleGrantedAuthority CURRENT_EGEN_ANSATT_ROLE = new SimpleGrantedAuthority("0000-GA-PIP_EGENANSATT");
@@ -55,10 +56,17 @@ public class RestAuthoritiesMapperTest {
     }
 
     @Test
-    public void returnsReadOWhenUserHasReadO() {
-        Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_ACCESS_ROLE_O));
+    public void returnsRoleAccessNArManHarTpsfLes() {
+        Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_TPSF_LES_ROLE));
 
-        assertThat(result, contains(UserRole.ROLE_ACCESS));
+        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_LES_TPSF));
+    }
+
+    @Test
+    public void returnsRoleAccessOgRoleSkrivNArManHarTpsfSkriv() {
+        Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_TPSF_SKRIV_ROLE));
+
+        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_SKRIV_TPSF));
     }
 
     @Test
@@ -81,7 +89,7 @@ public class RestAuthoritiesMapperTest {
                 CURRENT_DISK_6_ROLE,
                 CURRENT_DISK_7_ROLE,
                 CURRENT_EGEN_ANSATT_ROLE,
-                CURRENT_ACCESS_ROLE_O);
+                CURRENT_TPSF_LES_ROLE);
 
         Collection<UserRole> result = mapper.mapAuthorities(currentRoles);
 
@@ -89,7 +97,8 @@ public class RestAuthoritiesMapperTest {
                 UserRole.ROLE_ACCESS,
                 UserRole.ROLE_DISKRESJONESKODE_6_READ,
                 UserRole.ROLE_EGEN_ANSATT_READ,
-                UserRole.ROLE_DISKRESJONESKODE_7_READ
+                UserRole.ROLE_DISKRESJONESKODE_7_READ,
+                UserRole.ROLE_LES_TPSF
         ));
     }
 
@@ -99,7 +108,7 @@ public class RestAuthoritiesMapperTest {
                 CURRENT_DISK_6_ROLE,
                 CURRENT_DISK_7_ROLE,
                 CURRENT_EGEN_ANSATT_ROLE,
-                CURRENT_ACCESS_ROLE_O,
+                CURRENT_TPSF_LES_ROLE,
                 new SimpleGrantedAuthority("dummy"),
                 new SimpleGrantedAuthority("dummy_2"));
 
@@ -109,17 +118,18 @@ public class RestAuthoritiesMapperTest {
                 UserRole.ROLE_ACCESS,
                 UserRole.ROLE_DISKRESJONESKODE_6_READ,
                 UserRole.ROLE_EGEN_ANSATT_READ,
-                UserRole.ROLE_DISKRESJONESKODE_7_READ
+                UserRole.ROLE_DISKRESJONESKODE_7_READ,
+                UserRole.ROLE_LES_TPSF
         ));
     }
 
     @Test
     public void mapAuthoritiesReturnererKunDeRolleneSomBrukerInnehar() {
-        List<SimpleGrantedAuthority> currentRoles = Collections.singletonList(CURRENT_ACCESS_ROLE_O);
+        List<SimpleGrantedAuthority> currentRoles = Collections.singletonList(CURRENT_TPSF_LES_ROLE);
 
         Collection<UserRole> result = mapper.mapAuthorities(currentRoles);
 
-        assertThat(result, contains(UserRole.ROLE_ACCESS));
+        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS,UserRole.ROLE_LES_TPSF));
 
         assertThat(result, not(contains(UserRole.ROLE_EGEN_ANSATT_READ)));
         assertThat(result, not(contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)));

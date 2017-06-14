@@ -13,7 +13,7 @@ public class GetEnvironments {
     @Autowired
     private VeraConsumer veraConsumer;
 
-    public Set<String> execute(String application) {
+    public Set<String> getEnvironmentsFromVera(String application) {
         return veraConsumer.getEnvironments(application);
     }
 }

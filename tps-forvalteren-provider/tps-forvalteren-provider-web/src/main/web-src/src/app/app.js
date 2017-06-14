@@ -1,5 +1,6 @@
 require('angular');
 require('angular-ui-router');
+require('angular-aria');
 require('angular-animate');
 require('angular-material');
 require('angular-messages');
@@ -14,13 +15,13 @@ require('./services/service.module');
 require('./directives/directives.module');
 require('./factory/factory.module');
 
-var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
+var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
-    'pikaday']);
+    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday']);
 
 require('./shared/index');
 
-app.config(['pikadayConfigProvider', 'moment', function (pikaday, moment) {
+app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function (pikaday, moment, $mdDateLocaleProvider) {
 
     moment.locale("nb");
     var locales = {
@@ -41,6 +42,20 @@ app.config(['pikadayConfigProvider', 'moment', function (pikaday, moment) {
         i18n: locales.nb,
         locales: locales
     });
+
+    $mdDateLocaleProvider.shortMonths = ['Jan','Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
+    $mdDateLocaleProvider.shortDays = ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø'];
+    $mdDateLocaleProvider.msgCalendar = 'Kalender';
+    $mdDateLocaleProvider.lastRenderableDate = new Date();
+    $mdDateLocaleProvider.firstDayOfWeek = 1;
+    $mdDateLocaleProvider.formatDate = function(date) {
+        var m = moment(date);
+        return m.isValid() ? m.format('DD-MM-YYYY') : new Date(NaN);
+    };
+    $mdDateLocaleProvider.parseDate = function(dateString) {
+        var m = moment(dateString, 'DD-MM-YYYY', true);
+        return m.isValid() ? m.toDate() : new Date(NaN);
+    };
 }]);
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
@@ -61,9 +76,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
 
             .state('gt', {
                 url: "/gt",
-                params: {
-                    serviceRutineName: null
-                },
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -91,11 +103,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
-            .state('testdata', {
-                url: "/testdata",
-                params: {
-                    serviceRutineName: null
-                },
+            .state('vis-testdata', {
+                url: "/vis-testdata",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -109,8 +118,37 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 },
                 views: {
                     'content@': {
-                        templateUrl: "app/components/testdata/testdata.html",
-                        controller: 'TestdataCtrl'
+                        templateUrl: "app/components/vis-testdata/vis-testdata.html",
+                        controller: 'VisTestdataCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('opprett-testdata', {
+                url: "/opprett-testdata",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/opprett-testdata/opprett-testdata.html",
+                        controller: 'OpprettTestdataCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",

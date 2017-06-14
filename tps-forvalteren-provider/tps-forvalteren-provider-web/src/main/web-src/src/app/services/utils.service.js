@@ -127,8 +127,18 @@ angular.module('tps-forvalteren.service')
 
         self.showAlertError = function (error) {
             var errorMessages = {
+                400: {
+                    title: 'Ugyldig forespørsel',
+                    text: 'Du har sendt en ugyldig forspørsel.',
+                    ariaLabel: 'Ugyldig forespørsel fra din bruker.'
+                },
                 401: {
                     title: 'Ikke autorisert',
+                    text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                    ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                },
+                403: {
+                    title: 'Forbudt',
                     text: 'Din bruker har ikke tillatelse til denne spørringen.',
                     ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
                 },

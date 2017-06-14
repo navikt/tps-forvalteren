@@ -47,6 +47,8 @@ public class ServiceControllerTest {
     private static final String ENVIRONMENT_PROPERTY_VALUE = "currentEnvironmentIsProd";
     private static final boolean ENVIRONMENT_NOT_PROD = false;
 
+    private Map<String, Object> parameters = new HashMap<>();
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -75,9 +77,6 @@ public class ServiceControllerTest {
     private RsTpsResponseMappingUtils rsTpsResponseMappingUtilsMock;
 
     @Mock
-    private JsonNode baseJsonNode;
-
-    @Mock
     private TpsRequestSender tpsRequestSenderMock;
 
     @InjectMocks
@@ -86,11 +85,10 @@ public class ServiceControllerTest {
     @Before
     @SuppressWarnings("unchecked")
     public void before() {
-        mockNodeContent(baseJsonNode, "environment", ENVIRONMENT_U);
-        mockNodeContent(baseJsonNode, "serviceRutinenavn", SERVICE_RUTINE_NAME);
+        parameters.put("environment", ENVIRONMENT_U);
+        parameters.put("serviceRutinenavn", SERVICE_RUTINE_NAME);
 
-        when(mappingUtilsMock.convert(any(Map.class), eq(JsonNode.class))).thenReturn(baseJsonNode);
-        when(mappingUtilsMock.convertToTpsServiceRoutineRequest(SERVICE_RUTINE_NAME, baseJsonNode)).thenReturn(serviceRoutineRequestMock);
+        when(mappingUtilsMock.convertToTpsServiceRoutineRequest(SERVICE_RUTINE_NAME, parameters)).thenReturn(serviceRoutineRequestMock);
 
         when(findServiceRoutineByName.execute(anyString())).thenReturn(Optional.of(tpsServiceRoutineDefinitionMock));
         when(serviceRoutineRequestMock.getServiceRutinenavn()).thenReturn(SERVICE_RUTINE_NAME);
@@ -100,8 +98,6 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceUsingHttpGetSetsServiceRoutineNameOnParameters() {
-        mockNodeContent(baseJsonNode, "fnr", FNR);
-        Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
         parameters.put("fnr", FNR);
 
@@ -111,22 +107,7 @@ public class ServiceControllerTest {
     }
 
     @Test
-    public void getServiceUsingHttpGetCallsMappingUtilsWithMap() {
-        when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class))).thenReturn(new TpsServiceRoutineResponse());
-
-        mockNodeContent(baseJsonNode, "fnr", FNR);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("environment", ENVIRONMENT_U);
-        parameters.put("fnr", FNR);
-
-        controller.getService(parameters, SERVICE_RUTINE_NAME);
-
-        verify(mappingUtilsMock).convert(parameters, JsonNode.class);
-    }
-
-    @Test
     public void getServiceInProdTryingToCallTestEnvironmentThrowsIllegalEnvironmentException() {
-        Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
 
         ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE,true);
@@ -139,20 +120,11 @@ public class ServiceControllerTest {
 
     @Test
     public void getServiceInProdTryingToCallProdEnvironmentDoNotThrowIllegalEnvironmentException() {
-        Map<String, Object> parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_PROD);
 
         ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, true);
 
         controller.getService(parameters, SERVICE_RUTINE_NAME);
 
-    }
-
-    private void mockNodeContent(JsonNode node, String key, Object value) {
-        when(node.has(key)).thenReturn(value != null);
-        when(node.asText()).thenReturn(value != null ? value.toString() : null);
-        JsonNode subNode = mock(JsonNode.class);
-        when(subNode.asText()).thenReturn(value != null ? value.toString() : null);
-        when(node.get(key)).thenReturn(subNode);
     }
 }

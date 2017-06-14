@@ -25,8 +25,13 @@ angular.module('tps-forvalteren.service')
             $state.go("gt");
         };
 
-        self.redirectToTestdata = function() {
-            $state.go("testdata");
+        self.redirectToVisTestdata = function() {
+            $state.go("vis-testdata");
+        };
+
+
+        self.redirectToOpprettTestdata = function() {
+            $state.go("opprett-testdata");
         };
 
         self.isServicerutineState = function(){

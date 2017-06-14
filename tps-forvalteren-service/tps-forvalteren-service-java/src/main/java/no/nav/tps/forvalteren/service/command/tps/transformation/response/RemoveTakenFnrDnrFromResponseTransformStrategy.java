@@ -12,6 +12,10 @@ import java.util.regex.Pattern;
 @Component
 public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseTransformStrategy{
 
+    private static final String FNR_PATTERN = "<EFnr>.+?</EFnr>";
+    private static final String FEIL_MLD_PATTERN = "<returMelding>S201005F</returMelding>";
+
+
     @Override
     public boolean isSupported(Object o) {
         return o instanceof RemoveTakenFnrFromResponseTransform;
@@ -19,19 +23,17 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategy implements ResponseT
 
     @Override
     public void execute(Response response, Transformer transformer) {
-        removeTakenFnrDnrFromResponse(response, (RemoveTakenFnrFromResponseTransform) transformer);
+        fjernUtilgjengeligeIdenterFraResponse(response, (RemoveTakenFnrFromResponseTransform) transformer);
     }
 
-    private void removeTakenFnrDnrFromResponse(Response response, RemoveTakenFnrFromResponseTransform transformer) {
-        String fnrPattern = "<EFnr>.+?</EFnr>";
-        String feilmldPattern = "<returMelding>S201005F</returMelding>";
-        Matcher fnrMatcher = Pattern.compile(fnrPattern, Pattern.DOTALL).matcher(response.getRawXml());
+    private void fjernUtilgjengeligeIdenterFraResponse(Response response, RemoveTakenFnrFromResponseTransform transformer) {
+        Matcher fnrMatcher = Pattern.compile(FNR_PATTERN, Pattern.DOTALL).matcher(response.getRawXml());
 
         int fnrDnrRemoved = 0;
 
         while (fnrMatcher.find()){
            String fnrXml = fnrMatcher.group();
-           Matcher feilmeldingMatcher = Pattern.compile(feilmldPattern, Pattern.DOTALL).matcher(fnrXml);
+           Matcher feilmeldingMatcher = Pattern.compile(FEIL_MLD_PATTERN, Pattern.DOTALL).matcher(fnrXml);
            if(!feilmeldingMatcher.find()){
                response.setRawXml(response.getRawXml().replace(fnrXml, ""));
                fnrDnrRemoved++;

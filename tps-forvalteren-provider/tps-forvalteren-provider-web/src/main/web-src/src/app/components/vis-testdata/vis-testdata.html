@@ -1,0 +1,107 @@
+<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+
+    <div class="tps-vk-top md-whiteframe-z2">
+        <h2>Testdata</h2>
+
+        <md-button ng-click="opprettPersoner()" class="md-accent">Opprett ny testperson</md-button>
+
+        <div layout="row" flex>
+            <md-input-container layout="column" ng-show="personer.length > 0"
+                                title="Velg alle testpersoner" aria-label="Velg alle testpersoner">
+                <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()">Velg alle</md-checkbox>
+            </md-input-container>
+            <md-input-container class="tps-vk-input-container md-icon-float md-block md-title" layout="column">
+                <md-button class="md-button" ng-click="removeDialog()" ng-if="showDelete"
+                           title="Slett valgte rader" aria-label="Slett valgte rader">
+                    <md-icon md-svg-icon="assets/icons/ic_delete_sweep_black_24px.svg"></md-icon>
+                </md-button>
+            </md-input-container>
+        </div>
+
+        <div layout="row" flex>
+            <div layout="column" flex="5" class="header-label"></div>
+            <div layout="column" flex="15" class="header-label">Identitet</div>
+            <div layout="column" flex="25" class="header-label">Navn</div>
+            <div layout="column" flex="10" class="header-label">Kjønn</div>
+        </div>
+
+        <div ng-repeat="person in personer">
+            <div layout="row">
+            <md-checkbox layout="column" flex="5" class="marker-inntekt-sjekkboks"
+                         ng-model="person.velg"
+                         ng-change="oppdaterStatus()"
+                         aria-label="Marker person{{person.ident}} for sletting">
+            </md-checkbox>
+            <md-card flex>
+                <md-card-content flex class="md-whiteframe-5dp"  ng-click="enableEditing($index)">
+                    <div class="tps-vk-form">
+                        <div layout="row">
+                            <div layout="column" flex="15">{{person.ident}} ({{person.identtype}})</div>
+                            <div layout="column" flex="30">
+                               {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
+                            </div>
+                            <div layout="column" flex="5">{{person.kjonn}}</div>
+                            <div layout-align="end center" layout="row" flex="5">
+                                <md-button id="cancel" ng-class="{flipped: isEditing && selected == $index}"
+                                           class="md-icon-button"
+                                           type="button"
+                                           aria-label="Vis testdata detaljer"
+                                           ng-click="cancel()">
+                                    <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" ng-if="isEditing && selected == $index">
+                        <div class="line">
+                            <br>
+                            <div layout="row" flex>
+                                <md-input-container class="tps-vk-input-container" flex="15">
+                                    <label for="ident">Ident</label>
+                                    <input id="ident" ng-required="true" md-maxlength="11" pattern="[0-9]{11}" ng-model="person.ident"/>
+                                    <div ng-messages="testdataForm.ident.$error" ng-show="testdataFrom.ident.$touched">
+                                        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
+                                        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde elleve siffer</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="tps-vk-input-container" flex="25">
+                                    <label for="identtype">Type</label>
+                                    <md-select id="identtype" data-ng-model="person.identtype">
+                                        <md-option value="FNR">FNR</md-option>
+                                        <md-option value="DNR">DNR</md-option>
+                                        <md-option value="BNR">BNR</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container class="tps-vk-input-container" flex>
+                                    <label for="fornavn">Fornavn</label>
+                                    <input id="fornavn" ng-required="true" md-maxlength="50" ng-model="person.fornavn"/>
+                                </md-input-container>
+                                <md-input-container class="tps-vk-input-container" flex>
+                                    <label for="mellomnavn">Mellomnavn</label>
+                                    <input id="mellomnavn" ng-required="false" md-maxlength="50" ng-model="person.mellomnavn"/>
+                                </md-input-container>
+                                <md-input-container class="tps-vk-input-container" flex>
+                                    <label for="etternavn">Etternavn</label>
+                                    <input id="etternavn" ng-required="true" md-maxlength="50" ng-model="person.etternavn"/>
+                                </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container layout="col" class="tps-vk-input-container" flex="15">
+                                    <label for="kjonn">Kjønn</label>
+                                    <md-select id="kjonn" data-ng-model="person.kjonn">
+                                        <md-option value="K">K</md-option>
+                                        <md-option value="M">M</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+            </div>
+        </div>
+    </div>
+</div>

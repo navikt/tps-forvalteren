@@ -25,8 +25,9 @@ angular.module('tps-forvalteren')
         function init() {
             switch ($state.current.name){
                 case 'servicerutine':
-                    if (serviceRutinesPromise ){
-                        $scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
+                    if (serviceRutinesPromise){
+                        //TODO Legg til denne nAr vi Legger til ServiceRutiner igjen..
+                        //$scope.serviceRutineNames = serviceRutineFactory.getServiceRutineNames();
                     } else {
                         showAlertApiError("servicerutiner");
                     }
