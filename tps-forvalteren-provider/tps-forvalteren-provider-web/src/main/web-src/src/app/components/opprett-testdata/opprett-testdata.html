@@ -26,8 +26,9 @@
                                                 aria-label="Velg kjønn">
                                 <md-tooltip>Velg kjønn</md-tooltip>
                                 <label>Kjønn</label>
-                                <md-select ng-model="kriterium.kjonn" placeholder="Velg kjønn"
-                                           class="md-no-underline" ng-disabled="!editMode">
+                                <md-select ng-model="kriterium.kjonn" placeholder="Velg kjønn" ng-change="kjonnEndret()"
+                                            ng-disabled="!editMode">
+                                    <md-option value=" "> </md-option>
                                     <md-option value="K">Kvinne</md-option>
                                     <md-option value="M">Mann</md-option>
                                 </md-select>

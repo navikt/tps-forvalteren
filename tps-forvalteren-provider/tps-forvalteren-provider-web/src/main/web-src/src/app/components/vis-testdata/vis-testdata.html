@@ -20,7 +20,7 @@
             <md-input-container class="tps-vk-input-container" ng-show="personer.length > 0"
                                 aria-label="Velg alle testpersoner">
                 <md-tooltip>Velg alle testpersoner</md-tooltip>
-                <md-checkbox data-ng-model="allePersoner" style="margin: -10px 10px;" ng-click="velgAlle()">Velg alle</md-checkbox>
+                <md-checkbox data-ng-model="allePersoner" style="margin: -10px 10px;" ng-click="velgAlle()">Velg alle<span ng-if="visEndret"> som er endret</span> </md-checkbox>
             </md-input-container>
             <div flex></div>
             <md-input-container class="tps-vk-input-container">
@@ -57,7 +57,7 @@
             <md-card flex>
                 <md-card-content flex class="md-whiteframe-5dp" ng-click="aapneFane($index)">
                     <div class="tps-vk-form">
-                        <div layout="row" ng-class="md-whiteframe-z1">
+                        <div layout="row" ng-class="md-whiteframe-z1" style="font-style: oblique;">
                             <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
                                          ng-model="control[$index].velg"
                                          ng-change="oppdaterValgt($index)"
@@ -146,7 +146,8 @@
                                     <md-input-container class="tps-vk-input-container" flex>
                                         <md-tooltip>Spesialregister</md-tooltip>
                                         <label>Spesialregister</label>
-                                        <md-select ng-model="person.spesreg" class="md-no-underline" ng-change="endret($index)">
+                                        <md-select ng-model="person.spesreg" class="md-no-underline" ng-change="spesregChanged($index)">
+                                            <md-option value=" "> </md-option>
                                             <md-option value="KLIE">Klientadresse</md-option>
                                             <md-option value="MILI">Militær</md-option>
                                             <md-option value="PEND">Pendler</md-option>
@@ -173,11 +174,11 @@
                                     </div>
                                 </md-input-container>
                             </div>
-                            <div layout="row">Boadresse</div>
+                            <div layout="row"><h5 class="element">Boadresse - Offentlig adresse</h5></div>
                             <div layout="row">
                                 <md-input-container class="tps-vk-input-container" flex>
-                                    <md-tooltip>Gateadresse</md-tooltip>
-                                    <label>Gateadresse</label>
+                                    <md-tooltip>Gatenavn</md-tooltip>
+                                    <label>Gatenavn</label>
                                     <input name="boGateadresse" ng-required="false" md-maxlength="50"
                                            ng-model="person.gateadresse[0].boGateadresse" ng-change="endret($index)"/>
                                     <div ng-messages="requestForm.boGateadresse.$error">
@@ -253,7 +254,7 @@
                                     </div>
                                 </md-input-container>
                             </div>
-                            <div layout="row">Postadresse</div>
+                            <div layout="row"><h5 class="element">Postadresse</h5></div>
                             <div layout="row">
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Adresselinje 1</md-tooltip>

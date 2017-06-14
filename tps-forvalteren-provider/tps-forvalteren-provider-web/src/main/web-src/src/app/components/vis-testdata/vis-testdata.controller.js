@@ -230,5 +230,12 @@ angular.module('tps-forvalteren.vis-testdata')
                 });
             };
 
+            $scope.spesregChanged = function (index) {
+                if ($scope.personer[index].spesreg == ' ') {
+                    $scope.personer[index].spesreg = undefined;
+                }
+                $scope.endret(index);
+            };
+
             hentTestpersoner();
         }]);
