@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -44,6 +45,8 @@ public class FasitClientTest {
     private static final String QUEUE_NAME  = "queueName";
 
     private static final String FASIT_DOES_NOT_ANSWER_ERROR = "Fasit does not answer";
+
+    private static final String ENVIRONMENT_PROPERTY_VALUE = "deployedEnvironment";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -121,6 +124,8 @@ public class FasitClientTest {
 
     @Test
     public void pingReturnsTrueWhenFasitRespondsNormally() throws Exception {
+        ReflectionTestUtils.setField(fasitClient, ENVIRONMENT_PROPERTY_VALUE, "u");
+
         ResourceElement queueResourceElement = new ResourceElement(ResourceTypeDO.Queue, QUEUE_ALIAS);
 
         when(restClientMock.getResource(anyString(), anyString(), any(), any(), anyString())).thenReturn(queueResourceElement);
@@ -132,6 +137,7 @@ public class FasitClientTest {
 
     @Test
     public void pingThrowsExceptionWhenFasitThrowsException() throws Exception {
+        ReflectionTestUtils.setField(fasitClient, ENVIRONMENT_PROPERTY_VALUE, "u");
 
         RuntimeException thrownException = new RuntimeException(FASIT_DOES_NOT_ANSWER_ERROR);
 

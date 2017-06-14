@@ -42,6 +42,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
     private LinkedHashMap data1, data2, data3,data4;
     private JsonNode jsonNodeTom;
 
+    private int ANTALL_LOOP_I_EN_KJOERING = 22;
+
     private String FNR_1 = "09109009870";
     private String FNR_2 = "09109008815";
     private String FNR_3 = "09109000024";
@@ -99,7 +101,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
                 .thenReturn(tpsResponse2Identer);
 
         filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(100));
-        verify(tpsRequestSenderMock, times(24)).sendTpsRequest(any(),any());
+        verify(tpsRequestSenderMock, times(ANTALL_LOOP_I_EN_KJOERING*2)).sendTpsRequest(any(),any());
     }
 
     @Test
@@ -116,16 +118,16 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
                 .thenReturn(tpsResponse2Identer);
 
         filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(80));
-        verify(tpsRequestSenderMock, times(12)).sendTpsRequest(any(),any());
+        verify(tpsRequestSenderMock, times(ANTALL_LOOP_I_EN_KJOERING)).sendTpsRequest(any(),any());
 
         filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(81));
-        verify(tpsRequestSenderMock, times(12 + 24)).sendTpsRequest(any(),any());
+        verify(tpsRequestSenderMock, times(ANTALL_LOOP_I_EN_KJOERING + ANTALL_LOOP_I_EN_KJOERING*2)).sendTpsRequest(any(),any());
 
         filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(160));
-        verify(tpsRequestSenderMock, times(36+24)).sendTpsRequest(any(),any());
+        verify(tpsRequestSenderMock, times(ANTALL_LOOP_I_EN_KJOERING*3 + ANTALL_LOOP_I_EN_KJOERING*2)).sendTpsRequest(any(),any());
 
         filterPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(161));
-        verify(tpsRequestSenderMock, times(60+36)).sendTpsRequest(any(),any());
+        verify(tpsRequestSenderMock, times(ANTALL_LOOP_I_EN_KJOERING*5 + ANTALL_LOOP_I_EN_KJOERING*3)).sendTpsRequest(any(),any());
     }
 
     @Test
@@ -149,9 +151,10 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2,FNR_3,FNR_4));
 
         assertThat(filtrerteIdenter, hasItem(FNR_1));
+
         assertFalse(filtrerteIdenter.contains(FNR_2));
         assertFalse(filtrerteIdenter.contains(FNR_3));
         assertFalse(filtrerteIdenter.contains(FNR_4));
@@ -176,7 +179,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2));
 
         assertTrue(filtrerteIdenter.isEmpty());
     }
@@ -201,7 +204,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2));
 
         assertThat(filtrerteIdenter, hasItems(FNR_1,FNR_2));
     }
@@ -221,7 +224,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList("test"));
+        Set<String> filtrerteIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2));
 
         assertTrue(filtrerteIdenter.isEmpty());
     }

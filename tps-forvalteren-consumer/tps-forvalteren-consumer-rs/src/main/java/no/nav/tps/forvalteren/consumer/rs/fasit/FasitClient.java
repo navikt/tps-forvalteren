@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.springframework.beans.factory.annotation.Value;
 
 public class FasitClient {
 
@@ -21,14 +22,17 @@ public class FasitClient {
 
     private static final long CACHE_MAX_SIZE        = 100;
     private static final long CACHE_MINUTES_TO_LIVE = 30;
-    private static final String PING_ENVIRONMENT = "t4";
-    private static final String PING_ALIAS = "mqGateway";
+    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
+    private static final String PING_QUEUE_MANAGER_ALIAS = "mqGateway";
     private static final ResourceTypeDO PING_TYPE = ResourceTypeDO.QueueManager;
     private static final String PING_APPLICATION_NAME = "tpsws";
 
     private FasitRestClient restClient;
 
     private Cache<String, ResourceElement> cache;
+
+    @Value("${environment.class}")
+    private String deployedEnvironment;
 
     public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
@@ -76,9 +80,16 @@ public class FasitClient {
 
     public boolean ping() {
         try {
-            DomainDO domain = FasitUtilities.domainFor(PING_ENVIRONMENT);
+            String pingEnvironment;
+            if(deployedEnvironment.contains("p")){
+                pingEnvironment = "p";
+            } else {
+                pingEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
+            }
 
-            this.restClient.getResource(PING_ENVIRONMENT, PING_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
+            DomainDO domain = FasitUtilities.domainFor(pingEnvironment);
+
+            this.restClient.getResource(pingEnvironment, PING_QUEUE_MANAGER_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
         } catch (RuntimeException exception) {
             LOGGER.warn("Pinging Fasit failed with exception: {}", exception.toString());
             throw exception;

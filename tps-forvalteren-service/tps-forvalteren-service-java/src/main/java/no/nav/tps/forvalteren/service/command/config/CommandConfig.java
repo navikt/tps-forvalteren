@@ -15,6 +15,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.service.command.Command;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +26,18 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQU
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
 
-    private static final String DEFAULT_ENV = "t4";
+    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
+
+    @Value("${environment.class}")
+    private String deployedEnvironment;
 
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        return messageQueueServiceFactory.createMessageQueueConsumer(DEFAULT_ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        String defaultEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
+        return messageQueueServiceFactory.createMessageQueueConsumer(defaultEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
     @Bean
