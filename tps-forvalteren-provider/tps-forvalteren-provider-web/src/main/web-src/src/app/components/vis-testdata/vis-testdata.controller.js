@@ -231,10 +231,10 @@ angular.module('tps-forvalteren.vis-testdata')
             };
 
             $scope.spesregChanged = function (index) {
-                if (personer[index].spesreg == ' ') {
-                    personer[index].spesreg = '';
+                if ($scope.personer[index].spesreg == ' ') {
+                    $scope.personer[index].spesreg = undefined;
                 }
-                endret(index);
+                $scope.endret(index);
             };
 
             hentTestpersoner();
