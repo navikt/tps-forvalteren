@@ -21,9 +21,14 @@ import java.util.Set;
 @Service
 public class FilterPaaIdenterTilgjengeligeIMiljo {
 
-    private static final int HIGHEST_T_ENVIRONMENT = 13;
-    private static final int LOWEST_T_ENVIRONMENT = 0;
     private static final int MAX_ANTALL_IDENTER_TIL_REQUEST_M201 = 80;
+
+    //TODO Finne ut hva man skal gjoere med disse...
+    // The queue manager channel 'T7_TPSWS' for this env does not exist.  Tatt ut t13 fordi randomly ikke virket.
+    // Q7 er også noe feil med.. Q9 også... Qx også
+    private static final String[] T_ENVIRONMENTS = {"t0","t1","t2","t3","t4","t5","t6","t8","t9","t10","t11","t12"};
+    private static final String[] Q_ENVIRONMENTS = {"q0","q1","q2","q3","q4","q5","q6","q8"};
+    private static final String[] U_ENVIRONMENTS = {"u5", "u6"};
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -69,30 +74,30 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
 
     private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
 
-        Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>();
+        Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>)tpsRequestParameters.get("fnr"));
 
-        for(int i=LOWEST_T_ENVIRONMENT; i<HIGHEST_T_ENVIRONMENT; i++){
-            if(i == 7){
-                continue;       // The queue manager channel 'T7_TPSWS' for this env does not exist.
-            }
-            context.setEnvironment("t"+i);
+        hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, Q_ENVIRONMENTS, tpsRequestParameters, context);
+        hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, U_ENVIRONMENTS, tpsRequestParameters, context);
+        hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, T_ENVIRONMENTS, tpsRequestParameters, context);
+
+        return tilgjengeligeIdenterAlleMiljoer;
+    }
+
+    private void hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(Set<String> tilgjengligIdenter, String[] miljoerAaSjekke, Map<String, Object> tpsRequestParameters, TpsRequestContext context){
+        for(String miljoe : miljoerAaSjekke){
+            context.setEnvironment(miljoe);
 
             TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
 
             if(kunneIkkeLeggeMeldingPaaKoe(tpsResponse)){
-                continue;
+                continue;       //TODO Gjoer hva hvis man ikke faar lagt paa koe??? Bare hopper over for naa.
             }
 
             Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterFraResponse(tpsResponse);
 
-            if(i == 0){
-                tilgjengeligeIdenterAlleMiljoer.addAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
-            } else {
-                tilgjengeligeIdenterAlleMiljoer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
-            }
+            tilgjengligIdenter.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
         }
-        return tilgjengeligeIdenterAlleMiljoer;
     }
 
     private boolean kunneIkkeLeggeMeldingPaaKoe(TpsServiceRoutineResponse response){
