@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
@@ -59,14 +58,12 @@ public class ServiceController extends BaseProvider {
 
         tpsRequestParameters.put(TPS_SERVICE_ROUTINE_PARAM_NAME, serviceRutinenavn);
 
-        JsonNode body = mappingUtils.convert(tpsRequestParameters, JsonNode.class);
-
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        context.setEnvironment(body.get(ENVIRONMENT_PARAM_NAME).asText());
+        context.setEnvironment(tpsRequestParameters.get(ENVIRONMENT_PARAM_NAME).toString());
 
-        String tpsServiceRutinenavn = body.get(TPS_SERVICE_ROUTINE_PARAM_NAME).asText();
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsServiceRutinenavn, body);
+        String tpsServiceRutinenavn = tpsRequestParameters.get(TPS_SERVICE_ROUTINE_PARAM_NAME).toString();
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsServiceRutinenavn, tpsRequestParameters);
 
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }

@@ -1,30 +1,27 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RsTpsRequestMappingUtilsTest {
@@ -57,12 +54,12 @@ public class RsTpsRequestMappingUtilsTest {
         List<TpsServiceRoutineDefinition> routines = Collections.singletonList(routine);
         when(serviceMock.execute()).thenReturn(routines);
 
-        JsonNode nodeMock = mock(JsonNode.class);
+        Map parametersMap = mock(Map.class);
 
         TpsHentPersonServiceRoutineRequest respMock = mock(TpsHentPersonServiceRoutineRequest.class);
-        when(objectMapperMock.convertValue(nodeMock, TpsHentPersonServiceRoutineRequest.class)).thenReturn(respMock);
+        when(objectMapperMock.convertValue(parametersMap, TpsHentPersonServiceRoutineRequest.class)).thenReturn(respMock);
 
-        TpsServiceRoutineRequest result = utils.convertToTpsServiceRoutineRequest("name", nodeMock);
+        TpsServiceRoutineRequest result = utils.convertToTpsServiceRoutineRequest("name", parametersMap);
 
         assertThat(result, is(sameInstance(respMock)));
     }

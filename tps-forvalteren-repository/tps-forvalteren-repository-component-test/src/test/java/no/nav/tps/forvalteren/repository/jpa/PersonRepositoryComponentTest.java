@@ -10,7 +10,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
@@ -24,7 +27,6 @@ import static org.hamcrest.Matchers.hasSize;
 public class PersonRepositoryComponentTest {
 
     private Person personOla = aMalePerson().build();
-
     private Person personKari = aFemalePerson().build();
 
     @Autowired
@@ -44,6 +46,54 @@ public class PersonRepositoryComponentTest {
         assertThat(result, hasSize(2));
         assertThat(result, hasItem(personOla));
         assertThat(result, hasItem(personKari));
+    }
+
+    @Test
+    @Rollback
+    public void deleteByIdInDeletesAll() {
+        Person ola = testRepository.save(personOla);
+        Person kari = testRepository.save(personKari);
+
+        List<Long> ids = new ArrayList<>();
+        ids.add(ola.getId());
+        ids.add(kari.getId());
+        repository.deleteByIdIn(ids);
+
+        List<Person> result = repository.findAll();
+        assertThat(result, hasSize(0));
+
+    }
+
+    @Test
+    @Rollback
+    public void saveSavesAll() {
+        List<Person> persons = Arrays.asList(personOla, personKari);
+        repository.save(persons);
+
+        Iterable<Person> result = testRepository.findAll();
+        List<Person> resultList = new ArrayList<>();
+
+        result.forEach(resultList::add);
+        assertThat(resultList, hasSize(2));
+        assertThat(resultList, hasItem(personOla));
+        assertThat(resultList, hasItem(personKari));
+    }
+
+    @Test
+    @Rollback
+    public void FindByIdentInReturnsAll() {
+        List<Person> persons = Arrays.asList(personOla, personKari);
+        testRepository.save(persons);
+
+        List<String> identList = persons.stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toList());
+
+        List<Person> result = repository.findByIdentIn(identList);
+
+        assertThat(result, hasSize(2));
+        assertThat(result, hasItem(persons.get(0)));
+        assertThat(result, hasItem(persons.get(1)));
     }
 
 }

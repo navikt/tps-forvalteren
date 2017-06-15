@@ -5,21 +5,27 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-
-import static java.util.stream.Collectors.toSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class RestAuthoritiesMapper implements GrantedAuthoritiesMapper {
 
     @Override
     public Collection<UserRole> mapAuthorities(Collection<? extends GrantedAuthority> collection) {
-        return collection.stream()
-                .filter(Objects::nonNull)
-                .map(GrantedAuthority::getAuthority)
-                .map(UserRole::getEnumFromName)
-                .filter(Objects::nonNull)
-                .collect(toSet());
+        List<String> userADRoles = collection.stream().filter(Objects::nonNull).map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        Set<UserRole> userRoles = new HashSet<>();
+        for(UserRole roleEnum : UserRole.values()){
+            for(String enumADRole : roleEnum.getADRolesForEnum()){
+                if(userADRoles.contains(enumADRole)){
+                    userRoles.add(roleEnum);
+                }
+            }
+        }
+        return userRoles;
     }
 
 }

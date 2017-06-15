@@ -14,7 +14,6 @@ angular.module('tps-forvalteren.service-rutine')
             $scope.toggle = false;
             $scope.isArray = angular.isArray;
 
-            var nonUniqueProperties = [];
             var requiredParameters = [];
             var isValidServiceRutineName = false;
             var apiError = true;
@@ -41,8 +40,15 @@ angular.module('tps-forvalteren.service-rutine')
                     $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
                     $scope.returStatus = response.status.kode;
 
+                    $scope.responseData = response;
+
+                    /* Brukes kun til å hente Tags som skal inn i servicerutinenes html fil */
+                    // var jup = utilsService.flattenObject($scope.responseData);
+                    // var str = JSON.stringify(jup, null, 2);
+                    // console.log(str);
+
                     if(response.data === undefined) return;
-                    $scope.personsData = extractPersonsData(response, nonUniqueProperties);
+                    //$scope.personsData = extractPersonsData(response, nonUniqueProperties);
 
                     var antallTreff = response.antallTotalt;
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
@@ -91,7 +97,7 @@ angular.module('tps-forvalteren.service-rutine')
             };
 
             $scope.resolveArray = function(arrayprefix, index, arrayLength, value){
-                if(arrayLength == 1){
+                if(arrayLength === 1){
                     return arrayprefix + "." + value;
                 }
                 return arrayprefix + "[" + index + "]" + "." + value;
@@ -124,7 +130,7 @@ angular.module('tps-forvalteren.service-rutine')
 
             function extractPersonsData(responseObject, nonUniqueProperties) {
                 var personsData = {};
-                if (responseObject.antallTotalt === undefined || responseObject.antallTotalt == 1) {
+                if (responseObject.antallTotalt === undefined || responseObject.antallTotalt === 1) {
                     personsData[0] = utilsService.flattenObject(responseObject.data[0], nonUniqueProperties);
                 } else {
                     var i = 0;
@@ -150,7 +156,7 @@ angular.module('tps-forvalteren.service-rutine')
                     }
                 };
 
-                var errorObj = error.status == 401 ? errorMessages[401] : errorMessages[500];
+                var errorObj = error.status === 401 ? errorMessages[401] : errorMessages[500];
                 $mdDialog.show(
                     $mdDialog.alert()
                         .title(errorObj.title)
@@ -259,11 +265,7 @@ angular.module('tps-forvalteren.service-rutine')
                     return;
                 }
 
-                serviceRutineFactory.getServiceRoutineConfig($scope.serviceRutineName).then(function (res){
-                    $scope.responseFormConfig = res.data;
-                    nonUniqueProperties = res.data[$scope.serviceRutineName].nonUniqueProperties;
-
-                });
+                $scope.serviceRutineNameHtmlUrl =  serviceRutineFactory.getServiceRoutineHtmlUrl($scope.serviceRutineName);
 
                 getServiceRutineInputFieldName();
                 getServiceRutineRequiredParametersNames();

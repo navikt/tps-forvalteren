@@ -5,9 +5,14 @@ import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
-@FunctionalInterface
 public interface PersonRepository extends Repository<Person, Long> {
 
     List<Person> findAll();
+
+    void deleteByIdIn(List<Long> ids);
+
+    void save(Iterable<Person> personer);
+
+    List<Person> findByIdentIn(List<String> identListe);
 
 }

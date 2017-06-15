@@ -28,6 +28,9 @@ public class EnvironmentController {
     @Value("${tps.forvalteren.production-mode}")
     private boolean currentEnvironmentIsProd;
 
+    @Value("${environment.class}")
+    private String deployedEnvironment;
+
     /**
      * Get a set of available environments from Vera
      *
@@ -41,15 +44,41 @@ public class EnvironmentController {
             Set<String> environments = new HashSet<>();
             environments.add("p");
             return environments;
-
         } else {
-            Set<String> environments = getEnvironmentsCommand.execute("tpsws");
+            Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+            return filterEnvironments(environments);
+        }
+    }
 
-            return EnvironmentsFilter.create()
-                    .include("u*")
-                    .include("t*")
-                    .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
-                    .filter(environments);
+    private Set<String> filterEnvironments(Set<String> environments){
+        char env = deployedEnvironment.charAt(0);
+        switch (env){
+            case 'u':
+                return EnvironmentsFilter.create()
+                        .include("u*")
+                        .include("t*")
+                        .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
+                        .filter(environments);
+            case 't':
+                return EnvironmentsFilter.create()
+                        .include("u*")
+                        .include("t*")
+                        .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
+                        .filter(environments);
+            case 'q':
+                return EnvironmentsFilter.create()
+                        .include("q*")
+                        .filter(environments);
+            case 'p':
+                return EnvironmentsFilter.create()
+                        .include("p*")
+                        .filter(environments);
+            default:
+                return EnvironmentsFilter.create()
+                        .include("u*")
+                        .include("t*")
+                        .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
+                        .filter(environments);
         }
     }
 }
