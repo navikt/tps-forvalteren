@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang ="no">
+<html lang ="no" ng-app="tps-forvalteren">
     <head>
         <title>TPS Forvalteren</title>
         <meta charset="utf-8">
@@ -11,11 +11,10 @@
         <!-- endinject -->
 
     </head>
-    <body ng-app="tps-forvalteren" layout="column" ng-cloak>
+    <body layout="column" ng-cloak>
         <div id="tps-vk-header" ui-view="header"></div>
         <div id="tps-vk-content-wrapper" layout="row" flex>
-            <div id="tps-vk-side-navigator" ui-view="side-navigator" layout="column"></div>
-            <div id="tps-vk-main-content" ui-view="content" layout="column" flex></div>
+            <div id="tps-vk-main-content" ui-view="content" layout="column" class="tps-content" flex></div>
         </div>
 
         <!-- inject:js -->

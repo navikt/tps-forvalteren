@@ -28,6 +28,7 @@ angular.module('tps-forvalteren.vis-testdata')
                 testdataService.getTestpersoner().then(
                     function (result) {
                         originalPersoner = result.data;
+                        fixAdresseDato();
                         $scope.personer = angular.copy(originalPersoner);
                         $scope.control = [];
                         $scope.antallEndret = 0;
@@ -38,6 +39,18 @@ angular.module('tps-forvalteren.vis-testdata')
                         utilsService.showAlertError(error);
                     }
                 );
+            };
+
+            // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
+            var fixAdresseDato = function () {
+                for (var i = 0; i < originalPersoner.length; i++) {
+                    if (originalPersoner[i].gateadresse.length == 0) {
+                        originalPersoner[i].gateadresse[0] = {};
+                    }
+                    if (!originalPersoner[i].gateadresse[0].boFlytteDato) {
+                        originalPersoner[i].gateadresse[0].boFlytteDato = null;
+                    }
+                }
             };
 
             var lukkingPaagaar = undefined;
@@ -56,11 +69,13 @@ angular.module('tps-forvalteren.vis-testdata')
             };
 
             $scope.lukkFane = function (index) {
-                if ($scope.control[index].aapen) {
-                    $scope.control[index].aapen = undefined;
-                    lukkingPaagaar = true;
-                } else {
-                    $scope.control[index].aapen = true;
+                if ($scope.control[index]) {
+                    if ($scope.control[index].aapen) {
+                        $scope.control[index].aapen = undefined;
+                        lukkingPaagaar = true;
+                    } else {
+                        $scope.control[index].aapen = true;
+                    }
                 }
             };
 

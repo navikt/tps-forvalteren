@@ -1,5 +1,9 @@
 .tps-vk-service-rutine-dashboard {
 
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+
   fieldset{
     border: 0px;
     padding: 0px;
@@ -17,11 +21,17 @@
   .tps-vk-top {
     margin-bottom: 10px;
     background-color: white;
-    padding: 25px 35px 25px;
+    padding: 0;
     position: relative;
 
     .tps-vk-input-container {
-      margin: 4px 10px 0 0;
+      margin: 4px 10px 5px 0;
+      label {
+        z-index: auto;
+      }
+    }
+    .tps-vk-datepicker-container {
+      margin: 4px 10px 5px -16px;
       label {
         z-index: auto;
       }
@@ -237,9 +247,33 @@
 }
 
 .tps-card {
-   padding: 2px;
+  padding: 2px;
 }
 
 .element {
-  margin-top: 2px;
+  margin: 2px 0 10px 0;
+  font-style: oblique;
+}
+
+.tps-content {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+#testdata-velg-alle {
+  margin-left: 22px;
+  margin-top: 13px;
+}
+
+.line {
+  border-top: dotted;
+  padding-top: 18px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  border-bottom-width: 1px;
+  border-color: rgba(215,215,215,0.8);
+}
+#vis-tesdata-main {
+  display: block;
+  z-index:99999;
 }
