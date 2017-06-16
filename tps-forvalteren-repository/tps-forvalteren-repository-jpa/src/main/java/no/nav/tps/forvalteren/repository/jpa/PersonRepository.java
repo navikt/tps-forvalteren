@@ -13,4 +13,6 @@ public interface PersonRepository extends Repository<Person, Long> {
 
     void save(Iterable<Person> personer);
 
+    List<Person> findByIdentIn(List<String> identListe);
+
 }

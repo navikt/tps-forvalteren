@@ -27,7 +27,7 @@ public class RsTpsResponseMappingUtils {
         if (response.getDataXmls() != null) {
             List<JSONObject> data = response.getDataXmls()
                     .stream()
-                    .map(xml -> XML.toJSONObject(xml))
+                    .map(XML::toJSONObject)
                     .collect(Collectors.toList());
 
             for(int i = 0; i < data.size(); i++){

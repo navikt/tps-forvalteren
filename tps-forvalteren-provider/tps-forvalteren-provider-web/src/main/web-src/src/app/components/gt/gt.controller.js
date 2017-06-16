@@ -47,7 +47,7 @@ angular.module('tps-forvalteren.gt')
                     $scope.adrLinjeStatus = adresseLinjeResult.status;
 
                     var utvandringResult = res[3].data.response;
-                    $scope.utvandring = utvandringResult.data;
+                    $scope.utvandring = utvandringResult.data1;
                     $scope.xmlFormUtvandring = utilsService.formatXml(res[3].data.xml);
                     $scope.utvandringStatus = utvandringResult.status;
 

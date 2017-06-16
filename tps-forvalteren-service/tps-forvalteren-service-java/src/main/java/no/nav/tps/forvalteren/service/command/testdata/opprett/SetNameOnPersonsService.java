@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata;
+package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import org.springframework.stereotype.Service;
