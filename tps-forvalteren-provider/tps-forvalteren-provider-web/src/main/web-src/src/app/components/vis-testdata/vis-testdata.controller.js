@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.vis-testdata')
-    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog) {
+    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope) {
 
             $scope.allePersoner = false;
             $scope.personer = [];
@@ -28,6 +28,7 @@ angular.module('tps-forvalteren.vis-testdata')
                 testdataService.getTestpersoner().then(
                     function (result) {
                         originalPersoner = result.data;
+                        fixAdresseDato();
                         $scope.personer = angular.copy(originalPersoner);
                         $scope.control = [];
                         $scope.antallEndret = 0;
@@ -38,6 +39,18 @@ angular.module('tps-forvalteren.vis-testdata')
                         utilsService.showAlertError(error);
                     }
                 );
+            };
+
+            // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
+            var fixAdresseDato = function () {
+                for (var i = 0; i < originalPersoner.length; i++) {
+                    if (originalPersoner[i].gateadresse.length == 0) {
+                        originalPersoner[i].gateadresse[0] = {};
+                    }
+                    if (!originalPersoner[i].gateadresse[0].boFlytteDato) {
+                        originalPersoner[i].gateadresse[0].boFlytteDato = null;
+                    }
+                }
             };
 
             var lukkingPaagaar = undefined;
@@ -56,11 +69,13 @@ angular.module('tps-forvalteren.vis-testdata')
             };
 
             $scope.lukkFane = function (index) {
-                if ($scope.control[index].aapen) {
-                    $scope.control[index].aapen = undefined;
-                    lukkingPaagaar = true;
-                } else {
-                    $scope.control[index].aapen = true;
+                if ($scope.control[index]) {
+                    if ($scope.control[index].aapen) {
+                        $scope.control[index].aapen = undefined;
+                        lukkingPaagaar = true;
+                    } else {
+                        $scope.control[index].aapen = true;
+                    }
                 }
             };
 
@@ -217,7 +232,7 @@ angular.module('tps-forvalteren.vis-testdata')
                 });
             };
 
-            $scope.avbryteDialog = function(index) {
+            $scope.avbryteDialog = function() {
                 var confirm = $mdDialog.confirm()
                     .title('Bekreft avbryt endring')
                     .textContent('Endringer som er gjort vil gå tapt')
@@ -230,11 +245,38 @@ angular.module('tps-forvalteren.vis-testdata')
                 });
             };
 
+            var bekreftRelokasjon = function(next) {
+                var confirm = $mdDialog.confirm()
+                    .title('Du har endringer som ikke er lagret')
+                    .textContent('Trykk OK for å forlate siden.')
+                    .ariaLabel('Bekreftelse på relokasjon og endringer ikke lagret')
+                    .ok('OK')
+                    .cancel('Avbryt');
+
+                $mdDialog.show(confirm).then(function() {
+                    $scope.visEndret = false;
+                    locationService.redirectUrl(next.url);
+                });
+            };
+
             $scope.spesregChanged = function (index) {
                 if ($scope.personer[index].spesreg == ' ') {
                     $scope.personer[index].spesreg = undefined;
                 }
                 $scope.endret(index);
+            };
+
+            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+                if ($scope.visEndret) {
+                    event.preventDefault();
+                    bekreftRelokasjon(next);
+                }
+            });
+
+            window.onbeforeunload = function (event) {
+                if ($scope.visEndret){
+                    return true; // Trigger nettlesers visning av dialogboks for avslutning
+                }
             };
 
             hentTestpersoner();

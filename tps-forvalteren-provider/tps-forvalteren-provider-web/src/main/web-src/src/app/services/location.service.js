@@ -38,4 +38,7 @@ angular.module('tps-forvalteren.service')
             return $state.current.name === 'servicerutine';
         };
 
+        self.redirectUrl = function(url) {
+            $state.go(url.substring(1)); // Ta bort ledende "/"
+        }
     }]);

@@ -1,7 +1,7 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
 
         <!-- Resulting Response -->
-        <md-content flex="100" class="tps-vk-bottom md-whiteframe-z2">
+        <md-content flex class="tps-vk-bottom md-whiteframe-z2">
 
             <h2>Legg til testpersoner</h2>
             <!-- Setup Tabs -->
@@ -9,9 +9,9 @@
                 <!-- Tab Readable Result -->
                 <md-tab label="Opprett person fra kriterier">
                     <form name="requestForm" class="tps-vk-form">
-                        <div layout="row" style="margin-top: 60px; margin-left: 30px;">
-                            <md-input-container class="tps-vk-input-container" flex="5"
-                                                flex aria-label="Velg identtype">
+                        <div layout="row" style="margin-top: 60px; margin-left: 30px; margin-right: 30px;">
+                            <md-input-container class="tps-vk-input-container"
+                                                aria-label="Velg identtype">
                                 <md-tooltip>Velg ident type</md-tooltip>
                                 <label>Type</label>
                                 <md-select ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
@@ -22,7 +22,7 @@
                             </md-input-container>
 
                             <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" flex="10"
+                            <md-input-container class="tps-vk-input-container"
                                                 aria-label="Velg kjønn">
                                 <md-tooltip>Velg kjønn</md-tooltip>
                                 <label>Kjønn</label>
@@ -35,7 +35,8 @@
                             </md-input-container>
 
                             <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" flex="15"
+                            <md-input-container class="tps-vk-input-container"
+                                                flex="20"
                                                 aria-label="Legg til dato født etter">
                                 <md-tooltip>Bestem "Født etter" dato</md-tooltip>
                                 <label>Født etter</label>
@@ -56,8 +57,9 @@
                             </md-input-container>
 
                             <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" flex="15"
-                                                aria-label="Legg til dato født før">
+                            <md-input-container class="tps-vk-input-container"
+                                                aria-label="Legg til dato født før"
+                                                flex="20">
                                 <md-tooltip>Bestem "Født før" dato</md-tooltip>
                                 <label>Født før</label>
                                 <md-datepicker name="foedtFoer"
@@ -80,7 +82,7 @@
                             <md-input-container class="tps-vk-input-container" aria-label="Sett antall personer">
                                 <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
                                 <label>Antall*</label>
-                                <input name="antall" placeholder="Antall personer" ng-model="kriterium.antall"
+                                <input name="antall" ng-model="kriterium.antall"
                                        maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
                                 <div class="validation-messages" ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$touched">
                                     <div ng-message="pattern">Ugyldig tallverdi</div>
@@ -88,7 +90,7 @@
                             </md-input-container>
 
                             <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" flex="5"
+                            <md-input-container class="tps-vk-input-container"
                                                 aria-label="Legg til kriterium">
                                 <md-tooltip>Legg til kriterium</md-tooltip>
                                 <div>
@@ -112,7 +114,7 @@
 
                             <div layout="row" layout-align="center center" flex="75" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
                         </div>
-                        <md-toolbar class="md-toolbar-tools" layout="row" style="margin-left: 30px; margin-top: 50px;" flex="90">
+                        <md-toolbar class="md-toolbar-tools" layout="row" style="margin-left: 30px; margin-top: 50px; margin-right: 30px;" flex="95">
                             <span flex></span>
                             <div layout="row" layout-sm="column" flex="100" ng-show="showSpinner">
                                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>

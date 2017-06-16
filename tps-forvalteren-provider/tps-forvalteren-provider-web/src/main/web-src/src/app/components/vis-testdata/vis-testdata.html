@@ -1,8 +1,9 @@
-<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+<div class="tps-vk-service-rutine-dashboard md-primary md-hue-3" layout="column" layout-padding ng-cloak>
 
     <!-- Resulting Response -->
-    <md-content flex="100" class="md-whiteframe-z2 tps-vk-top">
+    <md-card id="vis-tesdata-main" flex="90" class="tps-vk-top">
 
+        <md-card-content>
         <div layout="row">
         <div flex></div><h1>Endre testdata</h1><div flex></div>
         </div>
@@ -12,76 +13,86 @@
             <md-input-container layout="column" class="tps-vk-input-container"
                     aria-label="Opprett ny testperson">
                 <md-tooltip>Opprett ny testperson</md-tooltip>
-                <md-button class="md-primary md-accent md-raised md-title"  ng-click="opprettPersoner()" class="md-accent">Opprett ny testperson</md-button>
+                <md-button class="md-primary md-accent md-raised md-title" ng-click="opprettPersoner()" class="md-accent">Opprett ny testperson</md-button>
                 </md-button>
             </md-input-container>
         </div>
         <div layout="row" flex>
-            <md-input-container class="tps-vk-input-container" ng-show="personer.length > 0"
-                                aria-label="Velg alle testpersoner">
-                <md-tooltip>Velg alle testpersoner</md-tooltip>
-                <md-checkbox data-ng-model="allePersoner" style="margin: -10px 10px;" ng-click="velgAlle()">Velg alle<span ng-if="visEndret"> som er endret</span> </md-checkbox>
-            </md-input-container>
+            <div id="testdata-velg-alle" ng-show="personer.length > 0">
+                <md-input-container class="tps-vk-input-container"
+                                    aria-label="Velg alle testpersoner">
+                    <md-tooltip>Velg alle testpersoner</md-tooltip>
+                    <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()">
+                        <div style="margin-top: -5px;">Velg alle<span ng-if="visEndret"> endrede</span></div>
+                    </md-checkbox>
+                </md-input-container>
+            </div>
+
+            <div ng-show="personer.length > 0" style="margin-top: 3px;">
+                <div flex="10"></div>
+                <p>Valgt: {{antallValgt}}</p>
+            </div>
             <div flex></div>
+            <div ng-show="personer.length > 0 && visEndret" style="margin-top: 3px;">
+                <p>Endret: {{antallEndret}}</p>
+                <div flex="10"></div>
+            </div>
+
             <md-input-container class="tps-vk-input-container">
                 <md-tooltip>Slett valgte rader</md-tooltip>
                 <md-button class="md-primary md-accent md-raised md-title" ng-click="sletteDialog()" ng-disabled="antallValgt == 0" ng-if="!visEndret && personer.length > 0"
                            aria-label="Slett valgte rader">Slett
                 </md-button>
             </md-input-container>
-            <md-input-container class="tps-vk-input-container">
+            <md-input-container class="tps-vk-input-container" ng-if="visEndret">
                 <md-tooltip>Avbryt valgt rader</md-tooltip>
-                <md-button class="md-primary md-accent md-raised md-title" ng-disabled="antallValgt == 0" ng-if="visEndret" ng-click="avbryteDialog()"
+                <md-button class="md-primary md-accent md-raised md-title" ng-disabled="antallValgt == 0" ng-click="avbryteDialog()"
                            aria-label="Avbryt valgte rader">Avbryt endring
                 </md-button>
             </md-input-container>
-            <md-input-container class="tps-vk-input-container">
-                <md-tooltip>Slett valgte rader</md-tooltip>
-                <md-button class="md-primary md-accent md-raised md-title" ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-if="visEndret" ng-click="lagre()"
+            <md-input-container class="tps-vk-input-container" ng-if="visEndret">
+                <md-tooltip>Lagre valgte rader</md-tooltip>
+                <md-button class="md-primary md-accent md-raised md-title" ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
                            aria-label="Lagre valgte rader">Lagre
                 </md-button>
             </md-input-container>
         </div>
+        </md-card-content>
+    </md-card>
 
-        <form name="requestForm" class="tps-vk-form">
-        <div layout="row" ng-show="personer.length > 0">
-            <div flex="5"></div>
-            <div>Antall valgt: {{antallValgt}}</div>
-            <div flex></div>
-            <div>Antall endret: {{antallEndret}}</div>
-            <div flex="5"></div>
-        </div>
+
+    <!-- Resulting Response -->
+
+        <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
         <div ng-repeat="person in personer">
-            <div layout="row">
+            <div layout="row" flex="100">
             <md-card flex>
-                <md-card-content flex class="md-whiteframe-5dp" ng-click="aapneFane($index)">
-                    <div class="tps-vk-form">
-                        <div layout="row" ng-class="md-whiteframe-z1" style="font-style: oblique;">
-                            <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
-                                         ng-model="control[$index].velg"
-                                         ng-change="oppdaterValgt($index)"
-                                         ng-disabled="control[$index].disabled"
-                                         aria-label="Marker person{{person.ident}} for sletting">
-                            </md-checkbox>
-                            <div flex="15">{{person.ident}} ({{person.identtype}})</div>
-                            <div flex="30">
-                               {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
-                            </div>
-                            <div flex="20">{{getKjonn(person.kjonn)}}</div>
-                            <div flex></div>
-                            <div ng-if="control[$index].endret" style="color: red;">Endret</div>
-                            <div flex="5"></div>
-                            <div layout="row" flex="5">
-                                <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
-                                           class="md-icon-button"
-                                           type="button"
-                                           aria-label="Vis testdata detaljer"
-                                           ng-click="lukkFane($index)"
-                                           ng-disabled="!requestForm.$valid">
-                                    <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
-                                </md-button>
-                            </div>
+                <md-card-content flex class="md-whiteframe-1dp" ng-click="aapneFane($index)" style="padding-bottom: 0; padding-top: 10px;">
+                    <div class="tps-vk-form" layout="row" style="font-style: oblique;">
+                        <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
+                                     ng-model="control[$index].velg"
+                                     ng-change="oppdaterValgt($index)"
+                                     ng-disabled="control[$index].disabled"
+                                     aria-label="Marker person{{person.ident}} for sletting">
+                        </md-checkbox>
+                        <div flex="15">{{person.ident}} ({{person.identtype}})</div>
+                        <div flex="50">
+                           {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
+                        </div>
+                        <div flex="20">{{getKjonn(person.kjonn)}}</div>
+                        <div flex></div>
+                        <div ng-if="control[$index].endret" style="color: red;">Endret</div>
+                        <div flex="5"></div>
+                        <div flex="5">
+                            <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
+                                       class="md-icon-button"
+                                       type="button" style="margin-top: -10px;"
+                                       aria-label="Vis testdata detaljer"
+                                       ng-click="lukkFane($index)"
+                                       ng-disabled="!requestForm.$valid">
+                                <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                            </md-button>
                         </div>
                     </div>
                     <div layout="row" ng-if="control[$index].aapen">
@@ -116,8 +127,8 @@
                                     </div>
                                 </md-input-container>
                             </div>
-                            <div layout="row" flex>
-                                <md-input-container class="tps-vk-input-container tps-calendar" flex>
+                            <div layout="row">
+                                <md-input-container class="tps-vk-datepicker-container" flex>
                                     <md-tooltip>Registeringsdato</md-tooltip>
                                     <label>Regdato</label>
                                     <md-datepicker name="regdato"
@@ -130,8 +141,7 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
-                                <md-input-container class="tps-vk-input-container" flex="10">
+                                <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Statsborgerskap</md-tooltip>
                                     <label>Statsborgerskap</label>
                                     <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
@@ -142,25 +152,23 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
-                                    <md-input-container class="tps-vk-input-container" flex>
-                                        <md-tooltip>Spesialregister</md-tooltip>
-                                        <label>Spesialregister</label>
-                                        <md-select ng-model="person.spesreg" class="md-no-underline" ng-change="spesregChanged($index)">
-                                            <md-option value=" "> </md-option>
-                                            <md-option value="KLIE">Klientadresse</md-option>
-                                            <md-option value="MILI">Militær</md-option>
-                                            <md-option value="PEND">Pendler</md-option>
-                                            <md-option value="SPFO">Sperret adresse, fortrolig</md-option>
-                                            <md-option value="SPSF">Sperret adresse, strengt fortrolig</md-option>
-                                            <md-option value="SVAL">Svalbard</md-option>
-                                            <md-option value="UFB ">Uten fast bopel</md-option>
-                                            <md-option value="URIK">I utenrikstjeneste</md-option>
-                                            <md-option value="VABO">Vanlig bosatt</md-option>
-                                        </md-select>
-                                    </md-input-container>
+                                <md-input-container class="tps-vk-input-container" flex>
+                                    <md-tooltip>Spesialregister</md-tooltip>
+                                    <label>Spesialregister</label>
+                                    <md-select ng-model="person.spesreg" class="md-no-underline" ng-change="spesregChanged($index)">
+                                        <md-option value=" "> </md-option>
+                                        <md-option value="KLIE">Klientadresse</md-option>
+                                        <md-option value="MILI">Militær</md-option>
+                                        <md-option value="PEND">Pendler</md-option>
+                                        <md-option value="SPFO">Sperret adresse, fortrolig</md-option>
+                                        <md-option value="SPSF">Sperret adresse, strengt fortrolig</md-option>
+                                        <md-option value="SVAL">Svalbard</md-option>
+                                        <md-option value="UFB ">Uten fast bopel</md-option>
+                                        <md-option value="URIK">I utenrikstjeneste</md-option>
+                                        <md-option value="VABO">Vanlig bosatt</md-option>
+                                    </md-select>
+                                </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Spesialregister dato</md-tooltip>
                                     <label>Spesreg. dato</label>
@@ -174,7 +182,7 @@
                                     </div>
                                 </md-input-container>
                             </div>
-                            <div layout="row"><h5 class="element">Boadresse - Offentlig adresse</h5></div>
+                            <div layout="row" class="element">Boadresse - Offentlig adresse</div>
                             <div layout="row">
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Gatenavn</md-tooltip>
@@ -186,7 +194,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex="10">
                                     <md-tooltip>Husnummer</md-tooltip>
                                     <label>Husnummer</label>
@@ -198,7 +205,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex="10">
                                     <md-tooltip>Gatekode</md-tooltip>
                                     <label>Gatekode</label>
@@ -210,7 +216,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex="10">
                                     <md-tooltip>Postnummer</md-tooltip>
                                     <label>Postnummer</label>
@@ -225,8 +230,7 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
-                                <md-input-container class="tps-vk-input-container" flex="15">
+                                <md-input-container class="tps-vk-input-container" flex="20">
                                     <md-tooltip>Flyttedato</md-tooltip>
                                     <label>Flyttedato</label>
                                     <md-datepicker name="boFlytteDato"
@@ -239,7 +243,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex="10">
                                     <md-tooltip>Kommunenr</md-tooltip>
                                     <label>Kommunenr</label>
@@ -254,7 +257,7 @@
                                     </div>
                                 </md-input-container>
                             </div>
-                            <div layout="row"><h5 class="element">Postadresse</h5></div>
+                            <div layout="row" class="element">Postadresse</div>
                             <div layout="row">
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Adresselinje 1</md-tooltip>
@@ -267,7 +270,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Adresselinje 2</md-tooltip>
                                     <label>Linje 2</label>
@@ -278,7 +280,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Adresselinje 3</md-tooltip>
                                     <label>Linje 3</label>
@@ -289,7 +290,6 @@
                                     </div>
                                 </md-input-container>
 
-                                <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex="5">
                                     <md-tooltip>Land</md-tooltip>
                                     <label>Land</label>
@@ -310,5 +310,5 @@
             </div>
         </div>
         </form>
-    </md-content>
+
 </div>
