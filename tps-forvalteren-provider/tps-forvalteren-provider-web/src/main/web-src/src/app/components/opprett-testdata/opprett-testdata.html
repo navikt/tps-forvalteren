@@ -7,7 +7,7 @@
             <!-- Setup Tabs -->
             <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
                 <!-- Tab Readable Result -->
-                <md-tab label="Opprett person fra kriterie">
+                <md-tab label="Opprett person fra kriterier">
                     <form name="requestForm" class="tps-vk-form">
                         <div layout="row" style="margin-top: 60px; margin-left: 30px; margin-right: 30px;">
                             <md-input-container class="tps-vk-input-container"
@@ -31,7 +31,6 @@
                                     <md-option value=" "> </md-option>
                                     <md-option value="K">Kvinne</md-option>
                                     <md-option value="M">Mann</md-option>
-                                    <md-option value=" ">Uspesifisert</md-option>
                                 </md-select>
                             </md-input-container>
 
@@ -101,7 +100,7 @@
                             </md-input-container>
                         </div>
                         <div style="margin-left: 30px; margin-top: 30px;" flex>
-                            <div layout="row" style="margin-bottom: 10px;" ng-repeat="kriterium in kriterie">
+                            <div layout="row" style="margin-bottom: 10px;" ng-repeat="kriterium in kriterier">
                                 <div aria-label="Slett denne raden">
                                     <md-tooltip>Slett denne raden</md-tooltip>
                                     <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="removeDialog($index)"></md-icon>
@@ -113,7 +112,7 @@
                                 <div ng-if="kriterium.antall">, Antall = "{{kriterium.antall}}"</div>
                             </div>
 
-                            <div layout="row" layout-align="center center" flex="75" ng-if="kriterie.length == 0">Det er ikke lagt til noen kriterie</div>
+                            <div layout="row" layout-align="center center" flex="75" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
                         </div>
                         <md-toolbar class="md-toolbar-tools" layout="row" style="margin-left: 30px; margin-top: 50px; margin-right: 30px;" flex="95">
                             <span flex></span>
@@ -127,7 +126,7 @@
                             </div>
                             <div>
                                 <md-tooltip>Utfør operasjon "Legg til testpersoner"</md-tooltip>
-                                <md-button style="margin-right: 10px;" class="md-raised md-accent" ng-disabled="kriterie.length == 0 || !editMode"
+                                <md-button style="margin-right: 10px;" class="md-raised md-accent" ng-disabled="kriterier.length == 0 || !editMode"
                                        aria-label='Utfør operasjon "Legg til testpersoner"'
                                        ng-click="opprettTestpersoner()">Opprett</md-button>
                             </div>
