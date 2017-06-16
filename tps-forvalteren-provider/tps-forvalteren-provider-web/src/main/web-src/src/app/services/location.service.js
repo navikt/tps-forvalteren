@@ -1,6 +1,6 @@
 
 angular.module('tps-forvalteren.service')
-    .service('locationService', ['$state', '$rootScope', function($state, $rootScope) {
+    .service('locationService', ['$state', function($state) {
 
         var self = this;
         var returnState = 'servicerutine';
