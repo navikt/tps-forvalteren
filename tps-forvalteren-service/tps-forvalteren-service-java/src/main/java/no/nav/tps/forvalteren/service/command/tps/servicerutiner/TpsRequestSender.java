@@ -12,6 +12,8 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jms.JMSException;
+
 
 @Service
 public class TpsRequestSender {
@@ -32,6 +34,8 @@ public class TpsRequestSender {
             return rsTpsResponseMappingUtils.convertToTpsServiceRutineResponse(response);
         } catch (HttpUnauthorisedException ex){
             throw new HttpUnauthorisedException(ex, "api/v1/service/" + request.getServiceRutinenavn());
+        }catch (JMSException jmsException){
+            throw new HttpInternalServerErrorException(jmsException, "api/v1/service");
         } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
         }

@@ -52,7 +52,7 @@ angular.module('tps-forvalteren.gt')
                     $scope.utvandringStatus = utvandringResult.status;
 
                 },function (error) {
-                    showAlertTPSError(error);
+                    utilsService.showAlertError(error);
                     $scope.loading = false;
                 });
             }
@@ -78,30 +78,6 @@ angular.module('tps-forvalteren.gt')
                 $scope.xmlFormUtvandring = undefined;
                 $scope.utvandringStatus = undefined;
             };
-
-            function showAlertTPSError(error) {
-                var errorMessages = {
-                    401: {
-                        title: 'Ikke autorisert',
-                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
-                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
-                    },
-                    500: {
-                        title: 'Serverfeil',
-                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
-                        ariaLabel: 'Feil ved henting av data fra TPS'
-                    }
-                };
-
-                var errorObj = error.status == 401 ? errorMessages[401] : errorMessages[500];
-                $mdDialog.show(
-                    $mdDialog.alert()
-                        .title(errorObj.title)
-                        .textContent(errorObj.text)
-                        .ariaLabel(errorObj.ariaLabel)
-                        .ok('OK')
-                );
-            }
 
             if (environmentsPromise) {
                 $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());

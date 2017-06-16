@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -7,6 +8,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSende
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     private static final String[] T_ENVIRONMENTS = {"t0","t1","t2","t3","t4","t5","t6","t8","t9","t10","t11","t12"};
     private static final String[] Q_ENVIRONMENTS = {"q0","q1","q2","q3","q4","q5","q6","q8"};
     private static final String[] U_ENVIRONMENTS = {"u5", "u6"};
+
+    @Value("${environment.class}")
+    private String deployedEnvironment;
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -76,7 +81,10 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
 
         Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>)tpsRequestParameters.get("fnr"));
 
-        hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, Q_ENVIRONMENTS, tpsRequestParameters, context);
+        if("q".equalsIgnoreCase(deployedEnvironment)){
+            hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, Q_ENVIRONMENTS, tpsRequestParameters, context);
+        }
+
         hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, U_ENVIRONMENTS, tpsRequestParameters, context);
         hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, T_ENVIRONMENTS, tpsRequestParameters, context);
 
@@ -101,7 +109,15 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     }
 
     private boolean kunneIkkeLeggeMeldingPaaKoe(TpsServiceRoutineResponse response){
-        return response.getXml().isEmpty();
+        if(response.getXml().isEmpty()){
+            return true;
+        }
+        LinkedHashMap rep = (LinkedHashMap) response.getResponse();
+        ResponseStatus status = (ResponseStatus) rep.get("status");
+        if("12".equals(status.getKode())){
+            return true;
+        }
+        return false;
     }
 
     private Map<String,Object> opprettParametereForM201TpsRequest(Collection<String> identer){
