@@ -6,14 +6,13 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultEkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdataIdenterFetcher;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultOpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultSetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,16 +39,16 @@ public class TestdataController {
     private DeletePersonsByIdService deletePersonsByIdService;
 
     @Autowired
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private DefaultSetNameOnPersonsService setNameOnPersonsService;
 
     @Autowired
-    private OpprettPersoner opprettPersonerFraIdenter;
+    private DefaultOpprettPersoner opprettPersonerFraIdenter;
 
     @Autowired
-    private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
+    private DefaultEkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
 
     @Autowired
-    private TestdataIdenterFetcher testdataIdenterFetcher;
+    private DefaultTestdataIdenterFetcher testdataIdenterFetcher;
 
 
     @Autowired
