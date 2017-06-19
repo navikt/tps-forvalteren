@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ public class FindIdenterNotUsedInDBTest {
     private PersonRepository personRepositoryMock;
 
     @InjectMocks
-    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     @Before
     public void setup() {

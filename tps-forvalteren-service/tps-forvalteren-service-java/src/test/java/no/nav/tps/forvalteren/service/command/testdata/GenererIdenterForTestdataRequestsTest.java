@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.GenererIdenterForTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultGenererIdenterForTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class GenererIdenterForTestdataRequestsTest {
     private FiktiveIdenterGenerator fiktiveIdenterGeneratorMock;
 
     @InjectMocks
-    private GenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
+    private DefaultGenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
 
     @Before
     public void setup() {
