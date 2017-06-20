@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HentKjoennFraIdentTest {
+public class HentKjoennFraIdentServiceTest {
 
     private final static  String ODDETALL_IDENT = "00000000100";
     private final static  String PARTALL_IDENT = "00000000200";
