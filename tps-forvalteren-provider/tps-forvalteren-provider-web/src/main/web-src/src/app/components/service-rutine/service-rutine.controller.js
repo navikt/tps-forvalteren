@@ -1,7 +1,7 @@
 
 angular.module('tps-forvalteren.service-rutine')
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise',
-        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService',
+        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService) {
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
@@ -128,6 +128,14 @@ angular.module('tps-forvalteren.service-rutine')
                 return 34*bufferNummer;
             };
 
+            $scope.openGT = function () {
+                locationService.redirectToGT();
+            };
+
+            $scope.openVisTestdata = function () {
+                locationService.redirectToVisTestdata();
+            };
+
             function extractPersonsData(responseObject, nonUniqueProperties) {
                 var personsData = {};
                 if (responseObject.antallTotalt === undefined || responseObject.antallTotalt === 1) {
@@ -141,6 +149,8 @@ angular.module('tps-forvalteren.service-rutine')
                 }
                 return personsData;
             }
+
+
 
             function showAlertTPSError(error) {
                 var errorMessages = {

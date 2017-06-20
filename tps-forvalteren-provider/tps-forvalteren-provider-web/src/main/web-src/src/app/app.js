@@ -205,8 +205,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     },
                     views: {
                         'content@': {
-                            templateUrl: "app/components/service-rutine/welcome.html",
-                            controller: 'ServiceRutineCtrl'
+                            templateUrl: "app/components/welcome/welcome.html",
+                            controller: 'HeaderCtrl'
                         },
                         'header@': {
                             templateUrl: "app/shared/header/header.html",
