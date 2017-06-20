@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
     private TpsServiceRoutineResponse tpsResponse2Identer, tpsResponse3Identer;
     private LinkedHashMap data1, data2, data3,data4;
     private JsonNode jsonNodeTom;
+    private ResponseStatus responseStatusDummy;
 
     private int ANTALL_LOOP_I_EN_KJOERING = 22;
 
@@ -48,6 +51,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
     private String FNR_2 = "09109008815";
     private String FNR_3 = "09109000024";
     private String FNR_4 = "09109000458";
+
+    private static final String ENVIRONMENT_PROPERTY_VALUE = "deployedEnvironment";
 
     @Mock
     private UserContextHolder userContextHolderMock;
@@ -63,6 +68,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
 
     @Before
     public void setup() {
+        ReflectionTestUtils.setField(filterPaaIdenterTilgjengeligeIMiljo, ENVIRONMENT_PROPERTY_VALUE, "q");
+
         User user = new User("test", "tester");
         tpsServiceRoutineRequestTom = new TpsServiceRoutineRequest();
         tpsResponse2Identer = new TpsServiceRoutineResponse();
@@ -85,6 +92,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         data3.put("fnr", FNR_3);
         data4.put("fnr", FNR_4);
 
+        responseStatusDummy = new ResponseStatus();
+        responseStatusDummy.setKode("test");
     }
 
     @Test
@@ -111,6 +120,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         tpsResponse2Identer.setXml("");
 
         LinkedHashMap responseMapT1 = new LinkedHashMap();
+        responseMapT1.put("status", responseStatusDummy);
 
         tpsResponse2Identer.setResponse(responseMapT1);
 
@@ -136,6 +146,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
 
         responseMapT1.put("data1", data1);
         responseMapT1.put("data2", data2);
+        responseMapT1.put("status", responseStatusDummy);
+        responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("antallTotalt", 2);
 
         tpsResponse2Identer.setResponse(responseMapT1);
@@ -144,6 +156,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         responseMapT2.put("data1", data1);
         responseMapT2.put("data2", data3);
         responseMapT2.put("data3", data4);
+        responseMapT2.put("status", responseStatusDummy);
+        responseMapT2.put("status", responseStatusDummy);
         responseMapT2.put("antallTotalt", 3);
 
         tpsResponse3Identer.setResponse(responseMapT2);
@@ -165,6 +179,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         LinkedHashMap responseMapT1 = new LinkedHashMap();
         responseMapT1.put("data1", data1);
         responseMapT1.put("data2", data2);
+        responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("antallTotalt", 2);
 
         tpsResponse2Identer.setResponse(responseMapT1);
@@ -172,6 +187,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         LinkedHashMap responseMapT2 = new LinkedHashMap();
         responseMapT2.put("data1", data3);
         responseMapT2.put("data2", data4);
+        responseMapT2.put("status", responseStatusDummy);
         responseMapT2.put("antallTotalt", 2);
 
         tpsResponse3Identer.setResponse(responseMapT2);
@@ -190,6 +206,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         LinkedHashMap responseMapT1 = new LinkedHashMap();
         responseMapT1.put("data1", data1);
         responseMapT1.put("data2", data2);
+        responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("antallTotalt", 2);
 
         tpsResponse2Identer.setResponse(responseMapT1);
@@ -197,6 +214,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
         LinkedHashMap responseMapT2 = new LinkedHashMap();
         responseMapT2.put("data1", data1);
         responseMapT2.put("data2", data2);
+        responseMapT2.put("status", responseStatusDummy);
         responseMapT2.put("antallTotalt", 2);
 
         tpsResponse3Identer.setResponse(responseMapT2);
@@ -212,11 +230,13 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
     @Test
     public void returnererTomListeHvisIdenteneManOnskerIkkeErTilgjengeligINoenMiljoer() throws Exception {
         LinkedHashMap responseMapT1 = new LinkedHashMap();
+        responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("antallTotalt", 0);
 
         tpsResponse2Identer.setResponse(responseMapT1);
 
         LinkedHashMap responseMapT2 = new LinkedHashMap();
+        responseMapT2.put("status", responseStatusDummy);
         responseMapT2.put("antallTotalt", 0);
 
         tpsResponse3Identer.setResponse(responseMapT2);

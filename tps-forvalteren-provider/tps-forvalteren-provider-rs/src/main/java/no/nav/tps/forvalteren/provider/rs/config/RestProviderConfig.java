@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.advices.HttpExceptionAdvice;
 import no.nav.tps.forvalteren.provider.rs.security.config.RestSecurityConfig;
 import no.nav.tps.forvalteren.provider.rs.security.config.WebSecurityConfig;
@@ -32,6 +33,7 @@ public class RestProviderConfig {
     ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         mapper.findAndRegisterModules();
         return mapper;

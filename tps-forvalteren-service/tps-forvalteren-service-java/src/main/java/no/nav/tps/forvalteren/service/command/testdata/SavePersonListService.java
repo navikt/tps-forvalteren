@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,18 @@ public class SavePersonListService {
     private PersonRepository repository;
 
     public void save(List<Person> personer) {
+        for (Person person : personer) {
+            if (person.getGateadresse() != null) {
+                for (Gateadresse adr : person.getGateadresse()) {
+                    adr.setPerson(person);
+                }
+            }
+            if (person.getPostadresse() != null) {
+                for (Postadresse adr : person.getPostadresse()) {
+                    adr.setPerson(person);
+                }
+            }
+        }
         repository.save(personer);
     }
 }

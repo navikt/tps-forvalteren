@@ -6,12 +6,12 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultEkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdataIdenterFetcher;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultOpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultSetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
@@ -26,6 +27,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
+@Transactional
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
@@ -37,20 +39,20 @@ public class TestdataController {
     private DeletePersonsByIdService deletePersonsByIdService;
 
     @Autowired
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private DefaultSetNameOnPersonsService setNameOnPersonsService;
+
+    @Autowired
+    private DefaultOpprettPersoner opprettPersonerFraIdenter;
+
+    @Autowired
+    private DefaultEkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
+
+    @Autowired
+    private DefaultTestdataIdenterFetcher testdataIdenterFetcher;
+
 
     @Autowired
     private SavePersonListService savePersonListService;
-
-    @Autowired
-    private OpprettPersoner opprettPersonerFraIdenter;
-
-    @Autowired
-    private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
-
-    @Autowired
-    private TestdataIdenterFetcher testdataIdenterFetcher;
-
 
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons")})
@@ -75,5 +77,12 @@ public class TestdataController {
     @RequestMapping(value = "/deletePersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
         deletePersonsByIdService.execute(personIdListe.getIds());
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons")})
+    @RequestMapping(value = "/updatePersoner", method = RequestMethod.POST)
+    public void updatePersons(@RequestBody List<Person> personListe) {
+        savePersonListService.save(personListe);
     }
 }

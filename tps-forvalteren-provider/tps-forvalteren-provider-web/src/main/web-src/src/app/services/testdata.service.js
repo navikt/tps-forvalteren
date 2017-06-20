@@ -31,9 +31,22 @@ angular.module('tps-forvalteren.service')
             return defer.promise;
         };
 
-        self.deleteTestpersoner = function(identer){
+        self.sletteTestpersoner = function(identer){
             var defer = $q.defer();
             $http.post(url + "deletePersoner", {ids: identer}).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.oppdaterTestpersoner = function(personer){
+            var defer = $q.defer();
+            $http.post(url + "updatePersoner", personer).then(
                 function (data) {
                     defer.resolve(data);
                 },

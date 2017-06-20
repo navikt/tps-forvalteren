@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FilterPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +46,7 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljoMock;
 
     @InjectMocks
-    private FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
+    private DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 
     @Test
     public void verifiserAtFilterPaaIdenterFilgjengligIMiljoeBlirKaltMedAlleIdenterFraTestdatarequestsInput() {

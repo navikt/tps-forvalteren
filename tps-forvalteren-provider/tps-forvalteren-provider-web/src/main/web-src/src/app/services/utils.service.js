@@ -154,6 +154,7 @@ angular.module('tps-forvalteren.service')
                 }
             };
 
+            //var errorMsg = error.data.message;
             var errorObj = errorMessages[error.status];
             $mdDialog.show(
                 $mdDialog.alert()

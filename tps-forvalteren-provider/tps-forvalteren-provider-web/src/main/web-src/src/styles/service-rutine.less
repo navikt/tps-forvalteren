@@ -1,33 +1,41 @@
 .tps-vk-service-rutine-dashboard {
 
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+
   fieldset{
-      border: 0px;
-      padding: 0px;
-      margin: 0px;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
 
     legend{
-    text-indent: -10000px;
-    position: absolute;
-    top: auto;
-    width: 1px;
-    overflow: hidden;
-  }
+      text-indent: -10000px;
+      position: absolute;
+      top: auto;
+      width: 1px;
+      overflow: hidden;
+    }
   }
 
   .tps-vk-top {
     margin-bottom: 10px;
     background-color: white;
-    padding: 25px 35px 25px;
+    padding: 0;
     position: relative;
 
     .tps-vk-input-container {
-      margin: 8px 10px 8px 0px;
-
+      margin: 4px 10px 5px 0;
       label {
         z-index: auto;
       }
     }
-
+    .tps-vk-datepicker-container {
+      margin: 4px 10px 5px -16px;
+      label {
+        z-index: auto;
+      }
+    }
     .tps-vk-form-btns {
       text-align: center;
 
@@ -225,4 +233,47 @@
       border-radius: 50%;
     }
   }
+}
+
+.flipped {
+  transform: rotateZ(180deg);
+}
+
+.header-label {
+  margin-left: 2px;
+  font-size: 10pt;
+  color: #bbbbbb;
+  margin: 0 0 4px 0;
+}
+
+.tps-card {
+  padding: 2px;
+}
+
+.element {
+  margin: 2px 0 10px 0;
+  font-style: oblique;
+}
+
+.tps-content {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+#testdata-velg-alle {
+  margin-left: 22px;
+  margin-top: 13px;
+}
+
+.line {
+  border-top: dotted;
+  padding-top: 18px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  border-bottom-width: 1px;
+  border-color: rgba(215,215,215,0.8);
+}
+#vis-tesdata-main {
+  display: block;
+  z-index:99999;
 }

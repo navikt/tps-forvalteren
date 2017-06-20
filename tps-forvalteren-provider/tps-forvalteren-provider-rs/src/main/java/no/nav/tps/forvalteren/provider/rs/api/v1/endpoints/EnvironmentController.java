@@ -68,6 +68,9 @@ public class EnvironmentController {
             case 'q':
                 return EnvironmentsFilter.create()
                         .include("q*")
+                        .include("u*")
+                        .include("t*")
+                        .exception("t7")                // The queue manager channel 'T7_TPSWS' for this env does not exist
                         .filter(environments);
             case 'p':
                 return EnvironmentsFilter.create()
