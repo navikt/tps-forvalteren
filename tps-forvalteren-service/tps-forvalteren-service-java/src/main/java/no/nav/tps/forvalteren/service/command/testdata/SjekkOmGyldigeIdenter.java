@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class sjekkOmGyldigeIdenter {
+public class SjekkOmGyldigeIdenter {
 
     private static final int[] KONTROLL_SIFFER_C1 = { 3, 7, 6, 1, 8, 9, 4, 5, 2 };
     private static final int[] KONTROLL_SIFFER_C2 = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
@@ -24,10 +24,7 @@ public class sjekkOmGyldigeIdenter {
     private boolean isValidFnrDnrOrBnr(String ident) {
         int day = Integer.parseInt(ident.substring(0, 2));
         int month = Integer.parseInt(ident.substring(2, 4));
-        if (isFnr(day, month) || isDnr(day, month) || isBnr(day, month)) {
-            return true;
-        }
-        return false;
+        return isFnr(day, month) || isDnr(day, month) || isBnr(day, month);
     }
 
     private boolean isBnr(int day, int month) {
@@ -51,7 +48,7 @@ public class sjekkOmGyldigeIdenter {
         return korrektKontrollsiffer.equals(kontrollsifferIIdent);
     }
 
-    private int calculateKontrollsiffer(String ident, boolean isFirstKontrollsiffer, int[] multipliers) {
+    private int calculateKontrollsiffer(String ident, boolean isFirstKontrollsiffer, int... multipliers) {
         int kontrollsiffer = 0;
         int skipEnd = isFirstKontrollsiffer ? 2 : 1;
         for (int index = 0; index < ident.length() - skipEnd; index++) {

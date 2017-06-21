@@ -28,7 +28,7 @@ public class SjekkIdenterTest {
     private FindIdenterNotUsedInDB findIdenterNotUsedInDBMock;
 
     @Mock
-    private sjekkOmGyldigeIdenter sjekkOmGyldigeIdenterMock;
+    private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenterMock;
 
     @Mock
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljoMock;

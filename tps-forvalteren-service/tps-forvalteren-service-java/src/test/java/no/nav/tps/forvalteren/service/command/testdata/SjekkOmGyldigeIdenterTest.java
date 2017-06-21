@@ -12,10 +12,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @RunWith(MockitoJUnitRunner.class)
-public class sjekkOmGyldigeIdenterTest {
+public class SjekkOmGyldigeIdenterTest {
 
     @InjectMocks
-    private sjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
+    private SjekkOmGyldigeIdenter SjekkOmGyldigeIdenter;
 
     @Test
     public void sjekkOmGyldigeFnrErGyldige() {
@@ -24,7 +24,7 @@ public class sjekkOmGyldigeIdenterTest {
         identer.add("26065825936");
         identer.add("27034234111");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(3));
     }
@@ -36,7 +36,7 @@ public class sjekkOmGyldigeIdenterTest {
         identer.add("65056503425");
         identer.add("48085709316");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(3));
     }
@@ -48,7 +48,7 @@ public class sjekkOmGyldigeIdenterTest {
         identer.add("01210120668");
         identer.add("01210126690");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(3));
     }
@@ -60,7 +60,7 @@ public class sjekkOmGyldigeIdenterTest {
         identer.add("67127901630");
         identer.add("26065825902");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(0));
     }
@@ -72,7 +72,7 @@ public class sjekkOmGyldigeIdenterTest {
         identer.add("671237901630");
         identer.add("260645825902");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(0));
     }
@@ -84,7 +84,7 @@ public class sjekkOmGyldigeIdenterTest {
         identer.add("67137901667");
         identer.add("33210123915");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(0));
     }
@@ -94,7 +94,7 @@ public class sjekkOmGyldigeIdenterTest {
         Set<String> identer = new HashSet<>();
         identer.add("01021070501");
 
-        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+        Set<String> result = SjekkOmGyldigeIdenter.execute(identer);
 
         assertThat(result, hasSize(1));
     }
