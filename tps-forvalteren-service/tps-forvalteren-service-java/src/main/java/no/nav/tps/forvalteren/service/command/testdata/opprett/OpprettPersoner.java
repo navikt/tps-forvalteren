@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import java.util.Collection;
 import java.util.List;
 
+@FunctionalInterface
 public interface OpprettPersoner {
 
     List<Person> execute(Collection<String> tilgjengeligIdenter);

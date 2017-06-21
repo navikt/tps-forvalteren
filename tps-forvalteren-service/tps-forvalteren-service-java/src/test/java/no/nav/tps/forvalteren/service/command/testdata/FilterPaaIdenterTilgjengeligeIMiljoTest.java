@@ -45,7 +45,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljoTest {
     private JsonNode jsonNodeTom;
     private ResponseStatus responseStatusDummy;
 
-    private int ANTALL_LOOP_I_EN_KJOERING = 22;
+    private int ANTALL_LOOP_I_EN_KJOERING = 23;
 
     private String FNR_1 = "09109009870";
     private String FNR_2 = "09109008815";
