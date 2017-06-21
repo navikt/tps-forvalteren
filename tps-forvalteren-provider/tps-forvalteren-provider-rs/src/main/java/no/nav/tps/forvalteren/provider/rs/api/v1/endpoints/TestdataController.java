@@ -14,7 +14,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.response.IdentListeStatusResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -97,11 +96,8 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
     @RequestMapping(value = "/checkPersoner", method = RequestMethod.POST)
-    public IdentListeStatusResponse checkIdentList(@RequestBody List<String> personIdentListe) {
-        IdentListeStatusResponse response = new IdentListeStatusResponse();
-        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
-        response.setIdenter(result);
-        return response;
+    public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
+        return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
     @LogExceptions

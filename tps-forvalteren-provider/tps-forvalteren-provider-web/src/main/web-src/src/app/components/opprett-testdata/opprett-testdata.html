@@ -179,7 +179,8 @@
                                         <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="slettRadDialog(kandidat.ident)"></md-icon>
                                     </span>
                                     <span>&nbsp;&nbsp;{{kandidat.ident}}&nbsp;&nbsp;&nbsp;</span>
-                                    <span ng-class="{'status-ok': kandidat.status == 'LOG', 'status-nok': kandidat.status != 'LOG'}">{{kandidat.status | identStatus}}</span>
+                                    <span ng-class="{'status-log': kandidat.status == 'LOG', 'status-il': kandidat.status == 'IL', 'status-ig': kandidat.status == 'IG'}">
+                                        {{kandidat.status | identStatus}}</span>
                                 </div>
                             </div>
                             <div flex>

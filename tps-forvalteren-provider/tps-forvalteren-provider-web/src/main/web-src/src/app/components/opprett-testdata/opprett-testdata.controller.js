@@ -111,7 +111,7 @@ angular.module('tps-forvalteren.opprett-testdata')
                     testdataService.validerListe(identer).then(
                         function (result) {
                             $scope.showSjekkSpinner = false;
-                            $scope.kandidater = identer.data;
+                            $scope.kandidater = result.data;
                             antallGyldig();
                         },
                         function (error) {
