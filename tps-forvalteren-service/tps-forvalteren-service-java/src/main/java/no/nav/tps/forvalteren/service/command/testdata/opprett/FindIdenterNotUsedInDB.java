@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,13 +18,14 @@ public class FindIdenterNotUsedInDB {
     private PersonRepository repository;
 
     public Set<String> filtrer(Set<String> identer) {
-        List<Person> personerSomFinnes = repository.findByIdentIn(new ArrayList<>(identer));
+        List<String> identListe = new ArrayList<>(identer);
+        List<Person> personerSomFinnes = repository.findByIdentIn(identListe);
         List<String> opptatteIdenter = personerSomFinnes.stream()
                 .map(Person::getIdent)
                 .collect(Collectors.toList());
 
-        identer.removeAll(opptatteIdenter);
-        return identer;
+        identListe.removeAll(opptatteIdenter);
+        return new HashSet<>(identListe);
     }
 
 }

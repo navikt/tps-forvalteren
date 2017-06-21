@@ -23,42 +23,41 @@ public class SjekkIdenter {
     @Autowired
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
 
-    private static final String GYLDIG = "G";
     private static final String IKKE_GYLDIG = "IG";
     private static final String IKKE_LEDIG = "IL";
     private static final String LEDIG_OG_GYLDIG = "LOG";
 
-
     public Set<IdentMedStatus> finnGyldigeOgLedigeIdenter(List<String> identListe) {
-        Set<IdentMedStatus> identerMedStatus = new HashSet<>();
         Set<String> ukjenteIdenter = new HashSet<>(identListe);
-        Map<String, String> identer = new HashMap<>();
+        Map<String, String> identerMedStatus = new HashMap<>();
 
         Set<String> gyldigeIdenter = sjekkOmGyldigeIdenter.execute(ukjenteIdenter);
-        insertIntoMap(identer, gyldigeIdenter, GYLDIG);
 
         Set<String> ugyldigeIdenter = new HashSet<>(ukjenteIdenter);
         ugyldigeIdenter.removeAll(gyldigeIdenter);
-        insertIntoMap(identer, ugyldigeIdenter, IKKE_GYLDIG);
+        insertIntoMap(identerMedStatus, ugyldigeIdenter, IKKE_GYLDIG);
 
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
         Set<String> ledigeIdenterMiljo = filterPaaIdenterTilgjengeligeIMiljo.filtrer(gyldigeIdenter);
 
-        Set<String> ledigeIdenter = new HashSet<>();
-        ledigeIdenter.addAll(ledigeIdenterMiljo);
-        ledigeIdenter.retainAll(ledigeIdenterDB);
+        Set<String> ledigeIdenterDBOgMiljo = new HashSet<>();
+        ledigeIdenterDBOgMiljo.addAll(ledigeIdenterMiljo);
+        ledigeIdenterDBOgMiljo.retainAll(ledigeIdenterDB);
 
-        insertIntoMap(identer, ledigeIdenter, LEDIG_OG_GYLDIG);
+        insertIntoMap(identerMedStatus, ledigeIdenterDBOgMiljo, LEDIG_OG_GYLDIG);
 
         Set<String> opptattIdenter = new HashSet<>(gyldigeIdenter);
-        opptattIdenter.removeAll(ledigeIdenter);
+        opptattIdenter.removeAll(ledigeIdenterDBOgMiljo);
+        insertIntoMap(identerMedStatus, opptattIdenter, IKKE_LEDIG);
 
-        insertIntoMap(identer, opptattIdenter, IKKE_LEDIG);
+        return mapToIdentMedStatusSet(identerMedStatus);
+    }
 
-        for(Map.Entry<String, String> entry : identer.entrySet()) {
+    private Set<IdentMedStatus> mapToIdentMedStatusSet(Map<String, String> identer) {
+        Set<IdentMedStatus> identerMedStatus = new HashSet<>();
+        for (Map.Entry<String, String> entry : identer.entrySet()) {
             identerMedStatus.add(new IdentMedStatus(entry.getKey(), entry.getValue()));
         }
-
         return identerMedStatus;
     }
 

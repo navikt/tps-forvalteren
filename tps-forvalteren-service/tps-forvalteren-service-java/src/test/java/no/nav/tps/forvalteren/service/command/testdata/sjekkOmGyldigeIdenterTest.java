@@ -89,4 +89,14 @@ public class sjekkOmGyldigeIdenterTest {
         assertThat(result, hasSize(0));
     }
 
+    @Test
+    public void sjekkIdent() {
+        Set<String> identer = new HashSet<>();
+        identer.add("01021070501");
+
+        Set<String> result = sjekkOmGyldigeIdenter.execute(identer);
+
+        assertThat(result, hasSize(1));
+    }
+
 }

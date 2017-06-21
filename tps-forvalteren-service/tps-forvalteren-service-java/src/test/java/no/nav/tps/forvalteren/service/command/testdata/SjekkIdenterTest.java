@@ -80,7 +80,7 @@ public class SjekkIdenterTest {
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
         assertThat(result, hasSize(3));
-        for(IdentMedStatus ident : result) {
+        for (IdentMedStatus ident : result) {
             assertThat(ident.getStatus(), is(IKKE_GYLDIG));
         }
     }
@@ -101,7 +101,7 @@ public class SjekkIdenterTest {
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
         assertThat(result, hasSize(2));
-        for(IdentMedStatus ident : result) {
+        for (IdentMedStatus ident : result) {
             assertThat(ident.getStatus(), is(LEDIG_OG_GYLDIG));
         }
     }
@@ -122,11 +122,58 @@ public class SjekkIdenterTest {
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
         assertThat(result, hasSize(2));
-        for(IdentMedStatus ident : result) {
+        for (IdentMedStatus ident : result) {
             assertThat(ident.getStatus(), is(IKKE_LEDIG));
         }
     }
 
+    @Test
+    public void callWithIkkeLedigAndIkkeGyldigAndLedigOgGyldig() {
+        final String IDENT_LEDIG_OG_GYLDIG = "08087700047";
+        final String IDENT_IKKE_LEDIG = "01021070501";
+        final String IDENT_IKKE_GYLDIG = "16049434774";
 
+        identer.add(IDENT_LEDIG_OG_GYLDIG);
+        identer.add(IDENT_IKKE_LEDIG);
+        identer.add(IDENT_IKKE_GYLDIG);
+
+        Set<String> serviceResponseGyldig = new HashSet<>();
+        serviceResponseGyldig.add(IDENT_LEDIG_OG_GYLDIG);
+        serviceResponseGyldig.add(IDENT_IKKE_LEDIG);
+
+        Set<String> serviceResponseDB = new HashSet<>();
+        serviceResponseDB.add(IDENT_IKKE_LEDIG);
+        serviceResponseDB.add(IDENT_LEDIG_OG_GYLDIG);
+
+
+        Set<String> serviceResponseMiljo = new HashSet<>();
+        serviceResponseMiljo.add(IDENT_LEDIG_OG_GYLDIG);
+
+        when(sjekkOmGyldigeIdenterMock.execute(anySet())).thenReturn(serviceResponseGyldig);
+        when(findIdenterNotUsedInDBMock.filtrer(anySet())).thenReturn(serviceResponseDB);
+        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(serviceResponseMiljo);
+
+        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+
+        boolean hasIkkeGyldig = false;
+        boolean hasIkkeLedig = false;
+        boolean hasLedigOgGyldig = false;
+
+        for (IdentMedStatus identMedStatus : result) {
+            if (identMedStatus.getStatus().equalsIgnoreCase(LEDIG_OG_GYLDIG)
+                    && identMedStatus.getIdent().equalsIgnoreCase(IDENT_LEDIG_OG_GYLDIG)) {
+                hasLedigOgGyldig = true;
+            } else if (identMedStatus.getStatus().equalsIgnoreCase(IKKE_LEDIG)
+                    && identMedStatus.getIdent().equalsIgnoreCase(IDENT_IKKE_LEDIG)) {
+                hasIkkeLedig = true;
+            } else if (identMedStatus.getStatus().equalsIgnoreCase(IKKE_GYLDIG)
+                    && identMedStatus.getIdent().equalsIgnoreCase(IDENT_IKKE_GYLDIG)) {
+                hasIkkeGyldig = true;
+            }
+        }
+        assertThat(hasIkkeGyldig, is(true));
+        assertThat(hasIkkeLedig, is(true));
+        assertThat(hasLedigOgGyldig, is(true));
+    }
 
 }
