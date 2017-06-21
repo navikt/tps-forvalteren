@@ -18,7 +18,7 @@ public class SjekkIdenter {
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     @Autowired
-    private SjekkOmGyldigeIdenter SjekkOmGyldigeIdenter;
+    private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
 
     @Autowired
     private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
@@ -31,7 +31,7 @@ public class SjekkIdenter {
         Set<String> ukjenteIdenter = new HashSet<>(identListe);
         Map<String, String> identerMedStatus = new HashMap<>();
 
-        Set<String> gyldigeIdenter = SjekkOmGyldigeIdenter.execute(ukjenteIdenter);
+        Set<String> gyldigeIdenter = sjekkOmGyldigeIdenter.execute(ukjenteIdenter);
 
         Set<String> ugyldigeIdenter = new HashSet<>(ukjenteIdenter);
         ugyldigeIdenter.removeAll(gyldigeIdenter);
