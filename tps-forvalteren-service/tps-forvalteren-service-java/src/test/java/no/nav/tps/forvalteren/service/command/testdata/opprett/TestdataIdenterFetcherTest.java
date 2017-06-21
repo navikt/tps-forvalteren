@@ -4,6 +4,8 @@ import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdata;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdataIdenterFetcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,10 +51,10 @@ public class TestdataIdenterFetcherTest {
     private MessageProvider messageProviderMock;
 
     @Mock
-    private Testdata testdataMock;
+    private DefaultTestdata testdataMock;
 
     @InjectMocks
-    private TestdataIdenterFetcher testdataIdenterFetcher;
+    private DefaultTestdataIdenterFetcher testdataIdenterFetcher;
 
     @Before
     public void setup() {
@@ -130,7 +132,6 @@ public class TestdataIdenterFetcherTest {
         expectedException.expect(HttpCantSatisfyRequestException.class);
 
         testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriterieRequest);
-
     }
 
 }
