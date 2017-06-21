@@ -150,8 +150,6 @@ angular.module('tps-forvalteren.service-rutine')
                 return personsData;
             }
 
-
-
             function showAlertTPSError(error) {
                 var errorMessages = {
                     401: {
