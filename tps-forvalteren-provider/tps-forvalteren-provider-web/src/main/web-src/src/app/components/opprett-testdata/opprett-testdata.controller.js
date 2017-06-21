@@ -117,7 +117,6 @@ angular.module('tps-forvalteren.opprett-testdata')
                         function (error) {
                             $scope.showSjekkSpinner = false;
                             utilsService.showAlertError(error);
-                            antallGyldig();
                         });
                 };
             };
