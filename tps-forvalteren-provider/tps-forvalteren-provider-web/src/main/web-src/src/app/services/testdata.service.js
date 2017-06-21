@@ -56,4 +56,30 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.validerListe = function(identer){
+            var defer = $q.defer();
+            $http.post(url + "checkPersoner", identer).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.opprettFraListe = function(identer){
+            var defer = $q.defer();
+            $http.post(url + "createPersoner", identer).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
     }]);

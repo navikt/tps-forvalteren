@@ -1,144 +1,215 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
 
-        <!-- Resulting Response -->
-        <md-content flex class="tps-vk-bottom md-whiteframe-z2">
+    <!-- Resulting Response -->
+    <md-content flex class="md-whiteframe-z2">
 
-            <h2>Legg til testpersoner</h2>
-            <!-- Setup Tabs -->
-            <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
-                <!-- Tab Readable Result -->
-                <md-tab label="Opprett person fra kriterier">
-                    <form name="requestForm" class="tps-vk-form">
-                        <div layout="row" style="margin-top: 60px; margin-left: 30px; margin-right: 30px;">
-                            <md-input-container class="tps-vk-input-container"
-                                                aria-label="Velg identtype">
-                                <md-tooltip>Velg ident type</md-tooltip>
-                                <label>Type</label>
-                                <md-select ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
-                                    <md-option selected value="FNR">FNR</md-option>
-                                    <md-option value="DNR">DNR</md-option>
-                                    <md-option value="BNR">BNR</md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container"
-                                                aria-label="Velg kjønn">
-                                <md-tooltip>Velg kjønn</md-tooltip>
-                                <label>Kjønn</label>
-                                <md-select ng-model="kriterium.kjonn" placeholder="Velg kjønn" ng-change="kjonnEndret()"
-                                            ng-disabled="!editMode">
-                                    <md-option value=" "> </md-option>
-                                    <md-option value="K">Kvinne</md-option>
-                                    <md-option value="M">Mann</md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container"
-                                                flex="20"
-                                                aria-label="Legg til dato født etter">
-                                <md-tooltip>Bestem "Født etter" dato</md-tooltip>
-                                <label>Født etter</label>
-                                <md-datepicker name="foedtEtter"
-                                               md-placeholder="Angi dato"
-                                               md-current-view="year"
-                                               ng-model="kriterium.foedtEtter"
-                                               md-min-date="startOfEra"
-                                               md-max-date="foedtFoerMin"
-                                               ng-disabled="!editMode"
-                                               ng-change="foedtEtterChanged()">
-                                </md-datepicker>
-                                <div ng-messages="requestForm.foedtEtter.$error" ng-messages-multiple>
-                                    <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                                    <div ng-message="mindate">Dato kan ikke være før 01-01-1900</div>
-                                    <div ng-message="maxdate">Dato kan ikke være etter "Født før", eventuelt dagens dato</div>
-                                </div>
-                            </md-input-container>
-
-                            <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container"
-                                                aria-label="Legg til dato født før"
-                                                flex="20">
-                                <md-tooltip>Bestem "Født før" dato</md-tooltip>
-                                <label>Født før</label>
-                                <md-datepicker name="foedtFoer"
-                                        md-placeholder="Angi dato"
-                                        md-current-view="year"
-                                        ng-model="kriterium.foedtFoer"
-                                        md-max-date="today"
-                                        md-min-date="foedtEtterMax"
-                                        ng-disabled="!editMode"
-                                        ng-change="foedtFoerChanged()">
-                                </md-datepicker>
-                                <div ng-messages="requestForm.foedtFoer.$error" ng-messages-multiple>
-                                    <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                                    <div ng-message="mindate">Dato må være større enn "Født etter", eventuelt tidligst 01-01-1990</div>
-                                    <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
-                                </div>
-                            </md-input-container>
-
-                            <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container" aria-label="Sett antall personer">
-                                <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
-                                <label>Antall*</label>
-                                <input name="antall" ng-model="kriterium.antall"
-                                       maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
-                                <div class="validation-messages" ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$touched">
-                                    <div ng-message="pattern">Ugyldig tallverdi</div>
-                                </div>
-                            </md-input-container>
-
-                            <div flex="5"></div>
-                            <md-input-container class="tps-vk-input-container"
-                                                aria-label="Legg til kriterium">
-                                <md-tooltip>Legg til kriterium</md-tooltip>
-                                <div>
-                                    <md-button ng-disabled="!requestForm.$valid || !kriterium.antall || kriterium.antall == 0 || !editMode"
-                                               ng-click="addKriterium()" class="md-raised">Legg til</md-button>
-                                </div>
-                            </md-input-container>
-                        </div>
-                        <div style="margin-left: 30px; margin-top: 30px;" flex>
-                            <div layout="row" style="margin-bottom: 10px;" ng-repeat="kriterium in kriterier">
-                                <div aria-label="Slett denne raden">
-                                    <md-tooltip>Slett denne raden</md-tooltip>
-                                    <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="removeDialog($index)"></md-icon>
-                                </div>
-                                <div >Type = "{{kriterium.identtype}}"</div>
-                                <div ng-if="kriterium.kjonn != ' '">, Kjonn = "{{kriterium.kjonn}}"</div>
-                                <div ng-if="kriterium.foedtEtter">, Født etter = "{{kriterium.foedtEtter | date:'dd-MM-yyyy'}}"</div>
-                                <div ng-if="kriterium.foedtFoer">, Født før = "{{kriterium.foedtFoer | date:'dd-MM-yyyy'}}"</div>
-                                <div ng-if="kriterium.antall">, Antall = "{{kriterium.antall}}"</div>
-                            </div>
-
-                            <div layout="row" layout-align="center center" flex="75" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
-                        </div>
-                        <md-toolbar class="md-toolbar-tools" layout="row" style="margin-left: 30px; margin-top: 50px; margin-right: 30px;" flex="95">
-                            <span flex></span>
-                            <div layout="row" layout-sm="column" flex="100" ng-show="showSpinner">
-                                <md-progress-linear md-mode="indeterminate"></md-progress-linear>
-                            </div>
-                            <div>
-                                <md-tooltip>Avbryt operasjon "Legg til testpersoner"</md-tooltip>
-                                <md-button class="md-raised" ng-disabled="!editMode" ng-click="avbryt()"
-                                       aria-label='Avbryt operasjon "Legg til testpersoner"'>Avbryt</md-button>
-                            </div>
-                            <div>
-                                <md-tooltip>Utfør operasjon "Legg til testpersoner"</md-tooltip>
-                                <md-button style="margin-right: 10px;" class="md-raised md-accent" ng-disabled="kriterier.length == 0 || !editMode"
-                                       aria-label='Utfør operasjon "Legg til testpersoner"'
-                                       ng-click="opprettTestpersoner()">Opprett</md-button>
-                            </div>
-                        </md-toolbar>
-                    </form>
-                </md-tab>
-                <md-tab label="Opprett person fra liste over identer" style="background-color: rgb(250,250,250)">
-
-                    <div class="tps-vk-top">
-
+        <div layout="row" flex class="header">
+            <div flex></div><h1>Legg til testpersoner</h1><div flex></div>
+        </div>
+        <!-- Setup Tabs -->
+        <md-tabs md-border-bottom class="tps-no-scroll-view">
+            <!-- Tab Readable Result -->
+            <md-tab label="Opprett person fra kriterier">
+                <form name="requestForm" class="tps-vk-form content-block">
+                    <div layout="row">
+                        <h3>Legg til testpersoner fra kriterier</h3>
                     </div>
-                </md-tab>
-            </md-tabs>
-        </md-content>
+                    <div layout="row">
+                        <md-input-container class="tps-vk-input-container"
+                                            aria-label="Velg identtype">
+                            <md-tooltip>Velg ident type</md-tooltip>
+                            <label>Type</label>
+                            <md-select ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
+                                <md-option selected value="FNR">FNR</md-option>
+                                <md-option value="DNR">DNR</md-option>
+                                <md-option value="BNR">BNR</md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <div flex="5"></div>
+                        <md-input-container class="tps-vk-input-container"
+                                            aria-label="Velg kjønn">
+                            <md-tooltip>Velg kjønn</md-tooltip>
+                            <label>Kjønn</label>
+                            <md-select ng-model="kriterium.kjonn" placeholder="Velg kjønn"
+                                        ng-disabled="!editMode">
+                                <md-option value=""><em>Uspesifisert</em></md-option>
+                                <md-option value="K">Kvinne</md-option>
+                                <md-option value="M">Mann</md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <div flex="5"></div>
+                        <md-input-container class="tps-vk-input-container"
+                                            flex="20"
+                                            aria-label="Legg til dato født etter">
+                            <md-tooltip>Bestem "Født etter" dato</md-tooltip>
+                            <label>Født etter</label>
+                            <md-datepicker name="foedtEtter"
+                                           md-placeholder="Angi dato"
+                                           md-current-view="year"
+                                           ng-model="kriterium.foedtEtter"
+                                           md-min-date="startOfEra"
+                                           md-max-date="foedtFoerMin"
+                                           ng-disabled="!editMode"
+                                           ng-change="foedtEtterChanged()">
+                            </md-datepicker>
+                            <div ng-messages="requestForm.foedtEtter.$error" ng-messages-multiple>
+                                <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                                <div ng-message="mindate">Dato kan ikke være før 01-01-1900</div>
+                                <div ng-message="maxdate">Dato kan ikke være etter "Født før", eventuelt dagens dato</div>
+                            </div>
+                        </md-input-container>
+
+                        <div flex="5"></div>
+                        <md-input-container class="tps-vk-input-container"
+                                            aria-label="Legg til dato født før"
+                                            flex="20">
+                            <md-tooltip>Bestem "Født før" dato</md-tooltip>
+                            <label>Født før</label>
+                            <md-datepicker name="foedtFoer"
+                                    md-placeholder="Angi dato"
+                                    md-current-view="year"
+                                    ng-model="kriterium.foedtFoer"
+                                    md-max-date="today"
+                                    md-min-date="foedtEtterMax"
+                                    ng-disabled="!editMode"
+                                    ng-change="foedtFoerChanged()">
+                            </md-datepicker>
+                            <div ng-messages="requestForm.foedtFoer.$error" ng-messages-multiple>
+                                <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                                <div ng-message="mindate">Dato må være større enn "Født etter", eventuelt tidligst 01-01-1990</div>
+                                <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
+                            </div>
+                        </md-input-container>
+
+                        <div flex="5"></div>
+                        <md-input-container class="tps-vk-input-container" aria-label="Sett antall personer">
+                            <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
+                            <label>Antall*</label>
+                            <input name="antall" ng-model="kriterium.antall"
+                                   maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
+                            <div ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$dirty">
+                                <div ng-message="pattern">Ugyldig tallverdi</div>
+                            </div>
+                        </md-input-container>
+
+                        <div flex="5"></div>
+                        <md-input-container class="tps-vk-input-container"
+                                            aria-label="Legg til kriterium">
+                            <md-tooltip>Legg til kriterium</md-tooltip>
+                                <md-button ng-disabled="!requestForm.$valid || !kriterium.antall || kriterium.antall == 0 || !editMode"
+                                           ng-click="addKriterium()" class="md-raised md-accent">Legg til</md-button>
+                        </md-input-container>
+                    </div>
+                    <div style="margin-left: 30px; margin-top: 30px;" flex>
+                        <div layout="row" style="margin-bottom: 10px;" ng-repeat="kriterium in kriterier">
+                            <div aria-label="Slett denne raden">
+                                <md-tooltip>Slett denne raden</md-tooltip>
+                                <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="removeDialog($index)"></md-icon>
+                            </div>
+                            <div >Type = "{{kriterium.identtype}}"</div>
+                            <div ng-if="kriterium.kjonn">, Kjonn = "{{kriterium.kjonn}}"</div>
+                            <div ng-if="kriterium.foedtEtter">, Født etter = "{{kriterium.foedtEtter | date:'dd-MM-yyyy'}}"</div>
+                            <div ng-if="kriterium.foedtFoer">, Født før = "{{kriterium.foedtFoer | date:'dd-MM-yyyy'}}"</div>
+                            <div ng-if="kriterium.antall">, Antall = "{{kriterium.antall}}"</div>
+                        </div>
+
+                        <div layout="row" layout-align="center center" flex="90" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
+                    </div>
+                    <div layout="row" flex>
+                        <div flex></div>
+                        <md-input-container class="tps-vk-input-container">
+                            <md-tooltip>Avbryt operasjon "Legg til testpersoner"</md-tooltip>
+                            <md-button class="md-raised" ng-disabled="!editMode" ng-click="avbryt()"
+                                   aria-label='Avbryt operasjon "Legg til testpersoner"'>Avbryt</md-button>
+                        </md-input-container>
+                        <md-input-container class="tps-vk-input-container">
+                            <md-tooltip>Utfør operasjon "Legg til testpersoner"</md-tooltip>
+                            <md-button class="md-raised md-accent" ng-disabled="kriterier.length == 0 || !editMode"
+                                   aria-label='Utfør operasjon "Legg til testpersoner"'
+                                   ng-click="opprettTestpersoner()">Opprett</md-button>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" class="testdata-progress-bar" flex style="margin-right: 10px;" ng-show="showSpinner">
+                        <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                    </div>
+                </form>
+            </md-tab>
+            <md-tab label="Opprett person fra liste over identer" style="background-color: rgb(250,250,250)">
+
+                <div class="content-block">
+
+                    <form name="requestForm2" class="tps-vk-form tps-vk-top">
+                        <div layout="row">
+                            <h3>Legg til testpersoner fra liste</h3>
+                        </div>
+
+                        <div layout="row" flex layout-align="end end">
+                            <md-input-container class="tps-vk-input-container" flex="80">
+                                <md-tooltip>Kopier inn liste av identer</md-tooltip>
+                                <label>Liste av identer</label>
+                                <textarea cols="120" name="identRaw" ng-model="identRaw" rows="5" required class="testdata-ident-liste"
+                                          placeholder="Kopier inn liste av identer"
+                                          ng-pattern="/^(\d{11}[\W\s]*)+$/"></textarea>
+                                <div class="validation-messages" ng-messages="requestForm2.identRaw.$error" ng-show="requestForm2.identRaw.$dirty">
+                                    <div ng-message="required">Feltet er påkrevet</div>
+                                    <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
+                                </div>
+                            </md-input-container>
+                            <div flex></div>
+                            <md-input-container class="tps-vk-input-container" style="margin-bottom: 23px;">
+                                <md-tooltip>Sjekk om identer finnes fra før</md-tooltip>
+                                <md-button class="md-raised md-accent" ng-disabled="requestForm2.$invalid"
+                                           aria-label="Sjekk om identer finnes fra før" ng-click="sjekkIdenter()">Sjekk</md-button>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" class="testdata-progress-bar" ng-show="showSjekkSpinner">
+                            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                        </div>
+
+                        <h3>Resultat fra sjekk</h3>
+
+                        <!-- Vis resultat fra check -->
+                        <div layout="row" flex layout-align="end end">
+                            <div class="testdata-ident-liste" flex="70">
+                                <div layout="row" ng-repeat="kandidat in kandidater | orderBy: '-status'">
+                                    <span aria-label="Slett denne raden">
+                                        <md-tooltip>Slett denne raden</md-tooltip>
+                                        <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="slettRadDialog(kandidat.ident)"></md-icon>
+                                    </span>
+                                    <span>&nbsp;&nbsp;{{kandidat.ident}}&nbsp;&nbsp;&nbsp;</span>
+                                    <span ng-class="{'status-ok': kandidat.status == 'LOG', 'status-nok': kandidat.status != 'LOG'}">{{kandidat.status | identStatus}}</span>
+                                </div>
+                            </div>
+                            <div flex>
+                                <div layout-align="end end" style="margin-bottom: -13px;">
+                                    <div class="opprett-testdata-antall" layout="row" flex ng-show="antallLedig > 0">
+                                        <div flex></div>
+                                        <div>{{antallLedig}} person<span ng-show="antallLedig > 1">er</span> vil bli opprettet</div>
+                                    </div>
+                                    <div layout="row" flex>
+                                        <div flex></div>
+                                        <md-input-container class="tps-vk-input-container">
+                                            <md-tooltip>Avbryt opprett fra liste</md-tooltip>
+                                            <md-button class="md-raised"
+                                                       aria-label="Sjekk om identer finnes fra før" ng-click="avbrytFraIdentliste()" >Avbryt</md-button>
+                                        </md-input-container>
+                                        <md-input-container class="tps-vk-input-container">
+                                            <md-tooltip>Opprett testpersoner</md-tooltip>
+                                            <md-button class="md-raised md-accent" ng-disabled="antallLedig == 0"
+                                                       aria-label="Opprett identer fra liste" ng-click="opprettFraIdentliste()">Opprett</md-button>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" class="testdata-progress-bar" style="margin-top: 20px;" ng-show="showOpprettSpinner">
+                            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                        </div>
+                    </form>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </md-content>
 </div>
