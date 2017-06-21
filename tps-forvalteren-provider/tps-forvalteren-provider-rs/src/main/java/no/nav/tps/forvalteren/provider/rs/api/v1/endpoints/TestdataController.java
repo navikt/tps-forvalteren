@@ -6,10 +6,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -32,9 +29,9 @@ import java.util.Set;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
+@Transactional
 @RestController
 @RequestMapping(value = "api/v1/testdata")
-@Transactional
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
@@ -57,7 +54,6 @@ public class TestdataController {
     @Autowired
     private TestdataIdenterFetcher testdataIdenterFetcher;
 
-
     @Autowired
     private SavePersonListService savePersonListService;
 
@@ -65,14 +61,14 @@ public class TestdataController {
     private SjekkIdenter sjekkIdenter;
 
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons") })
     @RequestMapping(value = "/personer", method = RequestMethod.GET)
-    public List<Person> getAllPersons(){
+    public List<Person> getAllPersons() {
         return findAllPersonService.execute();
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons") })
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
     public void createNewPersons(@RequestBody RsPersonKriterieRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
@@ -83,14 +79,14 @@ public class TestdataController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
     @RequestMapping(value = "/deletePersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
         deletePersonsByIdService.execute(personIdListe.getIds());
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
     @RequestMapping(value = "/updatePersoner", method = RequestMethod.POST)
     public void updatePersons(@RequestBody List<Person> personListe) {
         savePersonListService.save(personListe);

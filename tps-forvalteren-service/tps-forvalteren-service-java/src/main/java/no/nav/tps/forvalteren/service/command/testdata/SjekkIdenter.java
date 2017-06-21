@@ -32,11 +32,20 @@ public class SjekkIdenter {
         Map<String, String> identerMedStatus = new HashMap<>();
 
         Set<String> gyldigeIdenter = sjekkOmGyldigeIdenter.execute(ukjenteIdenter);
+        setStatusOnDifference(ukjenteIdenter, gyldigeIdenter, identerMedStatus, IKKE_GYLDIG);
 
-        Set<String> ugyldigeIdenter = new HashSet<>(ukjenteIdenter);
-        ugyldigeIdenter.removeAll(gyldigeIdenter);
-        insertIntoMap(identerMedStatus, ugyldigeIdenter, IKKE_GYLDIG);
+        Set<String> ledigeIdenterDBOgMiljo = finnLedigeIdenterDBOgMiljoOgSetStatus(identerMedStatus, gyldigeIdenter);
+        setStatusOnDifference(gyldigeIdenter, ledigeIdenterDBOgMiljo, identerMedStatus, IKKE_LEDIG);
+        return mapToIdentMedStatusSet(identerMedStatus);
+    }
 
+    private void setStatusOnDifference(Set<String> firstIdentSet, Set<String> secondIdentSet, Map<String, String> identerMedStatus, String status) {
+        Set<String> identer = new HashSet<>(firstIdentSet);
+        identer.removeAll(secondIdentSet);
+        insertIntoMap(identerMedStatus, identer, status);
+    }
+
+    private Set<String> finnLedigeIdenterDBOgMiljoOgSetStatus(Map<String, String> identerMedStatus, Set<String> gyldigeIdenter) {
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
         Set<String> ledigeIdenterMiljo = filterPaaIdenterTilgjengeligeIMiljo.filtrer(gyldigeIdenter);
 
@@ -45,12 +54,7 @@ public class SjekkIdenter {
         ledigeIdenterDBOgMiljo.retainAll(ledigeIdenterDB);
 
         insertIntoMap(identerMedStatus, ledigeIdenterDBOgMiljo, LEDIG_OG_GYLDIG);
-
-        Set<String> opptattIdenter = new HashSet<>(gyldigeIdenter);
-        opptattIdenter.removeAll(ledigeIdenterDBOgMiljo);
-        insertIntoMap(identerMedStatus, opptattIdenter, IKKE_LEDIG);
-
-        return mapToIdentMedStatusSet(identerMedStatus);
+        return ledigeIdenterDBOgMiljo;
     }
 
     private Set<IdentMedStatus> mapToIdentMedStatusSet(Map<String, String> identer) {
