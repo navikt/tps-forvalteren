@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class FindAllExistingIdenterInDBTest {
     private PersonRepository repository;
 
     @InjectMocks
-    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     private List<Person> existingIdenterInDB;
     private List<String> newIdenter;

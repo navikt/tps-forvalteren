@@ -167,8 +167,10 @@ angular.module('tps-forvalteren.vis-testdata')
                         for (var i = 0; i < $scope.personer.length; i++) {
                             if ($scope.control[i] && $scope.control[i].velg) {
                                 nullstillControl(i);
+                                originalPersoner[i] = angular.copy($scope.personer[i]);
                             }
                         }
+                        fixAdresseDato();
                         $scope.oppdaterValgt();
                         bekrefterLagring();
                     },

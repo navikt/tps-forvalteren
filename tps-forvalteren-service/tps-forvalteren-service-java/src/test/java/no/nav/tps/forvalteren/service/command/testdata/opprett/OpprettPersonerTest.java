@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultOpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class OpprettPersonerTest {
     private HentKjoennFraIdent hentKjoennFraIdentMock;
 
     @InjectMocks
-    private OpprettPersoner opprettPersoner;
+    private DefaultOpprettPersoner opprettPersoner;
 
     @Before
     public void setup() {

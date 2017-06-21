@@ -7,7 +7,7 @@
             <pattern>%date [%-5level] [%X{consumerId},%X{userId},%X{callId}] %logger{1} -- %message%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>OFF</level>
+            <!-- <level>OFF</level> -->
         </filter>
     </appender>
 
