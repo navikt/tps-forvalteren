@@ -4,32 +4,25 @@
 
             <div class="md-toolbar-tools" layout="row" layout-align="start center">
 
-                <div flex="10" layout="row" layout-align="start center">
-                    <img class="logo-image" src="assets/icons/nav-logo-hvit.png" style="height: 64px;">
+                <!-- Logo -->
+                <div flex="5" layout="row" layout-align="start center">
+                    <img class="logo-image" src="assets/icons/nav-logo-hvit.png" style="height: 58px;">
                 </div>
 
-                <div class="tps-vk-header-default-container" layout="row" layout-align="start center" flex="15">
-                    <!--
-                    <md-button ng-click="toggleSideNav('left')" class="md-icon-button" hide-gt-md aria-label="Menu">
-                        <ng-md-icon icon="menu"></ng-md-icon>
-                    </md-button>
-                    -->
+                <!-- App Name left corner -->
+                <div class="tps-vk-header-default-container left-border" layout="row" layout-align="start center" flex="20">
+
                     <a ui-sref="servicerutine({serviceRutineName: null})" rel="home" >
                         <Sidetittel class="tps-vk-header-h1" clasName="blokk-xs">TPS-Forvalteren</Sidetittel>
 
                     </a>
                 </div>
 
-                <!-- Person Button -->
-                <!--<md-button id="tps-vk-rutiner-button" class="md-raised md-accent" ng-click="serviceRutineState()" >-->
-                    <!--Rutiner-->
-                <!--</md-button>-->
-
-
-                <!-- Person Button -->
+                <!-- Navigation Buttons -->
                 <div class="tps-vk-header-default-container" layout="row" layout-align="start center" flex="50" >
                     <div layout-align="center">
                         <u class="tps-vk-header-route-text" ng-click="openGT()"> Geografisk tilknytning </u>
+
                     </div>
 
                     <div flex-gt-xs="5"></div>
@@ -39,7 +32,7 @@
                     </div>
                 </div>
 
-                <!-- Upper right names -->
+                <!-- Upper right name and logout button -->
                 <div class="tps-vk-header-default-container" flex="25" layout="row" layout-align="end center">
                     <div layout="column" class="tps-vk-user-info">
                         <div class="md-body-1">{{currentUser.username}}</div>
@@ -47,16 +40,10 @@
 
                     <div flex-gt-xs="5"></div>
 
-                    <!-- Logout Button -->
                     <md-button id="tps-vk-logout-button" class="md-raised md-accent" ng-click="logout()" >
                         Logg ut
                     </md-button>
 
-                    <!--
-                    <button role="button" class="knapp" ng-click="logout()">
-                        Logg ut
-                    </button>
-                    -->
                 </div>
 
             </div>
