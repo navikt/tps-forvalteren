@@ -14,6 +14,7 @@ import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultSetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import java.util.List;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
 @RestController
 @RequestMapping(value = "api/v1/testdata")
 @Transactional
