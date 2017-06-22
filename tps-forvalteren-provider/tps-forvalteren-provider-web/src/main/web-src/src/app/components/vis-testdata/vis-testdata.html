@@ -1,7 +1,7 @@
-<div class="tps-vk-service-rutine-dashboard md-primary md-hue-3" layout="column" layout-padding ng-cloak>
+<div class="tps-vk-service-rutine-dashboard" layout="column" layout-padding ng-cloak>
 
     <!-- Resulting Response -->
-    <md-card id="vis-testdata-main" flex="90" class="tps-vk-top">
+    <md-card id="vis-testdata-main" class="tps-vk-top">
 
         <md-card-content>
         <div layout="row">
@@ -136,7 +136,7 @@
                                                    md-current-view="year"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.regdato.$error">
+                                    <div ng-messages="requestForm.regdato.$error" ng-show="requestForm.regdato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -177,7 +177,7 @@
                                                    ng-model="person.spesregDato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.spesregDato.$error">
+                                    <div ng-messages="requestForm.spesregDato.$error" ng-show="requestForm.spesregDato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -238,7 +238,7 @@
                                                    ng-model="person.gateadresse[0].boFlytteDato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.boFlytteDato.$error">
+                                    <div ng-messages="requestForm.boFlytteDato.$error" ng-show="requestForm.boFlytteDato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
