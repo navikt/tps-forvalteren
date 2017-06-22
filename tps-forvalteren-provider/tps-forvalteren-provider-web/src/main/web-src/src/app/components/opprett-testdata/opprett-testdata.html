@@ -3,8 +3,8 @@
     <!-- Resulting Response -->
     <md-content flex class="md-whiteframe-z1">
 
-        <div layout="row" flex class="header">
-            <div flex></div><h1>Legg til testpersoner</h1><div flex></div>
+        <div layout="row" layout-align="center" flex class="header">
+            <h1>Legg til testpersoner</h1>
         </div>
         <!-- Setup Tabs -->
         <md-tabs md-border-bottom class="tps-no-scroll-view">
@@ -145,11 +145,11 @@
                             <h3>Legg til testpersoner fra liste</h3>
                         </div>
 
-                        <div layout="row" flex layout-align="end end">
+                        <div layout="row" flex>
                             <md-input-container class="tps-vk-input-container" flex="80">
                                 <md-tooltip>Kopier inn liste av identer</md-tooltip>
                                 <label>Liste av identer</label>
-                                <textarea cols="120" name="identRaw" ng-model="identRaw" rows="5" required class="testdata-ident-liste"
+                                <textarea cols="120" name="identRaw" ng-model="identRaw" rows="6" required class="testdata-ident-liste"
                                           placeholder="Kopier inn liste av identer"
                                           ng-pattern="/^(\d{11}[\W\s]*)+$/"></textarea>
                                 <div class="validation-messages" ng-messages="requestForm2.identRaw.$error" ng-show="requestForm2.identRaw.$dirty">
@@ -185,12 +185,10 @@
                             </div>
                             <div flex>
                                 <div layout-align="end end" style="margin-bottom: -13px;">
-                                    <div class="opprett-testdata-antall" layout="row" flex ng-show="antallLedig > 0">
-                                        <div flex></div>
+                                    <div class="opprett-testdata-antall" layout="row" flex ng-show="antallLedig > 0" layout-align="end">
                                         <div>{{antallLedig}} person<span ng-show="antallLedig > 1">er</span> vil bli opprettet</div>
                                     </div>
-                                    <div layout="row" flex>
-                                        <div flex></div>
+                                    <div layout="row" layout-align="end">
                                         <md-input-container class="tps-vk-input-container">
                                             <md-tooltip>Avbryt opprett fra liste</md-tooltip>
                                             <md-button class="md-raised"
