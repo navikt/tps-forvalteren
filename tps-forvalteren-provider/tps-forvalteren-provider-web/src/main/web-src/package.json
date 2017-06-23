@@ -44,6 +44,7 @@
     "moment": "^2.15.2",
     "nav-frontend-core": "^3.0.5",
     "nav-frontend-knapper-style": "^0.1.8",
+    "nav-frontend-lenker-style": "^0.1.2",
     "nav-frontend-skjema-style": "^0.1.11",
     "nav-frontend-typografi-style": "^0.1.10",
     "pikaday": "^1.5.1",

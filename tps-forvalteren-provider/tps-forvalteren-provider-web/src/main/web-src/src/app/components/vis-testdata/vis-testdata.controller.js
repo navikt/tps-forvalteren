@@ -261,13 +261,6 @@ angular.module('tps-forvalteren.vis-testdata')
                 });
             };
 
-            $scope.spesregChanged = function (index) {
-                if ($scope.personer[index].spesreg == ' ') {
-                    $scope.personer[index].spesreg = undefined;
-                }
-                $scope.endret(index);
-            };
-
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
@@ -277,7 +270,7 @@ angular.module('tps-forvalteren.vis-testdata')
 
             window.onbeforeunload = function (event) {
                 if ($scope.visEndret){
-                    return true; // Trigger nettlesers visning av dialogboks for avslutning
+                    return 'Du har data som ikke er lagret. Vil du forlate siden?'; // Trigger nettlesers visning av dialogboks for avslutning
                 }
             };
 

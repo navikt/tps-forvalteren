@@ -1,183 +1,208 @@
-<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+<div class="tps-vk-service-rutine-dashboard" layout="column" flex layout-padding ng-cloak>
 
-    <div class="tps-vk-top md-whiteframe-z2">
-        <h2>Oppslag på Geografisk Tilknytning</h2>
-        <form name="requestForm" ng-submit="requestForm.$valid && submit()" flex="40" layout="row" layout-align="start start">
-            <tps-input-field flex="15" layout="col" input-param-name="'fnr'" form-data="formData" select-values=""
-                             ng-required="true"></tps-input-field>
+    <div class="tps-vk-top md-whiteframe-z1" flex="20" layout="column">
 
-            <div flex="5"></div>
-            <md-input-container flex="15" class="tps-vk-input-container">
-                <label>Miljø</label>
-                <md-select ng-model="formData.environment" required>
-                    <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
-                </md-select>
-            </md-input-container>
-            <div flex="5"></div>
-            <md-button align="center" type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-disabled="!requestForm.$valid">
-                Finn GT
-            </md-button>
-        </form>
+        <div flex="20">
+            <h2 class="typo-sidetittel">Geografisk Tilknytning</h2>
+        </div>
+
+        <div flex="80" layout="row" layout-align="start end">
+            <form name="requestForm" ng-submit="requestForm.$valid && submit()" flex="40" layout="row" layout-align="start start">
+                <tps-input-field flex="15" layout="col" input-param-name="'fnr'" form-data="formData" select-values=""
+                                 ng-required="true"></tps-input-field>
+
+                <div flex="5"></div>
+                <md-input-container flex="15" class="tps-vk-input-container">
+                    <label>Miljø</label>
+                    <md-select ng-model="formData.environment" required>
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                    </md-select>
+                </md-input-container>
+                <div flex="5"></div>
+                <md-button align="center" type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-disabled="!requestForm.$valid">
+                    Finn GT
+                </md-button>
+            </form>
+        </div>
 
         <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
     </div>
 
 
     <!-- Resulting Response -->
-    <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
+    <md-content flex="80" class="tps-vk-bottom md-whiteframe-z1">
         <!-- Setup Tabs -->
         <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
             <!-- Tab Readable Result -->
             <md-tab label="Resultat" style="background-color: rgb(250,250,250)">
                 <!-- Include HTML file "response.html" -->
                 <div class="tps-vk-top">
-                    <form name="responseForm" layout-align="start start">
-                        <div layout="row">
-                            <h2>Utledet GT</h2>
+                    <form flex="1" name="responseForm" layout-align="start start">
+
+                        <div layout="row" flex="40">
+                            <h3 class="typo-undertittel tps-vk-bottom-undertitle">Utledet GT</h3>
                             <span></span>
                             <status-field status="gtStatus"></status-field>
                         </div>
-                        <div layout="row">
-                            <tps-output-field flex="5" label="Regel" field-model="gt.bruker.regelForGeografiskTilknytning"></tps-output-field>
+
+                        <div layout="row" flex="40">
+                            <tps-output-field flex="80" label="Regel" field-model="gt.bruker.regelForGeografiskTilknytning"></tps-output-field>
                             <span flex="20"></span>
                             <a target="_blank" title="Beskrivelse av regler for Geografisk Tilknytning"
                                href="https://confluence.adeo.no/display/FEL/K411GETI+Utlede+Geografisk+Tilknytning">GT regelverk</a>
                         </div>
-                        <div layout="row">
-                            <tps-output-field label="Landkode" flex="10" field-model="gt.bruker.geografiskTilknytning.landKode"></tps-output-field>
+
+
+                        <div layout="row" flex="70">
+                            <tps-output-field label="Landkode" flex="20" field-model="gt.bruker.geografiskTilknytning.landKode"></tps-output-field>
                             <span flex="5"></span>
-                            <tps-output-field label="Kommunennr" flex="10" field-model="gt.bruker.geografiskTilknytning.kommunenr"></tps-output-field>
+                            <tps-output-field label="Kommunennr" flex="20" field-model="gt.bruker.geografiskTilknytning.kommunenr"></tps-output-field>
                             <span flex="5"></span>
-                            <tps-output-field label="Bydel" flex="10" field-model="gt.bruker.geografiskTilknytning.bydel"></tps-output-field>
+                            <tps-output-field label="Bydel" flex="20" field-model="gt.bruker.geografiskTilknytning.bydel"></tps-output-field>
                         </div>
 
-                        <h2>Person</h2>
-                        <div layout="row">
-                            <tps-output-field label="Personnavn" flex="40" field-model="gt.personnavn.gjeldendePersonnavn"></tps-output-field>
-                        </div>
-                        <div layout="row">
-                            <tps-output-field label="ID" flex="10" field-model="gt.fodselsnummer"></tps-output-field>
-                            <span flex="5"></span>
-                            <tps-output-field label="Identtype" flex="5" field-model="gt.identType"></tps-output-field>
-                        </div>
-                        <div layout="row">
-                            <tps-output-field label="Personstatus" flex="5" field-model="gt.personstatusDetalj.kodePersonstatus"
-                                              title="{{gt.personstatusDetalj.kodePersonstatusBeskr}}"></tps-output-field>
-                            <span flex="5"></span>
-                            <tps-output-field label="Spesreg" flex="5" field-model="gt.bruker.diskresjonDetalj.kodeDiskresjon"
-                                              title="{{gt.bruker.diskresjonDetalj.kodeDiskresjonBeskr}}"></tps-output-field>
-                        </div>
-
-                        <div layout="row"  layout-align="start center">
-                            <h2>Boadresse Historikk</h2>
-                            <span></span>
-                            <status-field status="adrHistStatus"></status-field>
-                        </div>
-                        <div layout="column">
-                            <div layout="row"
-                                 ng-if="isArray(adresseHistorikk['boAdresser']['boAdresse'])"
-                                 ng-repeat="adresse in adresseHistorikk.boAdresser.boAdresse">
-                                <tps-output-field label="Boadresse 1" flex="30" field-model="adresse.boAdresse1" title="Boadresse"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="adresse.postnr" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="adresse.poststed" title="Poststed"></tps-output-field>
-                                <tps-output-field label="TK Nummer" flex="15" field-model="adresse.tknr" title="tknr"></tps-output-field>
-                                <tps-output-field label="Endringstype" flex="15" field-model="adresse.endringsType" title="Endringstype"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.adresseFom" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.adresseTom" title="Dato TOM"></tps-output-field>
+                        <!-- Person -->
+                        <div>
+                            <h2 class="typo-undertittel tps-vk-bottom-undertitle" flex="10">Person</h2>
+                            <div layout="row" flex="60">
+                                <tps-output-field label="Personnavn" flex="100" field-model="gt.personnavn.gjeldendePersonnavn"></tps-output-field>
                             </div>
-                            <div layout="row"
-                                 ng-if="!isArray(adresseHistorikk['boAdresser']['boAdresse'])">
-                                <tps-output-field label="Boadresse 1" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.boAdresse1" title="Boadresse"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.postnr" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.poststed" title="Poststed"></tps-output-field>
-                                <tps-output-field label="TK Nummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.tknr" title="tknr"></tps-output-field>
-                                <tps-output-field label="Endringstype" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.endringsType" title="Endringstype"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseFom" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseTom" title="Dato TOM"></tps-output-field>
+                            <div layout="row" flex="60">
+                                <tps-output-field label="ID" flex="50" field-model="gt.fodselsnummer"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Identtype" flex="50" field-model="gt.identType"></tps-output-field>
+                            </div>
+                            <div layout="row" flex="60">
+                                <tps-output-field label="Personstatus" flex="50" field-model="gt.personstatusDetalj.kodePersonstatus"
+                                                  title="{{gt.personstatusDetalj.kodePersonstatusBeskr}}"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Spesreg" flex="50" field-model="gt.bruker.diskresjonDetalj.kodeDiskresjon"
+                                                  title="{{gt.bruker.diskresjonDetalj.kodeDiskresjonBeskr}}"></tps-output-field>
                             </div>
                         </div>
 
-                        <div layout="row">
-                            <h2>Adresselinje Historikk</h2>
-                            <span></span>
-                            <status-field status="adrLinjeStatus"></status-field>
+                        <!-- Boadresse Historikk -->
+                        <div>
+                            <div layout="row" flex="50" layout-align="start center">
+                                <h2 class="typo-undertittel tps-vk-bottom-undertitle">Boadresse Historikk</h2>
+                                <span></span>
+                                <status-field status="adrHistStatus"></status-field>
+                            </div>
+                            <div layout="column">
+                                <div layout="row"
+                                     ng-if="isArray(adresseHistorikk['boAdresser']['boAdresse'])"
+                                     ng-repeat="adresse in adresseHistorikk.boAdresser.boAdresse">
+                                    <tps-output-field label="Boadresse 1" flex="30" field-model="adresse.boAdresse1" title="Boadresse"></tps-output-field>
+                                    <tps-output-field label="Postnummer" flex="15" field-model="adresse.postnr" title="Postnummer"></tps-output-field>
+                                    <tps-output-field label="Poststed" flex="30" field-model="adresse.poststed" title="Poststed"></tps-output-field>
+                                    <tps-output-field label="TK Nummer" flex="15" field-model="adresse.tknr" title="tknr"></tps-output-field>
+                                    <tps-output-field label="Endringstype" flex="15" field-model="adresse.endringsType" title="Endringstype"></tps-output-field>
+                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.adresseFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.adresseTom" title="Dato TOM"></tps-output-field>
+                                </div>
+                                <div layout="row"
+                                     ng-if="!isArray(adresseHistorikk['boAdresser']['boAdresse'])">
+                                    <tps-output-field label="Boadresse 1" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.boAdresse1" title="Boadresse"></tps-output-field>
+                                    <tps-output-field label="Postnummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.postnr" title="Postnummer"></tps-output-field>
+                                    <tps-output-field label="Poststed" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.poststed" title="Poststed"></tps-output-field>
+                                    <tps-output-field label="TK Nummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.tknr" title="tknr"></tps-output-field>
+                                    <tps-output-field label="Endringstype" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.endringsType" title="Endringstype"></tps-output-field>
+                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseTom" title="Dato TOM"></tps-output-field>
+                                </div>
+                            </div>
+
                         </div>
-                        <div layout="column">
+
+                        <!-- Adresselinje historikk -->
+                        <div>
+                            <div layout="row">
+                                <h2 class="typo-undertittel tps-vk-bottom-undertitle">Adresselinje Historikk</h2>
+                                <span></span>
+                                <status-field status="adrLinjeStatus"></status-field>
+                            </div>
+                            <div layout="column">
+                                <div layout="row"
+                                     ng-if="!isArray(adresseLinjer['adresseLinjeHistorikk']['adresseLinje'])">
+                                    <tps-output-field label="Adresse 1" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.adresse1" title="Adresse 1"></tps-output-field>
+                                    <tps-output-field label="Postnummer" flex="15" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.postnr" title="Postnummer"></tps-output-field>
+                                    <tps-output-field label="Poststed" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.poststed" title="Poststed"></tps-output-field>
+                                    <tps-output-field label="Adresse Type" flex="15" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.adresseType" title="Poststed"></tps-output-field>
+                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoTom" title="Dato TOM"></tps-output-field>
+                                </div>
+
+                                <div layout="row"
+                                     ng-if="isArray(adresseLinjer['adresseLinjeHistorikk']['adresseLinje'])"
+                                     ng-repeat="adresse in adresseLinjer.adresseLinjeHistorikk.adresseLinje">
+                                    <tps-output-field label="Adresse 1" flex="30" field-model="adresse.adresse1" title="Adresse 1"></tps-output-field>
+                                    <tps-output-field label="Postnummer" flex="15" field-model="adresse.postnr" title="Postnummer"></tps-output-field>
+                                    <tps-output-field label="Poststed" flex="30" field-model="adresse.poststed" title="Poststed"></tps-output-field>
+                                    <tps-output-field label="Adresse Type" flex="15" field-model="adresse.adresseType" title="Poststed"></tps-output-field>
+                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.datoFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.datoTom" title="Dato TOM"></tps-output-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Utvandring Historikk -->
+                        <div>
+                            <div layout="row">
+                                <h2>Utvandring Historikk</h2>
+                                <span></span>
+                                <status-field status="utvandringStatus"></status-field>
+                            </div>
+                            <h3 class="typo-undertittel tps-vk-bottom-undertitle">Innvandringer</h3>
                             <div layout="row"
-                                 ng-if="!isArray(adresseLinjer['adresseLinjeHistorikk']['adresseLinje'])">
-                                <tps-output-field label="Adresse 1" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.adresse1" title="Adresse 1"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.postnr" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.poststed" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Adresse Type" flex="15" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.adresseType" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoFom" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoTom" title="Dato TOM"></tps-output-field>
+                                 ng-if="!isArray(utvandring['innvandringer']['innvandring'])">
+                                <tps-output-field label="Adresse 1" flex="30" field-model="utvandring.innvandringer.innvandring.land" title="Adresse 1"></tps-output-field>
+                                <tps-output-field label="Postnummer" flex="15" field-model="utvandring.innvandringer.innvandring.kodeLand" title="Postnummer"></tps-output-field>
+                                <tps-output-field label="Poststed" flex="30" field-model="utvandring.innvandringer.innvandring.fom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Adresse Type" flex="15" field-model="utvandring.innvandringer.innvandring.tom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Dato F.O.M" flex="30" field-model="utvandring.innvandringer.innvandring.saksbehandler" title="Dato FOM"></tps-output-field>
+                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="utvandring.innvandringer.innvandring.system" title="Dato TOM"></tps-output-field>
                             </div>
 
                             <div layout="row"
-                                 ng-if="isArray(adresseLinjer['adresseLinjeHistorikk']['adresseLinje'])"
-                                 ng-repeat="adresse in adresseLinjer.adresseLinjeHistorikk.adresseLinje">
-                                <tps-output-field label="Adresse 1" flex="30" field-model="adresse.adresse1" title="Adresse 1"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="adresse.postnr" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="adresse.poststed" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Adresse Type" flex="15" field-model="adresse.adresseType" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.datoFom" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.datoTom" title="Dato TOM"></tps-output-field>
+                                 ng-if="isArray(utvandring['innvandringer']['innvandring'])"
+                                 ng-repeat="inn in utvandring['innvandringer']['innvandring']">
+                                <tps-output-field label="Adresse 1" flex="30" field-model="inn.land" title="Adresse 1"></tps-output-field>
+                                <tps-output-field label="Postnummer" flex="15" field-model="inn.kodeLand" title="Postnummer"></tps-output-field>
+                                <tps-output-field label="Poststed" flex="30" field-model="inn.fom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Adresse Type" flex="15" field-model="inn.tom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Dato F.O.M" flex="30" field-model="inn.saksbehandler" title="Dato FOM"></tps-output-field>
+                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="inn.system" title="Dato TOM"></tps-output-field>
                             </div>
-                        </div>
 
-                        <div layout="row">
-                            <h2>Utvandring Historikk</h2>
-                            <span></span>
-                            <status-field status="utvandringStatus"></status-field>
-                        </div>
-                        <h3>Innvandringer</h3>
-                        <div layout="row"
-                            ng-if="!isArray(utvandring['innvandringer']['innvandring'])">
-                            <tps-output-field label="Adresse 1" flex="30" field-model="utvandring.innvandringer.innvandring.land" title="Adresse 1"></tps-output-field>
-                            <tps-output-field label="Postnummer" flex="15" field-model="utvandring.innvandringer.innvandring.kodeLand" title="Postnummer"></tps-output-field>
-                            <tps-output-field label="Poststed" flex="30" field-model="utvandring.innvandringer.innvandring.fom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Adresse Type" flex="15" field-model="utvandring.innvandringer.innvandring.tom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Dato F.O.M" flex="30" field-model="utvandring.innvandringer.innvandring.saksbehandler" title="Dato FOM"></tps-output-field>
-                            <tps-output-field label="Adresse T.O.M" flex="30" field-model="utvandring.innvandringer.innvandring.system" title="Dato TOM"></tps-output-field>
-                        </div>
+                            <h3 class="typo-undertittel tps-vk-bottom-undertitle">Utvandringer</h3>
 
-                        <div layout="row"
-                            ng-if="isArray(utvandring['innvandringer']['innvandring'])"
-                            ng-repeat="inn in utvandring['innvandringer']['innvandring']">
-                            <tps-output-field label="Adresse 1" flex="30" field-model="inn.land" title="Adresse 1"></tps-output-field>
-                            <tps-output-field label="Postnummer" flex="15" field-model="inn.kodeLand" title="Postnummer"></tps-output-field>
-                            <tps-output-field label="Poststed" flex="30" field-model="inn.fom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Adresse Type" flex="15" field-model="inn.tom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Dato F.O.M" flex="30" field-model="inn.saksbehandler" title="Dato FOM"></tps-output-field>
-                            <tps-output-field label="Adresse T.O.M" flex="30" field-model="inn.system" title="Dato TOM"></tps-output-field>
-                        </div>
+                            <div layout="row"
+                                 ng-if="!isArray(utvandring['utvandringer']['utvandring'])">
+                                <tps-output-field label="Adresse 1" flex="30" field-model="utvandring.utvandringer.utvandring.land" title="Adresse 1"></tps-output-field>
+                                <tps-output-field label="Postnummer" flex="15" field-model="utvandring.utvandringer.utvandring.kodeLand" title="Postnummer"></tps-output-field>
+                                <tps-output-field label="Poststed" flex="30" field-model="utvandring.utvandringer.utvandring.fom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Adresse Type" flex="15" field-model="utvandring.utvandringer.utvandring.tom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Dato F.O.M" flex="30" field-model="utvandring.utvandringer.utvandring.saksbehandler" title="Dato FOM"></tps-output-field>
+                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="utvandring.utvandringer.utvandring.system" title="Dato TOM"></tps-output-field>
+                            </div>
 
-                        <h3>Utvandringer</h3>
+                            <div layout="row"
+                                 ng-if="isArray(utvandring['utvandringer']['utvandring'])"
+                                 ng-repeat="inn in utvandring['utvandringer']['utvandring']">
+                                <tps-output-field label="Adresse 1" flex="30" field-model="inn.land" title="Adresse 1"></tps-output-field>
+                                <tps-output-field label="Postnummer" flex="15" field-model="inn.kodeLand" title="Postnummer"></tps-output-field>
+                                <tps-output-field label="Poststed" flex="30" field-model="inn.fom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Adresse Type" flex="15" field-model="inn.tom" title="Poststed"></tps-output-field>
+                                <tps-output-field label="Dato F.O.M" flex="30" field-model="inn.saksbehandler" title="Dato FOM"></tps-output-field>
+                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="inn.system" title="Dato TOM"></tps-output-field>
+                            </div>
 
-                        <div layout="row"
-                             ng-if="!isArray(utvandring['utvandringer']['utvandring'])">
-                            <tps-output-field label="Adresse 1" flex="30" field-model="utvandring.utvandringer.utvandring.land" title="Adresse 1"></tps-output-field>
-                            <tps-output-field label="Postnummer" flex="15" field-model="utvandring.utvandringer.utvandring.kodeLand" title="Postnummer"></tps-output-field>
-                            <tps-output-field label="Poststed" flex="30" field-model="utvandring.utvandringer.utvandring.fom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Adresse Type" flex="15" field-model="utvandring.utvandringer.utvandring.tom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Dato F.O.M" flex="30" field-model="utvandring.utvandringer.utvandring.saksbehandler" title="Dato FOM"></tps-output-field>
-                            <tps-output-field label="Adresse T.O.M" flex="30" field-model="utvandring.utvandringer.utvandring.system" title="Dato TOM"></tps-output-field>
-                        </div>
-
-                        <div layout="row"
-                             ng-if="isArray(utvandring['utvandringer']['utvandring'])"
-                             ng-repeat="inn in utvandring['utvandringer']['utvandring']">
-                            <tps-output-field label="Adresse 1" flex="30" field-model="inn.land" title="Adresse 1"></tps-output-field>
-                            <tps-output-field label="Postnummer" flex="15" field-model="inn.kodeLand" title="Postnummer"></tps-output-field>
-                            <tps-output-field label="Poststed" flex="30" field-model="inn.fom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Adresse Type" flex="15" field-model="inn.tom" title="Poststed"></tps-output-field>
-                            <tps-output-field label="Dato F.O.M" flex="30" field-model="inn.saksbehandler" title="Dato FOM"></tps-output-field>
-                            <tps-output-field label="Adresse T.O.M" flex="30" field-model="inn.system" title="Dato TOM"></tps-output-field>
                         </div>
 
                     </form>
                 </div>
             </md-tab>
+
             <!-- Tab XML Result -->
             <md-tab label="XML GT">
                 <div class="tps-vk-xml-panel" hljs hljs-source="xmlFormGT" hljs-language="xml">

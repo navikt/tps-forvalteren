@@ -14,10 +14,11 @@ require('./components/index');
 require('./services/service.module');
 require('./directives/directives.module');
 require('./factory/factory.module');
+require('./filters/filter.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
-    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday']);
+    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter']);
 
 require('./shared/index');
 
@@ -205,8 +206,8 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     },
                     views: {
                         'content@': {
-                            templateUrl: "app/components/service-rutine/welcome.html",
-                            controller: 'ServiceRutineCtrl'
+                            templateUrl: "app/components/welcome/welcome.html",
+                            controller: 'HeaderCtrl'
                         },
                         'header@': {
                             templateUrl: "app/shared/header/header.html",
@@ -226,6 +227,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
         $mdThemingProvider.definePalette('tps-vk-grey', extended_grey);
 
         $mdThemingProvider.theme('default')
+
             .primaryPalette('indigo', {
                 'default': '500'
             })

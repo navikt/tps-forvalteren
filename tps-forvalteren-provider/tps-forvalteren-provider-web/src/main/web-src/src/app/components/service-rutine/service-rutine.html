@@ -1,7 +1,7 @@
 <div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
   <!-- Velkomstsmelding -->
   <div ng-show="!loadServiceRutineTemplate() && !loadEndringsmeldingTemplate()" layout="column" flex>
-      <ng-include src="'app/components/service-rutine/welcome.html'"></ng-include>
+      <ng-include src="'app/components/welcome/welcome.html'"></ng-include>
   </div>
 
     <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>

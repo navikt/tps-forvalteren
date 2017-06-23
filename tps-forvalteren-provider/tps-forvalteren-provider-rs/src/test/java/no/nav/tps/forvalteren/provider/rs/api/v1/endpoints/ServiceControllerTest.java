@@ -1,18 +1,15 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
+import no.nav.tps.forvalteren.service.command.tps.TpsRequestService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.FindServiceRoutineByName;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.service.command.tps.TpsRequestService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.FindServiceRoutineByName;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,18 +20,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 

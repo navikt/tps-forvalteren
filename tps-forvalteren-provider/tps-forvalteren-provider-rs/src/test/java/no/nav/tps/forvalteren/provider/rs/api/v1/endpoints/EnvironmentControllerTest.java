@@ -17,7 +17,6 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.eventFrom;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +51,7 @@ public class EnvironmentControllerTest {
         ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, "u");
         Set<String> environments = controller.getEnvironments();
 
-        assertThat(environments, containsInAnyOrder("t3",  "t4", "u1", "u5", "u6"));
+        assertThat(environments, containsInAnyOrder("t3",  "t4","t7", "u1", "u5", "u6"));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class EnvironmentControllerTest {
         ReflectionTestUtils.setField(controller, ENVIRONMENT_PROPERTY_VALUE, "q");
         Set<String> environments = controller.getEnvironments();
 
-        assertThat(environments, containsInAnyOrder("q4", "q9", "t3", "t4", "u1","u5", "u6"));
+        assertThat(environments, containsInAnyOrder("q4", "q9", "t3", "t4","t7", "u1","u5", "u6"));
 
     }
 
