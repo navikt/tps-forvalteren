@@ -4,7 +4,7 @@ require('./service-rutine/service-rutine.module');
 require('./gt/gt.module');
 require('./vis-testdata/vis-testdata.module');
 require('./opprett-testdata/opprett-testdata.module');
-require('./welcome/welcome.module')
+require('./welcome/welcome.module');
 
 /* Load Controllers */
 require('./login/login.controller');
