@@ -18,7 +18,7 @@ require('./filters/filter.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
-    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter']);
+    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome']);
 
 require('./shared/index');
 
@@ -163,7 +163,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('servicerutine', {
-                url: "/{serviceRutineName}",
+                url: "/serviceRutineName/{serviceRutineName}",
                 params: {
                     serviceRutineName: null
                 },
@@ -207,7 +207,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     views: {
                         'content@': {
                             templateUrl: "app/components/welcome/welcome.html",
-                            controller: 'HeaderCtrl'
+                            controller: 'WelcomeCtrl'
                         },
                         'header@': {
                             templateUrl: "app/shared/header/header.html",

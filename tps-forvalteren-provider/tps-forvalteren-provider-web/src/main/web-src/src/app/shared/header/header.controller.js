@@ -1,7 +1,9 @@
 
 angular.module('tps-forvalteren')
-    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', '$mdSidenav',
-        function ($scope, authenticationService, locationService, $mdSidenav) {
+    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', '$mdSidenav', 'serviceRutineFactory',
+        function ($scope, authenticationService, locationService, $mdSidenav, serviceRutineFactory) {
+
+            $scope.visTestdataKnapp = false;
 
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {
@@ -29,4 +31,13 @@ angular.module('tps-forvalteren')
                 locationService.redirectToVisTestdata();
             };
 
+            serviceRutineFactory.loadFromServerEnvironments().then( function(environment) {
+                var prodEnvironment = false;
+                for (i in environment) {
+                    if (environment[i] == 'p') {
+                        prodEnvironment = true;
+                    }
+                }
+                $scope.visTestdataKnapp = !prodEnvironment;
+            });
         }]);

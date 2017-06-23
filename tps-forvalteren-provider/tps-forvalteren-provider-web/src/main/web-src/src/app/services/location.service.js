@@ -3,7 +3,7 @@ angular.module('tps-forvalteren.service')
     .service('locationService', ['$state', function($state) {
 
         var self = this;
-        var returnState = 'servicerutine';
+        var returnState = 'root';
 
         self.redirectToLoginReturnState = function() {
             $state.go(returnState);

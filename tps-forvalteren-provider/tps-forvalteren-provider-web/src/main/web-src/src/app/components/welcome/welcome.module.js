@@ -1,2 +1,1 @@
-angular.module('tps-forvalteren.welcome');
-
+angular.module('tps-forvalteren.welcome', []);

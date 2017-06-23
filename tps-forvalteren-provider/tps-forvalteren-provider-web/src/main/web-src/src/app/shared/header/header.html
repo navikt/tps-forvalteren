@@ -12,14 +12,14 @@
                 <!-- App Name left corner -->
                 <div class="tps-vk-header-default-container left-border" layout="row" layout-align="start center" flex="20">
 
-                    <a ui-sref="servicerutine({serviceRutineName: null})" rel="home" >
+                    <a ui-sref="root" rel="home" >
                         <Sidetittel class="tps-vk-header-h1" clasName="blokk-xs">TPS-Forvalteren</Sidetittel>
 
                     </a>
                 </div>
 
                 <!-- Navigation Buttons -->
-                <div class="tps-vk-header-default-container" layout="row" layout-align="start center" flex="50" >
+                <div class="tps-vk-header-default-container" layout="row" layout-align="start center" flex="50">
                     <div layout-align="center">
                         <u class="tps-vk-header-route-text" ng-click="openGT()"> Geografisk tilknytning </u>
 
@@ -27,7 +27,7 @@
 
                     <div flex-gt-xs="5"></div>
 
-                    <div layout-align="center">
+                    <div layout-align="center" ng-if="visTestdataKnapp">
                         <u class="tps-vk-header-route-text" ng-click="openVisTestdata()"> Testdata </u>
                     </div>
                 </div>
