@@ -1,6 +1,6 @@
 
 angular.module('tps-forvalteren.service')
-    .service('locationService', ['$state', function($state) {
+    .service('locationService', ['$state', '$location', function($state, $location) {
 
         var self = this;
         var returnState = 'root';
@@ -29,7 +29,6 @@ angular.module('tps-forvalteren.service')
             $state.go("vis-testdata");
         };
 
-
         self.redirectToOpprettTestdata = function() {
             $state.go("opprett-testdata");
         };
@@ -40,5 +39,9 @@ angular.module('tps-forvalteren.service')
 
         self.redirectUrl = function(url) {
             $state.go(url.substring(1)); // Ta bort ledende "/"
+        };
+
+        self.isRoot = function () {
+            return $location.url() == '/';
         };
     }]);

@@ -1,6 +1,8 @@
 angular.module('tps-forvalteren.vis-testdata')
-    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope) {
+    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope', 'headerService',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService) {
+
+            headerService.setHeader('Endre testdata');
 
             $scope.allePersoner = false;
             $scope.personer = [];

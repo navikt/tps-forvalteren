@@ -1,6 +1,8 @@
 angular.module('tps-forvalteren.opprett-testdata')
-    .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter',
-        function ($scope, testdataService, utilsService, $mdDialog, locationService, $filter) {
+    .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter', 'headerService',
+        function ($scope, testdataService, utilsService, $mdDialog, locationService, $filter, headerService) {
+
+            headerService.setHeader('Legg til testpersoner');
 
             $scope.kriterier = [];
             $scope.kriterium = {};
