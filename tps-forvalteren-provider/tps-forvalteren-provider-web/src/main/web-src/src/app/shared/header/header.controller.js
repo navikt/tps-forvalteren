@@ -31,6 +31,14 @@ angular.module('tps-forvalteren')
                 locationService.redirectToVisTestdata();
             };
 
+            $scope.goBack = function () {
+                window.history.back();
+            };
+
+            $scope.goHome = function () {
+                locationService.redirectToLoginReturnState();
+            };
+
             serviceRutineFactory.loadFromServerEnvironments().then( function(environment) {
                 var prodEnvironment = false;
                 for (i in environment) {
@@ -40,4 +48,6 @@ angular.module('tps-forvalteren')
                 }
                 $scope.visTestdataKnapp = !prodEnvironment;
             });
+
+            $scope.isRoot = locationService.isRoot();
         }]);
