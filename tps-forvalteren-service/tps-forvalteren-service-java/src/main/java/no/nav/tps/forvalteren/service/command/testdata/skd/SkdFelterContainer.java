@@ -48,12 +48,17 @@ public class SkdFelterContainer {
         SkdFelter.add(new SkdFeltDefinisjon("T1-DATO-SPES-REG-TYPE","00000000",24,8));
         SkdFelter.add(new SkdFeltDefinisjon("T1-SIVILSTAND","0",25,1));
         SkdFelter.add(new SkdFeltDefinisjon("T1-REGDATO-SIVILSTAND","00000000",26,8));
-        SkdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-FNR","0",27,1));       // Usikker, manglet data på confluence
+
+        //SkdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-FNR","0",27,1));       // Usikker, manglet data på confluence
+
         SkdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-FDATO","000000",28,6));
         SkdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-PNR","00000",29,5));
         SkdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-NAVN",whitespace50stk,30,50));
         SkdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-STATSB","000",31,3));
-        SkdFelter.add(new SkdFeltDefinisjon("T1-AKTUELL-ADRESSE","0",32,1));
+
+        // Mangler data på confluence
+        //SkdFelter.add(new SkdFeltDefinisjon("T1-AKTUELL-ADRESSE","0",32,1));
+
         SkdFelter.add(new SkdFeltDefinisjon("T1-REGDATO-ADR","00000000",33,8));
         SkdFelter.add(new SkdFeltDefinisjon("T1-FLYTTEDATO-ADR","00000000",34,8));
         SkdFelter.add(new SkdFeltDefinisjon("T1-KOMMUNEENUMMER","0000",35,4));
@@ -66,7 +71,9 @@ public class SkdFelterContainer {
         SkdFelter.add(new SkdFeltDefinisjon("T1-TILLEGGSADRESSE",whitespace25stk,42,25));
         SkdFelter.add(new SkdFeltDefinisjon("T1-POSTNUMMER","0000",43,4));
         SkdFelter.add(new SkdFeltDefinisjon("T1-VALGKRETS","0000",44,4));
-        SkdFelter.add(new SkdFeltDefinisjon("T1-POSTADRESSE","0",45,1));             // Spesiell i gjen
+
+        //SkdFelter.add(new SkdFeltDefinisjon("T1-POSTADRESSE","0",45,1));             // Spesiell i gjen
+
         SkdFelter.add(new SkdFeltDefinisjon("T1-ADRESSE1",whitespace30stk,46,30));
         SkdFelter.add(new SkdFeltDefinisjon("T1-ADRESSE2",whitespace30stk,47,30));
         SkdFelter.add(new SkdFeltDefinisjon("T1-ADRESSE3",whitespace30stk,48,30));
@@ -89,12 +96,18 @@ public class SkdFelterContainer {
         SkdFelter.add(new SkdFeltDefinisjon("T1-ARBEIDSTILLATELSE"," ",65,1));
         SkdFelter.add(new SkdFeltDefinisjon("T1-DATO-ARBEIDSTILLATELSE","00000000",66,8));
         SkdFelter.add(new SkdFeltDefinisjon("T1-FREMKONNUMMER","00000000",67,8));
-        SkdFelter.add(new SkdFeltDefinisjon("T1-MORS-FODSELSNR","0",68,1));      //Spesiell igjen
+
+        // Spesiell
+        //SkdFelter.add(new SkdFeltDefinisjon("T1-MORS-FODSELSNR","0",68,1));      //Spesiell igjen
+
         SkdFelter.add(new SkdFeltDefinisjon("T1-MORS-FODSELSDATO","000000",69,6));
         SkdFelter.add(new SkdFeltDefinisjon("T1-MORS-PERSONNUMMER","00000",70,5));
         SkdFelter.add(new SkdFeltDefinisjon("T1-MORS-NAVN",whitespace50stk,71,50));
         SkdFelter.add(new SkdFeltDefinisjon("T1-MORS-STATSB-SKAP","000",72,3));
-        SkdFelter.add(new SkdFeltDefinisjon("T1-FARS-FODSELSNR","0",73,1));              // Spesiell igjen
+
+        // Spesiell.
+        //SkdFelter.add(new SkdFeltDefinisjon("T1-FARS-FODSELSNR","0",73,1));              // Spesiell igjen
+
         SkdFelter.add(new SkdFeltDefinisjon("T1-FARS-FODSELSDATO","000000",74,6));
         SkdFelter.add(new SkdFeltDefinisjon("T1-FARS-PERSONNUMMER","00000",75,5));
         SkdFelter.add(new SkdFeltDefinisjon("T1-FARS-FARS-NAVN",whitespace50stk,76,50));

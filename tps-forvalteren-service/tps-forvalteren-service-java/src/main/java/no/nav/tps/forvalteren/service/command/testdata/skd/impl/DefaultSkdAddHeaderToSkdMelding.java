@@ -17,10 +17,14 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
         String statusKode = extractStatusKode(skdMelding.toString());
         String aasakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
-        String tildelingsKode = getTildelingskode("0", aasakskode, statusKode);     //TODO Tildelingskode skal være 1 hvis personen ikke finnes fra før, og 2 hvis personen finnes fra før.
+        String tildelingsKode = getTildelingskode("0", aasakskode, statusKode);
         headerSkdMelding = headerSkdMelding + aasakskode + transType + tildelingsKode + skdRef;
-        skdMelding.reverse().append(headerSkdMelding).reverse();
+        skdMelding
+                .reverse()
+                .append(new StringBuilder(headerSkdMelding).reverse().toString())
+                .reverse();
     }
+    //TODO Tildelingskode skal være 1 hvis personen ikke finnes fra før, og 2 hvis personen finnes fra før.??
 
     //TODO Spør spesefikt hvordan Tildelingskode bestemmes.
     private String getTildelingskode(String tildelingsKode, String aarskode, String statusKode) {
