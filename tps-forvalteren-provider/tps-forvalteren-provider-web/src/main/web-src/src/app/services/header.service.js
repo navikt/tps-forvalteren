@@ -5,5 +5,5 @@ angular.module('tps-forvalteren.service')
 
         self.setHeader = function (header) {
             $rootScope.header = header;
-        }
+        };
     }]);

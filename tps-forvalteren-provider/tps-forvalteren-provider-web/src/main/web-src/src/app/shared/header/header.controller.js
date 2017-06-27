@@ -28,7 +28,7 @@ angular.module('tps-forvalteren')
             };
 
             $scope.openVisTestdata = function () {
-                locationService.redirectToVisTestdata();
+                locationService.redirectToTestgruppe();
             };
 
             $scope.goBack = function () {
