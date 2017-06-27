@@ -110,4 +110,13 @@ public class TestdataController {
         savePersonListService.save(personer);
     }
 
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
+    @RequestMapping(value = "/createPersoner", method = RequestMethod.POST)
+    public void lagreTilTPS(@RequestBody List<String> personIdentListe) {
+        List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
+        setNameOnPersonsService.execute(personer);
+        savePersonListService.save(personer);
+    }
+
 }

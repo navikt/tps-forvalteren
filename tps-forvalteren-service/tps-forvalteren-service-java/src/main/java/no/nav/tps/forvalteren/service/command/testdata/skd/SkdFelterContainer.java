@@ -10,9 +10,9 @@ public class SkdFelterContainer {
 
     private static final String whitespace5stk = "     ";
     private static final String whitespace10stk = whitespace5stk+whitespace5stk;
-    private static final String whitespace25stk = "                         ";
+    private static final String whitespace25stk = whitespace5stk + whitespace10stk+ whitespace10stk;
     private static final String whitespace40stk = whitespace10stk+whitespace10stk+whitespace10stk+whitespace10stk;
-    private static final String whitespace30stk = whitespace5stk + whitespace5stk;
+    private static final String whitespace30stk = whitespace5stk + whitespace25stk;
     private static final String whitespace50stk = whitespace25stk+whitespace25stk;
     private static final String whitespace100stk = whitespace50stk+whitespace50stk;
     private static final String whitespace200stk = whitespace100stk+whitespace100stk;
