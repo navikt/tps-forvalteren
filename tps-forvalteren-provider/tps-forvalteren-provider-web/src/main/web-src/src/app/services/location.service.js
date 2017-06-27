@@ -25,6 +25,10 @@ angular.module('tps-forvalteren.service')
             $state.go("gt");
         };
 
+        self.redirectToTestgruppe = function() {
+            $state.go("testgruppe");
+        };
+
         self.redirectToVisTestdata = function() {
             $state.go("vis-testdata");
         };

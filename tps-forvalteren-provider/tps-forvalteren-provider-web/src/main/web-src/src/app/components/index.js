@@ -5,6 +5,7 @@ require('./gt/gt.module');
 require('./vis-testdata/vis-testdata.module');
 require('./opprett-testdata/opprett-testdata.module');
 require('./welcome/welcome.module');
+require('./testgruppe/testgruppe.module');
 
 /* Load Controllers */
 require('./login/login.controller');
@@ -13,3 +14,4 @@ require('./gt/gt.controller');
 require('./vis-testdata/vis-testdata.controller');
 require('./opprett-testdata/opprett-testdata.controller');
 require('./welcome/welcome.controller');
+require('./testgruppe/testgruppe.controller');
