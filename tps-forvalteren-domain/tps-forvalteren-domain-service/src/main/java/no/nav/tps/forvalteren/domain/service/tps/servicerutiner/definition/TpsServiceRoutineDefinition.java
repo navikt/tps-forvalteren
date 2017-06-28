@@ -15,23 +15,16 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TpsServiceRoutineDefinition {
+public class TpsServiceRoutineDefinition extends TpsMeldingDefinition {
 
-    private String name;
     private String internalName;    // (DisplayName)
 
     @JsonIgnore
     private Class<?> javaClass;
 
-    @JsonIgnore
-    private TpsRequestConfig config;
-
     private List<TpsParameter> parameters;
 
     @JsonIgnore
     private List<Transformer> transformers;
-
-    @JsonIgnore
-    private List<ServiceRutineAuthorisationStrategy> requiredSecurityServiceStrategies;
 
 }

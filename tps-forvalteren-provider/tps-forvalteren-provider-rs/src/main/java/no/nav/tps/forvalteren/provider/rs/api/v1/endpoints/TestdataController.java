@@ -5,9 +5,9 @@ import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
 import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
+import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonsIn;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -16,6 +16,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdUpdateCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +43,13 @@ public class TestdataController {
     private FindAllPersonService findAllPersonService;
 
     @Autowired
+    private SkdUpdateCreatePersoner skdUpdateOrCreatePersoner;
+
+    @Autowired
     private DeletePersonsByIdService deletePersonsByIdService;
+
+    @Autowired
+    private FindAllPersonsIn findAllPersonsIn;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -111,12 +118,10 @@ public class TestdataController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
-    @RequestMapping(value = "/createPersoner", method = RequestMethod.POST)
-    public void lagreTilTPS(@RequestBody List<String> personIdentListe) {
-        List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
-        setNameOnPersonsService.execute(personer);
-        savePersonListService.save(personer);
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
+    @RequestMapping(value = "/saveTPS", method = RequestMethod.POST)
+    public void lagreTilTPS(@RequestBody List<Person> personer) {
+        skdUpdateOrCreatePersoner.execute(personer);
     }
 
 }

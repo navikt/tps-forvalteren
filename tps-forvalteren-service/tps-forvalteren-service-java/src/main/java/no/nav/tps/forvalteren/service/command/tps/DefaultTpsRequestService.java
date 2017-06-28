@@ -10,6 +10,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequ
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentByFnrRequest;
 import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class DefaultTpsRequestService implements TpsRequestService {
     private TpsAuthorisationService tpsAuthorisationService;
 
     @Override
-    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
+    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinition serviceRoutine, TpsRequestContext context)
+            throws JMSException, IOException, HttpUnauthorisedException {
 
         tpsAuthorisationService.authoriseRestCall(serviceRoutine);
 

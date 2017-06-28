@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -27,10 +27,9 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
 
     public void execute(StringBuilder skdMelding) {
         String headerSkdMelding = MQ_HANDLE + KODE_SYSTEM + KJORE_NUMMER_AKA_SYSTEM_IDENT;
-        //String statusKode = extractStatusKode(skdMelding.toString());
         String aasakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
-        String tildelingsKode = getTildelingskode(skdMelding.toString());
+        String tildelingsKode = extractTildelingskode(skdMelding.toString());
         headerSkdMelding = headerSkdMelding + aasakskode + transType + tildelingsKode + SKD_REFERANSE;
         skdMelding
                 .reverse()
@@ -38,29 +37,16 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
                 .reverse();
     }
 
-    private String getTildelingskode(String skdMelding){
-        String tildelingskode = skdMelding.substring(INDEX_START_TILDELINGSKODE,INDEX_SLUTT_TILDELINGSKODE);
-        if("".equals(tildelingskode)){
-            return " ";
-        }
-        return tildelingskode;
-    }
-
-    //TODO Kanskje gjøre noe med hvis man bare får 1 char av en eller nanen grunn.
     private String extractAArsakskode(String skdMelding) {
-        String aarskode =  skdMelding.substring(INDEX_START_AARSAKSKODE,INDEX_SLUTT_AARSAKSKODE);
-        if(aarskode.equals("")){
-            return "  ";
-        }
-        return aarskode;
+        return skdMelding.substring(INDEX_START_AARSAKSKODE,INDEX_SLUTT_AARSAKSKODE);
     }
 
     private String extractTranstype(String skdMelding) {
-        String transType = skdMelding.substring(INDEX_START_TRANSTYPE, INDEX_SLUTT_TRANSTYPE);
-        if (transType.equals("")) {
-            return " ";
-        }
-        return transType;
+        return skdMelding.substring(INDEX_START_TRANSTYPE, INDEX_SLUTT_TRANSTYPE);
+    }
+
+    private String extractTildelingskode(String skdMelding){
+        return skdMelding.substring(INDEX_START_TILDELINGSKODE,INDEX_SLUTT_TILDELINGSKODE);
     }
 
     private String extractStatusKode(String skdMelding) {
@@ -74,7 +60,7 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
     //TODO Tildelingskode skal være 1 hvis personen ikke finnes fra før, og 2 hvis personen finnes fra før.??
 
     //TODO Spør spesefikt hvordan Tildelingskode bestemmes.
-//    private String getTildelingskode(String tildelingsKode, String aarskode, String statusKode) {
+//    private String extractTildelingskode(String tildelingsKode, String aarskode, String statusKode) {
 //        if (tildelingsKode.equals(" ")) tildelingsKode = "0";
 //        if (aarskode.equals("01") && statusKode.equals("7")) tildelingsKode = "8";
 //        if (aarskode.equals("01") && statusKode.equals(" ")) tildelingsKode = "9";

@@ -9,21 +9,17 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
-import no.nav.tps.forvalteren.service.command.tps.TpsSkdMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.jms.JMSException;
-import java.util.List;
 import java.util.Map;
 
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
@@ -46,9 +42,6 @@ public class ServiceController extends BaseProvider {
 
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
-
-    @Autowired
-    private SkdMeldingRequest skdMeldingRequest;
 
     @Autowired
     private TpsRequestSender tpsRequestSender;
@@ -74,15 +67,6 @@ public class ServiceController extends BaseProvider {
         TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsServiceRutinenavn, tpsRequestParameters);
 
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
-    }
-
-    @RequestMapping(value = "/service/sendTps", method = RequestMethod.GET)
-    public void sendTps() throws JMSException {
-        TpsRequestContext context = new TpsRequestContext();
-        context.setUser(userContextHolder.getUser());
-        context.setEnvironment("t4");
-
-        skdMeldingRequest.execute("test", new TpsSkdMeldingDefinition(), context);
     }
 
     private void checkIfAllowedToSendRequestAgainstEnvironment(String environmentParam){

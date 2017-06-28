@@ -9,4 +9,5 @@ public interface PersonToSkdParametersMapper {
     Map<String, String> create(Person person);
 
     Map<String, String> update(Person person);
+
 }

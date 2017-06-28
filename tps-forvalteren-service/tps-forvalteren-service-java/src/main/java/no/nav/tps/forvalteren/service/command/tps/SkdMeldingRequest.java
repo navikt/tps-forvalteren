@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
 
 import javax.jms.JMSException;
 
 public interface SkdMeldingRequest {
 
-    String execute(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, TpsRequestContext context) throws JMSException;
+    String execute(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment) throws JMSException;
 
 }
