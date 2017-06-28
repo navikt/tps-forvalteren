@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
