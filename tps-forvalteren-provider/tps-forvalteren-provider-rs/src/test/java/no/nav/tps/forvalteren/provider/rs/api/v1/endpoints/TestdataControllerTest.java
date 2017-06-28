@@ -4,7 +4,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -21,17 +20,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataControllerTest {
-
-    @Mock
-    private FindAllPersonService findAllPersonService;
 
     @Mock
     private DeletePersonsByIdService deletePersonsByIdService;
@@ -56,21 +50,6 @@ public class TestdataControllerTest {
 
     @InjectMocks
     private TestdataController testdataController;
-
-    private static List<Person> allPersons = new ArrayList<>();
-
-    @Test
-    public void findAllPersonReturnsAll() {
-        Person person = new Person();
-        allPersons.add(person);
-        when(findAllPersonService.execute()).thenReturn(allPersons);
-
-        List<Person> result = testdataController.getAllPersons();
-
-        verify(findAllPersonService).execute();
-
-        assertThat(result, hasSize(1));
-    }
 
     @Test
     public void createNewPersons() {

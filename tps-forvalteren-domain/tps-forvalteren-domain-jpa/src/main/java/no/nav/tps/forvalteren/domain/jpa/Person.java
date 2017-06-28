@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -40,7 +43,7 @@ public class Person extends ChangeStamp {
     private Long id;
 
     @NotNull
-    @Column(name = "IDENT", nullable = false, length = 11)
+    @Column(name = "IDENT", nullable = false, unique = true, length = 11)
     private String ident;
 
     @NotNull
@@ -80,5 +83,10 @@ public class Person extends ChangeStamp {
     @NotNull
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
+
+    @Getter(AccessLevel.NONE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "GRUPPE_ID")
+    private Gruppe gruppe;
 
 }
