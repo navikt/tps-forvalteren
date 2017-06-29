@@ -54,30 +54,6 @@ angular.module('tps-forvalteren.vis-testdata')
                     function (error) {
                         utilsService.showAlertError(error);
                         headerService.setHeader("Testdata");
-                        // headerService.setHeader("Foreldrepenger iterasjon 5/6");
-                        // setHeaderButtons();
-                        // originalPersoner = $scope.personer = [{
-                        //     ident: "32345678901",
-                        //     identtype: "DNR",
-                        //     fornavn: "Elenora",
-                        //     mellomnavn: "Susan",
-                        //     etternavn: "Dixon",
-                        //     kjonn: "K"
-                        // },
-                        //     {
-                        //         ident: "15059023541",
-                        //         identtype: "FNR",
-                        //         fornavn: "Frank",
-                        //         mellomnavn: "Erland",
-                        //         etternavn: "Aaserud",
-                        //         kjonn: "M"
-                        //     }];
-                        // fixDatoForDatepicker();
-                        // $scope.personer = angular.copy(originalPersoner);
-                        // $scope.control = [];
-                        // $scope.antallEndret = 0;
-                        // $scope.antallValgt = 0;
-                        // oppdaterFunksjonsknapper();
                     }
                 );
             };
@@ -91,7 +67,7 @@ angular.module('tps-forvalteren.vis-testdata')
                     if (!originalPersoner[i].spesregDato) {
                         originalPersoner[i].spesregDato = null;
                     }
-                    if (!originalPersoner[i].gateadresse) {
+                    if (!originalPersoner[i].gateadresse || !originalPersoner[i].gateadresse[0]) {
                         originalPersoner[i].gateadresse = [];
                         originalPersoner[i].gateadresse[0] = {};
                     }
