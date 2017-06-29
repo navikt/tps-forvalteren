@@ -1,7 +1,7 @@
 
 angular.module('tps-forvalteren')
-    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', '$mdSidenav', 'serviceRutineFactory',
-        function ($scope, authenticationService, locationService, $mdSidenav, serviceRutineFactory) {
+    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', 'headerService',
+        function ($scope, authenticationService, locationService, headerService) {
 
             $scope.visTestdataKnapp = false;
 
@@ -9,18 +9,6 @@ angular.module('tps-forvalteren')
                 authenticationService.invalidateSession(function () {
                     locationService.redirectToLoginState();
                 });
-            };
-
-            $scope.toggleSideNav = function (menuId) {
-                $mdSidenav(menuId).toggle();
-            };
-
-            $scope.endringState = function () {
-                locationService.redirectToEndringState();
-            };
-
-            $scope.serviceRutineState = function () {
-                locationService.redirectToServiceRutineState();
             };
 
             $scope.openGT = function () {
@@ -39,15 +27,19 @@ angular.module('tps-forvalteren')
                 locationService.redirectToLoginReturnState();
             };
 
-            serviceRutineFactory.loadFromServerEnvironments().then( function(environment) {
-                var prodEnvironment = false;
-                for (i in environment) {
-                    if (environment[i] == 'p') {
-                        prodEnvironment = true;
-                    }
-                }
-                $scope.visTestdataKnapp = !prodEnvironment;
-            });
-
             $scope.isRoot = locationService.isRoot();
+
+            var environment = $scope.$resolve.environmentsPromise;
+            var prodEnvironment = false;
+            for (i in environment) {
+                if (environment[i] == 'p') {
+                    prodEnvironment = true;
+                }
+            }
+            $scope.visTestdataKnapp = !prodEnvironment;
+
+            $scope.clickButton = function (index) {
+                var buttons = headerService.getButtons();
+                eval('(' + buttons[index].function + ')')(buttons[index].params ? buttons[index].params : undefined);
+            }
         }]);

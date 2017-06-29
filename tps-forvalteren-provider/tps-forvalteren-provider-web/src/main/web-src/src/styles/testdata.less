@@ -1,3 +1,156 @@
+.tps-testdata-dashboard {
+
+   display: flex;
+
+   .tps-no-scroll-view {
+     height: 88%;
+   }
+
+   .tps-vk-top {
+     //margin-bottom: 10px;
+     //background-color: white;
+     //padding: 10px 15px;
+     //position: relative;
+     padding: 0;
+
+     .tps-vk-input-container {
+       margin: 4px 10px 5px 0;
+       label {
+         z-index: auto;
+       }
+     }
+     .tps-vk-datepicker-container {
+       margin: 4px 10px 5px -16px;
+       label {
+         z-index: auto;
+       }
+     }
+     .tps-vk-form-btns {
+       text-align: center;
+
+       @media (min-width: 600px) {
+         text-align: right;
+       }
+
+       .tps-vk-refresh-btn {
+         width: 40px;
+         height: 40px;
+         z-index: auto;
+
+         svg {
+           width: 30px;
+           height: 40px;
+           fill: white;
+         }
+       }
+     }
+
+     md-progress-linear {
+       right: 0;
+       left: 0;
+       bottom: 0;
+     }
+   }
+
+   .tps-vk-bottom {
+
+     .tps-vk-scrollable-tabs {
+       height: 100%;
+     }
+
+     .tps-vk-xml-panel {
+       pre {
+         margin: 0;
+       }
+       .hljs {
+         background-color: white;
+       }
+     }
+
+     .tps-vk-bottom-undertitle {
+       margin-bottom: 10px;
+     }
+
+     .row {
+       display: flex;
+     }
+
+     .tps-vk-response-form {
+       padding: 28px 35px 0;
+
+       .tps-vk-output-container {
+         margin: 3px 0;
+         padding: 2px 3px;
+
+         .tps-vk-output-data,
+         .tps-vk-output-label {
+           border-color: rgba(0, 0, 0, 0.12);
+           color: rgba(0, 0, 0, 0.74);
+
+           &.filled,
+           &.empty {
+             background-color: rgb(250, 255, 189);
+           }
+           &.noValue {
+             background-color: white;
+           }
+         }
+         .tps-vk-output-label {
+           color: #000;
+         }
+       }
+     }
+   }
+
+   .tps-vk-status-container {
+     padding: 0 33px;
+     border-top: 1px solid rgba(0, 0, 0, .12);
+     min-height: 30px;
+
+     .tps-vk-hits {
+       text-align: left;
+       font-size: 12px;
+       color: rgba(0, 0, 0, .54);
+
+       .tps-vk-hits-message {
+         height: 100%;
+         display: inline-block;
+         vertical-align: middle;
+       }
+
+       .tps-vk-hits-paging {
+
+       }
+     }
+
+     .tps-vk-status {
+       text-align: right;
+       font-size: 12px;
+       color: rgba(0, 0, 0, .54);
+
+       .tps-vk-status-message,
+       .tps-vk-status-icon {
+         height: 100%;
+         display: inline-block;
+         vertical-align: middle;
+       }
+
+       .tps-vk-status-icon {
+         &.error {
+           svg {
+             fill: red;
+           }
+         }
+         &.success {
+           svg {
+             fill: green;
+           }
+         }
+       }
+     }
+   }
+ }
+
 .flipped {
   transform: rotateZ(180deg);
 }
@@ -19,13 +172,15 @@
 }
 
 .tps-content {
+  display: block;
   margin-left: 20%;
   margin-right: 20%;
 }
 
-#testdata-velg-alle {
-  margin-left: 22px;
-  margin-top: 13px;
+.testdata-quere-block {
+  display: block;
+  margin-left: 5%;
+  margin-right: 35%;
 }
 
 .line {
@@ -34,8 +189,9 @@
   margin-top: -5px;
   margin-bottom: 10px;
   border-bottom-width: 1px;
-  border-color: rgba(215,215,215,0.8);
+  border-color: rgba(215, 215, 215, 0.8);
 }
+
 #vis-testdata-main {
   display: block;
   z-index: auto;
@@ -64,8 +220,7 @@ textarea {
 
 h1 {
   margin-top: 30px;
-  text-transform: uppercase;
-  color: #9e9e9e;
+  color: #515151;
 }
 
 .content-block {
@@ -84,12 +239,6 @@ h1 {
   margin: -10px 20px 50px 2px;
 }
 
-.testgrupper {
-  display: block;
-  margin-left: 5%;
-  margin-right: 35%;
-}
-
 html {
   background-color: @tps-vk-background-color-light-grey;
 }
@@ -98,11 +247,16 @@ body {
   background-color: @tps-vk-background-color-light-grey;
 }
 
-.header2 {
-  background-color: white;
-  height: 55px;
+.testcard:hover {
+  background-color: rgba(64, 161, 228, 0.41);
 }
 
-.testcard:hover {
-  background-color: rgba(64,161,228,0.41);
+.testdata-card-content {
+  padding-bottom: 0;
+  padding-top: 10px;
+}
+
+.testdata-big-icon {
+  font-size:45px;
+  height:45px;
 }

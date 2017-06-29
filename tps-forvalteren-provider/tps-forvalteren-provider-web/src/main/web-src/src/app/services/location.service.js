@@ -29,12 +29,12 @@ angular.module('tps-forvalteren.service')
             $state.go("testgruppe");
         };
 
-        self.redirectToVisTestdata = function() {
-            $state.go("vis-testdata");
+        self.redirectToVisTestdata = function(index) {
+            $state.go("vis-testdata", {id: index});
         };
 
-        self.redirectToOpprettTestdata = function() {
-            $state.go("opprett-testdata");
+        self.redirectToOpprettTestdata = function(index) {
+            $state.go("opprett-testdata", {id: index});
         };
 
         self.isServicerutineState = function(){
