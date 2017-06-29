@@ -111,9 +111,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
                     }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
-                    }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
                     }]
@@ -135,13 +132,10 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('vis-testdata', {
-                url: "/vis-testdata",
+                url: "/vis-testdata/:id",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
-                    }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
@@ -164,13 +158,10 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('opprett-testdata', {
-                url: "/opprett-testdata",
+                url: "/opprett-testdata/:id",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
-                    }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();

@@ -1,6 +1,8 @@
 angular.module('tps-forvalteren.opprett-testdata')
-    .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter', 'headerService',
-        function ($scope, testdataService, utilsService, $mdDialog, locationService, $filter, headerService) {
+    .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter', 'headerService', '$location',
+        function ($scope, testdataService, utilsService, $mdDialog, locationService, $filter, headerService, $location) {
+
+            var gruppeId = $location.url().match(/\d+/g);
 
             headerService.setHeader('Legg til testpersoner');
 
@@ -29,7 +31,7 @@ angular.module('tps-forvalteren.opprett-testdata')
             $scope.opprettTestpersoner = function () {
                 $scope.editMode = false;
                 $scope.showSpinner = true;
-                testdataService.opprettTestpersoner($scope.kriterier).then(
+                testdataService.opprettTestpersoner(gruppeId, $scope.kriterier).then(
                     function (result) {
                         $scope.showSpinner = false;
                         opprettComplete();
@@ -55,7 +57,7 @@ angular.module('tps-forvalteren.opprett-testdata')
                     .ok('OK');
 
                 $mdDialog.show(confirm).then(function() {
-                    locationService.redirectToVisTestdata();
+                    locationService.redirectToVisTestdata(gruppeId);
                 });
             };
 
@@ -87,10 +89,10 @@ angular.module('tps-forvalteren.opprett-testdata')
                         .cancel('Avbryt');
 
                     $mdDialog.show(confirm).then(function() {
-                        locationService.redirectToVisTestdata();
+                        locationService.redirectToVisTestdata(gruppeId);
                     });
                 } else {
-                    locationService.redirectToVisTestdata();
+                    locationService.redirectToVisTestdata(gruppeId);
                 }
             };
 
@@ -142,10 +144,10 @@ angular.module('tps-forvalteren.opprett-testdata')
                         .ok('OK')
                         .cancel('Avbryt');
                     $mdDialog.show(confirm).then(function() {
-                        locationService.redirectToVisTestdata();
+                        locationService.redirectToVisTestdata(gruppeId);
                     });
                 } else {
-                    locationService.redirectToVisTestdata();
+                    locationService.redirectToVisTestdata(gruppeId);
                 }
             };
 
@@ -167,7 +169,7 @@ angular.module('tps-forvalteren.opprett-testdata')
                         identer.push($scope.kandidater[i].ident);
                     }
                 }
-                testdataService.opprettFraListe(identer).then(
+                testdataService.opprettFraListe(gruppeId, identer).then(
                     function (result) {
                         $scope.showOpprettSpinner = false;
                         opprettComplete();

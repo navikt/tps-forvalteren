@@ -1,69 +1,60 @@
-<div class="tps-vk-service-rutine-dashboard tps-content" layout="column" layout-padding ng-cloak>
+<div class="tps-testdata-dashboard testdata-quere-block" layout="column" layout-padding ng-cloak>
 
-    <!-- Resulting Response -->
-    <md-card id="vis-testdata-main" class="tps-vk-top">
+    <h3 style="margin-left: 15px; margin-top: 10px; margin-bottom: -5px;">Testpersoner</h3>
 
-        <md-card-content>
-        <div layout="row" layout-align="end" flex>
-            <md-input-container layout="column" class="tps-vk-input-container"
-                    aria-label="Opprett ny testperson">
-                <md-tooltip>Opprett ny testperson</md-tooltip>
-                <md-button class="md-accent md-raised md-title" ng-click="opprettPersoner()">Opprett ny testperson</md-button>
-                </md-button>
-            </md-input-container>
-        </div>
-        <div layout="row" flex>
-            <div id="testdata-velg-alle" ng-show="personer.length > 0">
-                <md-input-container class="tps-vk-input-container"
-                                    aria-label="Velg alle testpersoner">
-                    <md-tooltip>Velg alle testpersoner</md-tooltip>
-                    <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()">
-                        <div style="margin-top: -5px;">Velg alle<span ng-if="visEndret"> endrede</span></div>
-                    </md-checkbox>
-                </md-input-container>
+    <md-card id="vis-testdata-main" class="tps-vk-top ">
+
+        <md-card-content flex class="testdata-card-content md-whiteframe-1p">
+            <div layout="column" class="md-raised" style="height: 200px;" flex layout-align="center center" ng-show="!personer">
+                <div>
+                    <md-icon md-svg-icon="assets/icons/ic_people_outline_black_24px.svg" class="testdata-big-icon"></md-icon>
+                </div>
+                <div>Ingen testpersoner er lagt til ennå</div>
             </div>
+            <div layout="row" style="margin-top: 3px;" flex ng-show="personer.length > 0">
 
-            <div ng-show="personer.length > 0" style="margin-top: 3px;">
-                <div flex="10"></div>
-                <p>Valgt: {{antallValgt}}</p>
-            </div>
-            <div flex></div>
-            <div ng-show="personer.length > 0 && visEndret" style="margin-top: 3px;">
-                <p>Endret: {{antallEndret}}</p>
-                <div flex="10"></div>
-            </div>
+                <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()" flex="15">
+                    Velg alle<span ng-if="visEndret"> endrede</span>
+                </md-checkbox>
 
-            <md-input-container class="tps-vk-input-container">
-                <md-tooltip>Slett valgte rader</md-tooltip>
-                <md-button class="md-accent md-raised md-title" ng-click="sletteDialog()" ng-disabled="antallValgt == 0" ng-if="!visEndret && personer.length > 0"
-                           aria-label="Slett valgte rader">Slett
-                </md-button>
-            </md-input-container>
-            <md-input-container class="tps-vk-input-container" ng-if="visEndret">
-                <md-tooltip>Avbryt valgt rader</md-tooltip>
-                <md-button class="md-accent md-raised md-title" ng-disabled="antallValgt == 0" ng-click="avbryteDialog()"
-                           aria-label="Avbryt valgte rader">Avbryt endring
-                </md-button>
-            </md-input-container>
-            <md-input-container class="tps-vk-input-container" ng-if="visEndret">
-                <md-tooltip>Lagre valgte rader</md-tooltip>
-                <md-button class="md-accent md-raised md-title" ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
-                           aria-label="Lagre valgte rader">Lagre
-                </md-button>
-            </md-input-container>
-        </div>
+                <div style="margin-top: 3px;">
+                    Valgt: {{antallValgt}}
+                </div>
+
+                <div layout="row" layout-align="end center" flex style="margin-top: -13px;">
+                    <div ng-show="visEndret" flex="10">
+                        Endret: {{antallEndret}}
+                    </div>
+
+                    <md-button class="md-accent md-raised md-title" ng-click="sletteDialog()"
+                               ng-disabled="antallValgt == 0" ng-if="!visEndret"
+                               aria-label="Slett valgte rader">Slett
+                    </md-button>
+                    <md-button class="md-accent md-raised md-title" ng-disabled="antallValgt == 0" ng-show="visEndret"
+                               ng-click="avbryteDialog()"
+                               aria-label="Avbryt valgte rader">Avbryt endring
+                    </md-button>
+
+                    <md-button class="md-accent md-raised md-title" ng-show="visEndret"
+                               ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
+                               aria-label="Lagre valgte rader">Lagre
+                    </md-button>
+                </div>
+            </div>
         </md-card-content>
     </md-card>
 
-
     <!-- Resulting Response -->
 
-        <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
+    <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
         <div ng-repeat="person in personer">
-            <div layout="row" flex="100">
-            <md-card flex>
-                <md-card-content flex class="md-whiteframe-1dp" ng-click="aapneFane($index)" style="padding-bottom: 0; padding-top: 10px;">
+            <md-card flex md-whiteframe="{{height}}"
+                     ng-init="height = 1"
+                     ng-mouseover="height = 5"
+                     ng-mouseleave="height = 1"
+                     ng-click="aapneFane($index)">
+                <md-card-content flex class="testdata-card-content">
                     <div class="tps-vk-form" layout="row" style="font-style: oblique;">
                         <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
                                      ng-model="control[$index].velg"
@@ -73,7 +64,7 @@
                         </md-checkbox>
                         <div flex="15">{{person.ident}} ({{person.identtype}})</div>
                         <div flex="50">
-                           {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
+                            {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
                         </div>
                         <div flex="20">{{getKjonn(person.kjonn)}}</div>
                         <div flex></div>
@@ -96,8 +87,10 @@
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Fornavn</md-tooltip>
                                     <label>Fornavn</label>
-                                    <input name="fornavn" ng-required="true" md-maxlength="50" ng-model="person.fornavn" ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.fornavn.$error" ng-show="requestForm.fornavn.$dirty">
+                                    <input name="fornavn" ng-required="true" md-maxlength="50"
+                                           ng-model="person.fornavn" ng-change="endret($index)"/>
+                                    <div ng-messages="requestForm.fornavn.$error"
+                                         ng-show="requestForm.fornavn.$dirty">
                                         <div ng-message="required">Verdi er påkrevd</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
@@ -106,17 +99,21 @@
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Mellomnavn</md-tooltip>
                                     <label>Mellomnavn</label>
-                                    <input name="mellomnavn" ng-required="false" md-maxlength="50" ng-model="person.mellomnavn" ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.mellomnavn.$error" ng-show="requestForm.mellomnavn.$dirty">
+                                    <input name="mellomnavn" ng-required="false" md-maxlength="50"
+                                           ng-model="person.mellomnavn" ng-change="endret($index)"/>
+                                    <div ng-messages="requestForm.mellomnavn.$error"
+                                         ng-show="requestForm.mellomnavn.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
                                 <div flex="5"></div>
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Etternavn</md-tooltip>
-                                    <label >Etternavn</label>
-                                    <input name="etternavn" ng-required="true" md-maxlength="50" ng-model="person.etternavn" ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.etternavn.$error" ng-show="requestForm.etternavn.$dirty">
+                                    <label>Etternavn</label>
+                                    <input name="etternavn" ng-required="true" md-maxlength="50"
+                                           ng-model="person.etternavn" ng-change="endret($index)"/>
+                                    <div ng-messages="requestForm.etternavn.$error"
+                                         ng-show="requestForm.etternavn.$dirty">
                                         <div ng-message="required">Verdi er påkrevd</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
@@ -131,7 +128,8 @@
                                                    md-current-view="year"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.regdato.$error" ng-show="requestForm.regdato.$pristine">
+                                    <div ng-messages="requestForm.regdato.$error"
+                                         ng-show="requestForm.regdato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -141,7 +139,8 @@
                                     <label>Statsborgerskap</label>
                                     <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
                                            ng-model="person.statsborgerskap" ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.statsborgerskap.$error" ng-show="requestForm.statsborgerskap.$dirty">
+                                    <div ng-messages="requestForm.statsborgerskap.$error"
+                                         ng-show="requestForm.statsborgerskap.$dirty">
                                         <div ng-message="minlength">Verdi har for få tegn</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
@@ -150,7 +149,8 @@
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Spesialregister</md-tooltip>
                                     <label>Spesialregister</label>
-                                    <md-select ng-model="person.spesreg" class="md-no-underline" ng-change="endret($index)">
+                                    <md-select ng-model="person.spesreg" class="md-no-underline"
+                                               ng-change="endret($index)">
                                         <md-option value=""><em>Uspesifisert</em></md-option>
                                         <md-option value="KLIE">Klientadresse</md-option>
                                         <md-option value="MILI">Militær</md-option>
@@ -172,7 +172,8 @@
                                                    ng-model="person.spesregDato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.spesregDato.$error" ng-show="requestForm.spesregDato.$pristine">
+                                    <div ng-messages="requestForm.spesregDato.$error"
+                                         ng-show="requestForm.spesregDato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -183,8 +184,10 @@
                                     <md-tooltip>Gatenavn</md-tooltip>
                                     <label>Gatenavn</label>
                                     <input name="boGateadresse" ng-required="false" md-maxlength="50"
-                                           ng-model="person.gateadresse[0].boGateadresse" ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boGateadresse.$error" ng-show="requestForm.boGateadresse.$dirty">
+                                           ng-model="person.gateadresse[0].boGateadresse"
+                                           ng-change="endret($index)"/>
+                                    <div ng-messages="requestForm.boGateadresse.$error"
+                                         ng-show="requestForm.boGateadresse.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -195,7 +198,8 @@
                                     <input name="boHusnummer" ng-required="false" md-maxlength="4"
                                            ng-model="person.gateadresse[0].boHusnummer"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boHusnummer.$error" ng-show="requestForm.boHusnummer.$dirty">
+                                    <div ng-messages="requestForm.boHusnummer.$error"
+                                         ng-show="requestForm.boHusnummer.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -206,7 +210,8 @@
                                     <input name="boGatekode" ng-required="false" md-maxlength="5"
                                            ng-model="person.gateadresse[0].boGatekode"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boGatekode.$error" ng-show="requestForm.boGatekode.$dirty">
+                                    <div ng-messages="requestForm.boGatekode.$error"
+                                         ng-show="requestForm.boGatekode.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -218,7 +223,8 @@
                                            md-maxlength="4" minlength="4"
                                            ng-model="person.gateadresse[0].boPostnummer"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boPostnummer.$error" ng-show="requestForm.boPostnummer.$dirty" ng-messages-multiple>
+                                    <div ng-messages="requestForm.boPostnummer.$error"
+                                         ng-show="requestForm.boPostnummer.$dirty" ng-messages-multiple>
                                         <div ng-message="pattern">Ugyldig numerisk verdi</div>
                                         <div ng-message="minlength">Verdi har for få tegn</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -233,7 +239,8 @@
                                                    ng-model="person.gateadresse[0].boFlytteDato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.boFlytteDato.$error" ng-show="requestForm.boFlytteDato.$pristine">
+                                    <div ng-messages="requestForm.boFlytteDato.$error"
+                                         ng-show="requestForm.boFlytteDato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -245,7 +252,8 @@
                                            minlength="4"
                                            ng-model="person.gateadresse[0].boKommunenr"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boKommunenr.$error" ng-show="requestForm.boKommunenr.$dirty" ng-messages-multiple>
+                                    <div ng-messages="requestForm.boKommunenr.$error"
+                                         ng-show="requestForm.boKommunenr.$dirty" ng-messages-multiple>
                                         <div ng-message="pattern">Ugyldig numerisk verdi</div>
                                         <div ng-message="minlength">Verdi har for få tegn</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -260,7 +268,8 @@
                                     <input name="postLinje1" ng-required="false" md-maxlength="30"
                                            ng-model="person.postadresse[0].postLinje1"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.postLinje1.$error" ng-show="requestForm.postLinje1.$dirty">
+                                    <div ng-messages="requestForm.postLinje1.$error"
+                                         ng-show="requestForm.postLinje1.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -268,9 +277,11 @@
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Adresselinje 2</md-tooltip>
                                     <label>Linje 2</label>
-                                    <input name="postLinje2" ng-required="false" md-maxlength="30" ng-model="person.postadresse[0].postLinje2"
+                                    <input name="postLinje2" ng-required="false" md-maxlength="30"
+                                           ng-model="person.postadresse[0].postLinje2"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.postLinje2.$error" ng-show="requestForm.postLinje2.$dirty">
+                                    <div ng-messages="requestForm.postLinje2.$error"
+                                         ng-show="requestForm.postLinje2.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -278,9 +289,11 @@
                                 <md-input-container class="tps-vk-input-container" flex>
                                     <md-tooltip>Adresselinje 3</md-tooltip>
                                     <label>Linje 3</label>
-                                    <input name="postLinje3" ng-required="false" md-maxlength="30" ng-model="person.postadresse[0].postLinje3"
+                                    <input name="postLinje3" ng-required="false" md-maxlength="30"
+                                           ng-model="person.postadresse[0].postLinje3"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.postLinje3.$error" ng-show="requestForm.postLinje3.$dirty">
+                                    <div ng-messages="requestForm.postLinje3.$error"
+                                         ng-show="requestForm.postLinje3.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -288,10 +301,12 @@
                                 <md-input-container class="tps-vk-input-container" flex="5">
                                     <md-tooltip>Land</md-tooltip>
                                     <label>Land</label>
-                                    <input name="postLand" ng-required="false" pattern="[0-9]*" md-maxlength="3" minlength="3"
+                                    <input name="postLand" ng-required="false" pattern="[0-9]*" md-maxlength="3"
+                                           minlength="3"
                                            ng-model="person.postadresse[0].postLand"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.postLand.$error"  ng-show="requestForm.postLand.$dirty" ng-messages-multiple>
+                                    <div ng-messages="requestForm.postLand.$error"
+                                         ng-show="requestForm.postLand.$dirty" ng-messages-multiple>
                                         <div ng-message="pattern">Ugyldig numerisk verdi</div>
                                         <div ng-message="minlength">Verdi har for få tegn</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -302,8 +317,6 @@
                     </div>
                 </md-card-content>
             </md-card>
-            </div>
         </div>
-        </form>
-
+    </form>
 </div>

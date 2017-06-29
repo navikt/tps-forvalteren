@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.welcome')
-    .controller('WelcomeCtrl', ['$scope', 'locationService', 'serviceRutineFactory',
-        function ($scope, locationService, serviceRutineFactory) {
+    .controller('WelcomeCtrl', ['$scope', 'locationService',
+        function ($scope, locationService) {
 
             $scope.visTestdataKnapp = false;
 
@@ -16,14 +16,12 @@ angular.module('tps-forvalteren.welcome')
                 locationService.redirectToVisTestdata();
             };
 
-            serviceRutineFactory.loadFromServerEnvironments().then( function(environment) {
-                var prodEnvironment = false;
-                for (i in environment) {
-                    if (environment[i] == 'p') {
-                        prodEnvironment = true;
-                    }
+            var environment = $scope.$resolve.environmentsPromise;
+            var prodEnvironment = false;
+            for (i in environment) {
+                if (environment[i] == 'p') {
+                    prodEnvironment = true;
                 }
-                $scope.visTestdataKnapp = !prodEnvironment;
-            });
-
+            }
+            $scope.visTestdataKnapp = !prodEnvironment;
         }]);
