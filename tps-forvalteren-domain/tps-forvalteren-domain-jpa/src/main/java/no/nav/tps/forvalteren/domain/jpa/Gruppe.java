@@ -49,7 +49,7 @@ public class Gruppe extends ChangeStamp {
     @Column(name = "BESKRIVELSE", length = 200)
     private String beskrivelse;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "gruppe")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppe")
     private List<Person> personer = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

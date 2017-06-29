@@ -16,6 +16,7 @@ import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
@@ -68,19 +69,23 @@ public class TestdataController {
     private SjekkIdenter sjekkIdenter;
 
     @Autowired
+    private SetGruppeIdOnPersons setGruppeIdOnPersons;
+
+    @Autowired
     private GruppeRepository gruppeRepository;
 
     @Autowired
     private MapperFacade mapper;
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons") })
-    @RequestMapping(value = "/personer", method = RequestMethod.POST)
-    public void createNewPersons(@RequestBody RsPersonKriterieRequest personKriterierListe) {
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
+    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriterieRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(ekstraherIdenterFraTestdataRequests.execute(testdataRequests));
 
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
+        setGruppeIdOnPersons.setGruppeId(personerSomSkalPersisteres, gruppeId);
         savePersonListService.save(personerSomSkalPersisteres);
     }
 
@@ -107,10 +112,11 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
-    @RequestMapping(value = "/createPersoner", method = RequestMethod.POST)
-    public void createPersonerFraIdentliste(@RequestBody List<String> personIdentListe) {
+    @RequestMapping(value = "/createPersoner/{gruppeId}", method = RequestMethod.POST)
+    public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
         List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
         setNameOnPersonsService.execute(personer);
+        setGruppeIdOnPersons.setGruppeId(personer, gruppeId);
         savePersonListService.save(personer);
     }
 
