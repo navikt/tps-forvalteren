@@ -85,7 +85,7 @@ public class Person extends ChangeStamp {
     private LocalDateTime regdato;
 
     @Getter(AccessLevel.NONE)
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GRUPPE_ID")
     private Gruppe gruppe;
 
