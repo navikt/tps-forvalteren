@@ -13,7 +13,7 @@ angular.module('tps-forvalteren.welcome')
             };
 
             $scope.openVisTestdata = function () {
-                locationService.redirectToVisTestdata();
+                locationService.redirectToTestgruppe();
             };
 
             var environment = $scope.$resolve.environmentsPromise;
