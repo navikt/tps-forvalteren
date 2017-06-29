@@ -53,6 +53,6 @@ public class RsPerson {
 
     private LocalDateTime regdato;
 
-    private RsGruppe gruppe;
+    private RsSimpleGruppe gruppe;
 
 }

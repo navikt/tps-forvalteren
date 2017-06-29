@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,7 +83,6 @@ public class Person extends ChangeStamp {
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
 
-    @Getter(AccessLevel.NONE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GRUPPE_ID")
     private Gruppe gruppe;
