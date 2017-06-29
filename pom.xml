@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.3.RELEASE</version>
+        <version>1.5.4.RELEASE</version>
     </parent>
 
     <groupId>no.nav.tps.forvalteren</groupId>
@@ -68,7 +68,7 @@
         <guava.version>19.0</guava.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <ojdbc.version>11.2.0.3</ojdbc.version>
-        <orika.version>1.4.5</orika.version>
+        <orika.version>1.5.1</orika.version>
         <mqjms.version>7.1</mqjms.version>
         <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
