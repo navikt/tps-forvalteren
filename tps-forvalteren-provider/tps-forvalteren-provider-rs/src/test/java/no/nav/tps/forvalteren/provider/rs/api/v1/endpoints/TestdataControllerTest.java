@@ -169,4 +169,17 @@ public class TestdataControllerTest {
         verify(gruppeRepository).findById(GRUPPE_ID);
         verify(mapper).map(gruppe, RsGruppe.class);
     }
+
+    @Test
+    public void createGruppe() {
+        RsSimpleGruppe rsGruppe = new RsSimpleGruppe();
+        Gruppe gruppe = new Gruppe();
+
+        when(mapper.map(rsGruppe, Gruppe.class)).thenReturn(gruppe);
+
+        testdataController.createGruppe(rsGruppe);
+
+        verify(gruppeRepository).save(gruppe);
+    }
+
 }

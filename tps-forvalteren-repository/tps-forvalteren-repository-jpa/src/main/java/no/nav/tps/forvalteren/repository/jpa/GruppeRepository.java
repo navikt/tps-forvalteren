@@ -11,6 +11,6 @@ public interface GruppeRepository extends Repository<Gruppe, Long> {
 
     Gruppe findById(Long id);
 
-    void save(Gruppe gruppe);
+    Gruppe save(Gruppe gruppe);
 
 }

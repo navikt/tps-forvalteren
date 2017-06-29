@@ -136,66 +136,12 @@ public class TestdataController {
         return mapper.map(gruppe, RsGruppe.class);
     }
 
-
-    @RequestMapping(value = "/tempdata", method = RequestMethod.GET)
-    public void saveGrupper() {
-        Gruppe gruppe = Gruppe.builder().beskrivelse("NORG2 testidenter HL3 som skal brukes til bla bla bla").navn("NORG2 testidenter HL3").build();
-        Gruppe gruppe2 = Gruppe.builder().beskrivelse("MEDL2 nye testidenter for T som skal brukes til bla bla bla").navn("MEDL2 nye testidenter for T").build();
-
-        Person.PersonBuilder personBuilder = Person.builder()
-                .identtype("FNR")
-                .kjonn('M')
-                .fornavn("Ola")
-                .mellomnavn("O")
-                .etternavn("Nordmann")
-                .statsborgerskap("000")
-                .regdato(LocalDateTime.now());
-
-        Person person = personBuilder
-                .ident("12345678910")
-                .gruppe(gruppe)
-                .build();
-
-        Person person2 = personBuilder
-                .ident("12345678000")
-                .fornavn("Kari")
-                .gruppe(gruppe)
-                .build();
-
-        Person person3 = personBuilder
-                .ident("12345670000")
-                .fornavn("Per")
-                .gruppe(gruppe2)
-                .build();
-
-        Person person4 = personBuilder
-                .ident("12345600000")
-                .fornavn("Pål")
-                .gruppe(gruppe2)
-                .build();
-
-        List<Person> personer = new ArrayList<>(Arrays.asList(person, person2));
-        List<Person> personer2 = new ArrayList<>(Arrays.asList(person3, person4));
-
-        Tag tag = new Tag();
-        tag.setNavn("NORG2");
-
-        Tag tag2 = new Tag();
-        tag2.setNavn("MEDL2");
-
-        gruppe.setTags(Arrays.asList(tag));
-        gruppe2.setTags(Arrays.asList(tag2));
-
-        tag.setGrupper(Arrays.asList(gruppe));
-        tag2.setGrupper(Arrays.asList(gruppe2));
-
-        gruppe.setPersoner(personer);
-        gruppe2.setPersoner(personer2);
-
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
+    @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
+    public void createGruppe(@RequestBody RsSimpleGruppe rsGruppe) {
+        Gruppe gruppe = mapper.map(rsGruppe, Gruppe.class);
         gruppeRepository.save(gruppe);
-        gruppeRepository.save(gruppe2);
-
     }
-
 
 }
