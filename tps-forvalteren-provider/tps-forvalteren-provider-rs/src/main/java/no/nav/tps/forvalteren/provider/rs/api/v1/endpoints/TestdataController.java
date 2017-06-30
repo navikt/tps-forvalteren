@@ -92,14 +92,14 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
-    @RequestMapping(value = "/deletePersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
         personRepository.deleteByIdIn(personIdListe.getIds());
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
-    @RequestMapping(value = "/updatePersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
     public void updatePersons(@RequestBody List<RsPerson> personListe) {
         List<Person> personer = mapper.mapAsList(personListe, Person.class);
         savePersonListService.save(personer);
@@ -107,14 +107,14 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
-    @RequestMapping(value = "/checkPersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
         return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
-    @RequestMapping(value = "/createPersoner/{gruppeId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
     public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
         List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
         setNameOnPersonsService.execute(personer);
