@@ -45,7 +45,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     private RsTpsRequestMappingUtils mappingUtils;
 
     public Set<String> filtrer(Collection<String> identer){
-        if(!(identer.size() > MAX_ANTALL_IDENTER_TIL_REQUEST_M201)){
+        if(identer.size() <= MAX_ANTALL_IDENTER_TIL_REQUEST_M201){
 
             return filtrerPaaIdenter(identer);
 
@@ -114,10 +114,7 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
         }
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
-        if("12".equals(status.getKode())){
-            return true;
-        }
-        return false;
+        return "12".equals(status.getKode());
     }
 
     private Map<String,Object> opprettParametereForM201TpsRequest(Collection<String> identer){
