@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
@@ -18,7 +18,7 @@ public class DefaultGenererIdenterForTestdataRequests implements GenererIdenterF
     @Autowired
     private FiktiveIdenterGenerator fiktiveIdenterGenerator;
 
-    public List<TestdataRequest> execute(RsPersonKriterieRequest personKriterierRequest) {
+    public List<TestdataRequest> execute(RsPersonKriteriumRequest personKriterierRequest) {
         List<TestdataRequest> requests = new ArrayList<>();
         for (RsPersonKriterier kriterie : personKriterierRequest.getPersonKriterierListe()) {
             TestdataRequest request = new TestdataRequest(kriterie);

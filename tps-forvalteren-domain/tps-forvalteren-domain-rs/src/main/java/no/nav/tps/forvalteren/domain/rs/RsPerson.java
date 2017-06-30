@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +44,7 @@ public class RsPerson {
 
     private String statsborgerskap;
 
+    @Size(min = 4, max = 4)
     private String spesreg;
 
     private LocalDateTime spesregDato;
@@ -51,8 +53,10 @@ public class RsPerson {
 
     private List<RsPostadresse> postadresse;
 
+    @NotNull
     private LocalDateTime regdato;
 
+    @NotNull
     private RsSimpleGruppe gruppe;
 
 }

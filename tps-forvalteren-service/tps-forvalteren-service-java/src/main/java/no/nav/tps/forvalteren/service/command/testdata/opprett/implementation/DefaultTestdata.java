@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.Testdata;
@@ -33,7 +33,7 @@ public class DefaultTestdata implements Testdata {
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(testdataRequests);
     }
 
-    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriterieRequest personKriterierRequest){
+    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){
         return genererIdenterForTestdataRequests.execute(personKriterierRequest);
     }
 

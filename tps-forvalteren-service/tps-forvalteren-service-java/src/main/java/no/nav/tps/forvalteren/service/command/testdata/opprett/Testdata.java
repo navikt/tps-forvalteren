@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface Testdata {
 
     void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests);
 
-    List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriterieRequest personKriterierRequest);
+    List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest);
 
     void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request);
 

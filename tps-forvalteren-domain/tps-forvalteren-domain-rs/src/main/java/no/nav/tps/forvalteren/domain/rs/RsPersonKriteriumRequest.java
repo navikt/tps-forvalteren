@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsPersonKriterieRequest {
+public class RsPersonKriteriumRequest {
 
     @NotEmpty
     @Size(min = 1)
