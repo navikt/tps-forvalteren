@@ -146,13 +146,6 @@ public class TestdataController {
         gruppeRepository.save(gruppe);
     }
 
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
-    @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.GET)
-    public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        gruppeRepository.deleteById(gruppeId);
-    }
-
     @RequestMapping(value = "/tempdata", method = RequestMethod.GET)
     public void saveGrupper() {
         Gruppe gruppe = Gruppe.builder().beskrivelse("NORG2 testidenter HL3 som skal brukes til bla bla bla").navn("NORG2 testidenter HL3").build();

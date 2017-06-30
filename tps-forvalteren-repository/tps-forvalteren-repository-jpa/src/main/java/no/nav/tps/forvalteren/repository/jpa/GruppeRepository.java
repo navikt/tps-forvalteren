@@ -13,6 +13,4 @@ public interface GruppeRepository extends Repository<Gruppe, Long> {
 
     Gruppe save(Gruppe gruppe);
 
-    void deleteById(Long id);
-
 }

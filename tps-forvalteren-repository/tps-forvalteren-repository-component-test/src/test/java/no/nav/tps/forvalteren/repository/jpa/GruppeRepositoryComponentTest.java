@@ -10,11 +10,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Temporal;
 import java.util.List;
 
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -61,6 +61,7 @@ public class GruppeRepositoryComponentTest {
     @Test
     @Rollback
     public void save() {
+
         Gruppe gruppeMedId = repository.save(gruppe);
 
         Gruppe result = testRepository.findOne(gruppeMedId.getId());
@@ -68,19 +69,6 @@ public class GruppeRepositoryComponentTest {
         assertThat(result.getId(), is(gruppe.getId()));
         assertThat(result.getNavn(), is(gruppe.getNavn()));
         assertThat(result.getBeskrivelse(), is(gruppe.getBeskrivelse()));
-    }
-
-    @Test
-    @Rollback
-    public void deleteById() {
-        Gruppe nyGruppe = new Gruppe();
-        Gruppe savedGruppe = testRepository.save(gruppe);
-
-        repository.deleteById(savedGruppe.getId());
-
-        Gruppe result = testRepository.findOne(savedGruppe.getId());
-
-        assertThat(result, is(nullValue()));
     }
 
 }
