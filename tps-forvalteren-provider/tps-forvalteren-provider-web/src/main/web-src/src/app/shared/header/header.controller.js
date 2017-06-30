@@ -37,9 +37,4 @@ angular.module('tps-forvalteren')
                 }
             }
             $scope.visTestdataKnapp = !prodEnvironment;
-
-            $scope.clickButton = function (index) {
-                var buttons = headerService.getButtons();
-                eval('(' + buttons[index].function + ')')(buttons[index].params ? buttons[index].params : undefined);
-            }
         }]);

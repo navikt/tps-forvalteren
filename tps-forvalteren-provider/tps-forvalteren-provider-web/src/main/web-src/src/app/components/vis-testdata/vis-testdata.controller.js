@@ -4,16 +4,13 @@ angular.module('tps-forvalteren.vis-testdata')
 
             var gruppeId = $location.url().match(/\d+/g);
 
-            var opprettPersoner = function (id) {
-                locationService.redirectToOpprettTestdata(id);
-            };
-
             var setHeaderButtons = function () {
                 headerService.setButtons([{
                     text: 'Opprett ny testperson',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
-                    function: opprettPersoner.toString(),
-                    params: [gruppeId.toString()]
+                    click: function () {
+                        locationService.redirectToOpprettTestdata(gruppeId);
+                    }
                 }]);
             };
 
