@@ -148,7 +148,7 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
-    @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         gruppeRepository.deleteById(gruppeId);
     }
