@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultGenererIdenterForTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class GenererIdenterForTestdataRequestsTest {
 
-    private RsPersonKriterieRequest rsPersonKriterieRequest;
+    private RsPersonKriteriumRequest rsPersonKriteriumRequest;
     private RsPersonKriterier personKriterier1 = new RsPersonKriterier();
     private RsPersonKriterier personKriterier2 = new RsPersonKriterier();
 
@@ -41,8 +41,8 @@ public class GenererIdenterForTestdataRequestsTest {
 
     @Before
     public void setup() {
-        rsPersonKriterieRequest = new RsPersonKriterieRequest();
-        rsPersonKriterieRequest.setPersonKriterierListe(Arrays.asList(personKriterier1,personKriterier2));
+        rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
+        rsPersonKriteriumRequest.setPersonKriterierListe(Arrays.asList(personKriterier1,personKriterier2));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class GenererIdenterForTestdataRequestsTest {
         when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any()))
                 .thenReturn(dummyIdenter1,dummyIdenter2);
 
-        List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(rsPersonKriterieRequest);
+        List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(rsPersonKriteriumRequest);
 
         assertThat(requests.get(0).getIdenterGenerertForKriterie().contains(dummyIdent1), is(true));
         assertThat(requests.get(1).getIdenterGenerertForKriterie().contains(dummyIdent2), is(true));
@@ -75,7 +75,7 @@ public class GenererIdenterForTestdataRequestsTest {
         when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any()))
                 .thenReturn(dummyIdenter1,dummyIdenter2);
 
-        List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(rsPersonKriterieRequest);
+        List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(rsPersonKriteriumRequest);
 
         assertThat(requests.get(0).getIdenterGenerertForKriterie()
                 .containsAll(Arrays.asList(dummyIdent1, dummyIdent2)), is(true));

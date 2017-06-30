@@ -20,7 +20,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +40,9 @@ public class Gruppe extends ChangeStamp {
     @Column(name = "GRUPPE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @NotNull
     @Column(name = "NAVN", nullable = false, length = 30)
     private String navn;
 
-    @NotNull
     @Column(name = "BESKRIVELSE", length = 200)
     private String beskrivelse;
 

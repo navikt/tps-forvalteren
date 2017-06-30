@@ -4,11 +4,12 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
+import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
-import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -38,9 +39,6 @@ public class TestdataControllerTest {
     private MapperFacade mapper;
 
     @Mock
-    private DeletePersonsByIdService deletePersonsByIdService;
-
-    @Mock
     private SetNameOnPersonsService setNameOnPersonsService;
 
     @Mock
@@ -62,6 +60,9 @@ public class TestdataControllerTest {
     private SetGruppeIdOnPersons setGruppeIdOnPersons;
 
     @Mock
+    private PersonRepository personRepository;
+
+    @Mock
     private GruppeRepository gruppeRepository;
 
     @InjectMocks
@@ -71,7 +72,7 @@ public class TestdataControllerTest {
 
     @Test
     public void createNewPersonsFromKriterier() {
-        RsPersonKriterieRequest rsPersonKriterieRequest = new RsPersonKriterieRequest();
+        RsPersonKriteriumRequest rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
 
         TestdataRequest testdataRequest = new TestdataRequest(null);
         List<TestdataRequest> testdataRequestsList = new ArrayList<>();
@@ -80,13 +81,13 @@ public class TestdataControllerTest {
         List<String> identer = new ArrayList<>();
         List<Person> personerSomSkalPersisteres = new ArrayList<>();
 
-        when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriterieRequest.class))).thenReturn(testdataRequestsList);
+        when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriteriumRequest.class))).thenReturn(testdataRequestsList);
         when(ekstraherIdenterFraTestdataRequests.execute(testdataRequestsList)).thenReturn(identer);
         when(opprettPersonerFraIdenter.execute(identer)).thenReturn(personerSomSkalPersisteres);
 
-        testdataController.createNewPersonsFromKriterier(GRUPPE_ID, rsPersonKriterieRequest);
+        testdataController.createNewPersonsFromKriterier(GRUPPE_ID, rsPersonKriteriumRequest);
 
-        verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriterieRequest);
+        verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
         verify(ekstraherIdenterFraTestdataRequests).execute(testdataRequestsList);
         verify(opprettPersonerFraIdenter).execute(identer);
         verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
@@ -102,16 +103,20 @@ public class TestdataControllerTest {
 
         testdataController.deletePersons(rsPersonIdListe);
 
-        verify(deletePersonsByIdService).execute(rsPersonIdListe.getIds());
+        verify(personRepository).deleteByIdIn(rsPersonIdListe.getIds());
     }
 
     @Test
     public void updatePersons() {
+        List<RsPerson> rsPersonListe = new ArrayList<>();
         List<Person> personListe = new ArrayList<>();
 
-        testdataController.updatePersons(personListe);
+        when(mapper.mapAsList(rsPersonListe, Person.class)).thenReturn(personListe);
+
+        testdataController.updatePersons(rsPersonListe);
 
         verify(savePersonListService).save(personListe);
+        verify(mapper).mapAsList(rsPersonListe, Person.class);
     }
 
     @Test
@@ -169,4 +174,17 @@ public class TestdataControllerTest {
         verify(gruppeRepository).findById(GRUPPE_ID);
         verify(mapper).map(gruppe, RsGruppe.class);
     }
+
+    @Test
+    public void createGruppe() {
+        RsSimpleGruppe rsGruppe = new RsSimpleGruppe();
+        Gruppe gruppe = new Gruppe();
+
+        when(mapper.map(rsGruppe, Gruppe.class)).thenReturn(gruppe);
+
+        testdataController.createGruppe(rsGruppe);
+
+        verify(gruppeRepository).save(gruppe);
+    }
+
 }
