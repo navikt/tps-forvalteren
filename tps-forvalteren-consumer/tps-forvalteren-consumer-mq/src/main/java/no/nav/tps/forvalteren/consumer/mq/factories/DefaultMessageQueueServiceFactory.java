@@ -7,6 +7,7 @@ import no.nav.tps.forvalteren.consumer.rs.fasit.queues.FasitMessageQueueConsumer
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +23,16 @@ import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerCons
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false", matchIfMissing = true)
 public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
+    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
+
     @Autowired
     private FasitMessageQueueConsumer fasitMessageQueueConsumer;
 
-    // TODO: There should not be any dependencies between consumers
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
+
+    @Value("${environment.class}")
+    private String deployedEnvironment;
 
     /**
      * Instantiates a new MessageQueueConsumer in the specified environment
@@ -43,7 +48,8 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
         QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(environment);
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
 
-        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager, environment.toUpperCase() + CHANNEL_POSTFIX);
+        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,
+                                                                    (deployedEnvironment+DEFAULT_ENVIRONMENT_NUMBER).toUpperCase() + CHANNEL_POSTFIX);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 

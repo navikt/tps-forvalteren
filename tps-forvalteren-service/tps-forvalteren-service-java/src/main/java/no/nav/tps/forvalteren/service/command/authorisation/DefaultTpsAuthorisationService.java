@@ -1,10 +1,10 @@
 package no.nav.tps.forvalteren.service.command.authorisation;
 
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsMeldingDefinition;
+import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SearchSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SecurityStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     private List<RestSecurityStrategy> restSecurityStrategies;
 
     @Override
-    public void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine) {
+    public void authoriseRestCall(TpsMeldingDefinition serviceRoutine) {
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedRestStrategies(authStrategy, restSecurityStrategies)
                     .forEach(SecurityStrategy::handleUnauthorised);
@@ -29,7 +29,7 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     }
 
     @Override
-    public void authorisePersonSearch(TpsServiceRoutineDefinition serviceRoutine, String fnr){
+    public void authorisePersonSearch(TpsMeldingDefinition serviceRoutine, String fnr){
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedPersonStrategies(authStrategy, searchPersonSecurityStrategies, fnr)
                     .forEach(SecurityStrategy::handleUnauthorised);
@@ -37,14 +37,14 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     }
 
     @Override
-    public boolean isAuthorisedToUseServiceRutine(TpsServiceRoutineDefinition serviceRoutine){
+    public boolean isAuthorisedToUseServiceRutine(TpsMeldingDefinition serviceRoutine){
         return !serviceRoutine.getRequiredSecurityServiceStrategies()
                 .stream()
                 .anyMatch(strategy -> !isAuthorised(strategy, restSecurityStrategies));
     }
 
     @Override
-    public boolean isAuthorisedToFetchPersonInfo(TpsServiceRoutineDefinition serviceRoutine, String fnr) {
+    public boolean isAuthorisedToFetchPersonInfo(TpsMeldingDefinition serviceRoutine, String fnr) {
         return !serviceRoutine.getRequiredSecurityServiceStrategies()
                 .stream()
                 .anyMatch(strategy -> !isAuthorised(strategy, searchPersonSecurityStrategies, fnr));

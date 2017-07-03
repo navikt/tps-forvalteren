@@ -22,6 +22,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdUpdateCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,9 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
+
+    @Autowired
+    private SkdUpdateCreatePersoner skdUpdateOrCreatePersoner;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -121,6 +125,15 @@ public class TestdataController {
         setGruppeIdOnPersons.setGruppeId(personer, gruppeId);
         savePersonListService.save(personer);
     }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
+    @RequestMapping(value = "/saveTPS", method = RequestMethod.POST)
+    public void lagreTilTPS(@RequestBody List<String> identer) {
+        List<Person> personer = personRepository.findByIdentIn(identer);
+        skdUpdateOrCreatePersoner.execute(personer);
+    }
+
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })

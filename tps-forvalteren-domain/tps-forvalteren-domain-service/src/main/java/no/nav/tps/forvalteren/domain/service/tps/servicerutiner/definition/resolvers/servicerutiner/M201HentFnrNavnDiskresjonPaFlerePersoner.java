@@ -1,6 +1,7 @@
-package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers;
+package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrHistMultiServiceRoutineRequest;
@@ -42,6 +43,10 @@ public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineR
                 .postSend(extractDataListFromXml("personDataM201", "EFnr", "antallFM201"))
                 .postSend(extractStatusFromXmlElement("svarStatus"))
                 .and()
+
+                .securityBuilder()
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
+                .addSecurity()
 
                 .build();
     }

@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.utils;
 
+import no.nav.tps.forvalteren.service.command.EnvironmentsFilter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;

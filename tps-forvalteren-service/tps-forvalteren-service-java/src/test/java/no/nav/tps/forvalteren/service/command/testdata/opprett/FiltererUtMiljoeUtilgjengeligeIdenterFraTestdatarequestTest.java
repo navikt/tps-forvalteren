@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.service.command.testdata.FilterPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
     }
 
     @Mock
-    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljoMock;
+    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljoMock;
 
     @InjectMocks
     private DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
@@ -56,11 +56,11 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
 
         ArgumentCaptor<Set> arg = ArgumentCaptor.forClass(Set.class);
 
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(new HashSet<>());
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(new HashSet<>());
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
 
-        verify(filterPaaIdenterTilgjengeligeIMiljoMock).filtrer(arg.capture());
+        verify(filtrerPaaIdenterTilgjengeligeIMiljoMock).filtrer(arg.capture());
 
         Set<String> identerSet = arg.getValue();
 
@@ -77,7 +77,7 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
         identerTilgjenglig.add(dummyIdent1);
         identerTilgjenglig.add(dummyIdent3);
 
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identerTilgjenglig);
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identerTilgjenglig);
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
 
@@ -97,7 +97,7 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
         identerTilgjenglig.add(dummyIdent2);
         identerTilgjenglig.add(dummyIdent3);
 
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identerTilgjenglig);
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identerTilgjenglig);
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
 
@@ -114,7 +114,7 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
 
         Set<String> identerTilgjenglig = new HashSet<>();
 
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identerTilgjenglig);
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identerTilgjenglig);
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
 

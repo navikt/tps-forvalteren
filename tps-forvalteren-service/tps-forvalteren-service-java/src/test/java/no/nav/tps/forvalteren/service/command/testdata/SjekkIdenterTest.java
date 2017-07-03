@@ -31,7 +31,7 @@ public class SjekkIdenterTest {
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenterMock;
 
     @Mock
-    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljoMock;
+    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljoMock;
 
     @InjectMocks
     private SjekkIdenter sjekkIdenter;
@@ -53,7 +53,7 @@ public class SjekkIdenterTest {
 
         verify(sjekkOmGyldigeIdenterMock).execute(anySet());
         verify(findIdenterNotUsedInDBMock).filtrer(anySet());
-        verify(filterPaaIdenterTilgjengeligeIMiljoMock).filtrer(anySet());
+        verify(filtrerPaaIdenterTilgjengeligeIMiljoMock).filtrer(anySet());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class SjekkIdenterTest {
 
         verify(sjekkOmGyldigeIdenterMock).execute(anySet());
         verify(findIdenterNotUsedInDBMock).filtrer(anySet());
-        verify(filterPaaIdenterTilgjengeligeIMiljoMock).filtrer(anySet());
+        verify(filtrerPaaIdenterTilgjengeligeIMiljoMock).filtrer(anySet());
 
         assertThat(result, hasSize(0));
     }
@@ -75,7 +75,7 @@ public class SjekkIdenterTest {
 
         when(sjekkOmGyldigeIdenterMock.execute(anySet())).thenReturn(new HashSet());
         when(findIdenterNotUsedInDBMock.filtrer(anySet())).thenReturn(new HashSet());
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(new HashSet());
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(new HashSet());
 
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
@@ -96,7 +96,7 @@ public class SjekkIdenterTest {
 
         when(sjekkOmGyldigeIdenterMock.execute(anySet())).thenReturn(serviceResponse);
         when(findIdenterNotUsedInDBMock.filtrer(anySet())).thenReturn(serviceResponse);
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(serviceResponse);
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(serviceResponse);
 
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
@@ -117,7 +117,7 @@ public class SjekkIdenterTest {
 
         when(sjekkOmGyldigeIdenterMock.execute(anySet())).thenReturn(serviceResponse);
         when(findIdenterNotUsedInDBMock.filtrer(anySet())).thenReturn(new HashSet());
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(new HashSet());
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(new HashSet());
 
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
@@ -151,7 +151,7 @@ public class SjekkIdenterTest {
 
         when(sjekkOmGyldigeIdenterMock.execute(anySet())).thenReturn(serviceResponseGyldig);
         when(findIdenterNotUsedInDBMock.filtrer(anySet())).thenReturn(serviceResponseDB);
-        when(filterPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(serviceResponseMiljo);
+        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(anySet())).thenReturn(serviceResponseMiljo);
 
         Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
 
