@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
@@ -24,7 +24,7 @@ public class DefaultTestdataIdenterFetcher implements TestdataIdenterFetcher {
     @Autowired
     private MessageProvider messageProvider;
 
-    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriterieRequest personKriterierListe){
+    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe){
         List<TestdataRequest> testdataRequests = testdata.genererIdenterForTestdataRequests(personKriterierListe);
 
         testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
@@ -45,7 +45,7 @@ public class DefaultTestdataIdenterFetcher implements TestdataIdenterFetcher {
             if (!harNokIdenterForKritereIRequest(request)) {
                 int counter = 0;
                 while ((counter < MAX_TRIES) && !harNokIdenterForKritereIRequest(request)) {
-                    RsPersonKriterieRequest singelKriterieListe = new RsPersonKriterieRequest();
+                    RsPersonKriteriumRequest singelKriterieListe = new RsPersonKriteriumRequest();
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
                     singelKriterieListe.getPersonKriterierListe().add(request.getKriterie());
 

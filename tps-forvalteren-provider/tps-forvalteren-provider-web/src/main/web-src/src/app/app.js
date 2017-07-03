@@ -18,7 +18,8 @@ require('./filters/filter.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
-    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter']);
+    'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome',
+    'tps-forvalteren.testgruppe']);
 
 require('./shared/index');
 
@@ -104,14 +105,37 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
-            .state('vis-testdata', {
-                url: "/vis-testdata",
+            .state('testgruppe', {
+                url: "/testgruppe",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
                     }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/testgruppe/testgruppe.html",
+                        controller: 'TestgruppeCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('vis-testdata', {
+                url: "/vis-testdata/:id",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
                     }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
@@ -134,13 +158,10 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('opprett-testdata', {
-                url: "/opprett-testdata",
+                url: "/opprett-testdata/:id",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
-                    }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
@@ -163,7 +184,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('servicerutine', {
-                url: "/{serviceRutineName}",
+                url: "/serviceRutineName/{serviceRutineName}",
                 params: {
                     serviceRutineName: null
                 },
@@ -207,7 +228,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     views: {
                         'content@': {
                             templateUrl: "app/components/welcome/welcome.html",
-                            controller: 'HeaderCtrl'
+                            controller: 'WelcomeCtrl'
                         },
                         'header@': {
                             templateUrl: "app/shared/header/header.html",

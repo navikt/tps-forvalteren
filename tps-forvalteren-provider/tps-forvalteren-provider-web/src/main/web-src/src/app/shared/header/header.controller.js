@@ -1,7 +1,9 @@
 
 angular.module('tps-forvalteren')
-    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', '$mdSidenav',
-        function ($scope, authenticationService, locationService, $mdSidenav) {
+    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', 'headerService',
+        function ($scope, authenticationService, locationService, headerService) {
+
+            $scope.visTestdataKnapp = false;
 
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {
@@ -9,24 +11,30 @@ angular.module('tps-forvalteren')
                 });
             };
 
-            $scope.toggleSideNav = function (menuId) {
-                $mdSidenav(menuId).toggle();
-            };
-
-            $scope.endringState = function () {
-                locationService.redirectToEndringState();
-            };
-
-            $scope.serviceRutineState = function () {
-                locationService.redirectToServiceRutineState();
-            };
-
             $scope.openGT = function () {
                 locationService.redirectToGT();
             };
 
             $scope.openVisTestdata = function () {
-                locationService.redirectToVisTestdata();
+                locationService.redirectToTestgruppe();
             };
 
+            $scope.goBack = function () {
+                window.history.back();
+            };
+
+            $scope.goHome = function () {
+                locationService.redirectToLoginReturnState();
+            };
+
+            $scope.isRoot = locationService.isRoot();
+
+            var environment = $scope.$resolve.environmentsPromise;
+            var prodEnvironment = false;
+            for (i in environment) {
+                if (environment[i] == 'p') {
+                    prodEnvironment = true;
+                }
+            }
+            $scope.visTestdataKnapp = !prodEnvironment;
         }]);
