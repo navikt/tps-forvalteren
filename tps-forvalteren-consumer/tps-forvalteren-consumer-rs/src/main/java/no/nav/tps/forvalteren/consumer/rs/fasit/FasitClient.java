@@ -6,6 +6,7 @@ import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.ResourceElement;
+import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
@@ -26,6 +27,10 @@ public class FasitClient {
     private static final String PING_QUEUE_MANAGER_ALIAS = "mqGateway";
     private static final ResourceTypeDO PING_TYPE = ResourceTypeDO.QueueManager;
     private static final String PING_APPLICATION_NAME = "tpsws";
+    private static final String PREFIX_MQ_QUEUES = "QA.";
+    private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
+    private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
+    private static final String DEV_ENVIRONMENT = "D8";
 
     private FasitRestClient restClient;
 
@@ -78,6 +83,16 @@ public class FasitClient {
         return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
     }
 
+    private String getQueueName(String alias, String environment){
+        if(environment.contains("u") || environment.contains("U")){
+            environment = DEV_ENVIRONMENT;
+        }
+        if(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias)){
+            return PREFIX_MQ_QUEUES + environment.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
+        }
+        return PREFIX_MQ_QUEUES + environment.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
+    }
+
     public boolean ping() {
         try {
             String pingEnvironment;
@@ -119,21 +134,28 @@ public class FasitClient {
         }
 
         public QueueManager getQueueManager(String alias) {
-            ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.QueueManager);
+            String queueManagerEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
+            if("p".equalsIgnoreCase(deployedEnvironment)) {
+                queueManagerEnvironment = environment;
+            }
+
+            ResourceElement resource = FasitClient.this.findResource(alias, name, queueManagerEnvironment, ResourceTypeDO.QueueManager);
 
             String managerName = resource.getPropertyString("name");
             String hostname    = resource.getPropertyString("hostname");
             String port        = resource.getPropertyString("port");
-            return new QueueManager(managerName, hostname, port, this.environment);
+
+            return new QueueManager(managerName, hostname, port, queueManagerEnvironment);
         }
 
         public Queue getQueue(String alias) {
-            ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.Queue);
+//            ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.Queue);
+//
+//            String queueName = resource.getPropertyString("queueName");
+//            String manager   = resource.getPropertyString("queueManager");
 
-            String queueName = resource.getPropertyString("queueName");
-            String manager   = resource.getPropertyString("queueManager");
-
-            return new Queue(queueName, manager);
+            String queueName = getQueueName(alias, environment);
+            return new Queue(queueName, null);
         }
 
     }

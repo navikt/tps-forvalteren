@@ -5,6 +5,7 @@ import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
 import no.nav.aura.envconfig.client.rest.PropertyElement;
 import no.nav.aura.envconfig.client.rest.ResourceElement;
+import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 import org.junit.Before;
@@ -19,6 +20,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
@@ -33,7 +35,10 @@ public class FasitClientTest {
     private static final String USERNAME    = "username";
     private static final String PASSWORD    = "password";
     private static final String BASE_URL    = "url";
-    private static final String ENVIRONMENT = "u1";
+    private static final String ENVIRONMENT_U = "U1";
+    private static final String ENVIRONMENT_Q = "Q1";
+    private static final String ENVIRONMENT_T = "T1";
+    private static final String ENVIRONMENT_D = "D8";
     private static final String APPLICATION = "application";
 
     private static final String QUEUE_MANAGER_ALIAS     = "queueManagerAlias";
@@ -81,7 +86,7 @@ public class FasitClientTest {
 
     @Test
     public void queueManagerContainsAllDataFromTheRetrievedResource() {
-        QueueManager queueManager = fasitClient.getApplication(APPLICATION, ENVIRONMENT)
+        QueueManager queueManager = fasitClient.getApplication(APPLICATION, ENVIRONMENT_U)
                                                .getQueueManager(QUEUE_MANAGER_ALIAS);
 
         assertThat(queueManager.getName(), is(QUEUE_MANAGER_NAME));
@@ -90,21 +95,41 @@ public class FasitClientTest {
     }
 
     @Test
-    public void queueContainsAllDataFromTheRetrievedResource() {
-        Queue queue = fasitClient.getApplication(APPLICATION, ENVIRONMENT)
+    public void hvisUerMiljoeSaaRetuneresEnKoeMotD8() {
+        Queue queue = fasitClient.getApplication(APPLICATION, ENVIRONMENT_U)
                                  .getQueue(QUEUE_ALIAS);
 
-        assertThat(queue.getName(), is(QUEUE_NAME));
-        assertThat(queue.getManager(), is(QUEUE_MANAGER_NAME));
+        assertTrue(queue.getName().contains(ENVIRONMENT_D));
+        assertTrue(queue.getName().equals("QA.D8_412."+QUEUE_ALIAS));
     }
 
     @Test
-    public void resourcesAreAddedToCache() {
-        fasitClient.getApplication(APPLICATION, ENVIRONMENT)
-                   .getQueue(QUEUE_ALIAS);
+    public void hvisTerMiljoeOgManOnskerABrukeHentKoeSaaReturneresHentKoe() {
+        Queue queue = fasitClient.getApplication(APPLICATION, ENVIRONMENT_T)
+                .getQueue(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
-        verify(cacheMock).put(anyString(), any());
+        assertTrue(queue.getName().contains(ENVIRONMENT_T));
+        String koe = ("QA.T1_412." + TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        assertTrue(queue.getName().equals(koe));
     }
+
+    // Endret
+//    @Test
+//    public void queueContainsAllDataFromTheRetrievedResource() {
+//        Queue queue = fasitClient.getApplication(APPLICATION, ENVIRONMENT_U)
+//                                 .getQueue(QUEUE_ALIAS);
+//
+//        assertThat(queue.getName(), is(QUEUE_NAME));
+//        assertThat(queue.getManager(), is(QUEUE_MANAGER_NAME));
+//    }
+//
+//    @Test
+//    public void resourcesAreAddedToCache() {
+//        fasitClient.getApplication(APPLICATION, ENVIRONMENT_U)
+//                   .getQueue(QUEUE_ALIAS);
+//
+//        verify(cacheMock).put(anyString(), any());
+//    }
 
     @Test
     public void resourcesAreRetrievedFromCache() {
@@ -115,7 +140,7 @@ public class FasitClientTest {
 
         when(cacheMock.getIfPresent(anyString())).thenReturn(queueResourceElement);
 
-        fasitClient.getApplication(APPLICATION, ENVIRONMENT)
+        fasitClient.getApplication(APPLICATION, ENVIRONMENT_U)
                    .getQueue(QUEUE_ALIAS);
 
         verify(cacheMock, never()).put(anyString(), any());

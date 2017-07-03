@@ -8,7 +8,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
-import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;

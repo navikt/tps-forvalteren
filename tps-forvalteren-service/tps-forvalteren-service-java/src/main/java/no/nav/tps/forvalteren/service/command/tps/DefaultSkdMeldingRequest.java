@@ -27,14 +27,11 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
 
         tpsAuthorisationService.authoriseRestCall(skdMeldingDefinition);
 
-        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS);
+        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());
 
         String response = messageQueueConsumer.sendMessage(skdMelding);
 
-        MessageQueueConsumer messageQueueConsumerStartAjour = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS);
-
-        String ajourforingskoe = "QA." + environment.toUpperCase() + "_412." + TpsConstants.REQUEST_QUEUE_START_AJOURHOLD_ALIAS;
-        messageQueueConsumerStartAjour.setRequestQueue(ajourforingskoe);
+        MessageQueueConsumer messageQueueConsumerStartAjour = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_START_AJOURHOLD_ALIAS);
 
         return messageQueueConsumerStartAjour.sendMessage(KAN_VAERE_HVA_SOM_HELST_STRING);
     }

@@ -31,4 +31,6 @@ public class SkdFeltDefinisjon {
         this.idRekkefolge = idRekkefolge;
         this.antallBytesAvsatt = antallByesAvsatt;
     }
+
+    public SkdFeltDefinisjon(){}
 }

@@ -2,13 +2,15 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
-import no.nav.tps.forvalteren.service.command.testdata.FilterPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.skd.utils.PersonToSkdParametersMapper;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetTpsSkdmeldingService;
+import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +27,6 @@ public class SkdUpdateCreatePersoner {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TpsRequestSender.class);
 
-    private static final String[] T_ENVIRONMENTS = {"t0","t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12"};
-    private static final String[] Q_ENVIRONMENTS = {"q0","q1","q2","q3","q4","q5","q6","q8"};
-    private static final String[] U_ENVIRONMENTS = {"u5", "u6"};
-
     @Value("${environment.class}")
     private String deployedEnvironment;
 
@@ -42,14 +40,20 @@ public class SkdUpdateCreatePersoner {
     private SkdMeldingRequest skdMeldingRequest;
 
     @Autowired
-    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
+    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
     @Autowired
     private GetTpsSkdmeldingService getTpsSkdmeldingService;
 
+    @Autowired
+    private GetEnvironments getEnvironmentsCommand;
+
+    @Autowired
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+
     public void execute(List<Person> personer){
         List<String> identer = ekstraherIdenterFraPerson(personer);
-        Set<String> identerSomIkkeFinnesiTPSiMiljoe = filterPaaIdenterTilgjengeligeIMiljo.filtrer(identer);
+        Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer);
 
         for(Person person : personer){
             Map<String,String> skdParametere;
@@ -68,17 +72,11 @@ public class SkdUpdateCreatePersoner {
     private void sendSkdMeldingerTilAlleMiljoer(String skdMelding){
         TpsSkdMeldingDefinition skdMeldingDefinition = getTpsSkdmeldingService.execute().get(0);  // For now only 1 SkdMeldingDefinition
 
-        for(String env : T_ENVIRONMENTS){
-            sendSkdMelding(skdMelding, skdMeldingDefinition, env);
-        }
-        for(String env : U_ENVIRONMENTS){
-            sendSkdMelding(skdMelding, skdMeldingDefinition, env);
-        }
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
 
-        if("q".equalsIgnoreCase(deployedEnvironment)){
-            for(String env : Q_ENVIRONMENTS){
-                sendSkdMelding(skdMelding, skdMeldingDefinition, env);
-            }
+        for(String env : envToCheck){
+            sendSkdMelding(skdMelding, skdMeldingDefinition, env);
         }
     }
 
