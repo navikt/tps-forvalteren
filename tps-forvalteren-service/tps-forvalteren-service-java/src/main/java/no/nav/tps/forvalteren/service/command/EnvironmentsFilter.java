@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.provider.rs.api.v1.utils;
+package no.nav.tps.forvalteren.service.command;
 
 import org.springframework.util.AntPathMatcher;
 

@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers;
+package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
@@ -13,41 +13,41 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.res
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
-public class S610HentGT implements ServiceRoutineResolver{
+public class S010Adressehistorikk implements ServiceRoutineResolver {
 
     @Override
     public TpsServiceRoutineDefinition resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("FS03-FDNUMMER-KERNINFO-O")
-                .internalName("Hent GT")
+                .name("FS03-FDNUMMER-ADRHISTO-O")
+                .internalName("Hent Adressehistorikk")
                 .javaClass(TpsServiceRoutineHentByFnrRequest.class)
                 .config()
-                    .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
+                .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
                 .and()
                 .parameter()
-                    .name("fnr")
-                    .required()
-                    .type(TpsParameterType.STRING)
+                .name("fnr")
+                .required()
+                .type(TpsParameterType.STRING)
 
                 .and()
                 .parameter()
-                    .name("aksjonsKode")
-                    .required()
-                    .type(TpsParameterType.STRING)
-                    .value("B0")
+                .name("aksjonsKode")
+                .required()
+                .type(TpsParameterType.STRING)
+                .values("A0", "B0","C0", "C1")
                 .and()
 
                 .transformer()
-                    .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
-                    .postSend(ResponseDataTransformer.extractDataFromXmlElement("person"))
-                    .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
+                .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
+                .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataS010"))
+                .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()
-                    .addRequiredSearchAuthorisationStrategy(DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation())
-                    .addRequiredSearchAuthorisationStrategy(EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation())
-                    .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
-                    .addSecurity()
+                .addRequiredSearchAuthorisationStrategy(DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
+                .addSecurity()
 
                 .build();
     }

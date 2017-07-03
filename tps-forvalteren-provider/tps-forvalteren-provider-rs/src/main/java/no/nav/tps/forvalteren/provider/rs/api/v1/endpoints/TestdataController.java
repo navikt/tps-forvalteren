@@ -22,6 +22,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdUpdateCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,9 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
+
+    @Autowired
+    private SkdUpdateCreatePersoner skdUpdateOrCreatePersoner;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -92,14 +96,14 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
-    @RequestMapping(value = "/deletePersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
         personRepository.deleteByIdIn(personIdListe.getIds());
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
-    @RequestMapping(value = "/updatePersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
     public void updatePersons(@RequestBody List<RsPerson> personListe) {
         List<Person> personer = mapper.mapAsList(personListe, Person.class);
         savePersonListService.save(personer);
@@ -107,20 +111,29 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
-    @RequestMapping(value = "/checkPersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
         return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
-    @RequestMapping(value = "/createPersoner/{gruppeId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
     public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
         List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
         setNameOnPersonsService.execute(personer);
         setGruppeIdOnPersons.setGruppeId(personer, gruppeId);
         savePersonListService.save(personer);
     }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
+    @RequestMapping(value = "/saveTPS", method = RequestMethod.POST)
+    public void lagreTilTPS(@RequestBody List<String> identer) {
+        List<Person> personer = personRepository.findByIdentIn(identer);
+        skdUpdateOrCreatePersoner.execute(personer);
+    }
+
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -144,6 +157,13 @@ public class TestdataController {
     public void createGruppe(@RequestBody RsSimpleGruppe rsGruppe) {
         Gruppe gruppe = mapper.map(rsGruppe, Gruppe.class);
         gruppeRepository.save(gruppe);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
+    @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
+    public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
+        gruppeRepository.deleteById(gruppeId);
     }
 
     @RequestMapping(value = "/tempdata", method = RequestMethod.GET)

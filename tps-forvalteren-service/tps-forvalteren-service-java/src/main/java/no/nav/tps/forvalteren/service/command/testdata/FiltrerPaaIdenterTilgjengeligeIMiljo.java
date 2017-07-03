@@ -4,11 +4,12 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,19 +22,11 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
-public class FilterPaaIdenterTilgjengeligeIMiljo {
+public class FiltrerPaaIdenterTilgjengeligeIMiljo {
 
     private static final int MAX_ANTALL_IDENTER_TIL_REQUEST_M201 = 80;
 
-    //TODO Finne ut hva man skal gjoere med disse...
-    // The queue manager channel 'T7_TPSWS' for this env does not exist.  Tatt ut t13 fordi randomly ikke virket.
-    // Q7 er også noe feil med.. Q9 også... Qx også
-    private static final String[] T_ENVIRONMENTS = {"t0","t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12"};
-    private static final String[] Q_ENVIRONMENTS = {"q0","q1","q2","q3","q4","q5","q6","q8"};
-    private static final String[] U_ENVIRONMENTS = {"u5", "u6"};
-
-    @Value("${environment.class}")
-    private String deployedEnvironment;
+    private static final String TPS_SYSTEM_ERROR_CODE = "12";
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -44,27 +37,33 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
 
-    public Set<String> filtrer(Collection<String> identer){
-        if(!(identer.size() > MAX_ANTALL_IDENTER_TIL_REQUEST_M201)){
+    @Autowired
+    private GetEnvironments getEnvironmentsCommand;
 
+    @Autowired
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+
+    public Set<String> filtrer(Collection<String> identer){
+        if(identer.size() <= MAX_ANTALL_IDENTER_TIL_REQUEST_M201){
             return filtrerPaaIdenter(identer);
 
         } else {
-
             Set<String> tilgjengeligeIdenter = new HashSet<>();
             List<String> identerListe = new ArrayList<>(identer);
             int batchStart = 0;
-            int batchStop;
             while(batchStart < identer.size()){
-                batchStop = (identer.size() <= batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
-                            ? identer.size() : (batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
-
-                Set<String> tilgjengeligeIdenterFraEnJobb = filtrerPaaIdenter(identerListe.subList(batchStart, batchStop));
-                tilgjengeligeIdenter.addAll(tilgjengeligeIdenterFraEnJobb);
+                tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe));
                 batchStart = batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201;
             }
             return tilgjengeligeIdenter;
         }
+    }
+
+    private Set<String> hentEnBatchTilgjengeligeIdenter(int batchStart, List<String> identer){
+        int batchStop = (identer.size() <= batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
+                ? identer.size() : (batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
+
+        return filtrerPaaIdenter(identer.subList(batchStart, batchStop));
     }
 
     private Set<String> filtrerPaaIdenter(Collection<String> identer){
@@ -78,20 +77,17 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
     }
 
     private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
-
         Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>)tpsRequestParameters.get("fnr"));
 
-        if("q".equalsIgnoreCase(deployedEnvironment)){
-            hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, Q_ENVIRONMENTS, tpsRequestParameters, context);
-        }
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
 
-        hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, U_ENVIRONMENTS, tpsRequestParameters, context);
-        hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(tilgjengeligeIdenterAlleMiljoer, T_ENVIRONMENTS, tpsRequestParameters, context);
+        filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(tilgjengeligeIdenterAlleMiljoer, environmentsToCheck, tpsRequestParameters, context);
 
         return tilgjengeligeIdenterAlleMiljoer;
     }
 
-    private void hentOgTaVarePaaIdenterTilgjengeligIEtBestemtMiloe(Set<String> tilgjengligIdenter, String[] miljoerAaSjekke, Map<String, Object> tpsRequestParameters, TpsRequestContext context){
+    private void filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(Set<String> tilgjengligIdenter, Set<String> miljoerAaSjekke, Map<String, Object> tpsRequestParameters, TpsRequestContext context){
         for(String miljoe : miljoerAaSjekke){
             context.setEnvironment(miljoe);
 
@@ -114,7 +110,8 @@ public class FilterPaaIdenterTilgjengeligeIMiljo {
         }
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
-        if("12".equals(status.getKode())){
+
+        if(TPS_SYSTEM_ERROR_CODE.equals(status.getKode())){
             return true;
         }
         return false;

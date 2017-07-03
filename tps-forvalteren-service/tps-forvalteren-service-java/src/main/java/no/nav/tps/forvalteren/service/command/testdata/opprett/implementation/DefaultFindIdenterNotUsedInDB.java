@@ -22,8 +22,8 @@ public class DefaultFindIdenterNotUsedInDB implements FindIdenterNotUsedInDB {
         List<String> identListe = new ArrayList<>(identer);
         List<Person> personerSomFinnes = repository.findByIdentIn(identListe);
         List<String> opptatteIdenter = personerSomFinnes.stream()
-                .map(Person::getIdent)
-                .collect(Collectors.toList());
+                                                        .map(Person::getIdent)
+                                                        .collect(Collectors.toList());
 
         identListe.removeAll(opptatteIdenter);
         return new HashSet<>(identListe);

@@ -1,15 +1,15 @@
 package no.nav.tps.forvalteren.service.command.authorisation;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsMeldingDefinition;
 
 public interface TpsAuthorisationService {
 
-    void authoriseRestCall(TpsServiceRoutineDefinition serviceRoutine);
+    void authoriseRestCall(TpsMeldingDefinition serviceRoutine);
 
-    void authorisePersonSearch(TpsServiceRoutineDefinition serviceRoutine, String fnr);
+    void authorisePersonSearch(TpsMeldingDefinition serviceRoutine, String fnr);
 
-    boolean isAuthorisedToUseServiceRutine(TpsServiceRoutineDefinition serviceRoutine);
+    boolean isAuthorisedToUseServiceRutine(TpsMeldingDefinition serviceRoutine);
 
-    boolean isAuthorisedToFetchPersonInfo(TpsServiceRoutineDefinition serviceRoutine, String fnr);
+    boolean isAuthorisedToFetchPersonInfo(TpsMeldingDefinition serviceRoutine, String fnr);
 
 }

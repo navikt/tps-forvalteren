@@ -40,13 +40,13 @@ public class Gruppe extends ChangeStamp {
     @Column(name = "GRUPPE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "NAVN", nullable = false, length = 30)
+    @Column(name = "NAVN", unique = true, nullable = false, length = 30)
     private String navn;
 
     @Column(name = "BESKRIVELSE", length = 200)
     private String beskrivelse;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppe")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "gruppe")
     private List<Person> personer = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

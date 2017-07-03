@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import no.nav.tps.forvalteren.service.command.testdata.FilterPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +14,14 @@ import java.util.Set;
 public class DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest implements FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest {
 
     @Autowired
-    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
+    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
     public void execute(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = new HashSet<>();
         for (TestdataRequest request : testdataRequests) {
             alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
         }
-        Set<String> alleTilgjengeligIdenter = filterPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter);
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 

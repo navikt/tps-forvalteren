@@ -33,6 +33,11 @@ ALTER TABLE T_TAG         ADD CONSTRAINT T_TAG_PK         PRIMARY KEY (TAG_ID);
 ALTER TABLE T_GRUPPE_TAG ADD CONSTRAINT GRUPPE_ID_FK FOREIGN KEY (GRUPPE_ID) REFERENCES T_GRUPPE (GRUPPE_ID);
 ALTER TABLE T_GRUPPE_TAG ADD CONSTRAINT TAG_ID_FK    FOREIGN KEY (TAG_ID)    REFERENCES T_TAG    (TAG_ID);
 
+-----------------------------------------
+-- U N I Q U E   C O N S T R A I N T S --
+-----------------------------------------
+ALTER TABLE T_GRUPPE ADD CONSTRAINT NAVN_UNIQUE UNIQUE (NAVN);
+
 -----------------------
 -- S E Q U E N C E S --
 -----------------------

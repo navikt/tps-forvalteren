@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.M201HentFnrNavnDiskresjonPaFlerePersoner;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S010Adressehistorikk;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S015HentAdresselinjehistorikk;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S016Utvandring;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.S610HentGT;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.ServiceRoutineResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S010Adressehistorikk;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S015HentAdresselinjehistorikk;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S016Utvandring;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.Command;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +82,15 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnr(){
         return new M201HentFnrNavnDiskresjonPaFlerePersoner();
+    }
+
+    @Bean
+    ServiceRoutineResolver hentPersonSok() {
+        return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
+    }
+
+    @Bean
+    SkdMeldingResolver innvandring() {
+        return new InnvandringAarsakskode02();
     }
 }

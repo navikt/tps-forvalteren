@@ -5,8 +5,8 @@ import java.util.Set;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.provider.rs.api.v1.utils.EnvironmentsFilter;
 import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ public class EnvironmentController {
     @Autowired
     private GetEnvironments getEnvironmentsCommand;
 
+    @Autowired
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+
     @Value("${tps.forvalteren.production-mode}")
     private boolean currentEnvironmentIsProd;
-
-    @Value("${environment.class}")
-    private String deployedEnvironment;
 
     /**
      * Get a set of available environments from Vera
@@ -46,38 +46,9 @@ public class EnvironmentController {
             return environments;
         } else {
             Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
-            return filterEnvironments(environments);
+            environments = filterEnvironmentsOnDeployedEnvironment.execute(environments);
+            return environments;
         }
     }
 
-    private Set<String> filterEnvironments(Set<String> environments){
-        char env = deployedEnvironment.charAt(0);
-        switch (env){
-            case 'u':
-                return EnvironmentsFilter.create()
-                        .include("u*")
-                        .include("t*")
-                        .filter(environments);
-            case 't':
-                return EnvironmentsFilter.create()
-                        .include("u*")
-                        .include("t*")
-                        .filter(environments);
-            case 'q':
-                return EnvironmentsFilter.create()
-                        .include("q*")
-                        .include("u*")
-                        .include("t*")
-                        .filter(environments);
-            case 'p':
-                return EnvironmentsFilter.create()
-                        .include("p*")
-                        .filter(environments);
-            default:
-                return EnvironmentsFilter.create()
-                        .include("u*")
-                        .include("t*")
-                        .filter(environments);
-        }
-    }
 }

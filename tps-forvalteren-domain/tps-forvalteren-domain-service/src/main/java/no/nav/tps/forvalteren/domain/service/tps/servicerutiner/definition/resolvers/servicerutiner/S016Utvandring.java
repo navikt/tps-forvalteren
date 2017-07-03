@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers;
+package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
