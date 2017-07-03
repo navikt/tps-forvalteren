@@ -29,7 +29,6 @@ public class FasitClient {
     private static final String PING_APPLICATION_NAME = "tpsws";
     private static final String PREFIX_MQ_QUEUES = "QA.";
     private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
-    private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
     private static final String DEV_ENVIRONMENT = "D8";
 
     private FasitRestClient restClient;
@@ -83,22 +82,10 @@ public class FasitClient {
         return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
     }
 
-    private String getQueueName(String alias, String environment){
-        if(environment.contains("u") || environment.contains("U")){
-            environment = DEV_ENVIRONMENT;
-        }
-        if(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias)){
-            return PREFIX_MQ_QUEUES + environment.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
-        }
-        return PREFIX_MQ_QUEUES + environment.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
-    }
-
     public boolean ping() {
         try {
-            String pingEnvironment;
-            if("p".equalsIgnoreCase(deployedEnvironment)){
-                pingEnvironment = "p";
-            } else {
+            String pingEnvironment = deployedEnvironment;
+            if(!"p".equalsIgnoreCase(deployedEnvironment)){
                 pingEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
             }
 
@@ -156,6 +143,17 @@ public class FasitClient {
 
             String queueName = getQueueName(alias, environment);
             return new Queue(queueName, null);
+        }
+
+        private String getQueueName(String alias, String environment){
+            String environmentForQueueName = environment;
+            if(environment.toUpperCase().contains("U")){
+                environmentForQueueName = DEV_ENVIRONMENT;
+            }
+            if(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias)){
+                return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
+            }
+            return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
         }
 
     }

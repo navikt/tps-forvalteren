@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
-
-
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsSokPersonServiceRoutineRequest;
@@ -14,6 +11,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQU
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataListTransformer.extractDataListFromXml;
 import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation;
+import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation;
 
 public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements ServiceRoutineResolver {
 
@@ -100,7 +98,7 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
 
                 .securityBuilder()
                 .addRequiredSearchAuthorisationStrategy(diskresjonskodeAuthorisation())
-                .addRequiredSearchAuthorisationStrategy(EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(egenAnsattAuthorisation())
                 .addSecurity()
 
                 .build();

@@ -5,7 +5,6 @@ import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +22,13 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
     private TpsAuthorisationService tpsAuthorisationService;
 
     @Override
-    public String execute(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment) throws JMSException, HttpUnauthorisedException {
+    public String execute(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
 
         tpsAuthorisationService.authoriseRestCall(skdMeldingDefinition);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());
 
-        String response = messageQueueConsumer.sendMessage(skdMelding);
+        messageQueueConsumer.sendMessage(skdMelding);
 
         MessageQueueConsumer messageQueueConsumerStartAjour = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_START_AJOURHOLD_ALIAS);
 

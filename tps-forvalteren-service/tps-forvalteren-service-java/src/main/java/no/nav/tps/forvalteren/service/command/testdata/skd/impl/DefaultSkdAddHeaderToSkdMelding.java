@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding {
 
-    private static final String whitespace20 = "                    ";
+    private static final String WHITESPACE_20_STK = "                    ";
 
     private static final String KJORE_NUMMER = "000004421";
     private static final String KODE_SYSTEM = "SKD ";
     private static final String MQ_HANDLE = "000000000";
-    private static final String SKD_REFERANSE = whitespace20;
+    private static final String SKD_REFERANSE = WHITESPACE_20_STK;
 
     private static final int INDEX_START_TILDELINGSKODE = 873;
     private static final int INDEX_SLUTT_TILDELINGSKODE = 874;

@@ -25,7 +25,6 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
     private static final int INDEX_START_TRANSTYPE_HEADER = 24;
     private static final int INDEX_START_TILDELINGSKODE_HEADER = 25;
 
-    private static final String TILDELINGSKODE_FOR_OPPRETT = "1";
     private static final String DEFUALT_TRANSTYPE = "1";
 
     String testSkdMld = "060121241102017062700000010220170627100000000Saks                                              Rask                                                                                                                                                                           00000000                        000000000000809674014020170627100000000010000000000000000000                                                  000201706272017062700000000000000000000                                                   00000000                                                                                          0000012017062720170627000000000000000000000000000000000000000 00000000 00000000 00000000 000000000000000000000000000                                                  00000000000000                                                  00000000000000000000000000000000000000000  2                0000        00000000 000000     000000000000        00000000                                                                                                                        00000000000 00000000 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 00000000                                                                                                                                                                                                                                                                                                         ";
@@ -95,7 +94,7 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
 
         int sizeSkdMldMedHeader = skdMeldingSB.length();
 
-        assertTrue(FASIT_LENGTH_HEADER == (sizeSkdMldMedHeader - sizeSkdMld));
+        assertSame(FASIT_LENGTH_HEADER , (sizeSkdMldMedHeader - sizeSkdMld));
     }
 
 }

@@ -4,6 +4,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 
 import javax.jms.JMSException;
 
+@FunctionalInterface
 public interface SkdMeldingRequest {
 
     String execute(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment) throws JMSException;

@@ -1,11 +1,10 @@
 package no.nav.tps.forvalteren.service.command.authorisation;
 
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsMeldingDefinition;
+import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SearchSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SecurityStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

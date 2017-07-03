@@ -44,26 +44,26 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
     public Set<String> filtrer(Collection<String> identer){
-        if(!(identer.size() > MAX_ANTALL_IDENTER_TIL_REQUEST_M201)){
-
+        if(identer.size() <= MAX_ANTALL_IDENTER_TIL_REQUEST_M201){
             return filtrerPaaIdenter(identer);
 
         } else {
-
             Set<String> tilgjengeligeIdenter = new HashSet<>();
             List<String> identerListe = new ArrayList<>(identer);
             int batchStart = 0;
-            int batchStop;
             while(batchStart < identer.size()){
-                batchStop = (identer.size() <= batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
-                            ? identer.size() : (batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
-
-                Set<String> tilgjengeligeIdenterFraEnJobb = filtrerPaaIdenter(identerListe.subList(batchStart, batchStop));
-                tilgjengeligeIdenter.addAll(tilgjengeligeIdenterFraEnJobb);
+                tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe));
                 batchStart = batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201;
             }
             return tilgjengeligeIdenter;
         }
+    }
+
+    private Set<String> hentEnBatchTilgjengeligeIdenter(int batchStart, List<String> identer){
+        int batchStop = (identer.size() <= batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
+                ? identer.size() : (batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
+
+        return filtrerPaaIdenter(identer.subList(batchStart, batchStop));
     }
 
     private Set<String> filtrerPaaIdenter(Collection<String> identer){

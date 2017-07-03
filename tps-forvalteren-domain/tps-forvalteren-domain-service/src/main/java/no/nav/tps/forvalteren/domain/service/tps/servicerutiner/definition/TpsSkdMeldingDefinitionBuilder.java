@@ -9,8 +9,6 @@ import java.util.List;
 
 public class TpsSkdMeldingDefinitionBuilder {
     private String name;
-    private String internalName;
-    private List<TpsParameter> parameters = new ArrayList<>();
     private TpsRequestConfig requestConfig;
     private List<ServiceRutineAuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
@@ -20,11 +18,6 @@ public class TpsSkdMeldingDefinitionBuilder {
 
     public TpsSkdMeldingDefinitionBuilder name(String name) {
         this.name = name;
-        return this;
-    }
-
-    public TpsSkdMeldingDefinitionBuilder internalName(String internalName) {
-        this.internalName = internalName;
         return this;
     }
 

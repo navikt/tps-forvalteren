@@ -25,7 +25,7 @@ import java.util.Set;
 @Service
 public class SkdUpdateCreatePersoner {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TpsRequestSender.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(SkdUpdateCreatePersoner.class);
 
     @Value("${environment.class}")
     private String deployedEnvironment;
@@ -83,8 +83,7 @@ public class SkdUpdateCreatePersoner {
     private void sendSkdMelding(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment){
         try {
             skdMeldingRequest.execute(skdMelding, skdMeldingDefinition, environment);
-        }
-        catch (JMSException jmsException) {
+        } catch (JMSException jmsException) {
             LOGGER.error(jmsException.getMessage(), jmsException);
             throw new HttpInternalServerErrorException(jmsException, "api/v1/testdata/saveTPS");
         } catch (HttpUnauthorisedException ex) {
