@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition;
 
-import no.nav.tps.forvalteren.domain.service.tps.TpsParameter;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
 
