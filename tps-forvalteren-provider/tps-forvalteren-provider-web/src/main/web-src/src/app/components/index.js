@@ -15,3 +15,4 @@ require('./vis-testdata/vis-testdata.controller');
 require('./opprett-testdata/opprett-testdata.controller');
 require('./welcome/welcome.controller');
 require('./testgruppe/testgruppe.controller');
+require('./testgruppe/nygruppe/nygruppe.controller');
