@@ -50,8 +50,10 @@ public class FasitClientTest {
     private static final String QUEUE_NAME  = "queueName";
 
     private static final String FASIT_DOES_NOT_ANSWER_ERROR = "Fasit does not answer";
-
     private static final String ENVIRONMENT_PROPERTY_VALUE = "deployedEnvironment";
+
+    private static final String HENT_PREFIX_KOE = "_411.";
+
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -109,7 +111,7 @@ public class FasitClientTest {
                 .getQueue(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
         assertTrue(queue.getName().contains(ENVIRONMENT_T));
-        String koe = ("QA.T1_412." + TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        String koe = ("QA.T1"+ HENT_PREFIX_KOE + TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
         assertTrue(queue.getName().equals(koe));
     }
 

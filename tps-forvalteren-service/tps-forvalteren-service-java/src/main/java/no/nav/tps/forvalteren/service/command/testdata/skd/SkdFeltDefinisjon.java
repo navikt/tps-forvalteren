@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class SkdFeltDefinisjon {
 
-    protected String defaultVerdi;
-    protected String nokkelNavn;
-    protected int idRekkefolge;   // For sortering for hvor de skal være.
-    protected int antallBytesAvsatt;
-    protected int fraByte;
-    protected int tilByte;
+    private String defaultVerdi;
+    private String nokkelNavn;
+    private int idRekkefolge;
+    private int antallBytesAvsatt;
+    private int fraByte;
+    private int tilByte;
     String verdi;
 
     public SkdFeltDefinisjon(String nokkelNavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt,

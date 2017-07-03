@@ -38,9 +38,9 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
 
         int sizeMld = testSkdMld.length();
 
-        skdAddHeaderToSkdMelding.execute(skdMeldingSB);
+        StringBuilder skdMedHeader = skdAddHeaderToSkdMelding.execute(skdMeldingSB);
 
-        assertTrue(skdMeldingSB.length() > sizeMld);
+        assertTrue(skdMedHeader.length() > sizeMld);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
 
         assertEquals(aarsakskode, fasitAarsakskode);
 
-        skdAddHeaderToSkdMelding.execute(skdMeldingSB);
+        StringBuilder skdMedHeader = skdAddHeaderToSkdMelding.execute(skdMeldingSB);
 
         String skdMldMedHeader = skdMeldingSB.toString().substring(INDEX_START_AARSAKSKODE_HEADER, 24);
 
@@ -64,9 +64,9 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
 
         assertEquals(aarsakskode, fasitAarsakskode);
 
-        skdAddHeaderToSkdMelding.execute(skdMeldingSB);
+        StringBuilder skdMedHeader = skdAddHeaderToSkdMelding.execute(skdMeldingSB);
 
-        String skdMldMedHeader = skdMeldingSB.toString().substring(INDEX_START_TRANSTYPE_HEADER, 25);
+        String skdMldMedHeader = skdMedHeader.toString().substring(INDEX_START_TRANSTYPE_HEADER, 25);
 
         assertEquals(skdMldMedHeader, fasitAarsakskode);
     }
@@ -78,9 +78,9 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
 
         assertEquals(aarsakskode, fasitAarsakskode);
 
-        skdAddHeaderToSkdMelding.execute(skdMeldingSB);
+        StringBuilder skdMedHeader = skdAddHeaderToSkdMelding.execute(skdMeldingSB);
 
-        String skdMldMedHeader = skdMeldingSB.toString().substring(INDEX_START_TILDELINGSKODE_HEADER, 26);
+        String skdMldMedHeader = skdMedHeader.toString().substring(INDEX_START_TILDELINGSKODE_HEADER, 26);
 
         assertEquals(skdMldMedHeader, fasitAarsakskode);
     }
@@ -90,9 +90,9 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
 
         int sizeSkdMld = skdMeldingSB.length();
 
-        skdAddHeaderToSkdMelding.execute(skdMeldingSB);
+        StringBuilder skdMedHeader = skdAddHeaderToSkdMelding.execute(skdMeldingSB);
 
-        int sizeSkdMldMedHeader = skdMeldingSB.length();
+        int sizeSkdMldMedHeader = skdMedHeader.length();
 
         assertSame(FASIT_LENGTH_HEADER , (sizeSkdMldMedHeader - sizeSkdMld));
     }

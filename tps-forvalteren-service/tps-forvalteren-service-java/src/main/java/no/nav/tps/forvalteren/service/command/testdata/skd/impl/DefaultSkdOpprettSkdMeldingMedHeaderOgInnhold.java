@@ -20,7 +20,7 @@ public class DefaultSkdOpprettSkdMeldingMedHeaderOgInnhold implements SkdOpprett
     @Override
     public String execute(Map<String, String> skdParameters) {
         StringBuilder skdMelding = skdInputParamsToSkdMeldingInnhold.execute(skdParameters);
-        skdAddHeaderToSkdMelding.execute(skdMelding);
-        return skdMelding.toString();
+        StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(skdMelding);
+        return skdMeldingMedHeader.toString();
     }
 }

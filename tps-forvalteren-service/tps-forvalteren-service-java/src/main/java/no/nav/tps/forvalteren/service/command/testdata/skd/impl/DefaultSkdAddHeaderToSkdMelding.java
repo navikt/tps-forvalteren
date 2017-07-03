@@ -22,16 +22,15 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
     private static final int INDEX_START_TRANSTYPE = 25;
     private static final int INDEX_SLUTT_TRANSTYPE = 26;
 
-    public void execute(StringBuilder skdMelding) {
+    public StringBuilder execute(StringBuilder skdMelding) {
         String headerSkdMelding = MQ_HANDLE + KODE_SYSTEM + KJORE_NUMMER;
         String aasakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
         String tildelingsKode = extractTildelingskode(skdMelding.toString());
         headerSkdMelding = headerSkdMelding + aasakskode + transType + tildelingsKode + SKD_REFERANSE;
-        skdMelding
-                .reverse()
-                .append(new StringBuilder(headerSkdMelding).reverse().toString())
-                .reverse();
+        return skdMelding.reverse()
+                        .append(new StringBuilder(headerSkdMelding).reverse().toString())
+                        .reverse();
     }
 
     private String extractAArsakskode(String skdMelding) {

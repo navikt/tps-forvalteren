@@ -34,9 +34,8 @@ public class DefaultSkdInputParamsToSkdMeldingInnhold implements SkdInputParamsT
     }
 
     private void addDefaultValueToEndOfString(SkdFeltDefinisjon skdFeltDefinisjon) {
-        if (skdFeltDefinisjon.getVerdi() == null) {
-            return;
+        if (skdFeltDefinisjon.getVerdi() != null) {
+            skdFeltDefinisjon.setVerdi(skdFeltDefinisjon.getVerdi() + skdFeltDefinisjon.getDefaultVerdi().substring(skdFeltDefinisjon.getVerdi().length()));
         }
-        skdFeltDefinisjon.setVerdi(skdFeltDefinisjon.getVerdi() + skdFeltDefinisjon.getDefaultVerdi().substring(skdFeltDefinisjon.getVerdi().length()));
     }
 }

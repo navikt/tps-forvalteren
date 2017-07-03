@@ -29,6 +29,7 @@ public class FasitClient {
     private static final String PING_APPLICATION_NAME = "tpsws";
     private static final String PREFIX_MQ_QUEUES = "QA.";
     private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
+    private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
     private static final String DEV_ENVIRONMENT = "D8";
 
     private FasitRestClient restClient;
@@ -151,7 +152,7 @@ public class FasitClient {
                 environmentForQueueName = DEV_ENVIRONMENT;
             }
             if(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias)){
-                return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
+                return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_HENTING + alias;
             }
             return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
         }
