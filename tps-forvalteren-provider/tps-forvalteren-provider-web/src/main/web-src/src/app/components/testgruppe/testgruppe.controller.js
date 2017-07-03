@@ -1,30 +1,43 @@
 angular.module('tps-forvalteren.testgruppe')
-    .controller('TestgruppeCtrl', ['$scope', 'headerService', 'testdataService', 'utilsService', 'locationService',
-        function ($scope, headerService, testdataService, utilsService, locationService) {
+    .controller('TestgruppeCtrl', ['$scope', 'headerService', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
+        function ($scope, headerService, testdataService, utilsService, locationService, $mdDialog) {
 
-        headerService.setHeader('Testdata');
+            headerService.setHeader('Testdata');
 
-        $scope.testgrupper = [];
+            var nyGruppeDialog = function (ev) {
+                var confirm = $mdDialog.confirm({
+                    controller: 'NyGruppeCtrl',
+                    templateUrl: 'app/components/testgruppe/nygruppe/nygruppe.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev
+                });
+                $mdDialog.show(confirm).then(function () {
+                    hentTestgrupper();
+                });
+            };
 
-        $scope.aapneFane = function (index) {
-            locationService.redirectToVisTestdata(index);
-        };
+            headerService.setButtons([{
+                text: 'Ny gruppe',
+                icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
+                click: nyGruppeDialog
+            }]);
 
-        testdataService.hentTestgrupper().then(
-            function(result) {
-                $scope.testgrupper = result.data;
-                if ($scope.testgrupper.length == 0) {
-                    testdataService.tempdata().then(
-                        function (result) {
-                            $scope.testgrupper = result.data;
+            $scope.testgrupper = [];
+
+            $scope.aapneFane = function (index) {
+                locationService.redirectToVisTestdata(index);
+            };
+
+            var hentTestgrupper = function () {
+                testdataService.hentTestgrupper().then(
+                    function (result) {
+                        $scope.testgrupper = result.data;
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                    });
-                }
-            },
-            function (error) {
-                utilsService.showAlertError(error);
-            }
-        );
-    }]);
+                    }
+                );
+            };
+
+            hentTestgrupper();
+        }]);

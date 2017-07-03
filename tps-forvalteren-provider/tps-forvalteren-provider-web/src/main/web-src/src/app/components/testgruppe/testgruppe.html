@@ -17,7 +17,7 @@
             </md-card-content>
         </md-card>
 
-        <div ng-repeat="testgruppe in testgrupper">
+        <div ng-repeat="testgruppe in testgrupper | orderBy: ['navn','beskrivelse']">
             <div layout="row" flex="100" style="cursor: pointer">
                 <md-card flex md-whiteframe="{{height}}"
                          ng-init="height = 1"
