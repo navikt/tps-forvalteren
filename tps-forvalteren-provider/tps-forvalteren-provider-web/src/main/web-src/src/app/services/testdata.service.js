@@ -33,7 +33,7 @@ angular.module('tps-forvalteren.service')
 
         self.sletteTestpersoner = function(identer){
             var defer = $q.defer();
-            $http.post(url + 'deletePersoner', {ids: identer}).then(
+            $http.post(url + 'deletepersoner', {ids: identer}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -46,7 +46,7 @@ angular.module('tps-forvalteren.service')
 
         self.oppdaterTestpersoner = function(personer){
             var defer = $q.defer();
-            $http.post(url + 'updatePersoner', personer).then(
+            $http.post(url + 'updatepersoner', personer).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -59,7 +59,7 @@ angular.module('tps-forvalteren.service')
 
         self.validerListe = function(identer){
             var defer = $q.defer();
-            $http.post(url + 'checkPersoner', identer).then(
+            $http.post(url + 'checkpersoner', identer).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -72,7 +72,7 @@ angular.module('tps-forvalteren.service')
 
         self.opprettFraListe = function(gruppeId, identer){
             var defer = $q.defer();
-            $http.post(url + 'createPersoner/' + gruppeId, identer).then(
+            $http.post(url + 'createpersoner/' + gruppeId, identer).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -94,7 +94,7 @@ angular.module('tps-forvalteren.service')
                 }
             );
             return defer.promise;
-        }
+        };
 
         self.tempdata = function () {
             var defer = $q.defer();
