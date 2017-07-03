@@ -9,9 +9,7 @@ angular.module('tps-forvalteren.testgruppe')
                     controller: 'NyGruppeCtrl',
                     templateUrl: 'app/components/testgruppe/nygruppe/nygruppe.html',
                     parent: angular.element(document.body),
-                    targetEvent: ev,
-                    bindToController: true,
-                    locals: {test: 'hei' }
+                    targetEvent: ev
                 });
                 $mdDialog.show(confirm).then(function () {
                     hentTestgrupper();
@@ -34,15 +32,6 @@ angular.module('tps-forvalteren.testgruppe')
                 testdataService.hentTestgrupper().then(
                     function (result) {
                         $scope.testgrupper = result.data;
-                        if ($scope.testgrupper.length == 0) {
-                            testdataService.tempdata().then(
-                                function (result) {
-                                    $scope.testgrupper = result.data;
-                                },
-                                function (error) {
-                                    utilsService.showAlertError(error);
-                                });
-                        }
                     },
                     function (error) {
                         utilsService.showAlertError(error);
