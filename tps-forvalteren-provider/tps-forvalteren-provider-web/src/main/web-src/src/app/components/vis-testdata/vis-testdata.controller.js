@@ -20,11 +20,12 @@ angular.module('tps-forvalteren.vis-testdata')
                 headerService.setIcons([{
                     icon: 'assets/icons/ic_delete_black_24px.svg',
                     click: function () {
+                        var personTekst = $scope.personer.length > 0 ? ' med ' + $scope.personer.length + ' testperson' : '';
+                        personTekst += $scope.personer.length > 1 ? 'er' : '';
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .textContent('Ønsker du å slette gruppe ' + headerTittel +
-                                ($scope.personer.length > 0 ? ' med ' + $scope.personer.length + ' testperson' +
-                                ($scope.personer.length > 1 ? 'er' : '') : '') + '?')
+                            .htmlContent('Ønsker du å slette gruppe <strong>' + headerTittel + '</strong>' + personTekst + '?<br><br>' +
+                                'Denne handlingen vil ikke slette testpersonene fra TPS, dersom de er opprettet der.')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
                             .cancel('Avbryt');
