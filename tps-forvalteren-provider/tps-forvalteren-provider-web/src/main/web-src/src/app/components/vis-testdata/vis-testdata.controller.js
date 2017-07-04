@@ -4,12 +4,37 @@ angular.module('tps-forvalteren.vis-testdata')
 
             var gruppeId = $location.url().match(/\d+/g);
 
+            var headerTittel;
+
             var setHeaderButtons = function () {
                 headerService.setButtons([{
                     text: 'Opprett ny testperson',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
                         locationService.redirectToOpprettTestdata(gruppeId);
+                    }
+                }]);
+            };
+
+            var setHeaderIcons = function () {
+                headerService.setIcons([{
+                    icon: 'assets/icons/ic_delete_black_24px.svg',
+                    click: function () {
+                        var confirm = $mdDialog.confirm()
+                            .title('Bekreft sletting')
+                            .textContent('Ønsker du å slette gruppe ' + headerTittel +
+                                ($scope.personer.length > 0 ? ' med ' + $scope.personer.length + ' testperson' +
+                                ($scope.personer.length > 1 ? 'er' : '') : '') + '?')
+                            .ariaLabel('Bekreft sletting')
+                            .ok('OK')
+                            .cancel('Avbryt');
+                        $mdDialog.show(confirm).then(function () {
+                            testdataService.sletteTestgruppe(gruppeId).then(
+                                function () {
+                                    locationService.redirectToTestgruppe();
+                                }
+                            )
+                        });
                     }
                 }]);
             };
@@ -38,8 +63,10 @@ angular.module('tps-forvalteren.vis-testdata')
                 $scope.personer = undefined;
                 testdataService.getTestpersoner(gruppeId).then(
                     function (result) {
-                        headerService.setHeader(result.data.navn);
+                        headerTittel = result.data.navn;
+                        headerService.setHeader(headerTittel);
                         setHeaderButtons();
+                        setHeaderIcons();
                         originalPersoner = result.data.personer;
                         fixDatoForDatepicker();
                         $scope.personer = angular.copy(originalPersoner);

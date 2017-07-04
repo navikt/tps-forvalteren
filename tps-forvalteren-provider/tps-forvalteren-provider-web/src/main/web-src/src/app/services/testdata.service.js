@@ -108,4 +108,17 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.sletteTestgruppe = function (gruppeId) {
+            var defer = $q.defer();
+            $http.post(url + 'deletegruppe/' + gruppeId).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
     }]);

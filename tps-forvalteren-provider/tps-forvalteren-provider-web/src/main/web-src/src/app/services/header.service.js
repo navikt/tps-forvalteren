@@ -13,7 +13,7 @@ angular.module('tps-forvalteren.service')
             $rootScope.header.buttons = buttons;
         };
 
-        self.getButtons = function () {
-            return $rootScope.header.buttons;
+        self.setIcons = function (icons) {
+            $rootScope.header.icons = icons;
         };
     }]);
