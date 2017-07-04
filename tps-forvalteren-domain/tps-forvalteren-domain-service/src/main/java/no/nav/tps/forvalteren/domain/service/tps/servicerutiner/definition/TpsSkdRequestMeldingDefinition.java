@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TpsSkdMeldingDefinition extends TpsMeldingDefinition {
+public class TpsSkdRequestMeldingDefinition extends TpsRequestMeldingDefinition {
 
 }

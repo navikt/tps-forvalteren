@@ -245,7 +245,7 @@ angular.module('tps-forvalteren.vis-testdata')
                     .title('Bekrefter lagring')
                     .textContent('Lagring er utført')
                     .ariaLabel('Bekrefter lagring')
-                    .ok('OK')
+                    .ok('OK');
 
                 $mdDialog.show(confirm).then(function () {
                 });

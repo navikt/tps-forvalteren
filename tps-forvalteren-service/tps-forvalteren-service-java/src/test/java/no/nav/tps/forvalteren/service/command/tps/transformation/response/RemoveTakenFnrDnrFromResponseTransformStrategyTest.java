@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.response;
 
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveTakenFnrFromResponseTransform;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class RemoveTakenFnrDnrFromResponseTransformStrategyTest {
 
         Response response = new Response();
         response.setContext(createContext());
-        response.setServiceRoutine(new TpsServiceRoutineDefinition());
+        response.setServiceRoutine(new TpsServiceRoutineDefinitionRequest());
         response.setRawXml(
                         "<data>"+
                         "<antallFM201>4</antallFM201>"

@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.gt')
-    .controller('GTCtrl', ['$scope', '$mdDialog', '$state', '$q', 'utilsService', 'environmentsPromise', 'serviceRutineFactory', 'headerService',
-        function ($scope, $mdDialog, $state, $q, utilsService, environmentsPromise, serviceRutineFactory, headerService) {
+    .controller('GTCtrl', ['$scope', '$q', 'utilsService', 'environmentsPromise', 'serviceRutineFactory', 'headerService',
+        function ($scope, $q, utilsService, environmentsPromise, serviceRutineFactory, headerService) {
 
             headerService.setHeader('Geografisk Tilknytning');
 

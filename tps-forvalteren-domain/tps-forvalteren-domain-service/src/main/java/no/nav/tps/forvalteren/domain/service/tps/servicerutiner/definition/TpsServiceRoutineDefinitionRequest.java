@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TpsServiceRoutineDefinition extends TpsMeldingDefinition {
+public class TpsServiceRoutineDefinitionRequest extends TpsRequestMeldingDefinition {
 
     private String internalName;    // (DisplayName)
 

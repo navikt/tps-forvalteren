@@ -3,14 +3,14 @@ package no.nav.tps.forvalteren.service.command.tps;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.domain.service.tps.Request;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class DefaultTpsRequestServiceTest {
     private XmlMapper xmlMapperMock;
 
     @Mock
-    private TpsAuthorisationService tpsAuthorisationServiceMock;
+    private DBAuthorisationService DBAuthorisationServiceMock;
 
     @Mock
     private TransformationService transformationService;
@@ -68,12 +68,12 @@ public class DefaultTpsRequestServiceTest {
     public void callsAuthorisationService() throws Exception {
 
         TpsServiceRoutineRequest tpsRequestMock = mock(TpsServiceRoutineRequest.class);
-        TpsServiceRoutineDefinition serviceRoutine = createDefaultServiceRoutine();
+        TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
         TpsRequestContext context = createDefaultContext();
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
 
-        verify(tpsAuthorisationServiceMock).authoriseRestCall(serviceRoutine);
+        verify(DBAuthorisationServiceMock).authoriseRestCall(serviceRoutine);
     }
 
 
@@ -83,7 +83,7 @@ public class DefaultTpsRequestServiceTest {
         InOrder inOrder = inOrder(transformationService, messageQueueConsumerMock);
 
         TpsServiceRoutineRequest tpsRequestMock = mock(TpsServiceRoutineRequest.class);
-        TpsServiceRoutineDefinition serviceRoutine = createDefaultServiceRoutine();
+        TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
         TpsRequestContext context = createDefaultContext();
 
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
@@ -100,7 +100,7 @@ public class DefaultTpsRequestServiceTest {
         InOrder inOrder = inOrder(messageQueueConsumerMock, transformationService);
 
         TpsServiceRoutineRequest tpsRequestMock = mock(TpsServiceRoutineRequest.class);
-        TpsServiceRoutineDefinition serviceRoutine = createDefaultServiceRoutine();
+        TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
         TpsRequestContext context = createDefaultContext();
 
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
@@ -125,11 +125,11 @@ public class DefaultTpsRequestServiceTest {
         return context;
     }
 
-    private TpsServiceRoutineDefinition createDefaultServiceRoutine() {
+    private TpsServiceRoutineDefinitionRequest createDefaultServiceRoutine() {
         TpsRequestConfig config = new TpsRequestConfig();
         config.setRequestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
 
-        TpsServiceRoutineDefinition serviceRoutine = new TpsServiceRoutineDefinition();
+        TpsServiceRoutineDefinitionRequest serviceRoutine = new TpsServiceRoutineDefinitionRequest();
         serviceRoutine.setConfig(config);
 
         return serviceRoutine;

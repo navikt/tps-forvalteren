@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.tps;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +19,12 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Autowired
-    private TpsAuthorisationService tpsAuthorisationService;
+    private DBAuthorisationService DBAuthorisationService;
 
     @Override
-    public String execute(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
+    public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
 
-        tpsAuthorisationService.authoriseRestCall(skdMeldingDefinition);
+        DBAuthorisationService.authoriseRestCall(skdMeldingDefinition);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());
 

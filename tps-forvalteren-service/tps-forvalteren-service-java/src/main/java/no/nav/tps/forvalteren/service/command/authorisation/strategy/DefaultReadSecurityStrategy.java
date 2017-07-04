@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.service.command.authorisation.strategy;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.service.user.UserRole;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import no.nav.tps.forvalteren.service.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class DefaultReadSecurityStrategy implements ReadSecurityStrategy {
 
     @Override
     public void handleUnauthorised() {
-        throw new HttpUnauthorisedException(messageProvider.get("rest.service.request.exception.Unauthorized"), "api/v1/service/");
+        throw new HttpForbiddenException(messageProvider.get("rest.service.request.exception.Forbidden"), "api/v1/service/");
     }
 
     @Override

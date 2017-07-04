@@ -1,10 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.skd.utils.PersonToSkdParametersMapper;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
@@ -38,7 +38,7 @@ public class SkdUpdateCreatePersonerTest {
     private Person person1, person2;
     Map<String, String> skdParam1, skdParam2;
     Set<String> environments;
-    TpsSkdMeldingDefinition skdMeldingDefinition;
+    TpsSkdRequestMeldingDefinition skdMeldingDefinition;
     String skdMelding = "skd";
 
     @Rule
@@ -87,7 +87,7 @@ public class SkdUpdateCreatePersonerTest {
         environments.add("q0");
         environments.add("q1");
 
-        skdMeldingDefinition = new TpsSkdMeldingDefinition();
+        skdMeldingDefinition = new TpsSkdRequestMeldingDefinition();
 
         when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any())).thenReturn(identer);
         when(personToSkdParametersMapperMock.create(any())).thenReturn(skdParam1, skdParam2);
@@ -139,9 +139,9 @@ public class SkdUpdateCreatePersonerTest {
     @Test
     public void hvisSkdMeldingRequestKastExceptionUnAuthorisedSaaKasterDenneKlassenException() throws Exception{
 
-        when(skdMeldingRequestMock.execute(any(),any(),any())).thenThrow(new HttpUnauthorisedException("msg","path"));
+        when(skdMeldingRequestMock.execute(any(),any(),any())).thenThrow(new HttpForbiddenException("msg","path"));
 
-        expectedException.expect(HttpUnauthorisedException.class);
+        expectedException.expect(HttpForbiddenException.class);
 
         skdUpdateCreatePersoner.execute(Arrays.asList(person1, person2));
     }

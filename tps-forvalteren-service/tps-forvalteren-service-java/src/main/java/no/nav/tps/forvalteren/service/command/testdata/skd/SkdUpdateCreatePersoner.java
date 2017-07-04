@@ -1,14 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.skd.utils.PersonToSkdParametersMapper;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetTpsSkdmeldingService;
 import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.slf4j.LoggerFactory;
@@ -70,7 +69,7 @@ public class SkdUpdateCreatePersoner {
     }
 
     private void sendSkdMeldingerTilAlleMiljoer(String skdMelding){
-        TpsSkdMeldingDefinition skdMeldingDefinition = getTpsSkdmeldingService.execute().get(0);  // For now only 1 SkdMeldingDefinition
+        TpsSkdRequestMeldingDefinition skdMeldingDefinition = getTpsSkdmeldingService.execute().get(0);  // For now only 1 SkdMeldingDefinition
 
         Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
         Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
@@ -80,15 +79,15 @@ public class SkdUpdateCreatePersoner {
         }
     }
 
-    private void sendSkdMelding(String skdMelding, TpsSkdMeldingDefinition skdMeldingDefinition, String environment){
+    private void sendSkdMelding(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment){
         try {
             skdMeldingRequest.execute(skdMelding, skdMeldingDefinition, environment);
         } catch (JMSException jmsException) {
             LOGGER.error(jmsException.getMessage(), jmsException);
             throw new HttpInternalServerErrorException(jmsException, "api/v1/testdata/saveTPS");
-        } catch (HttpUnauthorisedException ex) {
+        } catch (HttpForbiddenException ex) {
             LOGGER.error(ex.getMessage(), ex);
-            throw new HttpUnauthorisedException(ex, "api/v1/testdata/saveTPS" + "skdInnvandring");
+            throw new HttpForbiddenException(ex, "api/v1/testdata/saveTPS" + "skdInnvandring");
         }
     }
 

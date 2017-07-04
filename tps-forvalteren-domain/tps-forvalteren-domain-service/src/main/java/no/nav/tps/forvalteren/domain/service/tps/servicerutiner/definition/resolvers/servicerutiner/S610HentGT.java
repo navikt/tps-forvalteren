@@ -4,7 +4,7 @@ import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentByFnrRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
@@ -16,7 +16,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQU
 public class S610HentGT implements ServiceRoutineResolver{
 
     @Override
-    public TpsServiceRoutineDefinition resolve() {
+    public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
                 .name("FS03-FDNUMMER-KERNINFO-O")
                 .internalName("Hent GT")

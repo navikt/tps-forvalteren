@@ -24,8 +24,8 @@ public class TpsSkdMeldingDefinitionBuilder {
         return new TpsSkdMeldingDefinitionBuilder.TpsServiceRoutineSecurityBuilder();
     }
 
-    public TpsSkdMeldingDefinition build() {
-        TpsSkdMeldingDefinition routine = new TpsSkdMeldingDefinition();
+    public TpsSkdRequestMeldingDefinition build() {
+        TpsSkdRequestMeldingDefinition routine = new TpsSkdRequestMeldingDefinition();
         routine.setName(name);
         routine.setConfig(requestConfig);
         routine.setRequiredSecurityServiceStrategies(securitySearchAuthorisationStrategies);

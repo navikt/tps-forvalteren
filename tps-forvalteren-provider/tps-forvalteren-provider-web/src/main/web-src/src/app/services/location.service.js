@@ -5,7 +5,7 @@ angular.module('tps-forvalteren.service')
         var self = this;
         var returnState = 'root';
 
-        self.redirectToLoginReturnState = function() {
+        self.redirectToHomeState = function() {
             $state.go(returnState);
         };
 
