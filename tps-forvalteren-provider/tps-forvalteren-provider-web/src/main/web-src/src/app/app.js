@@ -7,6 +7,7 @@ require('angular-messages');
 require('angular-material-icons');
 require('angular-highlightjs');
 require('angular-moment');
+require('angular-sanitize');
 require('pikaday');
 require('pikaday-angular');
 
@@ -19,7 +20,7 @@ require('./filters/filter.module');
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
     'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome',
-    'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe']);
+    'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize']);
 
 require('./shared/index');
 
