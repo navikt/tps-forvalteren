@@ -18,7 +18,23 @@ angular.module('tps-forvalteren.vis-testdata')
 
             var setHeaderIcons = function () {
                 headerService.setIcons([{
+                    icon: 'assets/icons/ic_mode_edit_black_24px.svg',
+                    title: 'Endre testgruppe',
+                    click: function (ev) {
+                        var confirm = $mdDialog.confirm({
+                            controller: 'EndreGruppeCtrl',
+                            templateUrl: 'app/components/vis-testdata/endregruppe/endregruppe.html',
+                            parent: angular.element(document.body),
+                            targetEvent: ev
+                        });
+                        $mdDialog.show(confirm).then(
+                            function () { // Ser ut til å hindre duplikatkall mot rest-endepunkt
+                            }
+                        )
+                    }
+                }, {
                     icon: 'assets/icons/ic_delete_black_24px.svg',
+                    title: 'Slette testgruppe',
                     click: function () {
                         var personTekst = $scope.personer.length > 0 ? ' med ' + $scope.personer.length + ' testperson' : '';
                         personTekst += $scope.personer.length > 1 ? 'er' : '';
@@ -37,7 +53,8 @@ angular.module('tps-forvalteren.vis-testdata')
                             )
                         });
                     }
-                }]);
+                }
+                ]);
             };
 
             $scope.allePersoner = false;

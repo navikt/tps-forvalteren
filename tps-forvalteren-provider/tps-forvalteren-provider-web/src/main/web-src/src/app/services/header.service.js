@@ -2,10 +2,11 @@ angular.module('tps-forvalteren.service')
     .service('headerService', ['$rootScope', function($rootScope) {
 
         var self =  this;
-        $rootScope.header = {};
 
-        self.setHeader = function (title) {
-            $rootScope.header = {};
+        self.setHeader = function (title, keep) {
+            if (!keep) {
+                $rootScope.header = {};
+            }
             $rootScope.header.name = title;
         };
 

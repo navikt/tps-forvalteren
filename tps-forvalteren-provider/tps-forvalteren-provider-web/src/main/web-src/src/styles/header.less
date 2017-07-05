@@ -74,6 +74,7 @@
 
 .header2 {
   background-color: white;
+  max-height: 55px;
   min-height: 55px;
   height: 55px;
 }
@@ -81,15 +82,17 @@
 .header3 {
   background-color: white;
   height: 30px;
+  min-height: 30px;
+  max-height: 30px;
 }
 
 .md-button.nav-blaa {
-  color: #0056a7;
+  color: @md-primary;
   font-weight: bold;
 }
 
 md-icon.nav-blaa {
-  color: #0056a7;
+  color: @md-primary;
   svg {
     fill: inherit;
   }
@@ -100,4 +103,11 @@ md-icon.nav-graa {
   svg {
     fill: inherit;
   }
+  ng-scope {
+    padding: 0;
+  }
+}
+
+md-icon.md-ink-ripple {
+  padding: 0;
 }
