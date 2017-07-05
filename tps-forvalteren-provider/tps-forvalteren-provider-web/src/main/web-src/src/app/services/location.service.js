@@ -43,7 +43,7 @@ angular.module('tps-forvalteren.service')
 
         self.redirectUrl = function(url) {
             if ('/' === url) {
-                self.redirectToLoginReturnState();
+                self.redirectToHomeState();
             } else {
                 $state.go(url.substring(1)); // Ta bort ledende "/"
             }
