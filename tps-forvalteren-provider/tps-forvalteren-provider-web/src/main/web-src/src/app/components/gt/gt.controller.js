@@ -81,8 +81,16 @@ angular.module('tps-forvalteren.gt')
                 $scope.utvandringStatus = undefined;
             };
 
-            if (environmentsPromise) {
-                $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
-            }
+            var init = function() {
+                var environments = $scope.$resolve.environmentsPromise;
+                if(environments.status !== undefined){
+                    utilsService.showAlertError(environments);
+                } else {
+                    $scope.environments = utilsService.sortEnvironments(environments);
+                }
+            };
+
+
+            init();
         }]);
 
