@@ -1,4 +1,4 @@
-angular.module('tps-forvalteren.welcome')
+angular.module('tps-forvalteren.welcome',[])
     .controller('WelcomeCtrl', ['$scope', 'locationService',
         function ($scope, locationService) {
 

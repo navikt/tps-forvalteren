@@ -1,10 +1,8 @@
-angular.module('tps-forvalteren.vis-testdata')
+angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope', 'headerService', '$location',
         function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
 
             var gruppeId = $location.url().match(/\d+/g);
-
-            var headerTittel;
 
             var setHeaderButtons = function () {
                 headerService.setButtons([{
@@ -40,7 +38,7 @@ angular.module('tps-forvalteren.vis-testdata')
                         personTekst += $scope.personer.length > 1 ? 'er' : '';
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .htmlContent('Ønsker du å slette gruppe <strong>' + headerTittel + '</strong>' + personTekst + '?<br><br>' +
+                            .htmlContent('Ønsker du å slette gruppe <strong>' + headerService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
                                 'Denne handlingen vil ikke slette testpersonene fra TPS, dersom de er opprettet der.')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
@@ -81,8 +79,7 @@ angular.module('tps-forvalteren.vis-testdata')
                 $scope.personer = undefined;
                 testdataService.getTestpersoner(gruppeId).then(
                     function (result) {
-                        headerTittel = result.data.navn;
-                        headerService.setHeader(headerTittel);
+                        headerService.setHeader(result.data.navn);
                         setHeaderButtons();
                         setHeaderIcons();
                         originalPersoner = result.data.personer;

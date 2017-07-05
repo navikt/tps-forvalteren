@@ -1,4 +1,4 @@
-angular.module('tps-forvalteren.opprett-testdata')
+angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
     .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter', 'headerService', '$location',
         function ($scope, testdataService, utilsService, $mdDialog, locationService, $filter, headerService, $location) {
 

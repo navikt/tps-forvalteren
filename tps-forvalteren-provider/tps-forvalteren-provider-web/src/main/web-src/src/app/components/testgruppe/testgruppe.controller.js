@@ -1,4 +1,4 @@
-angular.module('tps-forvalteren.testgruppe')
+angular.module('tps-forvalteren.testgruppe', [])
     .controller('TestgruppeCtrl', ['$scope', 'headerService', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
         function ($scope, headerService, testdataService, utilsService, locationService, $mdDialog) {
 

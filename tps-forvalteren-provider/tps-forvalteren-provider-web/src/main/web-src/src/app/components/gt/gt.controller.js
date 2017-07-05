@@ -1,4 +1,4 @@
-angular.module('tps-forvalteren.gt')
+angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
     .controller('GTCtrl', ['$scope', '$q', 'utilsService', 'environmentsPromise', 'serviceRutineFactory', 'headerService',
         function ($scope, $q, utilsService, environmentsPromise, serviceRutineFactory, headerService) {
 
