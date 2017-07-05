@@ -42,7 +42,11 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectUrl = function(url) {
-            $state.go(url.substring(1)); // Ta bort ledende "/"
+            if ('/' === url) {
+                self.redirectToLoginReturnState();
+            } else {
+                $state.go(url.substring(1)); // Ta bort ledende "/"
+            }
         };
 
         self.isRoot = function () {

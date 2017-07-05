@@ -79,11 +79,11 @@ angular.module('tps-forvalteren.opprett-testdata')
                 if ($scope.kriterier.length > 0) {
                     var contents = '';
                     for (var i = 0; i < $scope.kriterier.length; i++) {
-                        contents += getRow($scope.kriterier[i]) + ' / ';
+                        contents += getRow($scope.kriterier[i]) + '<br>';
                     }
                     var confirm = $mdDialog.confirm()
                         .title('Bekreft avbryt av følgende rad' + ($scope.kriterier.length > 1 ? 'er' : '') + ':')
-                        .textContent(contents)
+                        .htmlContent(contents)
                         .ariaLabel('Bekreft avbryt')
                         .ok('OK')
                         .cancel('Avbryt');

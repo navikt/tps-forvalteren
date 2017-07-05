@@ -16,3 +16,4 @@ require('./opprett-testdata/opprett-testdata.controller');
 require('./welcome/welcome.controller');
 require('./testgruppe/testgruppe.controller');
 require('./testgruppe/nygruppe/nygruppe.controller');
+require('./vis-testdata/endregruppe/endregruppe.controller');

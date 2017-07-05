@@ -46,20 +46,13 @@
             </div>
     </md-toolbar>
     <div layout="column" class="header2 flexbox-parent" ng-show="!isRoot">
-        <div layout="row" layout-align="start center" style="margin-left: 1%;"
-             ng-style="header.icons ? {'margin-top': '4px'} : {'margin-top': '20px'}">
-            <md-button ng-click="goBack()">
-                <md-icon md-svg-icon="assets/icons/ic_arrow_back_black_24px.svg" style="margin-top: -2px;"></md-icon>
-                Tilbake
-            </md-button>
-        </div>
         <div layout="row" layout-align="center center">
-            <h1 ng-style="header.icons ? {'margin-top': '-46px'} : {'margin-top': '-15px'}" ng-bind="header.name"></h1>
+            <h1 ng-style="header.icons ? {'margin-top': '12px'} : {'margin-top': '17px'}" ng-bind="header.name"></h1>
         </div>
-        <div layout="row" layout-align="end center" style="margin-top: -65px; margin-right: 1%;" ng-show="header.icons">
+        <div layout="row" layout-align="end center" style="margin-top: -40px; margin-right: 1%;" ng-show="header.icons">
             <div flex></div>
             <div ng-repeat="icon in header.icons">
-                <md-button class="md-icon-button" style="color: white;" ng-click="icon.click()" style="margin-right: 10px;">
+                <md-button class="md-icon-button md-raised" style="padding: 0;" ng-click="icon.click()" title="{{icon.title}}">
                      <md-icon class="nav-graa" md-svg-icon="{{icon.icon}}"></md-icon>
                 </md-button>
             </div>
