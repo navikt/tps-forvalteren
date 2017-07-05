@@ -8,8 +8,10 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
-import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
+import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -60,10 +62,16 @@ public class TestdataControllerTest {
     private SetGruppeIdOnPersons setGruppeIdOnPersons;
 
     @Mock
-    private PersonRepository personRepository;
+    private FindAlleGrupperOrderByIdAsc findAlleGrupperOrderByIdAsc;
 
     @Mock
-    private GruppeRepository gruppeRepository;
+    private FindGruppeById findGruppeById;
+
+    @Mock
+    private DeletePersonerByIdIn deletePersonerByIdIn;
+
+    @Mock
+    private SaveGruppe saveGruppe;
 
     @InjectMocks
     private TestdataController testdataController;
@@ -103,7 +111,7 @@ public class TestdataControllerTest {
 
         testdataController.deletePersons(rsPersonIdListe);
 
-        verify(personRepository).deleteByIdIn(rsPersonIdListe.getIds());
+        verify(deletePersonerByIdIn).execute(rsPersonIdListe.getIds());
     }
 
     @Test
@@ -151,14 +159,13 @@ public class TestdataControllerTest {
         List<Gruppe> grupper = new ArrayList<>(Arrays.asList(gruppe));
         List<RsSimpleGruppe> rsSimpleGrupper = new ArrayList<>(Arrays.asList(rsSimpleGruppe));
 
-        when(gruppeRepository.findAllByOrderByIdAsc()).thenReturn(grupper);
+        when(findAlleGrupperOrderByIdAsc.execute()).thenReturn(grupper);
         when(mapper.mapAsList(grupper, RsSimpleGruppe.class)).thenReturn(rsSimpleGrupper);
 
         testdataController.getGrupper();
 
-        verify(gruppeRepository).findAllByOrderByIdAsc();
+        verify(findAlleGrupperOrderByIdAsc).execute();
         verify(mapper).mapAsList(grupper, RsSimpleGruppe.class);
-
     }
 
     @Test
@@ -166,12 +173,12 @@ public class TestdataControllerTest {
         Gruppe gruppe = new Gruppe();
         RsGruppe rsGruppe = new RsGruppe();
 
-        when(gruppeRepository.findById(GRUPPE_ID)).thenReturn(gruppe);
+        when(findGruppeById.execute(GRUPPE_ID)).thenReturn(gruppe);
         when(mapper.map(gruppe, RsGruppe.class)).thenReturn(rsGruppe);
 
         testdataController.getGruppe(GRUPPE_ID);
 
-        verify(gruppeRepository).findById(GRUPPE_ID);
+        verify(findGruppeById).execute(GRUPPE_ID);
         verify(mapper).map(gruppe, RsGruppe.class);
     }
 
@@ -184,7 +191,7 @@ public class TestdataControllerTest {
 
         testdataController.createGruppe(rsGruppe);
 
-        verify(gruppeRepository).save(gruppe);
+        verify(saveGruppe).execute(gruppe);
     }
 
 }
