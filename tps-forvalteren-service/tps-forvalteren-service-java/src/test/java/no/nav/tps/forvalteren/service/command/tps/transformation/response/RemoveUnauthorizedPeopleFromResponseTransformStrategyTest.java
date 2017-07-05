@@ -5,7 +5,7 @@ import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
 
 
     @Mock
-    private DBAuthorisationService DBAuthorisationServiceMock;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
 
 
     @InjectMocks
@@ -67,8 +67,8 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
                 + "</data>"
         );
 
-        when(DBAuthorisationServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr1))).thenReturn(false);
-        when(DBAuthorisationServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr2))).thenReturn(true);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr1))).thenReturn(false);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr2))).thenReturn(true);
 
         strategy.execute(response, transform);
 

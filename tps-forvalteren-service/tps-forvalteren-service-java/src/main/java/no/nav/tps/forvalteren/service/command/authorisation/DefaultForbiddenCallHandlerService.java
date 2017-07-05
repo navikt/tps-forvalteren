@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultDBAuthorisationService implements DBAuthorisationService {
+public class DefaultForbiddenCallHandlerService implements ForbiddenCallHandlerService {
 
     @Autowired
     private List<SearchSecurityStrategy> searchPersonSecurityStrategies;
@@ -25,7 +25,7 @@ public class DefaultDBAuthorisationService implements DBAuthorisationService {
     public void authoriseRestCall(DBRequestMeldingDefinition serviceRoutine) {
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedRestStrategies(authStrategy, restSecurityStrategies)
-                    .forEach(SecurityStrategy::handleUnauthorised);
+                    .forEach(SecurityStrategy::handleForbiddenCall);
         }
     }
 
@@ -33,7 +33,7 @@ public class DefaultDBAuthorisationService implements DBAuthorisationService {
     public void authorisePersonSearch(DBRequestMeldingDefinition serviceRoutine, String fnr){
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedPersonStrategies(authStrategy, searchPersonSecurityStrategies, fnr)
-                    .forEach(SecurityStrategy::handleUnauthorised);
+                    .forEach(SecurityStrategy::handleForbiddenCall);
         }
     }
 

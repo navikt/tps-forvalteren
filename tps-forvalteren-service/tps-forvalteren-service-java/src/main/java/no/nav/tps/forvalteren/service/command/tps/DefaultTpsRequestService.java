@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentByFnrRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,17 +30,17 @@ public class DefaultTpsRequestService implements TpsRequestService {
     private TransformationService transformationService;
 
     @Autowired
-    private DBAuthorisationService DBAuthorisationService;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
 
     @Override
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
 
-        DBAuthorisationService.authoriseRestCall(serviceRoutine);
+        ForbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
         if(tpsRequest instanceof TpsServiceRoutineHentByFnrRequest){
-            DBAuthorisationService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
+            ForbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 
         String xml = xmlMapper.writeValueAsString(tpsRequest);

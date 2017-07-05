@@ -4,7 +4,7 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class DefaultSkdMeldingRequestTest {
     private MessageQueueConsumer messageQueueConsumerMock;
 
     @Mock
-    private DBAuthorisationService DBAuthorisationServiceMock;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
 
     @InjectMocks
     private DefaultSkdMeldingRequest skdMeldingRequest;
@@ -48,6 +48,6 @@ public class DefaultSkdMeldingRequestTest {
 
         skdMeldingRequest.execute("test", skdMeldingDefinition, "test");
 
-        verify(DBAuthorisationServiceMock).authoriseRestCall(skdMeldingDefinition);
+        verify(ForbiddenCallHandlerServiceMock).authoriseRestCall(skdMeldingDefinition);
     }
 }

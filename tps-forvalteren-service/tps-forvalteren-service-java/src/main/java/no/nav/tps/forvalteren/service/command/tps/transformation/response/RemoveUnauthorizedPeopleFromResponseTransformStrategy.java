@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.tps.transformation.response;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     private static final String PERSON_PATTERN = "<enPersonRes>.+?</enPersonRes>";
 
     @Autowired
-    private DBAuthorisationService DBAuthorisationService;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
 
     @Override
     public boolean isSupported(Object o) {
@@ -40,7 +40,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
             Matcher fnrMatcher = Pattern.compile(FODSELSNUMMER_PATTERN, Pattern.DOTALL).matcher(personXml);
             if (fnrMatcher.find()) {
                 String fnr = fnrMatcher.group(1);
-                if (!DBAuthorisationService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
+                if (!ForbiddenCallHandlerService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
                     response.setRawXml(response.getRawXml().replace(personXml, ""));
                     ++numberOfFnrRemoved;
                 }

@@ -4,7 +4,7 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +19,12 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Autowired
-    private DBAuthorisationService DBAuthorisationService;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
 
     @Override
     public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
 
-        DBAuthorisationService.authoriseRestCall(skdMeldingDefinition);
+        ForbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());
 

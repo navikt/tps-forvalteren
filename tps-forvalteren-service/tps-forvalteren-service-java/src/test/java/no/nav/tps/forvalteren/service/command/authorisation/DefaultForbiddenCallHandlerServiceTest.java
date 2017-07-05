@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultDBAuthorisationServiceTest {
+public class DefaultForbiddenCallHandlerServiceTest {
 
     private static final String FNR = "01018012345";
 
@@ -47,7 +47,7 @@ public class DefaultDBAuthorisationServiceTest {
     private List<RestSecurityStrategy> restSecurityStrategies = new ArrayList<>();
 
     @InjectMocks
-    private DefaultDBAuthorisationService authorisationService;
+    private DefaultForbiddenCallHandlerService authorisationService;
 
     @Test
     public void isAuthorisedToSeePersonReturnsTrueIfUserIsAuthorisedForAllSearchStrategies() {
@@ -144,9 +144,9 @@ public class DefaultDBAuthorisationServiceTest {
 
         authorisationService.authoriseRestCall(serviceRoutine);
 
-        verify(s1, times(0)).handleUnauthorised();
-        verify(s2, times(1)).handleUnauthorised();
-        verify(s3, times(0)).handleUnauthorised();
+        verify(s1, times(0)).handleForbiddenCall();
+        verify(s2, times(1)).handleForbiddenCall();
+        verify(s3, times(0)).handleForbiddenCall();
     }
 
     @Test
@@ -182,9 +182,9 @@ public class DefaultDBAuthorisationServiceTest {
 
         authorisationService.authoriseRestCall(serviceRoutine);
 
-        verify(restStrat1, never()).handleUnauthorised();
-        verify(restStrat2, never()).handleUnauthorised();
-        verify(restStrat3, never()).handleUnauthorised();
+        verify(restStrat1, never()).handleForbiddenCall();
+        verify(restStrat2, never()).handleForbiddenCall();
+        verify(restStrat3, never()).handleForbiddenCall();
     }
 
 
@@ -225,9 +225,9 @@ public class DefaultDBAuthorisationServiceTest {
 
         authorisationService.authorisePersonSearch(serviceRoutine, FNR);
 
-        verify(s1, times(0)).handleUnauthorised();
-        verify(s2, times(1)).handleUnauthorised();
-        verify(s3, times(0)).handleUnauthorised();
+        verify(s1, times(0)).handleForbiddenCall();
+        verify(s2, times(1)).handleForbiddenCall();
+        verify(s3, times(0)).handleForbiddenCall();
     }
 
     @Test
@@ -263,9 +263,9 @@ public class DefaultDBAuthorisationServiceTest {
 
         authorisationService.authorisePersonSearch(serviceRoutine, FNR);
 
-        verify(s1, never()).handleUnauthorised();
-        verify(s2, never()).handleUnauthorised();
-        verify(s3, never()).handleUnauthorised();
+        verify(s1, never()).handleForbiddenCall();
+        verify(s2, never()).handleForbiddenCall();
+        verify(s3, never()).handleForbiddenCall();
     }
 
     @Test

@@ -29,7 +29,7 @@ public class DefaultEgenAnsattSecurityStrategy implements EgenAnsattSecurityStra
     }
 
     @Override
-    public void handleUnauthorised() {
+    public void handleForbiddenCall() {
         throw new HttpForbiddenException(messageProvider.get("rest.service.request.exception.Forbidden"), "api/v1/service/");
     }
 

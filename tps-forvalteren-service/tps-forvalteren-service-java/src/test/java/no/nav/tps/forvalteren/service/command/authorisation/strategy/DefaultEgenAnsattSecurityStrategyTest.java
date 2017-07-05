@@ -109,7 +109,7 @@ public class DefaultEgenAnsattSecurityStrategyTest {
     public void handleUnauthorisedThrowsHttpUnauthorisedException() throws Exception{
         expectedException.expect(HttpForbiddenException.class);
 
-        defaultEgenAnsattSecurityStrategy.handleUnauthorised();
+        defaultEgenAnsattSecurityStrategy.handleForbiddenCall();
         verify(messageProvider).get(anyString());
     }
 }

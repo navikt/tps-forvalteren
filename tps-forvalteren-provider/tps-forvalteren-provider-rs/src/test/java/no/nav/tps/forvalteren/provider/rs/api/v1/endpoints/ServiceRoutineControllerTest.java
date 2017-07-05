@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 public class ServiceRoutineControllerTest {
 
     @Mock
-    private DBAuthorisationService DBAuthorisationServiceMock;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
 
     @Mock
     private GetTpsServiceRutinerService getTpsServiceRutinerServiceMock;
@@ -39,7 +39,7 @@ public class ServiceRoutineControllerTest {
         List<TpsServiceRoutineDefinitionRequest> serviceRoutines = Collections.singletonList(serviceRoutine);
         when(getTpsServiceRutinerServiceMock.execute()).thenReturn(serviceRoutines);
 
-        when(DBAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutine)).thenReturn(true);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToUseServiceRutine(serviceRoutine)).thenReturn(true);
 
         List<TpsServiceRoutineDefinitionRequest> result = serviceRoutineController.getTpsServiceRutiner();
 
@@ -54,9 +54,9 @@ public class ServiceRoutineControllerTest {
         TpsServiceRoutineDefinitionRequest serviceRoutineMock3 = mock(TpsServiceRoutineDefinitionRequest.class);
         when(getTpsServiceRutinerServiceMock.execute()).thenReturn(Arrays.asList(serviceRoutineMock1, serviceRoutineMock2, serviceRoutineMock3));
 
-        when(DBAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock1)).thenReturn(false);
-        when(DBAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock2)).thenReturn(true);
-        when(DBAuthorisationServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock3)).thenReturn(true);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock1)).thenReturn(false);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock2)).thenReturn(true);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToUseServiceRutine(serviceRoutineMock3)).thenReturn(true);
 
         List<TpsServiceRoutineDefinitionRequest> rutiner = serviceRoutineController.getTpsServiceRutiner();
 

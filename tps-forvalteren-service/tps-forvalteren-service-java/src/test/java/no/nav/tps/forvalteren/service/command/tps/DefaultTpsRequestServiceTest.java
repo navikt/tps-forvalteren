@@ -10,7 +10,7 @@ import no.nav.tps.forvalteren.domain.service.tps.Response;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.service.command.authorisation.DBAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class DefaultTpsRequestServiceTest {
     private XmlMapper xmlMapperMock;
 
     @Mock
-    private DBAuthorisationService DBAuthorisationServiceMock;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
 
     @Mock
     private TransformationService transformationService;
@@ -73,7 +73,7 @@ public class DefaultTpsRequestServiceTest {
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
 
-        verify(DBAuthorisationServiceMock).authoriseRestCall(serviceRoutine);
+        verify(ForbiddenCallHandlerServiceMock).authoriseRestCall(serviceRoutine);
     }
 
 

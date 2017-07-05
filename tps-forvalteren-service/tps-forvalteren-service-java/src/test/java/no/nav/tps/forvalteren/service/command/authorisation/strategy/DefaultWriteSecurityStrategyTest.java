@@ -95,7 +95,7 @@ public class DefaultWriteSecurityStrategyTest {
     @Test
     public void handleUnauthorisedThrowsUnautorisedWhenUserDontHaveRequiredRoles() {
         exception.expect(HttpForbiddenException.class);
-        defaultWriteSecurityStrategy.handleUnauthorised();
+        defaultWriteSecurityStrategy.handleForbiddenCall();
         verify(messageProviderMock).get(anyString());
     }
 
