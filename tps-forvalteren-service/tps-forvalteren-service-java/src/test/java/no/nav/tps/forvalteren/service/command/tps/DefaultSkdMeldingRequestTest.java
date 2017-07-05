@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.tps;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultSkdMeldingRequestTest {
 
-    private TpsSkdMeldingDefinition skdMeldingDefinition = new TpsSkdMeldingDefinition();
+    private TpsSkdRequestMeldingDefinition skdMeldingDefinition = new TpsSkdRequestMeldingDefinition();
     private TpsRequestConfig config = new TpsRequestConfig();
     private String REQUEST_QUEUE_TEST = "testQ";
 
@@ -30,7 +30,7 @@ public class DefaultSkdMeldingRequestTest {
     private MessageQueueConsumer messageQueueConsumerMock;
 
     @Mock
-    private TpsAuthorisationService tpsAuthorisationServiceMock;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
 
     @InjectMocks
     private DefaultSkdMeldingRequest skdMeldingRequest;
@@ -48,6 +48,6 @@ public class DefaultSkdMeldingRequestTest {
 
         skdMeldingRequest.execute("test", skdMeldingDefinition, "test");
 
-        verify(tpsAuthorisationServiceMock).authoriseRestCall(skdMeldingDefinition);
+        verify(ForbiddenCallHandlerServiceMock).authoriseRestCall(skdMeldingDefinition);
     }
 }

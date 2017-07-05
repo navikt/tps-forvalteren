@@ -130,7 +130,6 @@ public class TestdataController {
         skdUpdateOrCreatePersoner.execute(personer);
     }
 
-
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)

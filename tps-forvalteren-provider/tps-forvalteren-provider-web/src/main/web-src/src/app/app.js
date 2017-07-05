@@ -221,9 +221,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     resolve: {
                         user: ['authenticationService', function (authenticationService) {
                             return authenticationService.loadUser();
-                        }],
-                        environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                            return serviceRutineFactory.loadFromServerEnvironments();
                         }]
                     },
                     views: {

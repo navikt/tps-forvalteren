@@ -1,10 +1,10 @@
 package no.nav.tps.forvalteren.service.command.authorisation;
 
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SearchSecurityStrategy;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultTpsAuthorisationServiceTest {
+public class DefaultForbiddenCallHandlerServiceTest {
 
     private static final String FNR = "01018012345";
 
@@ -47,14 +47,14 @@ public class DefaultTpsAuthorisationServiceTest {
     private List<RestSecurityStrategy> restSecurityStrategies = new ArrayList<>();
 
     @InjectMocks
-    private DefaultTpsAuthorisationService authorisationService;
+    private DefaultForbiddenCallHandlerService authorisationService;
 
     @Test
     public void isAuthorisedToSeePersonReturnsTrueIfUserIsAuthorisedForAllSearchStrategies() {
         ServiceRutineAuthorisationStrategy a1 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy a2 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2));
 
@@ -83,7 +83,7 @@ public class DefaultTpsAuthorisationServiceTest {
         ServiceRutineAuthorisationStrategy a1 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy a2 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2));
 
@@ -114,7 +114,7 @@ public class DefaultTpsAuthorisationServiceTest {
         ServiceRutineAuthorisationStrategy a2 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy a3 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2, a3));
 
@@ -144,9 +144,9 @@ public class DefaultTpsAuthorisationServiceTest {
 
         authorisationService.authoriseRestCall(serviceRoutine);
 
-        verify(s1, times(0)).handleUnauthorised();
-        verify(s2, times(1)).handleUnauthorised();
-        verify(s3, times(0)).handleUnauthorised();
+        verify(s1, times(0)).handleForbiddenCall();
+        verify(s2, times(1)).handleForbiddenCall();
+        verify(s3, times(0)).handleForbiddenCall();
     }
 
     @Test
@@ -155,7 +155,7 @@ public class DefaultTpsAuthorisationServiceTest {
         ServiceRutineAuthorisationStrategy rutineAuthStrat2 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy rutineAuthStrat3 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(rutineAuthStrat1, rutineAuthStrat2, rutineAuthStrat3));
 
@@ -182,9 +182,9 @@ public class DefaultTpsAuthorisationServiceTest {
 
         authorisationService.authoriseRestCall(serviceRoutine);
 
-        verify(restStrat1, never()).handleUnauthorised();
-        verify(restStrat2, never()).handleUnauthorised();
-        verify(restStrat3, never()).handleUnauthorised();
+        verify(restStrat1, never()).handleForbiddenCall();
+        verify(restStrat2, never()).handleForbiddenCall();
+        verify(restStrat3, never()).handleForbiddenCall();
     }
 
 
@@ -195,7 +195,7 @@ public class DefaultTpsAuthorisationServiceTest {
         ServiceRutineAuthorisationStrategy a2 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy a3 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1, a2, a3));
 
@@ -225,9 +225,9 @@ public class DefaultTpsAuthorisationServiceTest {
 
         authorisationService.authorisePersonSearch(serviceRoutine, FNR);
 
-        verify(s1, times(0)).handleUnauthorised();
-        verify(s2, times(1)).handleUnauthorised();
-        verify(s3, times(0)).handleUnauthorised();
+        verify(s1, times(0)).handleForbiddenCall();
+        verify(s2, times(1)).handleForbiddenCall();
+        verify(s3, times(0)).handleForbiddenCall();
     }
 
     @Test
@@ -236,7 +236,7 @@ public class DefaultTpsAuthorisationServiceTest {
         ServiceRutineAuthorisationStrategy rutineAuthStrat2 = mock(ServiceRutineAuthorisationStrategy.class);
         ServiceRutineAuthorisationStrategy rutineAuthStrat3 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(rutineAuthStrat1, rutineAuthStrat2, rutineAuthStrat3));
 
@@ -263,16 +263,16 @@ public class DefaultTpsAuthorisationServiceTest {
 
         authorisationService.authorisePersonSearch(serviceRoutine, FNR);
 
-        verify(s1, never()).handleUnauthorised();
-        verify(s2, never()).handleUnauthorised();
-        verify(s3, never()).handleUnauthorised();
+        verify(s1, never()).handleForbiddenCall();
+        verify(s2, never()).handleForbiddenCall();
+        verify(s3, never()).handleForbiddenCall();
     }
 
     @Test
     public void authorisedToUseServiceRutinesReturnsFalseIfRequiredRolesIsMissing() {
         ServiceRutineAuthorisationStrategy a1 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1));
 
@@ -293,7 +293,7 @@ public class DefaultTpsAuthorisationServiceTest {
     public void authorisedToUseServiceRutineReturnsTrueIfCorrectRolesIsPresent() {
         ServiceRutineAuthorisationStrategy a1 = mock(ServiceRutineAuthorisationStrategy.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getRequiredSecurityServiceStrategies()).thenReturn(Arrays.asList(a1));
 

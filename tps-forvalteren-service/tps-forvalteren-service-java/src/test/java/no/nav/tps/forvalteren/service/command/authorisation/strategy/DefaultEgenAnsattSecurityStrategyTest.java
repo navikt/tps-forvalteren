@@ -5,7 +5,7 @@ import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.service.user.UserRole;
 import org.junit.Before;
@@ -107,9 +107,9 @@ public class DefaultEgenAnsattSecurityStrategyTest {
 
     @Test
     public void handleUnauthorisedThrowsHttpUnauthorisedException() throws Exception{
-        expectedException.expect(HttpUnauthorisedException.class);
+        expectedException.expect(HttpForbiddenException.class);
 
-        defaultEgenAnsattSecurityStrategy.handleUnauthorised();
+        defaultEgenAnsattSecurityStrategy.handleForbiddenCall();
         verify(messageProvider).get(anyString());
     }
 }

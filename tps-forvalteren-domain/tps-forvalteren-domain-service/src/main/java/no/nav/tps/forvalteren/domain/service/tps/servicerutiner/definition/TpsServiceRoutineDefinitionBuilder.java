@@ -54,8 +54,8 @@ public class TpsServiceRoutineDefinitionBuilder {
         return new TpsServiceRoutineSecurityBuilder();
     }
 
-    public TpsServiceRoutineDefinition build() {
-        TpsServiceRoutineDefinition routine = new TpsServiceRoutineDefinition();
+    public TpsServiceRoutineDefinitionRequest build() {
+        TpsServiceRoutineDefinitionRequest routine = new TpsServiceRoutineDefinitionRequest();
         routine.setName(name);
         routine.setInternalName(internalName);
         routine.setJavaClass(javaClass);

@@ -1,7 +1,7 @@
 
 angular.module('tps-forvalteren')
-    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService', 'headerService',
-        function ($scope, authenticationService, locationService, headerService) {
+    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService',
+        function ($scope, authenticationService, locationService) {
 
             $scope.visTestdataKnapp = false;
 
@@ -24,7 +24,7 @@ angular.module('tps-forvalteren')
             };
 
             $scope.goHome = function () {
-                locationService.redirectToLoginReturnState();
+                locationService.redirectToHomeState();
             };
 
             $scope.isRoot = locationService.isRoot();

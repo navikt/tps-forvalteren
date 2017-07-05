@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.domain.service.tps;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class Response {
     private Integer totalHits;
     private List<String> dataXmls;
     private TpsRequestContext context;
-    private TpsServiceRoutineDefinition serviceRoutine;
+    private TpsServiceRoutineDefinitionRequest serviceRoutine;
 
-    public Response(String rawXml, TpsRequestContext context, TpsServiceRoutineDefinition serviceRoutine) {
+    public Response(String rawXml, TpsRequestContext context, TpsServiceRoutineDefinitionRequest serviceRoutine) {
         this.rawXml = rawXml;
         this.context = context;
         this.serviceRoutine = serviceRoutine;

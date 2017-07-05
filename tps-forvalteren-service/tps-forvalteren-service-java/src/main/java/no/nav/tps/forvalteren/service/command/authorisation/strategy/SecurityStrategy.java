@@ -4,6 +4,6 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.Servic
 
 public interface SecurityStrategy {
     boolean isSupported(ServiceRutineAuthorisationStrategy a1);
-    void handleUnauthorised();
+    void handleForbiddenCall();
 
 }

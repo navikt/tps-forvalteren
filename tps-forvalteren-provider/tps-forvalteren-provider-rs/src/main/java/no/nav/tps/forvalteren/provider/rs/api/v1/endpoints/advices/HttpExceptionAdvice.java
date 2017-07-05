@@ -6,6 +6,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.ExceptionInformation;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpBadRequestException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpException;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
@@ -24,6 +25,13 @@ public class HttpExceptionAdvice {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     ExceptionInformation unauthorisedAccess(HttpException exception) {
         return informationForException(exception, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(HttpForbiddenException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    ExceptionInformation forbiddenAccess(HttpException exception) {
+        return informationForException(exception, HttpStatus.FORBIDDEN);
     }
 
     @ResponseBody

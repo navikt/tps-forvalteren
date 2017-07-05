@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.command.authorisation.strategy;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.service.user.UserRole;
 import org.junit.Before;
 import org.junit.Rule;
@@ -94,8 +94,8 @@ public class DefaultWriteSecurityStrategyTest {
 
     @Test
     public void handleUnauthorisedThrowsUnautorisedWhenUserDontHaveRequiredRoles() {
-        exception.expect(HttpUnauthorisedException.class);
-        defaultWriteSecurityStrategy.handleUnauthorised();
+        exception.expect(HttpForbiddenException.class);
+        defaultWriteSecurityStrategy.handleForbiddenCall();
         verify(messageProviderMock).get(anyString());
     }
 

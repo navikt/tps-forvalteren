@@ -1,7 +1,8 @@
 package no.nav.tps.forvalteren.service.command.authorisation;
 
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.DBRequestMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SearchSecurityStrategy;
 import no.nav.tps.forvalteren.service.command.authorisation.strategy.SecurityStrategy;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
+public class DefaultForbiddenCallHandlerService implements ForbiddenCallHandlerService {
 
     @Autowired
     private List<SearchSecurityStrategy> searchPersonSecurityStrategies;
@@ -21,30 +22,30 @@ public class DefaultTpsAuthorisationService implements TpsAuthorisationService {
     private List<RestSecurityStrategy> restSecurityStrategies;
 
     @Override
-    public void authoriseRestCall(TpsMeldingDefinition serviceRoutine) {
+    public void authoriseRestCall(DBRequestMeldingDefinition serviceRoutine) {
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedRestStrategies(authStrategy, restSecurityStrategies)
-                    .forEach(SecurityStrategy::handleUnauthorised);
+                    .forEach(SecurityStrategy::handleForbiddenCall);
         }
     }
 
     @Override
-    public void authorisePersonSearch(TpsMeldingDefinition serviceRoutine, String fnr){
+    public void authorisePersonSearch(DBRequestMeldingDefinition serviceRoutine, String fnr){
         for (ServiceRutineAuthorisationStrategy authStrategy : serviceRoutine.getRequiredSecurityServiceStrategies()) {
             getUnauthorizedPersonStrategies(authStrategy, searchPersonSecurityStrategies, fnr)
-                    .forEach(SecurityStrategy::handleUnauthorised);
+                    .forEach(SecurityStrategy::handleForbiddenCall);
         }
     }
 
     @Override
-    public boolean isAuthorisedToUseServiceRutine(TpsMeldingDefinition serviceRoutine){
+    public boolean isAuthorisedToUseServiceRutine(TpsRequestMeldingDefinition serviceRoutine){
         return !serviceRoutine.getRequiredSecurityServiceStrategies()
                 .stream()
                 .anyMatch(strategy -> !isAuthorised(strategy, restSecurityStrategies));
     }
 
     @Override
-    public boolean isAuthorisedToFetchPersonInfo(TpsMeldingDefinition serviceRoutine, String fnr) {
+    public boolean isAuthorisedToFetchPersonInfo(TpsRequestMeldingDefinition serviceRoutine, String fnr) {
         return !serviceRoutine.getRequiredSecurityServiceStrategies()
                 .stream()
                 .anyMatch(strategy -> !isAuthorised(strategy, searchPersonSecurityStrategies, fnr));

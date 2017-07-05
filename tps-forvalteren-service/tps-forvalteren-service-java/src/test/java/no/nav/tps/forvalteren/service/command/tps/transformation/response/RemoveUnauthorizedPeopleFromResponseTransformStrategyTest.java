@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.response;
 
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
-import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
 
 
     @Mock
-    private TpsAuthorisationService tpsAuthorisationServiceMock;
+    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
 
 
     @InjectMocks
@@ -57,7 +57,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
 
         Response response = new Response();
         response.setContext(createContext());
-        response.setServiceRoutine(new TpsServiceRoutineDefinition());
+        response.setServiceRoutine(new TpsServiceRoutineDefinitionRequest());
         response.setRawXml(
                 "<data>"
                 + "<totalHits>2</totalHits>"
@@ -67,8 +67,8 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {
                 + "</data>"
         );
 
-        when(tpsAuthorisationServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr1))).thenReturn(false);
-        when(tpsAuthorisationServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr2))).thenReturn(true);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr1))).thenReturn(false);
+        when(ForbiddenCallHandlerServiceMock.isAuthorisedToFetchPersonInfo(any(), eq(fnr2))).thenReturn(true);
 
         strategy.execute(response, transform);
 

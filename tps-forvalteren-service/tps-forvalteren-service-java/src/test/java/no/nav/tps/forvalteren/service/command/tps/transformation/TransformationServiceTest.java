@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation;
 
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.service.command.tps.transformation.response.ResponseTransformStrategy;
 import no.nav.tps.forvalteren.domain.service.tps.Request;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.RequestTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseTransformer;
 import no.nav.tps.forvalteren.service.command.tps.transformation.request.RequestTransformStrategy;
@@ -42,7 +42,7 @@ public class TransformationServiceTest {
         RequestTransformer transformer1 = mock(RequestTransformer.class);
         RequestTransformer transformer2 = mock(RequestTransformer.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getTransformers()).thenReturn(Arrays.asList(transformer1, transformer2));
 
@@ -76,7 +76,7 @@ public class TransformationServiceTest {
         ResponseTransformer transformer1 = mock(ResponseTransformer.class);
         ResponseTransformer transformer2 = mock(ResponseTransformer.class);
 
-        TpsServiceRoutineDefinition serviceRoutine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = mock(TpsServiceRoutineDefinitionRequest.class);
 
         when(serviceRoutine.getTransformers()).thenReturn(Arrays.asList(transformer1, transformer2));
 

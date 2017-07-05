@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.reso
 
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrHistMultiServiceRoutineRequest;
 
@@ -15,7 +15,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transform
 public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineResolver{
 
     @Override
-    public TpsServiceRoutineDefinition resolve() {
+    public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
                 .name("FS03-FDLISTER-DISKNAVN-M")
                 .internalName("M201 Hent Fnr Navn")
