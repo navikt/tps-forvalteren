@@ -17,6 +17,7 @@ public class DefaultOpprettPersoner implements OpprettPersoner {
     @Autowired
     private HentKjoennFraIdent hentKjoennFraIdent;
 
+
     public List<Person> execute(Collection<String> tilgjengeligIdenter) {
         List<Person> personer = new ArrayList<>();
         for (String ident : tilgjengeligIdenter) {

@@ -92,7 +92,7 @@ public class TestdataControllerTest {
         verify(opprettPersonerFraIdenter).execute(identer);
         verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
         verify(setGruppeIdOnPersons).setGruppeId(personerSomSkalPersisteres, GRUPPE_ID);
-        verify(savePersonListService).save(personerSomSkalPersisteres);
+        verify(savePersonListService).execute(personerSomSkalPersisteres);
 
     }
 
@@ -115,7 +115,7 @@ public class TestdataControllerTest {
 
         testdataController.updatePersons(rsPersonListe);
 
-        verify(savePersonListService).save(personListe);
+        verify(savePersonListService).execute(personListe);
         verify(mapper).mapAsList(rsPersonListe, Person.class);
     }
 
@@ -140,7 +140,7 @@ public class TestdataControllerTest {
         verify(opprettPersonerFraIdenter).execute(personIdentListe);
         verify(setNameOnPersonsService).execute(personer);
         verify(setGruppeIdOnPersons).setGruppeId(personer, GRUPPE_ID);
-        verify(savePersonListService).save(personer);
+        verify(savePersonListService).execute(personer);
     }
 
     @Test

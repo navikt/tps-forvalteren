@@ -13,6 +13,7 @@ import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
@@ -50,6 +51,7 @@ public class SkdUpdateCreatePersoner {
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
+    @PreAuthorize("hasRole('0000-GA-TPSF-SKRIV')")
     public void execute(List<Person> personer){
         List<String> identer = ekstraherIdenterFraPerson(personer);
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer);

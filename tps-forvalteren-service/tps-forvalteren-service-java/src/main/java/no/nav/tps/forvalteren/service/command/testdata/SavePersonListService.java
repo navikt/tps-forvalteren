@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class SavePersonListService {
     @Autowired
     private PersonRepository repository;
 
-    public void save(List<Person> personer) {
+    @PreAuthorize("hasRole('0000-GA-TPSF-SKRIV')")
+    public void execute(List<Person> personer) {
         for (Person person : personer) {
             if (person.getGateadresse() != null) {
                 for (Gateadresse adr : person.getGateadresse()) {

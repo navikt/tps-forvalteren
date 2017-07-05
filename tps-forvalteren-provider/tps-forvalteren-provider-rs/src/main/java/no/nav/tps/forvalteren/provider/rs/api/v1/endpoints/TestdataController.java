@@ -10,8 +10,12 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
-import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
+import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -70,10 +74,22 @@ public class TestdataController {
     private SetGruppeIdOnPersons setGruppeIdOnPersons;
 
     @Autowired
-    private PersonRepository personRepository;
+    private FindAlleGrupperOrderByIdAsc findAlleGrupperOrderByIdAsc;
 
     @Autowired
-    private GruppeRepository gruppeRepository;
+    private FindPersonerByIdIn findPersonerByIdIn;
+
+    @Autowired
+    private FindGruppeById findGruppeById;
+
+    @Autowired
+    private DeletePersonerByIdIn deletePersonerByIdIn;
+
+    @Autowired
+    private DeleteGruppeById deleteGruppeById;
+
+    @Autowired
+    private SaveGruppe saveGruppe;
 
     @Autowired
     private MapperFacade mapper;
@@ -87,14 +103,14 @@ public class TestdataController {
 
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdOnPersons.setGruppeId(personerSomSkalPersisteres, gruppeId);
-        savePersonListService.save(personerSomSkalPersisteres);
+        savePersonListService.execute(personerSomSkalPersisteres);
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
     @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
-        personRepository.deleteByIdIn(personIdListe.getIds());
+        deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
     @LogExceptions
@@ -102,7 +118,7 @@ public class TestdataController {
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
     public void updatePersons(@RequestBody List<RsPerson> personListe) {
         List<Person> personer = mapper.mapAsList(personListe, Person.class);
-        savePersonListService.save(personer);
+        savePersonListService.execute(personer);
     }
 
     @LogExceptions
@@ -119,14 +135,14 @@ public class TestdataController {
         List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
         setNameOnPersonsService.execute(personer);
         setGruppeIdOnPersons.setGruppeId(personer, gruppeId);
-        savePersonListService.save(personer);
+        savePersonListService.execute(personer);
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
     @RequestMapping(value = "/saveTPS", method = RequestMethod.POST)
     public void lagreTilTPS(@RequestBody List<String> identer) {
-        List<Person> personer = personRepository.findByIdentIn(identer);
+        List<Person> personer = findPersonerByIdIn.execute(identer);
         skdUpdateOrCreatePersoner.execute(personer);
     }
 
@@ -134,7 +150,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSimpleGruppe> getGrupper() {
-        List<Gruppe>  grupper = gruppeRepository.findAllByOrderByIdAsc();
+        List<Gruppe> grupper = findAlleGrupperOrderByIdAsc.execute();
         return mapper.mapAsList(grupper, RsSimpleGruppe.class);
     }
 
@@ -142,7 +158,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        Gruppe gruppe = gruppeRepository.findById(gruppeId);
+        Gruppe gruppe = findGruppeById.execute(gruppeId);
         return mapper.map(gruppe, RsGruppe.class);
     }
 
@@ -151,13 +167,13 @@ public class TestdataController {
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
     public void createGruppe(@RequestBody RsSimpleGruppe rsGruppe) {
         Gruppe gruppe = mapper.map(rsGruppe, Gruppe.class);
-        gruppeRepository.save(gruppe);
+        saveGruppe.execute(gruppe);
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        gruppeRepository.deleteById(gruppeId);
+        deleteGruppeById.execute(gruppeId);
     }
 }
