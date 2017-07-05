@@ -17,3 +17,4 @@ require('./welcome/welcome.controller');
 require('./testgruppe/testgruppe.controller');
 require('./testgruppe/nygruppe/nygruppe.controller');
 require('./vis-testdata/endregruppe/endregruppe.controller');
+require('./vis-testdata/sendtiltps/sendtiltps.controller');
