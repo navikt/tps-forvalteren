@@ -140,10 +140,10 @@ public class TestdataController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
-    @RequestMapping(value = "/saveTPS", method = RequestMethod.POST)
-    public void lagreTilTPS(@RequestBody List<String> identer) {
-        List<Person> personer = findPersonerByIdIn.execute(identer);
-        skdUpdateOrCreatePersoner.execute(personer);
+    @RequestMapping(value = "/tps", method = RequestMethod.POST)
+    public void lagreTilTPS(@RequestBody Long gruppeId) {
+        Gruppe gruppe = findGruppeById.execute(gruppeId);
+        skdUpdateOrCreatePersoner.execute(gruppe.getPersoner());
     }
 
     @LogExceptions

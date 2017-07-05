@@ -14,7 +14,7 @@ public class FindAlleGrupperOrderByIdAsc {
     @Autowired
     private GruppeRepository gruppeRepository;
 
-    @PreAuthorize("hasRole('0000-GA-TPSF-LES')")
+    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     public List<Gruppe> execute(){
         return gruppeRepository.findAllByOrderByIdAsc();
     }

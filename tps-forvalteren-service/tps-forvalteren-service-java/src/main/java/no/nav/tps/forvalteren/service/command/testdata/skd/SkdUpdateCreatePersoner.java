@@ -51,7 +51,7 @@ public class SkdUpdateCreatePersoner {
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
-    @PreAuthorize("hasRole('0000-GA-TPSF-SKRIV')")
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     public void execute(List<Person> personer){
         List<String> identer = ekstraherIdenterFraPerson(personer);
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer);

@@ -13,7 +13,7 @@ public class DeletePersonerByIdIn {
     @Autowired
     PersonRepository personRepository;
 
-    @PreAuthorize("hasRole('0000-GA-TPSF-SKRIV')")
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     public void execute(List<Long> ids){
         personRepository.deleteByIdIn(ids);
     }

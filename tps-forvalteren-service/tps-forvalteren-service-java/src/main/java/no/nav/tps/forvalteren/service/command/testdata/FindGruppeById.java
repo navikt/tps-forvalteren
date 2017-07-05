@@ -12,7 +12,7 @@ public class FindGruppeById {
     @Autowired
     private GruppeRepository gruppeRepository;
 
-    @PreAuthorize("hasRole('0000-GA-TPSF-LES')")
+    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     public Gruppe execute(Long gruppeId){
         return gruppeRepository.findById(gruppeId);
     }

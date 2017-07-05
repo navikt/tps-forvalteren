@@ -12,7 +12,7 @@ public class SaveGruppe {
     @Autowired
     private GruppeRepository gruppeRepository;
 
-    @PreAuthorize("hasRole('0000-GA-TPSF-SKRIV')")
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     public Gruppe execute(Gruppe gruppe){
         return gruppeRepository.save(gruppe);
     }
