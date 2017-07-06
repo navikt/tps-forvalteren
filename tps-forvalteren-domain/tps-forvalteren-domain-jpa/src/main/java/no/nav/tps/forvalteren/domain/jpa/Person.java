@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -67,8 +68,8 @@ public class Person extends ChangeStamp {
     @Column(name = "SPESREG_DATO")
     private LocalDateTime spesregDato;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
-    private List<Gateadresse> gateadresse = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
+    private Adresse offisiellAdresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private List<Postadresse> postadresse = new ArrayList<>();

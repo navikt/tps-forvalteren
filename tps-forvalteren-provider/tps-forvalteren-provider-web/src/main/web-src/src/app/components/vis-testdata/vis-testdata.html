@@ -184,10 +184,10 @@
                                     <md-tooltip>Gatenavn</md-tooltip>
                                     <label>Gatenavn</label>
                                     <input name="boGateadresse" ng-required="false" md-maxlength="50"
-                                           ng-model="person.gateadresse[0].boGateadresse"
+                                           ng-model="person.offisiellAdresse[0].offisiellAdresse"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boGateadresse.$error"
-                                         ng-show="requestForm.boGateadresse.$dirty">
+                                    <div ng-messages="requestForm.offisiellAdresse.$error"
+                                         ng-show="requestForm.offisiellAdresse.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -196,10 +196,10 @@
                                     <md-tooltip>Husnummer</md-tooltip>
                                     <label>Husnummer</label>
                                     <input name="boHusnummer" ng-required="false" md-maxlength="4"
-                                           ng-model="person.gateadresse[0].boHusnummer"
+                                           ng-model="person.offisiellAdresse[0].husnummer"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boHusnummer.$error"
-                                         ng-show="requestForm.boHusnummer.$dirty">
+                                    <div ng-messages="requestForm.husnummer.$error"
+                                         ng-show="requestForm.husnummer.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -208,10 +208,10 @@
                                     <md-tooltip>Gatekode</md-tooltip>
                                     <label>Gatekode</label>
                                     <input name="boGatekode" ng-required="false" md-maxlength="5"
-                                           ng-model="person.gateadresse[0].boGatekode"
+                                           ng-model="person.offisiellAdresse[0].gatekode"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boGatekode.$error"
-                                         ng-show="requestForm.boGatekode.$dirty">
+                                    <div ng-messages="requestForm.gatekode.$error"
+                                         ng-show="requestForm.gatekode.$dirty">
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                     </div>
                                 </md-input-container>
@@ -221,10 +221,10 @@
                                     <label>Postnummer</label>
                                     <input name="boPostnummer" pattern="[0-9]*"
                                            md-maxlength="4" minlength="4"
-                                           ng-model="person.gateadresse[0].boPostnummer"
+                                           ng-model="person.offisiellAdresse[0].postnummer"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boPostnummer.$error"
-                                         ng-show="requestForm.boPostnummer.$dirty" ng-messages-multiple>
+                                    <div ng-messages="requestForm.postnummer.$error"
+                                         ng-show="requestForm.postnummer.$dirty" ng-messages-multiple>
                                         <div ng-message="pattern">Ugyldig numerisk verdi</div>
                                         <div ng-message="minlength">Verdi har for få tegn</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -236,11 +236,11 @@
                                     <label>Flyttedato</label>
                                     <md-datepicker name="boFlytteDato"
                                                    md-current-view="year"
-                                                   ng-model="person.gateadresse[0].boFlytteDato"
+                                                   ng-model="person.offisiellAdresse[0].flyttedato"
                                                    ng-change="endret($index)">
                                     </md-datepicker>
-                                    <div ng-messages="requestForm.boFlytteDato.$error"
-                                         ng-show="requestForm.boFlytteDato.$pristine">
+                                    <div ng-messages="requestForm.flyttedato.$error"
+                                         ng-show="requestForm.flyttedato.$pristine">
                                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
                                     </div>
                                 </md-input-container>
@@ -250,10 +250,10 @@
                                     <label>Kommunenr</label>
                                     <input name="boKommunenr" ng-required="false" pattern="[0-9]*" md-maxlength="4"
                                            minlength="4"
-                                           ng-model="person.gateadresse[0].boKommunenr"
+                                           ng-model="person.offisiellAdresse[0].kommunenr"
                                            ng-change="endret($index)"/>
-                                    <div ng-messages="requestForm.boKommunenr.$error"
-                                         ng-show="requestForm.boKommunenr.$dirty" ng-messages-multiple>
+                                    <div ng-messages="requestForm.kommunenr.$error"
+                                         ng-show="requestForm.kommunenr.$dirty" ng-messages-multiple>
                                         <div ng-message="pattern">Ugyldig numerisk verdi</div>
                                         <div ng-message="minlength">Verdi har for få tegn</div>
                                         <div ng-message="md-maxlength">Verdi har for mange tegn</div>

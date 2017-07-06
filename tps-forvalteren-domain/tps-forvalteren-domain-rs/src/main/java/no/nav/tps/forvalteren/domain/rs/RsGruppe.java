@@ -18,7 +18,7 @@ public class RsGruppe {
     private Long id;
 
     @NotBlank
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 30)
     private String navn;
 
     @Size(min = 1, max = 200)

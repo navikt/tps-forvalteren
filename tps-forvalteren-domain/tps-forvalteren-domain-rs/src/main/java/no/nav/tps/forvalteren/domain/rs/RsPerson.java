@@ -49,7 +49,7 @@ public class RsPerson {
 
     private LocalDateTime spesregDato;
 
-    private List<RsGateadresse> gateadresse;
+    private RsAdresse offisiellAdresse;
 
     private List<RsPostadresse> postadresse;
 
