@@ -17,7 +17,6 @@ public class DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe implements Filtere
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     public void execute(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = new HashSet<>();
         for (TestdataRequest request : testdataRequests) {

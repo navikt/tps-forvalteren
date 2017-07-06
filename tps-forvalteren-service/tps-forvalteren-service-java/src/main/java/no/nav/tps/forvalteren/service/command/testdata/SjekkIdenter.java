@@ -28,7 +28,6 @@ public class SjekkIdenter {
     private static final String IKKE_LEDIG = "IL";
     private static final String LEDIG_OG_GYLDIG = "LOG";
 
-    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     public Set<IdentMedStatus> finnGyldigeOgLedigeIdenter(List<String> identListe) {
         Set<String> ukjenteIdenter = new HashSet<>(identListe);
         Map<String, String> identerMedStatus = new HashMap<>();
