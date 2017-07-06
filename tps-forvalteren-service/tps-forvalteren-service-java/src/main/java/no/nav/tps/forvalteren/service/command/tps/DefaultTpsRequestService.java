@@ -14,9 +14,6 @@ import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.jms.JMSException;
-import java.io.IOException;
-
 @Service
 public class DefaultTpsRequestService implements TpsRequestService {
 
