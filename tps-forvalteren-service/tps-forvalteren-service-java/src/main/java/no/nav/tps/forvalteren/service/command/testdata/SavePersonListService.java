@@ -15,7 +15,7 @@ public class SavePersonListService {
     @Autowired
     private PersonRepository repository;
 
-    public void save(List<Person> personer) {
+    public void execute(List<Person> personer) {
         for (Person person : personer) {
             if (person.getGateadresse() != null) {
                 for (Gateadresse adr : person.getGateadresse()) {

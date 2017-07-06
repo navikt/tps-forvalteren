@@ -9,15 +9,12 @@ import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.tps.TpsRequestService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class TpsRequestSender {
-
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TpsRequestSender.class);
 
     @Autowired
     private FindServiceRoutineByName findServiceRoutineByName;
@@ -35,12 +32,11 @@ public class TpsRequestSender {
             return rsTpsResponseMappingUtils.convertToTpsServiceRutineResponse(response);
 
         } catch (HttpForbiddenException ex){
-            LOGGER.error(ex.getMessage(), ex);
             throw new HttpForbiddenException(ex, "api/v1/service/" + request.getServiceRutinenavn());
 
         } catch (Exception exception) {
-            LOGGER.error(exception.getMessage(), exception);
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
+
         }
     }
 }

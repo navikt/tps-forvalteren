@@ -9,4 +9,8 @@ public class MessageConstants {
 
     public static final String GRUPPE_NOT_FOUND_KEY = "service.exception.message.gruppe.not.found";
 
+    public static final String TPS_CALL_FORBIDDEN = "service.exception.message.tps.call.forbidden";
+    public static final String MQ_SENDING_FAILED = "service.exception.message.mq.sending.failed";
+
+    public static final String MAPPING_FAILED = "service.exception.message.mapping.failed";
 }

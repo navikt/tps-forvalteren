@@ -59,14 +59,14 @@ public class RestAuthoritiesMapperTest {
     public void returnsRoleAccessNArManHarTpsfLes() {
         Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_TPSF_LES_ROLE));
 
-        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_LES_TPSF));
+        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_TPSF_LES));
     }
 
     @Test
     public void returnsRoleAccessOgRoleSkrivNArManHarTpsfSkriv() {
         Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_TPSF_SKRIV_ROLE));
 
-        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_SKRIV_TPSF));
+        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_TPSF_SKRIV));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class RestAuthoritiesMapperTest {
                 UserRole.ROLE_DISKRESJONESKODE_6_READ,
                 UserRole.ROLE_EGEN_ANSATT_READ,
                 UserRole.ROLE_DISKRESJONESKODE_7_READ,
-                UserRole.ROLE_LES_TPSF
+                UserRole.ROLE_TPSF_LES
         ));
     }
 
@@ -119,7 +119,7 @@ public class RestAuthoritiesMapperTest {
                 UserRole.ROLE_DISKRESJONESKODE_6_READ,
                 UserRole.ROLE_EGEN_ANSATT_READ,
                 UserRole.ROLE_DISKRESJONESKODE_7_READ,
-                UserRole.ROLE_LES_TPSF
+                UserRole.ROLE_TPSF_LES
         ));
     }
 
@@ -129,7 +129,7 @@ public class RestAuthoritiesMapperTest {
 
         Collection<UserRole> result = mapper.mapAuthorities(currentRoles);
 
-        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS,UserRole.ROLE_LES_TPSF));
+        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS,UserRole.ROLE_TPSF_LES));
 
         assertThat(result, not(contains(UserRole.ROLE_EGEN_ANSATT_READ)));
         assertThat(result, not(contains(UserRole.ROLE_DISKRESJONESKODE_6_READ)));
