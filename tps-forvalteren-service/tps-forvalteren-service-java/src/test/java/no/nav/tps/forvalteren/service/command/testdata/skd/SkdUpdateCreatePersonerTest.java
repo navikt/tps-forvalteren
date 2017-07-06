@@ -68,6 +68,10 @@ public class SkdUpdateCreatePersonerTest {
     @InjectMocks
     private SkdUpdateCreatePersoner skdUpdateCreatePersoner;
 
+    @Test
+    public void tom(){
+
+    }
 
     /*h
     @Before
