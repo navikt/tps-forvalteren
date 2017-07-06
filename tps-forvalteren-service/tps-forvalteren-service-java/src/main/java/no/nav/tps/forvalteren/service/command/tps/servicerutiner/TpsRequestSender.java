@@ -10,11 +10,8 @@ import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.tps.TpsRequestService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.jms.JMSException;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.MQ_SENDING_FAILED;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.TPS_CALL_FORBIDDEN;
@@ -44,11 +41,8 @@ public class TpsRequestSender {
         } catch (HttpForbiddenException ex){
             throw new HttpForbiddenException(messageProvider.get(TPS_CALL_FORBIDDEN), "api/v1/service/" + request.getServiceRutinenavn());
 
-        } catch (JMSException exception) {
-            throw new HttpInternalServerErrorException(messageProvider.get(MQ_SENDING_FAILED), "api/v1/service");
-
         } catch (Exception exception) {
-            throw new HttpInternalServerErrorException(exception, "api/v1/service");
+            throw new HttpInternalServerErrorException(messageProvider.get(MQ_SENDING_FAILED), "api/v1/service");
 
         }
     }

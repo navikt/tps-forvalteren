@@ -19,12 +19,12 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Autowired
-    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
+    private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
     @Override
     public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
 
-        ForbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
+        forbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());
 

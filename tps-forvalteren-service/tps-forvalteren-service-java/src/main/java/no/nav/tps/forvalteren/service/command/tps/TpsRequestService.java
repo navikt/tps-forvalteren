@@ -10,5 +10,5 @@ import java.io.IOException;
 
 @FunctionalInterface
 public interface TpsRequestService {
-    Response executeServiceRutineRequest(TpsServiceRoutineRequest request, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws JMSException, IOException;
+    Response executeServiceRutineRequest(TpsServiceRoutineRequest request, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws Exception;
 }
