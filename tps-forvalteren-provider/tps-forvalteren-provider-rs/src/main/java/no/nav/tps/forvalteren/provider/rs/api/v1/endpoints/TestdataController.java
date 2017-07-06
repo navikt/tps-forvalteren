@@ -148,8 +148,8 @@ public class TestdataController {
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
-    @RequestMapping(value = "/tps", method = RequestMethod.POST)
-    public void lagreTilTPS(@RequestBody Long gruppeId) {
+    @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
+    public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         skdUpdateOrCreatePersoner.execute(gruppe.getPersoner());
     }

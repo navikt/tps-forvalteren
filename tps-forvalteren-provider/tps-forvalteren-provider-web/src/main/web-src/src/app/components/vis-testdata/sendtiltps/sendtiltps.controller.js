@@ -14,7 +14,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             $scope.send = function () {
                 $scope.showSpinner = true;
-                testdataService.sendTilTps(gruppeId).then(
+                testdataService.sendTilTps(gruppeId[0]).then(
                     function () {
                         $scope.showSpinner = false;
                         $mdDialog.hide();
