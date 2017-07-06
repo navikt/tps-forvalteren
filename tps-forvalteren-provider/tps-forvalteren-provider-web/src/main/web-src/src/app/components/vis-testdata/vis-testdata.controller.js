@@ -2,6 +2,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope', 'headerService', '$location',
         function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
 
+            $scope.persondetalj = "app/components/vis-testdata/person/person.html";
+            $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
+            $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
+            $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
+
             var gruppeId = $location.url().match(/\d+/g);
 
             var setHeaderButtons = function () {

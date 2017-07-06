@@ -1,0 +1,53 @@
+<div layout="row" class="testdata-postadr">Postadresse</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adresselinje 1</md-tooltip>
+        <label>Linje 1</label>
+        <input name="postLinje1" ng-required="false" md-maxlength="30"
+               ng-model="person.postadresse[0].postLinje1"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.postLinje1.$error"
+             ng-show="requestForm.postLinje1.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adresselinje 2</md-tooltip>
+        <label>Linje 2</label>
+        <input name="postLinje2" ng-required="false" md-maxlength="30"
+               ng-model="person.postadresse[0].postLinje2"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.postLinje2.$error"
+             ng-show="requestForm.postLinje2.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adresselinje 3</md-tooltip>
+        <label>Linje 3</label>
+        <input name="postLinje3" ng-required="false" md-maxlength="30"
+               ng-model="person.postadresse[0].postLinje3"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.postLinje3.$error"
+             ng-show="requestForm.postLinje3.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="5">
+        <md-tooltip>Land</md-tooltip>
+        <label>Land</label>
+        <input name="postLand" ng-required="false" pattern="[0-9]*" md-maxlength="3"
+               minlength="3"
+               ng-model="person.postadresse[0].postLand"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.postLand.$error"
+             ng-show="requestForm.postLand.$dirty">
+            <div ng-message="pattern">Ugyldig numerisk verdi</div>
+            <div ng-message="minlength">Verdi har for få tegn</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>

@@ -1,0 +1,104 @@
+<div layout="row" ng-if="person.adressetype == 'MATR'">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Mellomnavn</md-tooltip>
+        <label>Mellomnavn</label>
+        <input name="matrMellomnavn" ng-required="false" md-maxlength="50"
+               ng-model="person.matrikkeladresse[0].mellomnavn"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.matrMellomnavn.$error"
+             ng-show="requestForm.matrMellomnavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="5">
+        <md-tooltip>Gårdsnummer</md-tooltip>
+        <label>Gårdsnr</label>
+        <input name="gardsnr" ng-required="false" md-maxlength="4"
+               ng-model="person.matrikkeladresse[0].gardsnr"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.gardsnr.$error"
+             ng-show="requestForm.gardsnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="5">
+        <md-tooltip>Bruksnummer</md-tooltip>
+        <label>Bruksnr</label>
+        <input name="bruksnr" ng-required="false" md-maxlength="4"
+               ng-model="person.matrikkeladresse[0].bruksnr"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.bruksnr.$error"
+             ng-show="requestForm.bruksnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="5">
+        <md-tooltip>Festenummer</md-tooltip>
+        <label>Festenr</label>
+        <input name="festenr" ng-required="false" md-maxlength="4"
+               ng-model="person.matrikkeladresse[0].festenr"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.festenr.$error"
+             ng-show="requestForm.festenr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Undernummer</md-tooltip>
+        <label>Undernr</label>
+        <input name="undernr" ng-required="false" md-maxlength="4"
+               ng-model="person.matrikkeladresse[0].undernr"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.undernr.$error"
+             ng-show="requestForm.undernr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="5">
+        <md-tooltip>Postnummer</md-tooltip>
+        <label>Postnr</label>
+        <input name="matrPostnr" pattern="[0-9]*"
+               md-maxlength="4" minlength="4"
+               ng-model="person.matrikkeladresse[0].postnr"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.matrPostnr.$error"
+             ng-show="requestForm.matrPostnr.$dirty">
+            <div ng-message="pattern">Ugyldig numerisk verdi</div>
+            <div ng-message="minlength">Verdi har for få tegn</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Kommunenummer</md-tooltip>
+        <label>Kommunenr</label>
+        <input name="matrKommunenr" ng-required="false" pattern="[0-9]*" md-maxlength="4"
+               minlength="4"
+               ng-model="person.matrikkeladresse[0].kommunenr"
+               ng-change="endret($index)"/>
+        <div ng-messages="requestForm.matrKommunenr.$error"
+             ng-show="requestForm.matrKommunenr.$dirty" ng-messages-multiple>
+            <div ng-message="pattern">Ugyldig numerisk verdi</div>
+            <div ng-message="minlength">Verdi har for få tegn</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Flyttedato</md-tooltip>
+        <label>Flyttedato</label>
+        <md-datepicker name="matrFlyttedato"
+                       md-current-view="year"
+                       ng-model="person.matrikkeladresse[0].flytteDato"
+                       ng-change="endret($index)">
+        </md-datepicker>
+        <div ng-messages="requestForm.matrFlyttedato.$error"
+             ng-show="requestForm.matrFlyttedato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+        </div>
+    </md-input-container>
+</div>
