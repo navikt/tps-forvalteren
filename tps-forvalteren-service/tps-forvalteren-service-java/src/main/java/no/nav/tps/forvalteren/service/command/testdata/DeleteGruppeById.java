@@ -11,7 +11,6 @@ public class DeleteGruppeById {
     @Autowired
     private GruppeRepository gruppeRepository;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     public void execute(Long gruppeId){
         gruppeRepository.deleteById(gruppeId);
     }

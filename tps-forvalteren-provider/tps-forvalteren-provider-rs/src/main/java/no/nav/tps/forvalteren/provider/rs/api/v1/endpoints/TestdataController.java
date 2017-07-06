@@ -28,6 +28,7 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdUpdateCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,6 +95,8 @@ public class TestdataController {
     @Autowired
     private MapperFacade mapper;
 
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
@@ -106,6 +109,7 @@ public class TestdataController {
         savePersonListService.execute(personerSomSkalPersisteres);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
     @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
@@ -113,6 +117,7 @@ public class TestdataController {
         deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
@@ -121,6 +126,7 @@ public class TestdataController {
         savePersonListService.execute(personer);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
@@ -128,6 +134,7 @@ public class TestdataController {
         return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
     @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
@@ -138,6 +145,7 @@ public class TestdataController {
         savePersonListService.execute(personer);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
     @RequestMapping(value = "/tps", method = RequestMethod.POST)
@@ -146,6 +154,7 @@ public class TestdataController {
         skdUpdateOrCreatePersoner.execute(gruppe.getPersoner());
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
@@ -154,6 +163,7 @@ public class TestdataController {
         return mapper.mapAsList(grupper, RsSimpleGruppe.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
@@ -162,6 +172,7 @@ public class TestdataController {
         return mapper.map(gruppe, RsGruppe.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
@@ -170,6 +181,7 @@ public class TestdataController {
         saveGruppe.execute(gruppe);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)

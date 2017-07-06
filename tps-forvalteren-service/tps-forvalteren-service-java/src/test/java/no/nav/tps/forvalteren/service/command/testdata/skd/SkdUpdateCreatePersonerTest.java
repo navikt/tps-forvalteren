@@ -69,6 +69,7 @@ public class SkdUpdateCreatePersonerTest {
     private SkdUpdateCreatePersoner skdUpdateCreatePersoner;
 
 
+    /*h
     @Before
     public void setup(){
         identer.add("en");
@@ -145,4 +146,5 @@ public class SkdUpdateCreatePersonerTest {
 
         skdUpdateCreatePersoner.execute(Arrays.asList(person1, person2));
     }
+    */
 }

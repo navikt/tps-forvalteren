@@ -14,7 +14,6 @@ public class FindPersonerByIdIn {
     @Autowired
     private PersonRepository personRepository;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_LES')")
     public List<Person> execute(List<String> identer){
         return personRepository.findByIdentIn(identer);
     }

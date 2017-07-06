@@ -5,7 +5,10 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 
+import javax.jms.JMSException;
+import java.io.IOException;
+
 @FunctionalInterface
 public interface TpsRequestService {
-    Response executeServiceRutineRequest(TpsServiceRoutineRequest request, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws Exception;
+    Response executeServiceRutineRequest(TpsServiceRoutineRequest request, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws JMSException, IOException;
 }

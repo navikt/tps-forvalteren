@@ -25,10 +25,11 @@ import java.util.Set;
 @Service
 public class SkdUpdateCreatePersoner {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(SkdUpdateCreatePersoner.class);
-
     @Value("${environment.class}")
     private String deployedEnvironment;
+
+    @Autowired
+    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 
     @Autowired
     private PersonToSkdParametersMapper personToSkdParametersMapper;
@@ -37,21 +38,11 @@ public class SkdUpdateCreatePersoner {
     private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;
 
     @Autowired
-    private SkdMeldingRequest skdMeldingRequest;
-
-    @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
-
-    @Autowired
-    private GetTpsSkdmeldingService getTpsSkdmeldingService;
 
     @Autowired
     private GetEnvironments getEnvironmentsCommand;
 
-    @Autowired
-    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
-
-    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     public void execute(List<Person> personer){
         List<String> identer = ekstraherIdenterFraPerson(personer);
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer);
@@ -66,30 +57,7 @@ public class SkdUpdateCreatePersoner {
             }
 
             String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere);
-            sendSkdMeldingerTilAlleMiljoer(skdMelding);
-        }
-    }
-
-    private void sendSkdMeldingerTilAlleMiljoer(String skdMelding){
-        TpsSkdRequestMeldingDefinition skdMeldingDefinition = getTpsSkdmeldingService.execute().get(0);  // For now only 1 SkdMeldingDefinition
-
-        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
-        Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
-
-        for(String env : envToCheck){
-            sendSkdMelding(skdMelding, skdMeldingDefinition, env);
-        }
-    }
-
-    private void sendSkdMelding(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment){
-        try {
-            skdMeldingRequest.execute(skdMelding, skdMeldingDefinition, environment);
-        } catch (JMSException jmsException) {
-            LOGGER.error(jmsException.getMessage(), jmsException);
-            throw new HttpInternalServerErrorException(jmsException, "api/v1/testdata/saveTPS");
-        } catch (HttpForbiddenException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-            throw new HttpForbiddenException(ex, "api/v1/testdata/saveTPS" + "skdInnvandring");
+            sendSkdMeldingTilGitteMiljoer.execute(skdMelding, getEnvironmentsCommand.getEnvironmentsFromVera("tpsws"));
         }
     }
 

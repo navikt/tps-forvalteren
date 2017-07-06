@@ -16,7 +16,6 @@ public class SavePersonListService {
     @Autowired
     private PersonRepository repository;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     public void execute(List<Person> personer) {
         for (Person person : personer) {
             if (person.getGateadresse() != null) {
