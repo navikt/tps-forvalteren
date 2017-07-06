@@ -6,10 +6,22 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var setHeaderButtons = function () {
                 headerService.setButtons([{
-                    text: 'Opprett ny testperson',
+                    text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
                         locationService.redirectToOpprettTestdata(gruppeId);
+                    }
+                }, {
+                    text: 'Send til TPS',
+                    icon: 'assets/icons/ic_send_black_24px.svg',
+                    click: function (ev) {
+                        var confirm = $mdDialog.confirm({
+                            controller: 'SendTilTpsCtrl',
+                            templateUrl: 'app/components/vis-testdata/sendtiltps/sendtiltps.html',
+                            parent: angular.element(document.body),
+                            targetEvent: ev
+                        });
+                        $mdDialog.show(confirm);
                     }
                 }]);
             };
@@ -23,7 +35,12 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             controller: 'EndreGruppeCtrl',
                             templateUrl: 'app/components/vis-testdata/endregruppe/endregruppe.html',
                             parent: angular.element(document.body),
-                            targetEvent: ev
+                            targetEvent: ev,
+                            locals: {
+                                miljo: $scope.$resolve.environmentsPromise
+                            },
+                            bindToController: true,
+                            controllerAs: 'ctrl'
                         });
                         $mdDialog.show(confirm).then(
                             function () { // Ser ut til å hindre duplikatkall mot rest-endepunkt
@@ -51,8 +68,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             )
                         });
                     }
-                }
-                ]);
+                }]);
             };
 
             $scope.allePersoner = false;

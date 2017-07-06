@@ -1,0 +1,42 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Oppdater testgruppe dialog">
+        <form name="tpsForm">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Send til TPS - fra {{miljo}}-miljø</h2>
+                <div layout="row">
+                    Testpersonene vil bli sendt til TPS i følgende miljøer:
+                </div>
+                <div ng-show="u_miljoer">
+                    {{u_miljoer}}
+                </div>
+                <div ng-show="t_miljoer">
+                    {{t_miljoer}}
+                </div>
+                <div ng-show="q_miljoer">
+                    {{q_miljoer}}
+                </div>
+                <div ng-show="p_miljoer">
+                    {{p_miljoer}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Avbryt">
+                    <md-tooltip md-direction="top">Avbryt send til TPS</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Avbryt</md-button>
+                </md-input-container>
+                <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
+                    <md-tooltip md-direction="top">Send inn til TPS</md-tooltip>
+                    <md-button class="md-button md-raised md-accent" ng-click="send()">Send inn
+                    </md-button>
+                </md-input-container>
+            </md-dialog-actions>
+
+        </form>
+        <div layout="row" class="md-dialog-content" ng-show="showSpinner">
+            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </md-dialog>
+
+</div>
