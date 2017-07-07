@@ -1,9 +1,9 @@
-<div layout="row" ng-if="person.adressetype == 'GATE'">
+<div layout="row" ng-if="person.boadresse.adressetype == 'GATE'">
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Gatenavn</md-tooltip>
         <label>Gatenavn</label>
         <input name="gateadresse" ng-required="false" md-maxlength="50"
-               ng-model="person.gateadresse[0].gateadresse"
+               ng-model="person.gateadresse.gateadresse"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.gateadresse.$error"
              ng-show="requestForm.gateadresse.$dirty">
@@ -15,7 +15,7 @@
         <md-tooltip>Husnummer</md-tooltip>
         <label>Husnummer</label>
         <input name="husnummer" ng-required="false" md-maxlength="4"
-               ng-model="person.gateadresse[0].husnummer"
+               ng-model="person.gateadresse.husnummer"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.husnummer.$error"
              ng-show="requestForm.husnummer.$dirty">
@@ -27,7 +27,7 @@
         <md-tooltip>Gatekode</md-tooltip>
         <label>Gatekode</label>
         <input name="gatekode" ng-required="false" md-maxlength="5"
-               ng-model="person.gateadresse[0].gatekode"
+               ng-model="person.gateadresse.gatekode"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.gatekode.$error"
              ng-show="requestForm.gatekode.$dirty">
@@ -40,7 +40,7 @@
         <label>Postnummer</label>
         <input name="gtPostnummer" pattern="[0-9]*"
                md-maxlength="4" minlength="4"
-               ng-model="person.gateadresse[0].postnummer"
+               ng-model="person.gateadresse.postnummer"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.gtPostnummer.$error"
              ng-show="requestForm.gtPostnummer.$dirty" ng-messages-multiple>
@@ -55,7 +55,7 @@
         <label>Kommunenr</label>
         <input name="gtKommunenr" ng-required="false" pattern="[0-9]*" md-maxlength="4"
                minlength="4"
-               ng-model="person.gateadresse[0].kommunenr"
+               ng-model="person.gateadresse.kommunenr"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.gtKommunenr.$error"
              ng-show="requestForm.gtKommunenr.$dirty" ng-messages-multiple>
@@ -70,7 +70,7 @@
         <label>Flyttedato</label>
         <md-datepicker name="gtFlytteDato"
                        md-current-view="year"
-                       ng-model="person.gateadresse[0].flytteDato"
+                       ng-model="person.gateadresse.flytteDato"
                        ng-change="endret($index)">
         </md-datepicker>
         <div ng-messages="requestForm.gtFlytteDato.$error"

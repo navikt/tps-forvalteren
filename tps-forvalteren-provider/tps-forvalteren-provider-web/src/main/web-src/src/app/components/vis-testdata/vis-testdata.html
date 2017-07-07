@@ -13,7 +13,7 @@
                 </div>
                 <div>Ingen testpersoner er lagt til ennå</div>
             </div>
-            <div layout="row" style="margin-top: 3px;" flex ng-show="personer.length > 0">
+            <div layout="row" style="margin-top: 3px;" flex ng-if="personer.length > 0">
 
                 <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()" flex="15">
                     Velg alle<span ng-if="visEndret"> endrede</span>
@@ -84,10 +84,9 @@
                     <div layout="row" ng-if="control[$index].aapen">
                         <div class="line">
                             <div ng-include="persondetalj"></div>
-
                                 <div class="testdata-boadr">Boadresse</div>
-                                <md-radio-group ng-model="person.adressetype" layout="row" class="testdata-adr-btn"
-                                                ng-init="person.adressetype='GATE'">
+                                <md-radio-group ng-model="person.boadresse.adressetype"
+                                                layout="row" class="testdata-adr-btn">
                                     <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
                                     <md-radio-button value="MATR">Matrikkeladresse</md-radio-button>
                                 </md-radio-group>
