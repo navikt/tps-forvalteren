@@ -157,12 +157,20 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             var oppdaterFane = undefined;
+            var checkIt = false;
 
             $scope.toggleFane = function (index) {
                 if (!$scope.control[index]) {
                     $scope.control[index] = {};
                 }
-                $scope.control[index].aapen = !$scope.control[index].aapen;
+                if (!checkIt) {
+                    $scope.control[index].aapen = !$scope.control[index].aapen;
+                }
+                checkIt = false;
+            };
+
+            $scope.checkIt = function () {
+                checkIt = true;
             };
 
             $scope.sletteDialog = function (index) {

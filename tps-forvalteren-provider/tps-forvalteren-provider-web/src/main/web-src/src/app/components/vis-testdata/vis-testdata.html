@@ -61,7 +61,8 @@
                                      ng-model="control[$index].velg"
                                      ng-change="oppdaterValgt($index)"
                                      ng-disabled="control[$index].disabled"
-                                     aria-label="Marker person{{person.ident}} for sletting">
+                                     aria-label="Marker person{{person.ident}} for sletting"
+                                     ng-click="checkIt()">
                         </md-checkbox>
                         <div flex="15">{{person.ident}} ({{person.identtype}})</div>
                         <div flex="50">
