@@ -1,6 +1,12 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope', 'headerService', '$location',
+    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
+        'headerService', '$location',
         function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
+
+            $scope.persondetalj = "app/components/vis-testdata/person/person.html";
+            $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
+            $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
+            $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
 
             var gruppeId = $location.url().match(/\d+/g);
 
@@ -99,7 +105,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         setHeaderButtons();
                         setHeaderIcons();
                         originalPersoner = result.data.personer;
-                        fixDatoForDatepicker();
+                        prepOriginalPersoner();
                         $scope.personer = angular.copy(originalPersoner);
                         $scope.control = [];
                         $scope.antallEndret = 0;
@@ -113,49 +119,58 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
-            // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
-            var fixDatoForDatepicker = function () {
+            var prepOriginalPersoner = function () {
                 for (var i = 0; i < originalPersoner.length; i++) {
-                    if (!originalPersoner[i].regdato) {
-                        originalPersoner[i].regdato = null;
-                    }
-                    if (!originalPersoner[i].spesregDato) {
-                        originalPersoner[i].spesregDato = null;
-                    }
-                    if (!originalPersoner[i].gateadresse || !originalPersoner[i].gateadresse[0]) {
-                        originalPersoner[i].gateadresse = [];
-                        originalPersoner[i].gateadresse[0] = {};
-                    }
-                    if (!originalPersoner[i].gateadresse[0].boFlytteDato) {
-                        originalPersoner[i].gateadresse[0].boFlytteDato = null;
-                    }
+                    etablerAdressetype(originalPersoner[i]);
+                    fixDatoForDatepicker(originalPersoner[i]);
                 }
             };
 
-            var lukkingPaagaar = undefined;
-            var oppdaterFane = undefined;
-
-            $scope.aapneFane = function (index) {
-                if (lukkingPaagaar || oppdaterFane) {
-                    lukkingPaagaar = false;
-                    oppdaterFane = false;
+            // Datofix kjøres etter denne
+            var etablerAdressetype = function (person) {
+                if (person.boadresse) {
+                    if (person.boadresse.adressetype === 'GATE') {
+                        person.gateadresse = angular.copy(person.boadresse);
+                    } else if (person.boadresse.adressetype === 'MATR') {
+                        person.matrikkeladresse = angular.copy(person.boadresse);
+                    }
                 } else {
-                    if (!$scope.control[index]) {
-                        $scope.control[index] = {};
-                    }
-                    $scope.control[index].aapen = true;
+                    person.boadresse = {};
+                    person.boadresse.adressetype = 'GATE';
                 }
             };
 
-            $scope.lukkFane = function (index) {
-                if ($scope.control[index]) {
-                    if ($scope.control[index].aapen) {
-                        $scope.control[index].aapen = undefined;
-                        lukkingPaagaar = true;
-                    } else {
-                        $scope.control[index].aapen = true;
-                    }
+            // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
+            var fixDatoForDatepicker = function (person) {
+                person.regdato = person.regdato ? person.regdato : null;
+                person.spesregDato = person.spesregDato ? person.spesregDato : null;
+
+                if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato ) {
+                    person.gateadresse = person.gateadresse && !Array.isArray(person.gateadresse) ? person.gateadresse : {};
+                    person.gateadresse.flytteDato = null;
                 }
+
+                if (!person.boadresse || !person.boadresse.matrikkeladresse || !person.boadresse.matrikkeladresse.flytteDato) {
+                    person.matrikkeladresse = person.matrikkeladresse ? person.matrikkeladresse : {};
+                    person.matrikkeladresse.flytteDato = null;
+                }
+            };
+
+            var oppdaterFane = undefined;
+            var checkIt = false;
+
+            $scope.toggleFane = function (index) {
+                if (!$scope.control[index]) {
+                    $scope.control[index] = {};
+                }
+                if (!checkIt) {
+                    $scope.control[index].aapen = !$scope.control[index].aapen;
+                }
+                checkIt = false;
+            };
+
+            $scope.checkIt = function () {
+                checkIt = true;
             };
 
             $scope.sletteDialog = function (index) {
@@ -234,7 +249,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 var buffer = [];
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
-                        buffer.push($scope.personer[i]);
+                        buffer.push(prepLagrePerson($scope.personer[i]));
                     }
                 }
                 testdataService.oppdaterTestpersoner(buffer).then(
@@ -243,9 +258,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             if ($scope.control[i] && $scope.control[i].velg) {
                                 nullstillControl(i);
                                 originalPersoner[i] = angular.copy($scope.personer[i]);
+                                etablerAdressetype(originalPersoner[i]);
+                                fixDatoForDatepicker(originalPersoner[i]);
                             }
                         }
-                        fixDatoForDatepicker();
                         $scope.oppdaterValgt();
                         bekrefterLagring();
                     },
@@ -253,6 +269,25 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         utilsService.showAlertError(error);
                     }
                 );
+            };
+
+            var prepLagrePerson = function (person) {
+                var adressetype = person.boadresse.adressetype;
+                if (adressetype === 'GATE') {
+                    person.boadresse = angular.copy(person.gateadresse);
+                } else if (adressetype === 'MATR') {
+                    person.boadresse = angular.copy(person.matradresse);
+                }
+                person.gateadresse = undefined;
+                person.matrikkeladresse = undefined;
+                person.boadresse.adressetype = adressetype;
+
+                // Fix foreign key for backend
+                if (!person.boadresse.person || !person.boadresse.person.id) {
+                    person.boadresse.person = {};
+                    person.boadresse.person.id = person.personId;
+                }
+                return person;
             };
 
             var oppdaterFunksjonsknapper = function () {
