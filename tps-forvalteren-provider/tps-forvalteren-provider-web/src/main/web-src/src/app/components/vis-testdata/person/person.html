@@ -2,7 +2,7 @@
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Fornavn</md-tooltip>
         <label>Fornavn</label>
-        <input name="fornavn" ng-required="true" md-maxlength="50"
+        <input name="fornavn" ng-required="true" md-maxlength="50" md-autofocus
                ng-model="person.fornavn" ng-change="endret($index)"/>
         <div ng-messages="requestForm.fornavn.$error"
              ng-show="requestForm.fornavn.$dirty">

@@ -51,13 +51,12 @@
     <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
         <div ng-repeat="person in personer">
-            <md-card flex md-whiteframe="{{height}}"
+            <md-card id="person_{{$index}}" flex md-whiteframe="{{height}}"
                      ng-init="height = 1"
                      ng-mouseover="height = 5"
-                     ng-mouseleave="height = 1"
-                     ng-click="aapneFane($index)">
+                     ng-mouseleave="height = 1" ng-class="control[$index].aapen ? 'testdata-open-card' : ''">
                 <md-card-content flex class="testdata-card-content">
-                    <div class="tps-vk-form" layout="row" style="font-style: oblique;">
+                    <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" ng-click="toggleFane($index)">
                         <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
                                      ng-model="control[$index].velg"
                                      ng-change="oppdaterValgt($index)"
@@ -77,7 +76,6 @@
                                        class="md-icon-button"
                                        type="button" style="margin-top: -10px;"
                                        aria-label="Vis testdata detaljer"
-                                       ng-click="lukkFane($index)"
                                        ng-disabled="!requestForm.$valid">
                                 <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
                             </md-button>

@@ -1,5 +1,6 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope', 'headerService', '$location',
+    .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
+        'headerService', '$location',
         function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
@@ -131,36 +132,26 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         originalPersoner[i].gateadresse = [];
                         originalPersoner[i].gateadresse[0] = {};
                     }
-                    if (!originalPersoner[i].gateadresse[0].boFlytteDato) {
-                        originalPersoner[i].gateadresse[0].boFlytteDato = null;
+                    if (!originalPersoner[i].gateadresse[0].flytteDato) {
+                        originalPersoner[i].gateadresse[0].flytteDato = null;
+                    }
+                    if (!originalPersoner[i].matrikkeladresse || !originalPersoner[i].matrikkeladresse[0]) {
+                        originalPersoner[i].matrikkeladresse = [];
+                        originalPersoner[i].matrikkeladresse[0] = {};
+                    }
+                    if (!originalPersoner[i].matrikkeladresse[0].flytteDato) {
+                        originalPersoner[i].matrikkeladresse[0].flytteDato = null;
                     }
                 }
             };
 
-            var lukkingPaagaar = undefined;
             var oppdaterFane = undefined;
 
-            $scope.aapneFane = function (index) {
-                if (lukkingPaagaar || oppdaterFane) {
-                    lukkingPaagaar = false;
-                    oppdaterFane = false;
-                } else {
-                    if (!$scope.control[index]) {
-                        $scope.control[index] = {};
-                    }
-                    $scope.control[index].aapen = true;
+            $scope.toggleFane = function (index) {
+                if (!$scope.control[index]) {
+                    $scope.control[index] = {};
                 }
-            };
-
-            $scope.lukkFane = function (index) {
-                if ($scope.control[index]) {
-                    if ($scope.control[index].aapen) {
-                        $scope.control[index].aapen = undefined;
-                        lukkingPaagaar = true;
-                    } else {
-                        $scope.control[index].aapen = true;
-                    }
-                }
+                $scope.control[index].aapen = !$scope.control[index].aapen;
             };
 
             $scope.sletteDialog = function (index) {
