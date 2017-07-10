@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RsPerson {
 
-    private Long id;
+    private Long personId;
 
     @NotBlank
     @Size(min = 11, max = 11)
@@ -49,7 +49,7 @@ public class RsPerson {
 
     private LocalDateTime spesregDato;
 
-    private RsAdresse offisiellAdresse;
+    private RsAdresse boadresse;
 
     private List<RsPostadresse> postadresse;
 

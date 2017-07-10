@@ -10,17 +10,17 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "adressetype")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = RsGateadresse.class, name = "Gateadresse"),
-        @JsonSubTypes.Type(value = RsMatrikkeladresse.class, name = "Matrikkeladresse")
+        @JsonSubTypes.Type(value = RsGateadresse.class, name = "GATE"),
+        @JsonSubTypes.Type(value = RsMatrikkeladresse.class, name = "MATR")
 })
 @Getter
 @Setter
 public abstract class RsAdresse {
 
     @NotNull
-    private Long id;
+    private Long adresseId;
 
     @NotNull
     private RsSimplePerson person;

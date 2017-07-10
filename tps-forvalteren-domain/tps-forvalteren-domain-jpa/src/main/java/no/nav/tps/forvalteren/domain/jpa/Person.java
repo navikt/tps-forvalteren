@@ -69,7 +69,7 @@ public class Person extends ChangeStamp {
     private LocalDateTime spesregDato;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
-    private Adresse offisiellAdresse;
+    private Adresse boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private List<Postadresse> postadresse = new ArrayList<>();

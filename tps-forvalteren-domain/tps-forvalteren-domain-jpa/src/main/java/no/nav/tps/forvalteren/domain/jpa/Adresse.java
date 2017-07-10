@@ -28,7 +28,7 @@ public abstract class Adresse {
     @Id
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
-    @Column(name = "ID", nullable = false, updatable = false)
+    @Column(name = "ADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
     @OneToOne
