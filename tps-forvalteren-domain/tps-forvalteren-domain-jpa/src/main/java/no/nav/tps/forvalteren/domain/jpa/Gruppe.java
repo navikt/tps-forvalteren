@@ -40,7 +40,7 @@ public class Gruppe extends ChangeStamp {
     @Column(name = "GRUPPE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "NAVN", unique = true, nullable = false, length = 30)
+    @Column(name = "NAVN", unique = true, nullable = false, length = 50)
     private String navn;
 
     @Column(name = "BESKRIVELSE", length = 200)

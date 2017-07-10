@@ -5,7 +5,7 @@
 
         <h3 style="margin-left: 20px; margin-bottom: 10px;">Testgrupper</h3>
 
-        <md-card id="vis-testdata-main" class="tps-vk-top" ng-show="testgrupper.length == 0">
+        <md-card id="vis-testdata-main" class="tps-vk-top" ng-if="testgrupper.length == 0">
 
             <md-card-content flex class="testdata-card-content md-whiteframe-z2">
                 <div layout="column" class="md-raised" style="height: 200px;" flex layout-align="center center" ng-show="!personer">

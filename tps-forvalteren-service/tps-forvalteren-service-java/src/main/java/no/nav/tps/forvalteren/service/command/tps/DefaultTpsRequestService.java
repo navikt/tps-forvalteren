@@ -14,9 +14,6 @@ import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.jms.JMSException;
-import java.io.IOException;
-
 @Service
 public class DefaultTpsRequestService implements TpsRequestService {
 
@@ -30,17 +27,17 @@ public class DefaultTpsRequestService implements TpsRequestService {
     private TransformationService transformationService;
 
     @Autowired
-    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
+    private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
     @Override
-    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws JMSException, IOException {
+    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws Exception {
 
-        ForbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
+        forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
         if(tpsRequest instanceof TpsServiceRoutineHentByFnrRequest){
-            ForbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
+            forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 
         String xml = xmlMapper.writeValueAsString(tpsRequest);

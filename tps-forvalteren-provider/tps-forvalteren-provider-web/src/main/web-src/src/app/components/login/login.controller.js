@@ -1,5 +1,4 @@
-
-angular.module('tps-forvalteren.login')
+angular.module('tps-forvalteren.login', ['ngMessages'])
     .controller('LoginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
 

@@ -1,9 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtIdenterSomAlleredeFinnesIMiljoe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest implements FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest {
+public class DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe implements FiltererUtIdenterSomAlleredeFinnesIMiljoe {
 
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;

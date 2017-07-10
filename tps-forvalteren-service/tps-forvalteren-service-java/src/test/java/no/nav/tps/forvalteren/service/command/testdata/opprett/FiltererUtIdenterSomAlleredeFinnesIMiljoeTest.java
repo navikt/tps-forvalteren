@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
+public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
     private TestdataRequest testdataRequest1, testdataRequest2;
     private RsPersonKriterier dummyKriterie = new RsPersonKriterier();
@@ -46,7 +46,7 @@ public class FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestTest {
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljoMock;
 
     @InjectMocks
-    private DefaultFiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
+    private DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 
     @Test
     public void verifiserAtFilterPaaIdenterFilgjengligIMiljoeBlirKaltMedAlleIdenterFraTestdatarequestsInput() {

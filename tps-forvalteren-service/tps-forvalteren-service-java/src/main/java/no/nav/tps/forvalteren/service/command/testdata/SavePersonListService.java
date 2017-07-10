@@ -1,8 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
@@ -21,7 +19,7 @@ public class SavePersonListService {
     @Autowired
     private AdresseRepository adresseRepository;
 
-    public void save(List<Person> personer) {
+    public void execute(List<Person> personer) {
         for (Person person : personer) {
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {
@@ -33,12 +31,7 @@ public class SavePersonListService {
                 if (personAdresseDB == null) {
                     continue;
                 }
-
-                if ((personAdresseDB instanceof Gateadresse && person.getBoadresse() instanceof Matrikkeladresse) ||
-                        (personAdresseDB instanceof Matrikkeladresse && person.getBoadresse() instanceof Gateadresse)) {
-                    adresseRepository.deleteById(personAdresseDB.getId());
-                }
-
+                adresseRepository.deleteById(personAdresseDB.getId());
             }
         }
         personRepository.save(personer);

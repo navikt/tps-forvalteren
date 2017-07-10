@@ -20,7 +20,8 @@ require('./filters/filter.module');
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
     'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome',
-    'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize', 'tps-forvalteren.vis-testdata.endregruppe']);
+    'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize', 'tps-forvalteren.vis-testdata.endregruppe',
+    'tps-forvalteren.vis-testdata.sendtiltps']);
 
 require('./shared/index');
 

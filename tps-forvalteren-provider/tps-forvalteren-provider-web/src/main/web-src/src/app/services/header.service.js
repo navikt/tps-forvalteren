@@ -17,4 +17,8 @@ angular.module('tps-forvalteren.service')
         self.setIcons = function (icons) {
             $rootScope.header.icons = icons;
         };
+
+        self.getHeader = function () {
+            return $rootScope.header;
+        };
     }]);

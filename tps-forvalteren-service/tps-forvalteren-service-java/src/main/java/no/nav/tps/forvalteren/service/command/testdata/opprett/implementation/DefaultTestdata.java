@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtIdenterSomAlleredeFinnesIMiljoe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.Testdata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class DefaultTestdata implements Testdata {
     private DefaultGenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
 
     @Autowired
-    private FiltererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
+    private FiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtIdenterSomAlleredeFinnesIMiljoe;
 
     @Autowired
     private DefaultFiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
@@ -30,7 +30,7 @@ public class DefaultTestdata implements Testdata {
     }
 
     public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests){
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(testdataRequests);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.execute(testdataRequests);
     }
 
     public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){

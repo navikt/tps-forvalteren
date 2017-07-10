@@ -1,5 +1,4 @@
-
-angular.module('tps-forvalteren.service-rutine')
+angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
     .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService',
         function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService) {
 

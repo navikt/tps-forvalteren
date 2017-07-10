@@ -3,7 +3,7 @@
 -----------------
 CREATE TABLE T_GRUPPE (
   GRUPPE_ID       NUMBER(9)              NOT NULL,
-  NAVN            VARCHAR2(30)           NOT NULL,
+  NAVN            VARCHAR2(50)           NOT NULL,
   BESKRIVELSE     VARCHAR2(200),
   OPPRETTET_DATO  TIMESTAMP              NOT NULL,
   OPPRETTET_AV    VARCHAR2(20)           NOT NULL,
