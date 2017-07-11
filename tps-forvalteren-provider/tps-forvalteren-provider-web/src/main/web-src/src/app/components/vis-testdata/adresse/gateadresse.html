@@ -40,7 +40,7 @@
         <label>Postnummer</label>
         <input name="gtPostnummer" pattern="[0-9]*"
                md-maxlength="4" minlength="4"
-               ng-model="person.gateadresse.postnummer"
+               ng-model="person.gateadresse.postnr"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.gtPostnummer.$error"
              ng-show="requestForm.gtPostnummer.$dirty" ng-messages-multiple>

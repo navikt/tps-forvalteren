@@ -78,8 +78,8 @@ public class Person extends ChangeStamp {
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GRUPPE_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
 
 }

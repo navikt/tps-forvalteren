@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class Gruppe extends ChangeStamp {
     @Column(name = "BESKRIVELSE", length = 200)
     private String beskrivelse;
 
+    @OrderBy
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "gruppe")
     private List<Person> personer = new ArrayList<>();
 
