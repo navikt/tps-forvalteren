@@ -27,6 +27,7 @@ public class SavePersonListService {
                 }
             }
             if (person.getBoadresse() != null) {
+                person.getBoadresse().setPerson(person);
                 Adresse personAdresseDB = adresseRepository.findAdresseByPersonId(person.getId());
                 if (personAdresseDB == null) {
                     continue;

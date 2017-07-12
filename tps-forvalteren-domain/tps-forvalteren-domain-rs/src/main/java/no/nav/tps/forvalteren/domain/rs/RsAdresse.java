@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "adressetype")
@@ -19,11 +19,10 @@ import java.time.LocalDate;
 @Setter
 public abstract class RsAdresse {
 
-    @NotNull
     private Long adresseId;
 
     @NotNull
-    private RsSimplePerson person;
+    private Long personId;
 
     @Size(min = 4, max = 4)
     private String postnr;
@@ -31,6 +30,6 @@ public abstract class RsAdresse {
     @Size(min = 4, max = 4)
     private String kommunenr;
 
-    private LocalDate flyttedato;
+    private LocalDateTime flyttedato;
 
 }

@@ -11,8 +11,17 @@ public class GateadresseRestMappingStrategy implements MappingStrategy {
 
     @Override
     public void register(MapperFactory factory) {
-        factory.classMap(RsGateadresse.class, Gateadresse.class).byDefault().register();
-        factory.classMap(Gateadresse.class, RsGateadresse.class).byDefault().register();
+        factory.classMap(RsGateadresse.class, Gateadresse.class)
+                .field("personId", "person.id")
+                .field("gateadresse", "adresse")
+                .byDefault()
+                .register();
+
+        factory.classMap(Gateadresse.class, RsGateadresse.class)
+                .field("person.id", "personId")
+                .field("adresse", "gateadresse")
+                .byDefault()
+                .register();
     }
 
 }

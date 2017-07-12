@@ -77,6 +77,11 @@
             <groupId>no.nav.freg</groupId>
             <artifactId>metrics-spring</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

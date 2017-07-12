@@ -280,14 +280,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     person.boadresse = angular.copy(person.matrikkeladresse);
                     person.gateadresse = undefined;
                 }
-
                 person.boadresse.adressetype = adressetype;
-
-                // Fix foreign key for backend
-                if (!person.boadresse.person || !person.boadresse.person.id) {
-                    person.boadresse.person = {};
-                    person.boadresse.person.id = person.personId;
-                }
                 return person;
             };
 

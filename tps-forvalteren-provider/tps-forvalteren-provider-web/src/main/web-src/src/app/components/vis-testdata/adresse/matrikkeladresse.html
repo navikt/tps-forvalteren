@@ -2,7 +2,7 @@
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Mellomnavn</md-tooltip>
         <label>Mellomnavn</label>
-        <input name="matrMellomnavn" ng-required="false" md-maxlength="50"
+        <input name="matrMellomnavn" ng-required="false" md-maxlength="25"
                ng-model="person.matrikkeladresse.mellomnavn"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.matrMellomnavn.$error"
@@ -50,7 +50,7 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Undernummer</md-tooltip>
         <label>Undernr</label>
-        <input name="undernr" ng-required="false" md-maxlength="4"
+        <input name="undernr" ng-required="false" md-maxlength="3"
                ng-model="person.matrikkeladresse.undernr"
                ng-change="endret($index)"/>
         <div ng-messages="requestForm.undernr.$error"
