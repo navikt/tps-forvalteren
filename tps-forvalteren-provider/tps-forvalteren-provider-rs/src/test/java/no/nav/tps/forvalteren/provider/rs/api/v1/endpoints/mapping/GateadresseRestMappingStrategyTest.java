@@ -56,16 +56,16 @@ public class GateadresseRestMappingStrategyTest {
         rsGateadresse.setPersonId(gateadresse.getPerson().getId());
         rsGateadresse.setFlyttedato(gateadresse.getFlyttedato());
 
-        Gateadresse JpaGateadresse = mapper.map(rsGateadresse, Gateadresse.class);
+        Gateadresse jpaGateadresse = mapper.map(rsGateadresse, Gateadresse.class);
 
-        assertThat(JpaGateadresse.getAdresse(), is(rsGateadresse.getGateadresse()));
-        assertThat(JpaGateadresse.getGatekode(), is(rsGateadresse.getGatekode()));
-        assertThat(JpaGateadresse.getHusnummer(), is(rsGateadresse.getHusnummer()));
-        assertThat(JpaGateadresse.getId(), is(rsGateadresse.getAdresseId()));
-        assertThat(JpaGateadresse.getPostnr(), is(rsGateadresse.getPostnr()));
-        assertThat(JpaGateadresse.getKommunenr(), is(rsGateadresse.getKommunenr()));
-        assertThat(JpaGateadresse.getPerson().getId(), is(rsGateadresse.getPersonId()));
-        assertThat(JpaGateadresse.getFlyttedato(), is(rsGateadresse.getFlyttedato()));
+        assertThat(jpaGateadresse.getAdresse(), is(rsGateadresse.getGateadresse()));
+        assertThat(jpaGateadresse.getGatekode(), is(rsGateadresse.getGatekode()));
+        assertThat(jpaGateadresse.getHusnummer(), is(rsGateadresse.getHusnummer()));
+        assertThat(jpaGateadresse.getId(), is(rsGateadresse.getAdresseId()));
+        assertThat(jpaGateadresse.getPostnr(), is(rsGateadresse.getPostnr()));
+        assertThat(jpaGateadresse.getKommunenr(), is(rsGateadresse.getKommunenr()));
+        assertThat(jpaGateadresse.getPerson().getId(), is(rsGateadresse.getPersonId()));
+        assertThat(jpaGateadresse.getFlyttedato(), is(rsGateadresse.getFlyttedato()));
     }
 
 

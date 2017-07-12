@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.rs.RsMatrikkeladresse;
@@ -50,7 +49,18 @@ public class MatrikkeladresseRestMappingStrategyTest {
 
     @Test
     public void mapsFromRsMatrikkeladresseToMatrikkeladresse() {
-        RsMatrikkeladresse rsMatrikkeladresse = mapper.map(matrikkeladresse, RsMatrikkeladresse.class);
+        RsMatrikkeladresse rsMatrikkeladresse = new RsMatrikkeladresse();
+        rsMatrikkeladresse.setBruksnr(matrikkeladresse.getBruksnr());
+        rsMatrikkeladresse.setFestenr(matrikkeladresse.getFestenr());
+        rsMatrikkeladresse.setGardsnr(matrikkeladresse.getGardsnr());
+        rsMatrikkeladresse.setMellomnavn(matrikkeladresse.getMellomnavn());
+        rsMatrikkeladresse.setUndernr(matrikkeladresse.getUndernr());
+        rsMatrikkeladresse.setAdresseId(matrikkeladresse.getId());
+        rsMatrikkeladresse.setFlyttedato(matrikkeladresse.getFlyttedato());
+        rsMatrikkeladresse.setKommunenr(matrikkeladresse.getKommunenr());
+        rsMatrikkeladresse.setPersonId(matrikkeladresse.getPerson().getId());
+        rsMatrikkeladresse.setPostnr(matrikkeladresse.getPostnr());
+
         Matrikkeladresse matrikkeladresse = mapper.map(rsMatrikkeladresse, Matrikkeladresse.class);
 
         assertThat(matrikkeladresse, is(notNullValue()));
@@ -65,7 +75,5 @@ public class MatrikkeladresseRestMappingStrategyTest {
         assertThat(matrikkeladresse.getPerson().getId(), is(rsMatrikkeladresse.getPersonId()));
         assertThat(matrikkeladresse.getPostnr(), is(rsMatrikkeladresse.getPostnr()));
     }
-
-
 
 }
