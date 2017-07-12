@@ -7,7 +7,7 @@
                 <div layout="row">
                     <md-input-container class="testdata-input-row" aria-label="Gruppenavn">
                         <label>Navn</label>
-                        <input name="navn" ng-model="gruppe.navn" required md-maxlength="30"
+                        <input name="navn" ng-model="gruppe.navn" required md-maxlength="50"
                                md-autofocus ng-change="checkNavn()">
                         <div ng-messages="gruppeForm.navn.$error" ng-show="gruppeForm.navn.$dirty">
                             <div ng-message="required">Feltet er påkrevet</div>

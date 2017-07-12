@@ -145,7 +145,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.regdato = person.regdato ? person.regdato : null;
                 person.spesregDato = person.spesregDato ? person.spesregDato : null;
 
-                if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato ) {
+                if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato) {
                     person.gateadresse = person.gateadresse && !Array.isArray(person.gateadresse) ? person.gateadresse : {};
                     person.gateadresse.flytteDato = null;
                 }
@@ -275,18 +275,12 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 var adressetype = person.boadresse.adressetype;
                 if (adressetype === 'GATE') {
                     person.boadresse = angular.copy(person.gateadresse);
+                    person.matrikkeladresse = undefined;
                 } else if (adressetype === 'MATR') {
-                    person.boadresse = angular.copy(person.matradresse);
+                    person.boadresse = angular.copy(person.matrikkeladresse);
+                    person.gateadresse = undefined;
                 }
-                person.gateadresse = undefined;
-                person.matrikkeladresse = undefined;
                 person.boadresse.adressetype = adressetype;
-
-                // Fix foreign key for backend
-                if (!person.boadresse.person || !person.boadresse.person.id) {
-                    person.boadresse.person = {};
-                    person.boadresse.person.id = person.personId;
-                }
                 return person;
             };
 

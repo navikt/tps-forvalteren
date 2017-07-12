@@ -21,6 +21,7 @@ public class MapperConfig {
         if (mappingStrategies != null) {
             for (MappingStrategy mapper : mappingStrategies) {
                 mapper.register(mapperFactory);
+
             }
         }
 

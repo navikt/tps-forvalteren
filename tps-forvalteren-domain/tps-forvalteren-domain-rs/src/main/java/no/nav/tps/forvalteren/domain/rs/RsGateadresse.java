@@ -1,24 +1,27 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@JsonTypeName("Gateadresse")
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsGateadresse {
+public class RsGateadresse extends RsAdresse{
 
-    private Long id;
-    private String boGateadresse;
-    private String boHusnummer;
-    private String boGatekode;
-    private String boPostnummer;
-    private String boKommunenr;
-    private LocalDateTime boFlytteDato;
+    @Size(min = 1, max = 50)
+    private String gateadresse;
+
+    @Size(min = 1, max = 4)
+    private String husnummer;
+
+    @Size(min = 1, max = 4)
+    private String gatekode;
 
 }
