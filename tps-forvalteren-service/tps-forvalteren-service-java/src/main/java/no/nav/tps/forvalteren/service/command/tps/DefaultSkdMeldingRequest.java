@@ -22,7 +22,7 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
     @Override
-    public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
+    public void execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
 
         forbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
 
@@ -32,6 +32,6 @@ public class DefaultSkdMeldingRequest implements SkdMeldingRequest {
 
         MessageQueueConsumer messageQueueConsumerStartAjour = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_START_AJOURHOLD_ALIAS);
 
-        return messageQueueConsumerStartAjour.sendMessage(KAN_VAERE_HVA_SOM_HELST_STRING);
+        messageQueueConsumerStartAjour.sendMessageAsync(KAN_VAERE_HVA_SOM_HELST_STRING);
     }
 }
