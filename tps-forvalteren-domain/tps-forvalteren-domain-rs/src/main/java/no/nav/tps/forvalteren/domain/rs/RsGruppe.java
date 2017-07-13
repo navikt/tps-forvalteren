@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -27,5 +28,13 @@ public class RsGruppe {
     private List<RsPerson> personer;
 
     private List<RsTag> tags;
+
+    private LocalDateTime opprettetDato;
+
+    private String opprettetAv;
+
+    private LocalDateTime endretDato;
+
+    private String endretAv;
 
 }
