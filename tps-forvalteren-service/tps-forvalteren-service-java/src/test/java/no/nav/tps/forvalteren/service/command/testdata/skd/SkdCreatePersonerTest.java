@@ -3,14 +3,11 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.skd.utils.PersonToSkdParametersMapper;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetTpsSkdmeldingService;
 import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,20 +16,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.JMSException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SkdUpdateCreatePersonerTest {
+public class SkdCreatePersonerTest {
 
     private Set<String> identer = new HashSet<>();
     private Person person1, person2;
@@ -66,7 +58,7 @@ public class SkdUpdateCreatePersonerTest {
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironmentMock;
 
     @InjectMocks
-    private SkdUpdateCreatePersoner skdUpdateCreatePersoner;
+    private SkdCreatePersoner skdCreatePersoner;
 
     @Test
     public void tom(){

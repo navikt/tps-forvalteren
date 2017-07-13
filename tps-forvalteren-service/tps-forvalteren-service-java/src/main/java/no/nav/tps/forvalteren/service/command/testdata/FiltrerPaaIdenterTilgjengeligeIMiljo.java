@@ -37,49 +37,47 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
 
-    @Autowired
-    private GetEnvironments getEnvironmentsCommand;
 
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
-    public Set<String> filtrer(Collection<String> identer){
+    public Set<String> filtrer(Collection<String> identer, Set<String> environments){
         if(identer.size() <= MAX_ANTALL_IDENTER_TIL_REQUEST_M201){
-            return filtrerPaaIdenter(identer);
+            return filtrerPaaIdenter(identer, environments);
 
         } else {
             Set<String> tilgjengeligeIdenter = new HashSet<>();
             List<String> identerListe = new ArrayList<>(identer);
             int batchStart = 0;
             while(batchStart < identer.size()){
-                tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe));
+                tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe, environments));
                 batchStart = batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201;
             }
             return tilgjengeligeIdenter;
         }
     }
 
-    private Set<String> hentEnBatchTilgjengeligeIdenter(int batchStart, List<String> identer){
+    private Set<String> hentEnBatchTilgjengeligeIdenter(int batchStart, List<String> identer, Set<String> environments){
         int batchStop = (identer.size() <= batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
                 ? identer.size() : (batchStart+MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
 
-        return filtrerPaaIdenter(identer.subList(batchStart, batchStop));
+        return filtrerPaaIdenter(identer.subList(batchStart, batchStop), environments);
     }
 
-    private Set<String> filtrerPaaIdenter(Collection<String> identer){
+    private Set<String> filtrerPaaIdenter(Collection<String> identer,Set<String> environments){
 
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
 
-        return hentIdenterSomErTilgjengeligeIAlleMiljoer(tpsRequestParameters, context);
+        return hentIdenterSomErTilgjengeligeIAlleMiljoer(tpsRequestParameters, context, environments);
     }
 
-    private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context){
+    private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context, Set<String> environments){
         Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>)tpsRequestParameters.get("fnr"));
 
-        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        //Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
         Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
 
         filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(tilgjengeligeIdenterAlleMiljoer, environmentsToCheck, tpsRequestParameters, context);
