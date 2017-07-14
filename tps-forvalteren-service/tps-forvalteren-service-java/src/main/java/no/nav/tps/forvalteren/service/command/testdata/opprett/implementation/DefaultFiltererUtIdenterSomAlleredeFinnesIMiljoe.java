@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtIdenterSomAlleredeFinnesIMiljoe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
+import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,6 +15,9 @@ import java.util.Set;
 public class DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe implements FiltererUtIdenterSomAlleredeFinnesIMiljoe {
 
     @Autowired
+    private GetEnvironments getEnvironmentsCommand;
+
+    @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
     public void execute(List<TestdataRequest> testdataRequests) {
@@ -22,7 +25,9 @@ public class DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe implements Filtere
         for (TestdataRequest request : testdataRequests) {
             alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
         }
-        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter);
+
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 

@@ -16,7 +16,6 @@ import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
@@ -27,7 +26,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdUpdateCreatePersoner;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,7 +52,7 @@ public class TestdataController {
     private static final String REST_SERVICE_NAME = "testdata";
 
     @Autowired
-    private SkdUpdateCreatePersoner skdUpdateOrCreatePersoner;
+    private SkdCreatePersoner skdCreatePersoner;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -148,9 +147,9 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
-    public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId) {
+    public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, List<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
-        skdUpdateOrCreatePersoner.execute(gruppe.getPersoner());
+        skdCreatePersoner.execute(gruppe.getPersoner(), environments);
     }
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
