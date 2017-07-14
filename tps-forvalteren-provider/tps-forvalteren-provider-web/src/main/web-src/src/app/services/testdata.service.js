@@ -122,9 +122,9 @@ angular.module('tps-forvalteren.service')
             return defer.promise;
         };
 
-        self.sendTilTps = function (gruppeId) {
+        self.sendTilTps = function (gruppeId, miljoer) {
             var defer = $q.defer();
-            $http.post(url + 'tps/' + gruppeId).then(
+            $http.post(url + 'tps/' + gruppeId, miljoer).then(
                 function (data) {
                     defer.resolve(data);
                 },
