@@ -44,7 +44,7 @@ public class SkdCreatePersoner {
             if(identerSomIkkeFinnesiTPSiMiljoe.contains(person.getIdent())){
                 Map<String,String> skdParametere = personToSkdParametersMapper.create(person);
                 String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere);
-                sendSkdMeldingTilGitteMiljoer.execute(skdMelding, getEnvironmentsCommand.getEnvironmentsFromVera("tpsws"));
+                sendSkdMeldingTilGitteMiljoer.execute(skdMelding, new HashSet<>(environments));
             }
 
         }

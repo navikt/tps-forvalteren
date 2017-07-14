@@ -23,7 +23,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
                             controller: 'SendTilTpsCtrl',
-                            templateUrl: 'app/components/vis-testdata/sendtiltps/sendtiltps.html',
+                            templateUrl: 'app/components/vis-testdata/sendtiltps/send-til-tps.html',
                             parent: angular.element(document.body),
                             targetEvent: ev
                         });

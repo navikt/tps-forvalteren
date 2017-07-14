@@ -6,6 +6,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             var miljoer = serviceRutineFactory.getEnvironments();
             $scope.showSpinner = false;
+            $scope.alleMiljoe = true;
             $scope.valgt_u_miljoer = [];
             $scope.valgt_t_miljoer = [];
             $scope.valgt_q_miljoer = [];
@@ -52,6 +53,21 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                     }
                 }
                 return miljo_liste;
+            };
+
+            $scope.velgAlleMiljoe = function () {
+                console.log($scope.alleMiljoe);
+                if ($scope.alleMiljoe === true) {
+                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, true);
+                } else {
+                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, false);
+                }
+            };
+
+            var sett_array_til = function (array, array2, verdi) {
+                for (var index = 0; index < array.length; index++) {
+                    array2[index] = verdi;
+                }
             };
 
             var hasLetter = function (letter) {
