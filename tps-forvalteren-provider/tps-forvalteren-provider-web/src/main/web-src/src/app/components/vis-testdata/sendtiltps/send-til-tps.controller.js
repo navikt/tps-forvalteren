@@ -2,7 +2,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
     .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'testdataService', '$location', 'utilsService',
         function ($scope, $mdDialog, serviceRutineFactory, testdataService, $location, utilsService) {
 
-            var gruppeId = $location.url().match(/\d+/g);
+            var gruppeId = $location.url().match(/\d+/g)[0];
 
             var miljoer = serviceRutineFactory.getEnvironments();
             $scope.showSpinner = false;
@@ -18,7 +18,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
             $scope.send = function () {
                 $scope.showSpinner = true;
                 var valgt_miljoer = $scope.hent_valgt_miljoer();
-                testdataService.sendTilTps(gruppeId[0], valgt_miljoer).then(
+                testdataService.sendTilTps(gruppeId, valgt_miljoer).then(
                     function () {
                         $scope.showSpinner = false;
                         $mdDialog.hide();
