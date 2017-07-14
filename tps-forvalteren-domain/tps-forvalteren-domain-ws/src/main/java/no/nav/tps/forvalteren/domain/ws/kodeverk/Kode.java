@@ -19,5 +19,4 @@ public class Kode {
 
     private String uri;
 
-    private Kodeverk kodeverk;
 }
