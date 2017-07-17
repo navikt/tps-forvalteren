@@ -59,7 +59,6 @@ public class HentKodeverkMappingStrategy implements MappingStrategy {
             toCode.setFom(mapGyldigFom(fromTerm));
             toCode.setTom(mapGyldigTom(fromTerm));
             toCode.setUri(fromCode.getUri());
-            toCode.setKodeverk(kodeverk);
             mappedCodes.add(toCode);
         }
         return mappedCodes;

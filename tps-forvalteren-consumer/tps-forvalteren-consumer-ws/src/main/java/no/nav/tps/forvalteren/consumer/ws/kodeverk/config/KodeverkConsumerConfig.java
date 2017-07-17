@@ -9,9 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.xml.namespace.QName;
 
-/**
- * @author Kenneth Gunnerud (Visma Consulting AS).
- */
 @Configuration
 @ComponentScan(basePackageClasses = KodeverkConsumer.class)
 public class KodeverkConsumerConfig {

@@ -1,13 +1,14 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
+import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
+import no.nav.tps.forvalteren.service.kodeverk.KodeverkCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/v1/kodeverk")
@@ -15,12 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class KodeverkController {
 
     @Autowired
-    private KodeverkConsumer kodeverkConsumer;
+    private KodeverkCache kodeverkCache;
 
-    @RequestMapping(value = "/{kodeverk}", method = RequestMethod.GET)
-    public void getKodeverk(@PathVariable("kodeverk") String kodeverkNavn) {
-        Kodeverk kodeverk = kodeverkConsumer.hentKodeverk(kodeverkNavn);
-        return;
+    @RequestMapping(value = "/knr", method = RequestMethod.GET)
+    public List<Kode> getKodeverkKommuner() {
+        return kodeverkCache.getKodeverkKommunerKoder();
     }
 
 }

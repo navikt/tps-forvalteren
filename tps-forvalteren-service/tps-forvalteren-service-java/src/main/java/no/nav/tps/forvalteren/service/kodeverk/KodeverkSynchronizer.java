@@ -15,7 +15,6 @@ public class KodeverkSynchronizer implements ApplicationListener<ContextRefreshe
     private static final String MINUTE = " 00 ";
     private static final String HOUR = " 03 ";
     private static final String CRON_EXPRESSION = "0" + MINUTE + HOUR + "* * *";
-    private static final String TIME_ZONE = "CEST";
 
     @Autowired
     private KodeverkUpdater kodeverkUpdater;
@@ -30,10 +29,10 @@ public class KodeverkSynchronizer implements ApplicationListener<ContextRefreshe
         }
     }
 
-    @Scheduled(cron = CRON_EXPRESSION, zone = TIME_ZONE)
+    @Scheduled(cron = CRON_EXPRESSION)
     public void updateKodeverk() {
         try {
-            kodeverkUpdater.updateKodeverk();
+            kodeverkUpdater.updateTpsfKodeverkCache();
         } catch (Exception e) {
             LOG.error("Failed to update Kodeverk", e);
         }
