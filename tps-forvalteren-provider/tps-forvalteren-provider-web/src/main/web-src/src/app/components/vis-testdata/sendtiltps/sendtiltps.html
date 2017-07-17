@@ -4,27 +4,44 @@
         <form name="tpsForm">
             <md-dialog-content class="md-dialog-content">
                 <h2>Send til TPS - fra {{miljo}}-miljø</h2>
-                <div layout="row">
-                    Testpersonene vil bli sendt til TPS i følgende miljøer:
-                </div>
-                <div ng-show="u_miljoer">
-                    {{u_miljoer}}
-                </div>
-                <div ng-show="t_miljoer">
-                    {{t_miljoer}}
-                </div>
-                <div ng-show="q_miljoer">
-                    {{q_miljoer}}
-                </div>
-                <div ng-show="p_miljoer">
-                    {{p_miljoer}}
+                <p>Velg miljø(er) som testpersonene skal bli sendt til:</p>
+
+                <div layout="row" layout-align="space-between">
+                    <div layout="column">
+                        <h3>U-miljø</h3>
+                        <md-checkbox ng-repeat="u_miljoe in u_miljoer track by $index" aria-label="Checkbox 1"
+                                     ng-model="valgt_u_miljoer[$index]">
+                            {{u_miljoe}}
+                        </md-checkbox>
+                    </div>
+                    <div layout="column">
+                        <h3>T-miljø</h3>
+                        <md-checkbox ng-repeat="t_miljoe in t_miljoer track by $index" aria-label="Checkbox 1"
+                                     ng-model="valgt_t_miljoer[$index]">
+                            {{t_miljoe}}
+                        </md-checkbox>
+                    </div>
+                    <div layout="column">
+                        <h3>Q-miljø</h3>
+                        <md-checkbox ng-repeat="q_miljoe in q_miljoer track by $index" aria-label="Checkbox 1"
+                                     ng-model="valgt_q_miljoer[$index]">
+                            {{q_miljoe}}
+                        </md-checkbox>
+                    </div>
+                    <div layout="column">
+                        <h3>P-miljø</h3>
+                        <md-checkbox ng-repeat="p_miljoer in p-miljoer track by $index" aria-label="Checkbox 1"
+                                     ng-model="valgt_p_miljoer[$index]">
+                            {{p_miljoe}}
+                        </md-checkbox>
+                    </div>
                 </div>
             </md-dialog-content>
 
             <md-dialog-actions class="testdata-footer">
-                <md-input-container class="testdata-input-row" aria-label="Avbryt">
-                    <md-tooltip md-direction="top">Avbryt send til TPS</md-tooltip>
-                    <md-button class="md-button md-raised" ng-click="avbryt()">Avbryt</md-button>
+                <md-input-container class="testdata-input-row" aria-label="Lukk">
+                    <md-tooltip md-direction="top">Lukk dialog</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Lukk</md-button>
                 </md-input-container>
                 <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
                     <md-tooltip md-direction="top">Send inn til TPS</md-tooltip>

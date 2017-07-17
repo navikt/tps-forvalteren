@@ -7,7 +7,7 @@ angular.module('tps-forvalteren.testgruppe', [])
             var nyGruppeDialog = function (ev) {
                 var confirm = $mdDialog.confirm({
                     controller: 'NyGruppeCtrl',
-                    templateUrl: 'app/components/testgruppe/nygruppe/nygruppe.html',
+                    templateUrl: 'app/components/testgruppe/nygruppe/ny-gruppe.html',
                     parent: angular.element(document.body),
                     targetEvent: ev
                 });

@@ -2,11 +2,14 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
     .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'testdataService', '$location', 'utilsService',
         function ($scope, $mdDialog, serviceRutineFactory, testdataService, $location, utilsService) {
 
-            var gruppeId = $location.url().match(/\d+/g);
+            var gruppeId = $location.url().match(/\d+/g)[0];
 
             var miljoer = serviceRutineFactory.getEnvironments();
-
             $scope.showSpinner = false;
+            $scope.valgt_u_miljoer = [];
+            $scope.valgt_t_miljoer = [];
+            $scope.valgt_q_miljoer = [];
+            $scope.valgt_p_miljoer = [];
 
             $scope.avbryt = function () {
                 $mdDialog.hide();
@@ -14,7 +17,8 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             $scope.send = function () {
                 $scope.showSpinner = true;
-                testdataService.sendTilTps(gruppeId[0]).then(
+                var valgt_miljoer = $scope.hent_valgt_miljoer();
+                testdataService.sendTilTps(gruppeId, valgt_miljoer).then(
                     function () {
                         $scope.showSpinner = false;
                         $mdDialog.hide();
@@ -30,6 +34,24 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                         utilsService.showAlertError(error);
                     }
                 );
+            };
+
+            $scope.hent_valgt_miljoer = function () {
+                var send_til_miljoer = hent_valgt_miljoer_med_navn($scope.valgt_u_miljoer, $scope.u_miljoer);
+                send_til_miljoer = send_til_miljoer.concat(hent_valgt_miljoer_med_navn($scope.valgt_t_miljoer, $scope.t_miljoer));
+                send_til_miljoer = send_til_miljoer.concat(hent_valgt_miljoer_med_navn($scope.valgt_q_miljoer, $scope.q_miljoer));
+                send_til_miljoer = send_til_miljoer.concat(hent_valgt_miljoer_med_navn($scope.valgt_p_miljoer, $scope.p_miljoer));
+                return send_til_miljoer;
+            };
+
+            var hent_valgt_miljoer_med_navn = function (valgt_miljoer, miljoer) {
+                var miljo_liste = [];
+                for (var index = 0; index < valgt_miljoer.length; index++) {
+                    if (valgt_miljoer[index]) {
+                        miljo_liste.push(miljoer[index]);
+                    }
+                }
+                return miljo_liste;
             };
 
             var hasLetter = function (letter) {
@@ -52,13 +74,13 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
             }
 
             var byggMiljoliste = function (letter) {
-                var liste = '';
+                var liste = [];
                 for (var i = 0; i < miljoer.length; i++) {
                     if (miljoer[i].toUpperCase().substring(0, 1) === letter) {
-                        liste += ', ' + miljoer[i];
+                        liste.push(miljoer[i]);
                     }
                 }
-                return liste.substring(2);
+                return liste;
             };
 
             miljoer.sort(function (a, b) {
