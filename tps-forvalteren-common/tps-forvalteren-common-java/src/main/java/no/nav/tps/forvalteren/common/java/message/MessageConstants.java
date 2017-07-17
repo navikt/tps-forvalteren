@@ -13,4 +13,9 @@ public class MessageConstants {
     public static final String MQ_SENDING_FAILED = "service.exception.message.mq.sending.failed";
 
     public static final String MAPPING_FAILED = "service.exception.message.mapping.failed";
+
+    public static final String KODEVERK_NOT_FOUND_KEY = "ws.kodeverk.v2.kodeverk.not.found";
+    public static final String UPDATING_KODEVERK_KEY = "service.kodeverk.updating";
+    public static final String GETTING_KODEVERK_KOMMUNER_FAILED = "service.kodeverk.fetching";
+
 }

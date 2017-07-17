@@ -6,23 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
 public class MapperConfig {
 
     @Autowired(required = false)
-    private List<MappingStrategy> mappingStrategies;
+    private List<MappingStrategy> mappingStrategies = new ArrayList<>();
 
     @Bean
     MapperFacade mapperFacade() {
         DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
-        if (mappingStrategies != null) {
-            for (MappingStrategy mapper : mappingStrategies) {
-                mapper.register(mapperFactory);
-
-            }
+        for (MappingStrategy mapper : mappingStrategies) {
+            mapper.register(mapperFactory);
         }
 
         return mapperFactory.getMapperFacade();
