@@ -13,8 +13,8 @@ import java.util.Map;
 @Component
 public class KodeverkCache {
 
-    Map<String, Kode> kodeverkKommunerMap = new HashMap<>();
-    List<Kode> kodeverkKommunerKoder = new ArrayList<>();
+    private Map<String, Kode> kodeverkKommunerMap = new HashMap<>();
+    private List<Kode> kodeverkKommunerKoder = new ArrayList<>();
 
     public void clearCache(){
         kodeverkKommunerMap.clear();
