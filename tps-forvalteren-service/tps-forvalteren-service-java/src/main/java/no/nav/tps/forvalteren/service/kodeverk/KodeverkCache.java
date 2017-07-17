@@ -16,12 +16,24 @@ public class KodeverkCache {
     private Map<String, Kode> kodeverkKommunerMap = new HashMap<>();
     private List<Kode> kodeverkKommunerKoder = new ArrayList<>();
 
-    public void clearCache(){
+    private Map<String, Kode> kodeverkPostnummerMap = new HashMap<>();
+    private List<Kode> kodeverkPostnummerKoder = new ArrayList<>();
+
+    public void clearKommuneCache(){
         kodeverkKommunerMap.clear();
         kodeverkKommunerKoder.clear();
     }
 
     public void setKodeverkKommuneKoder(List<Kode> kommunerKoder){
         kodeverkKommunerKoder = kommunerKoder;
+    }
+
+    public void clearPostnummerCache(){
+        kodeverkPostnummerMap.clear();
+        kodeverkPostnummerKoder.clear();
+    }
+
+    public void setKodeverkPostnummerKoder(List<Kode> postnummerKoder){
+        kodeverkPostnummerKoder = postnummerKoder;
     }
 }

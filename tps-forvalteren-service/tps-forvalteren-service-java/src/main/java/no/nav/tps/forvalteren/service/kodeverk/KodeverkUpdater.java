@@ -16,17 +16,35 @@ public class KodeverkUpdater {
     private KodeverkConsumer kodeverkConsumer;
 
     public void updateTpsfKodeverkCache() {
-        Kodeverk remotekoderverk = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_KOMMUNER_NAVN);
+        updateTPSFKommunenummerCache();
+        updateTPSFPostnummerCache();
+    }
 
-        if(remotekoderverk != null) {
+    private void updateTPSFKommunenummerCache(){
+        Kodeverk remoteKodeverkKommune = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_KOMMUNER_NAVN);
 
-            kodeverkCache.clearCache();
-            kodeverkCache.setKodeverkKommuneKoder(remotekoderverk.getKoder());
+        if(remoteKodeverkKommune != null) {
 
-            for (Kode kode : remotekoderverk.getKoder()) {
+            kodeverkCache.clearKommuneCache();
+            kodeverkCache.setKodeverkKommuneKoder(remoteKodeverkKommune.getKoder());
+
+            for (Kode kode : remoteKodeverkKommune.getKoder()) {
                 kodeverkCache.getKodeverkKommunerMap().put(kode.getNavn(), kode);
             }
         }
+    }
 
+    private void updateTPSFPostnummerCache(){
+        Kodeverk remoteKodeverkPostnummer = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_POSTNUMMER_NAVN);
+
+        if(remoteKodeverkPostnummer != null) {
+
+            kodeverkCache.clearPostnummerCache();
+            kodeverkCache.setKodeverkPostnummerKoder(remoteKodeverkPostnummer.getKoder());
+
+            for (Kode kode : remoteKodeverkPostnummer.getKoder()) {
+                kodeverkCache.getKodeverkPostnummerMap().put(kode.getNavn(), kode);
+            }
+        }
     }
 }

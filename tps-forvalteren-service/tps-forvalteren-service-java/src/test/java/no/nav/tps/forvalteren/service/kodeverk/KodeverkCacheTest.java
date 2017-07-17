@@ -27,10 +27,31 @@ public class KodeverkCacheTest {
         assertThat(kodeverkCache.getKodeverkKommunerKoder(), hasSize(1));
         assertNotNull(kodeverkCache.getKodeverkKommunerMap().get("test"));
 
-        kodeverkCache.clearCache();
+        kodeverkCache.clearKommuneCache();
 
         assertThat(kodeverkCache.getKodeverkKommunerKoder(), hasSize(0));
         assertNull(kodeverkCache.getKodeverkKommunerMap().get("test"));
     }
+
+    @Test
+    public void testAtClearPostnummerCacheTommerBaadeMapOgListeOverPostnummerkoder(){
+
+        KodeverkCache kodeverkCache = new KodeverkCache();
+
+        List<Kode> listeKode = new ArrayList<>();
+        listeKode.add(new Kode());
+        kodeverkCache.setKodeverkPostnummerKoder(listeKode);
+
+        kodeverkCache.getKodeverkPostnummerMap().put("test", new Kode());
+
+        assertThat(kodeverkCache.getKodeverkPostnummerKoder(), hasSize(1));
+        assertNotNull(kodeverkCache.getKodeverkPostnummerMap().get("test"));
+
+        kodeverkCache.clearPostnummerCache();
+
+        assertThat(kodeverkCache.getKodeverkPostnummerKoder(), hasSize(0));
+        assertNull(kodeverkCache.getKodeverkPostnummerMap().get("test"));
+    }
+
 
 }

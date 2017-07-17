@@ -23,4 +23,9 @@ public class KodeverkController {
         return kodeverkCache.getKodeverkKommunerKoder();
     }
 
+    @RequestMapping(value = "/postnummer", method = RequestMethod.GET)
+    public List<Kode> getKodeverkPostnummer() {
+        return kodeverkCache.getKodeverkPostnummerKoder();
+    }
+
 }

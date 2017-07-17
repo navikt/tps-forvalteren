@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.kodeverk;
 
+import org.apache.cxf.staxutils.StaxUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class KodeverkSynchronizer implements ApplicationListener<ContextRefreshe
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!initialUpdateComplete) {
             initialUpdateComplete = true;
+            StaxUtils.setInnerElementCountThreshold(-1);    //TODO Ellers faar man InneTreshold max 5000. Er dette greit??
             updateKodeverk();
         }
     }

@@ -48,7 +48,7 @@ public class KodeverkUpdaterTest {
 
         kodeverkUpdater.updateTpsfKodeverkCache();
 
-        verify(kodeverkCacheMock).clearCache();
+        verify(kodeverkCacheMock).clearKommuneCache();
         verify(kodeverkCacheMock).setKodeverkKommuneKoder(koder);
     }
 
@@ -61,7 +61,7 @@ public class KodeverkUpdaterTest {
 
         kodeverkUpdater.updateTpsfKodeverkCache();
 
-        verify(kodeverkCacheMock, never()).clearCache();
+        verify(kodeverkCacheMock, never()).clearKommuneCache();
         verify(kodeverkCacheMock, never()).setKodeverkKommuneKoder(any());
     }
 
