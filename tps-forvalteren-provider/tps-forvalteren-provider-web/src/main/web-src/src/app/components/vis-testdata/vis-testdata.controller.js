@@ -79,7 +79,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }]);
             };
 
-            $scope.allePersoner = false;
+            $scope.allePersoner = {checked: false};
             $scope.personer = [];
             var originalPersoner = [];
             $scope.control = [];
@@ -91,11 +91,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.control[i] = {};
                     }
                     if (!$scope.control[i].disabled) {
-                        $scope.control[i].velg = !$scope.allePersoner;
+                        $scope.control[i].velg = !$scope.allePersoner.checked;
                         enabled++;
                     }
                 }
-                $scope.antallValgt = !$scope.allePersoner ? enabled : 0;
+                $scope.antallValgt = !$scope.allePersoner.checked ? enabled : 0;
                 oppdaterFunksjonsknapper();
             };
 
@@ -215,7 +215,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         valgt++;
                     }
                 }
-                $scope.allePersoner = (endret == 0 && $scope.personer.length == valgt) ||
+                $scope.allePersoner.checked = (endret == 0 && $scope.personer.length == valgt) ||
                     (endret > 0 && endret == valgt);
                 $scope.antallEndret = endret;
                 $scope.antallValgt = valgt;

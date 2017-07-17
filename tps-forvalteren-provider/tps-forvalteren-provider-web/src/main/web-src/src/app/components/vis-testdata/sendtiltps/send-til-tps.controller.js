@@ -69,6 +69,24 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 }
             };
 
+            $scope.oppdaterVelgAlle = function () {
+                if(erAlleValgt($scope.valgt_u_miljoer) && erAlleValgt($scope.valgt_t_miljoer) &&
+                    erAlleValgt($scope.valgt_q_miljoer) && erAlleValgt($scope.valgt_p_miljoer)) {
+                    $scope.alleMiljoe = true;
+                } else {
+                    $scope.alleMiljoe = false;
+                }
+            };
+
+            var erAlleValgt = function(array) {
+                for (var index = 0; index < array.length; index++) {
+                    if(!array[index]){
+                        return false;
+                    }
+                }
+                return true;
+            };
+
             var sett_array_til = function (array, array2, verdi) {
                 for (var index = 0; index < array.length; index++) {
                     array2[index] = verdi;
