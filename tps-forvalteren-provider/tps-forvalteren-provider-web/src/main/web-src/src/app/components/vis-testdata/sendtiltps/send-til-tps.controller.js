@@ -10,6 +10,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
             $scope.valgt_t_miljoer = [];
             $scope.valgt_q_miljoer = [];
             $scope.valgt_p_miljoer = [];
+            $scope.alleMiljoe = false;
 
             $scope.avbryt = function () {
                 $mdDialog.hide();
@@ -52,6 +53,26 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                     }
                 }
                 return miljo_liste;
+            };
+
+            $scope.velgAlleMiljoe = function () {
+                if ($scope.alleMiljoe) {
+                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, false);
+                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, false);
+                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, false);
+                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, false);
+                } else {
+                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, true);
+                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, true);
+                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, true);
+                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, true);
+                }
+            };
+
+            var sett_array_til = function (array, array2, verdi) {
+                for (var index = 0; index < array.length; index++) {
+                    array2[index] = verdi;
+                }
             };
 
             var hasLetter = function (letter) {

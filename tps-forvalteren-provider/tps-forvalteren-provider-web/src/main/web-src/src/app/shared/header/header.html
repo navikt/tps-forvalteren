@@ -60,7 +60,7 @@
     </div>
     <div layout="row" class="header3" ng-show="!isRoot && header.buttons" layout-align="center center" style="padding-bottom: 10px; margin-left: -3px;">
         <div ng-repeat="button in header.buttons">
-            <md-button class="md-title nav-blaa" ng-click="button.click()">
+            <md-button class="md-title nav-blaa" ng-click="button.click()" ng-disabled="button.disabled">
                 <md-icon ng-if="button.icon" md-svg-icon="{{button.icon}}" class="nav-blaa" style="margin-top: -3px;"></md-icon>
                 {{button.text}}</md-button>
             </md-button>

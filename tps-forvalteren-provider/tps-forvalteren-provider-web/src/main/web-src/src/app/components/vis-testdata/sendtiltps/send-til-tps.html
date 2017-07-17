@@ -4,33 +4,35 @@
         <form name="tpsForm">
             <md-dialog-content class="md-dialog-content">
                 <h2>Send til TPS - fra {{miljo}}-miljø</h2>
-                <p>Velg miljø(er) som testpersonene skal bli sendt til:</p>
-
+                <p>Velg miljø testpersonene skal sendes til:</p>
+                <md-checkbox ng-model="alleMiljoe" ng-click="velgAlleMiljoe()" aria-label="Velg alle miljø">
+                    Velg alle
+                </md-checkbox>
                 <div layout="row" layout-align="space-between">
                     <div layout="column">
                         <h3>U-miljø</h3>
-                        <md-checkbox ng-repeat="u_miljoe in u_miljoer track by $index" aria-label="Checkbox 1"
+                        <md-checkbox ng-repeat="u_miljoe in u_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_u_miljoer[$index]">
                             {{u_miljoe}}
                         </md-checkbox>
                     </div>
                     <div layout="column">
                         <h3>T-miljø</h3>
-                        <md-checkbox ng-repeat="t_miljoe in t_miljoer track by $index" aria-label="Checkbox 1"
+                        <md-checkbox ng-repeat="t_miljoe in t_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_t_miljoer[$index]">
                             {{t_miljoe}}
                         </md-checkbox>
                     </div>
                     <div layout="column">
                         <h3>Q-miljø</h3>
-                        <md-checkbox ng-repeat="q_miljoe in q_miljoer track by $index" aria-label="Checkbox 1"
+                        <md-checkbox ng-repeat="q_miljoe in q_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_q_miljoer[$index]">
                             {{q_miljoe}}
                         </md-checkbox>
                     </div>
                     <div layout="column">
                         <h3>P-miljø</h3>
-                        <md-checkbox ng-repeat="p_miljoer in p-miljoer track by $index" aria-label="Checkbox 1"
+                        <md-checkbox ng-repeat="p_miljoer in p-miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_p_miljoer[$index]">
                             {{p_miljoe}}
                         </md-checkbox>
