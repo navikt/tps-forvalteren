@@ -10,7 +10,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var gruppeId = $location.url().match(/\d+/g);
 
-            var setHeaderButtons = function () {
+            var setHeaderButtons = function (antall_personer) {
+                var disable_send_til_tps_button = antall_personer < 1;
                 headerService.setButtons([{
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
@@ -20,6 +21,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }, {
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
+                    disabled: disable_send_til_tps_button,
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
                             controller: 'SendTilTpsCtrl',
@@ -102,7 +104,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 testdataService.getTestpersoner(gruppeId).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
-                        setHeaderButtons();
+                        setHeaderButtons(result.data.personer.length);
                         setHeaderIcons();
                         originalPersoner = result.data.personer;
                         prepOriginalPersoner();
@@ -224,7 +226,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 var identer = [];
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i].velg) {
-                        identer.push($scope.personer[i].id);
+                        identer.push($scope.personer[i].personId);
                     }
                 }
                 testdataService.sletteTestpersoner(identer).then(

@@ -6,11 +6,11 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             var miljoer = serviceRutineFactory.getEnvironments();
             $scope.showSpinner = false;
-            $scope.alleMiljoe = true;
             $scope.valgt_u_miljoer = [];
             $scope.valgt_t_miljoer = [];
             $scope.valgt_q_miljoer = [];
             $scope.valgt_p_miljoer = [];
+            $scope.alleMiljoe = false;
 
             $scope.avbryt = function () {
                 $mdDialog.hide();
@@ -56,11 +56,16 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
             };
 
             $scope.velgAlleMiljoe = function () {
-                console.log($scope.alleMiljoe);
-                if ($scope.alleMiljoe === true) {
-                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, true);
-                } else {
+                if ($scope.alleMiljoe) {
                     sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, false);
+                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, false);
+                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, false);
+                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, false);
+                } else {
+                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, true);
+                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, true);
+                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, true);
+                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, true);
                 }
             };
 
