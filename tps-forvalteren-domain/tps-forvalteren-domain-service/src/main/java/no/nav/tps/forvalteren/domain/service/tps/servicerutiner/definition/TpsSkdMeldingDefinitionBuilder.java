@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition;
 
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,15 @@ import java.util.List;
 public class TpsSkdMeldingDefinitionBuilder {
     private String name;
     private TpsRequestConfig requestConfig;
+    private SkdParametersCreator skdParametersCreator;
     private List<ServiceRutineAuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
     public TpsSkdMeldingDefinitionBuilder.TpsRequestConfigBuilder config() {
         return new TpsSkdMeldingDefinitionBuilder.TpsRequestConfigBuilder();
+    }
+
+    public SkdParametersBuilder skdParameters(){
+        return new TpsSkdMeldingDefinitionBuilder.SkdParametersBuilder();
     }
 
     public TpsSkdMeldingDefinitionBuilder name(String name) {
@@ -46,6 +52,24 @@ public class TpsSkdMeldingDefinitionBuilder {
 
         public TpsSkdMeldingDefinitionBuilder addSecurity() {
             securitySearchAuthorisationStrategies = this.serviceStrategies;
+            return TpsSkdMeldingDefinitionBuilder.this;
+        }
+    }
+
+    public class SkdParametersBuilder {
+        private SkdParametersCreator innerSkdParametersCreator;
+
+        public SkdParametersBuilder addSkdParametersCreator(SkdParametersCreator skdParametersCreator){
+            this.innerSkdParametersCreator = skdParametersCreator;
+            return this;
+        }
+
+        public SkdParametersBuilder addParameterCreator() {
+             skdParametersCreator = this.innerSkdParametersCreator;
+             return this;
+        }
+
+        public TpsSkdMeldingDefinitionBuilder and() {
             return TpsSkdMeldingDefinitionBuilder.this;
         }
     }

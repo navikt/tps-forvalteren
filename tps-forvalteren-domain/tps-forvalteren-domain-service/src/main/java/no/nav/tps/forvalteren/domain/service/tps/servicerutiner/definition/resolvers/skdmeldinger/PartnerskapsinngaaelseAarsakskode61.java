@@ -3,30 +3,28 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.reso
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InngaaelseAvPartnerskapSkdParametere;
 
-public class InnvandringAarsakskode02 implements SkdMeldingResolver{
+public class PartnerskapsinngaaelseAarsakskode61 implements SkdMeldingResolver {
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name("Innvandring")
+                .name("Partnerskapinngaaelse")
 
                 .config()
-                    .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
+                .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
 
                 .skdParameters()
-                    .addSkdParametersCreator(InnvandringSkdParametere.innvandringParameterCreator())
-                .addParameterCreator()
-
+                .addSkdParametersCreator(InngaaelseAvPartnerskapSkdParametere.partnerskapParameterCreator())
                 .and()
 
                 .securityBuilder()
-                    .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
-                    .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
 
                 .build()

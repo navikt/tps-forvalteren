@@ -19,4 +19,16 @@ public class SkdConstants {
     public static final String FRA_LAND_FLYTTEDATO = "T1-FRA-LAND-FLYTTEDATO";
     public static final String REG_DATO_FAM_NR = "T1-REGDATO-FAMNR";
 
+    public static final String SIVILSTAND = "T1-SIVILSTAND";
+    public static final String REGDATO_SIVILSTAND = "T1-REGDATO-SIVILSTAND";
+    public static final String TRANSTYPE = "T1-TRANSTYPE";
+
+
+    public static final String EKTEFELLE_PARTNER_PERSONNUMMMER = "T1-EKTEFELLE-PARTNER-PNR";
+    public static final String EKTEFELLE_PARTNER_FODSELSDATO = "T1-EKTEFELLE-PARTNER-FDATO";
+
+    public static final String FAMILIENUMMER = "T1-FAMILIENUMMER";
+
+    public static final String AARSAKSKODE = "T1-AARSAKSKODE";
+
 }
