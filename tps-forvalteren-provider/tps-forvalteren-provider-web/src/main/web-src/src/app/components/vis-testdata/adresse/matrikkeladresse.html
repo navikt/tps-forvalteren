@@ -58,35 +58,20 @@
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
-    <md-input-container class="tps-vk-input-container" flex="5">
-        <md-tooltip>Postnummer</md-tooltip>
-        <label>Postnr</label>
-        <input name="matrPostnr" pattern="[0-9]*"
-               md-maxlength="4" minlength="4"
-               ng-model="person.matrikkeladresse.postnr"
-               ng-change="endret($index)"/>
-        <div ng-messages="requestForm.matrPostnr.$error"
-             ng-show="requestForm.matrPostnr.$dirty">
-            <div ng-message="pattern">Ugyldig numerisk verdi</div>
-            <div ng-message="minlength">Verdi har for få tegn</div>
-            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
-        </div>
-    </md-input-container>
 
-    <md-input-container class="tps-vk-input-container" flex="10">
-        <md-tooltip>Kommunenummer</md-tooltip>
-        <label>Kommunenr</label>
-        <input name="matrKommunenr" ng-required="false" pattern="[0-9]*" md-maxlength="4"
-               minlength="4"
-               ng-model="person.matrikkeladresse.kommunenr"
-               ng-change="endret($index)"/>
-        <div ng-messages="requestForm.matrKommunenr.$error"
-             ng-show="requestForm.matrKommunenr.$dirty" ng-messages-multiple>
-            <div ng-message="pattern">Ugyldig numerisk verdi</div>
-            <div ng-message="minlength">Verdi har for få tegn</div>
-            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
-        </div>
-    </md-input-container>
+    <md-autocomplete md-no-cache="false" md-selected-item="person.matrikkeladresse.postnr"  md-selected-item-change="endret($index)" md-items="postnummer in getPostnummerMatches(postnummerSoek)" md-search-text="postnummerSoek"
+                     md-item-text="postnummer.visningsnavn"  md-require-match="true" md-select-on-match="true" md-delay="300" placeholder="Postnummer" md-floating-label="Postnummer">
+        <md-item-template>
+            <span md-highlight-text="postnummerSoek" md-highlight-flags="i">{{ postnummer.visningsnavn }}</span>
+        </md-item-template>
+    </md-autocomplete>
+
+    <md-autocomplete md-no-cache="false" md-selected-item="person.matrikkeladresse.kommunenr" md-selected-item-change="endret($index)" md-items="kommune in getKommuneMatches(kommuneSoek)" md-search-text="kommuneSoek"
+                     md-item-text="kommune.visningsnavn" md-select-on-match="true" md-require-match="true" md-delay="300" placeholder="Kommune" md-floating-label="Kommune" flex="10">
+        <md-item-template>
+            <span md-highlight-text="kommuneSoek" md-highlight-flags="i">{{ kommune.visningsnavn }}</span>
+        </md-item-template>
+    </md-autocomplete>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Flyttedato</md-tooltip>

@@ -4,6 +4,7 @@ angular.module('tps-forvalteren.service')
 
         var self =  this;
         var url = 'api/v1/testdata/';
+        var kodeverkUrl = 'api/v1/kodeverk/';
 
         self.getTestpersoner = function(id){
             var defer = $q.defer();
@@ -134,4 +135,31 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.hentKommuner = function () {
+            var defer = $q.defer();
+            $http.get(kodeverkUrl + 'knr').then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.hentPostnummer = function () {
+            var defer = $q.defer();
+            $http.get(kodeverkUrl + 'postnummer').then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
     }]);
