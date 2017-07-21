@@ -3,15 +3,17 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.RelasjonType;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonTypeRepository;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
@@ -37,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -92,6 +96,12 @@ public class TestdataController {
 
     @Autowired
     private MapperFacade mapper;
+
+    @Autowired
+    private RelasjonRepository relasjonRepository;
+
+    @Autowired
+    private RelasjonTypeRepository relasjonTypeRepository;
 
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
@@ -186,6 +196,54 @@ public class TestdataController {
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         deleteGruppeById.execute(gruppeId);
     }
+
+    @RequestMapping(value = "/bla", method = RequestMethod.GET)
+    public void deleteGruppe() {
+        Gruppe g1 = new Gruppe();
+        g1.setNavn("Trash");
+
+        Person p1 = new Person();
+        p1.setFornavn("cunt");
+        p1.setIdent("0");
+        p1.setIdenttype("tet");
+        p1.setKjonn('k');
+        p1.setEtternavn("test");
+        p1.setRegdato(LocalDateTime.now());
+
+        Person p2 = new Person();
+        p2.setFornavn("tull");
+        p2.setIdent("1");
+        p2.setIdenttype("tet");
+        p2.setKjonn('k');
+        p2.setEtternavn("test");
+        p2.setRegdato(LocalDateTime.now());
+
+        g1.setPersoner(Arrays.asList(p1,p2));
+        p1.setGruppe(g1);
+        p2.setGruppe(g1);
+
+        saveGruppe.execute(g1);
+
+        savePersonListService.execute(Arrays.asList(p1,p2));
+
+
+        RelasjonType type = new RelasjonType();
+        type.setName("married");
+
+        relasjonTypeRepository.save(type);
+
+
+        Relasjon rel = new Relasjon();
+        rel.setPerson(p1);
+        rel.setPersonRelasjonMed(p2);
+        rel.setRelasjonType(type);
+
+        relasjonRepository.save(rel);
+
+        List<Relasjon> relasjon = relasjonRepository.findAll();
+        return;
+    }
+
 
 
 }

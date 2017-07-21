@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -42,7 +43,8 @@ public class Relasjon {
     @ManyToOne
     private Person personRelasjonMed;
 
-    @Column(name = "RELASJON_TYPE", nullable = false, updatable = false)
-    private int type;
+    @JoinColumn(name = "relasjon_type_id")
+    @ManyToOne()
+    private RelasjonType relasjonType;
 
 }
