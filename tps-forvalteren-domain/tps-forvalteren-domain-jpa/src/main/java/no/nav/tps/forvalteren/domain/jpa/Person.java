@@ -82,4 +82,12 @@ public class Person extends ChangeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
+    private List<Relasjon> relasjoner = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRelasjonMed")
+    private List<Relasjon> relasjonMed = new ArrayList<>();
+
+
+
 }
