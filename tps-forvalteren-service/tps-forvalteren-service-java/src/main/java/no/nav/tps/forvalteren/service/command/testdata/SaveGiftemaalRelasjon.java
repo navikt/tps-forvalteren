@@ -8,6 +8,8 @@ import no.nav.tps.forvalteren.repository.jpa.RelasjonTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SaveGiftemaalRelasjon {
 
@@ -35,8 +37,17 @@ public class SaveGiftemaalRelasjon {
         relasjon1.setRelasjonType(relasjonType);
         relasjon2.setRelasjonType(relasjonType);
 
+        List<Relasjon> relasjoner1 = person1.getRelasjoner();
+        for(Relasjon relasjon : relasjoner1){
+            if(relasjon.getRelasjonType().equals(relasjonType) &&
+                    relasjon.getPersonRelasjonMed().getIdent().equalsIgnoreCase(person2.getIdent())){
+                return;
+            }
+        }
         person1.getRelasjoner().add(relasjon1);
         person2.getRelasjoner().add(relasjon2);
 
+        relasjonRepository.save(relasjon1);
+        relasjonRepository.save(relasjon2);
     }
 }
