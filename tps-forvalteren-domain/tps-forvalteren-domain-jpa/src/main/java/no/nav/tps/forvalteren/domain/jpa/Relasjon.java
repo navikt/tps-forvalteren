@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +37,12 @@ public class Relasjon {
     @Column(name = "RELASJON_ID", nullable = false, updatable = false)
     private Long id;
 
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "person_relasjon_id")
     @ManyToOne
     private Person person;
 
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "person_relasjon_med_id")
     @ManyToOne
     private Person personRelasjonMed;

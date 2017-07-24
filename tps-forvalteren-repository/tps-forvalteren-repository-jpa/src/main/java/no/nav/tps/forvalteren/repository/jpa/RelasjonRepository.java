@@ -10,4 +10,5 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
     List<Relasjon> findAll();
 
     void save(Relasjon relasjon);
+
 }
