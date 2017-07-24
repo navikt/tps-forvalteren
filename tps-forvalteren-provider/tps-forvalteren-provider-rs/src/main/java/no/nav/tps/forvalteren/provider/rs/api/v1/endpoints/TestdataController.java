@@ -5,8 +5,6 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.jpa.RelasjonType;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
@@ -39,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 

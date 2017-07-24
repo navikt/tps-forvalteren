@@ -6,4 +6,8 @@ import org.springframework.data.repository.Repository;
 public interface RelasjonTypeRepository extends Repository<RelasjonType, Long> {
 
     void save(RelasjonType relasjon);
+
+    RelasjonType findByName(String name);
+
+    RelasjonType findById(int id);
 }
