@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -82,9 +83,11 @@ public class Person extends ChangeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
 
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
     private List<Relasjon> relasjoner = new ArrayList<>();
 
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRelasjonMed")
     private List<Relasjon> relasjonMed = new ArrayList<>();
 

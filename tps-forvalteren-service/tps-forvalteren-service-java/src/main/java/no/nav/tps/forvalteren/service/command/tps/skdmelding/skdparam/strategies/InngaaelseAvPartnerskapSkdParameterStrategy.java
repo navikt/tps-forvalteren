@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.VigselSkdParametere;
@@ -42,10 +44,20 @@ public class InngaaelseAvPartnerskapSkdParameterStrategy implements SkdParameter
         skdParams.put(SkdConstants.REGDATO_SIVILSTAND, yyyyMMdd);
         skdParams.put(SkdConstants.REG_DATO, yyyyMMdd);
 
-        //skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, person.getEktefelle().getIdent().substring(0, 6));
-        //skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PNR, person.getEktefelle().getIdent().substring(6, 11));
+        Person ektefelle = null;
+        for(Relasjon relasjon : person.getRelasjoner()){
+            if(relasjon.getRelasjonTypeKode() == RelasjonType.REGISTRERT_PARTNER.getRelasjonTypeKode()){
+                ektefelle = relasjon.getPersonRelasjonMed();
+            }
+        }
+        if(ektefelle == null ){
+            return;
+        }
 
-        //skdParams.put(SkdConstants.FAMILIENUMMER, person.getEktefelle().getIdent());
+        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, ektefelle.getIdent().substring(0, 6));
+        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER, ektefelle.getIdent().substring(6, 11));
+
+        skdParams.put(SkdConstants.FAMILIENUMMER, ektefelle.getIdent());
 
         addDefaultParam(skdParams);
     }

@@ -15,5 +15,6 @@ public interface PersonRepository extends Repository<Person, Long> {
 
     List<Person> findByIdentIn(List<String> identListe);
 
+    List<Person> findAll();
 
 }

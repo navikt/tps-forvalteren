@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.VigselSkdParametere;
@@ -15,7 +17,6 @@ import java.util.Map;
 public class VigselSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKSKODE_FOR_VIGSEL  = "11";
-    private static final String SIVILSTAND_PAR  = "2"; //Kan vaere 2 eller 6. Vet ikke forskjell.
 
     @Override
     public boolean isSupported(SkdParametersCreator creator) {
@@ -43,10 +44,20 @@ public class VigselSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.REGDATO_SIVILSTAND, yyyyMMdd);
         skdParams.put(SkdConstants.REG_DATO, yyyyMMdd);
 
-        //skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, person.getEktefelle().getIdent().substring(0, 6));
-        //skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PNR, person.getEktefelle().getIdent().substring(6, 11));
+        Person ektefelle = null;
+        for(Relasjon relasjon : person.getRelasjoner()){
+            if(relasjon.getRelasjonTypeKode() == RelasjonType.GIFT.getRelasjonTypeKode()){
+                ektefelle = relasjon.getPersonRelasjonMed();
+            }
+        }
+        if(ektefelle == null ){
+            return;
+        }
 
-        //skdParams.put(SkdConstants.FAMILIENUMMER, person.getEktefelle().getIdent());
+        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, ektefelle.getIdent().substring(0, 6));
+        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER, ektefelle.getIdent().substring(6, 11));
+
+        skdParams.put(SkdConstants.FAMILIENUMMER, ektefelle.getIdent());
 
         addDefaultParam(skdParams);
     }
@@ -54,15 +65,8 @@ public class VigselSkdParameterStrategy implements SkdParametersStrategy {
     private void addDefaultParam(Map<String, String> skdParams) {
         skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_VIGSEL);
 
-        skdParams.put(SkdConstants.SIVILSTAND, SIVILSTAND_PAR);
+        skdParams.put(SkdConstants.SIVILSTAND, ""+ RelasjonType.GIFT.getRelasjonTypeKode());
         skdParams.put(SkdConstants.TRANSTYPE, "1");
         skdParams.put("T1-STATUSKODE", "1");
-    }
-
-    private String formaterDato(int tid) {
-        if (tid < 10) {
-            return "0" + tid;
-        }
-        return String.valueOf(tid);
     }
 }

@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.repository.jpa;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.jpa.RelasjonType;
 import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.transaction.Transactional;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +33,6 @@ public class RelasjonRepositoryComponentTest {
     private Person personKari = aFemalePerson().build();
     private Gruppe enGruppe = aGruppe().build();
 
-    private final static String REL_TYPE_GIFT = "gift";
-
     @Autowired
     private PersonRepository personRepository;
 
@@ -42,29 +40,21 @@ public class RelasjonRepositoryComponentTest {
     private GruppeRepository gruppeRepository;
 
     @Autowired
-    private RelasjonTypeRepository relasjonTypeRepository;
-
-    @Autowired
     private RelasjonRepository relasjonRepository;
 
     @Test
     @Rollback
     public void saveRelasjonLagrerRelasjon() {
-        enGruppe.setPersoner(Arrays.asList(personKari,personOla));
+        enGruppe.setPersoner(Arrays.asList(personKari, personOla));
 
         gruppeRepository.save(enGruppe);
 
-        personRepository.save(Arrays.asList(personKari,personOla));
-
-        RelasjonType type = new RelasjonType();
-        type.setName(REL_TYPE_GIFT);
-
-        relasjonTypeRepository.save(type);
+        personRepository.save(Arrays.asList(personKari, personOla));
 
         Relasjon rel = new Relasjon();
         rel.setPerson(personKari);
         rel.setPersonRelasjonMed(personOla);
-        rel.setRelasjonType(type);
+        rel.setRelasjonTypeKode(RelasjonType.GIFT.getRelasjonTypeKode());
 
         personKari.setRelasjoner(Arrays.asList(rel));
 
@@ -75,13 +65,72 @@ public class RelasjonRepositoryComponentTest {
 
         assertThat(relasjon, hasSize(1));
 
-        assertSame(relasjon.get(0).getPerson().getFornavn(),personKari.getFornavn() );
-        assertSame(relasjon.get(0).getPersonRelasjonMed().getFornavn(),personOla.getFornavn() );
+        assertSame(relasjon.get(0).getPerson().getFornavn(), personKari.getFornavn());
+        assertSame(relasjon.get(0).getPersonRelasjonMed().getFornavn(), personOla.getFornavn());
 
-        assertSame(relasjon.get(0).getRelasjonType().getName(),REL_TYPE_GIFT );
+        assertSame(relasjon.get(0).getRelasjonTypeKode(), RelasjonType.GIFT.getRelasjonTypeKode());
 
         assertSame(personer.get(0).getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), personOla.getFornavn());
     }
 
+    @Test
+    @Rollback
+    public void saveRelasjonPaaBeggerPersoner() {
+        enGruppe.setPersoner(Arrays.asList(personKari,personOla));
 
+        gruppeRepository.save(enGruppe);
+
+        personRepository.save(Arrays.asList(personKari,personOla));
+
+        Person kari = personRepository.findByIdentIn(Arrays.asList(personKari.getIdent())).get(0);
+        Person ola = personRepository.findByIdentIn(Arrays.asList(personOla.getIdent())).get(0);
+
+        saveGiftemaalCopyOfGiftemaalService(kari, ola);
+
+        kari = personRepository.findByIdentIn(Arrays.asList(personKari.getIdent())).get(0);
+        ola = personRepository.findByIdentIn(Arrays.asList(personOla.getIdent())).get(0);
+
+        assertSame(kari.getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), ola.getFornavn());
+        assertSame(kari.getRelasjoner().get(0).getRelasjonTypeKode(), RelasjonType.GIFT.getRelasjonTypeKode());
+
+        assertSame(ola.getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), kari.getFornavn());
+        assertSame(ola.getRelasjoner().get(0).getRelasjonTypeKode(), RelasjonType.GIFT.getRelasjonTypeKode());
+    }
+
+    private void saveGiftemaalCopyOfGiftemaalService(Person person1, Person person2){
+        Relasjon relasjon1 =  new Relasjon();
+        relasjon1.setPerson(person1);
+        relasjon1.setPersonRelasjonMed(person2);
+
+        Relasjon relasjon2 =  new Relasjon();
+        relasjon2.setPerson(person2);
+        relasjon2.setPersonRelasjonMed(person1);
+
+        RelasjonType relasjonType = RelasjonType.GIFT;
+
+        relasjon1.setRelasjonTypeKode(relasjonType.getRelasjonTypeKode());
+        relasjon2.setRelasjonTypeKode(relasjonType.getRelasjonTypeKode());
+
+        // Gjor dette fordi H2 ikke lager tom liste(Sender NULL) naar den ikke finner data av en eller annen grunn.
+        if(person1.getRelasjoner() == null){
+            person1.setRelasjoner(new ArrayList<>());
+        }
+        if(person2.getRelasjoner() == null){
+            person2.setRelasjoner(new ArrayList<>());
+        }
+
+        for(Relasjon relasjon : person1.getRelasjoner()){
+            if(relasjon.getRelasjonTypeKode() == relasjonType.getRelasjonTypeKode() &&
+                    relasjon.getPersonRelasjonMed().getIdent().equalsIgnoreCase(person2.getIdent())){
+                return;
+            }
+        }
+
+        person1.getRelasjoner().add(relasjon1);
+        person2.getRelasjoner().add(relasjon2);
+
+        relasjonRepository.save(relasjon1);
+        relasjonRepository.save(relasjon2);
+
+    }
 }
