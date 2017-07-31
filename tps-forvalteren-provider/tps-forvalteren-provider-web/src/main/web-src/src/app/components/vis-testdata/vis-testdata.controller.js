@@ -7,7 +7,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
-            $scope.relasjonHtml = "app/components/vis-testdata/relasjon/relasjon.html";
+            $scope.relasjoner = "app/components/vis-testdata/relasjon/relasjoner.html";
 
             $scope.kommuner = [];
             $scope.postnummer = [];
@@ -130,8 +130,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var testRel = function() {
                 $scope.personer[0]["relasjoner"] = [
-                    {id: "123", person: $scope.personer[0], personRelasjonMed: $scope.personer[1], relasjonTypeKode: "Gift"}
-                    ];
+                    {id: "123", person: angular.copy($scope.personer[0]), personRelasjonMed: angular.copy($scope.personer[1]), relasjonTypeKode: "Gift"}
+                ];
             };
 
 
@@ -502,6 +502,16 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 if ($scope.visEndret) {
                     return 'Du har data som ikke er lagret. Vil du forlate siden?'; // Trigger nettlesers visning av dialogboks for avslutning
                 }
+            };
+
+            $scope.getAlder = function(ident) {
+                var fnr = angular.copy(ident);
+                if (fnr.charAt(0) >= 4) {
+                    fnr = (fnr.charAt(0) - 4).toString() + fnr.substring(1);
+                }
+                return fnr;
+                // return fnr.toString();
+                // if (fnr.charAt(1))
             };
 
             hentKommuner();

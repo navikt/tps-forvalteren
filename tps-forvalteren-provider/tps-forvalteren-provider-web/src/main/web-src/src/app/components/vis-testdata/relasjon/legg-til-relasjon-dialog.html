@@ -26,7 +26,8 @@
             <span></span>
             <h3>Velg person</h3>
             <md-select ng-model="personForRelasjonSelector">
-                <md-option ng-repeat="person in personer" ng-value="person">{{ person["ident"] }}, {{person["fornavn"]}} {{person["etternavn"]}}, {{person["kjonn"]}}</md-option>
+                <md-option ng-repeat="person in personer" ng-value="person">{{ person.ident }}, {{person["fornavn"]}} {{person["etternavn"]}},
+                    {{getKjonn(person["kjonn"])}}, {{getAlder(person.ident)}}</md-option>
             </md-select>
 
         </md-dialog-content>

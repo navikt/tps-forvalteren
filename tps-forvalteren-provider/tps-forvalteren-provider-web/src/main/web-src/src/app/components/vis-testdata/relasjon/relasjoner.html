@@ -10,10 +10,11 @@
             <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg"></md-icon>
         </div>
         <div flex="5">{{ relasjon.relasjonTypeKode }}:</div>
-        <div flex="10">{{ relasjon.personRelasjonMed.ident }},</div>
-        <div flex="80">{{ relasjon.personRelasjonMed.etternavn }} {{ relasjon.personRelasjonMed.fornavn }}</div>
+        <div flex="10">{{ relasjon.personRelasjonMed.ident }},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.personRelasjonMed.etternavn }} {{ relasjon.personRelasjonMed.fornavn }},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ getKjonn(relasjon.personRelasjonMed.kjonn)}},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ getAlder(relasjon.personRelasjonMed.ident )}}</div>
     </div>
 </div>
 
 <div ng-if="!person.relasjoner">Har ingen relasjoner</div>
-
