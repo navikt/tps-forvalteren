@@ -85,7 +85,7 @@
                     <div layout="row" ng-if="control[$index].aapen">
                         <div class="line">
                             <div ng-include="persondetalj"></div>
-                                <div class="testdata-boadr">Boadresse</div>
+                                <h3>Boadresse</h3>
                                 <md-radio-group ng-model="person.boadresse.adressetype"
                                                 layout="row" class="testdata-adr-btn">
                                     <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
@@ -95,6 +95,7 @@
                             <div ng-include="gateadresse"></div>
                             <div ng-include="matradresse"></div>
                             <div ng-include="postadresse"></div>
+                            <div ng-include="relasjonHtml"></div>
                         </div>
                     </div>
                 </md-card-content>

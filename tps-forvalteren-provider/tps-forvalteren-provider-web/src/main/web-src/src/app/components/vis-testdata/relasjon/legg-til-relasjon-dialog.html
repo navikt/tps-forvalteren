@@ -1,0 +1,36 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Legg til relasjon dialog">
+        <md-dialog-content class="md-dialog-content">
+            <h2>Legg til Familierelasjon</h2>
+            <h3>Hvilken type relasjon vil du legge til?</h3>
+
+            <div layout="column" layout-align="space-between">
+                <md-radio-group ng-model="relasjonValgt">
+                    <md-radio-button aria-label="label" value="Mor">
+                        Mor
+                    </md-radio-button>
+                    <md-radio-button aria-label="label" value="Far">
+                        Far
+                    </md-radio-button>
+                    <md-radio-button aria-label="label" value="Barn">
+                        Barn
+                    </md-radio-button>
+                    <md-radio-button aria-label="label" value="Gift">
+                        Ektefelle
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+
+            <span></span>
+            <span></span>
+            <h3>Velg person</h3>
+            <md-select ng-model="personForRelasjonSelector">
+                <md-option ng-repeat="person in personer" ng-value="person">{{ person["ident"] }}, {{person["fornavn"]}} {{person["etternavn"]}}, {{person["kjonn"]}}</md-option>
+            </md-select>
+
+        </md-dialog-content>
+
+    </md-dialog>
+
+</div>

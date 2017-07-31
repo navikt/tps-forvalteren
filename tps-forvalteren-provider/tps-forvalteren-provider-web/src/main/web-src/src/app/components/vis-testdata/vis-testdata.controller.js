@@ -1,12 +1,13 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
         'headerService', '$location',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, underHeaderService, $location) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
+            $scope.relasjonHtml = "app/components/vis-testdata/relasjon/relasjon.html";
 
             $scope.kommuner = [];
             $scope.postnummer = [];
@@ -15,7 +16,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var setHeaderButtons = function (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
-                headerService.setButtons([{
+                underHeaderService.setButtons([{
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
@@ -38,7 +39,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             var setHeaderIcons = function () {
-                headerService.setIcons([{
+                underHeaderService.setIcons([{
                     icon: 'assets/icons/ic_mode_edit_black_24px.svg',
                     title: 'Endre testgruppe',
                     click: function (ev) {
@@ -66,7 +67,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         personTekst += $scope.personer.length > 1 ? 'er' : '';
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .htmlContent('Ønsker du å slette gruppe <strong>' + headerService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
+                            .htmlContent('Ønsker du å slette gruppe <strong>' + underHeaderService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
                                 'Denne handlingen vil ikke slette testpersonene fra TPS, dersom de er opprettet der.')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
@@ -106,7 +107,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.personer = undefined;
                 testdataService.getTestpersoner(gruppeId).then(
                     function (result) {
-                        headerService.setHeader(result.data.navn);
+                        underHeaderService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.personer.length);
                         setHeaderIcons();
                         originalPersoner = result.data.personer;
@@ -116,14 +117,23 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
                         prepPersoner();
+                        testRel();
                         oppdaterFunksjonsknapper();
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                        headerService.setHeader("Testdata");
+                        underHeaderService.setHeader("Testdata");
                     }
                 );
             };
+
+
+            var testRel = function() {
+                $scope.personer[0]["relasjoner"] = [
+                    {id: "123", person: $scope.personer[0], personRelasjonMed: $scope.personer[1], relasjonTypeKode: "Gift"}
+                    ];
+            };
+
 
             var hentKommuner = function () {
                 testdataService.hentKommuner().then(
@@ -141,7 +151,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                        headerService.setHeader("Testdata");
+                        underHeaderService.setHeader("Testdata");
                     }
                 );
             };
@@ -162,7 +172,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                        headerService.setHeader("Testdata");
+                        underHeaderService.setHeader("Testdata");
                     }
                 );
             };
@@ -279,6 +289,15 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $mdDialog.show(confirm).then(function () {
                     sletteTestpersoner();
                 });
+            };
+
+            $scope.leggTilRelasjonDialog = function () {
+                var confirm = $mdDialog.confirm({
+                    controller: 'VisTestdataCtrl',
+                    templateUrl: 'app/components/vis-testdata/relasjon/legg-til-relasjon-dialog.html',
+                    parent: angular.element(document.body),
+                });
+                $mdDialog.show(confirm);
             };
 
             $scope.oppdaterValgt = function () {
