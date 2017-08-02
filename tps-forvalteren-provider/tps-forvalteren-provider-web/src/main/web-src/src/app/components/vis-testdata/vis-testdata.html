@@ -68,10 +68,9 @@
                         <div flex="50">
                             {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
                         </div>
-                        <div flex="20">{{getKjonn(person.kjonn)}}</div>
+                        <div flex="20">{{person.kjonn | kjonn}}, &nbsp;&nbsp;&nbsp;{{person.ident | alder}}</div>
                         <div flex></div>
-                        <div ng-if="control[$index].endret" style="color: red;">Endret</div>
-                        <div flex="5"></div>
+                        <div flex="5" ng-if="control[$index].endret" style="color: red;">Endret</div>
                         <div flex="5">
                             <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
                                        class="md-icon-button"
@@ -85,17 +84,17 @@
                     <div layout="row" ng-if="control[$index].aapen">
                         <div class="line">
                             <div ng-include="persondetalj"></div>
-                                <h3>Boadresse</h3>
-                                <md-radio-group ng-model="person.boadresse.adressetype"
-                                                layout="row" class="testdata-adr-btn">
-                                    <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
-                                    <md-radio-button value="MATR">Matrikkeladresse</md-radio-button>
-                                </md-radio-group>
+                            <h3 class="testdata-sub-header">Boadresse</h3>
+                            <md-radio-group ng-model="person.boadresse.adressetype"
+                                            layout="row" class="testdata-adr-btn">
+                                <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
+                                <md-radio-button value="MATR">Matrikkeladresse</md-radio-button>
+                            </md-radio-group>
 
                             <div ng-include="gateadresse"></div>
                             <div ng-include="matradresse"></div>
                             <div ng-include="postadresse"></div>
-                            <div ng-include="relasjoner"></div>
+                            <familierelasjon person="person" personer="personer" index="$index" endret-fn="endret"></familierelasjon>
                         </div>
                     </div>
                 </md-card-content>

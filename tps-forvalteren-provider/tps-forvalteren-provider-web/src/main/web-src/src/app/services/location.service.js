@@ -41,11 +41,16 @@ angular.module('tps-forvalteren.service')
             return $state.current.name === 'servicerutine';
         };
 
-        self.redirectUrl = function(url) {
+        self.redirectUrl = function(url, param) {
             if ('/' === url) {
                 self.redirectToHomeState();
             } else {
-                $state.go(url.substring(1)); // Ta bort ledende "/"
+                if (url.indexOf('/:') != -1) {
+                    $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
+                }
+                else {
+                  $state.go(url.substr(1)); // Ta bort ledende "/"
+                }
             }
         };
 

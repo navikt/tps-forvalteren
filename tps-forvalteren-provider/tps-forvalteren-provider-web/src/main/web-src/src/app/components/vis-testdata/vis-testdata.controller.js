@@ -7,7 +7,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
-            $scope.relasjoner = "app/components/vis-testdata/relasjon/relasjoner.html";
 
             $scope.kommuner = [];
             $scope.postnummer = [];
@@ -117,7 +116,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
                         prepPersoner();
-                        testRel();
                         oppdaterFunksjonsknapper();
                     },
                     function (error) {
@@ -126,14 +124,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     }
                 );
             };
-
-
-            var testRel = function() {
-                $scope.personer[0]["relasjoner"] = [
-                    {person: angular.copy($scope.personer[0]), personRelasjonMed: angular.copy($scope.personer[1]), relasjonTypeNavn: "EKTEFELLE"}
-                ];
-            };
-
 
             var hentKommuner = function () {
                 testdataService.hentKommuner().then(
@@ -291,15 +281,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 });
             };
 
-            $scope.leggTilRelasjonDialog = function () {
-                var confirm = $mdDialog.confirm({
-                    controller: 'VisTestdataCtrl',
-                    templateUrl: 'app/components/vis-testdata/relasjon/legg-til-relasjon-dialog.html',
-                    parent: angular.element(document.body),
-                });
-                $mdDialog.show(confirm);
-            };
-
             $scope.oppdaterValgt = function () {
                 oppdaterFane = true;
 
@@ -349,14 +330,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         utilsService.showAlertError(error);
                     }
                 );
-            };
-
-            $scope.getKjonn = function (kjonn) {
-                if (kjonn) {
-                    return kjonn == 'K' ? 'Kvinne' : 'Mann';
-                } else {
-                    return '';
-                }
             };
 
             $scope.lagre = function () {
@@ -477,7 +450,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 });
             };
 
-            var bekreftRelokasjon = function (next) {
+            var bekreftRelokasjon = function (next, current) {
                 var confirm = $mdDialog.confirm()
                     .title('Du har endringer som ikke er lagret')
                     .textContent('Trykk OK for å forlate siden.')
@@ -487,14 +460,14 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                     $scope.visEndret = false;
-                    locationService.redirectUrl(next.url);
+                    locationService.redirectUrl(next.url, current);
                 });
             };
 
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
-                    bekreftRelokasjon(next);
+                    bekreftRelokasjon(next, current);
                 }
             });
 
@@ -502,16 +475,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 if ($scope.visEndret) {
                     return 'Du har data som ikke er lagret. Vil du forlate siden?'; // Trigger nettlesers visning av dialogboks for avslutning
                 }
-            };
-
-            $scope.getAlder = function(ident) {
-                var fnr = angular.copy(ident);
-                if (fnr.charAt(0) >= 4) {
-                    fnr = (fnr.charAt(0) - 4).toString() + fnr.substring(1);
-                }
-                return fnr;
-                // return fnr.toString();
-                // if (fnr.charAt(1))
             };
 
             hentKommuner();
