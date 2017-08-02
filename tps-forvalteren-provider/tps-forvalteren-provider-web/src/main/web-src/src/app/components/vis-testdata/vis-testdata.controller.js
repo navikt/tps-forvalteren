@@ -130,7 +130,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var testRel = function() {
                 $scope.personer[0]["relasjoner"] = [
-                    {id: "123", person: angular.copy($scope.personer[0]), personRelasjonMed: angular.copy($scope.personer[1]), relasjonTypeKode: "Gift"}
+                    {person: angular.copy($scope.personer[0]), personRelasjonMed: angular.copy($scope.personer[1]), relasjonTypeNavn: "EKTEFELLE"}
                 ];
             };
 

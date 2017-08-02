@@ -10,12 +10,11 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.SaveRelasjon;
+import no.nav.tps.forvalteren.service.command.testdata.RelasjonForAndrePersonIEnRelasjonGetter;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
@@ -26,6 +25,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -94,7 +94,10 @@ public class TestdataController {
     private MapperFacade mapper;
 
     @Autowired
-    private SaveRelasjon saveRelasjon;
+    private RelasjonForAndrePersonIEnRelasjonGetter relasjonForAndrePersonIEnRelasjonGetter;
+
+    @Autowired
+    private LagreTilTps lagreTilTps;
 
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
@@ -151,8 +154,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
-        Gruppe gruppe = findGruppeById.execute(gruppeId);
-        skdCreatePersoner.execute(gruppe.getPersoner(), environments);
+        lagreTilTps.execute(gruppeId, environments);
     }
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
@@ -199,7 +201,7 @@ public class TestdataController {
     public void bla() {
         List<Gruppe> alleGru = findAlleGrupperOrderByIdAsc.execute();
         List<Person> personer = alleGru.get(0).getPersoner();
-        saveRelasjon.execute(personer.get(0), personer.get(1), RelasjonType.GIFT);
+        //lagreRelasjon.execute(personer.get(0), personer.get(1), RelasjonType.GIFT);
     }
 
 }

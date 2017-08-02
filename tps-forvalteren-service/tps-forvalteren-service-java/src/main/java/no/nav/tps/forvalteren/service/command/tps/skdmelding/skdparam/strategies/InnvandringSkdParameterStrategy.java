@@ -14,7 +14,6 @@ import java.util.Map;
 @Service
 public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String TILDELINGSKODE_FOR_ENDRING = "2";
     private static final String TILDELINGSKODE_FOR_OPPRETT = "1";
     private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
 
@@ -66,12 +65,5 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put("T1-SIVILSTAND", "1");
         skdParams.put("T1-TRANSTYPE", "1");
         skdParams.put("T1-STATUSKODE", "1");
-    }
-
-    private String formaterDato(int tid) {
-        if (tid < 10) {
-            return "0" + tid;
-        }
-        return String.valueOf(tid);
     }
 }

@@ -23,7 +23,7 @@ public class SkdParametersCreatorService {
                 return strategy.execute(person);
             }
         }
-        throw new HttpInternalServerErrorException(UNKNOWN_SKD_PARAMETER_STRATEGY,"api/v1/testdata/saveTPS");
+        throw new HttpInternalServerErrorException(UNKNOWN_SKD_PARAMETER_STRATEGY, "api/v1/testdata/saveTPS");
     }
 }
 

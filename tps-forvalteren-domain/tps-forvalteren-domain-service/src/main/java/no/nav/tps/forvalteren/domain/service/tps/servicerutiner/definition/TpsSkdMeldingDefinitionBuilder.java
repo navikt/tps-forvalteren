@@ -35,6 +35,7 @@ public class TpsSkdMeldingDefinitionBuilder {
         routine.setName(name);
         routine.setConfig(requestConfig);
         routine.setRequiredSecurityServiceStrategies(securitySearchAuthorisationStrategies);
+        routine.setSkdParametersCreator(skdParametersCreator);
         return routine;
     }
 

@@ -54,7 +54,7 @@ public class RelasjonRepositoryComponentTest {
         Relasjon rel = new Relasjon();
         rel.setPerson(personKari);
         rel.setPersonRelasjonMed(personOla);
-        rel.setRelasjonTypeKode(RelasjonType.GIFT.getRelasjonTypeKode());
+        rel.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
 
         personKari.setRelasjoner(Arrays.asList(rel));
 
@@ -68,9 +68,36 @@ public class RelasjonRepositoryComponentTest {
         assertSame(relasjon.get(0).getPerson().getFornavn(), personKari.getFornavn());
         assertSame(relasjon.get(0).getPersonRelasjonMed().getFornavn(), personOla.getFornavn());
 
-        assertSame(relasjon.get(0).getRelasjonTypeKode(), RelasjonType.GIFT.getRelasjonTypeKode());
+        assertSame(relasjon.get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
 
         assertSame(personer.get(0).getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), personOla.getFornavn());
+    }
+
+    @Test
+    @Rollback
+    public void findByIdFinnerTidligereLagretRelasjoner() {
+        enGruppe.setPersoner(Arrays.asList(personKari, personOla));
+
+        gruppeRepository.save(enGruppe);
+
+        personRepository.save(Arrays.asList(personKari, personOla));
+
+        Relasjon rel = new Relasjon();
+        rel.setPerson(personKari);
+        rel.setPersonRelasjonMed(personOla);
+        rel.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
+
+        personKari.setRelasjoner(Arrays.asList(rel));
+
+        relasjonRepository.save(rel);
+
+        Relasjon relasjonFetched = relasjonRepository.findById(rel.getId());
+
+        assertNotNull(relasjonFetched);
+
+        Relasjon relasjonFetchedFail = relasjonRepository.findById(123456);
+
+        assertNull(relasjonFetchedFail);
     }
 
     @Test
@@ -91,10 +118,10 @@ public class RelasjonRepositoryComponentTest {
         ola = personRepository.findByIdentIn(Arrays.asList(personOla.getIdent())).get(0);
 
         assertSame(kari.getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), ola.getFornavn());
-        assertSame(kari.getRelasjoner().get(0).getRelasjonTypeKode(), RelasjonType.GIFT.getRelasjonTypeKode());
+        assertSame(kari.getRelasjoner().get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
 
         assertSame(ola.getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), kari.getFornavn());
-        assertSame(ola.getRelasjoner().get(0).getRelasjonTypeKode(), RelasjonType.GIFT.getRelasjonTypeKode());
+        assertSame(ola.getRelasjoner().get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
     }
 
     private void saveGiftemaalCopyOfGiftemaalService(Person person1, Person person2){
@@ -106,10 +133,10 @@ public class RelasjonRepositoryComponentTest {
         relasjon2.setPerson(person2);
         relasjon2.setPersonRelasjonMed(person1);
 
-        RelasjonType relasjonType = RelasjonType.GIFT;
+        RelasjonType relasjonType = RelasjonType.EKTEFELLE;
 
-        relasjon1.setRelasjonTypeKode(relasjonType.getRelasjonTypeKode());
-        relasjon2.setRelasjonTypeKode(relasjonType.getRelasjonTypeKode());
+        relasjon1.setRelasjonTypeNavn(relasjonType.getRelasjonTypeNavn());
+        relasjon2.setRelasjonTypeNavn(relasjonType.getRelasjonTypeNavn());
 
         // Gjor dette fordi H2 ikke lager tom liste(Sender NULL) naar den ikke finner data av en eller annen grunn.
         if(person1.getRelasjoner() == null){
@@ -120,7 +147,7 @@ public class RelasjonRepositoryComponentTest {
         }
 
         for(Relasjon relasjon : person1.getRelasjoner()){
-            if(relasjon.getRelasjonTypeKode() == relasjonType.getRelasjonTypeKode() &&
+            if(relasjon.getRelasjonTypeNavn().equals(relasjonType.getRelasjonTypeNavn()) &&
                     relasjon.getPersonRelasjonMed().getIdent().equalsIgnoreCase(person2.getIdent())){
                 return;
             }
@@ -131,6 +158,5 @@ public class RelasjonRepositoryComponentTest {
 
         relasjonRepository.save(relasjon1);
         relasjonRepository.save(relasjon2);
-
     }
 }
