@@ -10,8 +10,8 @@
                     <md-radio-group ng-model="relasjonValgt" capitalize required="true" layout-align="end end">
                         <md-radio-button ng-repeat="relasjon in relasjoner"
                                          ng-value="relasjon.opt"
-                                         aria-label="{{relasjon.opt}}">
-                            {{relasjon.opt}}
+                                         aria-label="{{relasjon.opt | titlecase}}">
+                            {{relasjon.opt | titlecase}}
                         </md-radio-button>
                     </md-radio-group>
                 </div>

@@ -11,7 +11,7 @@
         <div flex="5" ng-click="removePerson(relasjon)">
             <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg"></md-icon>
         </div>
-        <div>{{ relasjon.relasjonTypeNavn }}:&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.relasjonTypeNavn | titlecase}}:&nbsp;&nbsp;&nbsp;</div>
         <div>{{ relasjon.personRelasjonMed.ident }},&nbsp;&nbsp;&nbsp;</div>
         <div>{{ relasjon.personRelasjonMed.fornavn }} {{ relasjon.personRelasjonMed.etternavn }},&nbsp;&nbsp;&nbsp;</div>
         <div>{{ relasjon.personRelasjonMed.kjonn | kjonn}},&nbsp;&nbsp;&nbsp;</div>

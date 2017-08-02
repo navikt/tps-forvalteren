@@ -9,7 +9,7 @@ angular.module('tps-forvalteren.directives')
                 index: "="
             },
             templateUrl: 'app/components/vis-testdata/relasjon/relasjoner.html',
-            controller: ["$scope", '$mdDialog', function ($scope, $mdDialog) {
+            controller: ["$scope", '$mdDialog', '$filter', function ($scope, $mdDialog, $filter) {
                 $scope.leggTilRelasjonDialog = function () {
 
                     var confirm = $mdDialog.confirm({
@@ -27,7 +27,7 @@ angular.module('tps-forvalteren.directives')
                     $scope.removePerson = function(relasjon) {
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .textContent('Ønsker du å slette relasjon "' + relasjon.relasjonTypeKode +
+                            .textContent('Ønsker du å slette relasjon "' + $filter('titlecase')(relasjon.relasjonTypeNavn) +
                                 '" med navn ' + relasjon.personRelasjonMed.fornavn + ' ' + relasjon.personRelasjonMed.etternavn + '?')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
@@ -47,7 +47,7 @@ angular.module('tps-forvalteren.directives')
 
                 var relasjonerCtrl = function ($scope, $mdDialog, personer, index, endretFn) {
 
-                    $scope.relasjoner = [{opt: 'Mor'}, {opt: 'Far'}, {opt: 'Barn'}, {opt: 'Ektefelle'}];
+                    $scope.relasjoner = [{opt: 'MOR'}, {opt: 'FAR'}, {opt: 'BARN'}, {opt: 'EKTEFELLE'}];
 
                     $scope.person = personer[index];
                     $scope.personer = angular.copy(personer);
@@ -65,7 +65,7 @@ angular.module('tps-forvalteren.directives')
                         personUtenRelasjoner.relasjoner = undefined;
                         $scope.person.relasjoner.push({person: personUtenRelasjoner,
                             personRelasjonMed: $scope.personForRelasjonSelector,
-                            relasjonTypeNavn: $scope.relasjonValgt.toUpperCase()});
+                            relasjonTypeNavn: $scope.relasjonValgt});
                         endretFn(index);
                         $mdDialog.cancel();
                     };
