@@ -43,15 +43,15 @@ public class LagreTilTps {
 
         skdCreatePersoner.execute(NAVN_INNVANDRINGSMELDING, personerSomIkkeEksitererITPSMiljoe, environments);
 
-        List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITPSMiljoe);
-
-        for(Person person : personerMedRelasjoner){
-            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
-            for(Relasjon relasjon : personRelasjoner){
-                String skdMeldingNavn = getSkdMeldingNavn(relasjon);
-                skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments);
-            }
-        }
+//        List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITPSMiljoe);
+//
+//        for(Person person : personerMedRelasjoner){
+//            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+//            for(Relasjon relasjon : personRelasjoner){
+//                String skdMeldingNavn = getSkdMeldingNavn(relasjon);
+//                skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments);
+//            }
+//        }
     }
 
     private List<Person> personerSomIkkeFinnesIMiljoe(Set<String> identerSomIkkeFinnesiTPSiMiljoe, List<Person> personer) {
@@ -65,26 +65,26 @@ public class LagreTilTps {
     }
 
 
-    private String getSkdMeldingNavn(Relasjon relasjon){
-        //TODO Legg til for barn. Men har ikke lagd 98 korreksjon av familieopplysninger enda
-        switch (relasjon.getRelasjonTypeNavn()){
-            case "EKTEFELLE":
-                return "Vigsel";
-            default:
-                return "Vigsel";
-        }
-    }
-
-    private List<Person> getPersonerMedRelasjoner(List<Person> personerTidligereLagret) {
-        List<Person> personer = new ArrayList<>();
-        for(Person person : personerTidligereLagret){
-            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
-            if(!personRelasjoner.isEmpty()){
-                personer.add(person);
-            }
-        }
-        return personer;
-    }
+//    private String getSkdMeldingNavn(Relasjon relasjon){
+//        //TODO Legg til for barn. Men har ikke lagd 98 korreksjon av familieopplysninger enda
+//        switch (relasjon.getRelasjonTypeNavn()){
+//            case "EKTEFELLE":
+//                return "Vigsel";
+//            default:
+//                return "Vigsel";
+//        }
+//    }
+//
+//    private List<Person> getPersonerMedRelasjoner(List<Person> personerTidligereLagret) {
+//        List<Person> personer = new ArrayList<>();
+//        for(Person person : personerTidligereLagret){
+//            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+//            if(!personRelasjoner.isEmpty()){
+//                personer.add(person);
+//            }
+//        }
+//        return personer;
+//    }
 
     private List<String> ekstraherIdenterFraPersoner(List<Person> personer) {
         List<String> identer = new ArrayList<>();
