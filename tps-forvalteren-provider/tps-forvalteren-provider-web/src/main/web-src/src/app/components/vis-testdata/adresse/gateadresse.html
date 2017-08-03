@@ -35,19 +35,9 @@
         </div>
     </md-input-container>
 
-    <md-autocomplete md-no-cache="false" md-selected-item="person.gateadresse.postnr"  md-selected-item-change="endret($index)" md-items="postnummer in getPostnummerMatches(postnummerSoek)" md-search-text="postnummerSoek"
-                     md-item-text="postnummer.visningsnavn"  md-require-match="true" md-select-on-match="true" md-delay="300" placeholder="Postnummer" md-floating-label="Postnummer">
-        <md-item-template>
-            <span md-highlight-text="postnummerSoek" md-highlight-flags="i">{{ postnummer.visningsnavn }}</span>
-        </md-item-template>
-    </md-autocomplete>
+    <postnummer postnummer="person.gateadresse.postnr" endret-fn="endret" index="$index"></postnummer>
 
-    <md-autocomplete md-no-cache="false" md-selected-item="person.gateadresse.kommunenr" md-selected-item-change="endret($index)" md-items="kommune in getKommuneMatches(kommuneSoek)" md-search-text="kommuneSoek"
-                     md-item-text="kommune.visningsnavn" md-select-on-match="true" md-require-match="true" md-delay="300" placeholder="Kommune" md-floating-label="Kommune" flex="10">
-        <md-item-template>
-            <span md-highlight-text="kommuneSoek" md-highlight-flags="i">{{ kommune.visningsnavn }}</span>
-        </md-item-template>
-    </md-autocomplete>
+    <kommunenr kommunenr="person.gateadresse.kommunenr" endret-fn="endret" index="$index"></kommunenr>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Flyttedato</md-tooltip>

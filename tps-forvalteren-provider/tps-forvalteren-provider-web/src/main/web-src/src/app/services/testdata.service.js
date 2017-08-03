@@ -1,4 +1,3 @@
-
 angular.module('tps-forvalteren.service')
     .service('testdataService', ['$http', '$q', function($http, $q) {
 
@@ -126,32 +125,6 @@ angular.module('tps-forvalteren.service')
         self.sendTilTps = function (gruppeId, miljoer) {
             var defer = $q.defer();
             $http.post(url + 'tps/' + gruppeId, miljoer).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
-        };
-
-        self.hentKommuner = function () {
-            var defer = $q.defer();
-            $http.get(kodeverkUrl + 'knr').then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
-        };
-
-        self.hentPostnummer = function () {
-            var defer = $q.defer();
-            $http.get(kodeverkUrl + 'postnummer').then(
                 function (data) {
                     defer.resolve(data);
                 },

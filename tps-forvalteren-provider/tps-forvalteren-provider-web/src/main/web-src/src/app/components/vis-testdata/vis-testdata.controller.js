@@ -1,15 +1,12 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
-        'headerService', '$location',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, underHeaderService, $location) {
+        'headerService', '$location', 'kodeverkService',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, underHeaderService, $location, kodeverkService) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
-
-            $scope.kommuner = [];
-            $scope.postnummer = [];
 
             var gruppeId = $location.url().match(/\d+/g);
 
@@ -115,7 +112,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.control = [];
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
-                        prepPersoner();
                         oppdaterFunksjonsknapper();
                     },
                     function (error) {
@@ -125,85 +121,12 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
-            var hentKommuner = function () {
-                testdataService.hentKommuner().then(
-                    function (result) {
-                        for (var index = 0; index < result.data.length; index++) {
-                            var kommune = {};
-                            kommune.term = result.data[index].term.toUpperCase();
-                            kommune.navn = result.data[index].navn;
-                            kommune.visningsnavn = result.data[index].term.toUpperCase() + " - " + result.data[index].navn;
-                            $scope.kommuner.push(kommune);
-                        }
-                        $scope.kommuner.sort(function (a, b) {
-                            return a.term.length - b.term.length;
-                        });
-                    },
-                    function (error) {
-                        utilsService.showAlertError(error);
-                        underHeaderService.setHeader("Testdata");
-                    }
-                );
-            };
-
-            var hentPostnummer = function () {
-                testdataService.hentPostnummer().then(
-                    function (result) {
-                        for (var index = 0; index < result.data.length; index++) {
-                            var postnummer = {};
-                            postnummer.term = result.data[index].term.toUpperCase();
-                            postnummer.navn = result.data[index].navn;
-                            postnummer.visningsnavn = result.data[index].term.toUpperCase() + " - " + result.data[index].navn;
-                            $scope.postnummer.push(postnummer);
-                        }
-                        $scope.postnummer.sort(function (a, b) {
-                            return a.term.length - b.term.length;
-                        });
-                    },
-                    function (error) {
-                        utilsService.showAlertError(error);
-                        underHeaderService.setHeader("Testdata");
-                    }
-                );
-            };
-
-            $scope.getPostnummerMatches = function (searchText) {
-                var result = [];
-                var searchTextUpperCase = searchText.toUpperCase();
-                for (var index = 0; index < $scope.postnummer.length; index++) {
-                    if ($scope.postnummer[index].visningsnavn.indexOf(searchTextUpperCase) !== -1) {
-                        result.push($scope.postnummer[index]);
-                    }
-                }
-                return result;
-            };
-
-            $scope.getKommuneMatches = function (searchText) {
-                var result = [];
-                var searchTextUpperCase = searchText.toUpperCase();
-                for (var index = 0; index < $scope.kommuner.length; index++) {
-                    if ($scope.kommuner[index].visningsnavn.indexOf(searchTextUpperCase) !== -1) {
-                        result.push($scope.kommuner[index]);
-                    }
-                }
-                return result;
-            };
-
-            var prepOriginalPersoner = function () {
+            function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
                     etablerAdressetype(originalPersoner[i]);
                     fixDatoForDatepicker(originalPersoner[i]);
-                    fixKommunenr(originalPersoner[i]);
-                    fixPostnummer(originalPersoner[i]);
                 }
-            };
-
-            var prepPersoner = function () {
-                for (var index = 0; index < $scope.personer.length; index++) {
-                    fixKommunenr($scope.personer[index]);
-                    fixPostnummer($scope.personer[index]);
-                }
-            };
+            }
 
             // Datofix kjøres etter denne
             var etablerAdressetype = function (person) {
@@ -232,22 +155,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 if (!person.boadresse || !person.boadresse.matrikkeladresse || !person.boadresse.matrikkeladresse.flytteDato) {
                     person.matrikkeladresse = person.matrikkeladresse ? person.matrikkeladresse : {};
                     person.matrikkeladresse.flytteDato = null;
-                }
-            };
-
-            var fixKommunenr = function (person) {
-                for (var index = 0; index < $scope.kommuner.length; index++) {
-                    if ($scope.kommuner[index].navn === person.gateadresse.kommunenr) {
-                        person.gateadresse.kommunenr = $scope.kommuner[index];
-                    }
-                }
-            };
-
-            var fixPostnummer = function (person) {
-                for (var index = 0; index < $scope.postnummer.length; index++) {
-                    if ($scope.postnummer[index].navn === person.gateadresse.postnr) {
-                        person.gateadresse.postnr = $scope.postnummer[index];
-                    }
                 }
             };
 
@@ -362,22 +269,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 var adressetype = person.boadresse.adressetype;
                 if (adressetype === 'GATE') {
                     person.boadresse = angular.copy(person.gateadresse);
-                    if (person.boadresse.kommunenr && person.boadresse.kommunenr.navn) {
-                        person.boadresse.kommunenr = person.boadresse.kommunenr.navn;
-                    }
-                    if (person.boadresse.postnr && person.boadresse.postnr.navn) {
-                        person.boadresse.postnr = person.boadresse.postnr.navn;
-                    }
-                    person.matrikkeladresse = undefined;
+                    // person.matrikkeladresse = undefined;
                 } else if (adressetype === 'MATR') {
                     person.boadresse = angular.copy(person.matrikkeladresse);
-                    if (person.boadresse.kommunenr && person.boadresse.kommunenr.navn) {
-                        person.boadresse.kommunenr = person.boadresse.kommunenr.navn;
-                    }
-                    if (person.boadresse.postnr && person.boadresse.postnr.navn) {
-                        person.boadresse.postnr = person.boadresse.postnr.navn;
-                    }
-                    person.gateadresse = undefined;
+                    // person.gateadresse = undefined;
                 }
                 person.boadresse.adressetype = adressetype;
                 return person;
@@ -477,7 +372,5 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             };
 
-            hentKommuner();
-            hentPostnummer();
             hentTestpersoner();
         }]);

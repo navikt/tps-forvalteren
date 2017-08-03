@@ -8,7 +8,7 @@ angular.module('tps-forvalteren.directives')
                 endretFn: "=",
                 index: "="
             },
-            templateUrl: 'app/components/vis-testdata/relasjon/relasjoner.html',
+            templateUrl: 'app/directives/familierelasjon/relasjoner.html',
             controller: ["$scope", '$mdDialog', '$filter', function ($scope, $mdDialog, $filter) {
                 $scope.leggTilRelasjonDialog = function () {
 
@@ -19,7 +19,7 @@ angular.module('tps-forvalteren.directives')
                             index: $scope.index
                         },
                         controller: relasjonerCtrl,
-                        templateUrl: 'app/components/vis-testdata/relasjon/legg-til-relasjon-dialog.html',
+                        templateUrl: 'app/directives/familierelasjon/legg-til-relasjon-dialog.html',
                         parent: angular.element(document.body)
                     });
                     $mdDialog.show(confirm);
