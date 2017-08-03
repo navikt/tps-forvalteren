@@ -62,7 +62,7 @@ public class ServiceController extends BaseProvider {
         context.setUser(userContextHolder.getUser());
         context.setEnvironment(tpsRequestParameters.get(ENVIRONMENT_PARAM_NAME).toString());
 
-        String tpsServiceRutinenavn = tpsRequestParameters.get(TPS_SERVICE_ROUTINE_PARAM_NAME).toString();
+        String tpsServiceRutinenavn = tpsRequestParameters.get(TPS_SERVICE_ROUTINE_PARAM_NAME).toString();      //TODO Unodvendig. HAr allerede servicerutine navn fra PathVariable.
         TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(tpsServiceRutinenavn, tpsRequestParameters);
 
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);

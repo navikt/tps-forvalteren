@@ -31,15 +31,31 @@ public class SavePersonListService {
         for (Person person : personer) {
 
             if(person.getRelasjoner() != null && !person.getRelasjoner().isEmpty()){
-                for(Relasjon relasjon : person.getRelasjoner()){
+                Person personFraDB = personRepository.findById(person.getId());
+                List<Relasjon> personRelasjonDB = personFraDB.getRelasjoner();
 
-                    if(relasjon.getId() != null) {
+                for(Relasjon nyRelasjon : person.getRelasjoner()){
+
+                    boolean relasjonEksistererAllerede = false;
+                    for(Relasjon relasjonFraDB : personRelasjonDB){
+                        if(relasjonFraDB.getPersonRelasjonMed().getIdent().equals(nyRelasjon.getPersonRelasjonMed().getIdent()) &&
+                           relasjonFraDB.getRelasjonTypeNavn().equals(nyRelasjon.getRelasjonTypeNavn())){
+                            relasjonEksistererAllerede = true;
+                            break;
+                        }
+                        if(nyRelasjon.getId() != null && nyRelasjon.getId() == relasjonFraDB.getId()){
+                            relasjonEksistererAllerede = true;
+                            break;
+                        }
+                    }
+
+                    if(relasjonEksistererAllerede){
                         continue;
                     }
 
-                    relasjonRepository.save(relasjon);
+                    relasjonRepository.save(nyRelasjon);
 
-                    Relasjon relasjonB = relasjonForAndrePersonIEnRelasjonGetter.execute(relasjon);
+                    Relasjon relasjonB = relasjonForAndrePersonIEnRelasjonGetter.execute(nyRelasjon);
                     relasjonRepository.save(relasjonB);
                 }
             }
