@@ -20,7 +20,6 @@ public class DeletePersonerByIdIn {
     RelasjonRepository relasjonRepository;
 
     public void execute(List<Long> ids){
-        List<Person> personer = personRepository.findByIdentIn(idsToStringIds(ids));
         personRepository.deleteByIdIn(ids);
     }
 

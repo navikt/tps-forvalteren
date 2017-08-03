@@ -21,7 +21,6 @@ import java.util.Map;
 @Service
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String TILDELINGSKODE_FOR_ENDRING = "2";
     private static final String AARSAKSKODE_FOR_VIGSEL  = "11";
     private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
 
@@ -63,6 +62,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         for(Relasjon relasjon : personRelasjoner){
             if(relasjon.getRelasjonTypeNavn().equals(RelasjonType.EKTEFELLE.getRelasjonTypeNavn())){
                 ektefelle = personRepository.findById(relasjon.getPersonIdRelasjonMed());
+                break;
             }
         }
         if(ektefelle == null ){
@@ -82,11 +82,6 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, ektefelle.getIdent().substring(0, 6));
         skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER, ektefelle.getIdent().substring(6, 11));
 
-//        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_NAVN, ektefelle.getFornavn());
-//
-//        skdParams.put(SkdConstants.EKTEFELLER_PARTNER_STATBORGERSKAP, Integer.toString(990));
-
-
         //TODO Spesielle felter. Bare hardkodet nå. ----------- || ---------------
         skdParams.put(SkdConstants.EKTEFELLE_EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
         skdParams.put(SkdConstants.EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
@@ -97,7 +92,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
         skdParams.put(SkdConstants.EKTEFELLE_TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
 
-        skdParams.put(SkdConstants.VIGSELSKOMMUNE, Integer.toString(0301)); // OSLO kommunenummer.
+        skdParams.put(SkdConstants.VIGSELSKOMMUNE, "0301"); // OSLO kommunenummer.
 
         addDefaultParam(skdParams);
     }

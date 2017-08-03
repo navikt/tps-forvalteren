@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.Person;
 
 import javax.validation.constraints.NotNull;
 

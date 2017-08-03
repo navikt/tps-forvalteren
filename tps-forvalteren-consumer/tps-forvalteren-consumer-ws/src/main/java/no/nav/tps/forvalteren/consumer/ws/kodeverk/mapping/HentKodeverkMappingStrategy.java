@@ -45,12 +45,12 @@ public class HentKodeverkMappingStrategy implements MappingStrategy {
     private List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mapCodes(List<Kode> codesToMap, no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk kodeverk) {
         List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mappedCodes = new ArrayList<>();
         for (Kode fromCode : codesToMap) {
-            mappedCodes.addAll(mapCode(fromCode, kodeverk));
+            mappedCodes.addAll(mapCode(fromCode));
         }
         return mappedCodes;
     }
 
-    private List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mapCode(Kode fromCode, no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk kodeverk) {
+    private List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mapCode(Kode fromCode) {
         List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mappedCodes = new ArrayList<>();
         for (Term fromTerm : fromCode.getTerm()) {
             no.nav.tps.forvalteren.domain.ws.kodeverk.Kode toCode = new no.nav.tps.forvalteren.domain.ws.kodeverk.Kode();

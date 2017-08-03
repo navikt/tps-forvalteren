@@ -26,7 +26,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFe
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,9 +49,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
-
-    @Autowired
-    private SkdCreatePersoner skdCreatePersoner;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -92,9 +88,6 @@ public class TestdataController {
 
     @Autowired
     private MapperFacade mapper;
-
-    @Autowired
-    private RelasjonForAndrePersonIEnRelasjonGetter relasjonForAndrePersonIEnRelasjonGetter;
 
     @Autowired
     private LagreTilTps lagreTilTps;
