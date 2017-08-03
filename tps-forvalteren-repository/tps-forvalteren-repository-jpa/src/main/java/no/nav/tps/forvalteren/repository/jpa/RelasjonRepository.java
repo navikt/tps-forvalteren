@@ -11,6 +11,8 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
 
     Relasjon findById(long id);
 
+    List<Relasjon> findByPersonId(Long id);
+
     void deleteById(Long id);
 
     void save(Relasjon relasjon);

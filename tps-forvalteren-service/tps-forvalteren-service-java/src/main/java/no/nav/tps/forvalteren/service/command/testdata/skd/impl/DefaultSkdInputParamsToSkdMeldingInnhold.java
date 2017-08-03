@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFeltDefinisjon;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainer;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdInputParamsToSkdMeldingInnhold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class DefaultSkdInputParamsToSkdMeldingInnhold implements SkdInputParamsToSkdMeldingInnhold {
 
     @Autowired
-    private SkdFelterContainer skdFelterContainer;
+    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
 
     public StringBuilder execute(Map<String, String> skdInputMap) {
         StringBuilder skdMelding = new StringBuilder();
-        List<SkdFeltDefinisjon> skdFelter = skdFelterContainer.hentSkdFelter();
+        List<SkdFeltDefinisjon> skdFelter = skdFelterContainerTrans1.hentSkdFelter();
         skdFelter.forEach(skdFeltDefinisjon -> {
             skdFeltDefinisjon.setVerdi(skdInputMap.get(skdFeltDefinisjon.getNokkelNavn()));
             addDefaultValueToEndOfString(skdFeltDefinisjon);

@@ -30,35 +30,35 @@ public class SavePersonListService {
     public void execute(List<Person> personer) {
         for (Person person : personer) {
 
-            if(person.getRelasjoner() != null && !person.getRelasjoner().isEmpty()){
-                Person personFraDB = personRepository.findById(person.getId());
-                List<Relasjon> personRelasjonDB = personFraDB.getRelasjoner();
-
-                for(Relasjon nyRelasjon : person.getRelasjoner()){
-
-                    boolean relasjonEksistererAllerede = false;
-                    for(Relasjon relasjonFraDB : personRelasjonDB){
-                        if(relasjonFraDB.getPersonRelasjonMed().getIdent().equals(nyRelasjon.getPersonRelasjonMed().getIdent()) &&
-                           relasjonFraDB.getRelasjonTypeNavn().equals(nyRelasjon.getRelasjonTypeNavn())){
-                            relasjonEksistererAllerede = true;
-                            break;
-                        }
-                        if(nyRelasjon.getId() != null && nyRelasjon.getId() == relasjonFraDB.getId()){
-                            relasjonEksistererAllerede = true;
-                            break;
-                        }
-                    }
-
-                    if(relasjonEksistererAllerede){
-                        continue;
-                    }
-
-                    relasjonRepository.save(nyRelasjon);
-
-                    Relasjon relasjonB = relasjonForAndrePersonIEnRelasjonGetter.execute(nyRelasjon);
-                    relasjonRepository.save(relasjonB);
-                }
-            }
+//            if(person.getRelasjoner() != null && !person.getRelasjoner().isEmpty()){
+//                Person personFraDB = personRepository.findById(person.getId());
+//                List<Relasjon> personRelasjonDB = personFraDB.getRelasjoner();
+//
+//                for(Relasjon nyRelasjon : person.getRelasjoner()){
+//
+//                    boolean relasjonEksistererAllerede = false;
+//                    for(Relasjon relasjonFraDB : personRelasjonDB){
+//                        if(relasjonFraDB.getPersonRelasjonMed().getIdent().equals(nyRelasjon.getPersonRelasjonMed().getIdent()) &&
+//                           relasjonFraDB.getRelasjonTypeNavn().equals(nyRelasjon.getRelasjonTypeNavn())){
+//                            relasjonEksistererAllerede = true;
+//                            break;
+//                        }
+//                        if(nyRelasjon.getId() != null && nyRelasjon.getId() == relasjonFraDB.getId()){
+//                            relasjonEksistererAllerede = true;
+//                            break;
+//                        }
+//                    }
+//
+//                    if(relasjonEksistererAllerede){
+//                        continue;
+//                    }
+//
+//                    relasjonRepository.save(nyRelasjon);
+//
+//                    Relasjon relasjonB = relasjonForAndrePersonIEnRelasjonGetter.execute(nyRelasjon);
+//                    relasjonRepository.save(relasjonB);
+//                }
+//            }
 
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {

@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -82,15 +83,5 @@ public class Person extends ChangeStamp {
     @JoinColumn(name = "GRUPPE_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
-
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
-    private List<Relasjon> relasjoner = new ArrayList<>();
-
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRelasjonMed")
-    private List<Relasjon> relasjonMed = new ArrayList<>();
-
-
 
 }

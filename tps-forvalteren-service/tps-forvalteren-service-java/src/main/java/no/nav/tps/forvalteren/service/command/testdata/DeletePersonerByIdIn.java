@@ -21,11 +21,6 @@ public class DeletePersonerByIdIn {
 
     public void execute(List<Long> ids){
         List<Person> personer = personRepository.findByIdentIn(idsToStringIds(ids));
-        for(Person person : personer){
-            for(Relasjon relasjon : person.getRelasjoner()){
-                relasjonRepository.deleteById(relasjon.getId());
-            }
-        }
         personRepository.deleteByIdIn(ids);
     }
 

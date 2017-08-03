@@ -7,6 +7,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
@@ -47,6 +48,9 @@ public class LagreTilTps {
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
 
+    @Autowired
+    private RelasjonRepository relasjonRepository;
+
 
     public void execute(Long gruppeId,List<String> environments){
         Gruppe gruppe = findGruppeById.execute(gruppeId);
@@ -61,7 +65,8 @@ public class LagreTilTps {
         List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITPSMiljoe);
 
         for(Person person : personerMedRelasjoner){
-            for(Relasjon relasjon : person.getRelasjoner()){
+            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+            for(Relasjon relasjon : personRelasjoner){
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
                 skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments);
             }
@@ -92,7 +97,8 @@ public class LagreTilTps {
     private List<Person> getPersonerMedRelasjoner(List<Person> personerTidligereLagret) {
         List<Person> personer = new ArrayList<>();
         for(Person person : personerTidligereLagret){
-            if(!person.getRelasjoner().isEmpty()){
+            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+            if(!personRelasjoner.isEmpty()){
                 personer.add(person);
             }
         }

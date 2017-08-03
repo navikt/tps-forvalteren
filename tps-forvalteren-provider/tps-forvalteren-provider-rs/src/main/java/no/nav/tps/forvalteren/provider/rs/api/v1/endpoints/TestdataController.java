@@ -192,16 +192,9 @@ public class TestdataController {
         deleteGruppeById.execute(gruppeId);
     }
 
-    @RequestMapping(value = "/relasjon/vigsel", method = RequestMethod.POST)
-    public void lagreVigsel(@RequestBody List<RsPerson> personListe) {
-        //deleteGruppeById.execute(gruppeId);
-    }
-
-    @RequestMapping(value = "/bla", method = RequestMethod.GET)
-    public void bla() {
-        List<Gruppe> alleGru = findAlleGrupperOrderByIdAsc.execute();
-        List<Person> personer = alleGru.get(0).getPersoner();
-        //lagreRelasjon.execute(personer.get(0), personer.get(1), RelasjonType.GIFT);
-    }
+//    @RequestMapping(value = "/relasjon/vigsel", method = RequestMethod.POST)
+//    public void lagreVigsel(@RequestBody List<RsPerson> personListe) {
+//        //deleteGruppeById.execute(gruppeId);
+//    }
 
 }

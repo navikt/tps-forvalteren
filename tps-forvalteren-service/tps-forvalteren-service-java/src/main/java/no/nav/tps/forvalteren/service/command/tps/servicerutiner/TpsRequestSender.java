@@ -38,5 +38,7 @@ public class TpsRequestSender {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
 
         }
+
+        //TODO kan kaste SOAP Exception ogsaa. Fra EgenAnsattConsumer.
     }
 }

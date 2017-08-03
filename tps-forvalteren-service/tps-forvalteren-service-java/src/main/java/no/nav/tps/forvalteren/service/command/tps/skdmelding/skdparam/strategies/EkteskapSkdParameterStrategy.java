@@ -7,11 +7,15 @@ import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringversionOfLocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,6 +24,12 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
     private static final String TILDELINGSKODE_FOR_ENDRING = "2";
     private static final String AARSAKSKODE_FOR_VIGSEL  = "11";
     private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
+
+    @Autowired
+    private RelasjonRepository relasjonRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Override
     public boolean isSupported(SkdParametersCreator creator) {
@@ -49,9 +59,10 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
 
         Person ektefelle = null;
-        for(Relasjon relasjon : person.getRelasjoner()){
+        List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+        for(Relasjon relasjon : personRelasjoner){
             if(relasjon.getRelasjonTypeNavn().equals(RelasjonType.EKTEFELLE.getRelasjonTypeNavn())){
-                ektefelle = relasjon.getPersonRelasjonMed();
+                ektefelle = personRepository.findById(relasjon.getPersonIdRelasjonMed());
             }
         }
         if(ektefelle == null ){

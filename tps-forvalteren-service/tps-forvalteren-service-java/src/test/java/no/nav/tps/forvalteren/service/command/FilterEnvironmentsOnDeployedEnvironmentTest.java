@@ -22,19 +22,15 @@ public class FilterEnvironmentsOnDeployedEnvironmentTest {
     FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
     @Test
-    public void hvisErIUMiljoeSaaReturnerUOgT() {
+    public void hvisErIUMiljoeSaaReturnerU() {
 
         ReflectionTestUtils.setField(filterEnvironmentsOnDeployedEnvironment, ENVIRONMENT_PROPERTY_VALUE, "u");
 
         envIn.add("u1");
         envIn.add("u2");
-        envIn.add("t1");
-        envIn.add("q1");
 
         Set<String> ret = filterEnvironmentsOnDeployedEnvironment.execute(envIn);
 
-        assertFalse(ret.contains("q1"));
-        assertTrue(ret.contains("t1"));
         assertTrue(ret.contains("u1"));
 
     }
