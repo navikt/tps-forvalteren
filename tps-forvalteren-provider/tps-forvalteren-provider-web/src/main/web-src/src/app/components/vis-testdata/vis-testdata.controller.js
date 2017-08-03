@@ -269,10 +269,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 var adressetype = person.boadresse.adressetype;
                 if (adressetype === 'GATE') {
                     person.boadresse = angular.copy(person.gateadresse);
-                    // person.matrikkeladresse = undefined;
+                    person.matrikkeladresse = undefined;
                 } else if (adressetype === 'MATR') {
                     person.boadresse = angular.copy(person.matrikkeladresse);
-                    // person.gateadresse = undefined;
+                    person.gateadresse = undefined;
                 }
                 person.boadresse.adressetype = adressetype;
                 return person;
