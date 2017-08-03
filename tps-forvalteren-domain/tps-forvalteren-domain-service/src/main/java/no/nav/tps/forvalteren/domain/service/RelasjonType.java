@@ -1,36 +1,19 @@
 package no.nav.tps.forvalteren.domain.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public enum RelasjonType {
 
-    UGIFT(1),
-    GIFT(2),
-    ENKE_ELLER_ENKEMANN(3),
-    SKILT(4),
-    SEPARERT(5),
-    REGISTRERT_PARTNER(6);
+    MOR("MOR"),
+    FAR("FAR"),
+    BARN("BARN"),
+    EKTEFELLE("EKTEFELLE");
 
-    private final int kode;
+    private final String navn;
 
-    private static Map<Integer, RelasjonType> map = new HashMap<>();
-
-    RelasjonType(final int relasjonsKode){
-        kode = relasjonsKode;
+    RelasjonType(final String relasjonNavn){
+        navn = relasjonNavn;
     }
 
-    public int getRelasjonTypeKode() {
-        return kode;
-    }
-
-    static {
-        for (RelasjonType relasjonType : RelasjonType.values()) {
-            map.put(relasjonType.kode, relasjonType);
-        }
-    }
-
-    public static RelasjonType valueOf(int kode) {
-        return map.get(kode);
+    public String getRelasjonTypeNavn() {
+        return navn;
     }
 }

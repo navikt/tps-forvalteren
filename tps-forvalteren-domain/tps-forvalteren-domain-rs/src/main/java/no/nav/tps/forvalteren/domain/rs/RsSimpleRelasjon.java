@@ -25,6 +25,6 @@ public class RsSimpleRelasjon {
     private RsPerson personRelasjonMed;
 
     @NotNull
-    private int relasjonTypeKode;
+    private String relasjonTypeNavn;
 
 }

@@ -36,16 +36,16 @@ public class Relasjon {
     private Long id;
 
     @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinColumn(name = "person_relasjon_id")
+    @JoinColumn(name = "person_id")
     @ManyToOne
     private Person person;
 
     @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinColumn(name = "person_relasjon_med_id")
+    @JoinColumn(name = "person_relasjon_id")
     @ManyToOne
     private Person personRelasjonMed;
 
-    @Column(name = "RELASJON_TYPE_KODE", nullable = false)
-    private int relasjonTypeKode;
+    @Column(name = "RELASJON_TYPE_NAVN", nullable = false)
+    private String relasjonTypeNavn;
 
 }

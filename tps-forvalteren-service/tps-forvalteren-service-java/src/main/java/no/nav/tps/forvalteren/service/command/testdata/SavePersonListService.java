@@ -4,9 +4,9 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +22,27 @@ public class SavePersonListService {
     private AdresseRepository adresseRepository;
 
     @Autowired
-    private SaveRelasjon saveRelasjon;
+    private RelasjonForAndrePersonIEnRelasjonGetter relasjonForAndrePersonIEnRelasjonGetter;
+
+    @Autowired
+    private RelasjonRepository relasjonRepository;
 
     public void execute(List<Person> personer) {
         for (Person person : personer) {
 
-//            if(person.getRelasjoner() != null && !person.getRelasjoner().isEmpty()){
-//                for(Relasjon relasjon : person.getRelasjoner()){
-//                    saveRelasjon.execute(person, relasjon.getPersonRelasjonMed(), RelasjonType.valueOf(2));
-//                }
-//            }
+            if(person.getRelasjoner() != null && !person.getRelasjoner().isEmpty()){
+                for(Relasjon relasjon : person.getRelasjoner()){
+
+                    if(relasjon.getId() != null) {
+                        continue;
+                    }
+
+                    relasjonRepository.save(relasjon);
+
+                    Relasjon relasjonB = relasjonForAndrePersonIEnRelasjonGetter.execute(relasjon);
+                    relasjonRepository.save(relasjonB);
+                }
+            }
 
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {

@@ -3,24 +3,27 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
+import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.VigselSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringversionOfLocalDateTime;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
+public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
-public class InngaaelseAvPartnerskapSkdParameterStrategy implements SkdParametersStrategy {
-
+    private static final String TILDELINGSKODE_FOR_ENDRING = "2";
+    private static final String AARSAKSKODE_FOR_VIGSEL  = "11";
     private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
-    private static final String SIVILSTAND_PAR = "2"; //Kan vaere 2 eller 6. Vet ikke forskjell.
 
     @Override
     public boolean isSupported(SkdParametersCreator creator) {
-        return creator instanceof VigselSkdParametere;
+        return creator instanceof EkteskapSkdParametere;
     }
 
     @Override
@@ -43,10 +46,11 @@ public class InngaaelseAvPartnerskapSkdParameterStrategy implements SkdParameter
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
         skdParams.put(SkdConstants.REGDATO_SIVILSTAND, yyyyMMdd);
         skdParams.put(SkdConstants.REG_DATO, yyyyMMdd);
+        skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
 
         Person ektefelle = null;
         for(Relasjon relasjon : person.getRelasjoner()){
-            if(relasjon.getRelasjonTypeKode() == RelasjonType.REGISTRERT_PARTNER.getRelasjonTypeKode()){
+            if(relasjon.getRelasjonTypeNavn().equals(RelasjonType.EKTEFELLE.getRelasjonTypeNavn())){
                 ektefelle = relasjon.getPersonRelasjonMed();
             }
         }
@@ -54,27 +58,43 @@ public class InngaaelseAvPartnerskapSkdParameterStrategy implements SkdParameter
             return;
         }
 
+        if(person.getKjonn().equals(ektefelle.getKjonn())){
+            skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP);
+            skdParams.put(SkdConstants.SIVILSTAND, Integer.toString(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode()));
+        } else {
+            skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_VIGSEL);
+            skdParams.put(SkdConstants.SIVILSTAND, Integer.toString(Sivilstand.GIFT.getRelasjonTypeKode()));
+        }
+
+        skdParams.put(SkdConstants.FAMILIENUMMER, ektefelle.getIdent());
+
         skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, ektefelle.getIdent().substring(0, 6));
         skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER, ektefelle.getIdent().substring(6, 11));
 
-        skdParams.put(SkdConstants.FAMILIENUMMER, ektefelle.getIdent());
+//        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_NAVN, ektefelle.getFornavn());
+//
+//        skdParams.put(SkdConstants.EKTEFELLER_PARTNER_STATBORGERSKAP, Integer.toString(990));
+
+
+        //TODO Spesielle felter. Bare hardkodet nå. ----------- || ---------------
+        skdParams.put(SkdConstants.EKTEFELLE_EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
+        skdParams.put(SkdConstants.EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
+
+        skdParams.put(SkdConstants.VIGSELSTYPE, Integer.toString(1));
+
+        //TODO Setter bare tidligere sivilstand til Ugift for nå.
+        skdParams.put(SkdConstants.TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
+        skdParams.put(SkdConstants.EKTEFELLE_TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
+
+        skdParams.put(SkdConstants.VIGSELSKOMMUNE, Integer.toString(0301)); // OSLO kommunenummer.
 
         addDefaultParam(skdParams);
     }
 
     private void addDefaultParam(Map<String, String> skdParams) {
-        skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP);
 
-        skdParams.put(SkdConstants.SIVILSTAND, SIVILSTAND_PAR);
+        skdParams.put(SkdConstants.TILDELINGSKODE, "0");
         skdParams.put(SkdConstants.TRANSTYPE, "1");
-        skdParams.put("T1-STATUSKODE", "1");
-    }
-
-    private String formaterDato(int tid) {
-        if (tid < 10) {
-            return "0" + tid;
-        }
-        return String.valueOf(tid);
+        //skdParams.put("T1-STATUSKODE", "1");
     }
 }
-
