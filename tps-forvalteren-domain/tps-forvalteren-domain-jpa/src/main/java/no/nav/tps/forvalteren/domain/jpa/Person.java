@@ -1,13 +1,11 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

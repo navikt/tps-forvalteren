@@ -14,7 +14,6 @@ import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.RelasjonForAndrePersonIEnRelasjonGetter;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
@@ -184,10 +183,5 @@ public class TestdataController {
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         deleteGruppeById.execute(gruppeId);
     }
-
-//    @RequestMapping(value = "/relasjon/vigsel", method = RequestMethod.POST)
-//    public void lagreVigsel(@RequestBody List<RsPerson> personListe) {
-//        //deleteGruppeById.execute(gruppeId);
-//    }
 
 }

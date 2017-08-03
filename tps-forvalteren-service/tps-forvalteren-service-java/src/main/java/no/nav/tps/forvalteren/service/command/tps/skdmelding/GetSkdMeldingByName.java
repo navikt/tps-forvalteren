@@ -4,6 +4,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 
 import java.util.Optional;
 
+@FunctionalInterface
 public interface GetSkdMeldingByName {
 
     Optional<TpsSkdRequestMeldingDefinition> execute(String skdMeldingName);

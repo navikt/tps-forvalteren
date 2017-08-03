@@ -1,7 +1,5 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 public class GetStringversionOfLocalDateTime {

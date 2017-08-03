@@ -3,26 +3,16 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -38,15 +28,6 @@ public class LagreTilTps {
 
     @Autowired
     private FindGruppeById findGruppeById;
-
-    @Autowired
-    private TpsRequestSender tpsRequestSender;
-
-    @Autowired
-    private UserContextHolder userContextHolder;
-
-    @Autowired
-    private RsTpsRequestMappingUtils mappingUtils;
 
     @Autowired
     private RelasjonRepository relasjonRepository;
