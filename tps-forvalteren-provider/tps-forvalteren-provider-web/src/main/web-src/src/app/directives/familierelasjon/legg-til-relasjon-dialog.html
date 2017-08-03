@@ -21,7 +21,7 @@
                         <label>Velg person</label>
                         <md-select ng-model="personForRelasjonSelector" required="true" placeholder="Velg person"
                                    aria-label="Velg person for relasjon" class="md-no-underline">
-                            <md-option ng-repeat="person in personer" ng-value="person">{{ person.ident }}, &nbsp;&nbsp;&nbsp;
+                            <md-option ng-repeat="person in tilgjengelige" ng-value="person">{{ person.ident }}, &nbsp;&nbsp;&nbsp;
                                 {{person.fornavn}} {{person.etternavn}}, &nbsp;&nbsp;&nbsp;
                                 {{person.kjonn | kjonn}},&nbsp;&nbsp;&nbsp;
                                 {{person.ident | alder}}</md-option>

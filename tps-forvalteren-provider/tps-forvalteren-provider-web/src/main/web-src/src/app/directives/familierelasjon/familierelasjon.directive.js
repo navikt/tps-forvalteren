@@ -9,7 +9,7 @@ angular.module('tps-forvalteren.directives')
                 index: "="
             },
             templateUrl: 'app/directives/familierelasjon/relasjoner.html',
-            controller: ["$scope", '$mdDialog', '$filter', function ($scope, $mdDialog, $filter) {
+            controller: ["$scope", '$mdDialog', '$filter', '$timeout', function ($scope, $mdDialog, $filter, $timeout) {
                 $scope.leggTilRelasjonDialog = function () {
 
                     var confirm = $mdDialog.confirm({
@@ -35,27 +35,47 @@ angular.module('tps-forvalteren.directives')
 
                         $mdDialog.show(confirm).then(function () {
                             for (var i = 0; $scope.person.relasjoner.length; i++) {
-                                if ($scope.person.relasjoner[i].personRelasjonMed.ident == relasjon.personRelasjonMed.ident) {
+                                if ($scope.person.relasjoner[i].personRelasjonMed.ident === relasjon.personRelasjonMed.ident) {
                                     $scope.person.relasjoner.splice(i, 1);
-                                    $scope.endretFn($scope.index);
+                                    $timeout(function () {
+                                        $scope.endretFn($scope.index);
+                                    });
                                     break;
                                 }
                             }
+                            var ident = undefined;
+                            var relasjonMed = undefined;
+                            for (var i = 0; i < $scope.personer.length; i++) {
+                                if ($scope.personer[i].ident === relasjon.personRelasjonMed.ident) {
+                                    for (var j = 0; j < $scope.personer[i].relasjoner.length; j++) {
+                                        if ($scope.personer[i].relasjoner[j].personRelasjonMed.ident === relasjon.person.ident) {
+                                            ident = i;
+                                            relasjonMed = j;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            $scope.personer[ident].relasjoner.splice(relasjonMed, 1);
+                            $timeout(function () {
+                                $scope.endretFn(ident);
+                            });
                         });
                     };
                 };
 
-                var relasjonerCtrl = function ($scope, $mdDialog, personer, index, endretFn) {
+                var relasjonerCtrl = function ($scope, $mdDialog, personer, index, endretFn, $timeout) {
 
-                    $scope.relasjoner = [{opt: 'MOR'}, {opt: 'FAR'}, {opt: 'BARN'}, {opt: 'EKTEFELLE'}];
+                    $scope.relasjoner = [/*{opt: 'MOR'}, {opt: 'FAR'}, {opt: 'BARN'},*/ {opt: 'EKTEFELLE'}];
 
                     $scope.person = personer[index];
-                    $scope.personer = angular.copy(personer);
+                    $scope.personer = personer;
+                    $scope.tilgjengelige = angular.copy(personer);
 
                     function removePerson(ident) {
-                        for (var i = 0; i < $scope.personer.length; i++) {
-                            if ($scope.personer[i].ident == ident) {
-                                $scope.personer.splice(i, 1);
+                        for (var i = 0; i < $scope.tilgjengelige.length; i++) {
+                            if ($scope.tilgjengelige[i].ident == ident) {
+                                $scope.tilgjengelige.splice(i, 1);
                             }
                         }
                     }
@@ -67,6 +87,19 @@ angular.module('tps-forvalteren.directives')
                             personRelasjonMed: $scope.personForRelasjonSelector,
                             relasjonTypeNavn: $scope.relasjonValgt});
                         endretFn(index);
+                        for (var i = 0; i < $scope.personer.length; i++) {
+                            if ($scope.personer[i].ident === $scope.personForRelasjonSelector.ident) {
+                                if ($scope.relasjonValgt == 'EKTEFELLE') {
+                                    $scope.personer[i].relasjoner.push({person: $scope.personForRelasjonSelector,
+                                        personRelasjonMed: personUtenRelasjoner,
+                                        relasjonTypeNavn: $scope.relasjonValgt});
+                                    $timeout(function () {
+                                        endretFn(i);
+                                    });
+                                    break;
+                                }
+                            }
+                        }
                         $mdDialog.cancel();
                     };
 

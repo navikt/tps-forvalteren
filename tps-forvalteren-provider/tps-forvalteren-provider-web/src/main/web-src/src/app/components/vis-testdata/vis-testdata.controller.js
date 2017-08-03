@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
-        'headerService', '$location', 'kodeverkService',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, underHeaderService, $location, kodeverkService) {
+        'headerService', '$location',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, underHeaderService, $location) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";

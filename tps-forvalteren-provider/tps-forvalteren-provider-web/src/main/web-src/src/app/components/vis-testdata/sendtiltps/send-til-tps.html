@@ -9,28 +9,28 @@
                     Velg alle
                 </md-checkbox>
                 <div layout="row" layout-align="space-between">
-                    <div layout="column">
+                    <div layout="column" ng-show="u_miljoer.length > 0">
                         <h3>U-miljø</h3>
                         <md-checkbox ng-repeat="u_miljoe in u_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_u_miljoer[$index]" ng-change="oppdaterVelgAlle()">
                             {{u_miljoe}}
                         </md-checkbox>
                     </div>
-                    <div layout="column">
+                    <div layout="column" ng-show="t_miljoer.length > 0">
                         <h3>T-miljø</h3>
                         <md-checkbox ng-repeat="t_miljoe in t_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_t_miljoer[$index]" ng-change="oppdaterVelgAlle()">
                             {{t_miljoe}}
                         </md-checkbox>
                     </div>
-                    <div layout="column">
+                    <div layout="column" ng-show="q_miljoer.length > 0">
                         <h3>Q-miljø</h3>
                         <md-checkbox ng-repeat="q_miljoe in q_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_q_miljoer[$index]" ng-change="oppdaterVelgAlle()">
                             {{q_miljoe}}
                         </md-checkbox>
                     </div>
-                    <div layout="column">
+                    <div layout="column" ng-show="p_miljoer.length > 0">
                         <h3>P-miljø</h3>
                         <md-checkbox ng-repeat="p_miljoer in p-miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_p_miljoer[$index]" ng-change="oppdaterVelgAlle()">
