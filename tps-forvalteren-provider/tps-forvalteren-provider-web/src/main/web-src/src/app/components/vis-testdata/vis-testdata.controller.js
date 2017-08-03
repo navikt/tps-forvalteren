@@ -254,6 +254,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                                 originalPersoner[i] = angular.copy($scope.personer[i]);
                                 etablerAdressetype(originalPersoner[i]);
                                 fixDatoForDatepicker(originalPersoner[i]);
+                                $scope.personer[i] = angular.copy(originalPersoner[i]);
                             }
                         }
                         $scope.oppdaterValgt();
