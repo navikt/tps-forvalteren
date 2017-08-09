@@ -458,7 +458,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 });
             };
 
-            var bekreftRelokasjon = function (next) {
+            var bekreftRelokasjon = function (next, current) {
                 var confirm = $mdDialog.confirm()
                     .title('Du har endringer som ikke er lagret')
                     .textContent('Trykk OK for å forlate siden.')
@@ -468,14 +468,14 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                     $scope.visEndret = false;
-                    locationService.redirectUrl(next.url);
+                    locationService.redirectUrl(next.url, current);
                 });
             };
 
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
-                    bekreftRelokasjon(next);
+                    bekreftRelokasjon(next, current);
                 }
             });
 
