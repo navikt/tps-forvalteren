@@ -9,7 +9,7 @@ public class FasitConstants {
     protected static final String PASSWORD = "admin"; // NOSONAR
 
     /* The name of the fasit application */
-    protected static final String APPLICATION_NAME = "tpsws";
+    protected static final String FASIT_APPLICATION_NAME = "tpsws";
 
     /* Aliases for the different resources. Should be the same in all environments */
     protected static final String QUEUE_MANAGER_ALIAS  = "mqGateway";

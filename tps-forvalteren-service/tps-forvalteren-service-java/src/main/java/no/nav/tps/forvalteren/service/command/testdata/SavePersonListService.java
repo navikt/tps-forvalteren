@@ -34,6 +34,10 @@ public class SavePersonListService {
                 }
                 adresseRepository.deleteById(personAdresseDB.getId());
             }
+            person.setOpprettetDato(null);
+            person.setOpprettetAv(null);
+            person.setEndretDato(null);
+            person.setEndretAv(null);
         }
         personRepository.save(personer);
     }

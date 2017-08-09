@@ -1,0 +1,62 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Oppdater testgruppe dialog">
+        <form name="tpsForm">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Send til TPS - fra {{miljo}}-miljø</h2>
+                <p>Velg miljø testpersonene skal sendes til:</p>
+                <md-checkbox ng-model="alleMiljoe" ng-click="velgAlleMiljoe()" aria-label="Velg alle miljø">
+                    Velg alle
+                </md-checkbox>
+                <div layout="row" layout-align="space-between">
+                    <div layout="column" ng-hide="u_miljoer.length == 0">
+                        <h3>U-miljø</h3>
+                        <md-checkbox ng-repeat="u_miljoe in u_miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgt_u_miljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{u_miljoe}}
+                        </md-checkbox>
+                    </div>
+                    <div layout="column" ng-hide="t_miljoer.length == 0">
+                        <h3>T-miljø</h3>
+                        <md-checkbox ng-repeat="t_miljoe in t_miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgt_t_miljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{t_miljoe}}
+                        </md-checkbox>
+                    </div>
+                    <div layout="column" ng-hide="q_miljoer.length == 0">
+                        <h3>Q-miljø</h3>
+                        <md-checkbox ng-repeat="q_miljoe in q_miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgt_q_miljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{q_miljoe}}
+                        </md-checkbox>
+                    </div>
+                    <div layout="column" ng-hide="p_miljoer.length == 0">
+                        <h3>P-miljø</h3>
+                        <md-checkbox ng-repeat="p_miljoer in p-miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgt_p_miljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{p_miljoe}}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Lukk">
+                    <md-tooltip md-direction="top">Lukk dialog</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Lukk</md-button>
+                </md-input-container>
+                <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
+                    <md-tooltip md-direction="top">Send inn til TPS</md-tooltip>
+                    <md-button class="md-button md-raised md-accent"
+                               ng-disabled="!miljoeValgt"
+                               ng-click="send()">Send inn
+                    </md-button>
+                </md-input-container>
+            </md-dialog-actions>
+
+        </form>
+        <div layout="row" class="md-dialog-content" ng-show="showSpinner">
+            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </md-dialog>
+
+</div>

@@ -15,7 +15,7 @@
             </div>
             <div layout="row" style="margin-top: 3px;" flex ng-if="personer.length > 0">
 
-                <md-checkbox data-ng-model="allePersoner" ng-click="velgAlle()" flex="15">
+                <md-checkbox data-ng-model="allePersoner.checked" ng-click="velgAlle()" flex="15">
                     Velg alle<span ng-if="visEndret"> endrede</span>
                 </md-checkbox>
 
