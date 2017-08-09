@@ -11,6 +11,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
             $scope.valgt_q_miljoer = [];
             $scope.valgt_p_miljoer = [];
             $scope.alleMiljoe = false;
+            $scope.miljoeValgt = false;
 
             $scope.avbryt = function () {
                 $mdDialog.hide();
@@ -45,7 +46,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 return send_til_miljoer;
             };
 
-            var hent_valgt_miljoer_med_navn = function (valgt_miljoer, miljoer) {
+            function hent_valgt_miljoer_med_navn (valgt_miljoer, miljoer) {
                 var miljo_liste = [];
                 for (var index = 0; index < valgt_miljoer.length; index++) {
                     if (valgt_miljoer[index]) {
@@ -53,54 +54,53 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                     }
                 }
                 return miljo_liste;
-            };
+            }
 
-            $scope.velgAlleMiljoe = function () {
-                if ($scope.alleMiljoe) {
-                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, false);
-                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, false);
-                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, false);
-                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, false);
-                } else {
-                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, true);
-                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, true);
-                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, true);
-                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, true);
+            $scope.velgAlleMiljoe = function (status) {
+                function setValgteMiljoer (status) {
+                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, status);
+                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, status);
+                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, status);
+                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, status);
                 }
+                setValgteMiljoer(status !== undefined ? status : !$scope.alleMiljoe);
+                $scope.miljoeValgt = status !== undefined ? status : !$scope.alleMiljoe;
             };
 
             $scope.oppdaterVelgAlle = function () {
-                if(erAlleValgt($scope.valgt_u_miljoer) && erAlleValgt($scope.valgt_t_miljoer) &&
-                    erAlleValgt($scope.valgt_q_miljoer) && erAlleValgt($scope.valgt_p_miljoer)) {
-                    $scope.alleMiljoe = true;
-                } else {
-                    $scope.alleMiljoe = false;
-                }
+                $scope.alleMiljoe = erAlleValgt($scope.valgt_u_miljoer) &&
+                    erAlleValgt($scope.valgt_t_miljoer) &&
+                    erAlleValgt($scope.valgt_q_miljoer) &&
+                    erAlleValgt($scope.valgt_p_miljoer);
+                $scope.miljoeValgt = erValgt($scope.valgt_u_miljoer) ||
+                    erValgt($scope.valgt_t_miljoer) ||
+                    erValgt($scope.valgt_q_miljoer) ||
+                    erValgt($scope.valgt_p_miljoer);
             };
 
-            var erAlleValgt = function(array) {
+            function erAlleValgt(array) {
                 for (var index = 0; index < array.length; index++) {
                     if(!array[index]){
                         return false;
                     }
                 }
                 return true;
-            };
+            }
 
-            var sett_array_til = function (array, array2, verdi) {
+            function sett_array_til (array, array2, verdi) {
                 for (var index = 0; index < array.length; index++) {
                     array2[index] = verdi;
                 }
-            };
+            }
 
-            var hasLetter = function (letter) {
+            function hasLetter (letter) {
                 for (var i = 0; i < miljoer.length; i++) {
                     if (miljoer[i].toUpperCase().substring(0, 1) === letter) {
                         return true;
                     }
                 }
                 return false;
-            };
+            }
 
             if (!hasLetter('U') && hasLetter('Q')) {
                 $scope.miljo = 'Q';
@@ -112,15 +112,24 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 $scope.miljo = 'P';
             }
 
-            var byggMiljoliste = function (letter) {
+            function byggMiljoliste (letter) {
                 var liste = [];
                 for (var i = 0; i < miljoer.length; i++) {
                     if (miljoer[i].toUpperCase().substring(0, 1) === letter) {
-                        liste.push(miljoer[i]);
+                        liste.push(miljoer[i].toUpperCase());
                     }
                 }
                 return liste;
-            };
+            }
+
+            function erValgt(miljoe) {
+                for (var i = 0; i<miljoe.length; i++) {
+                    if (miljoe[i]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             miljoer.sort(function (a, b) {
                 return a.substring(1) - b.substring(1);
@@ -129,5 +138,5 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
             $scope.t_miljoer = byggMiljoliste('T');
             $scope.q_miljoer = byggMiljoliste('Q');
             $scope.p_miljoer = byggMiljoliste('P');
-
+            $scope.velgAlleMiljoe(false);
         }]);

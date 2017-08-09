@@ -39,7 +39,6 @@
                     </div>
                 </div>
             </md-dialog-content>
-
             <md-dialog-actions class="testdata-footer">
                 <md-input-container class="testdata-input-row" aria-label="Lukk">
                     <md-tooltip md-direction="top">Lukk dialog</md-tooltip>
@@ -47,7 +46,9 @@
                 </md-input-container>
                 <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
                     <md-tooltip md-direction="top">Send inn til TPS</md-tooltip>
-                    <md-button class="md-button md-raised md-accent" ng-click="send()">Send inn
+                    <md-button class="md-button md-raised md-accent"
+                               ng-disabled="!miljoeValgt"
+                               ng-click="send()">Send inn
                     </md-button>
                 </md-input-container>
             </md-dialog-actions>
