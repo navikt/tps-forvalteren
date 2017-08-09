@@ -102,11 +102,11 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 return false;
             };
 
-            if (!hasLetter('U') && hasLetter('T') && hasLetter('Q')) {
+            if (!hasLetter('U') && hasLetter('Q')) {
                 $scope.miljo = 'Q';
-            } else if (hasLetter('U') && hasLetter('T') && hasLetter('Q')) {
+            } else if (hasLetter('T')) {
                 $scope.miljo = 'T';
-            } else if (hasLetter('U') && hasLetter('T') && !hasLetter('Q')) {
+            } else if (hasLetter('U') && !hasLetter('Q')) {
                 $scope.miljo = 'U';
             } else {
                 $scope.miljo = 'P';
