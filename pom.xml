@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.3.RELEASE</version>
+        <version>1.5.4.RELEASE</version>
     </parent>
 
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>2.10.0</version>
+    <version>2.11.0</version>
 
 
     <packaging>pom</packaging>
@@ -66,9 +66,10 @@
         <jmqi.version>7.1.0.0</jmqi.version>
         <jms.version>1.1</jms.version>
         <guava.version>19.0</guava.version>
+        <kodeverk.tjenestespesifikasjon.version>2.0.0-alpha004</kodeverk.tjenestespesifikasjon.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <ojdbc.version>11.2.0.3</ojdbc.version>
-        <orika.version>1.4.5</orika.version>
+        <orika.version>1.5.1</orika.version>
         <mqjms.version>7.1</mqjms.version>
         <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
@@ -388,6 +389,13 @@
                 <groupId>no.nav.freg</groupId>
                 <artifactId>metrics-annotations</artifactId>
                 <version>${freg-metrics.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
+                <version>${kodeverk.tjenestespesifikasjon.version}</version>
+                <classifier>jaxws</classifier>
             </dependency>
 
         </dependencies>

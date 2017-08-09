@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
@@ -48,10 +48,10 @@ public class RsTpsRequestMappingUtilsTest {
 
     @Test
     public void convertToTpsRequestMapsServiceRoutineAndReturnsMappedResult() {
-        TpsServiceRoutineDefinition routine = mock(TpsServiceRoutineDefinition.class);
+        TpsServiceRoutineDefinitionRequest routine = mock(TpsServiceRoutineDefinitionRequest.class);
         doReturn("name").when(routine).getName();
         doReturn(TpsHentPersonServiceRoutineRequest.class).when(routine).getJavaClass();
-        List<TpsServiceRoutineDefinition> routines = Collections.singletonList(routine);
+        List<TpsServiceRoutineDefinitionRequest> routines = Collections.singletonList(routine);
         when(serviceMock.execute()).thenReturn(routines);
 
         Map parametersMap = mock(Map.class);

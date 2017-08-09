@@ -4,10 +4,11 @@ angular.module('tps-forvalteren.service')
 
         var self =  this;
         var url = 'api/v1/testdata/';
+        var kodeverkUrl = 'api/v1/kodeverk/';
 
-        self.getTestpersoner = function(){
+        self.getTestpersoner = function(id){
             var defer = $q.defer();
-            $http.get(url + "personer").then(
+            $http.get(url + 'gruppe/' + id).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -18,9 +19,9 @@ angular.module('tps-forvalteren.service')
             return defer.promise;
         };
 
-        self.opprettTestpersoner = function(kriterier){
+        self.opprettTestpersoner = function(gruppeId, kriterier){
             var defer = $q.defer();
-            $http.post(url + "personer", {personKriterierListe: kriterier}).then(
+            $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -33,7 +34,7 @@ angular.module('tps-forvalteren.service')
 
         self.sletteTestpersoner = function(identer){
             var defer = $q.defer();
-            $http.post(url + "deletePersoner", {ids: identer}).then(
+            $http.post(url + 'deletepersoner', {ids: identer}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -46,7 +47,7 @@ angular.module('tps-forvalteren.service')
 
         self.oppdaterTestpersoner = function(personer){
             var defer = $q.defer();
-            $http.post(url + "updatePersoner", personer).then(
+            $http.post(url + 'updatepersoner', personer).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -59,7 +60,7 @@ angular.module('tps-forvalteren.service')
 
         self.validerListe = function(identer){
             var defer = $q.defer();
-            $http.post(url + "checkPersoner", identer).then(
+            $http.post(url + 'checkpersoner', identer).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -70,9 +71,9 @@ angular.module('tps-forvalteren.service')
             return defer.promise;
         };
 
-        self.opprettFraListe = function(identer){
+        self.opprettFraListe = function(gruppeId, identer){
             var defer = $q.defer();
-            $http.post(url + "createPersoner", identer).then(
+            $http.post(url + 'createpersoner/' + gruppeId, identer).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -82,4 +83,83 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.hentTestgrupper = function () {
+            var defer = $q.defer();
+            $http.get(url + 'grupper').then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.lagreTestgruppe = function (gruppe) {
+            var defer = $q.defer();
+            $http.post(url + 'gruppe', gruppe).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.sletteTestgruppe = function (gruppeId) {
+            var defer = $q.defer();
+            $http.post(url + 'deletegruppe/' + gruppeId).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.sendTilTps = function (gruppeId, miljoer) {
+            var defer = $q.defer();
+            $http.post(url + 'tps/' + gruppeId, miljoer).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.hentKommuner = function () {
+            var defer = $q.defer();
+            $http.get(kodeverkUrl + 'knr').then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.hentPostnummer = function () {
+            var defer = $q.defer();
+            $http.get(kodeverkUrl + 'postnummer').then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
     }]);

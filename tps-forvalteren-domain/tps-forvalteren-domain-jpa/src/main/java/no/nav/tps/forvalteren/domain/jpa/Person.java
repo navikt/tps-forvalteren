@@ -14,10 +14,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,26 +41,21 @@ public class Person extends ChangeStamp {
     @Column(name = "PERSON_ID", nullable = false, updatable = false)
     private Long id;
 
-    @NotNull
-    @Column(name = "IDENT", nullable = false, length = 11)
+    @Column(name = "IDENT", nullable = false, unique = true, length = 11)
     private String ident;
 
-    @NotNull
     @Column(name = "IDENTTYPE", nullable = false, length = 3)
     private String identtype;
 
-    @NotNull
     @Column(name = "KJONN", nullable = false)
     private Character kjonn;
 
-    @NotNull
     @Column(name = "FORNAVN", nullable = false, length = 50)
     private String fornavn;
 
     @Column(name = "MELLOMNAVN", length = 50)
     private String mellomnavn;
 
-    @NotNull
     @Column(name = "ETTERNAVN", nullable = false, length = 50)
     private String etternavn;
 
@@ -71,14 +68,18 @@ public class Person extends ChangeStamp {
     @Column(name = "SPESREG_DATO")
     private LocalDateTime spesregDato;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
-    private List<Gateadresse> gateadresse = new ArrayList<>();
+    @JoinColumn(name = "ADRESSE_ID")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
+    private Adresse boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private List<Postadresse> postadresse = new ArrayList<>();
 
-    @NotNull
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
+
+    @JoinColumn(name = "GRUPPE_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Gruppe gruppe;
 
 }

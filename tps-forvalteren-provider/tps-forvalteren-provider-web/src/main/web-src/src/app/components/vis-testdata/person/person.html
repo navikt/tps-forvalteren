@@ -1,0 +1,95 @@
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Fornavn</md-tooltip>
+        <label>Fornavn</label>
+        <input name="fornavn" ng-required="true" md-maxlength="50" md-autofocus
+               ng-model="person.fornavn" ng-change="endret($index)"/>
+        <div ng-messages="requestForm.fornavn.$error"
+             ng-show="requestForm.fornavn.$dirty">
+            <div ng-message="required">Verdi er påkrevd</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <div flex="5"></div>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Mellomnavn</md-tooltip>
+        <label>Mellomnavn</label>
+        <input name="mellomnavn" ng-required="false" md-maxlength="50"
+               ng-model="person.mellomnavn" ng-change="endret($index)"/>
+        <div ng-messages="requestForm.mellomnavn.$error"
+             ng-show="requestForm.mellomnavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <div flex="5"></div>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Etternavn</md-tooltip>
+        <label>Etternavn</label>
+        <input name="etternavn" ng-required="true" md-maxlength="50"
+               ng-model="person.etternavn" ng-change="endret($index)"/>
+        <div ng-messages="requestForm.etternavn.$error"
+             ng-show="requestForm.etternavn.$dirty">
+            <div ng-message="required">Verdi er påkrevd</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-datepicker-container" flex="25">
+        <md-tooltip>Registeringsdato</md-tooltip>
+        <label>Regdato</label>
+        <md-datepicker name="regdato"
+                       ng-model="person.regdato"
+                       md-current-view="year"
+                       ng-change="endret($index)">
+        </md-datepicker>
+        <div ng-messages="requestForm.regdato.$error"
+             ng-show="requestForm.regdato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="15">
+        <md-tooltip>Statsborgerskap</md-tooltip>
+        <label>Statsborgerskap</label>
+        <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
+               ng-model="person.statsborgerskap" ng-change="endret($index)"/>
+        <div ng-messages="requestForm.statsborgerskap.$error"
+             ng-show="requestForm.statsborgerskap.$dirty">
+            <div ng-message="minlength">Verdi har for få tegn</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="25">
+        <md-tooltip>Spesialregister</md-tooltip>
+        <label>Spesialregister</label>
+        <md-select ng-model="person.spesreg" class="md-no-underline"
+                   ng-change="endret($index)">
+            <md-option value=""><em>Uspesifisert</em></md-option>
+            <md-option value="KLIE">Klientadresse</md-option>
+            <md-option value="MILI">Militær</md-option>
+            <md-option value="PEND">Pendler</md-option>
+            <md-option value="SPFO">Sperret adresse, fortrolig</md-option>
+            <md-option value="SPSF">Sperret adresse, strengt fortrolig</md-option>
+            <md-option value="SVAL">Svalbard</md-option>
+            <md-option value="UFB ">Uten fast bopel</md-option>
+            <md-option value="URIK">I utenrikstjeneste</md-option>
+            <md-option value="VABO">Vanlig bosatt</md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Spesialregister dato</md-tooltip>
+        <label>Spesreg. dato</label>
+        <md-datepicker name="spesregDato"
+                       md-current-view="year"
+                       ng-model="person.spesregDato"
+                       ng-change="endret($index)">
+        </md-datepicker>
+        <div ng-messages="requestForm.spesregDato.$error"
+             ng-show="requestForm.spesregDato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+        </div>
+    </md-input-container>
+</div>

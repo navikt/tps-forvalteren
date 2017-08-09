@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdata;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdataIdenterFetcher;
@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -31,7 +30,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataIdenterFetcherTest {
 
-    private RsPersonKriterieRequest rsPersonKriterieRequest;
+    private RsPersonKriteriumRequest rsPersonKriteriumRequest;
     private RsPersonKriterier personKriterier1 = new RsPersonKriterier();
     private RsPersonKriterier personKriterier2 = new RsPersonKriterier();
     private RsPersonKriterier personKriterier3 = new RsPersonKriterier();
@@ -58,8 +57,8 @@ public class TestdataIdenterFetcherTest {
 
     @Before
     public void setup() {
-        rsPersonKriterieRequest = new RsPersonKriterieRequest();
-        rsPersonKriterieRequest.setPersonKriterierListe(Arrays.asList(personKriterier1,personKriterier2));
+        rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
+        rsPersonKriteriumRequest.setPersonKriterierListe(Arrays.asList(personKriterier1,personKriterier2));
 
         testdataRequest1 = new TestdataRequest(personKriterier1);
         testdataRequest2 = new TestdataRequest(personKriterier2);
@@ -87,7 +86,7 @@ public class TestdataIdenterFetcherTest {
 
         when(testdataMock.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1,testdataRequest2));
 
-        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriterieRequest);
+        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
         verify(testdataMock, times(1)).genererIdenterForTestdataRequests(any());
     }
@@ -111,7 +110,7 @@ public class TestdataIdenterFetcherTest {
                         Arrays.asList(testdataRequest4)
                         );
 
-        List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriterieRequest);
+        List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
         verify(testdataMock, times(3)).genererIdenterForTestdataRequests(any());
 
@@ -131,7 +130,7 @@ public class TestdataIdenterFetcherTest {
 
         expectedException.expect(HttpCantSatisfyRequestException.class);
 
-        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriterieRequest);
+        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
     }
 
 }

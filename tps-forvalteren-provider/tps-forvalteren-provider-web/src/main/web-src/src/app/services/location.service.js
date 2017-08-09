@@ -1,11 +1,11 @@
 
 angular.module('tps-forvalteren.service')
-    .service('locationService', ['$state', function($state) {
+    .service('locationService', ['$state', '$location', function($state, $location) {
 
         var self = this;
-        var returnState = 'servicerutine';
+        var returnState = 'root';
 
-        self.redirectToLoginReturnState = function() {
+        self.redirectToHomeState = function() {
             $state.go(returnState);
         };
 
@@ -25,20 +25,36 @@ angular.module('tps-forvalteren.service')
             $state.go("gt");
         };
 
-        self.redirectToVisTestdata = function() {
-            $state.go("vis-testdata");
+        self.redirectToTestgruppe = function() {
+            $state.go("testgruppe");
         };
 
+        self.redirectToVisTestdata = function(index) {
+            $state.go("vis-testdata", {id: index});
+        };
 
-        self.redirectToOpprettTestdata = function() {
-            $state.go("opprett-testdata");
+        self.redirectToOpprettTestdata = function(index) {
+            $state.go("opprett-testdata", {id: index});
         };
 
         self.isServicerutineState = function(){
             return $state.current.name === 'servicerutine';
         };
 
-        self.redirectUrl = function(url) {
-            $state.go(url.substring(1)); // Ta bort ledende "/"
+        self.redirectUrl = function(url, param) {
+            if ('/' === url) {
+                self.redirectToHomeState();
+            } else {
+                if (url.indexOf('/:') != -1) {
+                    $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
+                }
+                else {
+                    $state.go(url.substr(1)); // Ta bort ledende "/"
+                }
+            }
+        };
+
+        self.isRoot = function () {
+            return $location.url() == '/';
         };
     }]);

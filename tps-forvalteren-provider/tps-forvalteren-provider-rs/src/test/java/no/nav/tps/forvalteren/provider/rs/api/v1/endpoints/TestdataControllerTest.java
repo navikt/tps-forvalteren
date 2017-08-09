@@ -1,14 +1,22 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsGruppe;
+import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
-import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
+import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
+import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
@@ -19,10 +27,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,10 +38,7 @@ import static org.mockito.Mockito.when;
 public class TestdataControllerTest {
 
     @Mock
-    private FindAllPersonService findAllPersonService;
-
-    @Mock
-    private DeletePersonsByIdService deletePersonsByIdService;
+    private MapperFacade mapper;
 
     @Mock
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -54,27 +58,29 @@ public class TestdataControllerTest {
     @Mock
     private SjekkIdenter sjekkIdenter;
 
+    @Mock
+    private SetGruppeIdOnPersons setGruppeIdOnPersons;
+
+    @Mock
+    private FindAlleGrupperOrderByIdAsc findAlleGrupperOrderByIdAsc;
+
+    @Mock
+    private FindGruppeById findGruppeById;
+
+    @Mock
+    private DeletePersonerByIdIn deletePersonerByIdIn;
+
+    @Mock
+    private SaveGruppe saveGruppe;
+
     @InjectMocks
     private TestdataController testdataController;
 
-    private static List<Person> allPersons = new ArrayList<>();
+    private static final Long GRUPPE_ID = 0L;
 
     @Test
-    public void findAllPersonReturnsAll() {
-        Person person = new Person();
-        allPersons.add(person);
-        when(findAllPersonService.execute()).thenReturn(allPersons);
-
-        List<Person> result = testdataController.getAllPersons();
-
-        verify(findAllPersonService).execute();
-
-        assertThat(result, hasSize(1));
-    }
-
-    @Test
-    public void createNewPersons() {
-        RsPersonKriterieRequest rsPersonKriterieRequest = new RsPersonKriterieRequest();
+    public void createNewPersonsFromKriterier() {
+        RsPersonKriteriumRequest rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
 
         TestdataRequest testdataRequest = new TestdataRequest(null);
         List<TestdataRequest> testdataRequestsList = new ArrayList<>();
@@ -83,17 +89,18 @@ public class TestdataControllerTest {
         List<String> identer = new ArrayList<>();
         List<Person> personerSomSkalPersisteres = new ArrayList<>();
 
-        when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriterieRequest.class))).thenReturn(testdataRequestsList);
+        when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriteriumRequest.class))).thenReturn(testdataRequestsList);
         when(ekstraherIdenterFraTestdataRequests.execute(testdataRequestsList)).thenReturn(identer);
         when(opprettPersonerFraIdenter.execute(identer)).thenReturn(personerSomSkalPersisteres);
 
-        testdataController.createNewPersons(rsPersonKriterieRequest);
+        testdataController.createNewPersonsFromKriterier(GRUPPE_ID, rsPersonKriteriumRequest);
 
-        verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriterieRequest);
+        verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
         verify(ekstraherIdenterFraTestdataRequests).execute(testdataRequestsList);
         verify(opprettPersonerFraIdenter).execute(identer);
         verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
-        verify(savePersonListService).save(personerSomSkalPersisteres);
+        verify(setGruppeIdOnPersons).setGruppeId(personerSomSkalPersisteres, GRUPPE_ID);
+        verify(savePersonListService).execute(personerSomSkalPersisteres);
 
     }
 
@@ -104,16 +111,20 @@ public class TestdataControllerTest {
 
         testdataController.deletePersons(rsPersonIdListe);
 
-        verify(deletePersonsByIdService).execute(rsPersonIdListe.getIds());
+        verify(deletePersonerByIdIn).execute(rsPersonIdListe.getIds());
     }
 
     @Test
     public void updatePersons() {
+        List<RsPerson> rsPersonListe = new ArrayList<>();
         List<Person> personListe = new ArrayList<>();
 
-        testdataController.updatePersons(personListe);
+        when(mapper.mapAsList(rsPersonListe, Person.class)).thenReturn(personListe);
 
-        verify(savePersonListService).save(personListe);
+        testdataController.updatePersons(rsPersonListe);
+
+        verify(savePersonListService).execute(personListe);
+        verify(mapper).mapAsList(rsPersonListe, Person.class);
     }
 
     @Test
@@ -132,10 +143,55 @@ public class TestdataControllerTest {
 
         when(opprettPersonerFraIdenter.execute(personIdentListe)).thenReturn(personer);
 
-        testdataController.createPersonerFraIdentliste(personIdentListe);
+        testdataController.createPersonerFraIdentliste(GRUPPE_ID, personIdentListe);
 
         verify(opprettPersonerFraIdenter).execute(personIdentListe);
         verify(setNameOnPersonsService).execute(personer);
-        verify(savePersonListService).save(personer);
+        verify(setGruppeIdOnPersons).setGruppeId(personer, GRUPPE_ID);
+        verify(savePersonListService).execute(personer);
     }
+
+    @Test
+    public void getGrupper() {
+        Gruppe gruppe = new Gruppe();
+        RsSimpleGruppe rsSimpleGruppe = new RsSimpleGruppe();
+
+        List<Gruppe> grupper = new ArrayList<>(Arrays.asList(gruppe));
+        List<RsSimpleGruppe> rsSimpleGrupper = new ArrayList<>(Arrays.asList(rsSimpleGruppe));
+
+        when(findAlleGrupperOrderByIdAsc.execute()).thenReturn(grupper);
+        when(mapper.mapAsList(grupper, RsSimpleGruppe.class)).thenReturn(rsSimpleGrupper);
+
+        testdataController.getGrupper();
+
+        verify(findAlleGrupperOrderByIdAsc).execute();
+        verify(mapper).mapAsList(grupper, RsSimpleGruppe.class);
+    }
+
+    @Test
+    public void getGruppe() {
+        Gruppe gruppe = new Gruppe();
+        RsGruppe rsGruppe = new RsGruppe();
+
+        when(findGruppeById.execute(GRUPPE_ID)).thenReturn(gruppe);
+        when(mapper.map(gruppe, RsGruppe.class)).thenReturn(rsGruppe);
+
+        testdataController.getGruppe(GRUPPE_ID);
+
+        verify(findGruppeById).execute(GRUPPE_ID);
+        verify(mapper).map(gruppe, RsGruppe.class);
+    }
+
+    @Test
+    public void createGruppe() {
+        RsSimpleGruppe rsGruppe = new RsSimpleGruppe();
+        Gruppe gruppe = new Gruppe();
+
+        when(mapper.map(rsGruppe, Gruppe.class)).thenReturn(gruppe);
+
+        testdataController.createGruppe(rsGruppe);
+
+        verify(saveGruppe).execute(gruppe);
+    }
+
 }

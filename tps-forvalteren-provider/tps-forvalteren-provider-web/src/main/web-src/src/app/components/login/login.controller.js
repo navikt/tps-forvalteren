@@ -1,5 +1,4 @@
-
-angular.module('tps-forvalteren.login')
+angular.module('tps-forvalteren.login', ['ngMessages'])
     .controller('LoginCtrl', ['$scope', 'authenticationService', 'locationService',
         function($scope, authenticationService, locationService) {
 
@@ -14,7 +13,7 @@ angular.module('tps-forvalteren.login')
                     case 200:
                         $scope.authenticationError = false;
                         $scope.forbiddenError = false;
-                        locationService.redirectToLoginReturnState();
+                        locationService.redirectToHomeState();
                         break;
                     case 401:
                         $scope.authenticationError = true;
@@ -39,7 +38,7 @@ angular.module('tps-forvalteren.login')
             function init() {
                 authenticationService.authenticate(false, function(authResponse) {
                     if (authResponse.status === 200) {
-                        locationService.redirectToLoginReturnState();
+                        locationService.redirectToHomeState();
                     }
                 });
             }

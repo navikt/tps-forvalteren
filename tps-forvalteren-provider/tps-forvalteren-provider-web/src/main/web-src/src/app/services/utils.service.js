@@ -1,12 +1,8 @@
 
 angular.module('tps-forvalteren.service')
-    .service('utilsService', ['moment', '$mdDialog', function(moment, $mdDialog){
+    .service('utilsService', ['moment', '$mdDialog','locationService','authenticationService', function(moment, $mdDialog, locationService, authenticationService){
 
         var self = this;
-
-        self.authHeaders = function(credentials) {
-            return {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)};
-        };
 
         self.getCurrentFormattedDate = function() {
             return moment().format('YYYY-MM-DD');
@@ -134,8 +130,8 @@ angular.module('tps-forvalteren.service')
                 },
                 401: {
                     title: 'Ikke autorisert',
-                    text: 'Din bruker har ikke tillatelse til denne spørringen.',
-                    ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
+                    text: 'Bruker er ikke autentisert. Prøv å logge inn på nytt',
+                    ariaLabel: 'Bruker er ikke autentisert. Prøv å logge inn på nytt'
                 },
                 403: {
                     title: 'Forbudt',
@@ -162,6 +158,12 @@ angular.module('tps-forvalteren.service')
                     .textContent(errorObj.text)
                     .ariaLabel(errorObj.ariaLabel)
                     .ok('OK')
-            );
+            ).finally(function () {
+                if(error.status === 401){
+                    authenticationService.invalidateSession(function () {
+                        locationService.redirectToLoginState();
+                    });
+                }
+            });
         };
     }]);

@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.forvalteren.service.command.tps.TpsRequestService;
@@ -54,7 +54,7 @@ public class ServiceControllerTest {
     private FindServiceRoutineByName findServiceRoutineByName;
 
     @Mock
-    private TpsServiceRoutineDefinition tpsServiceRoutineDefinitionMock;
+    private TpsServiceRoutineDefinitionRequest tpsServiceRoutineDefinitionMock;
 
     @Mock
     private TpsServiceRoutineRequest serviceRoutineRequestMock;

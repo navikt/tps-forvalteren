@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.service.command.tps.TpsRequestService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils;
 import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class TpsRequestSenderTest {
     private TpsRequestService tpsRequestServiceMock;
 
     @Mock
-    private TpsServiceRoutineDefinition serviceRoutineDefinitionMock;
+    private TpsServiceRoutineDefinitionRequest serviceRoutineDefinitionMock;
 
     @Mock
     private TpsServiceRoutineRequest tpsServiceRoutineRequestMock;
@@ -46,7 +46,7 @@ public class TpsRequestSenderTest {
     @Test
     public void sendTpsRequest() throws Exception {
         Response response = mock(Response.class);
-        Optional<TpsServiceRoutineDefinition> tpsServiceRoutineDefinition = Optional.of(serviceRoutineDefinitionMock);
+        Optional<TpsServiceRoutineDefinitionRequest> tpsServiceRoutineDefinition = Optional.of(serviceRoutineDefinitionMock);
 
         when(tpsServiceRoutineRequestMock.getServiceRutinenavn()).thenReturn("navn");
         when(findServiceRoutineByNameMock.execute(anyString())).thenReturn(tpsServiceRoutineDefinition);

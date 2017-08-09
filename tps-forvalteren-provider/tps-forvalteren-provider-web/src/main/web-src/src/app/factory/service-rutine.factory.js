@@ -7,7 +7,7 @@ angular.module('tps-forvalteren.factory')
         var urlBase = 'api/v1/service';
         var urlRoutinesBase = 'api/v1/serviceroutine';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
-        var urlBaseEnv = 'api/v1/environments';
+        var urlGetEnvironments = 'api/v1/environments';
         var urlConfig = 'assets/config/';
         var urlToServiceRutinerTemplates = 'app/components/service-rutine/service-rutiner-responses/';
 
@@ -69,12 +69,12 @@ angular.module('tps-forvalteren.factory')
         };
 
         serviceRutineFactory.loadFromServerEnvironments = function () {
-            return $http({method: 'GET', url: urlBaseEnv}).then(function (res) {
+            return $http({method: 'GET', url: urlGetEnvironments}).then(function (res) {
                 environments = res.data;
                 isSetEnvironments = true;
                 return environments;
             }, function (error) {
-                return null;
+                return error;
             });
         };
 

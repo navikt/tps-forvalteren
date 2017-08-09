@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinition;
-import no.nav.tps.forvalteren.service.command.authorisation.TpsAuthorisationService;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,12 @@ public class ServiceRoutineController {
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
     @Autowired
-    private TpsAuthorisationService authorisationService;
+    private ForbiddenCallHandlerService authorisationService;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getTpsServiceRutiner")})
     @RequestMapping(value = "/serviceroutine", method = RequestMethod.GET)
-    public List<TpsServiceRoutineDefinition> getTpsServiceRutiner() {
+    public List<TpsServiceRoutineDefinitionRequest> getTpsServiceRutiner() {
         return getTpsServiceRutinerService.execute().stream()
                 .filter(authorisationService::isAuthorisedToUseServiceRutine)
                 .collect(Collectors.toList());

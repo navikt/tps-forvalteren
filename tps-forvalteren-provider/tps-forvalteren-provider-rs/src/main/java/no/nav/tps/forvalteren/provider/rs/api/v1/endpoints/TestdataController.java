@@ -1,22 +1,36 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsGruppe;
+import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterieRequest;
-import no.nav.tps.forvalteren.service.command.testdata.DeletePersonsByIdService;
-import no.nav.tps.forvalteren.service.command.testdata.FindAllPersonService;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
+import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
+import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdCreatePersoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,10 +52,7 @@ public class TestdataController {
     private static final String REST_SERVICE_NAME = "testdata";
 
     @Autowired
-    private FindAllPersonService findAllPersonService;
-
-    @Autowired
-    private DeletePersonsByIdService deletePersonsByIdService;
+    private SkdCreatePersoner skdCreatePersoner;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -61,51 +72,118 @@ public class TestdataController {
     @Autowired
     private SjekkIdenter sjekkIdenter;
 
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllPersons") })
-    @RequestMapping(value = "/personer", method = RequestMethod.GET)
-    public List<Person> getAllPersons() {
-        return findAllPersonService.execute();
-    }
+    @Autowired
+    private SetGruppeIdOnPersons setGruppeIdOnPersons;
 
+    @Autowired
+    private FindAlleGrupperOrderByIdAsc findAlleGrupperOrderByIdAsc;
+
+    @Autowired
+    private FindGruppeById findGruppeById;
+
+    @Autowired
+    private DeletePersonerByIdIn deletePersonerByIdIn;
+
+    @Autowired
+    private DeleteGruppeById deleteGruppeById;
+
+    @Autowired
+    private SaveGruppe saveGruppe;
+
+    @Autowired
+    private MapperFacade mapper;
+
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersons") })
-    @RequestMapping(value = "/personer", method = RequestMethod.POST)
-    public void createNewPersons(@RequestBody RsPersonKriterieRequest personKriterierListe) {
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
+    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(ekstraherIdenterFraTestdataRequests.execute(testdataRequests));
 
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
-        savePersonListService.save(personerSomSkalPersisteres);
+        setGruppeIdOnPersons.setGruppeId(personerSomSkalPersisteres, gruppeId);
+        savePersonListService.execute(personerSomSkalPersisteres);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
-    @RequestMapping(value = "/deletePersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
-        deletePersonsByIdService.execute(personIdListe.getIds());
+        deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
-    @RequestMapping(value = "/updatePersoner", method = RequestMethod.POST)
-    public void updatePersons(@RequestBody List<Person> personListe) {
-        savePersonListService.save(personListe);
+    @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
+    public void updatePersons(@RequestBody List<RsPerson> personListe) {
+        List<Person> personer = mapper.mapAsList(personListe, Person.class);
+        savePersonListService.execute(personer);
     }
 
+    @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
-    @RequestMapping(value = "/checkPersoner", method = RequestMethod.POST)
+    @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
         return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
-    @RequestMapping(value = "/createPersoner", method = RequestMethod.POST)
-    public void createPersonerFraIdentliste(@RequestBody List<String> personIdentListe) {
+    @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
+    public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
         List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
         setNameOnPersonsService.execute(personer);
-        savePersonListService.save(personer);
+        setGruppeIdOnPersons.setGruppeId(personer, gruppeId);
+        savePersonListService.execute(personer);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
+    @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
+    public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
+        Gruppe gruppe = findGruppeById.execute(gruppeId);
+        skdCreatePersoner.execute(gruppe.getPersoner(), environments);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ACCESS')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
+    @RequestMapping(value = "/grupper", method = RequestMethod.GET)
+    public List<RsSimpleGruppe> getGrupper() {
+        List<Gruppe> grupper = findAlleGrupperOrderByIdAsc.execute();
+        return mapper.mapAsList(grupper, RsSimpleGruppe.class);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ACCESS')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
+    @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
+    public RsGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
+        Gruppe gruppe = findGruppeById.execute(gruppeId);
+        return mapper.map(gruppe, RsGruppe.class);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
+    @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
+    public void createGruppe(@RequestBody RsSimpleGruppe rsGruppe) {
+        Gruppe gruppe = mapper.map(rsGruppe, Gruppe.class);
+        saveGruppe.execute(gruppe);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
+    @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
+    public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
+        deleteGruppeById.execute(gruppeId);
     }
 }

@@ -2,7 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,7 +23,10 @@ public class SjekkIdenter {
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
 
     @Autowired
-    private FilterPaaIdenterTilgjengeligeIMiljo filterPaaIdenterTilgjengeligeIMiljo;
+    private GetEnvironments getEnvironmentsCommand;
+
+    @Autowired
+    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
     private static final String IKKE_GYLDIG = "IG";
     private static final String IKKE_LEDIG = "IL";
@@ -47,7 +52,8 @@ public class SjekkIdenter {
 
     private Set<String> finnLedigeIdenterDBOgMiljoOgSetStatus(Map<String, String> identerMedStatus, Set<String> gyldigeIdenter) {
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
-        Set<String> ledigeIdenterMiljo = filterPaaIdenterTilgjengeligeIMiljo.filtrer(gyldigeIdenter);
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(gyldigeIdenter, environments);
 
         Set<String> ledigeIdenterDBOgMiljo = new HashSet<>();
         ledigeIdenterDBOgMiljo.addAll(ledigeIdenterMiljo);

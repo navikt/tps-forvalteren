@@ -24,7 +24,7 @@ public class FasitConfig {
     @Bean
     public FasitMessageQueueConsumer getTpswsFasitMessageQueueQueueConsumer() {
         FasitMessageQueueConsumer consumer = new DefaultFasitMessageQueueConsumer(
-                FasitConstants.APPLICATION_NAME,
+                FasitConstants.FASIT_APPLICATION_NAME,
                 TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
                 FasitConstants.QUEUE_MANAGER_ALIAS
         );
