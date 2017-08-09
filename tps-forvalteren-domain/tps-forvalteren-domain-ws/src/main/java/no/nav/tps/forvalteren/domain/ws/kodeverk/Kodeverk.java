@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.domain.ws.kodeverk;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
