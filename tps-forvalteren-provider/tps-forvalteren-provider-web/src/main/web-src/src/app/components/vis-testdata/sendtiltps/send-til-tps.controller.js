@@ -116,7 +116,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 var liste = [];
                 for (var i = 0; i < miljoer.length; i++) {
                     if (miljoer[i].toUpperCase().substring(0, 1) === letter) {
-                        liste.push(miljoer[i].toUpperCase());
+                        liste.push(miljoer[i]);
                     }
                 }
                 return liste;
