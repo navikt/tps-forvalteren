@@ -33,7 +33,7 @@ public class SwaggerConfig {
         return new ApiInfo(
                 "TPS-Forvalteren",
                 "TPS-Forvalteren",
-                "1.0.0",
+                "2.12.0-SNAPSHOT",
                 "https://nav.no",
                 new Contact("Visma", "http://stash.devillo.no/projects/FEL/repos/tps-forvalteren/", "nav.no"),
                 "Super Strict Licence",
