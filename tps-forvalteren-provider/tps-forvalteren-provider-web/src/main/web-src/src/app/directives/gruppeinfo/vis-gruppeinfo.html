@@ -1,0 +1,42 @@
+<div layout="column" class="testdata-side-block" flex="30" layout-padding ng-cloak>
+    <md-card id="vis-testdata-sidebar" class="tps-vk-top ">
+        <md-card-content flex class="testdata-side-content md-whiteframe-1p">
+            <h3 style="margin-top: 10px; margin-bottom: 10px;">Beskrivelse</h3>
+            {{gruppe.beskrivelse}}
+            <h3 style="margin-top: 30px; margin-bottom: 10px;">Detaljer</h3>
+            <div layout="row" flex="100" flex>
+                <div layout="column" flex="30">
+                    Opprettet dato:
+                </div>
+                <div layout="column" flex="30">
+                    {{gruppe.opprettetDato | date:'dd-MM-yyyy HH:mm:ss'}}
+                </div>
+            </div>
+            <div layout="row" flex="100">
+                <div layout="column" flex="30">
+                    Opprettet av:
+                </div>
+                <div layout="column" flex="30">
+                    {{gruppe.opprettetAv}}
+                </div>
+            </div>
+            <div layout="row" flex="100">
+                <div layout="column" flex="30">
+                    Endret dato:
+                </div>
+                <div layout="column" flex="30">
+                    {{gruppe.endretDato | date:'dd-MM-yyyy HH:mm:ss'}}
+                </div>
+            </div>
+            <div layout="row">
+                <div layout="column" flex="30">
+                    Endret av:
+                </div>
+                <div layout="column" flex="30">
+                    {{gruppe.endretAv}}
+                </div>
+            </div>
+            <br><br>
+        </md-card-content>
+    </md-card>
+</div>
