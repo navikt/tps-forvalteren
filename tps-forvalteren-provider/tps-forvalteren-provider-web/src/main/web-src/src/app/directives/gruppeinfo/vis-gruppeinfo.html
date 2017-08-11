@@ -1,23 +1,28 @@
-<div layout="column" class="testdata-side-block" flex="30" layout-padding ng-cloak>
-    <md-card id="vis-testdata-sidebar" class="tps-vk-top ">
+<div layout="column" class="testdata-side-block" flex="25" layout-padding ng-cloak style="max-height: 500px;">
+    <md-card class="tps-vk-top" flex="50">
         <md-card-content flex class="testdata-side-content md-whiteframe-1p">
             <h3 style="margin-top: 10px; margin-bottom: 10px;">Beskrivelse</h3>
             {{gruppe.beskrivelse}}
-            <h3 style="margin-top: 30px; margin-bottom: 10px;">Detaljer</h3>
-            <div layout="row" flex="100" flex>
-                <div flex="35">Opprettet&nbsp;dato:</div>
+        </md-card-content>
+    </md-card>
+
+    <md-card class="tps-vk-top" flex="50">
+        <md-card-content>
+            <h3 style="margin-top: 10px; margin-bottom: 10px;">Detaljer</h3>
+            <div layout="row" >
+                <div flex="35">Opprettet dato:</div>
                 <div>{{gruppe.opprettetDato | date:'dd-MM-yyyy HH:mm:ss'}}</div>
             </div>
-            <div layout="row" flex="100">
-                <div flex="35">Opprettet&nbsp;av:</div>
+            <div layout="row" >
+                <div flex="35">Opprettet av:</div>
                 <div>{{gruppe.opprettetAv}}</div>
             </div>
-            <div layout="row" flex="100">
-                <div flex="35">Endretflex&nbsp;dato:</div>
+            <div layout="row" >
+                <div flex="35">Endret dato:</div>
                 <div>{{gruppe.endretDato | date:'dd-MM-yyyy HH:mm:ss'}}</div>
             </div>
-            <div layout="row" flex="100">
-                <div flex="35">Endret&nbsp;av:</div>
+            <div layout="row" >
+                <div flex="35">Endret av:</div>
                 <div>{{gruppe.endretAv}}</div>
             </div>
         </md-card-content>
