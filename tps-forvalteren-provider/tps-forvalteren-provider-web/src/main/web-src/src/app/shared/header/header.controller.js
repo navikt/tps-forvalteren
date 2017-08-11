@@ -1,7 +1,7 @@
 
 angular.module('tps-forvalteren')
-    .controller('HeaderCtrl', ['$scope', 'authenticationService', 'locationService',
-        function ($scope, authenticationService, locationService) {
+    .controller('HeaderCtrl', ['$scope', '$mdDialog', 'authenticationService', 'locationService', 'appInfoService', 'utilsService',
+        function ($scope, $mdDialog, authenticationService, locationService, appInfoService, utilsService) {
 
             $scope.visTestdataKnapp = false;
 
@@ -37,4 +37,22 @@ angular.module('tps-forvalteren')
                 }
             }
             $scope.visTestdataKnapp = !prodEnvironment;
+
+            $scope.om = function () {
+                var confirm = $mdDialog.confirm()
+                    .title('Om TPS-Forvalteren')
+                    .htmlContent('<table><tr><td>Versjon:</td><td>' + $scope.appInfo.applicationVersion + '</td></tr>' +
+                                 '<tr><td>Miljø:</td><td>' + $scope.appInfo.environment.toUpperCase() + '</td></tr>' +
+                                 '<tr><td>Vertsmaskin:</td><td>' + $scope.appInfo.hostName + '</td></tr></table>')
+                    .ariaLabel('Detaljer om TPS-forvalteren')
+                    .ok('OK')
+                    .clickOutsideToClose(true);
+                $mdDialog.show(confirm);
+            };
+
+            appInfoService.getInfo().then(function (result) {
+                $scope.appInfo = result.data;
+            }, function (error) {
+                 utilsService.showAlertError(error);
+            });
         }]);
