@@ -17,8 +17,8 @@ public class ApplicationStarter {
 
         TestCertificates.setupKeyAndTrustStore();
 
-        System.setProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME, "srvtps-vedlikeho_u");
-        System.setProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD, "DxXwbjQfV3C7K9d");
+        System.setProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME, "srvtps-forvalter_u");
+        System.setProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD, "srvBg3VB1FsrfEN");
 
         SpringApplication.run(LocalApplicationConfig.class, args);
     }
