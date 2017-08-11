@@ -5,38 +5,21 @@
             {{gruppe.beskrivelse}}
             <h3 style="margin-top: 30px; margin-bottom: 10px;">Detaljer</h3>
             <div layout="row" flex="100" flex>
-                <div layout="column" flex="30">
-                    Opprettet dato:
-                </div>
-                <div layout="column" flex="30">
-                    {{gruppe.opprettetDato | date:'dd-MM-yyyy HH:mm:ss'}}
-                </div>
+                <div flex="35">Opprettet&nbsp;dato:</div>
+                <div>{{gruppe.opprettetDato | date:'dd-MM-yyyy HH:mm:ss'}}</div>
             </div>
             <div layout="row" flex="100">
-                <div layout="column" flex="30">
-                    Opprettet av:
-                </div>
-                <div layout="column" flex="30">
-                    {{gruppe.opprettetAv}}
-                </div>
+                <div flex="35">Opprettet&nbsp;av:</div>
+                <div>{{gruppe.opprettetAv}}</div>
             </div>
             <div layout="row" flex="100">
-                <div layout="column" flex="30">
-                    Endret dato:
-                </div>
-                <div layout="column" flex="30">
-                    {{gruppe.endretDato | date:'dd-MM-yyyy HH:mm:ss'}}
-                </div>
+                <div flex="35">Endretflex&nbsp;dato:</div>
+                <div>{{gruppe.endretDato | date:'dd-MM-yyyy HH:mm:ss'}}</div>
             </div>
-            <div layout="row">
-                <div layout="column" flex="30">
-                    Endret av:
-                </div>
-                <div layout="column" flex="30">
-                    {{gruppe.endretAv}}
-                </div>
+            <div layout="row" flex="100">
+                <div flex="35">Endret&nbsp;av:</div>
+                <div>{{gruppe.endretAv}}</div>
             </div>
-            <br><br>
         </md-card-content>
     </md-card>
 </div>
