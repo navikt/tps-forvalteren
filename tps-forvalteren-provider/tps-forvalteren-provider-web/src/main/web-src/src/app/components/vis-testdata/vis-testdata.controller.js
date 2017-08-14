@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
-        'headerService', '$location',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
+        'headerService', '$location', '$filter',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location, $filter) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -470,6 +470,21 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     $scope.visEndret = false;
                     locationService.redirectUrl(next.url, current);
                 });
+            };
+
+            $scope.endretFornavn = function (index) {
+                $scope.personer[index].fornavn = $filter('titlecase')($scope.personer[index].fornavn);
+                $scope.endret(index);
+            };
+
+            $scope.endretMellomnavn = function (index) {
+                $scope.personer[index].mellomnavn = $filter('titlecase')($scope.personer[index].mellomnavn);
+                $scope.endret(index);
+            };
+
+            $scope.endretEtternavn = function (index) {
+                $scope.personer[index].etternavn = $filter('titlecase')($scope.personer[index].etternavn);
+                $scope.endret(index);
             };
 
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
