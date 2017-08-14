@@ -11,7 +11,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.kommuner = [];
             $scope.postnummer = [];
 
-            var gruppeId = $location.url().match(/\d+/g);
+            $scope.gruppeId = $location.url().match(/\d+/g);
 
             var setHeaderButtons = function (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
@@ -19,7 +19,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
-                        locationService.redirectToOpprettTestdata(gruppeId);
+                        locationService.redirectToOpprettTestdata($scope.gruppeId);
                     }
                 }, {
                     text: 'Send til TPS',
@@ -72,7 +72,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             .ok('OK')
                             .cancel('Avbryt');
                         $mdDialog.show(confirm).then(function () {
-                            testdataService.sletteTestgruppe(gruppeId).then(
+                            testdataService.sletteTestgruppe($scope.gruppeId).then(
                                 function () {
                                     locationService.redirectToTestgruppe();
                                 }
@@ -104,7 +104,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var hentTestpersoner = function () {
                 $scope.personer = undefined;
-                testdataService.getTestpersoner(gruppeId).then(
+                testdataService.getTestpersoner($scope.gruppeId).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.personer.length);
