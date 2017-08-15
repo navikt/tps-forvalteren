@@ -4,7 +4,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             var gruppeId = $location.url().match(/\d+/g)[0];
 
-            var miljoer = serviceRutineFactory.getEnvironments();
+            var miljoer = serviceRutineFactory.getEnvironments().environments;
             $scope.showSpinner = false;
             $scope.valgt_u_miljoer = [];
             $scope.valgt_t_miljoer = [];

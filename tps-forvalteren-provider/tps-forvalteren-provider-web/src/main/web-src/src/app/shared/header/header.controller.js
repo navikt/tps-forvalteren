@@ -29,14 +29,7 @@ angular.module('tps-forvalteren')
 
             $scope.isRoot = locationService.isRoot();
 
-            var environment = $scope.$resolve.environmentsPromise;
-            var prodEnvironment = false;
-            for (i in environment) {
-                if (environment[i] == 'p') {
-                    prodEnvironment = true;
-                }
-            }
-            $scope.visTestdataKnapp = !prodEnvironment;
+            $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
 
             $scope.om = function () {
                 var confirm = $mdDialog.confirm()

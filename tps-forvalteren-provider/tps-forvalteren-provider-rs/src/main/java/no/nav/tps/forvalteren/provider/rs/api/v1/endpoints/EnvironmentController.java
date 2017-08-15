@@ -1,19 +1,18 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.domain.service.environment.Environment;
 import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 
 @RestController
@@ -30,7 +29,6 @@ public class EnvironmentController {
 
     @Value("${tps.forvalteren.production-mode}")
     private boolean currentEnvironmentIsProd;
-
     /**
      * Get a set of available environments from Vera
      *
@@ -39,16 +37,13 @@ public class EnvironmentController {
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getEnvironments")})
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
-    public Set<String> getEnvironments() {
-        if(currentEnvironmentIsProd){
-            Set<String> environments = new HashSet<>();
-            environments.add("p");
-            return environments;
-        } else {
-            Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
-            environments = filterEnvironmentsOnDeployedEnvironment.execute(environments);
-            return environments;
-        }
-    }
+    public Environment getEnvironments() {
+        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
 
+        Environment environment = new Environment();
+        environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
+        environment.setProductionMode(currentEnvironmentIsProd);
+
+        return environment;
+    }
 }
