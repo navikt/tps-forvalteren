@@ -19,8 +19,12 @@ public class SavePersonListService {
     @Autowired
     private AdresseRepository adresseRepository;
 
+    @Autowired
+    private UppercaseDataInPerson uppercaseNamesInPerson;
+
     public void execute(List<Person> personer) {
         for (Person person : personer) {
+            uppercaseNamesInPerson.execute(person);
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {
                     adr.setPerson(person);
