@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.skd.utils.PersonToSkdParametersMapper;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,6 @@ public class SkdCreatePersoner {
 
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
-
-    @Autowired
-    private GetEnvironments getEnvironmentsCommand;
 
     public void execute(List<Person> personer, List<String> environments){
         List<String> identer = ekstraherIdenterFraPerson(personer);
