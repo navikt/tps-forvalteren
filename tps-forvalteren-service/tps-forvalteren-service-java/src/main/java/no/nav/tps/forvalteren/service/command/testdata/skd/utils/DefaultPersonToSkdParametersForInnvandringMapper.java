@@ -49,46 +49,7 @@ public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonT
         skdParams.put(SkdConstants.SLEKTSNAVN, person.getEtternavn());
         skdParams.put(SkdConstants.STATSBORGERSKAP, person.getStatsborgerskap());
 
-        /* Boadresse */
-        Adresse boadresse = person.getBoadresse();
-        if(person.getBoadresse() != null) {
-            if (boadresse instanceof Matrikkeladresse) {
-                skdParams.put("T1-GATE-GAARD", ((Matrikkeladresse) boadresse).getGardsnr());
-                skdParams.put("T1-HUS-BRUK", ((Matrikkeladresse) boadresse).getBruksnr());
-                skdParams.put("T1-BOKSTAV-FESTENR", ((Matrikkeladresse) boadresse).getFestenr());
-                skdParams.put("T1-UNDERNR", ((Matrikkeladresse) boadresse).getUndernr());
-                skdParams.put("T1-ADRESSENAVN", ((Matrikkeladresse) boadresse).getMellomnavn());
-            } else {
-                skdParams.put("T1-GATE-GAARD",((Gateadresse) boadresse).getGatekode());
-                skdParams.put("T1-HUS-BRUK",((Gateadresse) boadresse).getHusnummer());
-                String adresse = ((Gateadresse) boadresse).getAdresse();
-                if(adresse != null) {
-                    int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
-                    skdParams.put("T1-ADRESSENAVN", ((Gateadresse) boadresse).getAdresse().substring(0,lengAdr));
-                }
-            }
-            skdParams.put("T1-KOMMUNENUMMER", boadresse.getKommunenr());
-            skdParams.put("T1-POSTNUMMER", boadresse.getPostnr());
-
-            LocalDateTime flytteDato = boadresse.getFlyttedato();
-            if(flytteDato != null){
-                String yearFlytt = String.valueOf(flytteDato.getYear());
-                String monthFlytt = formaterDato(flytteDato.getMonthValue());
-                String dayFlytt = formaterDato(flytteDato.getDayOfMonth());
-                String yyyyMMddFlytt = yearFlytt + monthFlytt + dayFlytt;
-                skdParams.put("T1-FLYTTEDATO-ADR", yyyyMMddFlytt);
-            }
-            skdParams.put("T1-ADRESSETYPE", "O");
-        }
-
-        /* Postadresse */
-        if(person.getPostadresse() != null && !person.getPostadresse().isEmpty()){
-            Postadresse postadresse = person.getPostadresse().get(0);
-            skdParams.put(SkdConstants.POSTADRESSE_ADR_1, postadresse.getPostLinje1());
-            skdParams.put(SkdConstants.POSTADRESSE_ADR_2, postadresse.getPostLinje2());
-            skdParams.put(SkdConstants.POSTADRESSE_ADR_3, postadresse.getPostLinje3());
-            skdParams.put(SkdConstants.POSTADRESSE_LAND, postadresse.getPostLand());
-        }
+        setAdresse(skdParams, person);
 
         LocalDateTime regDato = person.getRegdato();
         String year = String.valueOf(regDato.getYear());
@@ -111,6 +72,50 @@ public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonT
         skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
 
         addDefaultParam(skdParams);
+    }
+
+    private void setAdresse(Map<String, String> skdParams, Person person) {
+
+    /* Boadresse */
+        Adresse boadresse = person.getBoadresse();
+        if (person.getBoadresse() != null) {
+            if (boadresse instanceof Matrikkeladresse) {
+                skdParams.put("T1-GATE-GAARD", ((Matrikkeladresse) boadresse).getGardsnr());
+                skdParams.put("T1-HUS-BRUK", ((Matrikkeladresse) boadresse).getBruksnr());
+                skdParams.put("T1-BOKSTAV-FESTENR", ((Matrikkeladresse) boadresse).getFestenr());
+                skdParams.put("T1-UNDERNR", ((Matrikkeladresse) boadresse).getUndernr());
+                skdParams.put("T1-ADRESSENAVN", ((Matrikkeladresse) boadresse).getMellomnavn());
+            } else {
+                skdParams.put("T1-GATE-GAARD", ((Gateadresse) boadresse).getGatekode());
+                skdParams.put("T1-HUS-BRUK", ((Gateadresse) boadresse).getHusnummer());
+                String adresse = ((Gateadresse) boadresse).getAdresse();
+                if (adresse != null) {
+                    int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
+                    skdParams.put("T1-ADRESSENAVN", ((Gateadresse) boadresse).getAdresse().substring(0, lengAdr));
+                }
+            }
+            skdParams.put("T1-KOMMUNENUMMER", boadresse.getKommunenr());
+            skdParams.put("T1-POSTNUMMER", boadresse.getPostnr());
+
+            LocalDateTime flytteDato = boadresse.getFlyttedato();
+            if (flytteDato != null) {
+                String yearFlytt = String.valueOf(flytteDato.getYear());
+                String monthFlytt = formaterDato(flytteDato.getMonthValue());
+                String dayFlytt = formaterDato(flytteDato.getDayOfMonth());
+                String yyyyMMddFlytt = yearFlytt + monthFlytt + dayFlytt;
+                skdParams.put("T1-FLYTTEDATO-ADR", yyyyMMddFlytt);
+            }
+            skdParams.put("T1-ADRESSETYPE", "O");
+        }
+
+        /* Postadresse */
+        if (person.getPostadresse() != null && !person.getPostadresse().isEmpty()) {
+            Postadresse postadresse = person.getPostadresse().get(0);
+            skdParams.put(SkdConstants.POSTADRESSE_ADR_1, postadresse.getPostLinje1());
+            skdParams.put(SkdConstants.POSTADRESSE_ADR_2, postadresse.getPostLinje2());
+            skdParams.put(SkdConstants.POSTADRESSE_ADR_3, postadresse.getPostLinje3());
+            skdParams.put(SkdConstants.POSTADRESSE_LAND, postadresse.getPostLand());
+        }
     }
 
     private void addDefaultParam(Map<String, String> skdParams) {
