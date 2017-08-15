@@ -13,7 +13,8 @@ public class SkdFeltDefinisjon {
     private int antallBytesAvsatt;
     private int fraByte;
     private int tilByte;
-    String verdi;
+    private String verdi;
+    private boolean isValueLastInSkdField = false;
 
     public SkdFeltDefinisjon(String nokkelNavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt,
                              int fraByte, int tilByte){
@@ -30,6 +31,14 @@ public class SkdFeltDefinisjon {
         this.defaultVerdi = defaultVerdi;
         this.idRekkefolge = idRekkefolge;
         this.antallBytesAvsatt = antallByesAvsatt;
+    }
+
+    public SkdFeltDefinisjon(String nokkelNavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt, boolean isValueLastInSkdField){
+        this.nokkelNavn = nokkelNavn;
+        this.defaultVerdi = defaultVerdi;
+        this.idRekkefolge = idRekkefolge;
+        this.antallBytesAvsatt = antallByesAvsatt;
+        this.isValueLastInSkdField = isValueLastInSkdField;
     }
 
     public SkdFeltDefinisjon(){}
