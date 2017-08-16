@@ -195,8 +195,26 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     fixDatoForDatepicker(originalPersoner[i]);
                     fixKommunenr(originalPersoner[i]);
                     fixPostnummer(originalPersoner[i]);
+                    fixCase(originalPersoner[i]);
                 }
             };
+
+            function fixCase(person) {
+                person.fornavn = $filter('titlecase')(person.fornavn);
+                if (person.mellomnavn) {
+                    person.mellomnavn = $filter('titlecase')(person.mellomnavn);
+                }
+                person.etternavn = $filter('titlecase')(person.etternavn);
+                if (person.postLinje1) {
+                    person.postlinje1 = $filter('titlecase')(person.postlinje1);
+                }
+                if (person.postLinje2) {
+                    person.postlinje2 = $filter('titlecase')(person.postlinje2);
+                }
+                if (person.postLinje3) {
+                    person.postlinje3 = $filter('titlecase')(person.postlinje2);
+                }
+            }
 
             var prepPersoner = function () {
                 for (var index = 0; index < $scope.personer.length; index++) {
@@ -210,8 +228,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 if (person.boadresse) {
                     if (person.boadresse.adressetype === 'GATE') {
                         person.gateadresse = angular.copy(person.boadresse);
+                        person.gateadresse.gateadresse = $filter('titlecase')(person.gateadresse.gateadresse);
+                        person.gateadresse.husnummer = $filter('uppercase')(person.gateadresse.husnummer);
                     } else if (person.boadresse.adressetype === 'MATR') {
                         person.matrikkeladresse = angular.copy(person.boadresse);
+                        person.matrikkeladresse.mellomnavn = $filter('titlecase')(person.matrikkeladresse.mellomnavn);
                     }
                 } else {
                     person.boadresse = {};

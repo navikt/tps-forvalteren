@@ -2,6 +2,9 @@
 angular.module('tps-forvalteren.filter')
     .filter('titlecase', function() {
     return function (input) {
+        if (!input) {
+            return;
+        }
         var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;
 
         input = input.toLowerCase();
