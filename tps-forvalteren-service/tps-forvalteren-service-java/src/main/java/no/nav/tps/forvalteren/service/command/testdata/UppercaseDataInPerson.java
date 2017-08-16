@@ -21,6 +21,7 @@ public class UppercaseDataInPerson {
             person.setMellomnavn(person.getMellomnavn().toUpperCase());
         }
 
+        /* Postadresse */
         if(person.getPostadresse() != null && !person.getPostadresse().isEmpty()){
             Postadresse postadresse = person.getPostadresse().get(0);
             if(postadresse.getPostLinje1() != null){
@@ -35,7 +36,7 @@ public class UppercaseDataInPerson {
             person.setPostadresse(Arrays.asList(postadresse));
         }
 
-
+        /* Gateadresse og Matrikkeladresse */
         Adresse boadresse = person.getBoadresse();
         if(person.getBoadresse() != null) {
             if (boadresse instanceof Matrikkeladresse) {
@@ -45,6 +46,9 @@ public class UppercaseDataInPerson {
             } else {
                 if( ((Gateadresse)boadresse).getAdresse() != null ){
                     ((Gateadresse)boadresse).setAdresse( ((Gateadresse) boadresse).getAdresse().toUpperCase());
+                }
+                if(((Gateadresse) boadresse).getHusnummer() != null) {
+                    ((Gateadresse)boadresse).setHusnummer( ((Gateadresse) boadresse).getHusnummer().toUpperCase());
                 }
             }
         }
