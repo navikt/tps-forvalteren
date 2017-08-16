@@ -487,6 +487,36 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.endret(index);
             };
 
+            $scope.endretGatenavn = function (index) {
+                $scope.personer[index].gateadresse.gateadresse = $filter('titlecase')($scope.personer[index].gateadresse.gateadresse);
+                $scope.endret(index);
+            };
+
+            $scope.endretHusnummer = function (index) {
+                $scope.personer[index].gateadresse.husnummer = $filter('uppercase')($scope.personer[index].gateadresse.husnummer );
+                $scope.endret(index);
+            };
+
+            $scope.endretMatrikkelnavn = function (index) {
+                $scope.personer[index].matrikkeladresse.mellomnavn = $filter('titlecase')($scope.personer[index].matrikkeladresse.mellomnavn );
+                $scope.endret(index);
+            };
+
+            $scope.endretPostlinje1 = function (index) {
+                $scope.personer[index].postadresse[0].postLinje1 = $filter('titlecase')($scope.personer[index].postadresse[0].postLinje1);
+                $scope.endret(index);
+            };
+
+            $scope.endretPostlinje2 = function (index) {
+                $scope.personer[index].postadresse[0].postLinje2 = $filter('titlecase')($scope.personer[index].postadresse[0].postLinje2);
+                $scope.endret(index);
+            };
+
+            $scope.endretPostlinje3 = function (index) {
+                $scope.personer[index].postadresse[0].postLinje3 = $filter('titlecase')($scope.personer[index].postadresse[0].postLinje3);
+                $scope.endret(index);
+            };
+
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
