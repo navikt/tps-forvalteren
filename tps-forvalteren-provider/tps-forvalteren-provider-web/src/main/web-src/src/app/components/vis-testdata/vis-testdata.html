@@ -69,7 +69,7 @@
                             </md-checkbox>
                             <div flex="15">{{person.ident}} ({{person.identtype}})</div>
                             <div flex="50">
-                                {{person.fornavn}} {{person.mellomnavn}} {{person.etternavn}}
+                                {{person.fornavn | titlecase}} {{person.mellomnavn | titlecase}} {{person.etternavn | titlecase}}
                             </div>
                             <div flex="20">{{getKjonn(person.kjonn)}}</div>
                             <div flex></div>
