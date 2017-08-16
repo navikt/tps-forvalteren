@@ -24,23 +24,20 @@
                         <u class="tps-vk-header-route-text" ng-click="openGT()"> Geografisk tilknytning </u>
                     </div>
 
-                    <div flex-gt-xs="5"></div>
-
                     <div layout-align="center" ng-if="visTestdataKnapp">
                         <u class="tps-vk-header-route-text" ng-click="openVisTestdata()"> Testdata </u>
                     </div>
                 </div>
 
                 <!-- Upper right name and logout button -->
-                <div class="tps-vk-header-default-container" flex="25" layout="row" layout-align="end center">
-                    <div class="tps-vk-header-route-text" style="border-color: #cf412a">
-                        <div class="md-body-1">Bruker: {{currentUser.username}}</div>
-                    </div>
+                <div class="tps-vk-header-default-container" flex="50" layout="row" layout-align="end center">
+                    <u class="tps-vk-header-route-text" ng-click="om()">Om</u>
 
-                    <div flex-gt-xs="5"></div>
+                    <div class="tps-vk-header-medium">Miljø:&nbsp;{{appInfo.environment | uppercase}}</div>
+
+                    <div class="tps-vk-header-medium">Bruker:&nbsp;{{currentUser.username}}</div>
 
                     <u class="tps-vk-header-route-text" ng-click="logout()">Logg ut</u>
-                    <div flex-gt-xs="5"></div>
                 </div>
 
             </div>

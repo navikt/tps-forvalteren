@@ -10,5 +10,4 @@ public class TpsRequestContext {
 
     private User user;
     private String environment;
-
 }

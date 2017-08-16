@@ -259,7 +259,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 }
 
                 if (environmentsPromise) {
-                    $scope.environments = utilsService.sortEnvironments(serviceRutineFactory.getEnvironments());
+                    $scope.environments = serviceRutineFactory.getEnvironments();
                     apiError = false;
                 } else {
                     apiError = true;

@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', 'testdataService', 'utilsService', 'locationService', '$mdDialog', '$rootScope',
-        'headerService', '$location',
-        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location) {
+        'headerService', '$location', '$filter',
+        function ($scope, testdataService, utilsService, locationService, $mdDialog, $rootScope, headerService, $location, $filter) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -11,7 +11,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.kommuner = [];
             $scope.postnummer = [];
 
-            var gruppeId = $location.url().match(/\d+/g);
+            $scope.gruppeId = $location.url().match(/\d+/g);
 
             var setHeaderButtons = function (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
@@ -19,7 +19,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
-                        locationService.redirectToOpprettTestdata(gruppeId);
+                        locationService.redirectToOpprettTestdata($scope.gruppeId);
                     }
                 }, {
                     text: 'Send til TPS',
@@ -72,7 +72,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             .ok('OK')
                             .cancel('Avbryt');
                         $mdDialog.show(confirm).then(function () {
-                            testdataService.sletteTestgruppe(gruppeId).then(
+                            testdataService.sletteTestgruppe($scope.gruppeId).then(
                                 function () {
                                     locationService.redirectToTestgruppe();
                                 }
@@ -104,7 +104,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             var hentTestpersoner = function () {
                 $scope.personer = undefined;
-                testdataService.getTestpersoner(gruppeId).then(
+                testdataService.getTestpersoner($scope.gruppeId).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.personer.length);
@@ -195,8 +195,26 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     fixDatoForDatepicker(originalPersoner[i]);
                     fixKommunenr(originalPersoner[i]);
                     fixPostnummer(originalPersoner[i]);
+                    fixCase(originalPersoner[i]);
                 }
             };
+
+            function fixCase(person) {
+                person.fornavn = $filter('titlecase')(person.fornavn);
+                if (person.mellomnavn) {
+                    person.mellomnavn = $filter('titlecase')(person.mellomnavn);
+                }
+                person.etternavn = $filter('titlecase')(person.etternavn);
+                if (person.postLinje1) {
+                    person.postlinje1 = $filter('titlecase')(person.postlinje1);
+                }
+                if (person.postLinje2) {
+                    person.postlinje2 = $filter('titlecase')(person.postlinje2);
+                }
+                if (person.postLinje3) {
+                    person.postlinje3 = $filter('titlecase')(person.postlinje2);
+                }
+            }
 
             var prepPersoner = function () {
                 for (var index = 0; index < $scope.personer.length; index++) {
@@ -210,8 +228,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 if (person.boadresse) {
                     if (person.boadresse.adressetype === 'GATE') {
                         person.gateadresse = angular.copy(person.boadresse);
+                        person.gateadresse.gateadresse = $filter('titlecase')(person.gateadresse.gateadresse);
+                        person.gateadresse.husnummer = $filter('uppercase')(person.gateadresse.husnummer);
                     } else if (person.boadresse.adressetype === 'MATR') {
                         person.matrikkeladresse = angular.copy(person.boadresse);
+                        person.matrikkeladresse.mellomnavn = $filter('titlecase')(person.matrikkeladresse.mellomnavn);
                     }
                 } else {
                     person.boadresse = {};
@@ -470,6 +491,51 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     $scope.visEndret = false;
                     locationService.redirectUrl(next.url, current);
                 });
+            };
+
+            $scope.endretFornavn = function (index) {
+                $scope.personer[index].fornavn = $filter('titlecase')($scope.personer[index].fornavn);
+                $scope.endret(index);
+            };
+
+            $scope.endretMellomnavn = function (index) {
+                $scope.personer[index].mellomnavn = $filter('titlecase')($scope.personer[index].mellomnavn);
+                $scope.endret(index);
+            };
+
+            $scope.endretEtternavn = function (index) {
+                $scope.personer[index].etternavn = $filter('titlecase')($scope.personer[index].etternavn);
+                $scope.endret(index);
+            };
+
+            $scope.endretGatenavn = function (index) {
+                $scope.personer[index].gateadresse.gateadresse = $filter('titlecase')($scope.personer[index].gateadresse.gateadresse);
+                $scope.endret(index);
+            };
+
+            $scope.endretHusnummer = function (index) {
+                $scope.personer[index].gateadresse.husnummer = $filter('uppercase')($scope.personer[index].gateadresse.husnummer );
+                $scope.endret(index);
+            };
+
+            $scope.endretMatrikkelnavn = function (index) {
+                $scope.personer[index].matrikkeladresse.mellomnavn = $filter('titlecase')($scope.personer[index].matrikkeladresse.mellomnavn );
+                $scope.endret(index);
+            };
+
+            $scope.endretPostlinje1 = function (index) {
+                $scope.personer[index].postadresse[0].postLinje1 = $filter('titlecase')($scope.personer[index].postadresse[0].postLinje1);
+                $scope.endret(index);
+            };
+
+            $scope.endretPostlinje2 = function (index) {
+                $scope.personer[index].postadresse[0].postLinje2 = $filter('titlecase')($scope.personer[index].postadresse[0].postLinje2);
+                $scope.endret(index);
+            };
+
+            $scope.endretPostlinje3 = function (index) {
+                $scope.personer[index].postadresse[0].postLinje3 = $filter('titlecase')($scope.personer[index].postadresse[0].postLinje3);
+                $scope.endret(index);
             };
 
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
