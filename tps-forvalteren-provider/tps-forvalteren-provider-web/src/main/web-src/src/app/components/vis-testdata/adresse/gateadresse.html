@@ -2,7 +2,7 @@
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Gatenavn</md-tooltip>
         <label>Gatenavn</label>
-        <input name="gateadresse" ng-required="false" md-maxlength="50"
+        <input name="gateadresse" ng-required="false" md-maxlength="25"
                ng-model="person.gateadresse.gateadresse"
                ng-change="endretGatenavn($index)"/>
         <div ng-messages="requestForm.gateadresse.$error"
