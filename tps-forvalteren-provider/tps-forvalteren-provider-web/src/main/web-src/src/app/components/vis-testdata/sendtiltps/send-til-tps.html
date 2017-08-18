@@ -9,37 +9,36 @@
                     Velg alle
                 </md-checkbox>
                 <div layout="row" layout-align="space-between">
-                    <div layout="column" ng-show="u_miljoer.length > 0">
+                    <div layout="column" ng-hide="u_miljoer.length == 0">
                         <h3>U-miljø</h3>
                         <md-checkbox ng-repeat="u_miljoe in u_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_u_miljoer[$index]" ng-change="oppdaterVelgAlle()">
-                            {{u_miljoe}}
+                            {{u_miljoe | uppercase}}
                         </md-checkbox>
                     </div>
-                    <div layout="column" ng-show="t_miljoer.length > 0">
+                    <div layout="column" ng-hide="t_miljoer.length == 0">
                         <h3>T-miljø</h3>
                         <md-checkbox ng-repeat="t_miljoe in t_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_t_miljoer[$index]" ng-change="oppdaterVelgAlle()">
-                            {{t_miljoe}}
+                            {{t_miljoe | uppercase}}
                         </md-checkbox>
                     </div>
-                    <div layout="column" ng-show="q_miljoer.length > 0">
+                    <div layout="column" ng-hide="q_miljoer.length == 0">
                         <h3>Q-miljø</h3>
                         <md-checkbox ng-repeat="q_miljoe in q_miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_q_miljoer[$index]" ng-change="oppdaterVelgAlle()">
-                            {{q_miljoe}}
+                            {{q_miljoe | uppercase}}
                         </md-checkbox>
                     </div>
-                    <div layout="column" ng-show="p_miljoer.length > 0">
+                    <div layout="column" ng-hide="p_miljoer.length == 0">
                         <h3>P-miljø</h3>
                         <md-checkbox ng-repeat="p_miljoer in p-miljoer track by $index" aria-label="Velg"
                                      ng-model="valgt_p_miljoer[$index]" ng-change="oppdaterVelgAlle()">
-                            {{p_miljoe}}
+                            {{p_miljoe | uppercase}}
                         </md-checkbox>
                     </div>
                 </div>
             </md-dialog-content>
-
             <md-dialog-actions class="testdata-footer">
                 <md-input-container class="testdata-input-row" aria-label="Lukk">
                     <md-tooltip md-direction="top">Lukk dialog</md-tooltip>
@@ -47,7 +46,9 @@
                 </md-input-container>
                 <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
                     <md-tooltip md-direction="top">Send inn til TPS</md-tooltip>
-                    <md-button class="md-button md-raised md-accent" ng-click="send()">Send inn
+                    <md-button class="md-button md-raised md-accent"
+                               ng-disabled="!miljoeValgt"
+                               ng-click="send()">Send inn
                     </md-button>
                 </md-input-container>
             </md-dialog-actions>

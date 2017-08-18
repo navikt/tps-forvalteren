@@ -86,7 +86,7 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                 if(environments.status !== undefined){
                     utilsService.showAlertError(environments);
                 } else {
-                    $scope.environments = utilsService.sortEnvironments(environments);
+                    $scope.environments = utilsService.sortEnvironments(environments.environments);
                 }
             };
 

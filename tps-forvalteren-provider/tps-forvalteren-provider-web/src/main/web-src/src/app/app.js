@@ -222,6 +222,9 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     resolve: {
                         user: ['authenticationService', function (authenticationService) {
                             return authenticationService.loadUser();
+                        }],
+                        environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                            return serviceRutineFactory.loadFromServerEnvironments();
                         }]
                     },
                     views: {
@@ -275,12 +278,12 @@ app.filter('startFromKey', function () {
         var outputObject = {};
         var reachedKey = false;
         for(var key in inputObject){
-           if(key == startKey){
-               reachedKey = true;
-           }
-           if(reachedKey){
-               outputObject[key] = inputObject[key];
-           }
+            if(key == startKey){
+                reachedKey = true;
+            }
+            if(reachedKey){
+                outputObject[key] = inputObject[key];
+            }
         }
         return outputObject;
     };
@@ -302,7 +305,7 @@ app.filter('removeDuplicateKeys', function () {
                 jsonObject.fieldData = res[0];
             }
             if(!objectComp.hasOwnProperty(jsonObject.fieldData) && !objectComp.hasOwnProperty()){
-               outputObject[jsonObject.fieldData] = inputObject[jsonObject.fieldData];
+                outputObject[jsonObject.fieldData] = inputObject[jsonObject.fieldData];
             }
         }
         return outputObject;
@@ -310,13 +313,13 @@ app.filter('removeDuplicateKeys', function () {
 });
 
 app.filter('notEmpty', function (){
-  return function (inputObject) {
-      var outputObject = {};
-      for(var key in inputObject){
-          if(!angular.equals(inputObject[key], {})){
-              outputObject[key] = inputObject[key];
-          }
-      }
-      return outputObject;
-  };
+    return function (inputObject) {
+        var outputObject = {};
+        for(var key in inputObject){
+            if(!angular.equals(inputObject[key], {})){
+                outputObject[key] = inputObject[key];
+            }
+        }
+        return outputObject;
+    };
 });

@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.vis-testdata.endregruppe', ['ngMaterial'])
-    .controller('EndreGruppeCtrl', ['$scope', '$mdDialog', 'testdataService', '$location', 'headerService', 'utilsService',
-        function ($scope, $mdDialog, testdataService, $location, headerService, utilsService) {
+    .controller('EndreGruppeCtrl', ['$scope', '$mdDialog', 'testdataService', '$location', 'headerService', 'utilsService', '$rootScope',
+        function ($scope, $mdDialog, testdataService, $location, headerService, utilsService, $rootScope) {
 
             var gruppeId = $location.url().match(/\d+/g);
 
@@ -44,6 +44,7 @@ angular.module('tps-forvalteren.vis-testdata.endregruppe', ['ngMaterial'])
                     function () {
                         $mdDialog.hide();
                         headerService.setHeader($scope.gruppe.navn, true);
+                        $rootScope.$broadcast('gruppeEvent', 'Gruppe er oppdatert');
                     },
                     function (error) {
                         $mdDialog.hide();

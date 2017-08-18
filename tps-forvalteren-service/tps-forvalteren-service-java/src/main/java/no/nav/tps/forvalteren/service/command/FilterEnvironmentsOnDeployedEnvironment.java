@@ -17,18 +17,18 @@ public class FilterEnvironmentsOnDeployedEnvironment {
             case 'u':
                 return EnvironmentsFilter.create()
                         .include("u*")
-                        //.include("t*")
+//                        .include("t*")
                         .filter(environments);
             case 't':
                 return EnvironmentsFilter.create()
-                        //.include("u*")
+//                        .include("u*")
                         .include("t*")
-                        //.include("q*")
+//                        .include("q*")
                         .filter(environments);
             case 'q':
                 return EnvironmentsFilter.create()
-                        //.include("q*")
-                        .include("t*")
+                        .include("q*")
+//                        .include("t*")
                         .filter(environments);
             case 'p':
                 return EnvironmentsFilter.create()
@@ -37,7 +37,7 @@ public class FilterEnvironmentsOnDeployedEnvironment {
             default:
                 return EnvironmentsFilter.create()
                         .include("u*")
-                        //.include("t*")
+//                        .include("t*")
                         .filter(environments);
         }
     }

@@ -86,9 +86,9 @@ public class SkdFelterContainerTrans1 {
 
         skdFelter.add(new SkdFeltDefinisjon(REG_DATO_ADR,"00000000",33,8));
         skdFelter.add(new SkdFeltDefinisjon(FLYTTEDATO_ADR,"00000000",34,8));
-        skdFelter.add(new SkdFeltDefinisjon("T1-KOMMUNEENUMMER","0000",35,4));
+        skdFelter.add(new SkdFeltDefinisjon("T1-KOMMUNENUMMER","0000",35,4));
         skdFelter.add(new SkdFeltDefinisjon("T1-GATE-GAARD","00000",36,5));
-        skdFelter.add(new SkdFeltDefinisjon("T1-HUS-BRUK","0000",37,4));
+        skdFelter.add(new SkdFeltDefinisjon("T1-HUS-BRUK","0000",37,4, true));
         skdFelter.add(new SkdFeltDefinisjon("T1-BOKSTAV-FESTENR","0000",38,4));
         skdFelter.add(new SkdFeltDefinisjon("T1-UNDERNR","000",39,3));
         skdFelter.add(new SkdFeltDefinisjon("T1-ADRESSENAVN", WHITESPACE_25_STK,40,25));

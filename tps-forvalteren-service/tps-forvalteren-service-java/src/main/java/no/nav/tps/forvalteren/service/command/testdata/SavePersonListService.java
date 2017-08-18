@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
@@ -26,6 +25,9 @@ public class SavePersonListService {
 
     @Autowired
     private RelasjonRepository relasjonRepository;
+
+    @Autowired
+    private UppercaseDataInPerson uppercaseDataInPerson;
 
     public void execute(List<Person> personer) {
         for (Person person : personer) {
@@ -60,6 +62,7 @@ public class SavePersonListService {
 //                }
 //            }
 
+            uppercaseDataInPerson.execute(person);
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {
                     adr.setPerson(person);

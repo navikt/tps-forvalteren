@@ -16,12 +16,5 @@ angular.module('tps-forvalteren.welcome',[])
                 locationService.redirectToTestgruppe();
             };
 
-            var environment = $scope.$resolve.environmentsPromise;
-            var prodEnvironment = false;
-            for (i in environment) {
-                if (environment[i] == 'p') {
-                    prodEnvironment = true;
-                }
-            }
-            $scope.visTestdataKnapp = !prodEnvironment;
+            $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
         }]);

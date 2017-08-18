@@ -49,7 +49,7 @@ angular.module('tps-forvalteren.service')
                     $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
                 }
                 else {
-                  $state.go(url.substr(1)); // Ta bort ledende "/"
+                    $state.go(url.substr(1)); // Ta bort ledende "/"}
                 }
             }
         };
