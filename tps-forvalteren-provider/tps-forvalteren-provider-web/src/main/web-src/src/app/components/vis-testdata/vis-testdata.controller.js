@@ -135,14 +135,16 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     person.mellomnavn = $filter('titlecase')(person.mellomnavn);
                 }
                 person.etternavn = $filter('titlecase')(person.etternavn);
-                if (person.postLinje1) {
-                    person.postlinje1 = $filter('titlecase')(person.postlinje1);
-                }
-                if (person.postLinje2) {
-                    person.postlinje2 = $filter('titlecase')(person.postlinje2);
-                }
-                if (person.postLinje3) {
-                    person.postlinje3 = $filter('titlecase')(person.postlinje2);
+                if (person.postadresse && person.postadresse[0]) {
+                    if (person.postadresse[0].postLinje1) {
+                        person.postadresse[0].postLinje1 = $filter('titlecase')(person.postadresse[0].postLinje1);
+                    }
+                    if (person.postadresse[0].postLinje2) {
+                        person.postadresse[0].postLinje2 = $filter('titlecase')(person.postadresse[0].postLinje2);
+                    }
+                    if (person.postadresse[0].postLinje3) {
+                        person.postadresse[0].postLinje3 = $filter('titlecase')(person.postadresse[0].postLinje3);
+                    }
                 }
             }
 
