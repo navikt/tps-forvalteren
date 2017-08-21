@@ -4,7 +4,7 @@
         <label>Gatenavn</label>
         <input name="gateadresse" ng-required="false" md-maxlength="25"
                ng-model="person.gateadresse.gateadresse"
-               ng-change="endretGatenavn($index)"/>
+               ng-change="endret($index)"/>
         <div ng-messages="requestForm.gateadresse.$error"
              ng-show="requestForm.gateadresse.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -16,7 +16,7 @@
         <label>Husnummer</label>
         <input name="husnummer" ng-required="false" md-maxlength="4"
                ng-model="person.gateadresse.husnummer"
-               ng-change="endretHusnummer($index)"/>
+               ng-change="endret($index)"/>
         <div ng-messages="requestForm.husnummer.$error"
              ng-show="requestForm.husnummer.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>

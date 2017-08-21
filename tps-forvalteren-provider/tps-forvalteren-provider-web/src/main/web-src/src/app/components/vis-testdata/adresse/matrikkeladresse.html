@@ -4,7 +4,7 @@
         <label>Mellomnavn</label>
         <input name="matrMellomnavn" ng-required="false" md-maxlength="25"
                ng-model="person.matrikkeladresse.mellomnavn"
-               ng-change="endretMatrikkelnavn($index)"/>
+               ng-change="endret($index)"/>
         <div ng-messages="requestForm.matrMellomnavn.$error"
              ng-show="requestForm.matrMellomnavn.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>

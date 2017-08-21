@@ -5,7 +5,7 @@
         <label>Linje 1</label>
         <input name="postLinje1" ng-required="false" md-maxlength="30"
                ng-model="person.postadresse[0].postLinje1"
-               ng-change="endretPostlinje1($index)"/>
+               ng-change="endret($index)"/>
         <div ng-messages="requestForm.postLinje1.$error"
              ng-show="requestForm.postLinje1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -17,7 +17,7 @@
         <label>Linje 2</label>
         <input name="postLinje2" ng-required="false" md-maxlength="30"
                ng-model="person.postadresse[0].postLinje2"
-               ng-change="endretPostlinje2($index)"/>
+               ng-change="endret($index)"/>
         <div ng-messages="requestForm.postLinje2.$error"
              ng-show="requestForm.postLinje2.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -29,7 +29,7 @@
         <label>Linje 3</label>
         <input name="postLinje3" ng-required="false" md-maxlength="30"
                ng-model="person.postadresse[0].postLinje3"
-               ng-change="endretPostlinje3($index)"/>
+               ng-change="endret($index)"/>
         <div ng-messages="requestForm.postLinje3.$error"
              ng-show="requestForm.postLinje3.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
