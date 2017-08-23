@@ -3,13 +3,16 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SavePersonListService {
@@ -21,46 +24,49 @@ public class SavePersonListService {
     private AdresseRepository adresseRepository;
 
     @Autowired
-    private RelasjonForAndrePersonIEnRelasjonGetter relasjonForAndrePersonIEnRelasjonGetter;
-
-    @Autowired
     private RelasjonRepository relasjonRepository;
 
     @Autowired
     private UppercaseDataInPerson uppercaseDataInPerson;
 
     public void execute(List<Person> personer) {
+
+        Set<Long> ids = new HashSet<>();
         for (Person person : personer) {
 
-//            if(person.getRelasjoner() != null && !person.getRelasjoner().isEmpty()){
-//                Person personFraDB = personRepository.findById(person.getId());
-//                List<Relasjon> personRelasjonDB = personFraDB.getRelasjoner();
-//
-//                for(Relasjon nyRelasjon : person.getRelasjoner()){
-//
-//                    boolean relasjonEksistererAllerede = false;
-//                    for(Relasjon relasjonFraDB : personRelasjonDB){
-//                        if(relasjonFraDB.getPersonRelasjonMed().getIdent().equals(nyRelasjon.getPersonRelasjonMed().getIdent()) &&
-//                           relasjonFraDB.getRelasjonTypeNavn().equals(nyRelasjon.getRelasjonTypeNavn())){
-//                            relasjonEksistererAllerede = true;
-//                            break;
-//                        }
-//                        if(nyRelasjon.getId() != null && nyRelasjon.getId() == relasjonFraDB.getId()){
-//                            relasjonEksistererAllerede = true;
-//                            break;
-//                        }
-//                    }
-//
-//                    if(relasjonEksistererAllerede){
-//                        continue;
-//                    }
-//
-//                    relasjonRepository.save(nyRelasjon);
-//
-//                    Relasjon relasjonB = relasjonForAndrePersonIEnRelasjonGetter.execute(nyRelasjon);
-//                    relasjonRepository.save(relasjonB);
-//                }
-//            }
+            Person personFraDB = personRepository.findById(person.getId());
+            if (personFraDB != null) {
+
+                // Relasjoner som skal oppdateres
+                if (person.getRelasjoner() != null) {
+                    for (Relasjon relasjonA : person.getRelasjoner()) {
+                        for (Relasjon relasjonB : personFraDB.getRelasjoner()) {
+                            if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
+                                    relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()) )) {
+                                relasjonA.setId(relasjonB.getId());
+                            }
+                        }
+                    }
+                }
+
+                // Relasjoner som skal fjernes
+                if (personFraDB.getRelasjoner() != null) {
+                    for (Relasjon relasjonA : personFraDB.getRelasjoner()) {
+                        boolean found = false;
+                        if (person.getRelasjoner() != null) {
+                            for (Relasjon relasjonB : person.getRelasjoner()) {
+                                if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
+                                        relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()) )) {
+                                    found = true;
+                                }
+                            }
+                        }
+                        if (!found) {
+                            ids.add(relasjonA.getId());
+                        }
+                    }
+                }
+            }
 
             uppercaseDataInPerson.execute(person);
             if (person.getPostadresse() != null) {
@@ -75,7 +81,7 @@ public class SavePersonListService {
                 if (personAdresseDB == null) {
                     continue;
                 }
-                adresseRepository.deleteById(personAdresseDB.getId());
+                person.getBoadresse().setId(personAdresseDB.getId());
             }
             person.setOpprettetDato(null);
             person.setOpprettetAv(null);
@@ -83,5 +89,10 @@ public class SavePersonListService {
             person.setEndretAv(null);
         }
         personRepository.save(personer);
+
+        // Sletter relasjoner etter at personer er lagret.
+        for (Long id : ids) {
+            relasjonRepository.deleteById(id);
+        }
     }
 }

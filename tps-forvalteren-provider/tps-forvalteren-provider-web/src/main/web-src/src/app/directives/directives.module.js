@@ -1,5 +1,5 @@
 
-angular.module('tps-forvalteren.directives', []);
+angular.module('tps-forvalteren.directives', ['ngMaterial']);
 
 require('./tps-input-field.directive');
 require('./tps-output-field.directive');

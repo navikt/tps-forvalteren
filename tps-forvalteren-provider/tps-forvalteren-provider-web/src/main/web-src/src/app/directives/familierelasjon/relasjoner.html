@@ -13,7 +13,9 @@
         </div>
         <div>{{ relasjon.relasjonTypeNavn | titlecase}}:&nbsp;&nbsp;&nbsp;</div>
         <div>{{ relasjon.personRelasjonMed.ident }},&nbsp;&nbsp;&nbsp;</div>
-        <div>{{ relasjon.personRelasjonMed.fornavn }} {{ relasjon.personRelasjonMed.etternavn }},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.personRelasjonMed.fornavn | titlecase }}
+            {{ relasjon.personRelasjonMed.mellomnavn | titlecase }}
+            {{ relasjon.personRelasjonMed.etternavn | titlecase }},&nbsp;&nbsp;&nbsp;</div>
         <div>{{ relasjon.personRelasjonMed.kjonn | kjonn}},&nbsp;&nbsp;&nbsp;</div>
         <div>{{ relasjon.personRelasjonMed.ident | alder}}</div>
     </div>

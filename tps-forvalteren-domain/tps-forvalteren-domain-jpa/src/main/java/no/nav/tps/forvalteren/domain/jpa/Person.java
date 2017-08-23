@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +23,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+
 @Entity
 @Getter
 @Setter
@@ -31,7 +32,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_PERSON")
-public class Person extends ChangeStamp {
+public class Person extends ChangeStamp implements Cloneable{
 
     private static final String SEQ = "T_PERSON_SEQ";
 
@@ -69,10 +70,10 @@ public class Person extends ChangeStamp {
     private LocalDateTime spesregDato;
 
     @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private Adresse boadresse;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse = new ArrayList<>();
 
     @Column(name = "REGDATO", nullable = false)
@@ -82,4 +83,16 @@ public class Person extends ChangeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Relasjon> relasjoner = new ArrayList<>();
+
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -183,5 +183,4 @@ public class TestdataController {
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         deleteGruppeById.execute(gruppeId);
     }
-
 }

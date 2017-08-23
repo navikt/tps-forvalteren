@@ -61,7 +61,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
         for(Relasjon relasjon : personRelasjoner){
             if(relasjon.getRelasjonTypeNavn().equals(RelasjonType.EKTEFELLE.getRelasjonTypeNavn())){
-                ektefelle = personRepository.findById(relasjon.getPersonIdRelasjonMed());
+                ektefelle = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
                 break;
             }
         }

@@ -8,7 +8,7 @@ angular.module('tps-forvalteren.directives')
                 index: '='
             },
             templateUrl: 'app/directives/postnummer/postnummer.html',
-            controller: ["$scope", 'kodeverkService', 'utilsService', '$timeout', function ($scope, kodeverkService, utilsService, $timeout) {
+            controller: ['$scope', 'kodeverkService', 'utilsService', '$timeout', function ($scope, kodeverkService, utilsService, $timeout) {
 
                 var poststeder = [];
 
