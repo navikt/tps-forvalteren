@@ -28,11 +28,11 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 @Getter
 @Setter
-@Builder
+@Builder (toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_PERSON")
-public class Person extends ChangeStamp implements Cloneable{
+public class Person extends ChangeStamp {
 
     private static final String SEQ = "T_PERSON_SEQ";
 
@@ -85,14 +85,4 @@ public class Person extends ChangeStamp implements Cloneable{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner = new ArrayList<>();
-
-    @Override
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

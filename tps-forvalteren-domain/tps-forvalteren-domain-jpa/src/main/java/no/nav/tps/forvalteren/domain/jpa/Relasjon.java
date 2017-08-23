@@ -25,7 +25,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_RELASJON")
-public class Relasjon implements Cloneable {
+public class Relasjon {
 
     private static final String SEQ = "T_RELASJON_SEQ";
 
@@ -46,13 +46,4 @@ public class Relasjon implements Cloneable {
     @Column(name = "RELASJON_TYPE_NAVN", nullable = false)
     private String relasjonTypeNavn;
 
-    @Override
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

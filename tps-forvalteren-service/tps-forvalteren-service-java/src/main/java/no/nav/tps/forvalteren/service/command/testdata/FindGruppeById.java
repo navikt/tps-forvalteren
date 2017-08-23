@@ -32,8 +32,8 @@ public class FindGruppeById {
                 for (Relasjon relasjon : person.getRelasjoner()) {
 
                     // Hindre looping av relasjon
-                    relasjon.setPerson((Person) relasjon.getPerson().clone());
-                    relasjon.setPersonRelasjonMed((Person) relasjon.getPersonRelasjonMed().clone());
+                    relasjon.setPerson(relasjon.getPerson().toBuilder().build());
+                    relasjon.setPersonRelasjonMed(relasjon.getPersonRelasjonMed().toBuilder().build());
 
                     relasjon.getPerson().setRelasjoner(null);
                     relasjon.getPersonRelasjonMed().setRelasjoner(null);
