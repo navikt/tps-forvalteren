@@ -36,7 +36,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         addSkdParametersExtractedFromPerson(skdParams, person);
 
         return skdParams;
-     }
+    }
 
     private void addSkdParametersExtractedFromPerson(Map<String, String> skdParams, Person person) {
         skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
@@ -64,7 +64,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
     private void setAdresse(Map<String, String> skdParams, Person person) {
 
-    /* Boadresse */
+        /* Boadresse */
         Adresse boadresse = person.getBoadresse();
         if (person.getBoadresse() != null) {
             if (boadresse instanceof Matrikkeladresse) {

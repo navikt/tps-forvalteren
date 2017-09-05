@@ -7,7 +7,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,7 +76,6 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context, Set<String> environments){
         Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>)tpsRequestParameters.get("fnr"));
 
-        //Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
         Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
 
         filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(tilgjengeligeIdenterAlleMiljoer, environmentsToCheck, tpsRequestParameters, context);
@@ -109,10 +107,7 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
 
-        if(TPS_SYSTEM_ERROR_CODE.equals(status.getKode())){
-            return true;
-        }
-        return false;
+        return TPS_SYSTEM_ERROR_CODE.equals(status.getKode());
     }
 
     private Map<String,Object> opprettParametereForM201TpsRequest(Collection<String> identer){

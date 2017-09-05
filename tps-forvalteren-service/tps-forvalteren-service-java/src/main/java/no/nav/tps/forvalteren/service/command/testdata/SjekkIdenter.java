@@ -4,7 +4,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUse
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
