@@ -44,6 +44,14 @@
                                    ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
                                    aria-label="Lagre valgte rader">Lagre
                         </md-button>
+                        <md-button class="md-accent md-raised md-title"
+                                   ng-click="toggleAlleFaner()"
+                                   aria-label="Åpne/lukke alle">
+                            <md-icon ng-class="{flipped: aapneAlleFaner}"
+                                     md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                            <span ng-if="!aapneAlleFaner">Åpne alle</span>
+                            <span ng-if="aapneAlleFaner">Lukke alle</span>
+                        </md-button>
                     </div>
                 </div>
             </md-card-content>
