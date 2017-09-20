@@ -93,8 +93,8 @@
                                     <tps-output-field label="Poststed" flex="30" field-model="adresse.poststed" title="Poststed"></tps-output-field>
                                     <tps-output-field label="TK Nummer" flex="15" field-model="adresse.tknr" title="tknr"></tps-output-field>
                                     <tps-output-field label="Endringstype" flex="15" field-model="adresse.endringsType" title="Endringstype"></tps-output-field>
-                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.adresseFom" title="Dato FOM"></tps-output-field>
-                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.adresseTom" title="Dato TOM"></tps-output-field>
+                                    <tps-output-field label="Dato FOM" flex="30" field-model="adresse.adresseFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Dato TOM" flex="30" field-model="adresse.adresseTom" title="Dato TOM"></tps-output-field>
                                 </div>
                                 <div layout="row"
                                      ng-if="!isArray(adresseHistorikk['boAdresser']['boAdresse'])">
@@ -103,8 +103,8 @@
                                     <tps-output-field label="Poststed" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.poststed" title="Poststed"></tps-output-field>
                                     <tps-output-field label="TK Nummer" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.tknr" title="tknr"></tps-output-field>
                                     <tps-output-field label="Endringstype" flex="15" field-model="adresseHistorikk.boAdresser.boAdresse.endringsType" title="Endringstype"></tps-output-field>
-                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseFom" title="Dato FOM"></tps-output-field>
-                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseTom" title="Dato TOM"></tps-output-field>
+                                    <tps-output-field label="Dato FOM" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Dato TOM" flex="30" field-model="adresseHistorikk.boAdresser.boAdresse.adresseTom" title="Dato TOM"></tps-output-field>
                                 </div>
                             </div>
 
@@ -124,8 +124,8 @@
                                     <tps-output-field label="Postnummer" flex="15" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.postnr" title="Postnummer"></tps-output-field>
                                     <tps-output-field label="Poststed" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.poststed" title="Poststed"></tps-output-field>
                                     <tps-output-field label="Adresse Type" flex="15" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.adresseType" title="Poststed"></tps-output-field>
-                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoFom" title="Dato FOM"></tps-output-field>
-                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoTom" title="Dato TOM"></tps-output-field>
+                                    <tps-output-field label="Dato FOM" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Dato TOM" flex="30" field-model="adresseLinjer.adresseLinjeHistorikk.adresseLinje.datoTom" title="Dato TOM"></tps-output-field>
                                 </div>
 
                                 <div layout="row"
@@ -135,8 +135,8 @@
                                     <tps-output-field label="Postnummer" flex="15" field-model="adresse.postnr" title="Postnummer"></tps-output-field>
                                     <tps-output-field label="Poststed" flex="30" field-model="adresse.poststed" title="Poststed"></tps-output-field>
                                     <tps-output-field label="Adresse Type" flex="15" field-model="adresse.adresseType" title="Poststed"></tps-output-field>
-                                    <tps-output-field label="Dato F.O.M" flex="30" field-model="adresse.datoFom" title="Dato FOM"></tps-output-field>
-                                    <tps-output-field label="Adresse T.O.M" flex="30" field-model="adresse.datoTom" title="Dato TOM"></tps-output-field>
+                                    <tps-output-field label="Dato FOM" flex="30" field-model="adresse.datoFom" title="Dato FOM"></tps-output-field>
+                                    <tps-output-field label="Dato TOM" flex="30" field-model="adresse.datoTom" title="Dato TOM"></tps-output-field>
                                 </div>
                             </div>
                         </div>
@@ -144,57 +144,51 @@
                         <!-- Utvandring Historikk -->
                         <div>
                             <div layout="row">
-                                <h2>Utvandring Historikk</h2>
+                                <h2>Utvandring og innvandring Historikk</h2>
                                 <span></span>
                                 <status-field status="utvandringStatus"></status-field>
                             </div>
                             <h3 class="typo-undertittel tps-vk-bottom-undertitle">Innvandringer</h3>
-                            <div layout="row"
+                            <div layout="row" flex="60"
                                  ng-if="!isArray(utvandring['innvandringer']['innvandring'])">
-                                <tps-output-field label="Adresse 1" flex="30" field-model="utvandring.innvandringer.innvandring.land" title="Adresse 1"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="utvandring.innvandringer.innvandring.kodeLand" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="utvandring.innvandringer.innvandring.fom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Adresse Type" flex="15" field-model="utvandring.innvandringer.innvandring.tom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="utvandring.innvandringer.innvandring.saksbehandler" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="utvandring.innvandringer.innvandring.system" title="Dato TOM"></tps-output-field>
+                                <tps-output-field label="Land" flex="50" field-model="utvandring.innvandringer.innvandring.land" title="Land"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato FOM" flex="25" field-model="utvandring.innvandringer.innvandring.fom" title="Dato FOM"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato TOM" flex="25" field-model="utvandring.innvandringer.innvandring.tom" title="Dato TOM"></tps-output-field>
                             </div>
 
-                            <div layout="row"
+                            <div layout="row" flex="60"
                                  ng-if="isArray(utvandring['innvandringer']['innvandring'])"
                                  ng-repeat="inn in utvandring['innvandringer']['innvandring']">
-                                <tps-output-field label="Adresse 1" flex="30" field-model="inn.land" title="Adresse 1"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="inn.kodeLand" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="inn.fom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Adresse Type" flex="15" field-model="inn.tom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="inn.saksbehandler" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="inn.system" title="Dato TOM"></tps-output-field>
+                                <tps-output-field label="Land" flex="50" field-model="inn.land" title="Land"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato FOM" flex="25" field-model="inn.fom" title="Dato FOM"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato TOM" flex="25" field-model="inn.tom" title="Dato TOM"></tps-output-field>
                             </div>
 
                             <h3 class="typo-undertittel tps-vk-bottom-undertitle">Utvandringer</h3>
 
-                            <div layout="row"
+                            <div layout="row" flex="60"
                                  ng-if="!isArray(utvandring['utvandringer']['utvandring'])">
-                                <tps-output-field label="Adresse 1" flex="30" field-model="utvandring.utvandringer.utvandring.land" title="Adresse 1"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="utvandring.utvandringer.utvandring.kodeLand" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="utvandring.utvandringer.utvandring.fom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Adresse Type" flex="15" field-model="utvandring.utvandringer.utvandring.tom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="utvandring.utvandringer.utvandring.saksbehandler" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="utvandring.utvandringer.utvandring.system" title="Dato TOM"></tps-output-field>
+                                <tps-output-field label="Land" flex="50" field-model="utvandring.utvandringer.utvandring.land" title="Land"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato FOM" flex="25" field-model="utvandring.utvandringer.utvandring.fom" title="Dato FOM"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato TOM" flex="25" field-model="utvandring.utvandringer.utvandring.tom" title="Dato TOM"></tps-output-field>
                             </div>
 
-                            <div layout="row"
+                            <div layout="row" flex="60"
                                  ng-if="isArray(utvandring['utvandringer']['utvandring'])"
                                  ng-repeat="inn in utvandring['utvandringer']['utvandring']">
-                                <tps-output-field label="Adresse 1" flex="30" field-model="inn.land" title="Adresse 1"></tps-output-field>
-                                <tps-output-field label="Postnummer" flex="15" field-model="inn.kodeLand" title="Postnummer"></tps-output-field>
-                                <tps-output-field label="Poststed" flex="30" field-model="inn.fom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Adresse Type" flex="15" field-model="inn.tom" title="Poststed"></tps-output-field>
-                                <tps-output-field label="Dato F.O.M" flex="30" field-model="inn.saksbehandler" title="Dato FOM"></tps-output-field>
-                                <tps-output-field label="Adresse T.O.M" flex="30" field-model="inn.system" title="Dato TOM"></tps-output-field>
+                                <tps-output-field label="Land" flex="50" field-model="inn.land" title="Land"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato FOM" flex="25" field-model="inn.fom" title="Dato FOM"></tps-output-field>
+                                <span flex="5"></span>
+                                <tps-output-field label="Dato TOM" flex="25" field-model="inn.tom" title="Dato TOM"></tps-output-field>
                             </div>
-
                         </div>
-
                     </form>
                 </div>
             </md-tab>
