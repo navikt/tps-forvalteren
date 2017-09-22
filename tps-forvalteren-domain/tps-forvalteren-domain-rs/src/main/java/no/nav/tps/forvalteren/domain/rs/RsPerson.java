@@ -49,6 +49,8 @@ public class RsPerson {
 
     private LocalDateTime spesregDato;
 
+    private LocalDateTime doedsdato;
+
     private RsAdresse boadresse;
 
     private List<RsPostadresse> postadresse;

@@ -68,6 +68,9 @@ public class Person extends ChangeStamp {
     @Column(name = "SPESREG_DATO")
     private LocalDateTime spesregDato;
 
+    @Column(name = "DOEDSDATO")
+    private LocalDateTime doedsdato;
+
     @JoinColumn(name = "ADRESSE_ID")
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private Adresse boadresse;
