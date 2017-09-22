@@ -244,6 +244,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             var fixDatoForDatepicker = function (person) {
                 person.regdato = person.regdato ? person.regdato : null;
                 person.spesregDato = person.spesregDato ? person.spesregDato : null;
+                person.doedsdato = person.doedsdato ? person.doedsdato : null;
 
                 if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato) {
                     person.gateadresse = person.gateadresse && !Array.isArray(person.gateadresse) ? person.gateadresse : {};
@@ -329,8 +330,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         valgt++;
                     }
                 }
-                $scope.allePersoner.checked = (endret == 0 && $scope.personer.length == valgt) ||
-                    (endret > 0 && endret == valgt);
+                $scope.allePersoner.checked = (endret === 0 && $scope.personer.length === valgt) ||
+                    (endret > 0 && endret === valgt);
                 $scope.antallEndret = endret;
                 $scope.antallValgt = valgt;
                 $scope.visEndret = endret > 0;
