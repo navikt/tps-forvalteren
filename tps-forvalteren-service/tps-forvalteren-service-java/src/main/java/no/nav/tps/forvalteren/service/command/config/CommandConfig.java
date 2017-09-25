@@ -13,8 +13,10 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.endringsmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11;
 import no.nav.tps.forvalteren.service.command.Command;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +92,18 @@ public class CommandConfig {
     }
 
     @Bean
+    ServiceRoutineResolver endreRelasjon() {
+        return new EndreRelasjon();
+    }
+
+    @Bean
     SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
     }
+
+    @Bean
+    SkdMeldingResolver vigsel() {
+        return new VigselAarsakskode11();
+    }
+
 }

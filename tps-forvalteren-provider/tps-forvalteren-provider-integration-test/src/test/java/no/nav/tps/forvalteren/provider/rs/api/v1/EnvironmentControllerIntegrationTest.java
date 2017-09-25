@@ -28,4 +28,5 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
                 )))
                 .andExpect(jsonPath("$.productionMode", is(false)));
     }
+
 }

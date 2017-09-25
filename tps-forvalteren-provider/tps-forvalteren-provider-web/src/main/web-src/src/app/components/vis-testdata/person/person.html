@@ -3,7 +3,7 @@
         <md-tooltip>Fornavn</md-tooltip>
         <label>Fornavn</label>
         <input name="fornavn" ng-required="true" md-maxlength="50" md-autofocus
-               ng-model="person.fornavn" ng-change="endretFornavn($index)"/>
+               ng-model="person.fornavn" ng-change="endret($index)"/>
         <div ng-messages="requestForm.fornavn.$error"
              ng-show="requestForm.fornavn.$dirty">
             <div ng-message="required">Verdi er påkrevd</div>
@@ -15,7 +15,7 @@
         <md-tooltip>Mellomnavn</md-tooltip>
         <label>Mellomnavn</label>
         <input name="mellomnavn" ng-required="false" md-maxlength="50"
-               ng-model="person.mellomnavn" ng-change="endretMellomnavn($index)"/>
+               ng-model="person.mellomnavn" ng-change="endret($index)"/>
         <div ng-messages="requestForm.mellomnavn.$error"
              ng-show="requestForm.mellomnavn.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -26,7 +26,7 @@
         <md-tooltip>Etternavn</md-tooltip>
         <label>Etternavn</label>
         <input name="etternavn" ng-required="true" md-maxlength="50"
-               ng-model="person.etternavn" ng-change="endretEtternavn($index)"/>
+               ng-model="person.etternavn" ng-change="endret($index)"/>
         <div ng-messages="requestForm.etternavn.$error"
              ng-show="requestForm.etternavn.$dirty">
             <div ng-message="required">Verdi er påkrevd</div>

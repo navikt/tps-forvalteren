@@ -1,4 +1,6 @@
 angular.module('tps-forvalteren.filter', []);
 
 require('./ident-status.filter');
-require('./titlecase-filter');
+require('./kjonn.filter');
+require('./alder.filter');
+require('./titlecase.filter');

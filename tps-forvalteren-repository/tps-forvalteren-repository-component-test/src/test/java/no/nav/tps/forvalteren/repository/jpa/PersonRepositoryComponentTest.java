@@ -38,9 +38,7 @@ public class PersonRepositoryComponentTest {
     @Test
     @Rollback
     public void findAllReturnsAll() {
-        testRepository.save(personOla);
-        testRepository.save(personKari);
-
+        repository.save(Arrays.asList(personKari, personOla));
         List<Person> result = repository.findAllByOrderByIdAsc();
 
         assertThat(result, hasSize(2));
@@ -83,7 +81,7 @@ public class PersonRepositoryComponentTest {
     @Rollback
     public void FindByIdentInReturnsAll() {
         List<Person> persons = Arrays.asList(personOla, personKari);
-        testRepository.save(persons);
+        repository.save(persons);
 
         List<String> identList = persons.stream()
                 .map(Person::getIdent)

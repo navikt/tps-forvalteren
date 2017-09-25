@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO;
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FLYTTEDATO_ADR;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FODSELSDATO;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FORNAVN;
@@ -22,7 +24,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.STAT
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILDELINGSKODE;
 
 @Component
-public class SkdFelterContainer {
+public class SkdFelterContainerTrans1 {
 
     private static final String WHITESPACE_5_STK = "     ";
     private static final String WHITESPACE_10_STK = WHITESPACE_5_STK + WHITESPACE_5_STK;
@@ -47,7 +49,6 @@ public class SkdFelterContainer {
     /* Delt opp definisjon i flere deler grunnet Sonar klager paa metodetorrelse */
 
     private void leggTilSkdFeltDefinisjonerDel1(ArrayList<SkdFeltDefinisjon> skdFelter){
-
         skdFelter.add(new SkdFeltDefinisjon(FODSELSDATO, "000000", 1,6,1,6));
         skdFelter.add(new SkdFeltDefinisjon(PERSONNUMMER, "00000", 2, 5,7,11));
         skdFelter.add(new SkdFeltDefinisjon(MASKINDATO, "00000000", 3, 8,12,19));
@@ -77,8 +78,8 @@ public class SkdFelterContainer {
     }
 
     private void leggTilSkdFeltDefinisjonerDel2(ArrayList<SkdFeltDefinisjon> skdFelter){
-        skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-FDATO","000000",28,6));
-        skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-PNR","00000",29,5));
+        skdFelter.add(new SkdFeltDefinisjon(EKTEFELLE_PARTNER_FODSELSDATO,"000000",28,6));
+        skdFelter.add(new SkdFeltDefinisjon(EKTEFELLE_PARTNER_PERSONNUMMMER,"00000",29,5));
         skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-NAVN", WHITESPACE_50_STK,30,50));
         skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-STATSB","000",31,3));
 

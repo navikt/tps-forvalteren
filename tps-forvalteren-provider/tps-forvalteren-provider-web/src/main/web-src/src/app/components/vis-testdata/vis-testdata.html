@@ -69,12 +69,11 @@
                             </md-checkbox>
                             <div flex="15">{{person.ident}} ({{person.identtype}})</div>
                             <div flex="50">
-                                {{person.fornavn | titlecase}} {{person.mellomnavn | titlecase}} {{person.etternavn | titlecase}}
+                                {{person.fornavn| titlecase}} {{person.mellomnavn| titlecase}} {{person.etternavn| titlecase}}
                             </div>
-                            <div flex="20">{{getKjonn(person.kjonn)}}</div>
+                            <div flex="20">{{person.kjonn| kjonn}}, &nbsp;&nbsp;&nbsp;{{person.ident | alder}}</div>
                             <div flex></div>
-                            <div ng-if="control[$index].endret" style="color: red;">Endret</div>
-                            <div flex="5"></div>
+                            <div flex="5"ng-if="control[$index].endret" style="color: red;">Endret</div>
                             <div flex="5">
                                 <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
                                            class="md-icon-button"
@@ -88,7 +87,7 @@
                         <div layout="row" ng-if="control[$index].aapen">
                             <div class="line">
                                 <div ng-include="persondetalj"></div>
-                                <div class="testdata-boadr">Boadresse</div>
+                                <h3 class="testdata-sub-header">Boadresse</h3>
                                 <md-radio-group ng-model="person.boadresse.adressetype"
                                                 layout="row" class="testdata-adr-btn">
                                     <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
@@ -98,6 +97,7 @@
                                 <div ng-include="gateadresse"></div>
                                 <div ng-include="matradresse"></div>
                                 <div ng-include="postadresse"></div>
+                                <familierelasjon person="person" personer="personer" index="$index" endret-fn="endret"></familierelasjon>
                             </div>
                         </div>
                     </md-card-content>

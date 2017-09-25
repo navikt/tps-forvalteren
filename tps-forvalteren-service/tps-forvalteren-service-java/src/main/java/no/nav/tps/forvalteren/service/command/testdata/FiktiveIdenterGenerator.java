@@ -22,7 +22,8 @@ public class FiktiveIdenterGenerator {
     private static final LocalDate DEFUALT_FODT_ETTER_DATE = LocalDate.of(1900, Month.JANUARY,1);
     private static final LocalDate DEFUALT_FODT_FOER_DATE = LocalDate.now();
 
-    private static final int CATEGORY1_NUMBER_RANGE_START = 0;
+    //Starter på 1 fordi individ nummer "000" er reservert for F-DAT nummer. Spesielt nummer.
+    private static final int CATEGORY1_NUMBER_RANGE_START = 1;
     private static final int CATEGORY1_NUMBER_RANGE_END = 499;
     private static final int CATEGORY1_TIME_PERIOD_START = 1900;
     private static final int CATEGORY1_TIME_PERIOD_END = 1999;

@@ -4,7 +4,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
-import no.nav.tps.forvalteren.service.command.testdata.skd.utils.PersonToSkdParametersMapper;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetTpsSkdmeldingService;
 import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
@@ -35,9 +34,6 @@ public class SkdCreatePersonerTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
-    @Mock
-    private PersonToSkdParametersMapper personToSkdParametersMapperMock;
 
     @Mock
     private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnholdMock;

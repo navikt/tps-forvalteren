@@ -17,7 +17,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     private static final String PERSON_PATTERN = "<enPersonRes>.+?</enPersonRes>";
 
     @Autowired
-    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
+    private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
     @Override
     public boolean isSupported(Object o) {
@@ -40,7 +40,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
             Matcher fnrMatcher = Pattern.compile(FODSELSNUMMER_PATTERN, Pattern.DOTALL).matcher(personXml);
             if (fnrMatcher.find()) {
                 String fnr = fnrMatcher.group(1);
-                if (!ForbiddenCallHandlerService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
+                if (!forbiddenCallHandlerService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
                     response.setRawXml(response.getRawXml().replace(personXml, ""));
                     ++numberOfFnrRemoved;
                 }

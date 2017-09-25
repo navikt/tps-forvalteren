@@ -1,0 +1,45 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Legg til relasjon dialog">
+        <md-dialog-content class="md-dialog-content">
+            <form name="relasjonDialogForm">
+                <h2 class="md-input-has-value">Legg til Familierelasjon</h2>
+
+                <h4>Velg relasjon</h4>
+                <div layout="row">
+                    <md-radio-group ng-model="relasjonValgt" capitalize required="true" layout-align="end end">
+                        <md-radio-button ng-repeat="relasjon in relasjoner"
+                                         ng-value="relasjon.opt"
+                                         aria-label="{{relasjon.opt | titlecase}}">
+                            {{relasjon.opt | titlecase}}
+                        </md-radio-button>
+                    </md-radio-group>
+                </div>
+
+                <div layout="row">
+                    <md-input-container>
+                        <label>Velg person</label>
+                        <md-select ng-model="personForRelasjonSelector" required="true" placeholder="Velg person"
+                                   aria-label="Velg person for relasjon" class="md-no-underline">
+                            <md-option ng-repeat="person in tilgjengelige" ng-value="person">{{ person.ident }}, &nbsp;&nbsp;&nbsp;
+                                {{person.fornavn}} {{person.etternavn}}, &nbsp;&nbsp;&nbsp;
+                                {{person.kjonn | kjonn}},&nbsp;&nbsp;&nbsp;
+                                {{person.ident | alder}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-align="end end">
+                    <md-button class="md-raised md-title" ng-click="cancelRelasjon()"
+                               aria-label="Avbryt legg til relasjon">Avbryt
+                    </md-button>
+                    <md-button class="md-accent md-raised md-title" ng-click="addRelasjon()" ng-disabled="!relasjonDialogForm.$valid"
+                               aria-label="Lagre legg til relasjon">OK
+                    </md-button>
+                </div>
+            </form>
+        </md-dialog-content>
+
+    </md-dialog>
+
+</div>

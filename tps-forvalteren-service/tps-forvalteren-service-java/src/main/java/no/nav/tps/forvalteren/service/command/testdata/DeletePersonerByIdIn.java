@@ -15,4 +15,5 @@ public class DeletePersonerByIdIn {
     public void execute(List<Long> ids){
         personRepository.deleteByIdIn(ids);
     }
+
 }

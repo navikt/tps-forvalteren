@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteS
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringSkdParametere;
 
 public class InnvandringAarsakskode02 implements SkdMeldingResolver{
 
@@ -15,6 +16,11 @@ public class InnvandringAarsakskode02 implements SkdMeldingResolver{
 
                 .config()
                     .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
+                .and()
+
+                .skdParameters()
+                    .addSkdParametersCreator(InnvandringSkdParametere.innvandringParameterCreator())
+                .addParameterCreator()
 
                 .and()
 

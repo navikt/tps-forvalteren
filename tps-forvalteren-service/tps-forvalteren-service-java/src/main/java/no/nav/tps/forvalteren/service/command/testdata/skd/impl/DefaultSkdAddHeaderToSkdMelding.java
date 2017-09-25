@@ -27,7 +27,8 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
         String aarsakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
         String tildelingsKode = extractTildelingskode(skdMelding.toString());
-        headerSkdMelding = headerSkdMelding + aarsakskode + transType + tildelingsKode + SKD_REFERANSE;
+        String endringsKode = aarsakskode + transType + tildelingsKode;
+        headerSkdMelding = headerSkdMelding + endringsKode  + SKD_REFERANSE;
         return skdMelding.reverse()
                         .append(new StringBuilder(headerSkdMelding).reverse().toString())
                         .reverse();
