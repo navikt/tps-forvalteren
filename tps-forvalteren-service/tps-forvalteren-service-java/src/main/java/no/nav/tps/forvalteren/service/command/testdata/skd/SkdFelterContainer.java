@@ -36,17 +36,17 @@ public class SkdFelterContainer {
     public List<SkdFeltDefinisjon> hentSkdFelter(){
         ArrayList<SkdFeltDefinisjon> skdFelter = new ArrayList<>();
 
-        leggTilSkdFetlDefinisjonerDel1(skdFelter);
-        leggTilSkdFetlDefinisjonerDel2(skdFelter);
-        leggTilSkdFetlDefinisjonerDel3(skdFelter);
-        leggTilSkdFetlDefinisjonerDel4(skdFelter);
+        leggTilSkdFeltDefinisjonerDel1(skdFelter);
+        leggTilSkdFeltDefinisjonerDel2(skdFelter);
+        leggTilSkdFeltDefinisjonerDel3(skdFelter);
+        leggTilSkdFeltDefinisjonerDel4(skdFelter);
 
         return skdFelter;
     }
 
     /* Delt opp definisjon i flere deler grunnet Sonar klager paa metodetorrelse */
 
-    private void leggTilSkdFetlDefinisjonerDel1(ArrayList<SkdFeltDefinisjon> skdFelter){
+    private void leggTilSkdFeltDefinisjonerDel1(ArrayList<SkdFeltDefinisjon> skdFelter){
 
         skdFelter.add(new SkdFeltDefinisjon(FODSELSDATO, "000000", 1,6,1,6));
         skdFelter.add(new SkdFeltDefinisjon(PERSONNUMMER, "00000", 2, 5,7,11));
@@ -76,7 +76,7 @@ public class SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("T1-REGDATO-SIVILSTAND","00000000",26,8));
     }
 
-    private void leggTilSkdFetlDefinisjonerDel2(ArrayList<SkdFeltDefinisjon> skdFelter){
+    private void leggTilSkdFeltDefinisjonerDel2(ArrayList<SkdFeltDefinisjon> skdFelter){
         skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-FDATO","000000",28,6));
         skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-PNR","00000",29,5));
         skdFelter.add(new SkdFeltDefinisjon("T1-EKTEFELLE-PARTNER-NAVN", WHITESPACE_50_STK,30,50));
@@ -119,7 +119,7 @@ public class SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("T1-FREMKONNUMMER","00000000",67,8));
     }
 
-    private void leggTilSkdFetlDefinisjonerDel3(ArrayList<SkdFeltDefinisjon> skdFelter){
+    private void leggTilSkdFeltDefinisjonerDel3(ArrayList<SkdFeltDefinisjon> skdFelter){
 
         skdFelter.add(new SkdFeltDefinisjon("T1-MORS-FODSELSDATO","000000",69,6));
         skdFelter.add(new SkdFeltDefinisjon("T1-MORS-PERSONNUMMER","00000",70,5));
@@ -162,7 +162,7 @@ public class SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("T1-DUF-ID","000000000000",107,12));
     }
 
-    private void leggTilSkdFetlDefinisjonerDel4(ArrayList<SkdFeltDefinisjon> skdFelter){
+    private void leggTilSkdFeltDefinisjonerDel4(ArrayList<SkdFeltDefinisjon> skdFelter){
 
         skdFelter.add(new SkdFeltDefinisjon("T1-BRUKERIDENT","        ",108,8));
         skdFelter.add(new SkdFeltDefinisjon("T1-SKOLERETS","0000",109,4));

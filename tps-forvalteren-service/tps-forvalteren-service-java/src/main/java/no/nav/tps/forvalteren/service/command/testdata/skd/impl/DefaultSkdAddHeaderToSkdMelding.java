@@ -24,10 +24,10 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
 
     public StringBuilder execute(StringBuilder skdMelding) {
         String headerSkdMelding = MQ_HANDLE + KODE_SYSTEM + KJORE_NUMMER;
-        String aasakskode = extractAArsakskode(skdMelding.toString());
+        String aarsakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
         String tildelingsKode = extractTildelingskode(skdMelding.toString());
-        headerSkdMelding = headerSkdMelding + aasakskode + transType + tildelingsKode + SKD_REFERANSE;
+        headerSkdMelding = headerSkdMelding + aarsakskode + transType + tildelingsKode + SKD_REFERANSE;
         return skdMelding.reverse()
                         .append(new StringBuilder(headerSkdMelding).reverse().toString())
                         .reverse();
