@@ -50,4 +50,6 @@ public class SkdConstants {
 
 
     public static final String SEKVENSNUMMER = "T1-SEKVENSNR";
+
+    public static final String DOEDSDATO = "T1-DATO-DOED";
 }
