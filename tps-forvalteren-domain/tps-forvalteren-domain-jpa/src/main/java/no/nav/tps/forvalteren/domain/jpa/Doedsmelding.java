@@ -39,7 +39,6 @@ public class Doedsmelding {
     private Person person;
 
     @Column(name = "MELDING_SENDT")
-    // Fungerer dette med BIT i table?
     private Boolean meldingSendt;
 
 }
