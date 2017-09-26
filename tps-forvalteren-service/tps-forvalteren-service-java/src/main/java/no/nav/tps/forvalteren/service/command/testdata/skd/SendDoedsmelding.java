@@ -31,10 +31,9 @@ public class SendDoedsmelding {
     public void execute(Long gruppeId, List<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
-
         List<Person> doedePersonerUtenDoedsmelding = findDoedePersonerUtenDoedsmelding(personerIGruppen);
-        skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments);
 
+        skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments);
         saveDoedsmelding.execute(doedePersonerUtenDoedsmelding);
     }
 

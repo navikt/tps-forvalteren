@@ -71,7 +71,11 @@
                             <div flex="50">
                                 {{person.fornavn| titlecase}} {{person.mellomnavn| titlecase}} {{person.etternavn| titlecase}}
                             </div>
-                            <div flex="20">{{person.kjonn| kjonn}}, &nbsp;&nbsp;&nbsp;{{person.ident | alder}}</div>
+                            <div flex="20">
+                                {{person.kjonn| kjonn}},&nbsp;&nbsp;&nbsp;{{person.ident | alder}}&nbsp;&nbsp;
+                                <md-icon md-svg-icon="assets/icons/skull_24px.svg"></md-icon>
+                            </div>
+
                             <div flex></div>
                             <div flex="5"ng-if="control[$index].endret" style="color: red;">Endret</div>
                             <div flex="5">
