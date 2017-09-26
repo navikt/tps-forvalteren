@@ -25,6 +25,8 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFe
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SendDoedsmelding;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -91,6 +93,9 @@ public class TestdataController {
     @Autowired
     private LagreTilTps lagreTilTps;
 
+    @Autowired
+    private SendDoedsmelding sendDoedsmelding;
+
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
@@ -147,6 +152,7 @@ public class TestdataController {
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
         lagreTilTps.execute(gruppeId, environments);
+        sendDoedsmelding.execute(gruppeId, environments);
     }
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")

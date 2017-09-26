@@ -1,15 +1,17 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringversionOfLocalDateTime;
+import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
 public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "43";
