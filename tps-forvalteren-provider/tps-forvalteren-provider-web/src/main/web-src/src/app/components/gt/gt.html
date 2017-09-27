@@ -148,8 +148,9 @@
                                 <span></span>
                                 <status-field status="utvandringStatus"></status-field>
                             </div>
-                            <h2 class="typo-element tps-vk-bottom-undertitle">Innvandringer</h2>
-                            <div layout="row" flex="60"
+
+                            <h3 class="typo-element tps-vk-bottom-undertitle">Innvandringer</h3>
+                            <div layout="row" flex="100"
                                  ng-if="!isArray(utvandring['innvandringer']['innvandring'])">
                                 <tps-output-field label="Land" flex="50" field-model="utvandring.innvandringer.innvandring.land" title="Land"></tps-output-field>
                                 <span flex="5"></span>
@@ -157,8 +158,7 @@
                                 <span flex="5"></span>
                                 <tps-output-field label="Dato TOM" flex="25" field-model="utvandring.innvandringer.innvandring.tom" title="Dato TOM"></tps-output-field>
                             </div>
-
-                            <div layout="row" flex="60"
+                            <div layout="row" flex="100"
                                  ng-if="isArray(utvandring['innvandringer']['innvandring'])"
                                  ng-repeat="inn in utvandring['innvandringer']['innvandring']">
                                 <tps-output-field label="Land" flex="50" field-model="inn.land" title="Land"></tps-output-field>
@@ -168,9 +168,8 @@
                                 <tps-output-field label="Dato TOM" flex="25" field-model="inn.tom" title="Dato TOM"></tps-output-field>
                             </div>
 
-                            <h2 class="typo-element tps-vk-bottom-undertitle">Utvandringer</h2>
-
-                            <div layout="row" flex="60"
+                            <h3 class="typo-element tps-vk-bottom-undertitle">Utvandringer</h3>
+                            <div layout="row" flex="100"
                                  ng-if="!isArray(utvandring['utvandringer']['utvandring'])">
                                 <tps-output-field label="Land" flex="50" field-model="utvandring.utvandringer.utvandring.land" title="Land"></tps-output-field>
                                 <span flex="5"></span>
@@ -178,8 +177,7 @@
                                 <span flex="5"></span>
                                 <tps-output-field label="Dato TOM" flex="25" field-model="utvandring.utvandringer.utvandring.tom" title="Dato TOM"></tps-output-field>
                             </div>
-
-                            <div layout="row" flex="60"
+                            <div layout="row" flex="100"
                                  ng-if="isArray(utvandring['utvandringer']['utvandring'])"
                                  ng-repeat="inn in utvandring['utvandringer']['utvandring']">
                                 <tps-output-field label="Land" flex="50" field-model="inn.land" title="Land"></tps-output-field>
