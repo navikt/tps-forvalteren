@@ -123,6 +123,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.personIsDead = function (index) {
                 if ($scope.personer[index].doedsdato) {
+                    // Is now similar to backend
+                    // Does not check for if doedsdato is in future
                     return true;
                 }
                 return false;

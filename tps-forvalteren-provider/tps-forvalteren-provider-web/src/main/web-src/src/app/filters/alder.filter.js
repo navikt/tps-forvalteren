@@ -2,7 +2,7 @@ angular.module('tps-forvalteren.filter')
     .filter('alder', function() {
 
         // Create the return function
-        return function (ident, dodsdato) {
+        return function (ident, doedsdato) {
 
             function gregorianAge (birthDate, ageAtDate) {
                 // convert birthDate to date object if already not
@@ -10,8 +10,10 @@ angular.module('tps-forvalteren.filter')
                     birthDate = new Date(birthDate);
 
                 // use today's date if ageAtDate is not provided
-                if (typeof ageAtDate == "undefined")
+                if (ageAtDate === undefined || ageAtDate === null) {
+                    // console.log("Lager ny dato");
                     ageAtDate = new Date();
+                }
 
                 // convert ageAtDate to date object if already not
                 else if (Object.prototype.toString.call(ageAtDate) !== '[object Date]')
@@ -44,7 +46,7 @@ angular.module('tps-forvalteren.filter')
                 var individ = parseInt(fnr.substring(6, 9));
                 var aarhundre = individ < 500 || individ >= 900 ? '19' : '20';
 
-                return (gregorianAge(new Date(aarhundre + fnr.substring(4, 6), fnr.substring(2, 4) - 1, fnr.substring(0, 2)), dodsdato)) + ' år';
+                return (gregorianAge(new Date(aarhundre + fnr.substring(4, 6), fnr.substring(2, 4) - 1, fnr.substring(0, 2)), doedsdato)) + ' år';
             }
         };
     });

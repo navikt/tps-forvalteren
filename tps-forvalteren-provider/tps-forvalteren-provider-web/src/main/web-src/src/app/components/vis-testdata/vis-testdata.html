@@ -72,7 +72,7 @@
                                 {{person.fornavn| titlecase}} {{person.mellomnavn| titlecase}} {{person.etternavn| titlecase}}
                             </div>
                             <div flex="20">
-                                {{person.kjonn| kjonn}},&nbsp;&nbsp;&nbsp;{{person.ident | alder}}&nbsp;&nbsp;
+                                {{person.kjonn| kjonn}},&nbsp;&nbsp;&nbsp;{{person.ident | alder:person.doedsdato}}&nbsp;&nbsp;
                                 <md-icon ng-show="personIsDead($index)" md-svg-icon="assets/icons/skull_24px.svg"></md-icon>
                             </div>
 
