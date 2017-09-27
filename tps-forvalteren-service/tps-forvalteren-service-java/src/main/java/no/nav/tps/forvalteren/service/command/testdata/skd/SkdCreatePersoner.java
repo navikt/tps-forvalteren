@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SkdCreatePersoner {
@@ -30,13 +31,22 @@ public class SkdCreatePersoner {
     @Autowired
     private GetSkdMeldingByName getSkdMeldingByName;
 
-    public void execute(String skdMeldingNavn, List<Person> personer, List<String> environments){
-        TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = getSkdMeldingByName.execute(skdMeldingNavn).get();
+    @Autowired
+    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
 
-        for(Person person : personer){
-                Map<String,String> skdParametere = skdParametersCreatorService.execute(skdRequestMeldingDefinition, person);
-                String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere);
+    public void execute(String skdMeldingNavn, List<Person> personer, List<String> environments) {
+        Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
+
+        if (skdRequestMeldingDefinitionOptional.isPresent()) {
+            TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
+            for (Person person : personer) {
+                Map<String, String> skdParametere = skdParametersCreatorService.execute(skdRequestMeldingDefinition, person);
+                String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainerTrans1);
                 sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, new HashSet<>(environments));
+            }
+        } else {
+            throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
         }
     }
+
 }

@@ -5,7 +5,7 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteS
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FamilieendringSkdParamtere;
 
 public class Familieendring implements SkdMeldingResolver {
     @Override
@@ -18,7 +18,7 @@ public class Familieendring implements SkdMeldingResolver {
                 .and()
 
                 .skdParameters()
-                .addSkdParametersCreator(EkteskapSkdParametere.ekteskapParameterCreator())
+                .addSkdParametersCreator(FamilieendringSkdParamtere.familieendringSkdParamterCreator())
                 .addParameterCreator()
 
                 .and()

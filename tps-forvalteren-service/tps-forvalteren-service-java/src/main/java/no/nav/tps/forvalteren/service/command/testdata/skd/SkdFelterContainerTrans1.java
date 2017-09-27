@@ -24,7 +24,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.STAT
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILDELINGSKODE;
 
 @Component
-public class SkdFelterContainerTrans1 {
+public class SkdFelterContainerTrans1 implements SkdFelterContainer {
 
     private static final String WHITESPACE_5_STK = "     ";
     private static final String WHITESPACE_10_STK = WHITESPACE_5_STK + WHITESPACE_5_STK;
