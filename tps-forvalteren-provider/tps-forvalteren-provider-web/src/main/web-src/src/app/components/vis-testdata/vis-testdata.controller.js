@@ -121,6 +121,13 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
+            $scope.personIsDead = function (index) {
+                if ($scope.personer[index].doedsdato) {
+                    return true;
+                }
+                return false;
+            }
+
             function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
                     etablerAdressetype(originalPersoner[i]);
