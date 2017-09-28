@@ -33,8 +33,10 @@ public class SendDoedsmelding {
         List<Person> personerIGruppen = gruppe.getPersoner();
         List<Person> doedePersonerUtenDoedsmelding = findDoedePersonerUtenDoedsmelding(personerIGruppen);
 
-        skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments);
-        saveDoedsmelding.execute(doedePersonerUtenDoedsmelding);
+        if (!doedePersonerUtenDoedsmelding.isEmpty()) {
+            skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments);
+            saveDoedsmelding.execute(doedePersonerUtenDoedsmelding);
+        }
     }
 
     private List<Person> findDoedePersonerUtenDoedsmelding(List<Person> personer) {
