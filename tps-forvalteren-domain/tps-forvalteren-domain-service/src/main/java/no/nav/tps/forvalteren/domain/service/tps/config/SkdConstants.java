@@ -48,6 +48,5 @@ public class SkdConstants {
 
     public static final String EKTEFELLER_PARTNER_STATBORGERSKAP = "T1-EKTEFELLE-PARTNER-STATSB";
 
-
     public static final String SEKVENSNUMMER = "T1-SEKVENSNR";
 }
