@@ -47,8 +47,8 @@ public class LagreTilTps {
 
         List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITPSMiljoe);
 
-        // Relasjoner som benytter Trans1
         for (Person person : personerMedRelasjoner) {
+            // Relasjoner som benytter Trans1
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
@@ -57,15 +57,14 @@ public class LagreTilTps {
                 }
                 skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments);
             }
-        }
 
-        // Relasjoner som benytter Trans2
-        for (Person person : personerMedRelasjoner) {
+            // Relasjoner som benytter Trans2
             List<Relasjon> foreldreBarnRelasjoner = relasjonRepository.findByPersonAndRelasjonTypeNavn(person, "BARN");
             if (!foreldreBarnRelasjoner.isEmpty()) {
                 skdCreateFamilierelasjoner.execute(person, foreldreBarnRelasjoner, environments);
             }
         }
+
     }
 
     private List<Person> personerSomIkkeFinnesIMiljoe(Set<String> identerSomIkkeFinnesiTPSiMiljoe, List<Person> personer) {
