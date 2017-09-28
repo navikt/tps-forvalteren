@@ -98,9 +98,8 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
     }
 
     private void addDefaultParam(Map<String, String> skdParams) {
-
         skdParams.put(SkdConstants.TILDELINGSKODE, "0");
         skdParams.put(SkdConstants.TRANSTYPE, "1");
-        //skdParams.put("T1-STATUSKODE", "1");
     }
+
 }

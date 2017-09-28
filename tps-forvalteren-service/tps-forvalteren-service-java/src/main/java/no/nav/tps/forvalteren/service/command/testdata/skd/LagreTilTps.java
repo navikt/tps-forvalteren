@@ -41,21 +41,20 @@ public class LagreTilTps {
 
         List<String> identer = ekstraherIdenterFraPersoner(personerIGruppen);
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer, new HashSet<>(environments));
-        List<Person> personerSomIkkeEksitererITPSMiljoe = personerSomIkkeFinnesIMiljoe(identerSomIkkeFinnesiTPSiMiljoe, personerIGruppen);
+        List<Person> personerSomIkkeEksitererITpsMiljoe = personerSomIkkeFinnesIMiljoe(identerSomIkkeFinnesiTPSiMiljoe, personerIGruppen);
 
-        skdCreatePersoner.execute(NAVN_INNVANDRINGSMELDING, personerSomIkkeEksitererITPSMiljoe, environments);
+        skdCreatePersoner.execute(NAVN_INNVANDRINGSMELDING, personerSomIkkeEksitererITpsMiljoe, environments);
 
-        List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITPSMiljoe);
+        List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITpsMiljoe);
 
         for (Person person : personerMedRelasjoner) {
             // Relasjoner som benytter Trans1
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
-                if (skdMeldingNavn == null) {
-                    continue;
+                if (skdMeldingNavn != null) {
+                    skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments);
                 }
-                skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments);
             }
 
             // Relasjoner som benytter Trans2
