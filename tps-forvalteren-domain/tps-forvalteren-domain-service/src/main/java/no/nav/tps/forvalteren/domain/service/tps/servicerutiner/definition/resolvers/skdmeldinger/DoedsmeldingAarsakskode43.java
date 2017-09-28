@@ -15,18 +15,18 @@ public class DoedsmeldingAarsakskode43 implements SkdMeldingResolver {
                 .name("Doedsmelding")
 
                 .config()
-                    .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
+                .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
 
                 .skdParameters()
-                    .addSkdParametersCreator(DoedsmeldingSkdParametere.doedsmeldingParameterCreator())
+                .addSkdParametersCreator(DoedsmeldingSkdParametere.doedsmeldingParameterCreator())
                 .addParameterCreator()
 
                 .and()
 
                 .securityBuilder()
-                    .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
-                    .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
 
                 .build()

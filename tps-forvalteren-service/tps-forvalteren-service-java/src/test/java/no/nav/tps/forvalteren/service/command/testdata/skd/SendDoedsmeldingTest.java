@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.Max;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

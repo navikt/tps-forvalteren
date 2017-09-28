@@ -1,15 +1,15 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkDoedsmeldingSentForPersonId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SendDoedsmelding {
