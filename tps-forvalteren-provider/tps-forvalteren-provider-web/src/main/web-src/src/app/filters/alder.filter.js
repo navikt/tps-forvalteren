@@ -11,7 +11,6 @@ angular.module('tps-forvalteren.filter')
 
                 // use today's date if ageAtDate is not provided
                 if (ageAtDate === undefined || ageAtDate === null) {
-                    // console.log("Lager ny dato");
                     ageAtDate = new Date();
                 }
 
