@@ -4,6 +4,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring;
+import no.nav.tps.forvalteren.service.command.testdata.FinnBarnTilForeldreFraRelasjoner;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdCreateFamilierelasjoner;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans2;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class DefaultSkdCreateFamilierelasjoner implements SkdCreateFamilierelasjoner {
@@ -36,11 +36,17 @@ public class DefaultSkdCreateFamilierelasjoner implements SkdCreateFamilierelasj
     @Autowired
     private SkdFelterContainerTrans2 skdFelterContainerTrans2;
 
+    @Autowired
+    private Familieendring familieendring;
+
+    @Autowired
+    private FinnBarnTilForeldreFraRelasjoner finnBarnTilForeldreFraRelasjoner;
+
     @Override
     public void execute(Person foreldre, List<Relasjon> foreldreBarnRelasjoner, List<String> environments) {
-        List<Person> barn = foreldreBarnRelasjoner.stream().map(Relasjon::getPersonRelasjonMed).collect(Collectors.toList());
+        List<Person> barn = finnBarnTilForeldreFraRelasjoner.execute(foreldreBarnRelasjoner);
 
-        TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = new Familieendring().resolve();
+        TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = familieendring.resolve();
 
         Map<String, String> skdParametere = barnetranseSkdParameterStrategy.execute(foreldre, barn);
 

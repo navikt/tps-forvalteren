@@ -73,7 +73,7 @@ public class SavePersonListService {
             for (Relasjon relasjonA : person.getRelasjoner()) {
                 for (Relasjon relasjonB : personFraDB.getRelasjoner()) {
                     if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
-                            relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()) )) {
+                            relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()))) {
                         relasjonA.setId(relasjonB.getId());
                     }
                 }
@@ -88,7 +88,7 @@ public class SavePersonListService {
                 if (person.getRelasjoner() != null) {
                     for (Relasjon relasjonB : person.getRelasjoner()) {
                         if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
-                                relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()) )) {
+                                relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()))) {
                             found = true;
                         }
                     }
@@ -99,6 +99,5 @@ public class SavePersonListService {
             }
         }
     }
-
 
 }

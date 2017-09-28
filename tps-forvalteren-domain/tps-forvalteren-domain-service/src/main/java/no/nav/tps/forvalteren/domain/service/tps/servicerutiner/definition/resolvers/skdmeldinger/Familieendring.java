@@ -6,8 +6,11 @@ import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FamilieendringSkdParamtere;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Familieendring implements SkdMeldingResolver {
+
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()

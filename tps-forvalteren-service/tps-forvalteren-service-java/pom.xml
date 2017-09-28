@@ -68,6 +68,11 @@
             <artifactId>spring-security-ldap</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
     
