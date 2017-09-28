@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -62,42 +64,42 @@ public class SendDoedsmeldingTest {
     @Captor
     private ArgumentCaptor<List<Person>> personCaptor;
 
-    @Before
-    public void setup() {
-        environments = Collections.singletonList("t");
-        //        environments = Arrays.asList("t");
-
-        anAlivePerson = new Person();
-        aDeadPersonMedDoedsmelding = new Person();
-        aDeadPersonUtenDoedsmelding = new Person();
-
-        anAlivePerson.setId(ALIVE_PERSON_ID);
-        aDeadPersonMedDoedsmelding.setId(DEAD_PERSON_MED_DOEDSMELDING_ID);
-        aDeadPersonUtenDoedsmelding.setId(DEAD_PERSON_UTEN_DOEDSMELDING_ID);
-
-        doedsdato = LocalDateTime.now();
-        aDeadPersonMedDoedsmelding.setDoedsdato(doedsdato);
-
-        personer = new ArrayList<>();
-        personer.add(anAlivePerson);
-        personer.add(aDeadPersonMedDoedsmelding);
-        personer.add(aDeadPersonUtenDoedsmelding);
-
-        when(findGruppeByIdMock.execute(any())).thenReturn(gruppeMock);
-        when(gruppeMock.getPersoner()).thenReturn(personer);
-        when(sjekkDoedsmeldingSentForPersonIdMock.execute(ALIVE_PERSON_ID)).thenReturn(false);
-        when(sjekkDoedsmeldingSentForPersonIdMock.execute(DEAD_PERSON_MED_DOEDSMELDING_ID)).thenReturn(true);
-        when(sjekkDoedsmeldingSentForPersonIdMock.execute(DEAD_PERSON_UTEN_DOEDSMELDING_ID)).thenReturn(false);
-
-    }
-
+//    @Before
+//    public void setup() {
+//        environments = Collections.singletonList("t");
+//        //        environments = Arrays.asList("t");
+//
+//        anAlivePerson = new Person();
+//        aDeadPersonMedDoedsmelding = new Person();
+//        aDeadPersonUtenDoedsmelding = new Person();
+//
+//        anAlivePerson.setId(ALIVE_PERSON_ID);
+//        aDeadPersonMedDoedsmelding.setId(DEAD_PERSON_MED_DOEDSMELDING_ID);
+//        aDeadPersonUtenDoedsmelding.setId(DEAD_PERSON_UTEN_DOEDSMELDING_ID);
+//
+//        doedsdato = LocalDateTime.now();
+//        aDeadPersonMedDoedsmelding.setDoedsdato(doedsdato);
+//
+//        personer = new ArrayList<>();
+//        personer.add(anAlivePerson);
+//        personer.add(aDeadPersonMedDoedsmelding);
+//        personer.add(aDeadPersonUtenDoedsmelding);
+//
+//        when(findGruppeByIdMock.execute(any())).thenReturn(gruppeMock);
+//        when(gruppeMock.getPersoner()).thenReturn(personer);
+//        when(sjekkDoedsmeldingSentForPersonIdMock.execute(ALIVE_PERSON_ID)).thenReturn(false);
+//        when(sjekkDoedsmeldingSentForPersonIdMock.execute(DEAD_PERSON_MED_DOEDSMELDING_ID)).thenReturn(true);
+//        when(sjekkDoedsmeldingSentForPersonIdMock.execute(DEAD_PERSON_UTEN_DOEDSMELDING_ID)).thenReturn(false);
+//
+//    }
+//
 //    @Test
 //    public void doedsmeldingBlirSendtOgLagretVedNyeDoedePersoner() {
 //        sendDoedsmelding.execute(any(), any());
 //        verify(skdCreatePersonerMock, times(1)).execute(any(), any(), any());
-//        verify(saveDoedsmeldingMock, times(1)).execute(any());
+//        verify(saveDoedsmeldingToDBMock, times(1)).execute(any());
 //    }
-
+//
 //    @Test
 //    public void doedsmeldingBlirSendtOgLagretMedKunNyeDoedePersoner() {
 //        sendDoedsmelding.execute(any(), any());
@@ -105,16 +107,16 @@ public class SendDoedsmeldingTest {
 //
 //        List<Person> personArguments = personCaptor.getValue();
 //
-//        assertThat(personArguments, hasItem(aDeadPerson));
+//        assertThat(personArguments, hasItem(aDeadPersonMedDoedsmelding));
 //        assertThat(personArguments, not(hasItem(anAlivePerson)));
 //    }
-
-    //    @Test
-    //    public void doedsmeldingBlirIkkeSendtVedIngenDoedePersoner() {
-    //        List<Person> ingenDoedePersoner = Collections.singletonList(anAlivePerson);
-    //        when(gruppeMock.getPersoner()).thenReturn(ingenDoedePersoner);
-    //
-    //        sendDoedsmelding.execute(any(), any());
-    //        verify(skdCreatePersonerMock, times(0)).execute(any(), any(), any());
-    //    }
+//
+//    @Test
+//    public void doedsmeldingBlirIkkeSendtVedIngenDoedePersoner() {
+//        List<Person> ingenDoedePersoner = Collections.singletonList(anAlivePerson);
+//        when(gruppeMock.getPersoner()).thenReturn(ingenDoedePersoner);
+//
+//        sendDoedsmelding.execute(any(), any());
+//        verify(skdCreatePersonerMock, times(0)).execute(any(), any(), any());
+//    }
 }
