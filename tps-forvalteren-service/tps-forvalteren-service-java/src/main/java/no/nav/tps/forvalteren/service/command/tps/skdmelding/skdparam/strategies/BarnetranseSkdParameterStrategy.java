@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringversionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,8 +33,8 @@ public class BarnetranseSkdParameterStrategy {
     }
 
     private void addDefaultParameters(Map<String, String> skdParams) {
-        String maskindato = GetStringversionOfLocalDateTime.yyyyMMdd(LocalDateTime.now());
-        String maskintid = GetStringversionOfLocalDateTime.hhMMss(LocalDateTime.now());
+        String maskindato = GetStringVersionOfLocalDateTime.yyyyMMdd(LocalDateTime.now());
+        String maskintid = GetStringVersionOfLocalDateTime.hhMMss(LocalDateTime.now());
         skdParams.put("T2-MASKINDATO", maskindato);
         skdParams.put("T2-MASKINTID", maskintid);
         skdParams.put("T2-TRANSTYPE", "2");

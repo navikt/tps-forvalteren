@@ -18,41 +18,41 @@ public class SkdFelterContainerTrans2Test {
     @InjectMocks
     private SkdFelterContainerTrans2 skdFelterContainerTrans2;
 
-    private List<SkdFeltDefinisjon> skdFeltDefinisjon;
+    private List<SkdFeltDefinisjon> skdFeltDefinisjoner;
 
     @Before
     public void setup() {
-        skdFeltDefinisjon = skdFelterContainerTrans2.hentSkdFelter();
+        skdFeltDefinisjoner = skdFelterContainerTrans2.hentSkdFelter();
     }
 
     @Test
     public void listContainsAllSkdFeltDefinisjoner() {
         final int SKD_FELT_DEFINISJONER_SIZE = 61;
-        assertThat(skdFeltDefinisjon, hasSize(SKD_FELT_DEFINISJONER_SIZE));
+        assertThat(skdFeltDefinisjoner, hasSize(SKD_FELT_DEFINISJONER_SIZE));
     }
 
     @Test
     public void firstFieldIsAtCorrectPosition() {
-        assertThat(skdFeltDefinisjon.get(0).getFraByte(), is(1));
-        assertThat(skdFeltDefinisjon.get(0).getTilByte(), is(11));
+        assertThat(skdFeltDefinisjoner.get(0).getFraByte(), is(1));
+        assertThat(skdFeltDefinisjoner.get(0).getTilByte(), is(11));
     }
 
     @Test
     public void lastBarnKjoennIsAtCorrectPosition() {
         final int LAST_FIXED_POSITION = 867;
-        assertThat(skdFeltDefinisjon.get(57).getFraByte(), is(LAST_FIXED_POSITION));
-        assertThat(skdFeltDefinisjon.get(57).getTilByte(), is(LAST_FIXED_POSITION));
+        assertThat(skdFeltDefinisjoner.get(57).getFraByte(), is(LAST_FIXED_POSITION));
+        assertThat(skdFeltDefinisjoner.get(57).getTilByte(), is(LAST_FIXED_POSITION));
     }
 
     @Test
     public void lastFieldIsAtCorrectPosition() {
-        assertThat(skdFeltDefinisjon.get(60).getFraByte(), is(918));
-        assertThat(skdFeltDefinisjon.get(60).getTilByte(), is(1500));
+        assertThat(skdFeltDefinisjoner.get(60).getFraByte(), is(918));
+        assertThat(skdFeltDefinisjoner.get(60).getTilByte(), is(1500));
     }
 
     @Test
     public void checkThatFieldLengthAndDefaultValueLengthIsEqual() {
-        for(SkdFeltDefinisjon felt : skdFeltDefinisjon) {
+        for(SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
             assertThat(felt.getDefaultVerdi().length(), is(felt.getAntallBytesAvsatt()));
         }
     }
@@ -60,7 +60,7 @@ public class SkdFelterContainerTrans2Test {
     @Test
     public void checkThatFieldsAreInAscOrder() {
         int order = 1;
-        for(SkdFeltDefinisjon felt : skdFeltDefinisjon) {
+        for(SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
             assertThat(felt.getIdRekkefolge(), is(order));
             order++;
         }
