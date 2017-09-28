@@ -10,9 +10,9 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 
 @Service
-public class SaveDoedsmelding {
+public class SaveDoedsmeldingToDB {
 
-    private static final Boolean MELDING_SENDT = true;
+    private static final Boolean MELDING_SENDT_CONFIRMED = true;
 
     @Autowired
     private DoedsmeldingRepository doedsmeldingRepository;
@@ -22,7 +22,7 @@ public class SaveDoedsmelding {
         for (Person person : personer) {
             Doedsmelding newDoedsmelding = new Doedsmelding();
             newDoedsmelding.setPerson(person);
-            newDoedsmelding.setMeldingSendt(MELDING_SENDT);
+            newDoedsmelding.setMeldingSendt(MELDING_SENDT_CONFIRMED);
             doedsmeldinger.add(newDoedsmelding);
         }
         doedsmeldingRepository.save(doedsmeldinger);

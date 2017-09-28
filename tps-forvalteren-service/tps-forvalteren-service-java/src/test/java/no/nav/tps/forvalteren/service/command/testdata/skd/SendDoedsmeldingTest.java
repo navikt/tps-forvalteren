@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -25,7 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkDoedsmeldingSentForPersonId;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,7 +54,7 @@ public class SendDoedsmeldingTest {
     private SjekkDoedsmeldingSentForPersonId sjekkDoedsmeldingSentForPersonIdMock;
 
     @Mock
-    private SaveDoedsmelding saveDoedsmeldingMock;
+    private SaveDoedsmeldingToDB saveDoedsmeldingToDBMock;
 
     @InjectMocks
     private SendDoedsmelding sendDoedsmelding;
