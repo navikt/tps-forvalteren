@@ -15,6 +15,8 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetS
 public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "43";
+    private static final String TRANSTYPE_FOR_DOEDSMELDING = "1";
+    private static final String STATUSKODE_FOR_DOEDSMELDING = "5";
 
     @Override
     public boolean isSupported(SkdParametersCreator creator) {
@@ -50,8 +52,7 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
     private void addDefaultParam(Map<String, String> skdParams) {
         skdParams.put("T1-AARSAKSKODE", AARSAKSKODE_FOR_DOEDSMELDING);
-
-        skdParams.put("T1-TRANSTYPE", "1");
-        skdParams.put("T1-STATUSKODE", "5");
+        skdParams.put("T1-TRANSTYPE", TRANSTYPE_FOR_DOEDSMELDING);
+        skdParams.put("T1-STATUSKODE", STATUSKODE_FOR_DOEDSMELDING);
     }
 }

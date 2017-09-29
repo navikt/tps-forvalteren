@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -22,13 +23,15 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 @RunWith(MockitoJUnitRunner.class)
 public class FindDoedePersonerTest {
 
-    private FindDoedePersoner command;
+    private FindDoedePersoner findDoedePersoner;
 
-    private LocalDateTime doedsdato;
-
+    @Mock
     private Person anAlivePersonMock1;
+    @Mock
     private Person anAlivePersonMock2;
+    @Mock
     private Person aDeadPersonMock1;
+    @Mock
     private Person aDeadPersonMock2;
 
     private List<Person> personer;
@@ -37,14 +40,9 @@ public class FindDoedePersonerTest {
 
     @Before
     public void setup() {
-        command = new FindDoedePersoner();
+        findDoedePersoner = new FindDoedePersoner();
 
-        doedsdato = LocalDateTime.now();
-
-        anAlivePersonMock1 = mock(Person.class);
-        anAlivePersonMock2 = mock(Person.class);
-        aDeadPersonMock1 = mock(Person.class);
-        aDeadPersonMock2 = mock(Person.class);
+        LocalDateTime doedsdato = LocalDateTime.now();
 
         personer = Arrays.asList(anAlivePersonMock1, anAlivePersonMock2, aDeadPersonMock1, aDeadPersonMock2);
         alivePersoner = Arrays.asList(anAlivePersonMock1, anAlivePersonMock2);
@@ -57,11 +55,19 @@ public class FindDoedePersonerTest {
     }
 
     @Test
-    public void onlyFindsDeadPersons() {
+    public void findsAllDeadPersons() {
         List<Person> returned;
-        returned = command.execute(personer);
+        returned = findDoedePersoner.execute(personer);
 
         assertThat(returned, is(deadPersoner));
+
+    }
+
+    @Test
+    public void doesNotFindAnyAlivePersons() {
+        List<Person> returned;
+        returned = findDoedePersoner.execute(personer);
+
         assertTrue(Collections.disjoint(returned, alivePersoner));
     }
 

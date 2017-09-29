@@ -96,7 +96,6 @@ public class TestdataController {
     @Autowired
     private SendDoedsmelding sendDoedsmelding;
 
-
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })

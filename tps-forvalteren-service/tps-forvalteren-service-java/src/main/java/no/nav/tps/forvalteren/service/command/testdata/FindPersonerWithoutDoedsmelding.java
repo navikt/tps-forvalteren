@@ -11,12 +11,12 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 public class FindPersonerWithoutDoedsmelding {
 
     @Autowired
-    private SjekkDoedsmeldingSentForPersonId sjekkDoedsmeldingSentForPersonId;
+    private SjekkDoedsmeldingSentForPerson sjekkDoedsmeldingSentForPerson;
 
     public List<Person> execute(List<Person> personer) {
         List<Person> personerWithoutDoedsmelding = new ArrayList<>();
         for (Person person : personer) {
-            if (!sjekkDoedsmeldingSentForPersonId.execute(person.getId())) {
+            if (!sjekkDoedsmeldingSentForPerson.execute(person)) {
                 personerWithoutDoedsmelding.add(person);
             }
         }
