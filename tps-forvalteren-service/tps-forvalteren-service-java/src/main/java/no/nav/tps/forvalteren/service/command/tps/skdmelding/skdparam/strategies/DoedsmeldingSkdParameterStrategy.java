@@ -44,7 +44,7 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
         String doedsdatoStringversion = GetStringversionOfLocalDateTime.yyyyMMdd(person.getDoedsdato());
 
-        // The specification says reg-dato should be doedsdato
+        // The specification for doedsmelding says reg-dato should be doedsdato
         skdParams.put(SkdConstants.REG_DATO, doedsdatoStringversion);
         skdParams.put(SkdConstants.DOEDSDATO, doedsdatoStringversion);
 
