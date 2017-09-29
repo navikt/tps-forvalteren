@@ -31,9 +31,9 @@ import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 @RunWith(MockitoJUnitRunner.class)
 public class SendDoedsmeldingTest {
 
-    private Long GRUPPE_ID = 1L;
-    private Long GRUPPE_ID_NO_DEAD_PERSONS = 2L;
-    private List<String> ENVS = Arrays.asList("u5", "u6");
+    private static final Long GRUPPE_ID = 1L;
+    private static final Long GRUPPE_ID_NO_DEAD_PERSONS = 2L;
+    private static final List<String> ENVS = Arrays.asList("u5", "u6");
 
     private List<Person> personer;
     private List<Person> doedePersoner;
