@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
 import java.time.LocalDateTime;
 
-public class GetStringversionOfLocalDateTime {
+public class GetStringVersionOfLocalDateTime {
 
     public static String yyyyMMdd(LocalDateTime localDateTime){
         String year = String.valueOf(localDateTime.getYear());

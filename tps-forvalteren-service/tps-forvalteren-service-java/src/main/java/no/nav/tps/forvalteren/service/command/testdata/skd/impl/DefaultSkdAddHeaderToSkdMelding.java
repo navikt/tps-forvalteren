@@ -43,6 +43,7 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
     }
 
     private String extractTildelingskode(String skdMelding){
-        return skdMelding.substring(INDEX_START_TILDELINGSKODE,INDEX_SLUTT_TILDELINGSKODE);
+        String tildelingskode = skdMelding.substring(INDEX_START_TILDELINGSKODE, INDEX_SLUTT_TILDELINGSKODE);
+        return " ".equals(tildelingskode) ? "0" : tildelingskode;
     }
 }

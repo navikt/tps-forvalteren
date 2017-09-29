@@ -6,7 +6,7 @@ angular.module('tps-forvalteren.service')
 
         self.hentKommuner = function () {
             var defer = $q.defer();
-            $http.get(url + 'knr').then(
+            $http({cache: true, url: url + 'knr', method: 'GET'}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -19,7 +19,7 @@ angular.module('tps-forvalteren.service')
 
         self.hentPoststeder = function () {
             var defer = $q.defer();
-            $http.get(url + 'postnummer').then(
+            $http({cache: true, url: url + 'postnummer', method: 'GET'}).then(
                 function (data) {
                     defer.resolve(data);
                 },

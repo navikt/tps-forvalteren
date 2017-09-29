@@ -36,36 +36,8 @@ public class SavePersonListService {
 
             Person personFraDB = personRepository.findById(person.getId());
             if (personFraDB != null) {
-
-                // Relasjoner som skal oppdateres
-                if (person.getRelasjoner() != null) {
-                    for (Relasjon relasjonA : person.getRelasjoner()) {
-                        for (Relasjon relasjonB : personFraDB.getRelasjoner()) {
-                            if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
-                                    relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()) )) {
-                                relasjonA.setId(relasjonB.getId());
-                            }
-                        }
-                    }
-                }
-
-                // Relasjoner som skal fjernes
-                if (personFraDB.getRelasjoner() != null) {
-                    for (Relasjon relasjonA : personFraDB.getRelasjoner()) {
-                        boolean found = false;
-                        if (person.getRelasjoner() != null) {
-                            for (Relasjon relasjonB : person.getRelasjoner()) {
-                                if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
-                                        relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()) )) {
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            ids.add(relasjonA.getId());
-                        }
-                    }
-                }
+                relasjonerSomSkalOppdateres(person, personFraDB);
+                relasjonerSomSkalFjernes(person, personFraDB, ids);
             }
 
             uppercaseDataInPerson.execute(person);
@@ -95,4 +67,37 @@ public class SavePersonListService {
             relasjonRepository.deleteById(id);
         }
     }
+
+    private void relasjonerSomSkalOppdateres(Person person, Person personFraDB) {
+        if (person.getRelasjoner() != null) {
+            for (Relasjon relasjonA : person.getRelasjoner()) {
+                for (Relasjon relasjonB : personFraDB.getRelasjoner()) {
+                    if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
+                            relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()))) {
+                        relasjonA.setId(relasjonB.getId());
+                    }
+                }
+            }
+        }
+    }
+
+    private void relasjonerSomSkalFjernes(Person person, Person personFraDB, Set<Long> ids) {
+        if (personFraDB.getRelasjoner() != null) {
+            for (Relasjon relasjonA : personFraDB.getRelasjoner()) {
+                boolean found = false;
+                if (person.getRelasjoner() != null) {
+                    for (Relasjon relasjonB : person.getRelasjoner()) {
+                        if ((relasjonA.getPersonRelasjonMed().getIdent().equals(relasjonB.getPersonRelasjonMed().getIdent()) &&
+                                relasjonA.getRelasjonTypeNavn().equals(relasjonB.getRelasjonTypeNavn()))) {
+                            found = true;
+                        }
+                    }
+                }
+                if (!found) {
+                    ids.add(relasjonA.getId());
+                }
+            }
+        }
+    }
+
 }

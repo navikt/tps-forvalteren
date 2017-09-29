@@ -5,5 +5,5 @@ import java.util.Map;
 @FunctionalInterface
 public interface SkdInputParamsToSkdMeldingInnhold {
 
-    StringBuilder execute(Map<String, String> skdInputMap);
+    StringBuilder execute(Map<String, String> skdInputMap, SkdFelterContainer skdFelterContainer);
 }

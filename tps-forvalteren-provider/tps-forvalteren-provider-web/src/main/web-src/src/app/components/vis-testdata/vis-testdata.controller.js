@@ -10,6 +10,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.gruppeId = $location.url().match(/\d+/g);
 
+            $scope.aapneAlleFaner = false;
+
             var setHeaderButtons = function (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
                 underHeaderService.setButtons([{
@@ -209,9 +211,23 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     $scope.control[index].aapen = !$scope.control[index].aapen;
                 }
                 checkIt = false;
+                var allOpen = true;
+                var allClosed = true;
+                for (var i = 0; i < $scope.personer.length; i++) {
+                    if ($scope.control[i]) {
+                        if ($scope.control[i].aapen) {
+                            allClosed = false;
+                        } else {
+                            allOpen = false;
+                        }
+                    }
+                }
+                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
+                    $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
+                }
             };
 
-            $scope.checkIt = function () {
+            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
                 checkIt = true;
             };
 
@@ -411,6 +427,16 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             window.onbeforeunload = function (event) {
                 if ($scope.visEndret) {
                     return 'Du har data som ikke er lagret. Vil du forlate siden?'; // Trigger nettlesers visning av dialogboks for avslutning
+                }
+            };
+
+            $scope.toggleAlleFaner = function () {
+                $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
+                for (var i = 0; i < $scope.personer.length; i++) {
+                    if (!$scope.control[i]) {
+                        $scope.control[i] = {};
+                    }
+                    $scope.control[i].aapen = $scope.aapneAlleFaner;
                 }
             };
 
