@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringversionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
 
 @Service
 public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
@@ -36,17 +36,17 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
         skdParams.put(SkdConstants.PERSONNUMMER, person.getIdent().substring(6, 11));
 
-        String yyyyMMdd = GetStringversionOfLocalDateTime.yyyyMMdd(person.getRegdato());
-        String hhMMss = GetStringversionOfLocalDateTime.hhMMss(person.getRegdato());
+        String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
+        String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());
 
         skdParams.put(SkdConstants.MASKINTID, hhMMss);
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
 
-        String doedsdatoStringversion = GetStringversionOfLocalDateTime.yyyyMMdd(person.getDoedsdato());
+        String doedsdatoStringVersion = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getDoedsdato());
 
         // The specification for doedsmelding says reg-dato should be doedsdato
-        skdParams.put(SkdConstants.REG_DATO, doedsdatoStringversion);
-        skdParams.put(SkdConstants.DOEDSDATO, doedsdatoStringversion);
+        skdParams.put(SkdConstants.REG_DATO, doedsdatoStringVersion);
+        skdParams.put(SkdConstants.DOEDSDATO, doedsdatoStringVersion);
 
         addDefaultParam(skdParams);
     }
