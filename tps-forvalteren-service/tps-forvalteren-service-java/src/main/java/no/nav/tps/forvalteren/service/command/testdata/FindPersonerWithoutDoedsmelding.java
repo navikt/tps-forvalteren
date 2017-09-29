@@ -15,6 +15,7 @@ public class FindPersonerWithoutDoedsmelding {
 
     public List<Person> execute(List<Person> personer) {
         List<Person> personerWithoutDoedsmelding = new ArrayList<>();
+
         for (Person person : personer) {
             if (!sjekkDoedsmeldingSentForPerson.execute(person)) {
                 personerWithoutDoedsmelding.add(person);

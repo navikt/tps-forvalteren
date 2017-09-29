@@ -19,6 +19,7 @@ public class SaveDoedsmeldingToDB {
 
     public void execute(List<Person> personer) {
         List<Doedsmelding> doedsmeldinger = new ArrayList<>();
+
         for (Person person : personer) {
             Doedsmelding newDoedsmelding = new Doedsmelding();
             newDoedsmelding.setPerson(person);

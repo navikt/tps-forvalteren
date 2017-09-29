@@ -11,6 +11,7 @@ public class FindDoedePersoner {
 
     public List<Person> execute(List<Person> personer) {
         List<Person> doedePersoner = new ArrayList<>();
+
         for (Person person : personer) {
             // What if death date is in the future?
             if (person.getDoedsdato() != null) {
