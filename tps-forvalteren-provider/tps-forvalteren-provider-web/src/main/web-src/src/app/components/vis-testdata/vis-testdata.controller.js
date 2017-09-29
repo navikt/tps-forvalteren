@@ -201,25 +201,27 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     $scope.control[index].aapen = !$scope.control[index].aapen;
                 }
                 checkIt = false;
-                var allOpen = true;
-                var allClosed = true;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if ($scope.control[i]) {
-                        if ($scope.control[i].aapen) {
-                            allClosed = false;
-                        } else {
-                            allOpen = false;
-                        }
-                    }
-                }
-                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
-                    $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                }
+                checkAndModifyAggregateOpenCloseButton();
             };
 
             $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
                 checkIt = true;
             };
+
+            function checkAndModifyAggregateOpenCloseButton () {
+                var allOpen = true;
+                var allClosed = true;
+                for (var i = 0; i < $scope.personer.length; i++) {
+                    if ($scope.control[i] && $scope.control[i].aapen) {
+                        allClosed = false;
+                    } else {
+                        allOpen = false;
+                    }
+                }
+                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
+                    $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
+                }
+            }
 
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
@@ -306,6 +308,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         }
                         $scope.oppdaterValgt();
                         bekrefterLagring();
+                        checkAndModifyAggregateOpenCloseButton();
                     },
                     function (error) {
                         utilsService.showAlertError(error);
