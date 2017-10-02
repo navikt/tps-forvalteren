@@ -30,7 +30,7 @@ public class SkdFelterContainerTrans1Test {
     public void callsMethodsThatAddSkdFelter() {
         final int SKD_MELDING_LENGTH = 1500;
         int bytesReserved = 0;
-        for(SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
+        for (SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
             bytesReserved += felt.getAntallBytesAvsatt();
         }
         assertThat(bytesReserved, is(SKD_MELDING_LENGTH));
@@ -44,7 +44,7 @@ public class SkdFelterContainerTrans1Test {
 
     @Test
     public void checkThatFieldLengthAndDefaultValueLengthIsEqual() {
-        for(SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
+        for (SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
             assertThat(felt.getDefaultVerdi().length(), is(felt.getAntallBytesAvsatt()));
         }
     }
@@ -52,7 +52,7 @@ public class SkdFelterContainerTrans1Test {
     @Test
     public void checkThatFieldsAreInAscOrder() {
         int currentOrder = 1;
-        for(SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
+        for (SkdFeltDefinisjon felt : skdFeltDefinisjoner) {
             assertThat(felt.getIdRekkefolge(), is(greaterThanOrEqualTo(currentOrder)));
             currentOrder++;
         }

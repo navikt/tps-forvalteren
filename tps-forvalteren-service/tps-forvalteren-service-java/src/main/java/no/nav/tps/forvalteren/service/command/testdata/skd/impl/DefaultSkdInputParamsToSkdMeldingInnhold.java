@@ -23,7 +23,7 @@ public class DefaultSkdInputParamsToSkdMeldingInnhold implements SkdInputParamsT
         skdMelding.append(
                 skdFelter.stream()
                         .sorted(Comparator.comparingInt(SkdFeltDefinisjon::getIdRekkefolge))
-                        .map(skdFeltDefinisjon -> skdFeltDefinisjon.getVerdi() == null ? skdFeltDefinisjon.getDefaultVerdi() : skdFeltDefinisjon.getVerdi())
+                        .map(skdFeltDefinisjon -> skdFeltDefinisjon.getVerdi() != null ? skdFeltDefinisjon.getVerdi() : skdFeltDefinisjon.getDefaultVerdi())
                         .collect(Collectors.joining())
         );
         return skdMelding;

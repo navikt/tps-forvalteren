@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,14 +24,21 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
     private static final int INDEX_SLUTT_TRANSTYPE = 26;
 
     public StringBuilder execute(StringBuilder skdMelding) {
-        String headerSkdMelding = MQ_HANDLE + KODE_SYSTEM + KJORE_NUMMER;
+        StringBuilder headerSkdMelding = new StringBuilder();
+        headerSkdMelding.append(MQ_HANDLE);
+        headerSkdMelding.append(KODE_SYSTEM);
+        headerSkdMelding.append(KJORE_NUMMER);
+
         String aasakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
         String tildelingsKode = extractTildelingskode(skdMelding.toString());
-        String endringsKode = aasakskode + transType + tildelingsKode;
-        headerSkdMelding = headerSkdMelding + endringsKode  + SKD_REFERANSE;
+
+        headerSkdMelding.append(aasakskode);
+        headerSkdMelding.append(transType);
+        headerSkdMelding.append(tildelingsKode);
+        headerSkdMelding.append(SKD_REFERANSE);
         return skdMelding.reverse()
-                        .append(new StringBuilder(headerSkdMelding).reverse().toString())
+                        .append(headerSkdMelding.reverse().toString())
                         .reverse();
     }
 
@@ -44,6 +52,6 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
 
     private String extractTildelingskode(String skdMelding){
         String tildelingskode = skdMelding.substring(INDEX_START_TILDELINGSKODE, INDEX_SLUTT_TILDELINGSKODE);
-        return " ".equals(tildelingskode) ? "0" : tildelingskode;
+        return !StringUtils.isBlank(tildelingskode) ? tildelingskode : "0";
     }
 }

@@ -5,8 +5,8 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
@@ -21,7 +21,7 @@ import java.util.Map;
 @Service
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String AARSAKSKODE_FOR_VIGSEL  = "11";
+    private static final String AARSAKSKODE_FOR_VIGSEL = "11";
     private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
 
     @Autowired
@@ -59,17 +59,17 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
         Person ektefelle = null;
         List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
-        for(Relasjon relasjon : personRelasjoner){
-            if(relasjon.getRelasjonTypeNavn().equals(RelasjonType.EKTEFELLE.getRelasjonTypeNavn())){
+        for (Relasjon relasjon : personRelasjoner) {
+            if (RelasjonType.EKTEFELLE.getRelasjonTypeNavn().equals(relasjon.getRelasjonTypeNavn())) {
                 ektefelle = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
                 break;
             }
         }
-        if(ektefelle == null ){
+        if (ektefelle == null) {
             return;
         }
 
-        if(person.getKjonn().equals(ektefelle.getKjonn())){
+        if (person.getKjonn().equals(ektefelle.getKjonn())) {
             skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP);
             skdParams.put(SkdConstants.SIVILSTAND, Integer.toString(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode()));
         } else {
@@ -82,13 +82,13 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, ektefelle.getIdent().substring(0, 6));
         skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER, ektefelle.getIdent().substring(6, 11));
 
-        //TODO Spesielle felter. Bare hardkodet nå. ----------- || ---------------
+        // TODO Spesielle felter. Bare hardkodet nå. ----------- || ---------------
         skdParams.put(SkdConstants.EKTEFELLE_EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
         skdParams.put(SkdConstants.EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
 
         skdParams.put(SkdConstants.VIGSELSTYPE, Integer.toString(1));
 
-        //TODO Setter bare tidligere sivilstand til Ugift for nå.
+        // TODO Setter bare tidligere sivilstand til Ugift for nå.
         skdParams.put(SkdConstants.TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
         skdParams.put(SkdConstants.EKTEFELLE_TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
 

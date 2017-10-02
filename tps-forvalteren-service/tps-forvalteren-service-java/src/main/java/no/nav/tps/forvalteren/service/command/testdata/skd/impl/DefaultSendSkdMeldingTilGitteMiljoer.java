@@ -6,6 +6,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Service
 public class DefaultSendSkdMeldingTilGitteMiljoer implements SendSkdMeldingTilGitteMiljoer {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DefaultSendSkdMeldingTilGitteMiljoer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSendSkdMeldingTilGitteMiljoer.class);
 
     @Autowired
     private SkdMeldingRequest skdMeldingRequest;

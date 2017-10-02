@@ -20,10 +20,10 @@ public class KodeverkUpdater {
         updateTpsfPostNummerCache();
     }
 
-    private void updateTpsfKommuneNummerCache(){
+    private void updateTpsfKommuneNummerCache() {
         Kodeverk remoteKodeverkKommune = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_KOMMUNER_NAVN);
 
-        if(remoteKodeverkKommune != null) {
+        if (remoteKodeverkKommune != null) {
 
             kodeverkCache.clearKommuneCache();
             kodeverkCache.setKodeverkKommuneKoder(remoteKodeverkKommune.getKoder());
@@ -34,10 +34,10 @@ public class KodeverkUpdater {
         }
     }
 
-    private void updateTpsfPostNummerCache(){
+    private void updateTpsfPostNummerCache() {
         Kodeverk remoteKodeverkPostnummer = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_POSTNUMMER_NAVN);
 
-        if(remoteKodeverkPostnummer != null) {
+        if (remoteKodeverkPostnummer != null) {
 
             kodeverkCache.clearPostnummerCache();
             kodeverkCache.setKodeverkPostnummerKoder(remoteKodeverkPostnummer.getKoder());
