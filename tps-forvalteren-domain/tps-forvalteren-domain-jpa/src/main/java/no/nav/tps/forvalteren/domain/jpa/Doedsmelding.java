@@ -40,5 +40,4 @@ public class Doedsmelding {
 
     @Column(name = "MELDING_SENDT")
     private Boolean meldingSendt;
-
 }
