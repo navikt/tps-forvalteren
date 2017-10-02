@@ -55,8 +55,8 @@ public class DoedsmeldingSkdParameterStrategyTest {
 
     @Test
     public void isSupportedTest() {
-        SkdParametersCreator correctObject = new DoedsmeldingSkdParametere();
-        SkdParametersCreator incorrectObject = new InnvandringSkdParametere();
+        SkdParametersCreator correctObject = mock(DoedsmeldingSkdParametere.class);
+        SkdParametersCreator incorrectObject = mock(InnvandringSkdParametere.class);
 
         assertTrue(doedsmeldingSkdParameterStrategy.isSupported(correctObject));
         assertFalse(doedsmeldingSkdParameterStrategy.isSupported(incorrectObject));
