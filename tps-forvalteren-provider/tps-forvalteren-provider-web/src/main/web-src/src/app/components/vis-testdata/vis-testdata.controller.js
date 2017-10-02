@@ -76,6 +76,9 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                                     locationService.redirectToTestgruppe();
                                 }
                             )
+                        }, function () {
+                            // Dialog cancelled
+                            // Without this function we get unhandled rejection error in console
                         });
                     }
                 }]);
@@ -241,6 +244,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                     sletteTestpersoner();
+                }, function () {
+                    // Prevent unhandled rejection error
                 });
             };
 
