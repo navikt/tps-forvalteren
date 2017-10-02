@@ -3,28 +3,28 @@ package no.nav.tps.forvalteren.repository.jpa;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import javax.transaction.Transactional;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.*;
+import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,12 +32,6 @@ import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe
 @Transactional
 public class RelasjonRepositoryComponentTest {
 
-    @Test
-    @Rollback
-    public void findAllReturnsAll() {
-
-    }
-/*
     private Person personOla = aMalePerson().build();
     private Person personKari = aFemalePerson().build();
     private Gruppe enGruppe = aGruppe().build();
@@ -50,6 +44,9 @@ public class RelasjonRepositoryComponentTest {
 
     @Autowired
     private RelasjonRepository relasjonRepository;
+
+    @Autowired
+    private RelasjonTestRepository relasjonTestRepository;
 
     @Test
     @Rollback
@@ -69,7 +66,7 @@ public class RelasjonRepositoryComponentTest {
 
         relasjonRepository.save(rel);
 
-        List<Relasjon> relasjon = relasjonRepository.findAll();
+        List<Relasjon> relasjon = relasjonTestRepository.findAll();
         List<Person> personer = personRepository.findAllByOrderByIdAsc();
 
         assertThat(relasjon, hasSize(1));
@@ -168,5 +165,5 @@ public class RelasjonRepositoryComponentTest {
         relasjonRepository.save(relasjon1);
         relasjonRepository.save(relasjon2);
     }
-    */
+
 }
