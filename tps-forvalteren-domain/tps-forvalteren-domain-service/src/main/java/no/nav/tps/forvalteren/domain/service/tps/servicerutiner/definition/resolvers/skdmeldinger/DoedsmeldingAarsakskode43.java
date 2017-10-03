@@ -13,23 +13,17 @@ public class DoedsmeldingAarsakskode43 implements SkdMeldingResolver {
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
                 .name("Doedsmelding")
-
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
-
                 .skdParameters()
                 .addSkdParametersCreator(DoedsmeldingSkdParametere.doedsmeldingParameterCreator())
                 .addParameterCreator()
-
                 .and()
-
                 .securityBuilder()
                 .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
                 .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
-
-                .build()
-                ;
+                .build();
     }
 }
