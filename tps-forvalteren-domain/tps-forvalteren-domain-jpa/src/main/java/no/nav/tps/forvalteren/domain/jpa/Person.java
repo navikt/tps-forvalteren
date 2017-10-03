@@ -1,12 +1,10 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import static javax.persistence.CascadeType.ALL;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,16 +17,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
 @Setter
-@Builder (toBuilder = true)
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_PERSON")

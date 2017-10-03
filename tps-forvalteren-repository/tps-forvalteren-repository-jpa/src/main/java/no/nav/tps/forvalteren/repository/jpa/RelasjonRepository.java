@@ -1,10 +1,11 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import java.util.List;
+import java.util.Set;
 import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
 public interface RelasjonRepository extends Repository<Relasjon, Long> {
 
@@ -14,7 +15,7 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
 
     List<Relasjon> findByPersonAndRelasjonTypeNavn(Person person, String relasjonTypeNavn);
 
-    void deleteById(Long id);
+    void deleteByIdIn(Set<Long> ids);
 
     void deleteByPersonRelasjonMedIdIn(List<Long> personIds);
 

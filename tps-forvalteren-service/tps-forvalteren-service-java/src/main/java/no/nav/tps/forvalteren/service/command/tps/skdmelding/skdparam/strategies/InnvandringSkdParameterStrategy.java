@@ -1,5 +1,10 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.stereotype.Service;
+
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
@@ -10,11 +15,6 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Innvandri
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {

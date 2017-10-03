@@ -28,10 +28,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
-            <artifactId>tps-forvalteren-domain-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-common-test</artifactId>
             <scope>test</scope>
         </dependency>

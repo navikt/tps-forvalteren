@@ -27,7 +27,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                         var alert = $mdDialog.alert()
                             .title('Bekreftelse')
                             .htmlContent('Testpersoner for gruppe har blitt sendt til TPS.<br>' +
-                                    'På grunn av prosessering i batch kan det flere minutter før endringen er synlig.')
+                                    'På grunn av prosessering i batch kan det ta flere minutter før endringen er synlig.')
                             .ariaLabel('Bekreftelse på at testpersoner har blitt sendt til TPS')
                             .ok('OK');
                         $mdDialog.show(alert);
