@@ -32,9 +32,9 @@ public class CreateRelasjoner {
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
-                if (skdMeldingNavn.equals("Vigsel")) {
+                if ("Vigsel".equals(skdMeldingNavn)) {
                     skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans1);
-                } else if (skdMeldingNavn.equals("Familieendring")) {
+                } else if ("Familieendring".equals(skdMeldingNavn)) {
                     skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans2);
                 }
             }
