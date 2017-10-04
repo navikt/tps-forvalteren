@@ -46,9 +46,9 @@ public class SjekkDoedsmeldingSentForPersonTest {
         when(aPersonWithDoedsmeldingAndNotSent.getId()).thenReturn(ID_DOEDSMELDING_AND_NOT_SENT);
         when(aPersonWithoutDoedsmelding.getId()).thenReturn(ID_NO_DOEDSMELDING);
 
-        when(doedsmeldingRepositoryMock.findDoedsmeldingByPersonId(ID_DOEDSMELDING_AND_SENT)).thenReturn(doedsmeldingThatIsSent);
-        when(doedsmeldingRepositoryMock.findDoedsmeldingByPersonId(ID_DOEDSMELDING_AND_NOT_SENT)).thenReturn(doedsmeldingThatIsNotSent);
-        when(doedsmeldingRepositoryMock.findDoedsmeldingByPersonId(ID_NO_DOEDSMELDING)).thenReturn(null);
+        when(doedsmeldingRepositoryMock.findByPersonId(ID_DOEDSMELDING_AND_SENT)).thenReturn(doedsmeldingThatIsSent);
+        when(doedsmeldingRepositoryMock.findByPersonId(ID_DOEDSMELDING_AND_NOT_SENT)).thenReturn(doedsmeldingThatIsNotSent);
+        when(doedsmeldingRepositoryMock.findByPersonId(ID_NO_DOEDSMELDING)).thenReturn(null);
 
         when(doedsmeldingThatIsSent.getMeldingSendt()).thenReturn(true);
         when(doedsmeldingThatIsNotSent.getMeldingSendt()).thenReturn(false);

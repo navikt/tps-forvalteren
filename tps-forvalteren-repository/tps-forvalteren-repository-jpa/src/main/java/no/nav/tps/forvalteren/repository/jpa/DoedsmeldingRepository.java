@@ -7,7 +7,7 @@ import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
 
 public interface DoedsmeldingRepository extends Repository<Doedsmelding, Long> {
 
-    Doedsmelding findDoedsmeldingByPersonId(Long id);
+    Doedsmelding findByPersonId(Long id);
 
     void save(Iterable<Doedsmelding> doedsmeldinger);
 

@@ -14,7 +14,7 @@ public class SjekkDoedsmeldingSentForPerson {
     private DoedsmeldingRepository doedsmeldingRepository;
 
     public Boolean execute(Person person) {
-        Doedsmelding doedsmelding = doedsmeldingRepository.findDoedsmeldingByPersonId(person.getId());
+        Doedsmelding doedsmelding = doedsmeldingRepository.findByPersonId(person.getId());
 
         if (doedsmelding != null) {
             return doedsmelding.getMeldingSendt();
