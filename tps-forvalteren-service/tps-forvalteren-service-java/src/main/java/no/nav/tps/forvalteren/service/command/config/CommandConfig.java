@@ -1,9 +1,18 @@
 package no.nav.tps.forvalteren.service.command.config;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
+
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
@@ -15,15 +24,8 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11;
 import no.nav.tps.forvalteren.service.command.Command;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
@@ -93,4 +95,10 @@ public class CommandConfig {
     SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
     }
+
+    @Bean
+    SkdMeldingResolver vigsel() {
+        return new VigselAarsakskode11();
+    }
+
 }

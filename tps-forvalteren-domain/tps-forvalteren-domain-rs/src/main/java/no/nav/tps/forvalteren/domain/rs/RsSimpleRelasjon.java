@@ -11,9 +11,18 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsSimplePerson {
+public class RsSimpleRelasjon {
 
     @NotNull
     private Long id;
+
+    @NotNull
+    private RsPerson person;
+
+    @NotNull
+    private RsPerson personRelasjonMed;
+
+    @NotNull
+    private String relasjonTypeNavn;
 
 }

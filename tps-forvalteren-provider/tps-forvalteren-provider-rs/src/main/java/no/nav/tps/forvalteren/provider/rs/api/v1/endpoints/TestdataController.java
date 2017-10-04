@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
@@ -11,7 +10,6 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
@@ -26,7 +24,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdCreatePersoner;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,9 +48,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";
-
-    @Autowired
-    private SkdCreatePersoner skdCreatePersoner;
 
     @Autowired
     private SetNameOnPersonsService setNameOnPersonsService;
@@ -92,6 +87,9 @@ public class TestdataController {
 
     @Autowired
     private MapperFacade mapper;
+
+    @Autowired
+    private LagreTilTps lagreTilTps;
 
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
@@ -148,8 +146,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
-        Gruppe gruppe = findGruppeById.execute(gruppeId);
-        skdCreatePersoner.execute(gruppe.getPersoner(), environments);
+        lagreTilTps.execute(gruppeId, environments);
     }
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")

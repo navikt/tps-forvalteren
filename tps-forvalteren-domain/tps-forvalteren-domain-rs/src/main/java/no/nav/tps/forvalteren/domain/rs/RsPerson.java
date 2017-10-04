@@ -59,4 +59,6 @@ public class RsPerson {
     @NotNull
     private RsSimpleGruppe gruppe;
 
+    private List<RsSimpleRelasjon> relasjoner;
+
 }

@@ -16,6 +16,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-repository-jpa</artifactId>
         </dependency>
         <dependency>

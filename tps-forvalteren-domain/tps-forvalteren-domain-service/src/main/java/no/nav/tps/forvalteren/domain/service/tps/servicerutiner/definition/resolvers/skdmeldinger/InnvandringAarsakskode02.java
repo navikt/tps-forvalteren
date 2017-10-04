@@ -3,10 +3,11 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.reso
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringSkdParametere;
 
-public class InnvandringAarsakskode02 implements SkdMeldingResolver{
+public class InnvandringAarsakskode02 implements SkdMeldingResolver {
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
@@ -14,16 +15,20 @@ public class InnvandringAarsakskode02 implements SkdMeldingResolver{
                 .name("Innvandring")
 
                 .config()
-                    .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
+                .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
+                .and()
+
+                .skdParameters()
+                .addSkdParametersCreator(InnvandringSkdParametere.innvandringParameterCreator())
+                .addParameterCreator()
 
                 .and()
 
                 .securityBuilder()
-                    .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
-                    .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
 
-                .build()
-                ;
+                .build();
     }
 }

@@ -22,7 +22,7 @@ public class FilterEnvironmentsOnDeployedEnvironmentTest {
     FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
     @Test
-    public void hvisErIUMiljoeSaaReturnerUOgT() {
+    public void hvisErIUMiljoeSaaReturnerU() {
 
         ReflectionTestUtils.setField(filterEnvironmentsOnDeployedEnvironment, ENVIRONMENT_PROPERTY_VALUE, "u");
 

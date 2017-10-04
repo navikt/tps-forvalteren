@@ -18,4 +18,6 @@ public class MessageConstants {
     public static final String UPDATING_KODEVERK_KEY = "service.kodeverk.updating";
     public static final String GETTING_KODEVERK_KOMMUNER_FAILED = "service.kodeverk.fetching";
 
+
+    public static final String UNKNOWN_SKD_PARAMETER_STRATEGY = "service.exception.parameter.mapping.failed";
 }

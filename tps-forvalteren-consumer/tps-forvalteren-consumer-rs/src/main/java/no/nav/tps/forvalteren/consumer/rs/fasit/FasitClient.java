@@ -137,11 +137,6 @@ public class FasitClient {
         }
 
         public Queue getQueue(String alias) {
-//            ResourceElement resource = FasitClient.this.findResource(alias, name, environment, ResourceTypeDO.Queue);
-//
-//            String queueName = resource.getPropertyString("queueName");
-//            String manager   = resource.getPropertyString("queueManager");
-
             String queueName = getQueueName(alias, environment);
             return new Queue(queueName, null);
         }

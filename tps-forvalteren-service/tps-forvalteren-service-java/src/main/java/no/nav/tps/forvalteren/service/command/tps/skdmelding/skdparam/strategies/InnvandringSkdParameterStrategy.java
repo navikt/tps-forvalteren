@@ -1,4 +1,9 @@
-package no.nav.tps.forvalteren.service.command.testdata.skd.utils;
+package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
@@ -6,35 +11,27 @@ import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
-import org.springframework.stereotype.Service;
-
-import javax.ejb.PostActivate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
 
 @Service
-public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonToSkdParametersMapper {
+public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String TILDELINGSKODE_FOR_ENDRING = "2";
     private static final String TILDELINGSKODE_FOR_OPPRETT = "1";
     private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
 
-    public Map<String, String> create(Person person) {
+    @Override
+    public boolean isSupported(SkdParametersCreator creator) {
+        return creator instanceof InnvandringSkdParametere;
+    }
+
+    @Override
+    public Map<String, String> execute(Person person) {
         HashMap<String, String> skdParams = new HashMap<>();
 
         skdParams.put(SkdConstants.TILDELINGSKODE, TILDELINGSKODE_FOR_OPPRETT);
-
-        addSkdParametersExtractedFromPerson(skdParams, person);
-
-        return skdParams;
-    }
-
-    public Map<String, String> update(Person person) {
-        HashMap<String, String> skdParams = new HashMap<>();
-
-        skdParams.put(SkdConstants.TILDELINGSKODE, TILDELINGSKODE_FOR_ENDRING);
 
         addSkdParametersExtractedFromPerson(skdParams, person);
 
@@ -50,17 +47,8 @@ public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonT
         skdParams.put(SkdConstants.STATSBORGERSKAP, person.getStatsborgerskap());
 
         setAdresse(skdParams, person);
-
-        LocalDateTime regDato = person.getRegdato();
-        String year = String.valueOf(regDato.getYear());
-        String month = formaterDato(regDato.getMonthValue());
-        String day = formaterDato(regDato.getDayOfMonth());
-        String hour = formaterDato(regDato.getHour());
-        String minute = formaterDato(regDato.getMinute());
-        String second = formaterDato(regDato.getSecond());
-
-        String yyyyMMdd = year + month + day;
-        String hhMMss = hour + minute + second;
+        String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
+        String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());
 
         skdParams.put(SkdConstants.MASKINTID, hhMMss);
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
@@ -76,7 +64,7 @@ public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonT
 
     private void setAdresse(Map<String, String> skdParams, Person person) {
 
-    /* Boadresse */
+        /* Boadresse */
         Adresse boadresse = person.getBoadresse();
         if (person.getBoadresse() != null) {
             if (boadresse instanceof Matrikkeladresse) {
@@ -99,11 +87,7 @@ public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonT
 
             LocalDateTime flytteDato = boadresse.getFlyttedato();
             if (flytteDato != null) {
-                String yearFlytt = String.valueOf(flytteDato.getYear());
-                String monthFlytt = formaterDato(flytteDato.getMonthValue());
-                String dayFlytt = formaterDato(flytteDato.getDayOfMonth());
-                String yyyyMMddFlytt = yearFlytt + monthFlytt + dayFlytt;
-                skdParams.put("T1-FLYTTEDATO-ADR", yyyyMMddFlytt);
+                skdParams.put("T1-FLYTTEDATO-ADR", String.format("%04d%02d%02d", flytteDato.getYear(), flytteDato.getMonthValue(), flytteDato.getDayOfMonth()));
             }
             skdParams.put("T1-ADRESSETYPE", "O");
         }
@@ -128,12 +112,4 @@ public class DefaultPersonToSkdParametersForInnvandringMapper implements PersonT
         skdParams.put("T1-TRANSTYPE", "1");
         skdParams.put("T1-STATUSKODE", "1");
     }
-
-    private String formaterDato(int tid) {
-        if (tid < 10) {
-            return "0" + tid;
-        }
-        return String.valueOf(tid);
-    }
-
 }
