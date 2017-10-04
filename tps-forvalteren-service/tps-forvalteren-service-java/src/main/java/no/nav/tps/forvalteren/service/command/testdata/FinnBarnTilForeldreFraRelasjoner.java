@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 public class FinnBarnTilForeldreFraRelasjoner {
 
     public List<Person> execute(List<Relasjon> foreldreBarnRelasjoner) {
-        return foreldreBarnRelasjoner.stream().map(Relasjon::getPersonRelasjonMed).collect(Collectors.toList());
+        return foreldreBarnRelasjoner.stream()
+                .map(Relasjon::getPersonRelasjonMed)
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,11 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;

@@ -90,7 +90,7 @@ public class SendDoedsmeldingTest {
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
         sendDoedsmelding.execute(GRUPPE_ID, ENVS);
 
-        verify(skdCreatePersonerMock).execute(anyString(), personCaptor.capture(), eq(ENVS));
+        verify(skdCreatePersonerMock).execute(anyString(), personCaptor.capture(), eq(ENVS), any());
         assertEquals(personCaptor.getValue(), doedePersonerWithoutDoedsmelding);
     }
 
@@ -106,7 +106,7 @@ public class SendDoedsmeldingTest {
     public void noFurtherCallsWhenNoDoedePersoner() {
         sendDoedsmelding.execute(GRUPPE_ID_NO_DEAD_PERSONS, ENVS);
 
-        verify(skdCreatePersonerMock, never()).execute(any(), any(), any());
+        verify(skdCreatePersonerMock, never()).execute(any(), any(), any(), any());
         verify(saveDoedsmeldingToDBMock, never()).execute(any());
     }
 }

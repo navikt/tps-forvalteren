@@ -15,21 +15,20 @@ public class VigselAarsakskode11 implements SkdMeldingResolver {
                 .name("Vigsel")
 
                 .config()
-                    .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
+                .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
 
                 .skdParameters()
-                    .addSkdParametersCreator(EkteskapSkdParametere.ekteskapParameterCreator())
+                .addSkdParametersCreator(EkteskapSkdParametere.ekteskapParameterCreator())
                 .addParameterCreator()
 
                 .and()
 
                 .securityBuilder()
-                    .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
-                    .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
+                .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
 
-                .build()
-                ;
+                .build();
     }
 }

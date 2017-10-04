@@ -20,6 +20,9 @@ public class SendDoedsmelding {
     private SkdCreatePersoner skdCreatePersoner;
 
     @Autowired
+    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
+
+    @Autowired
     private FindGruppeById findGruppeById;
 
     @Autowired
@@ -37,7 +40,7 @@ public class SendDoedsmelding {
         List<Person> doedePersonerUtenDoedsmelding = findDoedePersonerUtenDoedsmelding(personerIGruppen);
 
         if (!doedePersonerUtenDoedsmelding.isEmpty()) {
-            skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments);
+            skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments, skdFelterContainerTrans1);
             saveDoedsmeldingToDB.execute(doedePersonerUtenDoedsmelding);
         }
     }

@@ -18,9 +18,11 @@ public class DeleteGruppeById {
     @Autowired
     private DeletePersonerByIdIn deletePersonerByIdIn;
 
-    public void execute(Long gruppeId){
+    public void execute(Long gruppeId) {
         Gruppe gruppe = gruppeRepository.findById(gruppeId);
-        List<Long> personIds = gruppe.getPersoner().stream().map(Person::getId).collect(Collectors.toList());
+        List<Long> personIds = gruppe.getPersoner().stream()
+                .map(Person::getId)
+                .collect(Collectors.toList());
         deletePersonerByIdIn.execute(personIds);
         gruppeRepository.deleteById(gruppeId);
     }

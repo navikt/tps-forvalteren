@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,27 +24,35 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
     private static final int INDEX_SLUTT_TRANSTYPE = 26;
 
     public StringBuilder execute(StringBuilder skdMelding) {
-        String headerSkdMelding = MQ_HANDLE + KODE_SYSTEM + KJORE_NUMMER;
+        StringBuilder headerSkdMelding = new StringBuilder();
+        headerSkdMelding.append(MQ_HANDLE)
+                .append(KODE_SYSTEM)
+                .append(KJORE_NUMMER);
+
         String aarsakskode = extractAArsakskode(skdMelding.toString());
         String transType = extractTranstype(skdMelding.toString());
         String tildelingsKode = extractTildelingskode(skdMelding.toString());
-        String endringsKode = aarsakskode + transType + tildelingsKode;
-        headerSkdMelding = headerSkdMelding + endringsKode  + SKD_REFERANSE;
+
+        headerSkdMelding.append(aarsakskode)
+                .append(transType)
+                .append(tildelingsKode)
+                .append(SKD_REFERANSE);
+
         return skdMelding.reverse()
-                        .append(new StringBuilder(headerSkdMelding).reverse().toString())
-                        .reverse();
+                .append(headerSkdMelding.reverse().toString())
+                .reverse();
     }
 
     private String extractAArsakskode(String skdMelding) {
-        return skdMelding.substring(INDEX_START_AARSAKSKODE,INDEX_SLUTT_AARSAKSKODE);
+        return skdMelding.substring(INDEX_START_AARSAKSKODE, INDEX_SLUTT_AARSAKSKODE);
     }
 
     private String extractTranstype(String skdMelding) {
         return skdMelding.substring(INDEX_START_TRANSTYPE, INDEX_SLUTT_TRANSTYPE);
     }
 
-    private String extractTildelingskode(String skdMelding){
+    private String extractTildelingskode(String skdMelding) {
         String tildelingskode = skdMelding.substring(INDEX_START_TILDELINGSKODE, INDEX_SLUTT_TILDELINGSKODE);
-        return " ".equals(tildelingskode) ? "0" : tildelingskode;
+        return !StringUtils.isBlank(tildelingskode) ? tildelingskode : "0";
     }
 }
