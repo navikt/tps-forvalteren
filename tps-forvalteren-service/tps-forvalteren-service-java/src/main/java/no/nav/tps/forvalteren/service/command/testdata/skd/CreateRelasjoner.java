@@ -17,7 +17,7 @@ public class CreateRelasjoner {
     private RelasjonRepository relasjonRepository;
 
     @Autowired
-    private SkdCreatePersoner skdCreatePersoner;
+    private SkdMessageSender skdMessageSender;
 
     @Autowired
     private SkdFelterContainerTrans1 skdFelterContainerTrans1;
@@ -33,9 +33,9 @@ public class CreateRelasjoner {
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
                 if ("Vigsel".equals(skdMeldingNavn)) {
-                    skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans1);
+                    skdMessageSender.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans1);
                 } else if ("Familieendring".equals(skdMeldingNavn)) {
-                    skdCreatePersoner.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans2);
+                    skdMessageSender.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans2);
                 }
             }
         }

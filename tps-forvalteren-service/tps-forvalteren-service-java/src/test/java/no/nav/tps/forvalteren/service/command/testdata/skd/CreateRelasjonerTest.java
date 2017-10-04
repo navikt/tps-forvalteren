@@ -33,7 +33,7 @@ public class CreateRelasjonerTest {
     private RelasjonRepository relasjonRepository;
 
     @Mock
-    private SkdCreatePersoner skdCreatePersoner;
+    private SkdMessageSender skdMessageSender;
 
     @Mock
     private SkdFelterContainerTrans1 skdFelterContainerTrans1;
@@ -69,9 +69,9 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdCreatePersoner).execute("Vigsel", Arrays.asList(person2), environments, skdFelterContainerTrans1);
-        verify(skdCreatePersoner).execute("Vigsel", Arrays.asList(person3), environments, skdFelterContainerTrans1);
-        verify(skdCreatePersoner).execute("Familieendring", Arrays.asList(person), environments, skdFelterContainerTrans2);
+        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person2), environments, skdFelterContainerTrans1);
+        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person3), environments, skdFelterContainerTrans1);
+        verify(skdMessageSender).execute("Familieendring", Arrays.asList(person), environments, skdFelterContainerTrans2);
     }
 
     @Test
@@ -84,8 +84,8 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(1)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdCreatePersoner).execute("Vigsel", Arrays.asList(person2), environments, skdFelterContainerTrans1);
-        verify(skdCreatePersoner).execute("Vigsel", Arrays.asList(person3), environments, skdFelterContainerTrans1);
+        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person2), environments, skdFelterContainerTrans1);
+        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person3), environments, skdFelterContainerTrans1);
     }
 
     @Test
@@ -98,14 +98,14 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(1)).findByPersonId(person3.getId());
-        verify(skdCreatePersoner).execute("Familieendring", Arrays.asList(person), environments, skdFelterContainerTrans2);
+        verify(skdMessageSender).execute("Familieendring", Arrays.asList(person), environments, skdFelterContainerTrans2);
     }
 
     @Test
     public void checkThatNothingGetsCalled() {
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, environments);
 
-        verify(skdCreatePersoner, never()).execute(anyString(), anyListOf(Person.class), anyListOf(String.class), any(SkdFelterContainer.class));
+        verify(skdMessageSender, never()).execute(anyString(), anyListOf(Person.class), anyListOf(String.class), any(SkdFelterContainer.class));
     }
 
 }

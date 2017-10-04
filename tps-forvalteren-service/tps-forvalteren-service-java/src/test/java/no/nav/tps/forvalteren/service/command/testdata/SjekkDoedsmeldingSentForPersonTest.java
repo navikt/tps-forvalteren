@@ -50,8 +50,8 @@ public class SjekkDoedsmeldingSentForPersonTest {
         when(doedsmeldingRepositoryMock.findByPersonId(ID_DOEDSMELDING_AND_NOT_SENT)).thenReturn(doedsmeldingThatIsNotSent);
         when(doedsmeldingRepositoryMock.findByPersonId(ID_NO_DOEDSMELDING)).thenReturn(null);
 
-        when(doedsmeldingThatIsSent.getMeldingSendt()).thenReturn(true);
-        when(doedsmeldingThatIsNotSent.getMeldingSendt()).thenReturn(false);
+        when(doedsmeldingThatIsSent.getIsMeldingSent()).thenReturn(true);
+        when(doedsmeldingThatIsNotSent.getIsMeldingSent()).thenReturn(false);
     }
 
     @Test

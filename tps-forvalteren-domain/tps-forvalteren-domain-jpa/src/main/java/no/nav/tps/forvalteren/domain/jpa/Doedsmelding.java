@@ -38,6 +38,6 @@ public class Doedsmelding {
     @JoinColumn(name = "PERSON_ID")
     private Person person;
 
-    @Column(name = "MELDING_SENDT")
-    private Boolean meldingSendt;
+    @Column(name = "IS_MELDING_SENT")
+    private Boolean isMeldingSent;
 }

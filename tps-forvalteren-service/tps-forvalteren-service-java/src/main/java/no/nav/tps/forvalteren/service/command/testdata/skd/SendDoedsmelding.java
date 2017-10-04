@@ -17,7 +17,7 @@ public class SendDoedsmelding {
     private static final String NAVN_DOEDSMELDING = "Doedsmelding";
 
     @Autowired
-    private SkdCreatePersoner skdCreatePersoner;
+    private SkdMessageSender skdMessageSender;
 
     @Autowired
     private SkdFelterContainerTrans1 skdFelterContainerTrans1;
@@ -40,7 +40,7 @@ public class SendDoedsmelding {
         List<Person> doedePersonerUtenDoedsmelding = findDoedePersonerUtenDoedsmelding(personerIGruppen);
 
         if (!doedePersonerUtenDoedsmelding.isEmpty()) {
-            skdCreatePersoner.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments, skdFelterContainerTrans1);
+            skdMessageSender.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments, skdFelterContainerTrans1);
             saveDoedsmeldingToDB.execute(doedePersonerUtenDoedsmelding);
         }
     }

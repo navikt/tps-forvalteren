@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersCreatorService;
 
 @Service
-public class SkdCreatePersoner {
+public class SkdMessageSender {
 
     @Value("${environment.class}")
     private String deployedEnvironment;

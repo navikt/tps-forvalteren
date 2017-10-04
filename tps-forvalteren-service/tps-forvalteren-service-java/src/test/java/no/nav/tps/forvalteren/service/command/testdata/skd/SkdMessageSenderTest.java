@@ -31,13 +31,13 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersCreatorService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SkdCreatePersonerTest {
+public class SkdMessageSenderTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
-    private SkdCreatePersoner skdCreatePersoner;
+    private SkdMessageSender skdMessageSender;
 
     @Mock
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
@@ -73,7 +73,7 @@ public class SkdCreatePersonerTest {
         expectedException.expect(IllegalArgumentException.class);
         when(getSkdMeldingByName.execute(anyString())).thenReturn(Optional.empty());
 
-        skdCreatePersoner.execute(VIGSEL, persons, environments, skdFelterContainer);
+        skdMessageSender.execute(VIGSEL, persons, environments, skdFelterContainer);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class SkdCreatePersonerTest {
         when(skdParametersCreatorService.execute(skdRequestMeldingDefinitionOptional.get(), person)).thenReturn(skdParametere);
         when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer)).thenReturn(SKDMELDING);
 
-        skdCreatePersoner.execute(FAMILIEENDRING, persons, environments, skdFelterContainer);
+        skdMessageSender.execute(FAMILIEENDRING, persons, environments, skdFelterContainer);
 
         verify(sendSkdMeldingTilGitteMiljoer).execute(SKDMELDING, skdRequestMeldingDefinitionOptional.get(), new HashSet<>(environments));
     }
@@ -106,7 +106,7 @@ public class SkdCreatePersonerTest {
         when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(skdParametere);
         when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer)).thenReturn(SKDMELDING);
 
-        skdCreatePersoner.execute(INNVANDRING, persons, environments, skdFelterContainer);
+        skdMessageSender.execute(INNVANDRING, persons, environments, skdFelterContainer);
 
         verify(sendSkdMeldingTilGitteMiljoer, times(3)).execute(SKDMELDING, skdRequestMeldingDefinitionOptional.get(), new HashSet<>(environments));
 

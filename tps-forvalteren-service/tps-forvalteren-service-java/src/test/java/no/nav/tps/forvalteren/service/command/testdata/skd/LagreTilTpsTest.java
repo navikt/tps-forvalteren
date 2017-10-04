@@ -23,7 +23,7 @@ public class LagreTilTpsTest {
     private LagreTilTps lagreTilTps;
 
     @Mock
-    private SkdCreatePersoner skdCreatePersoner;
+    private SkdMessageSender skdMessageSender;
 
     @Mock
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
@@ -51,7 +51,7 @@ public class LagreTilTpsTest {
     @Test
     public void checkThatServicesGetsCalled() {
         verify(findPersonsNotInEnvironments).execute(gruppeId, environments);
-        verify(skdCreatePersoner).execute(NAVN_INNVANDRINGSMELDING, persons, environments, skdFelterContainerTrans1);
+        verify(skdMessageSender).execute(NAVN_INNVANDRINGSMELDING, persons, environments, skdFelterContainerTrans1);
         verify(createRelasjoner).execute(persons, environments);
     }
 

@@ -17,7 +17,7 @@ public class SjekkDoedsmeldingSentForPerson {
         Doedsmelding doedsmelding = doedsmeldingRepository.findByPersonId(person.getId());
 
         if (doedsmelding != null) {
-            return doedsmelding.getMeldingSendt();
+            return doedsmelding.getIsMeldingSent();
         }
         return false;
     }
