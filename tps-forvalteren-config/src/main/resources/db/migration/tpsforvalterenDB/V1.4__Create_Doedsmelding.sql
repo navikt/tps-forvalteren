@@ -4,6 +4,8 @@ CREATE TABLE T_DOEDSMELDING (
   MELDING_SENDT   BIT
 );
 
+ALTER TABLE T_PERSON ADD COLUMN DOEDSDATO DATE;
+
 ---------------------------------------------------
 -- P R I M A R Y   K E Y   C O N S T R A I N T S --
 ---------------------------------------------------
