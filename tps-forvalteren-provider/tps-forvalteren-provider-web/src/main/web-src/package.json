@@ -4,6 +4,7 @@
   "description": "tps-forvalteren client",
   "main": "index.js",
   "scripts": {
+    "prebuild": "npm install",
     "start": "gulp serve.dev --color",
     "build": "gulp build.prod --color"
   },
