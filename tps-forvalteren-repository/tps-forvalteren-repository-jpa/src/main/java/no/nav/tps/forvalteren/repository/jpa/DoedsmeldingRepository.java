@@ -9,7 +9,7 @@ public interface DoedsmeldingRepository extends Repository<Doedsmelding, Long> {
 
     Doedsmelding findByPersonId(Long id);
 
-    void save(Iterable<Doedsmelding> doedsmeldinger);
+    Iterable<Doedsmelding> save(Iterable<Doedsmelding> doedsmeldinger);
 
     void deleteByPersonIdIn(List<Long> personIds);
 }
