@@ -29,7 +29,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerWithoutDoedsm
 import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendDoedsmeldingTest {
+public class CreateDoedsmeldingerTest {
 
     private static final Long GRUPPE_ID = 1L;
     private static final Long GRUPPE_ID_NO_DEAD_PERSONS = 2L;
@@ -56,7 +56,7 @@ public class SendDoedsmeldingTest {
     private SaveDoedsmeldingToDB saveDoedsmeldingToDBMock;
 
     @InjectMocks
-    private SendDoedsmelding sendDoedsmelding;
+    private CreateDoedsmeldinger createDoedsmeldinger;
 
     @Captor
     private ArgumentCaptor<List<Person>> personCaptor;
@@ -88,7 +88,7 @@ public class SendDoedsmeldingTest {
 
     @Test
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
-        sendDoedsmelding.execute(GRUPPE_ID, ENVS);
+        createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
 
         verify(skdMessageSenderMock).execute(anyString(), personCaptor.capture(), eq(ENVS), any());
         assertEquals(personCaptor.getValue(), doedePersonerWithoutDoedsmelding);
@@ -96,7 +96,7 @@ public class SendDoedsmeldingTest {
 
     @Test
     public void saveDoedsmeldingToDBCalledWithDoedePersonerWithoutDoedsmelding() {
-        sendDoedsmelding.execute(GRUPPE_ID, ENVS);
+        createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
 
         verify(saveDoedsmeldingToDBMock).execute(personCaptor.capture());
         assertEquals(personCaptor.getValue(), doedePersonerWithoutDoedsmelding);
@@ -104,7 +104,7 @@ public class SendDoedsmeldingTest {
 
     @Test
     public void noFurtherCallsWhenNoDoedePersoner() {
-        sendDoedsmelding.execute(GRUPPE_ID_NO_DEAD_PERSONS, ENVS);
+        createDoedsmeldinger.execute(GRUPPE_ID_NO_DEAD_PERSONS, ENVS);
 
         verify(skdMessageSenderMock, never()).execute(any(), any(), any(), any());
         verify(saveDoedsmeldingToDBMock, never()).execute(any());

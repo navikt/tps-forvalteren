@@ -19,6 +19,8 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironme
 @RunWith(MockitoJUnitRunner.class)
 public class LagreTilTpsTest {
 
+    private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
+
     @InjectMocks
     private LagreTilTps lagreTilTps;
 
@@ -32,9 +34,11 @@ public class LagreTilTpsTest {
     private CreateRelasjoner createRelasjoner;
 
     @Mock
+    private CreateDoedsmeldinger createDoedsmeldinger;
+
+    @Mock
     private SkdFelterContainerTrans1 skdFelterContainerTrans1;
 
-    private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
     private List<Person> persons = new ArrayList<>();
     private Person person = aMalePerson().build();
     private List<String> environments = new ArrayList<>();
@@ -53,8 +57,6 @@ public class LagreTilTpsTest {
         verify(findPersonsNotInEnvironments).execute(gruppeId, environments);
         verify(skdMessageSender).execute(NAVN_INNVANDRINGSMELDING, persons, environments, skdFelterContainerTrans1);
         verify(createRelasjoner).execute(persons, environments);
+        verify(createDoedsmeldinger).execute(gruppeId, environments);
     }
-
-
-
 }

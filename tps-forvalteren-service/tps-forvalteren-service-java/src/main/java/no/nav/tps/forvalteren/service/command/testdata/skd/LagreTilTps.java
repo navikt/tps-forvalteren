@@ -22,12 +22,15 @@ public class LagreTilTps {
     private CreateRelasjoner createRelasjoner;
 
     @Autowired
+    private CreateDoedsmeldinger createDoedsmeldinger;
+
+    @Autowired
     private SkdFelterContainerTrans1 skdFelterContainerTrans1;
 
     public void execute(Long gruppeId, List<String> environments) {
         List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(gruppeId, environments);
         skdMessageSender.execute(NAVN_INNVANDRINGSMELDING, personerSomIkkeEksitererITpsMiljoe, environments, skdFelterContainerTrans1);
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, environments);
+        createDoedsmeldinger.execute(gruppeId, environments);
     }
-
 }

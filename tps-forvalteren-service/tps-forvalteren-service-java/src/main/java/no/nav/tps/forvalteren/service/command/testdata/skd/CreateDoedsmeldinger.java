@@ -12,7 +12,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerWithoutDoedsm
 import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 
 @Service
-public class SendDoedsmelding {
+public class CreateDoedsmeldinger {
 
     private static final String NAVN_DOEDSMELDING = "Doedsmelding";
 
@@ -37,17 +37,17 @@ public class SendDoedsmelding {
     public void execute(Long gruppeId, List<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
-        List<Person> doedePersonerUtenDoedsmelding = findDoedePersonerUtenDoedsmelding(personerIGruppen);
+        List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(personerIGruppen);
 
-        if (!doedePersonerUtenDoedsmelding.isEmpty()) {
-            skdMessageSender.execute(NAVN_DOEDSMELDING, doedePersonerUtenDoedsmelding, environments, skdFelterContainerTrans1);
-            saveDoedsmeldingToDB.execute(doedePersonerUtenDoedsmelding);
+        if (!doedePersonerWithoutDoedsmelding.isEmpty()) {
+            skdMessageSender.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, environments, skdFelterContainerTrans1);
+            saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
     }
 
-    private List<Person> findDoedePersonerUtenDoedsmelding(List<Person> personer) {
+    private List<Person> findDoedePersonerWithoutDoedsmelding(List<Person> personer) {
         List<Person> doedePersoner = findDoedePersoner.execute(personer);
-        List<Person> doedePersonerUtenDoedsmelding = findPersonerWithoutDoedsmelding.execute(doedePersoner);
-        return doedePersonerUtenDoedsmelding;
+        List<Person> doedePersonerWithoutDoedsmelding = findPersonerWithoutDoedsmelding.execute(doedePersoner);
+        return doedePersonerWithoutDoedsmelding;
     }
 }

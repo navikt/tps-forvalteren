@@ -13,7 +13,7 @@ public class FindDoedePersoner {
         List<Person> doedePersoner = new ArrayList<>();
 
         for (Person person : personer) {
-            // What if death date is in the future?
+            // Does not consider if death is in the future
             if (person.getDoedsdato() != null) {
                 doedePersoner.add(person);
             }
