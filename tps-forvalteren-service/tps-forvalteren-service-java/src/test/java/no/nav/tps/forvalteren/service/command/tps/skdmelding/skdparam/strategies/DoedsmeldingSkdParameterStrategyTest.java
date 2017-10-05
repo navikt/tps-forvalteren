@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -58,22 +58,22 @@ public class DoedsmeldingSkdParameterStrategyTest {
         SkdParametersCreator correctObject = mock(DoedsmeldingSkdParametere.class);
         SkdParametersCreator incorrectObject = mock(InnvandringSkdParametere.class);
 
-        assertTrue(doedsmeldingSkdParameterStrategy.isSupported(correctObject));
-        assertFalse(doedsmeldingSkdParameterStrategy.isSupported(incorrectObject));
+        assertThat(doedsmeldingSkdParameterStrategy.isSupported(correctObject), is(true));
+        assertThat(doedsmeldingSkdParameterStrategy.isSupported(incorrectObject), is(false));
     }
 
     @Test
     public void createCorrectSkdParameterMapFromPerson() {
         Map<String, String> result = doedsmeldingSkdParameterStrategy.execute(aPerson);
 
-        assertEquals(result.get(SkdConstants.FODSELSDATO), FNR.substring(0, 6));
-        assertEquals(result.get(SkdConstants.PERSONNUMMER), FNR.substring(6, 11));
-        assertEquals(result.get(SkdConstants.MASKINTID), REGDATO_TIME_STRING);
-        assertEquals(result.get(SkdConstants.MASKINDATO), REGDATO_DATE_STRING);
-        assertEquals(result.get(SkdConstants.REG_DATO), DOEDSDATO_DATE_STRING);
-        assertEquals(result.get(SkdConstants.DOEDSDATO), DOEDSDATO_DATE_STRING);
-        assertEquals(result.get(AARSAKSKODE_KEY), AARSAKSKODE_FOR_DOEDSMELDING);
-        assertEquals(result.get(TRANSTYPE_KEY), TRANSTYPE_FOR_DOEDSMELDING);
-        assertEquals(result.get(STATUSKODE_KEY), STATUSKODE_FOR_DOEDSMELDING);
+        assertThat(result.get(SkdConstants.FODSELSDATO), is(equalTo(FNR.substring(0, 6))));
+        assertThat(result.get(SkdConstants.PERSONNUMMER), is(equalTo(FNR.substring(6, 11))));
+        assertThat(result.get(SkdConstants.MASKINTID), is(equalTo(REGDATO_TIME_STRING)));
+        assertThat(result.get(SkdConstants.MASKINDATO), is(equalTo(REGDATO_DATE_STRING)));
+        assertThat(result.get(SkdConstants.REG_DATO), is(equalTo(DOEDSDATO_DATE_STRING)));
+        assertThat(result.get(SkdConstants.DOEDSDATO), is(equalTo(DOEDSDATO_DATE_STRING)));
+        assertThat(result.get(AARSAKSKODE_KEY), is(equalTo(AARSAKSKODE_FOR_DOEDSMELDING)));
+        assertThat(result.get(TRANSTYPE_KEY), is(equalTo(TRANSTYPE_FOR_DOEDSMELDING)));
+        assertThat(result.get(STATUSKODE_KEY), is(equalTo(STATUSKODE_FOR_DOEDSMELDING)));
     }
 }

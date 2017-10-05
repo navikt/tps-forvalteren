@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,16 +56,16 @@ public class SjekkDoedsmeldingSentForPersonTest {
 
     @Test
     public void testPersonWithDoedsmeldingAndSent() {
-        assertTrue(sjekkDoedsmeldingSentForPerson.execute(aPersonWithDoedsmeldingAndSent));
+        assertThat(sjekkDoedsmeldingSentForPerson.execute(aPersonWithDoedsmeldingAndSent), is(true));
     }
 
     @Test
     public void testPersonWithDoedsmeldingAndNotSent() {
-        assertFalse(sjekkDoedsmeldingSentForPerson.execute(aPersonWithDoedsmeldingAndNotSent));
+        assertThat(sjekkDoedsmeldingSentForPerson.execute(aPersonWithDoedsmeldingAndNotSent), is(false));
     }
 
     @Test
     public void testPersonWithoutDoedsmelding() {
-        assertFalse(sjekkDoedsmeldingSentForPerson.execute(aPersonWithoutDoedsmelding));
+        assertThat(sjekkDoedsmeldingSentForPerson.execute(aPersonWithoutDoedsmelding), is(false));
     }
 }

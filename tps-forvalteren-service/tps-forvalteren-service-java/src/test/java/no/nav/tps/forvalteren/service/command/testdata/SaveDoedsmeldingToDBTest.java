@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -47,6 +49,6 @@ public class SaveDoedsmeldingToDBTest {
         saveDoedsmeldingToDB.execute(personer);
 
         verify(doedsmeldingRepositoryMock).save(doedsmeldingerCaptor.capture());
-        assertEquals(doedsmeldingerCaptor.getValue().size(), personer.size());
+        assertThat(doedsmeldingerCaptor.getValue().size(), is(equalTo(personer.size())));
     }
 }

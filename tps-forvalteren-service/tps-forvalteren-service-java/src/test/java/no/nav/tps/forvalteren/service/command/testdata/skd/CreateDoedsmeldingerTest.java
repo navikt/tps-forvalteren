@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -91,7 +93,7 @@ public class CreateDoedsmeldingerTest {
         createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
 
         verify(skdMessageSenderMock).execute(anyString(), personCaptor.capture(), eq(ENVS), any());
-        assertEquals(personCaptor.getValue(), doedePersonerWithoutDoedsmelding);
+        assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
     }
 
     @Test
@@ -99,7 +101,7 @@ public class CreateDoedsmeldingerTest {
         createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
 
         verify(saveDoedsmeldingToDBMock).execute(personCaptor.capture());
-        assertEquals(personCaptor.getValue(), doedePersonerWithoutDoedsmelding);
+        assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
     }
 
     @Test

@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -65,7 +64,7 @@ public class FindDoedePersonerTest {
         List<Person> returned;
         returned = findDoedePersoner.execute(personer);
 
-        assertTrue(Collections.disjoint(returned, alivePersoner));
+        assertThat(Collections.disjoint(returned, alivePersoner), is(true));
     }
 
 }
