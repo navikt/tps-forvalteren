@@ -44,7 +44,6 @@ public class FindPersonerWithoutDoedsmeldingTest {
     @Test
     public void findPersonWithDoedsmeldingSent() {
         List<Person> result = findPersonerWithoutDoedsmelding.execute(personer);
-        System.out.println(result.toString());
 
         assertThat(result, hasItem(aPersonWithoutDoedsmeldingSent));
         assertThat(result, not(hasItem(aPersonWithDoedsmeldingSent)));
