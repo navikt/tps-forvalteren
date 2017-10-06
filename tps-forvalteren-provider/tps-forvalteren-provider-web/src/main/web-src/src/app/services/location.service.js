@@ -30,11 +30,11 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectToVisTestdata = function(index) {
-            $state.go("vis-testdata", {id: index});
+            $state.go("vis-testdata", {gruppeId: index});
         };
 
         self.redirectToOpprettTestdata = function(index) {
-            $state.go("opprett-testdata", {id: index});
+            $state.go("opprett-testdata", {gruppeId: index});
         };
 
         self.isServicerutineState = function(){

@@ -1,14 +1,14 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$rootScope', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
-        'headerService', '$location', '$filter',
-        function ($scope, $rootScope, testdataService, utilsService, locationService, $mdDialog, underHeaderService, $location, $filter) {
+    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
+        'headerService',
+        function ($scope, $rootScope, $stateParams, $filter, testdataService, utilsService, locationService, $mdDialog, underHeaderService) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
 
-            $scope.gruppeId = $location.url().match(/\d+/g);
+            $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 
@@ -366,7 +366,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     .replace(/,*"[A-Za-z0-9_]+":""/g, '')
                     .replace(/{}/g, '');
 
-                $scope.control[index].endret = originalPerson != endretPerson;
+                $scope.control[index].endret = originalPerson !== endretPerson;
                 $scope.control[index].velg = $scope.control[index].endret;
                 $scope.oppdaterValgt();
             };
@@ -408,6 +408,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                     avbrytLagring();
+                }, function () {
+
                 });
             };
 
@@ -422,6 +424,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $mdDialog.show(confirm).then(function () {
                     $scope.visEndret = false;
                     locationService.redirectUrl(next.url, current);
+                }, function () {
+
                 });
             };
 
