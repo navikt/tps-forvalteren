@@ -158,7 +158,11 @@ angular.module('tps-forvalteren.service')
                     .textContent(errorObj.text)
                     .ariaLabel(errorObj.ariaLabel)
                     .ok('OK')
-            ).finally(function () {
+            ).then(function () {
+
+            }, function () {
+                
+            }).finally(function () {
                 if(error.status === 401){
                     authenticationService.invalidateSession(function () {
                         locationService.redirectToLoginState();

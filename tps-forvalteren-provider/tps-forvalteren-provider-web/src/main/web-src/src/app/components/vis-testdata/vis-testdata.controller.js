@@ -133,7 +133,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     return true;
                 }
                 return false;
-            }
+            };
 
             function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
