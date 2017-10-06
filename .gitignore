@@ -118,7 +118,7 @@ crashlytics-build.properties
 hs_err_pid*
 
 ### Frontend
-/tps-forvalteren-provider/tps-forvalteren-provider-web/src/main/Resources/public/
+/tps-forvalteren-provider/tps-forvalteren-provider-web/src/main/resources/public/
 
 ### NPM DEBUG
 /npm-debug.log
