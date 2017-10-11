@@ -134,7 +134,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('vis-testdata', {
-                url: "/vis-testdata/:id",
+                url: "/vis-testdata/{gruppeId:[0-9]{9}}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -160,7 +160,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('opprett-testdata', {
-                url: "/opprett-testdata/:id",
+                url: "/opprett-testdata/{gruppeId:[0-9]{9}}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();

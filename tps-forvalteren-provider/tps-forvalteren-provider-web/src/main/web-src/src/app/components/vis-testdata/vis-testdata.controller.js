@@ -1,14 +1,14 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$rootScope', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
-        'headerService', '$location', '$filter',
-        function ($scope, $rootScope, testdataService, utilsService, locationService, $mdDialog, underHeaderService, $location, $filter) {
+    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
+        'headerService',
+        function ($scope, $rootScope, $stateParams, $filter, testdataService, utilsService, locationService, $mdDialog, underHeaderService) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
 
-            $scope.gruppeId = $location.url().match(/\d+/g);
+            $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 
@@ -126,6 +126,15 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
+            // var hentTestpersoner = function () {
+            //     $scope.personer = undefined;
+            //     var resultData = testdataFactory.getGruppe($scope.gruppeId);
+            //
+            //     if (testdataFactory.getIsLoadSuccess()) {
+            //         underHeaderService.setHeader(resultData);
+            //     }
+            // };
+
             $scope.personIsDead = function (index) {
                 if ($scope.personer[index].doedsdato) {
                     // Is now similar to backend
@@ -133,7 +142,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     return true;
                 }
                 return false;
-            }
+            };
 
             function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
@@ -408,6 +417,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                     avbrytLagring();
+                }, function () {
+
                 });
             };
 
@@ -422,6 +433,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $mdDialog.show(confirm).then(function () {
                     $scope.visEndret = false;
                     locationService.redirectUrl(next.url, current);
+                }, function () {
+
                 });
             };
 

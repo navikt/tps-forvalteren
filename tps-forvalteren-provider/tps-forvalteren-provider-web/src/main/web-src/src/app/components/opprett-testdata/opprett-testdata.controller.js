@@ -1,8 +1,8 @@
 angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
-    .controller('OpprettTestdataCtrl', ['$scope', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter', 'headerService', '$location',
-        function ($scope, testdataService, utilsService, $mdDialog, locationService, $filter, headerService, $location) {
+    .controller('OpprettTestdataCtrl', ['$scope', '$stateParams', 'testdataService', 'utilsService', '$mdDialog', 'locationService', '$filter', 'headerService',
+        function ($scope, $stateParams, testdataService, utilsService, $mdDialog, locationService, $filter, headerService) {
 
-            var gruppeId = $location.url().match(/\d+/g);
+            var gruppeId = $stateParams.gruppeId;
 
             headerService.setHeader('Legg til testpersoner');
 
