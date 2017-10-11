@@ -17,26 +17,27 @@ public class CreateRelasjoner {
     private RelasjonRepository relasjonRepository;
 
     @Autowired
-    private SkdMessageSender skdMessageSender;
+    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
 
     @Autowired
-    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
-
-    @Autowired
-    private SkdFelterContainerTrans2 skdFelterContainerTrans2;
+    private DivideBarnIntoTransRecords divideBarnIntoTransRecords;
 
     public void execute(List<Person> personerSomIkkeEksitererITpsMiljoe, List<String> environments) {
         List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITpsMiljoe);
 
         for (Person person : personerMedRelasjoner) {
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+            boolean hasBarn = false;
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
                 if ("Vigsel".equals(skdMeldingNavn)) {
-                    skdMessageSender.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans1);
+                    skdMessageSenderTrans1.execute(skdMeldingNavn, Arrays.asList(person), environments);
                 } else if ("Familieendring".equals(skdMeldingNavn)) {
-                    skdMessageSender.execute(skdMeldingNavn, Arrays.asList(person), environments, skdFelterContainerTrans2);
+                    hasBarn = true;
                 }
+            }
+            if (hasBarn) {
+                divideBarnIntoTransRecords.execute(person, environments);
             }
         }
 
@@ -46,9 +47,7 @@ public class CreateRelasjoner {
         switch (relasjon.getRelasjonTypeNavn()) {
         case "EKTEFELLE":
             return "Vigsel";
-        case "MOR":
-            return "Familieendring";
-        case "FAR":
+        case "BARN":
             return "Familieendring";
         default:
             return "";

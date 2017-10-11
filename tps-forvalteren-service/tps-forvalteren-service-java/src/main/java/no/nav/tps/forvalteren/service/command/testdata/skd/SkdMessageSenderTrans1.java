@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersCreatorService;
 
 @Service
-public class SkdMessageSender {
+public class SkdMessageSenderTrans1 {
 
     @Value("${environment.class}")
     private String deployedEnvironment;
@@ -31,7 +31,10 @@ public class SkdMessageSender {
     @Autowired
     private GetSkdMeldingByName getSkdMeldingByName;
 
-    public void execute(String skdMeldingNavn, List<Person> persons, List<String> environments, SkdFelterContainer skdFelterContainer) {
+    @Autowired
+    private SkdFelterContainerTrans1 skdFelterContainer;
+
+    public void execute(String skdMeldingNavn, List<Person> persons, List<String> environments) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
 
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
