@@ -1,7 +1,7 @@
 <h3 class="testdata-relasjon-header">Familierelasjoner</h3>
 <md-button class="md-title nav-blaa" style="margin: -8px 0 0 0;"
            ng-click="leggTilRelasjonDialog()"
-           ng-hide="person.relasjoner.length == personer.length - 1"
+           ng-hide="person.relasjoner.length === personer.length - 1"
            aria-label="Legg til relasjon">
     <md-icon md-svg-icon="assets/icons/ic_add_circle_outline_black_24px.svg" class="nav-blaa" style="margin-top: -3px;"></md-icon>
     Legg Til
@@ -21,4 +21,4 @@
     </div>
 </div>
 
-<div ng-if="!person.relasjoner || person.relasjoner.length == 0">Har ingen relasjoner</div>
+<div ng-if="!person.relasjoner || person.relasjoner.length === 0">Har ingen relasjoner</div>

@@ -366,7 +366,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     .replace(/,*"[A-Za-z0-9_]+":""/g, '')
                     .replace(/{}/g, '');
 
-                $scope.control[index].endret = originalPerson != endretPerson;
+                $scope.control[index].endret = originalPerson !== endretPerson;
                 $scope.control[index].velg = $scope.control[index].endret;
                 $scope.oppdaterValgt();
             };
