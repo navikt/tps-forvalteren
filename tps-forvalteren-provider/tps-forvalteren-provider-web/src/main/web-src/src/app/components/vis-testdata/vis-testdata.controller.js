@@ -126,6 +126,15 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
+            // var hentTestpersoner = function () {
+            //     $scope.personer = undefined;
+            //     var resultData = testdataFactory.getGruppe($scope.gruppeId);
+            //
+            //     if (testdataFactory.getIsLoadSuccess()) {
+            //         underHeaderService.setHeader(resultData);
+            //     }
+            // };
+
             $scope.personIsDead = function (index) {
                 if ($scope.personer[index].doedsdato) {
                     // Is now similar to backend
