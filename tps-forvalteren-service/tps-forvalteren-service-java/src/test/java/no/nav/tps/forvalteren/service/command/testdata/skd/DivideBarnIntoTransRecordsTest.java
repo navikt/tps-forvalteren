@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FinnBarnTilForeldre;
+import no.nav.tps.forvalteren.service.command.testdata.FinnBarnTilForelder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DivideBarnIntoTransRecordsTest {
@@ -33,17 +33,17 @@ public class DivideBarnIntoTransRecordsTest {
     private SkdMessageSenderTrans2 skdMessageSenderTrans2;
 
     @Mock
-    private FinnBarnTilForeldre finnBarnTilForeldre;
+    private FinnBarnTilForelder finnBarnTilForelder;
 
     @Mock
     private List<Person> barn = new ArrayList<>();
 
-    private Person foreldre = aMalePerson().build();
+    private Person forelder = aMalePerson().build();
     private List<String> environments = new ArrayList<>(Arrays.asList("u5", "u6"));
 
     @Before
     public void setup() {
-        when(finnBarnTilForeldre.execute(foreldre)).thenReturn(barn);
+        when(finnBarnTilForelder.execute(forelder)).thenReturn(barn);
     }
 
     @Test
@@ -52,17 +52,17 @@ public class DivideBarnIntoTransRecordsTest {
 
         exception.expect(IllegalArgumentException.class);
 
-        divideBarnIntoTransRecords.execute(foreldre, environments);
+        divideBarnIntoTransRecords.execute(forelder, environments);
     }
 
     @Test
     public void checkThatOneMessageIsSent() {
         when(barn.size()).thenReturn(13);
 
-        divideBarnIntoTransRecords.execute(foreldre, environments);
+        divideBarnIntoTransRecords.execute(forelder, environments);
 
-        verify(finnBarnTilForeldre).execute(foreldre);
-        verify(skdMessageSenderTrans2).execute("Familieendring", foreldre, barn, environments);
+        verify(finnBarnTilForelder).execute(forelder);
+        verify(skdMessageSenderTrans2).execute("Familieendring", forelder, barn, environments);
     }
 
     @Test
@@ -74,11 +74,11 @@ public class DivideBarnIntoTransRecordsTest {
         when(barn.subList(0, 13)).thenReturn(barnRecord1);
         when(barn.subList(13, 26)).thenReturn(barnRecord2);
 
-        divideBarnIntoTransRecords.execute(foreldre, environments);
+        divideBarnIntoTransRecords.execute(forelder, environments);
 
-        verify(finnBarnTilForeldre).execute(foreldre);
-        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", foreldre, barnRecord1, environments);
-        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", foreldre, barnRecord2, environments);
+        verify(finnBarnTilForelder).execute(forelder);
+        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord1, environments);
+        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord2, environments);
     }
 
 }

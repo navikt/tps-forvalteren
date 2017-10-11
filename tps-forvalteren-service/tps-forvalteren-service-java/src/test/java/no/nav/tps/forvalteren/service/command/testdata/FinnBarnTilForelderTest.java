@@ -21,15 +21,15 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FinnBarnTilForeldreTest {
+public class FinnBarnTilForelderTest {
 
     @InjectMocks
-    private FinnBarnTilForeldre finnBarnTilForeldre;
+    private FinnBarnTilForelder finnBarnTilForelder;
 
     @Mock
     private RelasjonRepository relasjonRepository;
 
-    private Person foreldre = aMalePerson().build();
+    private Person forelder = aMalePerson().build();
     private List<Person> barn = new ArrayList<>();
     private List<Relasjon> relasjoner = new ArrayList<>();
 
@@ -39,17 +39,17 @@ public class FinnBarnTilForeldreTest {
         Person barnKvinne = aMalePerson().build();
         barn.add(barnKvinne);
         barn.add(barnMann);
-        Relasjon relasjon = new Relasjon(0L, foreldre, barnKvinne, "BARN");
-        Relasjon relasjon2 = new Relasjon(0L, foreldre, barnMann, "BARN");
+        Relasjon relasjon = new Relasjon(0L, forelder, barnKvinne, "BARN");
+        Relasjon relasjon2 = new Relasjon(0L, forelder, barnMann, "BARN");
         relasjoner.add(relasjon);
         relasjoner.add(relasjon2);
     }
 
     @Test
     public void checkThatExecuteReturnsCorrectBarn() {
-        when(relasjonRepository.findByPersonAndRelasjonTypeNavn(foreldre, "BARN")).thenReturn(relasjoner);
+        when(relasjonRepository.findByPersonAndRelasjonTypeNavn(forelder, "BARN")).thenReturn(relasjoner);
 
-        List<Person> result = finnBarnTilForeldre.execute(foreldre);
+        List<Person> result = finnBarnTilForelder.execute(forelder);
 
         assertThat(result.size(), is(2));
         assertThat(result.get(0), is(barn.get(0)));
@@ -58,9 +58,9 @@ public class FinnBarnTilForeldreTest {
 
     @Test
     public void checkThatNoBarnIsReturnedWhenNoRelasjon() {
-        when(relasjonRepository.findByPersonAndRelasjonTypeNavn(foreldre, "BARN")).thenReturn(new ArrayList<>());
+        when(relasjonRepository.findByPersonAndRelasjonTypeNavn(forelder, "BARN")).thenReturn(new ArrayList<>());
 
-        List<Person> result = finnBarnTilForeldre.execute(foreldre);
+        List<Person> result = finnBarnTilForelder.execute(forelder);
 
         assertThat(result, is(empty()));
     }

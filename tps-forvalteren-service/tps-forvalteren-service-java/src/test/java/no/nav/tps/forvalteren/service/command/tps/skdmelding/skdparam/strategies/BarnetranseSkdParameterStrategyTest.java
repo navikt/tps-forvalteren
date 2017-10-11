@@ -24,21 +24,21 @@ public class BarnetranseSkdParameterStrategyTest {
     @InjectMocks
     private BarnetranseSkdParameterStrategy barnetranseSkdParameterStrategy;
 
-    private Person foreldre = aMalePerson().build();
+    private Person forelder = aMalePerson().build();
     private List<Person> barn = new ArrayList<>();
-    private List<Relasjon> foreldreBarnRelasjoner = new ArrayList<>();
+    private List<Relasjon> forelderBarnRelasjoner = new ArrayList<>();
     private Map<String, String> skdParams;
 
     @Before
     public void setup() {
         barn.add(aFemalePerson().build());
         barn.add(aMalePerson().build());
-        Relasjon relasjon = new Relasjon(1L, foreldre, barn.get(0), "BARN");
-        Relasjon relasjon2 = new Relasjon(2L, foreldre, barn.get(1), "BARN");
-        foreldreBarnRelasjoner.add(relasjon);
-        foreldreBarnRelasjoner.add(relasjon2);
+        Relasjon relasjon = new Relasjon(1L, forelder, barn.get(0), "BARN");
+        Relasjon relasjon2 = new Relasjon(2L, forelder, barn.get(1), "BARN");
+        forelderBarnRelasjoner.add(relasjon);
+        forelderBarnRelasjoner.add(relasjon2);
 
-        skdParams = barnetranseSkdParameterStrategy.execute(foreldre, barn);
+        skdParams = barnetranseSkdParameterStrategy.execute(forelder, barn);
     }
 
     @Test
@@ -50,8 +50,8 @@ public class BarnetranseSkdParameterStrategyTest {
     }
 
     @Test
-    public void checkThatForeldreIsAdded() {
-        assertThat(skdParams, hasEntry("T2-FODSELSNR", foreldre.getIdent()));
+    public void checkThatForelderIsAdded() {
+        assertThat(skdParams, hasEntry("T2-FODSELSNR", forelder.getIdent()));
     }
 
     @Test

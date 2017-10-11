@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FinnBarnTilForeldre {
+public class FinnBarnTilForelder {
 
     @Autowired
     private RelasjonRepository relasjonRepository;
 
-    public List<Person> execute(Person foreldre) {
-        List<Relasjon> foreldreBarnRelasjoner = relasjonRepository.findByPersonAndRelasjonTypeNavn(foreldre, "BARN");
-        return foreldreBarnRelasjoner.stream()
+    public List<Person> execute(Person forelder) {
+        List<Relasjon> forelderBarnRelasjoner = relasjonRepository.findByPersonAndRelasjonTypeNavn(forelder, "BARN");
+        return forelderBarnRelasjoner.stream()
                 .map(Relasjon::getPersonRelasjonMed)
                 .collect(Collectors.toList());
     }

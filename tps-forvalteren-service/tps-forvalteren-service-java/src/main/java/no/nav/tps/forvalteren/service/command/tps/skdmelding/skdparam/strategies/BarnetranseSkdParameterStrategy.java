@@ -12,16 +12,16 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetS
 @Service
 public class BarnetranseSkdParameterStrategy {
 
-    public Map<String, String> execute(Person foreldre, List<Person> barn) {
+    public Map<String, String> execute(Person forelder, List<Person> barn) {
         Map<String, String> skdParams = new HashMap<>();
-        addSkdParametersExtractedFromForeldre(skdParams, foreldre);
+        addSkdParametersExtractedFromForelder(skdParams, forelder);
         addSkdParametersExtractedFromBarn(skdParams, barn);
         addDefaultParameters(skdParams);
         return skdParams;
     }
 
-    private void addSkdParametersExtractedFromForeldre(Map<String, String> skdParams, Person foreldre) {
-        skdParams.put("T2-FODSELSNR", foreldre.getIdent());
+    private void addSkdParametersExtractedFromForelder(Map<String, String> skdParams, Person forelder) {
+        skdParams.put("T2-FODSELSNR", forelder.getIdent());
     }
 
     private void addSkdParametersExtractedFromBarn(Map<String, String> skdParams, List<Person> barn) {

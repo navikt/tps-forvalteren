@@ -34,12 +34,12 @@ public class SkdMessageSenderTrans2 {
     @Autowired
     private BarnetranseSkdParameterStrategy barnetranseSkdParameterStrategy;
 
-    public void execute(String skdMeldingNavn, Person foreldre, List<Person> barn, List<String> environments) {
+    public void execute(String skdMeldingNavn, Person forelder, List<Person> barn, List<String> environments) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
 
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
-            Map<String, String> skdParametere = barnetranseSkdParameterStrategy.execute(foreldre, barn);
+            Map<String, String> skdParametere = barnetranseSkdParameterStrategy.execute(forelder, barn);
             String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer);
             sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, new HashSet<>(environments));
         } else {
