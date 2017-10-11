@@ -111,7 +111,7 @@ angular.module('tps-forvalteren.service')
                     for (var j = 0; j < indent; j++) {
                         padding += '\t';
                     }
-                    if (fromTo == 'opening->closing')
+                    if (fromTo === 'opening->closing')
                         formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
                     else
                         formatted += padding + ln + '\n';

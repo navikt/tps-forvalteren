@@ -45,7 +45,7 @@ angular.module('tps-forvalteren.service')
             if ('/' === url) {
                 self.redirectToHomeState();
             } else {
-                if (url.indexOf('/:') != -1) {
+                if (url.indexOf('/:') !== -1) {
                     $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
                 }
                 else {
@@ -55,6 +55,6 @@ angular.module('tps-forvalteren.service')
         };
 
         self.isRoot = function () {
-            return $location.url() == '/';
+            return $location.url() === '/';
         };
     }]);

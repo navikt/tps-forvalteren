@@ -109,7 +109,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                     $scope.showSjekkSpinner = true;
                     var identer = $scope.identRaw.split(/[\W\s]+/);
                     identer = identer.sort().filter(function (elem, index, self) {
-                        return index == self.indexOf(elem);
+                        return index === self.indexOf(elem);
                     });
                     $scope.identRaw = identer.join('\n');
                     testdataService.validerListe(identer).then(
@@ -127,7 +127,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
 
             $scope.slettRadDialog = function (ident) {
                 for (var i = 0; i < $scope.kandidater.length; i++) {
-                    if (($scope.kandidater[i].ident == ident)) {
+                    if (($scope.kandidater[i].ident === ident)) {
                         $scope.kandidater.splice(i, 1);
                         break;
                     }
@@ -154,7 +154,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
             var antallGyldig = function () {
                 var antall = 0;
                 for (var i = 0; i < $scope.kandidater.length; i++) {
-                    if ($scope.kandidater[i].status == 'LOG') {
+                    if ($scope.kandidater[i].status === 'LOG') {
                         antall++;
                     }
                 }
@@ -165,7 +165,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 $scope.showOpprettSpinner = true;
                 var identer = [];
                 for (var i = 0; i < $scope.kandidater.length; i++) {
-                    if ($scope.kandidater[i].status == 'LOG') {
+                    if ($scope.kandidater[i].status === 'LOG') {
                         identer.push($scope.kandidater[i].ident);
                     }
                 }

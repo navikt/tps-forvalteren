@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', 'testdataService', 'utilsService', 'locationService', '$mdDialog',
+    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
         'headerService',
-        function ($scope, $rootScope, $stateParams, $filter, testdataService, utilsService, locationService, $mdDialog, underHeaderService) {
+        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, underHeaderService) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -77,8 +77,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                                 }
                             )
                         }, function () {
-                            // Dialog cancelled
-                            // Without this function we get unhandled rejection error in console
+                            // Empty function to prevent unhandled rejection error
                         });
                     }
                 }]);
@@ -125,15 +124,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     }
                 );
             };
-
-            // var hentTestpersoner = function () {
-            //     $scope.personer = undefined;
-            //     var resultData = testdataFactory.getGruppe($scope.gruppeId);
-            //
-            //     if (testdataFactory.getIsLoadSuccess()) {
-            //         underHeaderService.setHeader(resultData);
-            //     }
-            // };
 
             $scope.personIsDead = function (index) {
                 if ($scope.personer[index].doedsdato) {
