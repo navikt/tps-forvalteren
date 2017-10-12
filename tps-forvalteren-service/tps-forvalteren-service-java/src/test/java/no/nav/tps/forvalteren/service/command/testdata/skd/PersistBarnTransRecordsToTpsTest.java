@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FinnBarnTilForelder;
 
 @RunWith(MockitoJUnitRunner.class)
-public class persistBarnTransRecordsToTpsTest {
+public class PersistBarnTransRecordsToTpsTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
