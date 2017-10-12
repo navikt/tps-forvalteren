@@ -111,7 +111,7 @@ angular.module('tps-forvalteren.service')
                     for (var j = 0; j < indent; j++) {
                         padding += '\t';
                     }
-                    if (fromTo == 'opening->closing')
+                    if (fromTo === 'opening->closing')
                         formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
                     else
                         formatted += padding + ln + '\n';
@@ -158,7 +158,11 @@ angular.module('tps-forvalteren.service')
                     .textContent(errorObj.text)
                     .ariaLabel(errorObj.ariaLabel)
                     .ok('OK')
-            ).finally(function () {
+            ).then(function () {
+
+            }, function () {
+                
+            }).finally(function () {
                 if(error.status === 401){
                     authenticationService.invalidateSession(function () {
                         locationService.redirectToLoginState();

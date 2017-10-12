@@ -30,11 +30,11 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectToVisTestdata = function(index) {
-            $state.go("vis-testdata", {id: index});
+            $state.go("vis-testdata", {gruppeId: index});
         };
 
         self.redirectToOpprettTestdata = function(index) {
-            $state.go("opprett-testdata", {id: index});
+            $state.go("opprett-testdata", {gruppeId: index});
         };
 
         self.isServicerutineState = function(){
@@ -45,7 +45,7 @@ angular.module('tps-forvalteren.service')
             if ('/' === url) {
                 self.redirectToHomeState();
             } else {
-                if (url.indexOf('/:') != -1) {
+                if (url.indexOf('/:') !== -1) {
                     $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
                 }
                 else {
@@ -55,6 +55,6 @@ angular.module('tps-forvalteren.service')
         };
 
         self.isRoot = function () {
-            return $location.url() == '/';
+            return $location.url() === '/';
         };
     }]);

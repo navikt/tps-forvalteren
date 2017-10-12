@@ -33,7 +33,7 @@ angular.module('tps-forvalteren.directives')
 
                                 function removePerson(ident) {
                                     for (var i = 0; i < $scope.tilgjengelige.length; i++) {
-                                        if ($scope.tilgjengelige[i].ident == ident) {
+                                        if ($scope.tilgjengelige[i].ident === ident) {
                                             $scope.tilgjengelige.splice(i, 1);
                                         }
                                     }
@@ -106,9 +106,6 @@ angular.module('tps-forvalteren.directives')
                         for (var i = 0; $scope.person.relasjoner.length; i++) {
                             if ($scope.person.relasjoner[i].personRelasjonMed.ident === relasjon.personRelasjonMed.ident) {
                                 $scope.person.relasjoner.splice(i, 1);
-                                if ($scope.person.relasjoner.length == 0) {
-                                    $scope.person.relasjoner = undefined;
-                                }
                                 $scope.endretFn($scope.index);
                                 break;
                             }
@@ -127,9 +124,6 @@ angular.module('tps-forvalteren.directives')
                             }
                         }
                         $scope.personer[ident].relasjoner.splice(relasjonMed, 1);
-                        if ($scope.personer[ident].relasjoner.length == 0) {
-                            $scope.personer[ident].relasjoner = undefined;
-                        }
                         $scope.endretFn(ident);
                     });
                 };
