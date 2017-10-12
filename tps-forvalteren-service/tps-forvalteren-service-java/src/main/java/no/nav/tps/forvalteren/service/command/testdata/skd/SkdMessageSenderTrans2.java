@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersCreatorService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies.BarnetranseSkdParameterStrategy;
 
 @Service
-public class SkdMessageSender {
+public class SkdMessageSenderTrans2 {
 
     @Value("${environment.class}")
     private String deployedEnvironment;
@@ -23,24 +23,25 @@ public class SkdMessageSender {
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 
     @Autowired
-    private SkdParametersCreatorService skdParametersCreatorService;
-
-    @Autowired
     private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;
 
     @Autowired
     private GetSkdMeldingByName getSkdMeldingByName;
 
-    public void execute(String skdMeldingNavn, List<Person> persons, List<String> environments, SkdFelterContainer skdFelterContainer) {
+    @Autowired
+    private SkdFelterContainerTrans2 skdFelterContainer;
+
+    @Autowired
+    private BarnetranseSkdParameterStrategy barnetranseSkdParameterStrategy;
+
+    public void execute(String skdMeldingNavn, Person forelder, List<Person> barn, List<String> environments) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
 
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
-            for (Person person : persons) {
-                Map<String, String> skdParametere = skdParametersCreatorService.execute(skdRequestMeldingDefinition, person);
-                String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer);
-                sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, new HashSet<>(environments));
-            }
+            Map<String, String> skdParametere = barnetranseSkdParameterStrategy.execute(forelder, barn);
+            String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer);
+            sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, new HashSet<>(environments));
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
         }

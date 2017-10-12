@@ -43,7 +43,7 @@ public class CreateDoedsmeldingerTest {
     private List<Person> doedePersonerWithoutDoedsmelding;
 
     @Mock
-    private SkdMessageSender skdMessageSenderMock;
+    private SkdMessageSenderTrans1 skdMessageSenderTrans1Mock;
 
     @Mock
     private FindGruppeById findGruppeByIdMock;
@@ -92,7 +92,7 @@ public class CreateDoedsmeldingerTest {
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
         createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
 
-        verify(skdMessageSenderMock).execute(anyString(), personCaptor.capture(), eq(ENVS), any());
+        verify(skdMessageSenderTrans1Mock).execute(anyString(), personCaptor.capture(), eq(ENVS));
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
     }
 
@@ -108,7 +108,7 @@ public class CreateDoedsmeldingerTest {
     public void noFurtherCallsWhenNoDoedePersoner() {
         createDoedsmeldinger.execute(GRUPPE_ID_NO_DEAD_PERSONS, ENVS);
 
-        verify(skdMessageSenderMock, never()).execute(any(), any(), any(), any());
+        verify(skdMessageSenderTrans1Mock, never()).execute(any(), any(), any());
         verify(saveDoedsmeldingToDBMock, never()).execute(any());
     }
 }

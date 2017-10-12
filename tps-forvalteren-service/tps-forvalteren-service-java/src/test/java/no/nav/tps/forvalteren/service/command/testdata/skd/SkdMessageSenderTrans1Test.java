@@ -24,20 +24,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
 import no.nav.tps.forvalteren.domain.test.provider.PersonProvider;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersCreatorService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SkdMessageSenderTest {
+public class SkdMessageSenderTrans1Test {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
-    private SkdMessageSender skdMessageSender;
+    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
 
     @Mock
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
@@ -49,19 +48,20 @@ public class SkdMessageSenderTest {
     private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;
 
     @Mock
+    private SkdFelterContainerTrans1 skdFelterContainer;
+
+    @Mock
     private GetSkdMeldingByName getSkdMeldingByName;
 
     private final String VIGSEL = "Vigsel";
-    private final String FAMILIEENDRING = "Familieendring";
     private final String INNVANDRING = "Innvandring";
     private final String SKDMELDING = "SKDMELDING";
 
     private List<String> environments = new ArrayList<>(Arrays.asList("u2", "u6"));
-    private SkdFelterContainer skdFelterContainer = new SkdFelterContainerTrans1();
     private Person person = PersonProvider.aMalePerson().build();
     private Person person2 = PersonProvider.aMalePerson().build();
     private Person person3 = PersonProvider.aMalePerson().build();
-    private List<Person > persons = new ArrayList<>();
+    private List<Person> persons = new ArrayList<>();
 
     @Before
     public void setup() {
@@ -73,23 +73,7 @@ public class SkdMessageSenderTest {
         expectedException.expect(IllegalArgumentException.class);
         when(getSkdMeldingByName.execute(anyString())).thenReturn(Optional.empty());
 
-        skdMessageSender.execute(VIGSEL, persons, environments, skdFelterContainer);
-    }
-
-    @Test
-    public void createsFamilieendring() {
-        persons.add(person);
-        TpsSkdRequestMeldingDefinition tpsSkdRequestMeldingDefinition = new Familieendring().resolve();
-        Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = Optional.of(tpsSkdRequestMeldingDefinition);
-        Map<String, String> skdParametere = new HashMap<>();
-
-        when(getSkdMeldingByName.execute(FAMILIEENDRING)).thenReturn(skdRequestMeldingDefinitionOptional);
-        when(skdParametersCreatorService.execute(skdRequestMeldingDefinitionOptional.get(), person)).thenReturn(skdParametere);
-        when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer)).thenReturn(SKDMELDING);
-
-        skdMessageSender.execute(FAMILIEENDRING, persons, environments, skdFelterContainer);
-
-        verify(sendSkdMeldingTilGitteMiljoer).execute(SKDMELDING, skdRequestMeldingDefinitionOptional.get(), new HashSet<>(environments));
+        skdMessageSenderTrans1.execute(VIGSEL, persons, environments);
     }
 
     @Test
@@ -106,9 +90,9 @@ public class SkdMessageSenderTest {
         when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(skdParametere);
         when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer)).thenReturn(SKDMELDING);
 
-        skdMessageSender.execute(INNVANDRING, persons, environments, skdFelterContainer);
+        skdMessageSenderTrans1.execute(INNVANDRING, persons, environments);
 
         verify(sendSkdMeldingTilGitteMiljoer, times(3)).execute(SKDMELDING, skdRequestMeldingDefinitionOptional.get(), new HashSet<>(environments));
-
     }
+
 }

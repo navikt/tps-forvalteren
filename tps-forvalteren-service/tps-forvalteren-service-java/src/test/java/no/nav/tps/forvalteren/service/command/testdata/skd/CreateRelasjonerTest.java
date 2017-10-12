@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
@@ -33,13 +32,10 @@ public class CreateRelasjonerTest {
     private RelasjonRepository relasjonRepository;
 
     @Mock
-    private SkdMessageSender skdMessageSender;
+    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
 
     @Mock
-    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
-
-    @Mock
-    private SkdFelterContainerTrans2 skdFelterContainerTrans2;
+    private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
     private List<String> environments = new ArrayList<>(Arrays.asList("u2", "u6"));
 
@@ -69,9 +65,9 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person2), environments, skdFelterContainerTrans1);
-        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person3), environments, skdFelterContainerTrans1);
-        verify(skdMessageSender).execute("Familieendring", Arrays.asList(person), environments, skdFelterContainerTrans2);
+        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person2), environments);
+        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person3), environments);
+        verify(persistBarnTransRecordsToTps).execute(person2, environments);
     }
 
     @Test
@@ -84,8 +80,8 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(1)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person2), environments, skdFelterContainerTrans1);
-        verify(skdMessageSender).execute("Vigsel", Arrays.asList(person3), environments, skdFelterContainerTrans1);
+        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person2), environments);
+        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person3), environments);
     }
 
     @Test
@@ -98,14 +94,14 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(1)).findByPersonId(person3.getId());
-        verify(skdMessageSender).execute("Familieendring", Arrays.asList(person), environments, skdFelterContainerTrans2);
+        verify(persistBarnTransRecordsToTps).execute(person2, environments);
     }
 
     @Test
     public void checkThatNothingGetsCalled() {
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, environments);
 
-        verify(skdMessageSender, never()).execute(anyString(), anyListOf(Person.class), anyListOf(String.class), any(SkdFelterContainer.class));
+        verify(skdMessageSenderTrans1, never()).execute(anyString(), anyListOf(Person.class), anyListOf(String.class));
     }
 
 }
