@@ -35,7 +35,7 @@ public class CreateRelasjonerTest {
     private SkdMessageSenderTrans1 skdMessageSenderTrans1;
 
     @Mock
-    private DivideBarnIntoTransRecords divideBarnIntoTransRecords;
+    private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
     private List<String> environments = new ArrayList<>(Arrays.asList("u2", "u6"));
 
@@ -67,7 +67,7 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
         verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person2), environments);
         verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person3), environments);
-        verify(divideBarnIntoTransRecords).execute(person2, environments);
+        verify(persistBarnTransRecordsToTps).execute(person2, environments);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(1)).findByPersonId(person3.getId());
-        verify(divideBarnIntoTransRecords).execute(person2, environments);
+        verify(persistBarnTransRecordsToTps).execute(person2, environments);
     }
 
     @Test

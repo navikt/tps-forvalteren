@@ -20,7 +20,7 @@ public class CreateRelasjoner {
     private SkdMessageSenderTrans1 skdMessageSenderTrans1;
 
     @Autowired
-    private DivideBarnIntoTransRecords divideBarnIntoTransRecords;
+    private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
     public void execute(List<Person> personerSomIkkeEksitererITpsMiljoe, List<String> environments) {
         List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITpsMiljoe);
@@ -37,7 +37,7 @@ public class CreateRelasjoner {
                 }
             }
             if (hasBarn) {
-                divideBarnIntoTransRecords.execute(person, environments);
+                persistBarnTransRecordsToTps.execute(person, environments);
             }
         }
 
