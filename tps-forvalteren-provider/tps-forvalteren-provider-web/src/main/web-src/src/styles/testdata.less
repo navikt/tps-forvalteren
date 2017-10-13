@@ -2,6 +2,22 @@
 
   display: flex;
 
+  margin-left: 0;
+  margin-right: 0;
+
+  @media only screen and (min-width: 960px) {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .tpsf-testdata-container {
+    flex-direction: column-reverse;
+
+    @media only screen and (min-width: 960px) {
+      flex-direction: row;
+    }
+  }
+
   md-card-content {
     flex-basis: auto;
   }
@@ -181,22 +197,24 @@
   }
 }
 
-.testdata-body-block {
-  display: block;
-  margin-left: 5%;
-  margin-right: 0.5%;
-}
+//.testdata-body-block {
+//  display: block;
+//  margin-left: 5%;
+//  margin-right: 0.5%;
+//}
 
-.testdata-side-block {
-  float: right;
-  display: flex;
-  margin-top: 32px;
-  margin-left: 0.5%;
-  margin-right: 5%;
-}
+//.testdata-side-block {
+//  float: right;
+//  display: flex;
+//  margin-top: 32px;
+//  margin-left: 0.5%;
+//  margin-right: 5%;
+//}
+
 .testdata-side-content {
   margin: 12px 10px 20px 10px;
 }
+
 .line {
   border-top: dotted;
   padding-top: 18px;
