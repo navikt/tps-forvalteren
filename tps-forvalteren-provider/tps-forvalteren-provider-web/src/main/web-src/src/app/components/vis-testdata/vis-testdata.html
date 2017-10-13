@@ -1,9 +1,9 @@
-<div class="tps-testdata-dashboard" layout-padding ng-cloak>
-    <!--<div id="body" class="testdata-body-block" layout="column" flex>-->
+<div id="tps-testdata-dashboard" layout-padding ng-cloak>
     <div layout="column" flex>
-        <h3 style="margin-left: 15px; margin-top: 10px; margin-bottom: 0;">Testpersoner</h3>
-        <div layout="column"  layout-gt-sm="row" class="tpsf-testdata-container">
-            <div layout="column" flex-gt-sm="66">
+        <h3 hide show-gt-md class="tpsf-testdata-personer-header">Testpersoner</h3>
+        <div layout="column"  layout-gt-md="row" class="tpsf-testdata-container">
+            <div layout="column" flex-gt-md="66">
+                <h3 hide-gt-md class="tpsf-testdata-personer-header">Testpersoner</h3>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
                         <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
@@ -18,16 +18,16 @@
                         <div layout="row" style="margin-top: 3px;" flex ng-if="personer.length > 0">
 
                             <md-checkbox data-ng-model="allePersoner.checked" ng-click="velgAlle()" flex="15">
-                                Velg alle<span ng-if="visEndret"> endrede</span>
+                                Velg&nbsp;alle<span ng-if="visEndret"> endrede</span>
                             </md-checkbox>
 
-                            <div style="margin-top: 3px;">
-                                Valgt: {{antallValgt}}
+                            <div style="margin-top: 2px;">
+                                Valgt:&nbsp;{{antallValgt}}
                             </div>
 
                             <div layout="row" layout-align="end center" flex style="margin-top: -13px;">
                                 <div ng-show="visEndret" flex="10">
-                                    Endret: {{antallEndret}}
+                                    Endret:&nbsp;{{antallEndret}}
                                 </div>
 
                                 <md-button class="md-accent md-raised md-title" ng-click="sletteDialog()"
@@ -74,17 +74,17 @@
                                                  aria-label="Marker person{{person.ident}} for sletting"
                                                  ng-click="checkIt()">
                                     </md-checkbox>
-                                    <div flex="15">{{person.ident}} ({{person.identtype}})</div>
-                                    <div flex="50">
-                                        {{person.fornavn | titlecase}} {{person.mellomnavn | titlecase}} {{person.etternavn | titlecase}}
+                                    <div flex="20">{{person.ident}}&nbsp;({{person.identtype}})</div>
+                                    <div flex="45">
+                                        {{person.fornavn | titlecase}}&nbsp;{{person.mellomnavn | titlecase}}&nbsp;{{person.etternavn | titlecase}}
                                     </div>
-                                    <div flex="20">
-                                        {{person.kjonn| kjonn}},&nbsp;&nbsp;&nbsp;{{person.ident | alder:person.doedsdato}}&nbsp;&nbsp;
+                                    <div flex="20" style="white-space: nowrap">
+                                        {{person.kjonn| kjonn}},&nbsp;&nbsp;{{person.ident | alder:person.doedsdato}}&nbsp;&nbsp;
                                         <md-icon ng-show="personIsDead($index)" md-svg-icon="assets/icons/skull_24px.svg"></md-icon>
                                     </div>
 
                                     <div flex></div>
-                                    <div flex="5"ng-if="control[$index].endret" style="color: red;">Endret</div>
+                                    <div flex="5" ng-if="control[$index].endret" style="color: red;">Endret</div>
                                     <div flex="5">
                                         <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
                                                    class="md-icon-button"
@@ -116,7 +116,6 @@
                     </div>
                 </form>
             </div>
-            <!--<span flex="5"></span>-->
             <vis-gruppeinfo gruppe-id="gruppeId"></vis-gruppeinfo>
         </div>
     </div>
