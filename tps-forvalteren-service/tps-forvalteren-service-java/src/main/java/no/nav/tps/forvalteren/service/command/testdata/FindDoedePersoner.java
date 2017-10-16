@@ -11,6 +11,7 @@ public class FindDoedePersoner {
 
     public List<Person> execute(List<Person> personer) {
 
+        // Does not consider if death is in the future
         return personer.stream()
                 .filter(person -> person.getDoedsdato() != null)
                 .collect(Collectors.toList());
