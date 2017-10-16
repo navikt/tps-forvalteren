@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,9 @@ public class FindPersonerWithoutDoedsmelding {
     private SjekkDoedsmeldingSentForPerson sjekkDoedsmeldingSentForPerson;
 
     public List<Person> execute(List<Person> personer) {
-        List<Person> personerWithoutDoedsmelding = new ArrayList<>();
 
-        for (Person person : personer) {
-            if (!sjekkDoedsmeldingSentForPerson.execute(person)) {
-                personerWithoutDoedsmelding.add(person);
-            }
-        }
-        return personerWithoutDoedsmelding;
+        return personer.stream()
+                .filter(person -> !sjekkDoedsmeldingSentForPerson.execute(person))
+                .collect(Collectors.toList());
     }
 }
