@@ -197,7 +197,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 },
                 views: {
                     'content@': {
-                        templateUrl: "app/components/endringsmelding/skd/meldingsgruppe.html",
+                        templateUrl: "app/components/meldingsgruppe/skd/meldingsgruppe.html",
                         controller: 'SkdMeldingsgruppeCtrl'
                     },
                     'header@': {

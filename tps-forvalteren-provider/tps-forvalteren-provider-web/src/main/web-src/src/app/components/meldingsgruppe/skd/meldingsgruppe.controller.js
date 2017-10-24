@@ -7,7 +7,7 @@ angular.module('tps-forvalteren.skd-endringsmelding', [])
             var nyGruppeDialog = function (ev) {
                 var confirm = $mdDialog.confirm({
                     controller: 'NySkdMeldingsgruppeCtrl',
-                    templateUrl: 'app/components/endringsmelding/skd/nygruppe/ny-gruppe.html',
+                    templateUrl: 'app/components/meldingsgruppe/skd/nygruppe/ny-gruppe.html',
                     parent: angular.element(document.body),
                     targetEvent: ev
                 });
