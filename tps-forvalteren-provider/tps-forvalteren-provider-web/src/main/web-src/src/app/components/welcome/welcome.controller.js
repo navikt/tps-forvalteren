@@ -17,7 +17,7 @@ angular.module('tps-forvalteren.welcome',[])
                 locationService.redirectToTestgruppe();
             };
 
-            $scope.openVisEndringsmelding = function () {
+            $scope.openVisSkdEndringsmelding = function () {
                 locationService.redirectToSkdEndringsmeldingGrupper();
             };
 
