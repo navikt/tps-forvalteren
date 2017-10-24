@@ -9,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
@@ -30,15 +27,15 @@ import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "T_GRUPPE")
-public class Gruppe extends ChangeStamp {
+@Table(name = "T_SKD_ENDRINGSMELDING_GRUPPE")
+public class SkdEndringsmeldingGruppe extends ChangeStamp {
 
-    private static final String SEQ = "T_GRUPPE_SEQ";
+    private static final String SEQ = "T_SKD_ENDRINGSMELDING_GRUPPE_SEQ";
 
     @Id
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
-    @Column(name = "GRUPPE_ID", nullable = false, updatable = false)
+    @Column(name = "SKD_MELDINGSGRUPPE_ID", nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "NAVN", unique = true, nullable = false, length = 50)
@@ -49,11 +46,6 @@ public class Gruppe extends ChangeStamp {
 
     @OrderBy
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "gruppe")
-    private List<Person> personer = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "T_GRUPPE_TAG", joinColumns = { @JoinColumn(name = "GRUPPE_ID", nullable = false, updatable = false) }, inverseJoinColumns = {
-            @JoinColumn(name = "TAG_ID", nullable = false, updatable = false) })
-    private List<Tag> tags = new ArrayList<>();
+    private List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
 
 }
