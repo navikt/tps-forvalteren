@@ -1,10 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import static javax.persistence.GenerationType.SEQUENCE;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -40,7 +40,7 @@ public class Relasjon {
     private Person person;
 
     @JoinColumn(name = "person_relasjon_id")
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Person personRelasjonMed;
 
     @Column(name = "RELASJON_TYPE_NAVN", nullable = false)

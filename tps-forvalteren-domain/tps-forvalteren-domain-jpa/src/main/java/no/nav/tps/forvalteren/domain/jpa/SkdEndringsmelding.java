@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_SKD_ENDRINGSMELDING")
-public class SkdEndringsmelding {
+public class SkdEndringsmelding extends ChangeStamp {
 
     private static final String SEQ = "T_SKD_ENDRINGSMELDING_SEQ";
 
