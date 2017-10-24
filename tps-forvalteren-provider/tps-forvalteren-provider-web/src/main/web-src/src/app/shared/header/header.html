@@ -21,11 +21,15 @@
                 <!-- Navigation Buttons -->
                 <div class="tps-vk-header-default-container" layout="row" layout-align="start center" flex="50">
                     <div layout-align="center">
-                        <u class="tps-vk-header-route-text" ng-click="openGT()">Geografisk tilknytning</u>
+                        <u class="tps-vk-header-route-text" ng-click="openGT()">Geografisk Tilknytning</u>
                     </div>
 
                     <div layout-align="center" ng-if="visTestdataKnapp">
-                        <u class="tps-vk-header-route-text" ng-click="openVisTestdata()"> Testdata </u>
+                        <u class="tps-vk-header-route-text" ng-click="openVisTestdata()">Testdata</u>
+                    </div>
+
+                    <div layout-align="center" ng-if="visSkdEndringsmeldingKnapp">
+                        <u class="tps-vk-header-route-text" ng-click="openVisSkdEndringsmelding()">SKD Endringsmeldinger</u>
                     </div>
                 </div>
 

@@ -37,6 +37,14 @@ angular.module('tps-forvalteren.service')
             $state.go("opprett-testdata", {gruppeId: index});
         };
 
+        self.redirectToSkdEndringsmeldingGrupper = function() {
+            $state.go("skd-meldingsgrupper");
+        };
+
+        self.redirectToOpprettSkdMeldinger = function(index) {
+            $state.go("vis-skd-meldinger", {gruppeId: index});
+        };
+
         self.isServicerutineState = function(){
             return $state.current.name === 'servicerutine';
         };
