@@ -9,3 +9,5 @@ require('./testgruppe/testgruppe.controller');
 require('./testgruppe/nygruppe/ny-gruppe.controller');
 require('./vis-testdata/endregruppe/endre-gruppe.controller');
 require('./vis-testdata/sendtiltps/send-til-tps.controller');
+require('./endringsmelding/skd/meldingsgruppe.controller');
+require('./endringsmelding/skd/nygruppe/ny-gruppe.controller');

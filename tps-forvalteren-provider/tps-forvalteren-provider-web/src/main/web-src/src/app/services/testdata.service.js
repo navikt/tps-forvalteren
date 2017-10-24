@@ -3,7 +3,6 @@ angular.module('tps-forvalteren.service')
 
         var self =  this;
         var url = 'api/v1/testdata/';
-        var kodeverkUrl = 'api/v1/kodeverk/';
 
         self.getTestpersoner = function(id){
             var defer = $q.defer();

@@ -3,6 +3,7 @@ angular.module('tps-forvalteren.welcome',[])
         function ($scope, locationService) {
 
             $scope.visTestdataKnapp = false;
+            $scope.visSkdEndringsmeldingKnapp = false;
 
             $scope.serviceRutineState = function () {
                 locationService.redirectToServiceRutineState();
@@ -16,5 +17,10 @@ angular.module('tps-forvalteren.welcome',[])
                 locationService.redirectToTestgruppe();
             };
 
+            $scope.openVisEndringsmelding = function () {
+                locationService.redirectToSkdEndringsmeldingGrupper();
+            };
+
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
         }]);

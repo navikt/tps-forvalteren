@@ -21,7 +21,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
     'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome',
     'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize', 'tps-forvalteren.vis-testdata.endregruppe',
-    'tps-forvalteren.vis-testdata.sendtiltps']);
+    'tps-forvalteren.vis-testdata.sendtiltps', 'tps-forvalteren.skd-endringsmelding', 'tps-forvalteren.skd-endringsmelding.nygruppe']);
 
 require('./shared/index');
 
@@ -173,6 +173,58 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     'content@': {
                         templateUrl: "app/components/opprett-testdata/opprett-testdata.html",
                         controller: 'OpprettTestdataCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('skd-meldingsgrupper', {
+                url: "/endringsmelding/skd/grupper",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/endringsmelding/skd/meldingsgruppe.html",
+                        controller: 'SkdMeldingsgruppeCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('vis-skd-meldinger', {
+                url: "/endringsmelding/skd/gruppe/{gruppeId:[0-9]{9}}",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/endringsmelding/skd/meldingsgruppe.html",
+                        controller: 'SkdMeldingsgruppeCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",
