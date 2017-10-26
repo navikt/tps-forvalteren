@@ -1,6 +1,6 @@
-angular.module('tps-forvalteren.skd-endringsmelding.nygruppe', ['ngMaterial'])
-    .controller('NySkdMeldingsgruppeCtrl', ['$scope', '$mdDialog', 'endringsmeldingService',
-        function ($scope, $mdDialog, endringsmeldingService) {
+angular.module('tps-forvalteren.skd-meldingsgruppe.nygruppe', ['ngMaterial'])
+    .controller('NySkdMeldingsgruppeCtrl', ['$scope', '$mdDialog', 'endringsmeldingService', 'utilsService',
+        function ($scope, $mdDialog, endringsmeldingService, utilsService) {
 
             var meldingsgrupper = [];
             endringsmeldingService.getSkdMeldingsgrupper().then(
@@ -8,7 +8,6 @@ angular.module('tps-forvalteren.skd-endringsmelding.nygruppe', ['ngMaterial'])
                     meldingsgrupper = result.data;
                 },
                 function (error) {
-                    utilsService.showAlertError(error);
                 }
             );
 
@@ -34,6 +33,10 @@ angular.module('tps-forvalteren.skd-endringsmelding.nygruppe', ['ngMaterial'])
                 endringsmeldingService.storeSkdMeldingsgruppe($scope.gruppe).then(
                     function () {
                         $mdDialog.hide();
+                    },
+                    function (error) {
+                        $mdDialog.hide();
+                        utilsService.showAlertError(error);
                     }
                 );
             };

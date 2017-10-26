@@ -1,21 +1,21 @@
 <div class="tps-testdata-dashboard" layout-padding ng-cloak>
     <div layout="column" flex>
-        <h3 hide show-gt-md class="tpsf-testdata-personer-header">Testpersoner</h3>
+        <h3 hide show-gt-md class="tpsf-testdata-personer-header">SKD Endringsmeldinger</h3>
         <div layout="column" layout-gt-md="row" class="tpsf-testdata-container">
             <div layout="column" flex-gt-md="66">
-                <h3 hide-gt-md class="tpsf-testdata-personer-header">Testpersoner</h3>
+                <h3 hide-gt-md class="tpsf-testdata-personer-header">SKD Endringsmeldinger</h3>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
                         <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
                              flex layout-align="center center"
-                             ng-show="personer.length == 0">
+                             ng-show="meldinger.length == 0">
                             <div>
                                 <md-icon md-svg-icon="assets/icons/ic_people_outline_black_24px.svg"
                                          class="testdata-big-icon"></md-icon>
                             </div>
-                            <div>Ingen testpersoner er lagt til ennå</div>
+                            <div>Ingen meldinger er lagt til ennå</div>
                         </div>
-                        <div layout="row" style="margin-top: 3px;" flex ng-if="personer.length > 0">
+                        <div layout="row" style="margin-top: 3px;" flex ng-if="meldinger.length > 0">
 
                             <md-checkbox data-ng-model="allePersoner.checked" ng-click="velgAlle()" flex="15">
                                 Velg&nbsp;alle<span ng-if="visEndret"> endrede</span>
@@ -60,8 +60,8 @@
 
                 <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
-                    <div ng-repeat="person in personer">
-                        <md-card id="person_{{$index}}" flex md-whiteframe="{{height}}"
+                    <div ng-repeat="melding in meldinger">
+                        <md-card id="melding_{{$index}}" flex md-whiteframe="{{height}}"
                                  ng-init="height = 1"
                                  ng-mouseover="height = 5"
                                  ng-mouseleave="height = 1" ng-class="control[$index].aapen ? 'testdata-open-card' : ''">
@@ -71,17 +71,10 @@
                                                  ng-model="control[$index].velg"
                                                  ng-change="oppdaterValgt($index)"
                                                  ng-disabled="control[$index].disabled"
-                                                 aria-label="Marker person{{person.ident}} for sletting"
+                                                 aria-label="Marker melding{{melding.ident}} for sletting"
                                                  ng-click="checkIt()">
                                     </md-checkbox>
-                                    <div flex="20">{{person.ident}}&nbsp;({{person.identtype}})</div>
-                                    <div flex="45">
-                                        {{person.fornavn | titlecase}}&nbsp;{{person.mellomnavn | titlecase}}&nbsp;{{person.etternavn | titlecase}}
-                                    </div>
-                                    <div flex="20" style="white-space: nowrap">
-                                        {{person.kjonn| kjonn}},&nbsp;&nbsp;{{person.ident | alder:person.doedsdato}}&nbsp;&nbsp;
-                                        <md-icon ng-show="personIsDead($index)" md-svg-icon="assets/icons/skull_24px.svg"></md-icon>
-                                    </div>
+                                    <div flex="20">{{melding.id}})</div>
 
                                     <div flex></div>
                                     <div flex="5" ng-if="control[$index].endret" style="color: red;">Endret</div>
@@ -99,16 +92,6 @@
                                     <div class="line" flex="auto">
                                         <div ng-include="persondetalj"></div>
                                         <h3 class="testdata-sub-header">Boadresse</h3>
-                                        <md-radio-group ng-model="person.boadresse.adressetype"
-                                                        layout="row" class="testdata-adr-btn">
-                                            <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
-                                            <md-radio-button value="MATR">Matrikkeladresse</md-radio-button>
-                                        </md-radio-group>
-
-                                        <div ng-include="gateadresse"></div>
-                                        <div ng-include="matradresse"></div>
-                                        <div ng-include="postadresse"></div>
-                                        <familierelasjon person="person" personer="personer" index="$index" endret-fn="endret"></familierelasjon>
                                     </div>
                                 </div>
                             </md-card-content>
