@@ -4,7 +4,7 @@ angular.module('tps-forvalteren.service')
         var self =  this;
         var url = 'api/v1/testdata/';
 
-        self.getTestpersoner = function(id){
+        self.getGruppe = function(id){
             var defer = $q.defer();
             $http.get(url + 'gruppe/' + id).then(
                 function (data) {

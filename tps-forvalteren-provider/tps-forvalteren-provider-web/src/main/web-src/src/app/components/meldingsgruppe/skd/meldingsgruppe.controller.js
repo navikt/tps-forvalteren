@@ -1,4 +1,4 @@
-angular.module('tps-forvalteren.skd-endringsmelding', [])
+angular.module('tps-forvalteren.skd-meldingsgruppe', [])
     .controller('SkdMeldingsgruppeCtrl', ['$scope', 'headerService', 'endringsmeldingService', 'utilsService', 'locationService', '$mdDialog',
         function ($scope, headerService, endringsmeldingService, utilsService, locationService, $mdDialog) {
 

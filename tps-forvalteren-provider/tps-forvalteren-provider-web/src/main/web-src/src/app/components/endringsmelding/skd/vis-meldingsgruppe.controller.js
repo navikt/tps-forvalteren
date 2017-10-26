@@ -1,26 +1,21 @@
-angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
+angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
+    .controller('SkdVisMeldigsgruppeCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'endringsmeldingService', 'utilsService', 'locationService',
         'headerService',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, underHeaderService) {
+        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, endringsmeldingService, utilsService, locationService, underHeaderService) {
 
-            $scope.persondetalj = "app/components/vis-testdata/person/person.html";
-            $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
-            $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
-            $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
+            $scope.service = endringsmeldingService;
 
-            $scope.service = testdataService;
-
-            $scope.gruppeId = $stateParams.gruppeId;
+            $scope.grpId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 
             var setHeaderButtons = function (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
                 underHeaderService.setButtons([{
-                    text: 'Legg til testpersoner',
+                    text: 'Legg til meldinger',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
-                        locationService.redirectToOpprettTestdata($scope.gruppeId);
+                        locationService.redirectToOpprettTestdata($scope.grpId);
                     }
                 }, {
                     text: 'Send til TPS',
@@ -44,8 +39,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     title: 'Endre testgruppe',
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
-                            controller: 'EndreGruppeCtrl',
-                            templateUrl: 'app/components/vis-testdata/endregruppe/endre-gruppe.html',
+                            controller: 'EndreSkdGruppeCtrl',
+                            templateUrl: 'app/components/endringsmelding/skd/endregruppe/endre-gruppe.html',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             locals: {
@@ -55,7 +50,9 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             controllerAs: 'ctrl'
                         });
                         $mdDialog.show(confirm).then(
-                            function () { // Ser ut til å hindre duplikatkall mot rest-endepunkt
+                            function () { // Prevents duplicate call to rest-endpoint
+                            },
+                            function () { // Controlled error exit
                             }
                         )
                     }
@@ -63,36 +60,39 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     icon: 'assets/icons/ic_delete_black_24px.svg',
                     title: 'Slette testgruppe',
                     click: function () {
-                        var personTekst = $scope.personer.length > 0 ? ' med ' + $scope.personer.length + ' testperson' : '';
-                        personTekst += $scope.personer.length > 1 ? 'er' : '';
+                        var meldingsTekst = $scope.meldinger.length > 0 ? ' med ' + $scope.meldinger.length + ' melding' : '';
+                        meldingsTekst += $scope.meldinger.length > 1 ? 'er' : '';
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .htmlContent('Ønsker du å slette gruppe <strong>' + underHeaderService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
-                                'Denne handlingen vil ikke slette testpersonene fra TPS, dersom de er opprettet der.')
+                            .htmlContent('Ønsker du å slette gruppe <strong>' + underHeaderService.getHeader().name + '</strong>' + meldingsTekst + '?')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
                             .cancel('Avbryt');
-                        $mdDialog.show(confirm).then(function () {
-                            testdataService.sletteTestgruppe($scope.gruppeId).then(
-                                function () {
-                                    locationService.redirectToTestgruppe();
-                                }
-                            )
-                        }, function () {
-                            // Empty function to prevent unhandled rejection error
-                        });
+                        $mdDialog.show(confirm).then(
+                            function () {
+                                endringsmeldingService.deleteGruppe($scope.grpId).then(
+                                    function () {
+                                        locationService.redirectToSkdEndringsmeldingGrupper();
+                                    },
+                                    function (error) {
+                                        utilsService.showAlertError(error);
+                                    }
+                                )
+                            }, function () {
+                                // Empty function to prevent unhandled rejection error
+                            });
                     }
                 }]);
             };
 
             $scope.allePersoner = {checked: false};
-            $scope.personer = [];
-            var originalPersoner = [];
+            $scope.meldinger = [];
+            var originalMeldinger = [];
             $scope.control = [];
 
             $scope.velgAlle = function () {
                 var enabled = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if (!$scope.control[i]) {
                         $scope.control[i] = {};
                     }
@@ -105,104 +105,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 oppdaterFunksjonsknapper();
             };
 
-            var hentTestpersoner = function () {
-                $scope.personer = undefined;
-                testdataService.getGruppe($scope.gruppeId).then(
-                    function (result) {
-                        underHeaderService.setHeader(result.data.navn);
-                        setHeaderButtons(result.data.personer.length);
-                        setHeaderIcons();
-                        originalPersoner = result.data.personer;
-                        prepOriginalPersoner();
-                        $scope.personer = angular.copy(originalPersoner);
-                        $scope.control = [];
-                        $scope.antallEndret = 0;
-                        $scope.antallValgt = 0;
-                        oppdaterFunksjonsknapper();
-                    },
-                    function (error) {
-                        utilsService.showAlertError(error);
-                        underHeaderService.setHeader("Testdata");
-                    }
-                );
-            };
 
-            $scope.personIsDead = function (index) {
-                if ($scope.personer[index].doedsdato) {
-                    // Is now similar to backend
-                    // Does not check for if doedsdato is in future
-                    return true;
-                }
-                return false;
-            };
-
-            function prepOriginalPersoner () {
-                for (var i = 0; i < originalPersoner.length; i++) {
-                    etablerAdressetype(originalPersoner[i]);
-                    fixDatoForDatepicker(originalPersoner[i]);
-                    fixCase(originalPersoner[i]);
-                }
-            }
-
-            function fixCase(person) {
-                person.fornavn = $filter('titlecase')(person.fornavn);
-                if (person.mellomnavn) {
-                    person.mellomnavn = $filter('titlecase')(person.mellomnavn);
-                }
-                person.etternavn = $filter('titlecase')(person.etternavn);
-                if (person.postadresse && person.postadresse[0]) {
-                    if (person.postadresse[0].postLinje1) {
-                        person.postadresse[0].postLinje1 = $filter('titlecase')(person.postadresse[0].postLinje1);
-                    }
-                    if (person.postadresse[0].postLinje2) {
-                        person.postadresse[0].postLinje2 = $filter('titlecase')(person.postadresse[0].postLinje2);
-                    }
-                    if (person.postadresse[0].postLinje3) {
-                        person.postadresse[0].postLinje3 = $filter('titlecase')(person.postadresse[0].postLinje3);
-                    }
-                }
-            }
-
-            var prepPersoner = function () {
-                for (var index = 0; index < $scope.personer.length; index++) {
-                    fixKommunenr($scope.personer[index]);
-                    fixPostnummer($scope.personer[index]);
-                }
-            };
-
-            // Datofix kjøres etter denne
-            var etablerAdressetype = function (person) {
-                if (person.boadresse) {
-                    if (person.boadresse.adressetype === 'GATE') {
-                        person.gateadresse = angular.copy(person.boadresse);
-                        person.gateadresse.gateadresse = $filter('titlecase')(person.gateadresse.gateadresse);
-                        person.gateadresse.husnummer = $filter('uppercase')(person.gateadresse.husnummer);
-                    } else if (person.boadresse.adressetype === 'MATR') {
-                        person.matrikkeladresse = angular.copy(person.boadresse);
-                        person.matrikkeladresse.mellomnavn = $filter('titlecase')(person.matrikkeladresse.mellomnavn);
-                    }
-                } else {
-                    person.boadresse = {};
-                    person.boadresse.adressetype = 'GATE';
-                }
-            };
-
-            // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
-            var fixDatoForDatepicker = function (person) {
-                person.regdato = person.regdato ? person.regdato : null;
-                person.spesregDato = person.spesregDato ? person.spesregDato : null;
-                person.doedsdato = person.doedsdato ? person.doedsdato : null;
-
-                if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato) {
-                    person.gateadresse = person.gateadresse && !Array.isArray(person.gateadresse) ? person.gateadresse : {};
-                    person.gateadresse.flytteDato = null;
-                }
-
-                if (!person.boadresse || !person.boadresse.matrikkeladresse || !person.boadresse.matrikkeladresse.flytteDato) {
-                    person.matrikkeladresse = person.matrikkeladresse ? person.matrikkeladresse : {};
-                    person.matrikkeladresse.flytteDato = null;
-                }
-            };
 
             var oppdaterFane = undefined;
             var checkIt = false;
@@ -225,7 +128,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             function checkAndModifyAggregateOpenCloseButton () {
                 var allOpen = true;
                 var allClosed = true;
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i] && $scope.control[i].aapen) {
                         allClosed = false;
                     } else {
@@ -240,13 +143,13 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
                     .title('Bekreft sletting')
-                    .textContent('Bekreft sletting av valgte personer')
+                    .textContent('Bekreft sletting av valgte meldinger')
                     .ariaLabel('Bekreft sletting')
                     .ok('OK')
                     .cancel('Avbryt');
 
                 $mdDialog.show(confirm).then(function () {
-                    sletteTestpersoner();
+                    sletteMeldinger();
                 }, function () {
                     // Prevent unhandled rejection error
                 });
@@ -256,14 +159,14 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 oppdaterFane = true;
 
                 var endret = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i] && $scope.control[i].endret) {
                         endret++;
                     }
                 }
 
                 var valgt = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if (!$scope.control[i]) {
                         $scope.control[i] = {};
                     }
@@ -279,23 +182,23 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         valgt++;
                     }
                 }
-                $scope.allePersoner.checked = (endret === 0 && $scope.personer.length === valgt) ||
+                $scope.allePersoner.checked = (endret === 0 && $scope.meldinger.length === valgt) ||
                     (endret > 0 && endret === valgt);
                 $scope.antallEndret = endret;
                 $scope.antallValgt = valgt;
                 $scope.visEndret = endret > 0;
             };
 
-            var sletteTestpersoner = function () {
-                var identer = [];
-                for (var i = 0; i < $scope.personer.length; i++) {
+            var sletteMeldinger = function () {
+                var idList = [];
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i].velg) {
-                        identer.push($scope.personer[i].personId);
+                        idList.push($scope.meldinger[i].id);
                     }
                 }
-                testdataService.sletteTestpersoner(identer).then(
+                endringsmeldingService.deleteMeldinger(idList).then(
                     function (result) {
-                        hentTestpersoner();
+                        fetchMeldingsgruppe();
                     },
                     function (error) {
                         utilsService.showAlertError(error);
@@ -305,21 +208,17 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.lagre = function () {
                 var buffer = [];
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
-                        buffer.push(prepLagrePerson($scope.personer[i]));
+                        buffer.push(prepLagrePerson($scope.meldinger[i]));
                     }
                 }
-                testdataService.oppdaterTestpersoner(buffer).then(
+                endringsmeldingService.oppdaterTestpersoner(buffer).then(
                     function (result) {
-                        for (var i = 0; i < $scope.personer.length; i++) {
+                        for (var i = 0; i < $scope.meldinger.length; i++) {
                             if ($scope.control[i] && $scope.control[i].velg) {
                                 nullstillControl(i);
-                                originalPersoner[i] = angular.copy($scope.personer[i]);
-                                etablerAdressetype(originalPersoner[i]);
-                                fixDatoForDatepicker(originalPersoner[i]);
-                                fixCase(originalPersoner[i]);
-                                $scope.personer[i] = angular.copy(originalPersoner[i]);
+                                $scope.meldinger[i] = angular.copy(originalMeldinger[i]);
                             }
                         }
                         $scope.oppdaterValgt();
@@ -330,19 +229,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         utilsService.showAlertError(error);
                     }
                 );
-            };
-
-            var prepLagrePerson = function (person) {
-                var adressetype = person.boadresse.adressetype;
-                if (adressetype === 'GATE') {
-                    person.boadresse = angular.copy(person.gateadresse);
-                    person.matrikkeladresse = undefined;
-                } else if (adressetype === 'MATR') {
-                    person.boadresse = angular.copy(person.matrikkeladresse);
-                    person.gateadresse = undefined;
-                }
-                person.boadresse.adressetype = adressetype;
-                return person;
             };
 
             var oppdaterFunksjonsknapper = function () {
@@ -359,23 +245,23 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             $scope.endret = function (index) {
-                var originalPerson = JSON.stringify(originalPersoner[index]).replace(/null/g, '""') // Angular legger på $$hashKey, fjerner den
+                var originalMelding = JSON.stringify(originalMeldinger[index]).replace(/null/g, '""') // Angular legger på $$hashKey, fjerner den
                     .replace(/,*"[A-Za-z0-9_]+":""/g, '')
                     .replace(/{}/g, '');
-                var endretPerson = JSON.stringify($scope.personer[index]).replace(/null/g, '""')
+                var endretMelding = JSON.stringify($scope.meldinger[index]).replace(/null/g, '""')
                     .replace(/,*"\$\$hashKey":"[A-Za-z0-9_:]+"/g, '')
                     .replace(/,*"[A-Za-z0-9_]+":""/g, '')
                     .replace(/{}/g, '');
 
-                $scope.control[index].endret = originalPerson !== endretPerson;
+                $scope.control[index].endret = originalMelding !== endretMelding;
                 $scope.control[index].velg = $scope.control[index].endret;
                 $scope.oppdaterValgt();
             };
 
             var avbrytLagring = function () {
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
-                        $scope.personer[i] = JSON.parse(JSON.stringify(originalPersoner[i]));
+                        $scope.meldinger[i] = JSON.parse(JSON.stringify(originalMeldinger[i]));
                         nullstillControl(i);
                     }
                 }
@@ -445,7 +331,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.toggleAlleFaner = function () {
                 $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                for (var i = 0; i < $scope.personer.length; i++) {
+                for (var i = 0; i < $scope.meldinger.length; i++) {
                     if (!$scope.control[i]) {
                         $scope.control[i] = {};
                     }
@@ -453,5 +339,35 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             };
 
-            hentTestpersoner();
+            var fetchMeldingsgruppe = function () {
+                $scope.meldinger = undefined;
+                endringsmeldingService.getGruppe($scope.grpId).then(
+                    function (result) {
+                        underHeaderService.setHeader(result.data.navn);
+                        setHeaderButtons(result.data.meldinger.length);
+                        setHeaderIcons();
+                        originalMeldinger = result.data.meldinger;
+                        $scope.meldinger = angular.copy(originalMeldinger);
+                        $scope.control = [];
+                        $scope.antallEndret = 0;
+                        $scope.antallValgt = 0;
+                        oppdaterFunksjonsknapper();
+                    },
+                    function (error) {
+                        utilsService.showAlertError(error);
+                        underHeaderService.setHeader("SKD Endringsmeldinger");
+                        $scope.meldinger = [{id: 0}, {id: 1}];
+                        setHeaderButtons(2);
+                        setHeaderIcons();
+                        originalMeldinger = $scope.meldinger;
+                        $scope.meldinger = angular.copy(originalMeldinger);
+                        $scope.control = [];
+                        $scope.antallEndret = 0;
+                        $scope.antallValgt = 0;
+                        oppdaterFunksjonsknapper();
+                    }
+                );
+            };
+
+            fetchMeldingsgruppe();
         }]);

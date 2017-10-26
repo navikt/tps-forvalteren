@@ -11,3 +11,5 @@ require('./vis-testdata/endregruppe/endre-gruppe.controller');
 require('./vis-testdata/sendtiltps/send-til-tps.controller');
 require('./meldingsgruppe/skd/meldingsgruppe.controller');
 require('./meldingsgruppe/skd/nygruppe/ny-gruppe.controller');
+require('./endringsmelding/skd/vis-meldingsgruppe.controller');
+require('./endringsmelding/skd/endregruppe/endre-gruppe.controller');
