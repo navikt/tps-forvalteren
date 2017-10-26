@@ -135,7 +135,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('vis-testdata', {
-                url: "/vis-testdata/{gruppeId:[0-9]{9}}",
+                url: "/vis-testdata/{groupId:[0-9]{9}}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -161,7 +161,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('opprett-testdata', {
-                url: "/opprett-testdata/{gruppeId:[0-9]*}",
+                url: "/opprett-testdata/{groupId:[0-9]*}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -213,7 +213,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('skd-vis-meldingsgruppe', {
-                url: "/endringsmelding/skd/gruppe/{gruppeId:[0-9]*}",
+                url: "/endringsmelding/skd/gruppe/{groupId:[0-9]*}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();

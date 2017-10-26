@@ -5,7 +5,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
             $scope.service = endringsmeldingService;
 
-            $scope.grpId = $stateParams.gruppeId;
+            $scope.gruppeId = $stateParams.groupId;
 
             $scope.aapneAlleFaner = false;
 
@@ -15,7 +15,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     text: 'Legg til meldinger',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
-                        locationService.redirectToOpprettTestdata($scope.grpId);
+                        locationService.redirectToOpprettTestdata($scope.gruppeId);
                     }
                 }, {
                     text: 'Send til TPS',
@@ -70,7 +70,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                             .cancel('Avbryt');
                         $mdDialog.show(confirm).then(
                             function () {
-                                endringsmeldingService.deleteGruppe($scope.grpId).then(
+                                endringsmeldingService.deleteGruppe($scope.gruppeId).then(
                                     function () {
                                         locationService.redirectToSkdEndringsmeldingGrupper();
                                     },
@@ -341,7 +341,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
             var fetchMeldingsgruppe = function () {
                 $scope.meldinger = undefined;
-                endringsmeldingService.getGruppe($scope.grpId).then(
+                endringsmeldingService.getGruppe($scope.gruppeId).then(
                     function (result) {
                         underHeaderService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.meldinger.length);
