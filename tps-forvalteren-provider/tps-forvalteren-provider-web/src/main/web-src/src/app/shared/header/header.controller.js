@@ -24,10 +24,6 @@ angular.module('tps-forvalteren')
                 locationService.redirectToSkdEndringsmeldingGrupper();
             };
 
-            $scope.goBack = function () {
-                window.history.back();
-            };
-
             $scope.goHome = function () {
                 locationService.redirectToHomeState();
             };

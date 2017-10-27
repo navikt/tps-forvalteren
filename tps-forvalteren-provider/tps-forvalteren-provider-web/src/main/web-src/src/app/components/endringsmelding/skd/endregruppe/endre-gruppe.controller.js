@@ -1,30 +1,28 @@
-angular.module('tps-forvalteren.vis-testdata.endregruppe', ['ngMaterial'])
-    .controller('EndreGruppeCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'testdataService', 'headerService', 'utilsService',
-        function ($scope, $mdDialog, $rootScope, $stateParams, testdataService, headerService, utilsService) {
+angular.module('tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', ['ngMaterial'])
+    .controller('EndreSkdGruppeCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'endringsmeldingService', 'headerService', 'utilsService',
+        function ($scope, $mdDialog, $rootScope, $stateParams, endringsmeldingService, headerService, utilsService) {
 
-            var gruppeId = $stateParams.gruppeId;
-
-            var testgrupper = [];
-            testdataService.hentTestgrupper().then(
+            var gruppeId = $stateParams.groupId;
+            var grupper = [];
+            endringsmeldingService.getSkdMeldingsgrupper().then(
                 function (result) {
-                    testgrupper = result.data;
-                    for (var i = 0; i < testgrupper.length; i++) {
-                        if (testgrupper[i].id == gruppeId) {
-                            $scope.gruppe = testgrupper[i];
+                    grupper = result.data;
+                    for (var i = 0; i < grupper.length; i++) {
+                        if (grupper[i].id == gruppeId) {
+                            $scope.gruppe = grupper[i];
                             $scope.gmlTittel = $scope.gruppe.navn;
                         }
                     }
                 },
                 function (error) {
-                    utilsService.showAlertError(error);
                 }
             );
 
             $scope.checkNavn = function () {
                 var match = undefined;
-                for (var i = 0; i < testgrupper.length; i++) {
-                    if ($scope.gruppe.navn.toLowerCase().trim() === testgrupper[i].navn.toLowerCase().trim() &&
-                        testgrupper[i].id != gruppeId) {
+                for (var i = 0; i < grupper.length; i++) {
+                    if ($scope.gruppe.navn.toLowerCase().trim() === grupper[i].navn.toLowerCase().trim() &&
+                        grupper[i].id != gruppeId) {
                         match = true;
                         break;
                     }
@@ -40,7 +38,7 @@ angular.module('tps-forvalteren.vis-testdata.endregruppe', ['ngMaterial'])
                 $mdDialog.hide();
             };
             $scope.oppdater = function () {
-                testdataService.lagreTestgruppe($scope.gruppe).then(
+                endringsmeldingService.storeSkdMeldingsgruppe($scope.gruppe).then(
                     function () {
                         $mdDialog.hide();
                         headerService.setHeader($scope.gruppe.navn, true);

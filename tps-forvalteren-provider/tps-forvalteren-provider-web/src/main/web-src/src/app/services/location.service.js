@@ -42,7 +42,7 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectToOpprettSkdMeldinger = function(index) {
-            $state.go("vis-skd-meldinger", {gruppeId: index});
+            $state.go("skd-vis-meldingsgruppe", {gruppeId: index});
         };
 
         self.isServicerutineState = function(){
