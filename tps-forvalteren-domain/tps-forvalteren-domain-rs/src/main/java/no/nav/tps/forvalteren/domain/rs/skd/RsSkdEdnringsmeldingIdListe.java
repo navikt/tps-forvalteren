@@ -1,7 +1,8 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
+import java.util.List;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,12 +13,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsSkdEndringsmelding {
+public class RsSkdEdnringsmeldingIdListe {
 
-    private Long id;
-
-    @NotBlank
-    @Size(min = 1500, max = 1500)
-    private String endringsmelding;
+    @NotEmpty
+    @Size(min = 1)
+    private List<Long> ids;
 
 }

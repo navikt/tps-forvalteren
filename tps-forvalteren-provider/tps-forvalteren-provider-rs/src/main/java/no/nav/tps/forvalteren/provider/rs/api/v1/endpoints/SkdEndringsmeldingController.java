@@ -18,7 +18,9 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
@@ -46,6 +48,9 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private DeleteSkdEndringsmeldingGruppeById deleteSkdEndringsmeldingGruppeById;
+
+    @Autowired
+    private DeleteSkdEndringsmeldingByIdIn deleteSkdEndringsmeldingByIdIn;
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
@@ -80,6 +85,14 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         deleteSkdEndringsmeldingGruppeById.execute(gruppeId);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteMeldinger") })
+    @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
+    public void deleteSkdEndringsmeldinger(@RequestBody RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe) {
+        deleteSkdEndringsmeldingByIdIn.execute(rsSkdEdnringsmeldingIdListe.getIds());
     }
 
 }
