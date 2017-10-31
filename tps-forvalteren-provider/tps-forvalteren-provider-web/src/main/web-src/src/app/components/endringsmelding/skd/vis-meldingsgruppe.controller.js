@@ -344,6 +344,9 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 endringsmeldingService.getGruppe($scope.gruppeId).then(
                     function (result) {
                         underHeaderService.setHeader(result.data.navn);
+                        if (!result.data.meldinger) {
+                            result.data.meldinger = [];
+                        }
                         setHeaderButtons(result.data.meldinger.length);
                         setHeaderIcons();
                         originalMeldinger = result.data.meldinger;
@@ -356,15 +359,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     function (error) {
                         utilsService.showAlertError(error);
                         underHeaderService.setHeader("SKD Endringsmeldinger");
-                        $scope.meldinger = [{id: 0}, {id: 1}];
-                        setHeaderButtons(2);
-                        setHeaderIcons();
-                        originalMeldinger = $scope.meldinger;
-                        $scope.meldinger = angular.copy(originalMeldinger);
-                        $scope.control = [];
-                        $scope.antallEndret = 0;
-                        $scope.antallValgt = 0;
-                        oppdaterFunksjonsknapper();
                     }
                 );
             };
