@@ -37,7 +37,7 @@ public class SkdEndringsmeldingLogg {
     @Column(name = "SKD_ENDRINGSMELDING_LOGG_ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "SKD_ENDRINGSMELDING_GRUPPE_ID", nullable = false, updatable = false)
+    @Column(name = "SKD_ENDRINGSMELDING_GRUPPE_REF", nullable = false, updatable = false)
     private Long meldingsgruppeId;
 
     @Column(name = "ENDRINGSMELDING", nullable = false, updatable = false)

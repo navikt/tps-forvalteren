@@ -35,7 +35,7 @@ public class SkdEndringsmeldingGruppe extends ChangeStamp {
     @Id
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
-    @Column(name = "SKD_MELDINGSGRUPPE_ID", nullable = false, updatable = false)
+    @Column(name = "SKD_ENDRINGSMELDING_GRUPPE_ID", nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "NAVN", unique = true, nullable = false, length = 50)

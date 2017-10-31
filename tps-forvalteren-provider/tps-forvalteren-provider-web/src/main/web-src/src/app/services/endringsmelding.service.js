@@ -32,7 +32,7 @@ angular.module('tps-forvalteren.service')
 
         self.storeSkdMeldingsgruppe = function (gruppe) {
             var defer = $q.defer();
-            $http.post(url + '/skd/gruppe', {skdEndringsmeldingGruppe: gruppe}).then(
+            $http.post(url + '/skd/gruppe', gruppe).then(
                 function (data) {
                     defer.resolve(data);
                 },

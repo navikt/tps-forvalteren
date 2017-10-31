@@ -13,4 +13,6 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     void save(SkdEndringsmelding skdEndringsmelding);
 
+    void deleteByIdIn(List<Long> ids);
+
 }
