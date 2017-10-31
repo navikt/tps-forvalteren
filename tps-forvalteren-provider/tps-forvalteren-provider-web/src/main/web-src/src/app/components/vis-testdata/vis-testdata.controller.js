@@ -10,7 +10,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.service = testdataService;
 
-            $scope.gruppeId = $stateParams.groupId;
+            $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 

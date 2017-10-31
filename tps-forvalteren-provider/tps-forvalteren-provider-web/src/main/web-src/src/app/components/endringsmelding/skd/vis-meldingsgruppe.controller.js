@@ -5,7 +5,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
             $scope.service = endringsmeldingService;
 
-            $scope.gruppeId = $stateParams.groupId;
+            $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 
@@ -15,7 +15,18 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     text: 'Legg til meldinger',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
                     click: function () {
-                        locationService.redirectToOpprettTestdata($scope.gruppeId);
+                        var confirm = $mdDialog.confirm({
+                            controller: 'SkdNyMeldingCtrl',
+                            templateUrl: 'app/components/endringsmelding/skd/nymelding/ny-melding.html',
+                            parent: angular.element(document.body),
+                            bindToController: true
+                        });
+                        $mdDialog.show(confirm).then(
+                            function () { // Prevents duplicate call to rest-endpoint
+                            },
+                            function () { // Controlled error exit
+                            }
+                        )
                     }
                 }, {
                     text: 'Send til TPS',
@@ -36,7 +47,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             var setHeaderIcons = function () {
                 underHeaderService.setIcons([{
                     icon: 'assets/icons/ic_mode_edit_black_24px.svg',
-                    title: 'Endre testgruppe',
+                    title: 'Endre meldingsgruppe',
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
                             controller: 'EndreSkdGruppeCtrl',
@@ -58,7 +69,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     }
                 }, {
                     icon: 'assets/icons/ic_delete_black_24px.svg',
-                    title: 'Slette testgruppe',
+                    title: 'Slette meldingsgruppe',
                     click: function () {
                         var meldingsTekst = $scope.meldinger.length > 0 ? ' med ' + $scope.meldinger.length + ' melding' : '';
                         meldingsTekst += $scope.meldinger.length > 1 ? 'er' : '';

@@ -30,11 +30,11 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectToVisTestdata = function(index) {
-            $state.go("vis-testdata", {groupId: index});
+            $state.go("vis-testdata", {gruppeId: index});
         };
 
         self.redirectToOpprettTestdata = function(index) {
-            $state.go("opprett-testdata", {groupId: index});
+            $state.go("opprett-testdata", {gruppeId: index});
         };
 
         self.redirectToSkdEndringsmeldingGrupper = function() {
@@ -42,7 +42,7 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectToOpprettSkdMeldinger = function(index) {
-            $state.go("skd-vis-meldingsgruppe", {groupId: index});
+            $state.go("skd-vis-meldingsgruppe", {gruppeId: index});
         };
 
         self.isServicerutineState = function(){
