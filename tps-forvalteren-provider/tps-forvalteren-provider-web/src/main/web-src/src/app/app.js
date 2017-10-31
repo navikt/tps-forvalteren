@@ -22,7 +22,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome',
     'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize', 'tps-forvalteren.vis-testdata.endregruppe',
     'tps-forvalteren.vis-testdata.sendtiltps', 'tps-forvalteren.skd-meldingsgruppe', 'tps-forvalteren.skd-meldingsgruppe.nygruppe',
-    'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe']);
+    'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding']);
 
 require('./shared/index');
 
@@ -135,7 +135,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('vis-testdata', {
-                url: "/vis-testdata/{groupId:[0-9]{9}}",
+                url: "/vis-testdata/{gruppeId:[0-9]{9}}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -161,7 +161,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('opprett-testdata', {
-                url: "/opprett-testdata/{groupId:[0-9]*}",
+                url: "/opprett-testdata/{gruppeId:[0-9]*}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -213,7 +213,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('skd-vis-meldingsgruppe', {
-                url: "/endringsmelding/skd/gruppe/{groupId:[0-9]*}",
+                url: "/endringsmelding/skd/gruppe/{gruppeId:[0-9]*}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();

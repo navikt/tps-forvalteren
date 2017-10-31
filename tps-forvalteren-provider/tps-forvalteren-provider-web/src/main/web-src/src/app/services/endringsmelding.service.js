@@ -45,7 +45,7 @@ angular.module('tps-forvalteren.service')
 
         self.deleteMeldinger = function (idListe) {
             var defer = $q.defer();
-            $http.post(url + '/skd/deleteMeldinger', {rsMeldingIdListe: idListe}).then(
+            $http.post(url + '/skd/deletemeldinger', {rsMeldingIdListe: idListe}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -58,7 +58,20 @@ angular.module('tps-forvalteren.service')
 
         self.deleteGruppe = function (gruppeId) {
             var defer = $q.defer();
-            $http.post(url + '/skd/deleteGruppe/' + gruppeId).then(
+            $http.post(url + '/skd/deletegruppe/' + gruppeId).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.createMelding = function (gruppeId, melding) {
+            var defer = $q.defer();
+            $http.post(url + '/skd/gruppe/' + gruppeId, melding).then(
                 function (data) {
                     defer.resolve(data);
                 },

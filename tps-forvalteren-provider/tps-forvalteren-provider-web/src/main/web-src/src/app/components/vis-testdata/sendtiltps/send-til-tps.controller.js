@@ -2,7 +2,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
     .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'testdataService', 'utilsService',
         function ($scope, $mdDialog, $stateParams, serviceRutineFactory, testdataService, utilsService) {
 
-            var gruppeId = $stateParams.groupId;
+            var gruppeId = $stateParams.gruppeId;
 
             var miljoer = serviceRutineFactory.getEnvironments().environments;
             $scope.showSpinner = false;
