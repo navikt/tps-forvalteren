@@ -2,7 +2,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', ['ngMateria
     .controller('EndreSkdGruppeCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'endringsmeldingService', 'headerService', 'utilsService',
         function ($scope, $mdDialog, $rootScope, $stateParams, endringsmeldingService, headerService, utilsService) {
 
-            var gruppeId = $stateParams.groupId;
+            var gruppeId = $stateParams.gruppeId;
             var grupper = [];
             endringsmeldingService.getSkdMeldingsgrupper().then(
                 function (result) {

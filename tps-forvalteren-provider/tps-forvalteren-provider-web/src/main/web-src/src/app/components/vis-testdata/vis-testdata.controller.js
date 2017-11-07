@@ -10,11 +10,13 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.service = testdataService;
 
-            $scope.gruppeId = $stateParams.groupId;
+            $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 
-            var setHeaderButtons = function (antall_personer) {
+            $scope.limitTotalDisplayed = 1000;
+
+            function setHeaderButtons (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
                 underHeaderService.setButtons([{
                     text: 'Legg til testpersoner',
@@ -36,9 +38,9 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $mdDialog.show(confirm);
                     }
                 }]);
-            };
+            }
 
-            var setHeaderIcons = function () {
+            function setHeaderIcons () {
                 underHeaderService.setIcons([{
                     icon: 'assets/icons/ic_mode_edit_black_24px.svg',
                     title: 'Endre testgruppe',
@@ -83,7 +85,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         });
                     }
                 }]);
-            };
+            }
 
             $scope.allePersoner = {checked: false};
             $scope.personer = [];
@@ -105,7 +107,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 oppdaterFunksjonsknapper();
             };
 
-            var hentTestpersoner = function () {
+            function hentTestpersoner () {
+                $scope.showSpinner = true;
                 $scope.personer = undefined;
                 testdataService.getGruppe($scope.gruppeId).then(
                     function (result) {
@@ -119,13 +122,15 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
                         oppdaterFunksjonsknapper();
+                        $scope.showSpinner = false;
                     },
                     function (error) {
                         utilsService.showAlertError(error);
                         underHeaderService.setHeader("Testdata");
+                        $scope.showSpinner = false;
                     }
                 );
-            };
+            }
 
             $scope.personIsDead = function (index) {
                 if ($scope.personer[index].doedsdato) {
@@ -136,7 +141,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 return false;
             };
 
-            function prepOriginalPersoner() {
+            function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
                     etablerAdressetype(originalPersoner[i]);
                     fixDatoForDatepicker(originalPersoner[i]);
@@ -163,15 +168,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             }
 
-            var prepPersoner = function () {
-                for (var index = 0; index < $scope.personer.length; index++) {
-                    fixKommunenr($scope.personer[index]);
-                    fixPostnummer($scope.personer[index]);
-                }
-            };
-
             // Datofix kjøres etter denne
-            var etablerAdressetype = function (person) {
+            function etablerAdressetype (person) {
                 if (person.boadresse) {
                     if (person.boadresse.adressetype === 'GATE') {
                         person.gateadresse = angular.copy(person.boadresse);
@@ -185,10 +183,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     person.boadresse = {};
                     person.boadresse.adressetype = 'GATE';
                 }
-            };
+            }
 
             // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
-            var fixDatoForDatepicker = function (person) {
+            function fixDatoForDatepicker (person) {
                 person.regdato = person.regdato || null;
                 person.spesregDato = person.spesregDato || null;
                 person.doedsdato = person.doedsdato || null;
@@ -196,7 +194,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.gateadresse.flyttedato = person.gateadresse.flyttedato || null;
                 person.matrikkeladresse = person.matrikkeladresse || {};
                 person.matrikkeladresse.flyttedato = person.matrikkeladresse.flyttedato || null;
-            };
+            }
 
             var oppdaterFane = undefined;
             var checkIt = false;
@@ -216,7 +214,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 checkIt = true;
             };
 
-            function checkAndModifyAggregateOpenCloseButton() {
+            function checkAndModifyAggregateOpenCloseButton () {
                 var allOpen = true;
                 var allClosed = true;
                 for (var i = 0; i < $scope.personer.length; i++) {
@@ -226,7 +224,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         allOpen = false;
                     }
                 }
-                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen) {
+                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
                     $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
                 }
             }
@@ -280,7 +278,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.visEndret = endret > 0;
             };
 
-            var sletteTestpersoner = function () {
+            function sletteTestpersoner () {
                 var identer = [];
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i].velg) {
@@ -295,7 +293,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         utilsService.showAlertError(error);
                     }
                 );
-            };
+            }
 
             $scope.lagre = function () {
                 var buffer = [];
@@ -326,7 +324,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
-            var prepLagrePerson = function (person) {
+            function prepLagrePerson (person) {
                 var adressetype = person.boadresse.adressetype;
                 if (adressetype === 'GATE') {
                     person.boadresse = angular.copy(person.gateadresse);
@@ -336,10 +334,20 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     person.gateadresse = undefined;
                 }
                 person.boadresse.adressetype = adressetype;
+                fixTimezone(person.boadresse.flyttedato);
+                fixTimezone(person.regdato);
+                fixTimezone(person.spesregDato);
+                fixTimezone(person.doedsdato);
                 return person;
-            };
+            }
 
-            var oppdaterFunksjonsknapper = function () {
+            function fixTimezone (date) {
+                if (date && date.toString().length > 19) {
+                    date.setMinutes(date.getTimezoneOffset() * -1);
+                }
+            }
+
+            function oppdaterFunksjonsknapper () {
                 var endret = false;
                 for (var i = 0; i < $scope.control.length; i++) {
                     if ($scope.control[i]) {
@@ -350,7 +358,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
 
                 $scope.visEndret = endret;
-            };
+            }
 
             $scope.endret = function (index) {
                 var originalPerson = JSON.stringify(originalPersoner[index]).replace(/null/g, '""') // Angular legger på $$hashKey, fjerner den
@@ -366,7 +374,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.oppdaterValgt();
             };
 
-            var avbrytLagring = function () {
+            function avbrytLagring () {
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
                         $scope.personer[i] = JSON.parse(JSON.stringify(originalPersoner[i]));
@@ -374,15 +382,15 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     }
                 }
                 $scope.oppdaterValgt();
-            };
+            }
 
-            var nullstillControl = function (index) {
+            function nullstillControl (index) {
                 $scope.control[index].endret = false;
                 $scope.control[index].velg = false;
                 $scope.control[index].aapen = false;
-            };
+            }
 
-            var bekrefterLagring = function (index) {
+            function bekrefterLagring (index) {
                 var confirm = $mdDialog.confirm()
                     .title('Bekrefter lagring')
                     .textContent('Lagring er utført')
@@ -391,7 +399,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                 });
-            };
+            }
 
             $scope.avbryteDialog = function () {
                 var confirm = $mdDialog.confirm()
@@ -408,7 +416,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 });
             };
 
-            var bekreftRelokasjon = function (next, current) {
+            function bekreftRelokasjon (next, current) {
                 var confirm = $mdDialog.confirm()
                     .title('Du har endringer som ikke er lagret')
                     .textContent('Trykk OK for å forlate siden.')
@@ -422,7 +430,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }, function () {
 
                 });
-            };
+            }
 
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
@@ -439,12 +447,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.toggleAlleFaner = function () {
                 $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
-                    }
-                    $scope.control[i].aapen = $scope.aapneAlleFaner;
-                }
+                $scope.personer.forEach(function(person, index) {
+                    $scope.control[index] = $scope.control[index] = {};
+                    $scope.control[index].aapen = $scope.aapneAlleFaner;
+                });
             };
 
             hentTestpersoner();
