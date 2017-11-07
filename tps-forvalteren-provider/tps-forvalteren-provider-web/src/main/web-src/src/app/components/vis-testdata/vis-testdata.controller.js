@@ -136,7 +136,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 return false;
             };
 
-            function prepOriginalPersoner () {
+            function prepOriginalPersoner() {
                 for (var i = 0; i < originalPersoner.length; i++) {
                     etablerAdressetype(originalPersoner[i]);
                     fixDatoForDatepicker(originalPersoner[i]);
@@ -193,15 +193,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.spesregDato = person.spesregDato ? person.spesregDato : null;
                 person.doedsdato = person.doedsdato ? person.doedsdato : null;
 
-                if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato) {
-                    person.gateadresse = person.gateadresse && !Array.isArray(person.gateadresse) ? person.gateadresse : {};
-                    person.gateadresse.flytteDato = null;
-                }
+                person.gateadresse = person.gateadresse || {};
+                person.gateadresse.flyttedato = person.gateadresse.flyttedato || null;
 
-                if (!person.boadresse || !person.boadresse.matrikkeladresse || !person.boadresse.matrikkeladresse.flytteDato) {
-                    person.matrikkeladresse = person.matrikkeladresse ? person.matrikkeladresse : {};
-                    person.matrikkeladresse.flytteDato = null;
-                }
+                person.matrikkeladresse = person.matrikkeladresse || {};
+                person.matrikkeladresse.flyttedato = person.matrikkeladresse.flyttedato || null;
             };
 
             var oppdaterFane = undefined;
@@ -222,7 +218,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 checkIt = true;
             };
 
-            function checkAndModifyAggregateOpenCloseButton () {
+            function checkAndModifyAggregateOpenCloseButton() {
                 var allOpen = true;
                 var allClosed = true;
                 for (var i = 0; i < $scope.personer.length; i++) {
@@ -232,7 +228,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         allOpen = false;
                     }
                 }
-                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
+                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen) {
                     $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
                 }
             }

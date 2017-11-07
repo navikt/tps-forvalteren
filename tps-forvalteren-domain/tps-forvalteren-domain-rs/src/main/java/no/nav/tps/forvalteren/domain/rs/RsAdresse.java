@@ -2,7 +2,10 @@ package no.nav.tps.forvalteren.domain.rs;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
@@ -17,6 +20,8 @@ import java.time.LocalDateTime;
 })
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class RsAdresse {
 
     private Long adresseId;

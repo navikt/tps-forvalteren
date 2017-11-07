@@ -58,9 +58,10 @@ public class SavePersonListService {
                 person.getBoadresse().setPerson(person);
                 Adresse personAdresseDB = adresseRepository.findAdresseByPersonId(person.getId());
                 if (personAdresseDB != null) {
-                    person.getBoadresse().setId(personAdresseDB.getId());
+                    adresseRepository.deleteById(personAdresseDB.getId());
                 }
             }
+
             person.setOpprettetDato(null);
             person.setOpprettetAv(null);
             person.setEndretDato(null);
