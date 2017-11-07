@@ -14,11 +14,11 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
             $scope.showSpinner = false;
             $scope.antallLedig = 0;
 
-            var cleanupRow = function () {
+            function cleanupRow () {
                 $scope.kriterium = {identtype: "FNR", kjonn: undefined, foedtEtter: null, foedtFoer: null, antall: undefined};
                 $scope.foedtEtterMax = $scope.startOfEra;
                 $scope.foedtFoerMin = $scope.today;
-            };
+            }
 
             $scope.foedtEtterChanged = function () {
                 $scope.foedtEtterMax = $scope.kriterium.foedtEtter ? $scope.kriterium.foedtEtter : $scope.startOfEra;
@@ -28,9 +28,23 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 $scope.foedtFoerMin = $scope.kriterium.foedtFoer ? $scope.kriterium.foedtFoer : $scope.today;
             };
 
+            function fixTimezone (date) {
+                if (date && date.toString().length > 19) {
+                    date.setMinutes(date.getTimezoneOffset() * -1);
+                }
+            }
+
+            function fixDates () {
+                $scope.kriterier.forEach(function (kriterium) {
+                    fixTimezone(kriterium.foedtFoer);
+                    fixTimezone(kriterium.foedtEtter);
+                });
+            }
+
             $scope.opprettTestpersoner = function () {
                 $scope.editMode = false;
                 $scope.showSpinner = true;
+                fixDates();
                 testdataService.opprettTestpersoner(gruppeId, $scope.kriterier).then(
                     function (result) {
                         $scope.showSpinner = false;
@@ -45,11 +59,26 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
             };
 
             $scope.addKriterium = function() {
-                $scope.kriterier.push($scope.kriterium);
-                cleanupRow();
+                var count = 0;
+                $scope.kriterier.forEach(function(kriterium) {
+                   count += Number(kriterium.antall);
+                });
+                if (count + Number($scope.kriterium.antall) <= 1000) {
+                    $scope.kriterier.push($scope.kriterium);
+                    cleanupRow();
+                } else {
+                    var confirm = $mdDialog.confirm()
+                        .title('Begrensning')
+                        .textContent('Maks 1000 testpersoner kan opprettes av gangen!')
+                        .ariaLabel('Maks 1000 testpersoner kan opperettes per gang.')
+                        .ok('OK');
+                    $mdDialog.show(confirm).then(function() {
+                        // Empty function
+                    });
+                }
             };
 
-            var opprettComplete = function () {
+            function opprettComplete () {
                 var confirm = $mdDialog.confirm()
                     .title('Bekreftelse')
                     .textContent('Oppretting av testpersoner er fullført!')
@@ -59,7 +88,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 $mdDialog.show(confirm).then(function() {
                     locationService.redirectToVisTestdata(gruppeId);
                 });
-            };
+            }
 
             $scope.removeDialog = function(index) {
                 var krit = $scope.kriterier[index];
@@ -96,13 +125,13 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 }
             };
 
-            var getRow = function (kriterium) {
+            function getRow (kriterium) {
                 return 'Type = "' + kriterium.identtype + '"' +
                     (kriterium.kjonn ? ', Kjonn = "' + kriterium.kjonn + '"' : '') +
                     (kriterium.foedtEtter ? ', Født etter =" ' + $filter('date')(kriterium.foedtEtter, 'dd-MM-yyyy') + '"' : '') +
                     (kriterium.foedtFoer ? ', Født før = "' + $filter('date')(kriterium.foedtFoer, 'dd-MM-yyyy') + '"' : '') +
                     (kriterium.antall ? ', Antall = "' + kriterium.antall + '"' : '');
-            };
+            }
 
             $scope.sjekkIdenter = function () {
                 if ($scope.identRaw) {
@@ -151,7 +180,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 }
             };
 
-            var antallGyldig = function () {
+            function antallGyldig () {
                 var antall = 0;
                 for (var i = 0; i < $scope.kandidater.length; i++) {
                     if ($scope.kandidater[i].status === 'LOG') {
@@ -159,7 +188,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                     }
                 }
                 $scope.antallLedig = antall;
-            };
+            }
 
             $scope.opprettFraIdentliste = function () {
                 $scope.showOpprettSpinner = true;

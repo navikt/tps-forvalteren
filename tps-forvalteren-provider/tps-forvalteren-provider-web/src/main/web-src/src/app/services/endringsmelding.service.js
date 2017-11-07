@@ -71,7 +71,7 @@ angular.module('tps-forvalteren.service')
 
         self.createMelding = function (gruppeId, melding) {
             var defer = $q.defer();
-            $http.post(url + '/skd/gruppe/' + gruppeId, melding).then(
+            $http.post(url + '/skd/gruppe/' + gruppeId + (!!melding.raw ? '/raw' : ''), melding).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -81,4 +81,30 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.updateMeldinger = function(meldinger) {
+            var defer = $q.defer();
+            $http.post(url + '/skd/updatemeldinger', meldinger).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.convertMelding = function(melding) {
+            var defer = $q.defer();
+            $http.post(url + '/skd/convertmelding', melding).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        }
     }]);

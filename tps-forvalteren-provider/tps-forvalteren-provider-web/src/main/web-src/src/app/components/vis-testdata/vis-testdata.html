@@ -1,9 +1,15 @@
 <div class="tps-testdata-dashboard" layout-padding ng-cloak>
     <div layout="column" flex>
-        <h3 hide show-gt-md class="tpsf-testdata-personer-header">Testpersoner</h3>
+        <div layout="row" class="testdata-progress-bar" flex style="margin-left: 10px; margin-top: 10px;" ng-show="showSpinner">
+            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+        </div>
+        <!-- Pagaination is required say per 100 records. Merely to protect the user and browser for memory exhaustion limit is set on limitTotalDisplayed -->
+        <h3 hide show-gt-md class="tpsf-testdata-personer-header">Testpersoner<span ng-show="personer.length>0">&nbsp;({{personer.length}})</span>
+            <span ng-show="personer.length > limitTotalDisplayed">&nbsp;-- Viser de første {{limitTotalDisplayed}} kun for å bedre ytelsen</span></h3>
         <div layout="column" layout-gt-md="row" class="tpsf-testdata-container">
             <div layout="column" flex-gt-md="66">
-                <h3 hide-gt-md class="tpsf-testdata-personer-header">Testpersoner</h3>
+                <h3 hide-gt-md class="tpsf-testdata-personer-header">Testpersoner<span ng-show="personer.length>0">&nbsp;({{personer.length}})</span>
+                    <span ng-show="personer.length > limitTotalDisplayed">&nbsp;-- Viser de første {{limitTotalDisplayed}} kun for å bedre ytelsen</span></h3></h3>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
                         <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
@@ -43,14 +49,18 @@
                                            ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
                                            aria-label="Lagre valgte rader">Lagre
                                 </md-button>
-                                <md-button class="md-accent md-raised md-title"
-                                           ng-click="toggleAlleFaner()"
-                                           aria-label="Åpne/lukke alle">
-                                    <md-icon ng-class="{flipped: aapneAlleFaner}"
-                                             md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
-                                    <span ng-if="!aapneAlleFaner">Åpne alle</span>
-                                    <span ng-if="aapneAlleFaner">Lukke alle</span>
-                                </md-button>
+                                <div>
+                                    <md-tooltip>Åpner alle inntil 100 testpersoner</md-tooltip>
+                                    <md-button class="md-accent md-raised md-title"
+                                               ng-click="toggleAlleFaner()"
+                                               aria-label="Åpne/lukke alle"
+                                               ng-disabled="personer.length > 100">
+                                        <md-icon ng-class="{flipped: aapneAlleFaner}"
+                                                 md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                                        <span ng-if="!aapneAlleFaner">Åpne alle</span>
+                                        <span ng-if="aapneAlleFaner">Lukke alle</span>
+                                    </md-button>
+                                </div>
                             </div>
                         </div>
                     </md-card-content>
@@ -61,11 +71,11 @@
                 <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
                     <div ng-repeat="person in personer">
-                        <md-card id="person_{{$index}}" flex md-whiteframe="{{height}}"
+                        <md-card id="person_{{$index}}" flex md-whiteframe="{{height}}" ng-if="$index < limitTotalDisplayed"
                                  ng-init="height = 1"
                                  ng-mouseover="height = 5"
                                  ng-mouseleave="height = 1" ng-class="control[$index].aapen ? 'testdata-open-card' : ''">
-                            <md-card-content flex class="testdata-card-content">
+                            <md-card-content flex class="testdata-card-content" ng-cloak>
                                 <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" ng-click="toggleFane($index)">
                                     <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
                                                  ng-model="control[$index].velg"
