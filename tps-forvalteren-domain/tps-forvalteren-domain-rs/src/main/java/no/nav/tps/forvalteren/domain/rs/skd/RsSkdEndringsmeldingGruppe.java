@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,6 +24,8 @@ public class RsSkdEndringsmeldingGruppe {
 
     @Size(min = 1, max = 200)
     private String beskrivelse;
+
+    private List<RsMeldingstype> meldinger;
 
     private LocalDateTime opprettetDato;
 

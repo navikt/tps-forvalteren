@@ -19,7 +19,6 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
@@ -127,21 +126,6 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
 
-    }
-
-
-    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "convertMeldingToText") })
-    @RequestMapping(value = "/convertmelding", method = RequestMethod.POST)
-    public void convertMeldingToText(@RequestBody RsMeldingstype melding) {
-
-    }
-
-    @RequestMapping(value = "/melding", method = RequestMethod.GET)
-    public RsMeldingstype getMelding() {
-        RsMeldingstype melding = new RsMeldingstype2Felter();
-        return melding;
     }
 
 }

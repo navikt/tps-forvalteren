@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonTypeName("T2")
+@JsonTypeName("t2")
 public class RsMeldingstype2Felter extends RsMeldingstype {
 
     private String fodselsnr;

@@ -19,7 +19,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.embedded.StatsborgerskapFelter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonTypeName("T1")
+@JsonTypeName("t1")
 public class RsMeldingstype1Felter extends RsMeldingstype {
 
     @JsonUnwrapped

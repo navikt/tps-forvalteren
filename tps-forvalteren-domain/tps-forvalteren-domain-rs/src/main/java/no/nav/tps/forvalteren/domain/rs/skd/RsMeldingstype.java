@@ -19,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public abstract class RsMeldingstype {
 
+    private Long id;
     private String beskrivelse;
 
 }

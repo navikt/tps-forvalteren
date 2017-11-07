@@ -189,13 +189,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
             var fixDatoForDatepicker = function (person) {
-                person.regdato = person.regdato ? person.regdato : null;
-                person.spesregDato = person.spesregDato ? person.spesregDato : null;
-                person.doedsdato = person.doedsdato ? person.doedsdato : null;
-
+                person.regdato = person.regdato || null;
+                person.spesregDato = person.spesregDato || null;
+                person.doedsdato = person.doedsdato || null;
                 person.gateadresse = person.gateadresse || {};
                 person.gateadresse.flyttedato = person.gateadresse.flyttedato || null;
-
                 person.matrikkeladresse = person.matrikkeladresse || {};
                 person.matrikkeladresse.flyttedato = person.matrikkeladresse.flyttedato || null;
             };
