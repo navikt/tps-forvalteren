@@ -20,15 +20,15 @@ public class SaveSkdEndringsmeldingerFromText {
 
     public void execute(List<String> meldinger, Long gruppeId) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
-        for (String melding : meldinger) {
-            if (gruppe != null) {
+        if (gruppe != null) {
+            for (String melding : meldinger) {
                 SkdEndringsmelding skdEndringsmelding = new SkdEndringsmelding();
                 skdEndringsmelding.setGruppe(gruppe);
                 skdEndringsmelding.setEndringsmelding(melding);
                 skdEndringsmeldingRepository.save(skdEndringsmelding);
-            } else {
-                throw new IllegalArgumentException("skdEndringsmeldingGruppe med id: " + gruppeId + " finnes ikke.");
             }
+        } else {
+            throw new IllegalArgumentException("skdEndringsmeldingGruppe med id: " + gruppeId + " finnes ikke.");
         }
 
     }

@@ -14,7 +14,7 @@ angular.module('tps-forvalteren.skd-meldingsgruppe.nygruppe', ['ngMaterial'])
             $scope.checkNavn = function () {
                 var match = undefined;
                 for (var i = 0; i < meldingsgrupper.length; i++) {
-                    if ($scope.gruppe.navn.toLowerCase().trim() == meldingsgrupper[i].navn.toLowerCase().trim()) {
+                    if ($scope.gruppe.navn.toLowerCase().trim() === meldingsgrupper[i].navn.toLowerCase().trim()) {
                         match = true;
                         break;
                     }

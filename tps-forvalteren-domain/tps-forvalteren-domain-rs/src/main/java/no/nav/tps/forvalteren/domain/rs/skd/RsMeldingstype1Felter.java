@@ -1,19 +1,11 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.AdresseFelter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.DnrFelter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.ForeldreFelter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.HeaderFelter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.NavnFelter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.SivilstandFelter;
-import no.nav.tps.forvalteren.domain.rs.skd.embedded.StatsborgerskapFelter;
 
 @Getter
 @Setter
@@ -22,13 +14,35 @@ import no.nav.tps.forvalteren.domain.rs.skd.embedded.StatsborgerskapFelter;
 @JsonTypeName("t1")
 public class RsMeldingstype1Felter extends RsMeldingstype {
 
-    @JsonUnwrapped
-    private HeaderFelter headerFelter = new HeaderFelter();
+    private String fodselsdato;
+
+    private String personnummer;
+
+    private String maskindato;
+
+    private String maskintid;
+
+    private String transtype;
+
+    private String aarsakskode;
+
+    private String regDato;
+
+    private String statuskode;
 
     private String datoDoed;
 
-    @JsonUnwrapped
-    private NavnFelter navnFelter = new NavnFelter();
+    private String slektsnavn;
+
+    private String fornavn;
+
+    private String mellomnavn;
+
+    private String slekstnavnUgift;
+
+    private String forkortetNavn;
+
+    private String regDatoNavn;
 
     private String foedekommLand;
 
@@ -44,11 +58,69 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
 
     private String datoSpesRegType;
 
-    @JsonUnwrapped
-    private SivilstandFelter sivilstandFelter = new SivilstandFelter();
+    private String sivilstand;
 
-    @JsonUnwrapped
-    private AdresseFelter adresseFelter = new AdresseFelter();
+    private String regdatoSivilstand;
+
+    private String ektefellePartnerFdato;
+
+    private String ektefellePartnerPnr;
+
+    private String ektefellePartnerNavn;
+
+    private String ektefellePartnerStatsb;
+
+    private String regdatoAdr;
+
+    private String postadrRegDato;
+
+    private String flyttedatoAdr;
+
+    private String kommunenummer;
+
+    private String gateGaard;
+
+    private String husBruk;
+
+    private String bokstavFestenr;
+
+    private String undernr;
+
+    private String adressenavn;
+
+    private String adressetype;
+
+    private String tilleggsadresse;
+
+    private String postnummer;
+
+    private String valgkrets;
+
+    private String adresse1;
+
+    private String adresse2;
+
+    private String adresse3;
+
+    private String postadrLand;
+
+    private String innvandretFraLand;
+
+    private String fraLandRegdato;
+
+    private String fraLandFlyttedato;
+
+    private String fraKommune;
+
+    private String fraKommRegdato;
+
+    private String fraKommFlyttedato;
+
+    private String utvandretTilLand;
+
+    private String tilLandRegdato;
+
+    private String tilLandFlyttedato;
 
     private String samemanntall;
 
@@ -68,8 +140,21 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
 
     private String fremkonnummer;
 
-    @JsonUnwrapped
-    private ForeldreFelter foreldreFelter = new ForeldreFelter();
+    private String morsFodselsdato;
+
+    private String morsPersonnummer;
+
+    private String morsNavn;
+
+    private String morsStatsbSkap;
+
+    private String farsFodselsdato;
+
+    private String farsPersonnummer;
+
+    private String farsFarsNavn;
+
+    private String farsStatsbSkap;
 
     private String tidligereFnrDnr;
 
@@ -137,15 +222,65 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
 
     private String tkNr;
 
-    @JsonUnwrapped
-    private DnrFelter dnrFelter = new DnrFelter();
+    private String dnrHjemlandsadresse1;
+
+    private String dnrHjemlandsadresse2;
+
+    private String dnrHjemlandsadresse3;
+
+    private String dnrHjemlandLandkode;
+
+    private String dnrHjemlandRegDato;
+
+    private String dnrIdKontroll;
 
     private String utvandringstype;
 
     private String grunnkrets;
 
-    @JsonUnwrapped
-    private StatsborgerskapFelter statsborgerskapFelter = new StatsborgerskapFelter();
+    private String statsborgerskap;
+
+    private String regdatoStatsb;
+
+    private String statsborgerskap2;
+
+    private String regdatoStatsb2;
+
+    private String statsborgerskap3;
+
+    private String regdatoStatsb3;
+
+    private String statsborgerskap4;
+
+    private String regdatoStatsb4;
+
+    private String statsborgerskap5;
+
+    private String regdatoStatsb5;
+
+    private String statsborgerskap6;
+
+    private String regdatoStatsb6;
+
+    private String statsborgerskap7;
+
+    private String regdatoStatsb7;
+
+    private String statsborgerskap8;
+
+    private String regdatoStatsb8;
+
+    private String statsborgerskap9;
+
+    private String regdatoStatsb9;
+
+    private String statsborgerskap10;
+
+    private String regdatoStatsb10;
+
+    private String bibehold;
+
+    private String regdatoBibehold;
 
     private String saksid;
 

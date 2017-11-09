@@ -45,7 +45,7 @@ angular.module('tps-forvalteren.service')
 
         self.deleteMeldinger = function (idListe) {
             var defer = $q.defer();
-            $http.post(url + '/skd/deletemeldinger', {rsMeldingIdListe: idListe}).then(
+            $http.post(url + '/skd/deletemeldinger', {ids: idListe}).then(
                 function (data) {
                     defer.resolve(data);
                 },

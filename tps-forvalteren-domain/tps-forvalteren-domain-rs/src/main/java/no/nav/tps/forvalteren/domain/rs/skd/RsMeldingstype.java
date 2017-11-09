@@ -10,8 +10,8 @@ import lombok.Setter;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "meldingstype")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = RsMeldingstype1Felter.class, name = "T1"),
-        @JsonSubTypes.Type(value = RsMeldingstype2Felter.class, name = "T2")
+        @JsonSubTypes.Type(value = RsMeldingstype1Felter.class, name = "t1"),
+        @JsonSubTypes.Type(value = RsMeldingstype2Felter.class, name = "t2")
 })
 @Getter
 @Setter
