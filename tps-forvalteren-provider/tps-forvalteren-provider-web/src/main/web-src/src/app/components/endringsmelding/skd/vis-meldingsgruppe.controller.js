@@ -385,7 +385,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 endringsmeldingService.getGruppe($scope.gruppeId).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
-                        setHeaderButtons(result.data.meldinger.length);
+                        setHeaderButtons(result.data.meldinger ? result.data.meldinger.length : 0);
                         setHeaderIcons();
                         originalMeldinger = result.data.meldinger;
                         $scope.meldinger = angular.copy(originalMeldinger);
