@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
         'headerService',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, underHeaderService) {
+        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -18,16 +18,21 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             function setHeaderButtons (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
-                underHeaderService.setButtons([{
+                headerService.setButtons([{
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
+                    disabled: function () {
+                        return $scope.visEndret
+                    },
                     click: function () {
                         locationService.redirectToOpprettTestdata($scope.gruppeId);
                     }
                 }, {
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
-                    disabled: disable_send_til_tps_button,
+                    disabled: function () {
+                        return $scope.visEndret || disable_send_til_tps_button
+                    },
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
                             controller: 'SendTilTpsCtrl',
@@ -41,7 +46,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             }
 
             function setHeaderIcons () {
-                underHeaderService.setIcons([{
+                headerService.setIcons([{
                     icon: 'assets/icons/ic_mode_edit_black_24px.svg',
                     title: 'Endre testgruppe',
                     click: function (ev) {
@@ -69,7 +74,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         personTekst += $scope.personer.length > 1 ? 'er' : '';
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .htmlContent('Ønsker du å slette gruppe <strong>' + underHeaderService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
+                            .htmlContent('Ønsker du å slette gruppe <strong>' + headerService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
                                 'Denne handlingen vil ikke slette testpersonene fra TPS, dersom de er opprettet der.')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
@@ -112,7 +117,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.personer = undefined;
                 testdataService.getGruppe($scope.gruppeId).then(
                     function (result) {
-                        underHeaderService.setHeader(result.data.navn);
+                        headerService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.personer.length);
                         setHeaderIcons();
                         originalPersoner = result.data.personer;
@@ -126,7 +131,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                        underHeaderService.setHeader("Testdata");
+                        headerService.setHeader("Testdata");
                         $scope.showSpinner = false;
                     }
                 );
@@ -444,6 +449,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     return 'Du har data som ikke er lagret. Vil du forlate siden?'; // Trigger nettlesers visning av dialogboks for avslutning
                 }
             };
+
+            $scope.$watch('visEndret', function() {
+                headerService.eventUpdate();
+            });
 
             $scope.toggleAlleFaner = function () {
                 $scope.aapneAlleFaner = !$scope.aapneAlleFaner;

@@ -10,3 +10,4 @@ require('./gruppeinfo/vis-gruppeinfo-directive');
 require('./familierelasjon/familierelasjon.directive.js');
 require('./postnummer/postnummer.directive');
 require('./kommunenr/kommunenr.directive');
+require('./innsendingslogg/vis-innsendingslogg-directive');

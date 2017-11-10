@@ -3,10 +3,9 @@
         <div layout="row" class="testdata-progress-bar" flex style="margin-left: 10px; margin-top: 10px;" ng-show="showSpinner">
             <md-progress-linear md-mode="indeterminate"></md-progress-linear>
         </div>
-        <h3 hide show-gt-md class="tpsf-testdata-personer-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
-        <div layout="column" layout-gt-md="row" class="tpsf-testdata-container">
+        <h3 class="tpsf-testdata-personer-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
+        <div layout="row" layout-xs="column" layout-sm="column" layout-md="column">
             <div layout="column" flex-gt-md="66">
-                <h3 hide-gt-md class="tpsf-testdata-personer-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
                         <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
@@ -121,7 +120,10 @@
                     </div>
                 </form>
             </div>
-            <vis-gruppeinfo service="service" gruppe-id="gruppeId"></vis-gruppeinfo>
+            <div flex-gt-md="33">
+                <vis-gruppeinfo service="service" gruppe-id="gruppeId"></vis-gruppeinfo>
+                <vis-innsendingslogg service="service" gruppe-id="gruppeId"></vis-innsendingslogg>
+            </div>
         </div>
     </div>
 </div>
