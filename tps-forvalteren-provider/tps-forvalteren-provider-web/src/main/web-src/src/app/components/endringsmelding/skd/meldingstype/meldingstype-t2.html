@@ -1,11 +1,11 @@
 <div layout="row">
     <md-input-container class="tps-vk-input-container" flex>
-        <md-tooltip>Fodeselsnr</md-tooltip>
-        <label>fodeselsnr</label>
-        <input name="fodeselsnr" ng-required="false" pattern="\d{11}" md-maxlength="11" md-autofocus
-               ng-model="melding.fodeselsnr" ng-change="endret($index)"/>
-        <div ng-messages="requestForm.fodeselsnr.$error"
-             ng-show="requestForm.fodeselsnr.$dirty">
+        <md-tooltip>Fodselsnr</md-tooltip>
+        <label>Fodselsnr</label>
+        <input name="fodselsnr" ng-required="false" pattern="\d{11}" md-maxlength="11" md-autofocus
+               ng-model="melding.fodselsnr" ng-change="endret($index)"/>
+        <div ng-messages="requestForm.fodselsnr.$error"
+             ng-show="requestForm.fodselsnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
             <div ng-message="pattern">Elleve sifre forventet</div>
         </div>
