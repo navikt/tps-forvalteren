@@ -31,7 +31,7 @@ public class CreateSkdEndringsmeldingFromType {
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
     @Autowired
-    private getRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
+    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
 
     @Autowired
     private ObjectMapper mapper;
@@ -41,14 +41,14 @@ public class CreateSkdEndringsmeldingFromType {
         if (gruppe != null) {
             SkdEndringsmelding skdEndringsmelding = new SkdEndringsmelding();
             skdEndringsmelding.setGruppe(gruppe);
-            RsMeldingstype melding = getRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
+            RsMeldingstype melding = GetRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
             melding.setBeskrivelse(rsNewSkdEndringsmelding.getNavn());
             try {
                 String meldingAsJson = mapper.writeValueAsString(melding);
                 skdEndringsmelding.setEndringsmelding(meldingAsJson);
                 skdEndringsmeldingRepository.save(skdEndringsmelding);
-            } catch (JsonProcessingException e) {
-                throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()));
+            } catch (JsonProcessingException exception) {
+                throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()), exception);
             }
         } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));

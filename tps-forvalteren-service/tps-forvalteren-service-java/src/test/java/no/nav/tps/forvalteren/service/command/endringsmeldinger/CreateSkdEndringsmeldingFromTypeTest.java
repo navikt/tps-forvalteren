@@ -48,7 +48,7 @@ public class CreateSkdEndringsmeldingFromTypeTest {
     private ObjectMapper mapper;
 
     @Mock
-    private getRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
+    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
 
     @InjectMocks
     private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
@@ -73,14 +73,14 @@ public class CreateSkdEndringsmeldingFromTypeTest {
         when(skdEndringsmeldingGruppeRepository.findById(GRUPPE_ID)).thenReturn(gruppe);
         when(rsNewSkdEndringsmelding.getMeldingstype()).thenReturn(MELDINGSTYPE);
         when(rsNewSkdEndringsmelding.getNavn()).thenReturn(MELDING_NAVN);
-        when(getRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype())).thenReturn(rsMeldingstype);
+        when(GetRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype())).thenReturn(rsMeldingstype);
     }
 
     @Test
     public void checkThatMeldingGetsSaved() throws JsonProcessingException {
         createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
 
-        verify(getRsMeldingstypeFromTypeText).execute(MELDINGSTYPE);
+        verify(GetRsMeldingstypeFromTypeText).execute(MELDINGSTYPE);
         verify(mapper).writeValueAsString(rsMeldingstype);
         verify(skdEndringsmeldingRepository).save(any(SkdEndringsmelding.class));
     }

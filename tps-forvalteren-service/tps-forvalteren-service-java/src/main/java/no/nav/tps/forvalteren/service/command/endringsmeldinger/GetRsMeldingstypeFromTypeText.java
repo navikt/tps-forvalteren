@@ -12,15 +12,15 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalMeldingstypeException;
 
 @Service
-public class getRsMeldingstypeFromTypeText {
+public class GetRsMeldingstypeFromTypeText {
 
     @Autowired
     private MessageProvider messageProvider;
 
     public RsMeldingstype execute(String meldingstype) {
-        if (meldingstype.equalsIgnoreCase("t1")) {
+        if ("t1".equalsIgnoreCase(meldingstype)) {
             return new RsMeldingstype1Felter();
-        } else if (meldingstype.equalsIgnoreCase("t2")) {
+        } else if ("t2".equalsIgnoreCase(meldingstype)) {
             return new RsMeldingstype2Felter();
         } else {
             throw new IllegalMeldingstypeException(messageProvider.get(SKD_ILLEGAL_MELDINGSTYPE, meldingstype));

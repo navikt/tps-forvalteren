@@ -36,8 +36,8 @@ public class UpdateSkdEndringsmelding {
                     String meldingAsJson = mapper.writeValueAsString(melding);
                     skdEndringsmelding.setEndringsmelding(meldingAsJson);
                     skdEndringsmeldingRepository.save(skdEndringsmelding);
-                } catch (JsonProcessingException e) {
-                    throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()));
+                } catch (JsonProcessingException exception) {
+                    throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()), exception);
                 }
             } else {
                 throw new SkdEndringsmeldingNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, melding.getId()));

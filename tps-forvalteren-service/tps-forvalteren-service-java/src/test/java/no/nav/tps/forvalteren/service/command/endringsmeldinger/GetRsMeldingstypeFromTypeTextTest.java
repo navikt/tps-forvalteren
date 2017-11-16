@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalMeldingstypeException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class getRsMeldingstypeFromTypeTextTest {
+public class GetRsMeldingstypeFromTypeTextTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -30,7 +30,7 @@ public class getRsMeldingstypeFromTypeTextTest {
     private MessageProvider messageProvider;
 
     @InjectMocks
-    private getRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
+    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
 
     private static final String MELDINGSTYPE_T1 = "t1";
     private static final String MELDINGSTYPE_T2 = "t2";
@@ -38,13 +38,13 @@ public class getRsMeldingstypeFromTypeTextTest {
 
     @Test
     public void returnsMeldingstype1() {
-        RsMeldingstype result = getRsMeldingstypeFromTypeText.execute(MELDINGSTYPE_T1);
+        RsMeldingstype result = GetRsMeldingstypeFromTypeText.execute(MELDINGSTYPE_T1);
         assertThat(result, instanceOf(RsMeldingstype1Felter.class));
     }
 
     @Test
     public void returnsMeldingstype2() {
-        RsMeldingstype result = getRsMeldingstypeFromTypeText.execute(MELDINGSTYPE_T2);
+        RsMeldingstype result = GetRsMeldingstypeFromTypeText.execute(MELDINGSTYPE_T2);
         assertThat(result, instanceOf(RsMeldingstype2Felter.class));
     }
 
@@ -54,7 +54,7 @@ public class getRsMeldingstypeFromTypeTextTest {
 
         expectedException.expect(IllegalMeldingstypeException.class);
 
-        getRsMeldingstypeFromTypeText.execute(MELDINGSTYPE_ILLEGAL);
+        GetRsMeldingstypeFromTypeText.execute(MELDINGSTYPE_ILLEGAL);
         verify(messageProvider).get(SKD_ILLEGAL_MELDINGSTYPE, MELDINGSTYPE_ILLEGAL);
     }
 

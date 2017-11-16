@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_TO_OBJECT;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +13,18 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonToObjectException;
 
 @Component
 public class SkdEndringsmeldingGruppeMappingStrategy implements MappingStrategy {
+
+    @Autowired
+    private MessageProvider messageProvider;
 
     @Autowired
     private ObjectMapper mapper;
@@ -35,8 +42,8 @@ public class SkdEndringsmeldingGruppeMappingStrategy implements MappingStrategy 
                                         RsMeldingstype newMelding = mapper.readValue(melding.getEndringsmelding(), RsMeldingstype.class);
                                         newMelding.setId(melding.getId());
                                         meldinger.add(newMelding);
-                                    } catch (IOException e) {
-                                        throw new IllegalArgumentException(e.getMessage());
+                                    } catch (IOException exception) {
+                                        throw new SkdEndringsmeldingJsonToObjectException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_TO_OBJECT, melding.getId()), exception);
                                     }
                                 }
                                 rsSkdEndringsmeldingGruppe.setMeldinger(meldinger);

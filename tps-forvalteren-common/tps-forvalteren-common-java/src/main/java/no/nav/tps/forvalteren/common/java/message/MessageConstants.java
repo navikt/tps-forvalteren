@@ -24,5 +24,6 @@ public class MessageConstants {
     public static final String SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND = "service.exception.message.skd.endringsmelding.gruppe.not.found";
     public static final String SKD_ENDRINGSMELDING_JSON_PROCESSING = "service.exception.message.skd.endringsmelding.json.proccesing";
     public static final String SKD_ILLEGAL_MELDINGSTYPE = "service.exception.message.skd.illegal.meldingstype";
+    public static final String SKD_ENDRINGSMELDING_JSON_TO_OBJECT = "service.exception.message.skd.json.to.object";
 
 }
