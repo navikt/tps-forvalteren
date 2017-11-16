@@ -327,6 +327,10 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 });
             }
 
+            $scope.$on('createdMelding', function (event, arg) {
+                fetchMeldingsgruppe();
+            });
+
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();

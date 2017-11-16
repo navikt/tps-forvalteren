@@ -29,7 +29,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmelding;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 
 @Transactional
@@ -59,7 +59,7 @@ public class SkdEndringsmeldingController {
     private DeleteSkdEndringsmeldingByIdIn deleteSkdEndringsmeldingByIdIn;
 
     @Autowired
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
 
     @Autowired
     private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
@@ -104,17 +104,9 @@ public class SkdEndringsmeldingController {
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteMeldinger") })
-    @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
-    public void deleteSkdEndringsmeldinger(@RequestBody RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe) {
-        deleteSkdEndringsmeldingByIdIn.execute(rsSkdEdnringsmeldingIdListe.getIds());
-    }
-
-    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMelding") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.POST)
-    public void createMelding(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
+    public void createMeldingFromMeldingstype(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
         createSkdEndringsmeldingFromType.execute(gruppeId, rsNewSkdEndringsmelding);
     }
 
@@ -123,7 +115,15 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMeldingerFromText") })
     @RequestMapping(value = "/gruppe/{gruppeId}/raw", method = RequestMethod.POST)
     public void createMeldingerFromText(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsRawMeldinger meldingerAsText) {
-        createAndSaveSkdEndringsmeldingerFromText.execute(meldingerAsText, gruppeId);
+        createAndSaveSkdEndringsmeldingerFromText.execute(gruppeId, meldingerAsText);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteMeldinger") })
+    @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
+    public void deleteSkdEndringsmeldinger(@RequestBody RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe) {
+        deleteSkdEndringsmeldingByIdIn.execute(rsSkdEdnringsmeldingIdListe.getIds());
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
@@ -131,7 +131,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updateMeldinger") })
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
-        saveSkdEndringsmelding.execute(meldinger);
+        updateSkdEndringsmelding.execute(meldinger);
     }
 
 }

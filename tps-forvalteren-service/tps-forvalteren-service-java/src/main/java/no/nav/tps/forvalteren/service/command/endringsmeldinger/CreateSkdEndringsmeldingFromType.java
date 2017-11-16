@@ -1,27 +1,37 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
+import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
 import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
+import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
+import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonProcessingException;
 
 @Service
 public class CreateSkdEndringsmeldingFromType {
+
+    @Autowired
+    private MessageProvider messageProvider;
 
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
 
     @Autowired
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
+
+    @Autowired
+    private getRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
 
     @Autowired
     private ObjectMapper mapper;
@@ -31,28 +41,17 @@ public class CreateSkdEndringsmeldingFromType {
         if (gruppe != null) {
             SkdEndringsmelding skdEndringsmelding = new SkdEndringsmelding();
             skdEndringsmelding.setGruppe(gruppe);
-            RsMeldingstype melding = getCorrectMeldingFromType(rsNewSkdEndringsmelding.getMeldingstype());
+            RsMeldingstype melding = getRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
             melding.setBeskrivelse(rsNewSkdEndringsmelding.getNavn());
-            String meldingAsJson = "";
             try {
-                meldingAsJson = mapper.writeValueAsString(melding);
+                String meldingAsJson = mapper.writeValueAsString(melding);
+                skdEndringsmelding.setEndringsmelding(meldingAsJson);
+                skdEndringsmeldingRepository.save(skdEndringsmelding);
             } catch (JsonProcessingException e) {
-                e.printStackTrace(); // TODO: kast ny exception
+                throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()));
             }
-            skdEndringsmelding.setEndringsmelding(meldingAsJson);
-            skdEndringsmeldingRepository.save(skdEndringsmelding);
         } else {
-            throw new IllegalArgumentException("skdEndringsmeldingGruppe med id: " + gruppeId + " finnes ikke.");
-        }
-    }
-
-    private RsMeldingstype getCorrectMeldingFromType(String meldingstype) {
-        if (meldingstype.equalsIgnoreCase("t1")) {
-            return new RsMeldingstype1Felter();
-        } else if (meldingstype.equalsIgnoreCase("t2")) {
-            return new RsMeldingstype2Felter();
-        } else {
-            throw new IllegalArgumentException("Ugyldig meldingstype: " + meldingstype);
+            throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
         }
     }
 

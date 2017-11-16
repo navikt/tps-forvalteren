@@ -27,7 +27,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.nymelding', ['ngMaterial'
                 endringsmeldingService.createMelding(gruppeId, $scope.melding).then(
                     function () {
                         $mdDialog.hide();
-                        locationService.redirectToOpprettSkdMeldinger(gruppeId);
+                        $rootScope.$broadcast('createdMelding', 'Ny endringsmelding');
                     },
                     function (error) {
                         $mdDialog.hide();

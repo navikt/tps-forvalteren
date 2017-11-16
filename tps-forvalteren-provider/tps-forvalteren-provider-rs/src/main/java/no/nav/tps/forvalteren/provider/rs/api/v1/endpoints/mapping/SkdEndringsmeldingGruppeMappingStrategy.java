@@ -33,7 +33,7 @@ public class SkdEndringsmeldingGruppeMappingStrategy implements MappingStrategy 
                                 for (SkdEndringsmelding melding : skdEndringsmeldingGruppe.getSkdEndringsmeldinger()) {
                                     try {
                                         RsMeldingstype newMelding = mapper.readValue(melding.getEndringsmelding(), RsMeldingstype.class);
-                                        newMelding.setId(skdEndringsmeldingGruppe.getId());
+                                        newMelding.setId(melding.getId());
                                         meldinger.add(newMelding);
                                     } catch (IOException e) {
                                         throw new IllegalArgumentException(e.getMessage());
