@@ -31,7 +31,7 @@ public class CreateSkdEndringsmeldingFromType {
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
     @Autowired
-    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
+    private GetRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
 
     @Autowired
     private ObjectMapper mapper;
@@ -41,7 +41,7 @@ public class CreateSkdEndringsmeldingFromType {
         if (gruppe != null) {
             SkdEndringsmelding skdEndringsmelding = new SkdEndringsmelding();
             skdEndringsmelding.setGruppe(gruppe);
-            RsMeldingstype melding = GetRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
+            RsMeldingstype melding = getRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
             melding.setBeskrivelse(rsNewSkdEndringsmelding.getNavn());
             try {
                 String meldingAsJson = mapper.writeValueAsString(melding);

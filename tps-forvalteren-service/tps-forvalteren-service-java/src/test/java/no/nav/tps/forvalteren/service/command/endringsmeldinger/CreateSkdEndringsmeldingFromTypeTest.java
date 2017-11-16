@@ -93,7 +93,7 @@ public class CreateSkdEndringsmeldingFromTypeTest {
 
         createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
 
-        verify(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID));
+        verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);
     }
 
     @Test
