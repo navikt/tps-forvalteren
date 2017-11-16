@@ -7,18 +7,20 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
 
 @Service
-public class CreateSkdEndringsmeldingFromText {
+public class SplitSkdEndringsmeldingerFromText {
+
+    public static final int SKD_ENDRINGSMELDING_LENGTH = 1500;
 
     public List<String> execute(RsRawMeldinger rawMeldinger) {
         String meldingerAsText = rawMeldinger.getRaw();
         List<String> meldinger = new ArrayList<>();
-        if (meldingerAsText.length() % 1500 == 0) {
+        if (meldingerAsText.length() % SKD_ENDRINGSMELDING_LENGTH == 0) {
             int startPosition = 0;
-            int endPosition = 1500;
+            int endPosition = SKD_ENDRINGSMELDING_LENGTH;
             while (startPosition != meldingerAsText.length()) {
                 meldinger.add(meldingerAsText.substring(startPosition, endPosition));
-                startPosition += 1500;
-                endPosition += 1500;
+                startPosition += SKD_ENDRINGSMELDING_LENGTH;
+                endPosition += SKD_ENDRINGSMELDING_LENGTH;
             }
         } else {
             throw new IllegalArgumentException("Teksten har ugyldig lengde: " + meldingerAsText.length());
