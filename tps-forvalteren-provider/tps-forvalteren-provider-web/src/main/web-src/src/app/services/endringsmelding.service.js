@@ -2,11 +2,11 @@ angular.module('tps-forvalteren.service')
     .service('endringsmeldingService', ['$http', '$q', function($http, $q) {
 
         var self =  this;
-        var url = 'api/v1/endringsmelding';
+        var url = 'api/v1/endringsmelding/skd';
 
         self.getSkdMeldingsgrupper = function(){
             var defer = $q.defer();
-            $http.get(url + '/skd/grupper').then(
+            $http.get(url + '/grupper').then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -19,7 +19,7 @@ angular.module('tps-forvalteren.service')
 
         self.getGruppe = function (id) {
             var defer = $q.defer();
-            $http.get(url + '/skd/gruppe/' + id).then(
+            $http.get(url + '/gruppe/' + id).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -32,7 +32,7 @@ angular.module('tps-forvalteren.service')
 
         self.storeSkdMeldingsgruppe = function (gruppe) {
             var defer = $q.defer();
-            $http.post(url + '/skd/gruppe', gruppe).then(
+            $http.post(url + '/gruppe', gruppe).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -45,7 +45,7 @@ angular.module('tps-forvalteren.service')
 
         self.deleteMeldinger = function (idListe) {
             var defer = $q.defer();
-            $http.post(url + '/skd/deletemeldinger', {ids: idListe}).then(
+            $http.post(url + '/deletemeldinger', {ids: idListe}).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -58,7 +58,7 @@ angular.module('tps-forvalteren.service')
 
         self.deleteGruppe = function (gruppeId) {
             var defer = $q.defer();
-            $http.post(url + '/skd/deletegruppe/' + gruppeId).then(
+            $http.post(url + '/deletegruppe/' + gruppeId).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -71,7 +71,7 @@ angular.module('tps-forvalteren.service')
 
         self.createMelding = function (gruppeId, melding) {
             var defer = $q.defer();
-            $http.post(url + '/skd/gruppe/' + gruppeId + (!!melding.raw ? '/raw' : ''), melding).then(
+            $http.post(url + '/gruppe/' + gruppeId + (!!melding.raw ? '/raw' : ''), melding).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -84,7 +84,7 @@ angular.module('tps-forvalteren.service')
 
         self.updateMeldinger = function(meldinger) {
             var defer = $q.defer();
-            $http.post(url + '/skd/updatemeldinger', meldinger).then(
+            $http.post(url + '/updatemeldinger', meldinger).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -97,7 +97,7 @@ angular.module('tps-forvalteren.service')
 
         self.convertMelding = function(melding) {
             var defer = $q.defer();
-            $http.post(url + '/skd/convertmelding', melding).then(
+            $http.post(url + '/convertmelding', melding).then(
                 function (data) {
                     defer.resolve(data);
                 },
@@ -106,5 +106,31 @@ angular.module('tps-forvalteren.service')
                 }
             );
             return defer.promise;
-        }
+        };
+
+        self.sendTilTps = function (gruppeId, miljoe) {
+            var defer = $q.defer();
+            $http.post(url + '/tps/' + gruppeId, miljoe).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
+
+        self.getInnsendingslogg = function (gruppeId) {
+            var defer = $q.defer();
+            $http.post(url + '/gruppe/' + gruppeId + '/tpslogg').then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
     }]);

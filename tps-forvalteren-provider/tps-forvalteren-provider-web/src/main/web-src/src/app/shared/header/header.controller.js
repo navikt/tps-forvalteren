@@ -33,6 +33,16 @@ angular.module('tps-forvalteren')
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
 
+            $scope.$on('updateEvent', function () {
+                if ($scope.header && $scope.header.buttons) {
+                    $scope.header.buttons.forEach(function(button) {
+                        if (button.disabled) {
+                            button.status = button.disabled();
+                        }
+                    });
+                }
+            });
+
             $scope.om = function () {
                 var confirm = $mdDialog.confirm()
                     .title('Om TPS-Forvalteren')

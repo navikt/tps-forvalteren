@@ -24,7 +24,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize', 'tps-forvalteren.vis-testdata.endregruppe',
     'tps-forvalteren.vis-testdata.sendtiltps', 'tps-forvalteren.skd-meldingsgruppe', 'tps-forvalteren.skd-meldingsgruppe.nygruppe',
     'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding',
-    'tps-forvalteren.providers']);
+    'tps-forvalteren.providers', 'tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps']);
 
 require('./shared/index');
 
