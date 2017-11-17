@@ -19,7 +19,7 @@ public class CreateAndSaveSkdEndringsmeldingerFromText {
     private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
 
     public void execute(Long gruppeId, RsRawMeldinger rawMeldinger) {
-        List<String> meldinger = splitSkdEndringsmeldingerFromText.execute(rawMeldinger);
+        List<String> meldinger = splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw());
         createMeldingWithMeldingstype.execute(meldinger);
         saveSkdEndringsmeldingerFromText.execute(meldinger, gruppeId);
     }
