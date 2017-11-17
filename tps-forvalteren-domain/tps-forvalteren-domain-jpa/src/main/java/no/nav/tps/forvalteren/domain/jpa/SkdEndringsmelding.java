@@ -39,7 +39,7 @@ public class SkdEndringsmelding extends ChangeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private SkdEndringsmeldingGruppe gruppe;
 
-    @Column(name = "ENDRINGSMELDING", nullable = false)
+    @Column(name = "ENDRINGSMELDING_JSON", nullable = false)
     private String endringsmelding;
 
 }

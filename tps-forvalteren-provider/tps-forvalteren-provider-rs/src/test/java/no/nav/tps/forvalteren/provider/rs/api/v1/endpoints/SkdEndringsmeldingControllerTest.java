@@ -12,14 +12,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
+import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
+import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,10 +53,25 @@ public class SkdEndringsmeldingControllerTest {
     private DeleteSkdEndringsmeldingGruppeById deleteSkdEndringsmeldingGruppeById;
 
     @Mock
+    private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
+
+    @Mock
+    private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
+
+    @Mock
+    private DeleteSkdEndringsmeldingByIdIn deleteSkdEndringsmeldingByIdIn;
+
+    @Mock
+    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
+
+    @Mock
     private List<SkdEndringsmeldingGruppe> grupper;
 
     @Mock
     private List<RsSkdEndringsmeldingGruppe> rsGrupper;
+
+    @Mock
+    private List<RsMeldingstype> rsMeldinger;
 
     @Test
     public void getGrupperReturnsAllGrupper() {
@@ -96,6 +120,42 @@ public class SkdEndringsmeldingControllerTest {
         skdEndringsmeldingController.deleteGruppe(gruppeId);
 
         verify(deleteSkdEndringsmeldingGruppeById).execute(gruppeId);
+    }
+
+    @Test
+    public void createMeldingFromTypeCreatesMelding() {
+        Long gruppeId = 1337L;
+        RsNewSkdEndringsmelding melding = Mockito.mock(RsNewSkdEndringsmelding.class);
+
+        skdEndringsmeldingController.createMeldingFromMeldingstype(gruppeId, melding);
+
+        verify(createSkdEndringsmeldingFromType).execute(gruppeId, melding);
+    }
+
+    @Test
+    public void createMeldingerFromText() {
+        Long gruppeId = 1337L;
+        RsRawMeldinger meldingerAsText = Mockito.mock(RsRawMeldinger.class);
+
+        skdEndringsmeldingController.createMeldingerFromText(gruppeId, meldingerAsText);
+
+        verify(createAndSaveSkdEndringsmeldingerFromText).execute(gruppeId, meldingerAsText);
+    }
+
+    @Test
+    public void deleteMeldinger() {
+        RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe = Mockito.mock(RsSkdEdnringsmeldingIdListe.class);
+
+        skdEndringsmeldingController.deleteSkdEndringsmeldinger(rsSkdEdnringsmeldingIdListe);
+
+        verify(deleteSkdEndringsmeldingByIdIn).execute(rsSkdEdnringsmeldingIdListe.getIds());
+    }
+
+    @Test
+    public void updateMeldingVerify() {
+        skdEndringsmeldingController.updateMeldinger(rsMeldinger);
+
+        verify(updateSkdEndringsmelding).execute(rsMeldinger);
     }
 
 }
