@@ -25,5 +25,6 @@ public class MessageConstants {
     public static final String SKD_ENDRINGSMELDING_JSON_PROCESSING = "service.exception.message.skd.endringsmelding.json.proccesing";
     public static final String SKD_ILLEGAL_MELDINGSTYPE = "service.exception.message.skd.illegal.meldingstype";
     public static final String SKD_ENDRINGSMELDING_JSON_TO_OBJECT = "service.exception.message.skd.json.to.object";
+    public static final String SKD_ENDRINGSMELDING_ILLEGAL_LENGTH = "service.exception.message.skd.illegal.length";
 
 }
