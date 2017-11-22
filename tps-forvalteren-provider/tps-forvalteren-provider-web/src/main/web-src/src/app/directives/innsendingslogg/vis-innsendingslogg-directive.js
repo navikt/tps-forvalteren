@@ -14,13 +14,17 @@ angular.module('tps-forvalteren.directives')
                 function getInnsendingslogg () {
                     $scope.service.getInnsendingslogg($scope.gruppeId).then(
                         function (result) {
-                            $scope.gruppe = result.data;
+                            $scope.logg = result.data;
                         },
                         function (error) {
                             utilsService.showAlertError(error);
                         }
                     );
                 }
+
+                $scope.$on('MsgSentEvent', function () {
+                    getInnsendingslogg();
+                });
 
                 $scope.showMelding = function (melding) {
                     var details = $mdDialog.alert()

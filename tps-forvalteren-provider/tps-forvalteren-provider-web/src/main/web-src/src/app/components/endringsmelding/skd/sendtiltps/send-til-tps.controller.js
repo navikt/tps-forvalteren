@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial'])
-    .controller('SkdSendTilTpsCtrl', ['$scope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'endringsmeldingService', 'utilsService',
-        function ($scope, $mdDialog, $stateParams, serviceRutineFactory, endringsmeldingService, utilsService) {
+    .controller('SkdSendTilTpsCtrl', ['$scope', '$rootScope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'endringsmeldingService', 'utilsService',
+        function ($scope, $rootScope, $mdDialog, $stateParams, serviceRutineFactory, endringsmeldingService, utilsService) {
 
             var gruppeId = $stateParams.gruppeId;
             $scope.showSpinner = false;
@@ -22,6 +22,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial
                             .ariaLabel('Bekreftelse på at SKD-meldinger har blitt sendt til TPS')
                             .ok('OK');
                         $mdDialog.show(alert);
+                        $rootScope.$broadcast('MsgSentEvent', 'Meldinger sendt event');
                     },
                     function (error) {
                         $scope.showSpinner = false;

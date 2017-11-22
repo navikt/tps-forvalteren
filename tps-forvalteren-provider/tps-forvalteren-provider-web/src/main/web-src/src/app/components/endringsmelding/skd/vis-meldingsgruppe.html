@@ -107,7 +107,8 @@
                                         <div ng-include="meldingstypeT1" ng-if="melding.meldingstype === 't1'"></div>
                                         <div ng-include="meldingstypeT2" ng-if="melding.meldingstype === 't2'"></div>
 
-                                        <md-button class="md-title nav-blaa" style="margin: -8px 0 0 0;"
+                                        <md-button ng-class="meldingAsText[$index] ? 'md-title nav-blaa-ready' : 'md-title nav-blaa'" style="margin: -8px 0 0 0;"
+                                                   ng-mouseover="convertMelding($index)"
                                                    ng-click="copyToClipboard($index)"
                                                    aria-label="Kopier til utklippstavle">
                                             <md-icon md-svg-icon="assets/icons/ic_content_copy_black_24px.svg" class="nav-blaa" style="margin-top: -3px;"></md-icon>

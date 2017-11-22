@@ -10,6 +10,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
+            $scope.meldingAsText = [];
 
             function setHeaderButtons (meldingCount) {
                 var disable_send_til_tps_button = meldingCount < 1;
@@ -261,17 +262,16 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             }
 
             $scope.endret = function (index) {
-                var originalMelding = JSON.stringify(originalMeldinger[index]).replace(/null/g, '""') // Angular legger på $$hashKey, fjerner den
-                    .replace(/,*"[A-Za-z0-9_]+":""/g, '')
-                    .replace(/{}/g, '');
+                var originalMelding = JSON.stringify(originalMeldinger[index]).replace(/null/g, '""');
                 var endretMelding = JSON.stringify($scope.meldinger[index]).replace(/null/g, '""')
-                    .replace(/,*"\$\$hashKey":"[A-Za-z0-9_:]+"/g, '')
-                    .replace(/,*"[A-Za-z0-9_]+":""/g, '')
-                    .replace(/{}/g, '');
+                    .replace(/,*"\$\$hashKey":"[A-Za-z0-9_:]+"/g, '');
 
                 $scope.control[index].endret = originalMelding !== endretMelding;
                 $scope.control[index].velg = $scope.control[index].endret;
                 $scope.oppdaterValgt();
+                if ($scope.control[index].endret) {
+                    $scope.meldingAsText[index] = undefined;
+                }
             };
 
             function avbrytLagring () {
@@ -369,14 +369,24 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 $mdDialog.show(confirm);
             }
 
+            $scope.convertMelding = function (index) {
+                if (!$scope.meldingAsText[index]) {
+                    endringsmeldingService.convertMelding($scope.meldinger[index]).then(
+                        function (result) {
+                            $scope.meldingAsText[index] = result.data.melding;
+                        }, function (error) {
+                            utilsService.showAlertError(error);
+                            //TODO ta bort linje under
+                            $scope.meldingAsText[index] = "Lang tekststreng på 1500 tegn fra fane nummer: " + ++index;
+                        });
+                }
+            };
+
             $scope.copyToClipboard = function (index) {
-                endringsmeldingService.convertMelding($scope.meldinger[index]).then(
-                    function (data) {
-                        $copyToClipboard.copy(data);
-                        confirmClipboardCopy();
-                    }, function (error) {
-                        utilsService.showAlertError(error);
-                    });
+                if ($scope.meldingAsText[index]) {
+                    $copyToClipboard.copy($scope.meldingAsText[index]);
+                    confirmClipboardCopy();
+                }
             };
 
             function fetchMeldingsgruppe () {
@@ -390,6 +400,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         originalMeldinger = result.data.meldinger;
                         $scope.meldinger = angular.copy(originalMeldinger);
                         $scope.control = [];
+                        $scope.meldingAsText = [];
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
                         oppdaterFunksjonsknapper();
