@@ -68,28 +68,28 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         Adresse boadresse = person.getBoadresse();
         if (person.getBoadresse() != null) {
             if (boadresse instanceof Matrikkeladresse) {
-                skdParams.put("T1-GATE-GAARD", ((Matrikkeladresse) boadresse).getGardsnr());
-                skdParams.put("T1-HUS-BRUK", ((Matrikkeladresse) boadresse).getBruksnr());
-                skdParams.put("T1-BOKSTAV-FESTENR", ((Matrikkeladresse) boadresse).getFestenr());
-                skdParams.put("T1-UNDERNR", ((Matrikkeladresse) boadresse).getUndernr());
-                skdParams.put("T1-ADRESSENAVN", ((Matrikkeladresse) boadresse).getMellomnavn());
+                skdParams.put("gateGaard", ((Matrikkeladresse) boadresse).getGardsnr());
+                skdParams.put("husBruk", ((Matrikkeladresse) boadresse).getBruksnr());
+                skdParams.put("bokstavFestenr", ((Matrikkeladresse) boadresse).getFestenr());
+                skdParams.put("undernr", ((Matrikkeladresse) boadresse).getUndernr());
+                skdParams.put("adressenavn", ((Matrikkeladresse) boadresse).getMellomnavn());
             } else {
-                skdParams.put("T1-GATE-GAARD", ((Gateadresse) boadresse).getGatekode());
-                skdParams.put("T1-HUS-BRUK", ((Gateadresse) boadresse).getHusnummer());
+                skdParams.put("gateGaard", ((Gateadresse) boadresse).getGatekode());
+                skdParams.put("husBruk", ((Gateadresse) boadresse).getHusnummer());
                 String adresse = ((Gateadresse) boadresse).getAdresse();
                 if (adresse != null) {
                     int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
-                    skdParams.put("T1-ADRESSENAVN", ((Gateadresse) boadresse).getAdresse().substring(0, lengAdr));
+                    skdParams.put("adressenavn", ((Gateadresse) boadresse).getAdresse().substring(0, lengAdr));
                 }
             }
-            skdParams.put("T1-KOMMUNENUMMER", boadresse.getKommunenr());
-            skdParams.put("T1-POSTNUMMER", boadresse.getPostnr());
+            skdParams.put("kommunenummer", boadresse.getKommunenr());
+            skdParams.put("postnummer", boadresse.getPostnr());
 
             LocalDateTime flytteDato = boadresse.getFlyttedato();
             if (flytteDato != null) {
-                skdParams.put("T1-FLYTTEDATO-ADR", String.format("%04d%02d%02d", flytteDato.getYear(), flytteDato.getMonthValue(), flytteDato.getDayOfMonth()));
+                skdParams.put("flyttedatoAdr", String.format("%04d%02d%02d", flytteDato.getYear(), flytteDato.getMonthValue(), flytteDato.getDayOfMonth()));
             }
-            skdParams.put("T1-ADRESSETYPE", "O");
+            skdParams.put("adressetype", "O");
         }
 
         /* Postadresse */
@@ -103,13 +103,13 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
     }
 
     private void addDefaultParam(Map<String, String> skdParams) {
-        skdParams.put("T1-AARSAKSKODE", AARSAKSKODE_FOR_INNVANDRING);
+        skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNVANDRING);
 
-        skdParams.put("T1-INNVANDRET-FRA-LAND", "001");
-        skdParams.put("T1-FAMILIENUMMER", "08096740140");
-        skdParams.put("T1-PERSONKODE", "1");
-        skdParams.put("T1-SIVILSTAND", "1");
-        skdParams.put("T1-TRANSTYPE", "1");
-        skdParams.put("T1-STATUSKODE", "1");
+        skdParams.put("innvandretFraLand", "001");
+        skdParams.put("familienummer", "08096740140");
+        skdParams.put("personkode", "1");
+        skdParams.put("sivilstand", "1");
+        skdParams.put("transtype", "1");
+        skdParams.put("statuskode", "1");
     }
 }

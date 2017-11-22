@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
 
 @Service
@@ -20,7 +21,8 @@ public class CreateAndSaveSkdEndringsmeldingerFromText {
 
     public void execute(Long gruppeId, RsRawMeldinger rawMeldinger) {
         List<String> meldinger = splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw());
-        createMeldingWithMeldingstype.execute(meldinger);
-        saveSkdEndringsmeldingerFromText.execute(meldinger, gruppeId);
+        List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(meldinger);
+        saveSkdEndringsmeldingerFromText.execute(rsMeldinger, gruppeId);
     }
+
 }

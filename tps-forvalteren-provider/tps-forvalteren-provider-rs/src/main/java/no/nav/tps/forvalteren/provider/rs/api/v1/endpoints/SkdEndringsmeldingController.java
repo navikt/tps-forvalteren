@@ -18,11 +18,13 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingAsText;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
@@ -66,6 +68,9 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
+
+    @Autowired
+    private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
@@ -133,5 +138,15 @@ public class SkdEndringsmeldingController {
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
         updateSkdEndringsmelding.execute(meldinger);
     }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "convertMelding") })
+    @RequestMapping(value = "/convertmelding", method = RequestMethod.POST)
+    public RsMeldingAsText convertMelding(@RequestBody RsMeldingstype rsMelding) {
+        String melding = convertMeldingFromJsonToText.execute(rsMelding);
+        return new RsMeldingAsText(melding);
+    }
+
 
 }
