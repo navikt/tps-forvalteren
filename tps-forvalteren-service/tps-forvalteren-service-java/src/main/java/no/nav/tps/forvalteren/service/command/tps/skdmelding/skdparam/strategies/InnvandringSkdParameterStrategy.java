@@ -46,7 +46,6 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.SLEKTSNAVN, person.getEtternavn());
         skdParams.put(SkdConstants.STATSBORGERSKAP, person.getStatsborgerskap());
 
-        setAdresse(skdParams, person);
         String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
         String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());
 
@@ -59,6 +58,8 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.FRA_LAND_FLYTTEDATO, yyyyMMdd);
         skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
 
+        setAdresse(skdParams, person);
+        addSpesreg(skdParams, person);
         addDefaultParam(skdParams);
     }
 
@@ -99,6 +100,16 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
             skdParams.put(SkdConstants.POSTADRESSE_ADR_2, postadresse.getPostLinje2());
             skdParams.put(SkdConstants.POSTADRESSE_ADR_3, postadresse.getPostLinje3());
             skdParams.put(SkdConstants.POSTADRESSE_LAND, postadresse.getPostLand());
+        }
+    }
+
+    private void addSpesreg(Map<String, String> skdParams, Person person) {
+        if (person.getSpesreg() != null) {
+            skdParams.put("spesRegType", person.getSpesreg());
+        }
+        LocalDateTime spesregDato = person.getSpesregDato();
+        if (spesregDato != null) {
+            skdParams.put("datoSpesRegType", String.format("%04d%02d%02d", spesregDato.getYear(), spesregDato.getMonthValue(), spesregDato.getDayOfMonth()));
         }
     }
 

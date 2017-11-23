@@ -33,15 +33,16 @@ public class DetectMeldingstype {
     @Autowired
     private SkdFelterContainerTrans2 skdFelterContainerTrans2;
 
+    private static final int TRANSTYPE_START_POSITION = 25;
+    private static final int TRANSTYPE_END_POSITION = 26;
+
     public RsMeldingstype execute(String melding) {
-        String meldingstype = melding.substring(25, 26);
+        String meldingstype = melding.substring(TRANSTYPE_START_POSITION, TRANSTYPE_END_POSITION);
         switch (meldingstype) {
         case "1":
             return createT1(melding);
         case "2":
-            return createT2(melding);
         case "3":
-            return createT2(melding);
         case "4":
             return createT2(melding);
         default:
@@ -52,13 +53,7 @@ public class DetectMeldingstype {
     private RsMeldingstype createT1(String melding) {
         List<SkdFeltDefinisjon> felter = skdFelterContainerTrans1.hentSkdFelter();
         Map<String, String> meldingFelter = new HashMap<>();
-        for (SkdFeltDefinisjon felt : felter) {
-            if (felt.getFraByte() != 0 && felt.getTilByte() != 0) {
-                String extractedValue = melding.substring(felt.getFraByte() - 1, felt.getTilByte());
-                String trimmedValue = extractedValue.trim();
-                meldingFelter.put(felt.getNokkelNavn(), trimmedValue);
-            }
-        }
+        populateMapWithFelter(melding, meldingFelter, felter);
         meldingFelter.put("meldingstype", "t1");
         String beskrivelse = "IDENT: " + meldingFelter.get("fodselsdato") + meldingFelter.get("personnummer") + " - AARSAKSKODE: " + meldingFelter.get("aarsakskode");
         meldingFelter.put("beskrivelse", beskrivelse);
@@ -68,6 +63,14 @@ public class DetectMeldingstype {
     private RsMeldingstype createT2(String melding) {
         List<SkdFeltDefinisjon> felter = skdFelterContainerTrans2.hentSkdFelter();
         Map<String, String> meldingFelter = new HashMap<>();
+        populateMapWithFelter(melding, meldingFelter, felter);
+        meldingFelter.put("meldingstype", "t2");
+        String beskrivelse = "IDENT: " + meldingFelter.get("fodselsnr") + " - AARSAKSKODE: " + meldingFelter.get("aarsakskode");
+        meldingFelter.put("beskrivelse", beskrivelse);
+        return objectMapper.convertValue(meldingFelter, RsMeldingstype2Felter.class);
+    }
+
+    private void populateMapWithFelter(String melding, Map<String, String> meldingFelter, List<SkdFeltDefinisjon> felter) {
         for (SkdFeltDefinisjon felt : felter) {
             if (felt.getFraByte() != 0 && felt.getTilByte() != 0) {
                 String extractedValue = melding.substring(felt.getFraByte() - 1, felt.getTilByte());
@@ -75,10 +78,6 @@ public class DetectMeldingstype {
                 meldingFelter.put(felt.getNokkelNavn(), trimmedValue);
             }
         }
-        meldingFelter.put("meldingstype", "t2");
-        String beskrivelse = "IDENT: " + meldingFelter.get("fodselsnr") + " - AARSAKSKODE: " + meldingFelter.get("aarsakskode");
-        meldingFelter.put("beskrivelse", beskrivelse);
-        return objectMapper.convertValue(meldingFelter, RsMeldingstype2Felter.class);
     }
 
 }

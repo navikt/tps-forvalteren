@@ -30,9 +30,9 @@ public class DoedsmeldingSkdParameterStrategyTest {
     private static final String REGDATO_TIME_STRING = "153800";
     private static final String DOEDSDATO_DATE_STRING = "20171002";
 
-    private static final String AARSAKSKODE_KEY = "T1-AARSAKSKODE";
-    private static final String TRANSTYPE_KEY = "T1-TRANSTYPE";
-    private static final String STATUSKODE_KEY = "T1-STATUSKODE";
+    private static final String AARSAKSKODE_KEY = "aarsakskode";
+    private static final String TRANSTYPE_KEY = "transtype";
+    private static final String STATUSKODE_KEY = "statuskode";
 
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "43";
     private static final String TRANSTYPE_FOR_DOEDSMELDING = "1";

@@ -123,7 +123,7 @@ angular.module('tps-forvalteren.service')
 
         self.getInnsendingslogg = function (gruppeId) {
             var defer = $q.defer();
-            $http.post(url + '/gruppe/' + gruppeId + '/tpslogg').then(
+            $http.get(url + '/gruppe/' + gruppeId + '/tpslogg').then(
                 function (data) {
                     defer.resolve(data);
                 },

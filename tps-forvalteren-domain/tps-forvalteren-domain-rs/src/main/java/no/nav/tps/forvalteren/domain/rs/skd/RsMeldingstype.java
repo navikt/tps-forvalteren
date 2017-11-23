@@ -21,5 +21,6 @@ public abstract class RsMeldingstype {
 
     private Long id;
     private String beskrivelse;
+    private String transtype;
 
 }

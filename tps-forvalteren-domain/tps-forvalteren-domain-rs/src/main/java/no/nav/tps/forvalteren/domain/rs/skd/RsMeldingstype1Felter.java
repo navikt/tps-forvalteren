@@ -22,8 +22,6 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
 
     private String maskintid;
 
-    private String transtype;
-
     private String aarsakskode;
 
     private String regDato;

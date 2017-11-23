@@ -18,12 +18,14 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingAsText;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
@@ -31,6 +33,8 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLogForGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 
@@ -71,6 +75,12 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
+
+    @Autowired
+    private SendEndringsmeldingGruppeToTps sendEndringsmeldingGruppeToTps;
+
+    @Autowired
+    private GetLogForGruppe getLogForGruppe;
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
@@ -148,5 +158,21 @@ public class SkdEndringsmeldingController {
         return new RsMeldingAsText(melding);
     }
 
+    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendToTps") })
+    @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
+    public void sendToTps(@PathVariable Long gruppeId, @RequestBody String environment) {
+        sendEndringsmeldingGruppeToTps.execute(gruppeId, environment);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ACCESS')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
+    @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)
+    public List<RsSkdEndringsmeldingLogg> getLog(@PathVariable("gruppeId") Long gruppeId) {
+        List<SkdEndringsmeldingLogg> log = getLogForGruppe.execute(gruppeId);
+        return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
+    }
 
 }

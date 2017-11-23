@@ -20,8 +20,6 @@ public class RsMeldingstype2Felter extends RsMeldingstype {
 
     private String maskintid;
 
-    private String transtype;
-
     private String aarsakskode;
 
     private String barnFodsdato1;

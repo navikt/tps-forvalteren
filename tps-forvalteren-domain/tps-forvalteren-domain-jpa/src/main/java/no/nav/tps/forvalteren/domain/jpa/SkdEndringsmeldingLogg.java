@@ -43,6 +43,12 @@ public class SkdEndringsmeldingLogg {
     @Column(name = "ENDRINGSMELDING", nullable = false, updatable = false)
     private String endringsmelding;
 
+    @Column(name = "BESKRIVELSE", nullable = false, updatable = false)
+    private String beskrivelse;
+
+    @Column(name = "ENVIRONMENT", nullable = false, updatable = false)
+    private String environment;
+
     @CreatedDate
     @Column(name = "INNSENDT_DATO", nullable = false, updatable = false)
     private LocalDateTime innsendtDato;
