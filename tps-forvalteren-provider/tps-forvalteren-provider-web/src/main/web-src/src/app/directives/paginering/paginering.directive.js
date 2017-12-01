@@ -4,12 +4,13 @@ angular.module('tps-forvalteren.directives')
             restrict: 'E',
             scope: {
                 length: '=',
-                pager: '='
+                pager: '=',
+                pageSize: '='
             },
             templateUrl: 'app/directives/paginering/paginering.html',
             controller: ['$scope', '$timeout', 'pagerService', function ($scope, $timeout, pagerService) {
 
-                $scope.pageLen = 20;
+                $scope.pageLen = $scope.pageSize || 20;
                 $scope.pager = {};
 
                 $scope.$watch('length', function (newVal) {

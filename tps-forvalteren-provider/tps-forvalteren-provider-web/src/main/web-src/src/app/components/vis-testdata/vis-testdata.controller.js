@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
     .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
-        'headerService',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService) {
+        'headerService', 'toggleservice',
+        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService, toggleservice) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -189,35 +189,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             }
 
             var oppdaterFane = undefined;
-            var checkIt = false;
-
-            $scope.toggleFane = function (index) {
-                $scope.control[index] = $scope.control[index] || {};
-                if (!checkIt) {
-                    $scope.control[index].aapen = !$scope.control[index].aapen;
-                    checkAndModifyAggregateOpenCloseButton();
-                }
-                checkIt = false;
-            };
-
-            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
-                checkIt = true;
-            };
-
-            function checkAndModifyAggregateOpenCloseButton () {
-                var allOpen = true;
-                var allClosed = true;
-                for (var i = $scope.pager.startIndex; i < $scope.pager.endIndex + 1; i++) {
-                    if (i < $scope.personer.length && $scope.control[i] && $scope.control[i].aapen) {
-                        allClosed = false;
-                    } else {
-                        allOpen = false;
-                    }
-                }
-                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
-                    $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                }
-            }
 
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
@@ -306,7 +277,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         }
                         $scope.oppdaterValgt();
                         bekrefterLagring();
-                        checkAndModifyAggregateOpenCloseButton();
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
                     },
                     function (error) {
                         utilsService.showAlertError(error);
@@ -438,6 +410,21 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.$watch('visEndret', function () {
                 headerService.eventUpdate();
             });
+
+            var checkIt = false;
+
+            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
+                checkIt = true;
+            };
+
+            $scope.toggleFane = function (index) {
+                if (!checkIt) {
+                    toggleservice.toggleFane($scope.control, index);
+                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
+                }
+                checkIt = false;
+            };
 
             $scope.$watch('pager.startIndex', function () {
                 if ($scope.personer) {
