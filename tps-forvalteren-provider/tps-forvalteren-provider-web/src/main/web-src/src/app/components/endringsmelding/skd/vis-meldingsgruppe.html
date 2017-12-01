@@ -95,10 +95,11 @@
                                             <md-input-container class="tps-vk-input-container" flex>
                                                 <md-tooltip>Meldingsbeskrivelse</md-tooltip>
                                                 <label>Beskrivelse av melding</label>
-                                                <input name="navnBeskrivelse" ng-required="false" md-maxlength="200"
+                                                <input name="navnBeskrivelse" ng-required="true" md-maxlength="200"
                                                        ng-model="melding.beskrivelse" ng-change="endret($index)"/>
                                                 <div ng-messages="requestForm.navnBeskrivelse.$error"
                                                      ng-show="requestForm.navnBeskrivelse.$dirty">
+                                                    <div ng-message="required">Feltet er påkrevd</div>
                                                     <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                                 </div>
                                             </md-input-container>

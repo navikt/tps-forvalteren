@@ -46,21 +46,23 @@
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Transtype</md-tooltip>
         <label>Transtype</label>
-        <input name="transtype" ng-required="false" pattern="\d{1}" md-maxlength="1"
+        <input name="transtype" ng-required="true" pattern="[1]{1}" md-maxlength="1"
                ng-model="melding.transtype" ng-change="endret($index)"/>
         <div ng-messages="requestForm.transtype.$error"
              ng-show="requestForm.transtype.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
-            <div ng-message="pattern">Numerisk verdi forventet</div>
+            <div ng-message="pattern">Numerisk verdi 1 forventet</div>
         </div>
     </md-input-container>
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Aarsakskode</md-tooltip>
         <label>Aarsakskode</label>
-        <input name="aarsakskode" ng-required="false" pattern="\d{2}" md-maxlength="2"
+        <input name="aarsakskode" ng-required="true" pattern="\d{2}" md-maxlength="2"
                ng-model="melding.aarsakskode" ng-change="endret($index)"/>
         <div ng-messages="requestForm.aarsakskode.$error"
              ng-show="requestForm.aarsakskode.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
             <div ng-message="pattern">To sifre forventet</div>
         </div>

@@ -351,7 +351,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             $scope.toggleAlleFaner = function () {
                 $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
                 $scope.meldinger.forEach(function(melding, index) {
-                    $scope.control[index] = $scope.control[index] = {};
+                    $scope.control[index] = $scope.control[index] || {};
                     $scope.control[index].aapen = $scope.aapneAlleFaner;
                 });
             };
@@ -403,6 +403,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         $scope.meldingAsText = [];
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
+                        $scope.alleMeldinger.checked = false;
                         oppdaterFunksjonsknapper();
                         $scope.showSpinner = false;
                     },

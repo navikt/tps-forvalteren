@@ -14,8 +14,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.aapneAlleFaner = false;
 
-            $scope.limitTotalDisplayed = 1000;
-
             function setHeaderButtons (antall_personer) {
                 var disable_send_til_tps_button = antall_personer < 1;
                 headerService.setButtons([{
@@ -99,15 +97,13 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.velgAlle = function () {
                 var enabled = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
-                    }
-                    if (!$scope.control[i].disabled) {
-                        $scope.control[i].velg = !$scope.allePersoner.checked;
+               $scope.personer.forEach(function (person, index ) {
+                    $scope.control[index] = $scope.control[index] || {};
+                    if (!$scope.control[index].disabled) {
+                        $scope.control[index].velg = !$scope.allePersoner.checked;
                         enabled++;
                     }
-                }
+                });
                 $scope.antallValgt = !$scope.allePersoner.checked ? enabled : 0;
                 oppdaterFunksjonsknapper();
             };
@@ -136,15 +132,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     }
                 );
             }
-
-            $scope.personIsDead = function (index) {
-                if ($scope.personer[index].doedsdato) {
-                    // Is now similar to backend
-                    // Does not check for if doedsdato is in future
-                    return true;
-                }
-                return false;
-            };
 
             function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
@@ -205,14 +192,12 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             var checkIt = false;
 
             $scope.toggleFane = function (index) {
-                if (!$scope.control[index]) {
-                    $scope.control[index] = {};
-                }
+                $scope.control[index] = $scope.control[index] || {};
                 if (!checkIt) {
                     $scope.control[index].aapen = !$scope.control[index].aapen;
+                    checkAndModifyAggregateOpenCloseButton();
                 }
                 checkIt = false;
-                checkAndModifyAggregateOpenCloseButton();
             };
 
             $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
@@ -222,8 +207,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             function checkAndModifyAggregateOpenCloseButton () {
                 var allOpen = true;
                 var allClosed = true;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if ($scope.control[i] && $scope.control[i].aapen) {
+                for (var i = $scope.pager.startIndex; i < $scope.pager.endIndex + 1; i++) {
+                    if (i < $scope.personer.length && $scope.control[i] && $scope.control[i].aapen) {
                         allClosed = false;
                     } else {
                         allOpen = false;
@@ -450,16 +435,31 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             };
 
-            $scope.$watch('visEndret', function() {
+            $scope.$watch('visEndret', function () {
                 headerService.eventUpdate();
+            });
+
+            $scope.$watch('pager.startIndex', function () {
+                if ($scope.personer) {
+                    $scope.page = $scope.personer.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
+                    var allOpen = true;
+                    for (var i = $scope.pager.startIndex; i < $scope.pager.endIndex + 1; i++) {
+                        if (i < $scope.personer.length && (!$scope.control[i] || !$scope.control[i].aapen)) {
+                            allOpen = false;
+                        }
+                    }
+                    $scope.aapneAlleFaner = allOpen;
+                }
             });
 
             $scope.toggleAlleFaner = function () {
                 $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                $scope.personer.forEach(function(person, index) {
-                    $scope.control[index] = $scope.control[index] = {};
-                    $scope.control[index].aapen = $scope.aapneAlleFaner;
-                });
+                for (var i = $scope.pager.startIndex; i < $scope.pager.endIndex + 1; i++) {
+                    if (i < $scope.personer.length) {
+                        $scope.control[i] = $scope.control[i] || {};
+                        $scope.control[i].aapen = $scope.aapneAlleFaner;
+                    }
+                }
             };
 
             hentTestpersoner();
