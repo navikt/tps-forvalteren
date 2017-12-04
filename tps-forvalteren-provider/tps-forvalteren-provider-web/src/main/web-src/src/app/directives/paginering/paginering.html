@@ -1,18 +1,18 @@
 <!-- pager -->
 <ul ng-if="pager.totalItems > pageLen" class="pagination" style="cursor: pointer;">
     <li ng-class="{disabled:pager.currentPage === 1 || disable}">
-        <a ng-click="setPage(1)"><<</a>
+        <a ng-click="setPage(1)">&lt;&lt;</a>
     </li>
     <li ng-class="{disabled:pager.currentPage === 1 || disable}">
-        <a ng-click="setPage(pager.currentPage - 1)"><</a>
+        <a ng-click="setPage(pager.currentPage - 1)">&lt;</a>
     </li>
     <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page, disabled:disable}">
         <a ng-click="setPage(page)">{{page}}</a>
     </li>
     <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
-        <a ng-click="setPage(pager.currentPage + 1)">></a>
+        <a ng-click="setPage(pager.currentPage + 1)">&gt;</a>
     </li>
     <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
-        <a ng-click="setPage(pager.totalPages)">>></a>
+        <a ng-click="setPage(pager.totalPages)">&gt;&gt;</a>
     </li>
 </ul>
