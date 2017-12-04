@@ -18,7 +18,7 @@
                 </div>
                 <hr>
                 <div ng-repeat="melding in logg | orderBy: ['miljoe','-utfoertDato']">
-                    <div layout="row" title="{{melding.raw}}" ng-click="showMelding(melding)">
+                    <div layout="row" title="{{melding.raw}}" ng-click="showMelding(melding)" ng-class="$index%2==0 ? 'tpsf-endringslogg-row-even' : 'tpsf-endringslogg-row-odd'">
                         <span flex="10" class="tpsf-endringslogg-report">{{melding.miljoe}}</span>
                         <span flex="35" class="tpsf-endringslogg-report">{{melding.utfoertDato | date:'dd-MM-yyyy HH:mm:ss'}}</span>
                         <span flex="15" class="tpsf-endringslogg-report">{{melding.utfoertAv}}</span>

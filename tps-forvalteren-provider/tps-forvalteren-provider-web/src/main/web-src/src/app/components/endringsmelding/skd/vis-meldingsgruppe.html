@@ -79,7 +79,7 @@
                                                  aria-label="Marker melding{{melding.ident}} for sletting"
                                                  ng-click="checkIt()">
                                     </md-checkbox>
-                                    <div flex="85">{{melding.beskrivelse}}</div>
+                                    <div flex="85" class="dont-break-out">{{melding.beskrivelse}}</div>
                                     <div flex></div>
                                     <div flex="5" ng-if="control[$index + pager.startIndex].endret" style="color: red;">Endret</div>
                                     <div flex="5">
