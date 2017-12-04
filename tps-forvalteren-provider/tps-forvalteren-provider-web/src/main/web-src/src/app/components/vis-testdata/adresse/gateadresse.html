@@ -4,7 +4,7 @@
         <label>Gatenavn</label>
         <input name="gateadresse" ng-required="false" md-maxlength="25"
                ng-model="person.gateadresse.gateadresse"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gateadresse.$error"
              ng-show="requestForm.gateadresse.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -14,11 +14,13 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Husnummer</md-tooltip>
         <label>Husnummer</label>
-        <input name="husnummer" ng-required="false" md-maxlength="4"
+        <input name="husnummer" pattern="\d{1,4}[a-zA-ZæÆøØåÅáÁ]{0,1}" ng-required="person.gateadresse.gateadresse" md-maxlength="5"
                ng-model="person.gateadresse.husnummer"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.husnummer.$error"
              ng-show="requestForm.husnummer.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
+            <div ng-message="pattern">En til fire sifre + evt husbokstav forventet</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
@@ -26,29 +28,37 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Gatekode</md-tooltip>
         <label>Gatekode</label>
-        <input name="gatekode" ng-required="false" md-maxlength="5"
+        <input name="gatekode" pattern="\d{5}" ng-required="person.gateadresse.gateadresse" md-maxlength="5"
                ng-model="person.gateadresse.gatekode"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gatekode.$error"
              ng-show="requestForm.gatekode.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
+            <div ng-message="pattern">Fem sifre forventet (evt. med ledende nuller)</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
 
-    <postnummer postnummer="person.gateadresse.postnr" endret-fn="endret" index="$index"></postnummer>
+    <postnummer postnummer="person.gateadresse.postnr" endret-fn="endret"
+                index="$index + pager.startIndex" paakrevet="person.gateadresse.gateadresse">
+    </postnummer>
 
-    <kommunenr kommunenr="person.gateadresse.kommunenr" endret-fn="endret" index="$index"></kommunenr>
+    <kommunenr kommunenr="person.gateadresse.kommunenr" endret-fn="endret"
+               index="$index + pager.startIndex" paakrevet="person.gateadresse.gateadresse">
+    </kommunenr>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Flyttedato</md-tooltip>
         <label>Flyttedato</label>
         <md-datepicker name="gtFlytteDato"
                        md-current-view="year"
+                       ng-required="person.gateadresse.gateadresse"
                        ng-model="person.gateadresse.flyttedato"
-                       ng-change="endret($index)">
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.gtFlytteDato.$error"
              ng-show="requestForm.gtFlytteDato.$pristine">
+            <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>

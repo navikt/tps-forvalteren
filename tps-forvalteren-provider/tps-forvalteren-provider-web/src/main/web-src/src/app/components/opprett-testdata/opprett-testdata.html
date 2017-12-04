@@ -85,7 +85,7 @@
                             <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
                             <label>Antall*</label>
                             <input name="antall" ng-model="kriterium.antall"
-                                   maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
+                                   maxlength="3" pattern="[0-9]+" ng-disabled="!editMode">
                             <div ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$dirty">
                                 <div ng-message="pattern">Ugyldig tallverdi</div>
                             </div>

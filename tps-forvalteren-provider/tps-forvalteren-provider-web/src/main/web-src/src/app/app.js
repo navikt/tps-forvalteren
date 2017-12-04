@@ -10,6 +10,7 @@ require('angular-moment');
 require('angular-sanitize');
 require('pikaday');
 require('pikaday-angular');
+require('lodash');
 
 require('./components/index');
 require('./services/service.module');

@@ -3,7 +3,7 @@
                  md-items="kommune in getKommuneMatches(kommuneSoek)"
                  md-search-text="kommuneSoek"
                  md-item-text="kommune.visningsnavn"
-                 md-select-on-match="true" md-require-match="true"
+                 md-select-on-match="true" md-require-match="true" ng-required="paakrevet"
                  md-delay="300" placeholder="Kommunenr" md-floating-label="Kommunenr" flex="10">
     <md-item-template>
         <span md-highlight-text="kommuneSoek" md-highlight-flags="i">{{ kommune.visningsnavn }}</span>

@@ -3,7 +3,7 @@
         <md-tooltip>Fodselsnr</md-tooltip>
         <label>Fodselsnr</label>
         <input name="fodselsnr" ng-required="false" pattern="\d{11}" md-maxlength="11" md-autofocus
-               ng-model="melding.fodselsnr" ng-change="endret($index)"/>
+               ng-model="melding.fodselsnr" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.fodselsnr.$error"
              ng-show="requestForm.fodselsnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -14,7 +14,7 @@
         <md-tooltip>Maskindato</md-tooltip>
         <label>Maskindato</label>
         <input name="maskindato" ng-required="false" pattern="\d{8}" md-maxlength="8"
-               ng-model="melding.maskindato" ng-change="endret($index)"/>
+               ng-model="melding.maskindato" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.maskindato.$error"
              ng-show="requestForm.maskindato.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -25,7 +25,7 @@
         <md-tooltip>Maskintid</md-tooltip>
         <label>Maskintid</label>
         <input name="maskintid" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.maskintid" ng-change="endret($index)"/>
+               ng-model="melding.maskintid" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.maskintid.$error"
              ng-show="requestForm.maskintid.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -35,21 +35,23 @@
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Transtype</md-tooltip>
         <label>Transtype</label>
-        <input name="transtype" ng-required="false" pattern="\d{1}" md-maxlength="1"
-               ng-model="melding.transtype" ng-change="endret($index)"/>
+        <input name="transtype" ng-required="true" pattern="[2-4]{1}" md-maxlength="1"
+               ng-model="melding.transtype" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.transtype.$error"
              ng-show="requestForm.transtype.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
-            <div ng-message="pattern">Numerisk verdi forventet</div>
+            <div ng-message="pattern">Numerisk verdi 2-4 forventet</div>
         </div>
     </md-input-container>
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Aarsakskode</md-tooltip>
         <label>Aarsakskode</label>
         <input name="aarsakskode" ng-required="false" pattern="\d{2}" md-maxlength="2"
-               ng-model="melding.aarsakskode" ng-change="endret($index)"/>
+               ng-model="melding.aarsakskode" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.aarsakskode.$error"
              ng-show="requestForm.aarsakskode.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
             <div ng-message="pattern">To sifre forventet</div>
         </div>
@@ -60,7 +62,7 @@
         <md-tooltip>BarnFodsdato1</md-tooltip>
         <label>BarnFodsdato1</label>
         <input name="barnFodsdato1" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato1" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato1" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato1.$error"
              ng-show="requestForm.barnFodsdato1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -71,7 +73,7 @@
         <md-tooltip>BarnPersnr1</md-tooltip>
         <label>BarnPersnr1</label>
         <input name="barnPersnr1" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr1" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr1" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr1.$error"
              ng-show="requestForm.barnPersnr1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -82,7 +84,7 @@
         <md-tooltip>BarnNavn1</md-tooltip>
         <label>BarnNavn1</label>
         <input name="barnNavn1" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn1" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn1" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn1.$error"
              ng-show="requestForm.barnNavn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -92,7 +94,7 @@
         <md-tooltip>BarnKjoenn1</md-tooltip>
         <label>BarnKjoenn1</label>
         <input name="barnKjoenn1" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn1" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn1" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn1.$error"
              ng-show="requestForm.barnKjoenn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -104,7 +106,7 @@
         <md-tooltip>BarnFodsdato2</md-tooltip>
         <label>BarnFodsdato2</label>
         <input name="barnFodsdato2" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato2" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato2" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato2.$error"
              ng-show="requestForm.barnFodsdato2.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -115,7 +117,7 @@
         <md-tooltip>BarnPersnr2</md-tooltip>
         <label>BarnPersnr2</label>
         <input name="barnPersnr2" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr2" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr2" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr2.$error"
              ng-show="requestForm.barnPersnr2.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -126,7 +128,7 @@
         <md-tooltip>BarnNavn2</md-tooltip>
         <label>BarnNavn2</label>
         <input name="barnNavn2" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn2" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn2" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn2.$error"
              ng-show="requestForm.barnNavn2.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -136,7 +138,7 @@
         <md-tooltip>BarnKjoenn2</md-tooltip>
         <label>BarnKjoenn2</label>
         <input name="barnKjoenn2" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn2" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn2" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn2.$error"
              ng-show="requestForm.barnKjoenn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -148,7 +150,7 @@
         <md-tooltip>BarnFodsdato3</md-tooltip>
         <label>BarnFodsdato3</label>
         <input name="barnFodsdato3" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato3" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato3" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato3.$error"
              ng-show="requestForm.barnFodsdato3.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -159,7 +161,7 @@
         <md-tooltip>BarnPersnr3</md-tooltip>
         <label>BarnPersnr3</label>
         <input name="barnPersnr3" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr3" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr3" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr3.$error"
              ng-show="requestForm.barnPersnr3.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -170,7 +172,7 @@
         <md-tooltip>BarnNavn3</md-tooltip>
         <label>BarnNavn3</label>
         <input name="barnNavn3" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn3" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn3" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn3.$error"
              ng-show="requestForm.barnNavn3.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -180,7 +182,7 @@
         <md-tooltip>BarnKjoenn3</md-tooltip>
         <label>BarnKjoenn3</label>
         <input name="barnKjoenn3" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn3" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn3" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn3.$error"
              ng-show="requestForm.barnKjoenn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -192,7 +194,7 @@
         <md-tooltip>BarnFodsdato4</md-tooltip>
         <label>BarnFodsdato4</label>
         <input name="barnFodsdato4" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato4" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato4" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato4.$error"
              ng-show="requestForm.barnFodsdato4.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -203,7 +205,7 @@
         <md-tooltip>BarnPersnr4</md-tooltip>
         <label>BarnPersnr4</label>
         <input name="barnPersnr4" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr4" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr4" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr4.$error"
              ng-show="requestForm.barnPersnr4.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -214,7 +216,7 @@
         <md-tooltip>BarnNavn4</md-tooltip>
         <label>BarnNavn4</label>
         <input name="barnNavn4" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn4" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn4" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn4.$error"
              ng-show="requestForm.barnNavn4.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -224,7 +226,7 @@
         <md-tooltip>BarnKjoenn4</md-tooltip>
         <label>BarnKjoenn4</label>
         <input name="barnKjoenn4" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn4" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn4" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn4.$error"
              ng-show="requestForm.barnKjoenn4.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -236,7 +238,7 @@
         <md-tooltip>BarnFodsdato5</md-tooltip>
         <label>BarnFodsdato5</label>
         <input name="barnFodsdato5" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato5" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato5" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato5.$error"
              ng-show="requestForm.barnFodsdato5.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -247,7 +249,7 @@
         <md-tooltip>BarnPersnr5</md-tooltip>
         <label>BarnPersnr5</label>
         <input name="barnPersnr5" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr5" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr5" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr5.$error"
              ng-show="requestForm.barnPersnr5.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -258,7 +260,7 @@
         <md-tooltip>BarnNavn5</md-tooltip>
         <label>BarnNavn5</label>
         <input name="barnNavn5" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn5" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn5" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn5.$error"
              ng-show="requestForm.barnNavn5.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -268,7 +270,7 @@
         <md-tooltip>BarnKjoenn5</md-tooltip>
         <label>BarnKjoenn5</label>
         <input name="barnKjoenn5" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn5" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn5" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn5.$error"
              ng-show="requestForm.barnKjoenn5.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -280,7 +282,7 @@
         <md-tooltip>BarnFodsdato6</md-tooltip>
         <label>BarnFodsdato6</label>
         <input name="barnFodsdato6" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato6" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato6" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato6.$error"
              ng-show="requestForm.barnFodsdato6.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -291,7 +293,7 @@
         <md-tooltip>BarnPersnr6</md-tooltip>
         <label>BarnPersnr6</label>
         <input name="barnPersnr6" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr6" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr6" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr6.$error"
              ng-show="requestForm.barnPersnr6.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -302,7 +304,7 @@
         <md-tooltip>BarnNavn6</md-tooltip>
         <label>BarnNavn6</label>
         <input name="barnNavn6" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn6" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn6" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn6.$error"
              ng-show="requestForm.barnNavn6.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -312,7 +314,7 @@
         <md-tooltip>BarnKjoenn6</md-tooltip>
         <label>BarnKjoenn6</label>
         <input name="barnKjoenn6" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn6" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn6" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn6.$error"
              ng-show="requestForm.barnKjoenn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -324,7 +326,7 @@
         <md-tooltip>BarnFodsdato7</md-tooltip>
         <label>BarnFodsdato7</label>
         <input name="barnFodsdato7" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato7" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato7" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato7.$error"
              ng-show="requestForm.barnFodsdato7.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -335,7 +337,7 @@
         <md-tooltip>BarnPersnr7</md-tooltip>
         <label>BarnPersnr7</label>
         <input name="barnPersnr7" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr7" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr7" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr7.$error"
              ng-show="requestForm.barnPersnr7.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -346,7 +348,7 @@
         <md-tooltip>BarnNavn7</md-tooltip>
         <label>BarnNavn7</label>
         <input name="barnNavn7" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn7" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn7" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn7.$error"
              ng-show="requestForm.barnNavn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -356,7 +358,7 @@
         <md-tooltip>BarnKjoenn7</md-tooltip>
         <label>BarnKjoenn7</label>
         <input name="barnKjoenn7" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn7" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn7" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn7.$error"
              ng-show="requestForm.barnKjoenn7.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -368,7 +370,7 @@
         <md-tooltip>BarnFodsdato8</md-tooltip>
         <label>BarnFodsdato8</label>
         <input name="barnFodsdato8" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato8" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato8" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato8.$error"
              ng-show="requestForm.barnFodsdato8.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -379,7 +381,7 @@
         <md-tooltip>BarnPersnr8</md-tooltip>
         <label>BarnPersnr8</label>
         <input name="barnPersnr8" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr8" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr8" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr8.$error"
              ng-show="requestForm.barnPersnr8.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -390,7 +392,7 @@
         <md-tooltip>BarnNavn8</md-tooltip>
         <label>BarnNavn8</label>
         <input name="barnNavn8" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn8" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn8" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn8.$error"
              ng-show="requestForm.barnNavn8.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -400,7 +402,7 @@
         <md-tooltip>BarnKjoenn8</md-tooltip>
         <label>BarnKjoenn8</label>
         <input name="barnKjoenn8" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn8" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn8" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn8.$error"
              ng-show="requestForm.barnKjoenn8.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -412,7 +414,7 @@
         <md-tooltip>BarnFodsdato9</md-tooltip>
         <label>BarnFodsdato9</label>
         <input name="barnFodsdato9" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato9" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato9" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato9.$error"
              ng-show="requestForm.barnFodsdato9.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -423,7 +425,7 @@
         <md-tooltip>BarnPersnr9</md-tooltip>
         <label>BarnPersnr9</label>
         <input name="barnPersnr9" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr9" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr9" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr9.$error"
              ng-show="requestForm.barnPersnr9.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -434,7 +436,7 @@
         <md-tooltip>BarnNavn9</md-tooltip>
         <label>BarnNavn9</label>
         <input name="barnNavn9" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn9" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn9" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn9.$error"
              ng-show="requestForm.barnNavn9.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -444,7 +446,7 @@
         <md-tooltip>BarnKjoenn9</md-tooltip>
         <label>BarnKjoenn9</label>
         <input name="barnKjoenn9" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn9" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn9" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn9.$error"
              ng-show="requestForm.barnKjoenn1.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -456,7 +458,7 @@
         <md-tooltip>BarnFodsdato10</md-tooltip>
         <label>BarnFodsdato10</label>
         <input name="barnFodsdato10" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato10" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato10" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato10.$error"
              ng-show="requestForm.barnFodsdato10.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -467,7 +469,7 @@
         <md-tooltip>BarnPersnr10</md-tooltip>
         <label>BarnPersnr10</label>
         <input name="barnPersnr10" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr10" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr10" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr10.$error"
              ng-show="requestForm.barnPersnr10.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -478,7 +480,7 @@
         <md-tooltip>BarnNavn10</md-tooltip>
         <label>BarnNavn10</label>
         <input name="barnNavn10" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn10" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn10" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn10.$error"
              ng-show="requestForm.barnNavn10.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -488,7 +490,7 @@
         <md-tooltip>BarnKjoenn10</md-tooltip>
         <label>BarnKjoenn10</label>
         <input name="barnKjoenn10" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn10" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn10" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn10.$error"
              ng-show="requestForm.barnKjoenn10.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -500,7 +502,7 @@
         <md-tooltip>BarnFodsdato11</md-tooltip>
         <label>BarnFodsdato11</label>
         <input name="barnFodsdato11" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato11" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato11" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato11.$error"
              ng-show="requestForm.barnFodsdato11.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -511,7 +513,7 @@
         <md-tooltip>BarnPersnr11</md-tooltip>
         <label>BarnPersnr11</label>
         <input name="barnPersnr11" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr11" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr11" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr11.$error"
              ng-show="requestForm.barnPersnr11.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -522,7 +524,7 @@
         <md-tooltip>BarnNavn11</md-tooltip>
         <label>BarnNavn11</label>
         <input name="barnNavn11" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn11" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn11" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn11.$error"
              ng-show="requestForm.barnNavn11.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -532,7 +534,7 @@
         <md-tooltip>BarnKjoenn11</md-tooltip>
         <label>BarnKjoenn11</label>
         <input name="barnKjoenn11" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn11" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn11" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn11.$error"
              ng-show="requestForm.barnKjoenn11.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -544,7 +546,7 @@
         <md-tooltip>BarnFodsdato12</md-tooltip>
         <label>BarnFodsdato12</label>
         <input name="barnFodsdato12" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato12" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato12" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato12.$error"
              ng-show="requestForm.barnFodsdato12.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -555,7 +557,7 @@
         <md-tooltip>BarnPersnr12</md-tooltip>
         <label>BarnPersnr12</label>
         <input name="barnPersnr12" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr12" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr12" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr12.$error"
              ng-show="requestForm.barnPersnr12.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -566,7 +568,7 @@
         <md-tooltip>BarnNavn12</md-tooltip>
         <label>BarnNavn12</label>
         <input name="barnNavn12" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn12" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn12" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn12.$error"
              ng-show="requestForm.barnNavn12.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -576,7 +578,7 @@
         <md-tooltip>BarnKjoenn12</md-tooltip>
         <label>BarnKjoenn12</label>
         <input name="barnKjoenn12" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn12" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn12" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn12.$error"
              ng-show="requestForm.barnKjoenn12.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -588,7 +590,7 @@
         <md-tooltip>BarnFodsdato13</md-tooltip>
         <label>BarnFodsdato13</label>
         <input name="barnFodsdato13" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.barnFodsdato13" ng-change="endret($index)"/>
+               ng-model="melding.barnFodsdato13" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnFodsdato13.$error"
              ng-show="requestForm.barnFodsdato13.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -599,7 +601,7 @@
         <md-tooltip>BarnPersnr13</md-tooltip>
         <label>BarnPersnr13</label>
         <input name="barnPersnr13" ng-required="false" pattern="\d{5}" md-maxlength="5"
-               ng-model="melding.barnPersnr13" ng-change="endret($index)"/>
+               ng-model="melding.barnPersnr13" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnPersnr13.$error"
              ng-show="requestForm.barnPersnr13.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -610,7 +612,7 @@
         <md-tooltip>BarnNavn13</md-tooltip>
         <label>BarnNavn13</label>
         <input name="barnNavn13" ng-required="false" md-maxlength="50"
-               ng-model="melding.barnNavn13" ng-change="endret($index)"/>
+               ng-model="melding.barnNavn13" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnNavn13.$error"
              ng-show="requestForm.barnNavn13.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -620,7 +622,7 @@
         <md-tooltip>BarnKjoenn13</md-tooltip>
         <label>BarnKjoenn13</label>
         <input name="barnKjoenn13" ng-required="false" md-maxlength="1"
-               ng-model="melding.barnKjoenn13" ng-change="endret($index)"/>
+               ng-model="melding.barnKjoenn13" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.barnKjoenn13.$error"
              ng-show="requestForm.barnKjoenn13.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -632,7 +634,7 @@
         <md-tooltip>Sekvensnr</md-tooltip>
         <label>Sekvensnr</label>
         <input name="sekvensnr" ng-required="false" pattern="\d{6}" md-maxlength="6"
-               ng-model="melding.sekvensnr" ng-change="endret($index)"/>
+               ng-model="melding.sekvensnr" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.sekvensnr.$error"
              ng-show="requestForm.sekvensnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
