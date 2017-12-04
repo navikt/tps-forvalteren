@@ -2,6 +2,9 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ILLEGAL_MELDINGSTYPE;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -10,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +58,8 @@ public class DetectMeldingstypeTest {
     @InjectMocks
     private DetectMeldingstype detectMeldingstype;
 
-    private String validSkdEndringsmelding;
+    private String skdEndringsmeldingT1WithAllFieldsSupplied;
+    private String skdEndringsmeldingT2WithAllFieldsSupplied;
 
     private static final String T1 = "1";
     private static final String T2_TRANSTYPE_2 = "2";
@@ -71,7 +76,8 @@ public class DetectMeldingstypeTest {
     @Before
     public void setup() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        validSkdEndringsmelding = FileUtils.fileRead(new File(classLoader.getResource("melding.txt").getFile()));
+        skdEndringsmeldingT1WithAllFieldsSupplied = FileUtils.fileRead(new File(classLoader.getResource("melding-t1-alle-felter-utfylt.txt").getFile()));
+        skdEndringsmeldingT2WithAllFieldsSupplied = FileUtils.fileRead(new File(classLoader.getResource("melding-t2-alle-felter-utfylt.txt").getFile()));
 
         RsMeldingstype1Felter meldingT1 = new RsMeldingstype1Felter();
         RsMeldingstype2Felter meldingT2 = new RsMeldingstype2Felter();
@@ -91,30 +97,63 @@ public class DetectMeldingstypeTest {
     }
 
     @Test
-    public void returnsT1WhenCalledWithRealSkdEndringsmelding() {
+    public void returnsT1WhenCalledWithSkdEndringsmeldingAllFieldsSupplied() {
         when(skdFelterContainerTrans1.hentSkdFelter()).thenCallRealMethod();
 
-        RsMeldingstype melding = detectMeldingstype.execute(validSkdEndringsmelding);
+        RsMeldingstype melding = detectMeldingstype.execute(skdEndringsmeldingT1WithAllFieldsSupplied);
 
         assertThat(melding, instanceOf(RsMeldingstype1Felter.class));
     }
 
     @Test
-    public void meldingstype2ReturnsT2() {
+    public void checkThatAllFielsGetInitializedT1() {
+        when(skdFelterContainerTrans1.hentSkdFelter()).thenCallRealMethod();
+
+        RsMeldingstype melding = detectMeldingstype.execute(skdEndringsmeldingT1WithAllFieldsSupplied);
+
+        assertThat(melding, instanceOf(RsMeldingstype1Felter.class));
+        for(Field f : melding.getClass().getDeclaredFields()) {
+            assertThat(f, is(not(nullValue())));
+        }
+    }
+
+    @Test
+    public void checkThatAllFielsGetInitializedT2() {
+        when(skdFelterContainerTrans2.hentSkdFelter()).thenCallRealMethod();
+
+        RsMeldingstype melding = detectMeldingstype.execute(skdEndringsmeldingT2WithAllFieldsSupplied);
+
+        assertThat(melding, instanceOf(RsMeldingstype2Felter.class));
+        for(Field f : melding.getClass().getDeclaredFields()) {
+            assertThat(f, is(not(nullValue())));
+        }
+    }
+
+    @Test
+    public void transtype2ReturnsT2() {
         RsMeldingstype melding = detectMeldingstype.execute(T2_MELDING_WITH_TRANSTYPE_2);
 
         assertThat(melding, instanceOf(RsMeldingstype2Felter.class));
     }
 
     @Test
-    public void meldingstype3ReturnsT2() {
+    public void returnsT2WhenCalledWithSkdEndringsmeldingAllFieldsSupplied() {
+        when(skdFelterContainerTrans2.hentSkdFelter()).thenCallRealMethod();
+
+        RsMeldingstype melding = detectMeldingstype.execute(skdEndringsmeldingT2WithAllFieldsSupplied);
+
+        assertThat(melding, instanceOf(RsMeldingstype2Felter.class));
+    }
+
+    @Test
+    public void transtype3ReturnsT2() {
         RsMeldingstype melding = detectMeldingstype.execute(T2_MELDING_WITH_TRANSTYPE_3);
 
         assertThat(melding, instanceOf(RsMeldingstype2Felter.class));
     }
 
     @Test
-    public void meldingstype4ReturnsT2() {
+    public void transtype4ReturnsT2() {
         RsMeldingstype melding = detectMeldingstype.execute(T2_MELDING_WITH_TRANSTYPE_4);
 
         assertThat(melding, instanceOf(RsMeldingstype2Felter.class));

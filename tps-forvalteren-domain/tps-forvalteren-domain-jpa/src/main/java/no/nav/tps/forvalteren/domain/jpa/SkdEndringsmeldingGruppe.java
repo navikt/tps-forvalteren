@@ -30,7 +30,7 @@ import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 @Table(name = "T_SKD_ENDRINGSMELDING_GRUPPE")
 public class SkdEndringsmeldingGruppe extends ChangeStamp {
 
-    private static final String SEQ = "T_SKD_ENDRINGSMELDING_GRUPPE_SEQ";
+    private static final String SEQ = "T_SKD_MELDINGSGRUPPE_SEQ";
 
     @Id
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
