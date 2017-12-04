@@ -1,19 +1,22 @@
-<div class="tps-testdata-dashboard" layout-padding ng-cloak>
+<div class="tps-meldinger-dashboard" layout-padding ng-cloak>
     <div layout="column" flex>
-        <div layout="row" class="testdata-progress-bar" flex style="margin-left: 10px; margin-top: 10px;" ng-show="showSpinner">
+        <div layout="row" class="tpsf-meldinger-progress-bar" flex style="margin-left: 10px; margin-top: 10px;" ng-show="showSpinner">
             <md-progress-linear md-mode="indeterminate"></md-progress-linear>
         </div>
-        <h3 class="tpsf-testdata-personer-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
-        <div layout="row" layout-xs="column" layout-sm="column" layout-md="column">
-            <div layout="column" flex-gt-md="66">
-                <md-card id="vis-testdata-main" class="tps-vk-top">
-                    <md-card-content flex class="testdata-card-content md-whiteframe-1p">
+        <div layout="row" layout-gt-md="row" class="tpsf-meldinger-container">
+            <div layout="column" flex-gt-md="66" style="margin-top:15px;">
+                <div layout="row">
+                    <h3 class="tpsf-meldinger-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
+                    <paginering contents="meldinger" slice="slice" pager="pager" page-size="10" layout="column" flex layout-align="start end"></paginering>
+                </div>
+                <md-card id="tpsf-meldinger-main" class="tps-vk-top">
+                    <md-card-content flex class="tpsf-meldinger-card-content md-whiteframe-1p">
                         <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
                              flex layout-align="center center"
                              ng-show="!meldinger || meldinger.length == 0">
                             <div>
                                 <md-icon md-svg-icon="assets/icons/ic_message_black_24px.svg"
-                                         class="testdata-big-icon"></md-icon>
+                                         class="tpsf-meldinger-big-icon"></md-icon>
                             </div>
                             <div>Ingen meldinger er lagt til ennå</div>
                         </div>
@@ -40,7 +43,6 @@
                                            ng-click="avbryteDialog()"
                                            aria-label="Avbryt valgte rader">Avbryt endring
                                 </md-button>
-
                                 <md-button class="md-accent md-raised md-title" ng-show="visEndret"
                                            ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
                                            aria-label="Lagre valgte rader">Lagre
@@ -62,43 +64,44 @@
 
                 <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
-                    <div ng-repeat="melding in meldinger">
-                        <md-card id="melding_{{$index}}" flex md-whiteframe="{{height}}"
+                    <div ng-repeat="melding in slice">
+                        <md-card id="melding_{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
                                  ng-init="height = 1"
                                  ng-mouseover="height = 5"
-                                 ng-mouseleave="height = 1" ng-class="control[$index].aapen ? 'testdata-open-card' : ''">
-                            <md-card-content flex class="testdata-card-content">
-                                <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" ng-click="toggleFane($index)">
+                                 ng-mouseleave="height = 1" ng-class="control[$index].aapen ? 'tpsf-meldinger-open-card' : ''">
+                            <md-card-content flex class="tpsf-meldinger-card-content">
+                                <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" ng-click="toggleFane($index + pager.startIndex)">
                                     <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
-                                                 ng-model="control[$index].velg"
-                                                 ng-change="oppdaterValgt($index)"
-                                                 ng-disabled="control[$index].disabled"
+                                                 ng-model="control[$index + pager.startIndex].velg"
+                                                 ng-change="oppdaterValgt($index + pager.startIndex)"
+                                                 ng-disabled="control[$index + pager.startIndex].disabled"
                                                  aria-label="Marker melding{{melding.ident}} for sletting"
                                                  ng-click="checkIt()">
                                     </md-checkbox>
-                                    <div flex="85">{{melding.beskrivelse}}</div>
+                                    <div flex="85" class="dont-break-out">{{melding.beskrivelse}}</div>
                                     <div flex></div>
-                                    <div flex="5" ng-if="control[$index].endret" style="color: red;">Endret</div>
+                                    <div flex="5" ng-if="control[$index + pager.startIndex].endret" style="color: red;">Endret</div>
                                     <div flex="5">
-                                        <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
+                                        <md-button id="cancel" ng-class="{flipped: control[$index + pager.startIndex].aapen}"
                                                    class="md-icon-button"
                                                    type="button" style="margin-top: -10px;"
-                                                   aria-label="Vis testdata detaljer"
+                                                   aria-label="Vis meldinger detaljer"
                                                    ng-disabled="!requestForm.$valid">
                                             <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
                                         </md-button>
                                     </div>
                                 </div>
-                                <div layout="row" ng-if="control[$index].aapen">
+                                <div layout="row" ng-if="control[$index + pager.startIndex].aapen">
                                     <div class="line" flex="auto" ng-cloak>
                                         <div layout="row">
                                             <md-input-container class="tps-vk-input-container" flex>
                                                 <md-tooltip>Meldingsbeskrivelse</md-tooltip>
                                                 <label>Beskrivelse av melding</label>
-                                                <input name="navnBeskrivelse" ng-required="false" md-maxlength="200"
-                                                       ng-model="melding.beskrivelse" ng-change="endret($index)"/>
+                                                <input name="navnBeskrivelse" ng-required="true" md-maxlength="200"
+                                                       ng-model="melding.beskrivelse" ng-change="endret($index + pager.startIndex)"/>
                                                 <div ng-messages="requestForm.navnBeskrivelse.$error"
                                                      ng-show="requestForm.navnBeskrivelse.$dirty">
+                                                    <div ng-message="required">Feltet er påkrevd</div>
                                                     <div ng-message="md-maxlength">Verdi har for mange tegn</div>
                                                 </div>
                                             </md-input-container>
@@ -107,9 +110,9 @@
                                         <div ng-include="meldingstypeT1" ng-if="melding.meldingstype === 't1'"></div>
                                         <div ng-include="meldingstypeT2" ng-if="melding.meldingstype === 't2'"></div>
 
-                                        <md-button ng-class="meldingAsText[$index] ? 'md-title nav-blaa-ready' : 'md-title nav-blaa'" style="margin: -8px 0 0 0;"
-                                                   ng-mouseover="convertMelding($index)"
-                                                   ng-click="copyToClipboard($index)"
+                                        <md-button ng-class="meldingAsText[$index + pager.startIndex] ? 'md-title nav-blaa-ready' : 'md-title nav-blaa'" style="margin: -8px 0 0 0;"
+                                                   ng-mouseover="convertMelding($index + pager.startIndex)"
+                                                   ng-click="copyToClipboard($index + pager.startIndex)"
                                                    aria-label="Kopier til utklippstavle">
                                             <md-icon md-svg-icon="assets/icons/ic_content_copy_black_24px.svg" class="nav-blaa" style="margin-top: -3px;"></md-icon>
                                             Kopier til utklippstavle

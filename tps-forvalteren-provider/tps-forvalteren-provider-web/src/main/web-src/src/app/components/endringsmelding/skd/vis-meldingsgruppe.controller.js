@@ -1,7 +1,8 @@
 angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
     .controller('SkdVisMeldigsgruppeCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', '$copyToClipboard', 'endringsmeldingService',
-        'utilsService', 'locationService', 'headerService',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, $copyToClipboard, endringsmeldingService, utilsService, locationService, headerService) {
+        'utilsService', 'locationService', 'headerService', 'toggleservice',
+        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, $copyToClipboard, endringsmeldingService, utilsService, locationService,
+                  headerService, toggleservice) {
 
             $scope.meldingstypeT1 = "app/components/endringsmelding/skd/meldingstype/meldingstype-t1.html";
             $scope.meldingstypeT2 = "app/components/endringsmelding/skd/meldingstype/meldingstype-t2.html";
@@ -125,37 +126,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             };
 
             var oppdaterFane = undefined;
-            var checkIt = false;
-
-            $scope.toggleFane = function (index) {
-                if (!$scope.control[index]) {
-                    $scope.control[index] = {};
-                }
-                if (!checkIt) {
-                    $scope.control[index].aapen = !$scope.control[index].aapen;
-                }
-                checkIt = false;
-                checkAndModifyAggregateOpenCloseButton();
-            };
-
-            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
-                checkIt = true;
-            };
-
-            function checkAndModifyAggregateOpenCloseButton () {
-                var allOpen = true;
-                var allClosed = true;
-                for (var i = 0; i < $scope.meldinger.length; i++) {
-                    if ($scope.control[i] && $scope.control[i].aapen) {
-                        allClosed = false;
-                    } else {
-                        allOpen = false;
-                    }
-                }
-                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
-                    $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                }
-            }
 
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
@@ -177,16 +147,14 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
                 var endret = 0;
                 for (var i = 0; i < $scope.meldinger.length; i++) {
-                    if ($scope.control[i] && $scope.control[i].endret) {
+                    $scope.control[i] = $scope.control[i] || {};
+                    if ($scope.control[i].endret) {
                         endret++;
                     }
                 }
 
                 var valgt = 0;
                 for (var i = 0; i < $scope.meldinger.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
-                    }
                     if (endret > 0) {
                         $scope.control[i].disabled = !$scope.control[i].endret;
                         if (!$scope.control[i].endret) {
@@ -240,7 +208,8 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         });
                         $scope.oppdaterValgt();
                         bekrefterLagring();
-                        checkAndModifyAggregateOpenCloseButton();
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
                     },
                     function (error) {
                         utilsService.showAlertError(error);
@@ -348,14 +317,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 }
             };
 
-            $scope.toggleAlleFaner = function () {
-                $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                $scope.meldinger.forEach(function(melding, index) {
-                    $scope.control[index] = $scope.control[index] = {};
-                    $scope.control[index].aapen = $scope.aapneAlleFaner;
-                });
-            };
-
             $scope.$watch('visEndret', function() {
                 headerService.eventUpdate();
             });
@@ -397,12 +358,14 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         headerService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.meldinger ? result.data.meldinger.length : 0);
                         setHeaderIcons();
+                        prepTranstype(result.data.meldinger);
                         originalMeldinger = result.data.meldinger;
                         $scope.meldinger = angular.copy(originalMeldinger);
                         $scope.control = [];
                         $scope.meldingAsText = [];
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
+                        $scope.alleMeldinger.checked = false;
                         oppdaterFunksjonsknapper();
                         $scope.showSpinner = false;
                     },
@@ -413,6 +376,43 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     }
                 );
             }
+
+            function prepTranstype (meldinger) {
+                meldinger.forEach(function (melding) {
+                    if (melding.meldingstype === 't1') {
+                        melding.transtype = '1';
+                    }
+                    if (melding.meldingstype === 't2') {
+                        melding.transtype = melding.transtype || '2';
+                    }
+                });
+            }
+
+            var checkIt = false;
+
+            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
+                checkIt = true;
+            };
+
+            $scope.toggleFane = function (index) {
+                if (!checkIt) {
+                    toggleservice.toggleFane($scope.control, index);
+                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
+                }
+                checkIt = false;
+            };
+
+            $scope.$watch('pager.startIndex', function () {
+                if ($scope.meldinger) {
+                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
+                }
+            });
+
+            $scope.toggleAlleFaner = function () {
+                $scope.aapneAlleFaner = toggleservice.toggleAlleFaner($scope.aapneAlleFaner, $scope.control, $scope.pager);
+            };
 
             fetchMeldingsgruppe();
         }]);

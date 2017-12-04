@@ -32,8 +32,8 @@ angular.module('tps-forvalteren.directives')
                         .htmlContent('Miljø:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + melding.miljoe + '<br>' +
                             'Tidspunkt: ' + $filter('date')(melding.utfoertDato, 'dd-MM-yyyy HH:mm:ss') + '<br>'  +
                             'Utført av:&nbsp;&nbsp;&nbsp;' + melding.utfoertAv + '<br><br>' +
-                            'Melding:&nbsp;&nbsp;&nbsp;&nbsp;' + melding.beskrivelse + '<br>' +
-                            'Innhold:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + melding.raw)
+                            'Beskrivelse:&nbsp;&nbsp;&nbsp;&nbsp;' + melding.beskrivelse + '<br>' +
+                            'Melding:<pre>' + melding.raw + '</pre>')
                         .ariaLabel('Detaljvisning av SKD melding')
                         .ok('OK');
 

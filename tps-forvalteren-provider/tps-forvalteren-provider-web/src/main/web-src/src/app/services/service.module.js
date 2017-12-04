@@ -9,3 +9,4 @@ require('./header.service');
 require('./kodeverk.service');
 require('./appInfo.service');
 require('./endringsmelding.service');
+require('./toggleservice.service');

@@ -50,14 +50,19 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectUrl = function(url, param) {
-            if ('/' === url) {
-                self.redirectToHomeState();
-            } else {
-                if (url.indexOf('/:') !== -1) {
-                    $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
-                }
-                else {
-                    $state.go(url.substr(1)); // Ta bort ledende "/"}
+            if (url.indexOf('/:') !== -1) {
+                $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
+            }
+            else {
+                switch (url) {
+                    case '/endringsmelding/skd/grupper':
+                        self.redirectToSkdEndringsmeldingGrupper();
+                        break;
+                    case '/testgruppe':
+                        self.redirectToTestgruppe();
+                        break;
+                    default:
+                        self.redirectToHomeState();
                 }
             }
         };
