@@ -3,7 +3,8 @@ angular.module('tps-forvalteren.directives')
         return {
             restrict: 'E',
             scope: {
-                length: '=',
+                contents: '=',
+                slice: '=',
                 pager: '=',
                 pageSize: '='
             },
@@ -13,7 +14,7 @@ angular.module('tps-forvalteren.directives')
                 $scope.pageLen = $scope.pageSize || 20;
                 $scope.pager = {};
 
-                $scope.$watch('length', function (newVal) {
+                $scope.$watch('contents', function (newVal) {
                     if (newVal) {
                         $scope.setPage(1);
                     }
@@ -25,7 +26,9 @@ angular.module('tps-forvalteren.directives')
                     }
 
                     // get pager object from service
-                    $scope.pager = pagerService.getPager($scope.length, page, $scope.pageLen);
+                    $scope.pager = pagerService.getPager($scope.contents.length, page, $scope.pageLen);
+
+                    $scope.slice = $scope.contents.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                 }
             }]
         };

@@ -9,7 +9,7 @@
                 <div layout="row">
                     <h3 class="tpsf-testdata-personer-header">Testpersoner<span ng-show="personer.length>0">&nbsp;({{personer.length}})</span>
                     </h3>
-                    <paginering length="personer.length" pager="pager" layout="column" flex layout-align="start end"></paginering>
+                    <paginering contents="personer" slice="slice" pager="pager" layout="column" flex layout-align="start end"></paginering>
                 </div>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
@@ -69,7 +69,7 @@
 
                 <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
-                    <div ng-repeat="person in page">
+                    <div ng-repeat="person in slice">
                         <md-card id="person_{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
                                  ng-init="height = 1"
                                  ng-mouseover="height = 5"

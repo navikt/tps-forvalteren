@@ -7,7 +7,7 @@
             <div layout="column" flex-gt-md="66" style="margin-top:15px;">
                 <div layout="row">
                     <h3 class="tpsf-meldinger-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
-                    <paginering length="meldinger.length" pager="pager" page-size="10" layout="column" flex layout-align="start end"></paginering>
+                    <paginering contents="meldinger" slice="slice" pager="pager" page-size="10" layout="column" flex layout-align="start end"></paginering>
                 </div>
                 <md-card id="tpsf-meldinger-main" class="tps-vk-top">
                     <md-card-content flex class="tpsf-meldinger-card-content md-whiteframe-1p">
@@ -43,7 +43,6 @@
                                            ng-click="avbryteDialog()"
                                            aria-label="Avbryt valgte rader">Avbryt endring
                                 </md-button>
-
                                 <md-button class="md-accent md-raised md-title" ng-show="visEndret"
                                            ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
                                            aria-label="Lagre valgte rader">Lagre
@@ -65,7 +64,7 @@
 
                 <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
 
-                    <div ng-repeat="melding in page">
+                    <div ng-repeat="melding in slice">
                         <md-card id="melding_{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
                                  ng-init="height = 1"
                                  ng-mouseover="height = 5"

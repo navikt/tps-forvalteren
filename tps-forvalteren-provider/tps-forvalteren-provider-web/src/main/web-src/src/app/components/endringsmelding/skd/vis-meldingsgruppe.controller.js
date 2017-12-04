@@ -147,16 +147,14 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
                 var endret = 0;
                 for (var i = 0; i < $scope.meldinger.length; i++) {
-                    if ($scope.control[i] && $scope.control[i].endret) {
+                    $scope.control[i] = $scope.control[i] || {};
+                    if ($scope.control[i].endret) {
                         endret++;
                     }
                 }
 
                 var valgt = 0;
                 for (var i = 0; i < $scope.meldinger.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
-                    }
                     if (endret > 0) {
                         $scope.control[i].disabled = !$scope.control[i].endret;
                         if (!$scope.control[i].endret) {
@@ -360,6 +358,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         headerService.setHeader(result.data.navn);
                         setHeaderButtons(result.data.meldinger ? result.data.meldinger.length : 0);
                         setHeaderIcons();
+                        prepTranstype(result.data.meldinger);
                         originalMeldinger = result.data.meldinger;
                         $scope.meldinger = angular.copy(originalMeldinger);
                         $scope.control = [];
@@ -376,6 +375,17 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         $scope.showSpinner = false;
                     }
                 );
+            }
+
+            function prepTranstype (meldinger) {
+                meldinger.forEach(function (melding) {
+                    if (melding.meldingstype === 't1') {
+                        melding.transtype = '1';
+                    }
+                    if (melding.meldingstype === 't2') {
+                        melding.transtype = melding.transtype || '2';
+                    }
+                });
             }
 
             var checkIt = false;
@@ -395,7 +405,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
             $scope.$watch('pager.startIndex', function () {
                 if ($scope.meldinger) {
-                    $scope.page = $scope.meldinger.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                     $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
                         $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
                 }

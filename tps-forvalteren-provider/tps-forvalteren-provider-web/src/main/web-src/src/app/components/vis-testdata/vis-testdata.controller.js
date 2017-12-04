@@ -428,25 +428,13 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.$watch('pager.startIndex', function () {
                 if ($scope.personer) {
-                    $scope.page = $scope.personer.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
-                    var allOpen = true;
-                    for (var i = $scope.pager.startIndex; i < $scope.pager.endIndex + 1; i++) {
-                        if (i < $scope.personer.length && (!$scope.control[i] || !$scope.control[i].aapen)) {
-                            allOpen = false;
-                        }
-                    }
-                    $scope.aapneAlleFaner = allOpen;
+                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
                 }
             });
 
             $scope.toggleAlleFaner = function () {
-                $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                for (var i = $scope.pager.startIndex; i < $scope.pager.endIndex + 1; i++) {
-                    if (i < $scope.personer.length) {
-                        $scope.control[i] = $scope.control[i] || {};
-                        $scope.control[i].aapen = $scope.aapneAlleFaner;
-                    }
-                }
+                $scope.aapneAlleFaner = toggleservice.toggleAlleFaner($scope.aapneAlleFaner, $scope.control, $scope.pager);
             };
 
             hentTestpersoner();

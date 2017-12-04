@@ -47,7 +47,7 @@
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Aarsakskode</md-tooltip>
         <label>Aarsakskode</label>
-        <input name="aarsakskode" ng-required="true" pattern="\d{2}" md-maxlength="2"
+        <input name="aarsakskode" ng-required="false" pattern="\d{2}" md-maxlength="2"
                ng-model="melding.aarsakskode" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.aarsakskode.$error"
              ng-show="requestForm.aarsakskode.$dirty">
