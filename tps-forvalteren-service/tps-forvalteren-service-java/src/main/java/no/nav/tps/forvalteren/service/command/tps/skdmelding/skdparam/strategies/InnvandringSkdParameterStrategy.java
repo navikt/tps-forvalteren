@@ -3,6 +3,9 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
@@ -15,12 +18,19 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Innvandri
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.HusbokstavEncoder;
 
 @Service
 public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
+    @Autowired
+    private HusbokstavEncoder husbokstavEncoder;
+    
     private static final String TILDELINGSKODE_FOR_OPPRETT = "1";
     private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
+
+    private static final Pattern HUSNUMMER_PATTERN = Pattern.compile("(\\d+)");
+    private static final Pattern HUSBOKSTAV_PATTERN = Pattern.compile("([a-zA-ZæÆøØåÅáÁ])");
 
     @Override
     public boolean isSupported(SkdParametersCreator creator) {
@@ -76,7 +86,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
                 skdParams.put("adressenavn", ((Matrikkeladresse) boadresse).getMellomnavn());
             } else {
                 skdParams.put("gateGaard", ((Gateadresse) boadresse).getGatekode());
-                skdParams.put("husBruk", ((Gateadresse) boadresse).getHusnummer());
+                addHusBrukAndBokstavFestenr(skdParams, person, boadresse);
                 String adresse = ((Gateadresse) boadresse).getAdresse();
                 if (adresse != null) {
                     int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
@@ -123,4 +133,21 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put("transtype", "1");
         skdParams.put("statuskode", "1");
     }
+    
+    private void addHusBrukAndBokstavFestenr(Map<String, String> skdParams, Person person, Adresse boadresse) {
+        Gateadresse gateadresse = (Gateadresse) boadresse;
+        if(gateadresse.getHusnummer() != null) {
+            Matcher husbokstavMatcher = HUSBOKSTAV_PATTERN.matcher(gateadresse.getHusnummer());
+            Matcher husnummerMatcher = HUSNUMMER_PATTERN.matcher(gateadresse.getHusnummer());
+
+            if(husbokstavMatcher.find()) {
+                skdParams.put("bokstavFestenr", husbokstavEncoder.encode(husbokstavMatcher.group(1)));
+            }
+            if(husnummerMatcher.find()) {
+                skdParams.put("husBruk", husnummerMatcher.group(1));
+            }
+        }
+
+    }
+    
 }

@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
+import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 
 @Service
 public class SendEndringsmeldingGruppeToTps {
@@ -58,6 +59,9 @@ public class SendEndringsmeldingGruppeToTps {
     @Autowired
     private SkdEndringsmeldingLoggRepository skdEndringsmeldingLoggRepository;
 
+    @Autowired
+    private SkdStartAjourhold skdStartAjourhold;
+    
     public void execute(Long gruppeId, String environment) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
         if (gruppe != null) {
@@ -72,6 +76,7 @@ public class SendEndringsmeldingGruppeToTps {
                 String skdMelding = convertMeldingFromJsonToText.execute(melding);
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
+                skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
                 SkdEndringsmeldingLogg log = new SkdEndringsmeldingLogg();
                 log.setEndringsmelding(skdMelding);
                 log.setBeskrivelse(melding.getBeskrivelse());

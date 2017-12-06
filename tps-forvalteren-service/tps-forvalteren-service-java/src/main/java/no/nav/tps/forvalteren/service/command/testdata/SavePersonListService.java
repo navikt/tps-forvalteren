@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,12 +42,12 @@ public class SavePersonListService {
         Set<Long> utdaterteRelasjonIder = new HashSet<>();
         for (Person person : personer) {
 
-            Person personFraDB = personRepository.findById(person.getId());
-            if (personFraDB != null) {
-                oppdaterRelasjonReferanser.execute(person, personFraDB);
-                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personFraDB);
+            Person personDb = personRepository.findById(person.getId());
+            if(personDb != null) {
+                relasjonRepository.deleteAllByPerson(personDb);
+                relasjonRepository.deleteAllByPersonRelasjonMed(personDb);
             }
-
+            
             uppercaseDataInPerson.execute(person);
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {
@@ -56,22 +57,16 @@ public class SavePersonListService {
 
             if (person.getBoadresse() != null) {
                 person.getBoadresse().setPerson(person);
-                Adresse personAdresseDB = adresseRepository.findAdresseByPersonId(person.getId());
-                if (personAdresseDB != null) {
-                    adresseRepository.deleteById(personAdresseDB.getId());
+                List<Adresse> personAdresserDb = adresseRepository.findAllAdresseByPersonId(person.getId());
+                if (!personAdresserDb.isEmpty()) {
+                    List<Long> adresseIds = personAdresserDb.stream().map(Adresse::getId).collect(Collectors.toList());
+                    adresseRepository.deleteAllById(adresseIds);
                 }
             }
-
-            person.setOpprettetDato(null);
-            person.setOpprettetAv(null);
-            person.setEndretDato(null);
-            person.setEndretAv(null);
+            
         }
+        
         personRepository.save(personer);
-
-        if (!utdaterteRelasjonIder.isEmpty()) {
-            relasjonRepository.deleteByIdIn(utdaterteRelasjonIder);
-        }
 
     }
 

@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
-import javax.jms.JMSException;
+import java.util.Set;
 
 public interface SkdStartAjourhold {
 
-    void execute(String environment) throws JMSException;
+    void execute(Set<String> environments);
 
 }

@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
+import java.util.Set;
 import javax.jms.JMSException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +17,19 @@ public class DefaultSkdStartAjourhold implements SkdStartAjourhold {
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSkdStartAjourhold.class);
     private static final String KAN_VAERE_HVA_SOM_HELST_STRING = "start";
 
     @Override
-    public void execute(String environment) throws JMSException {
-        MessageQueueConsumer messageQueueConsumerStartAjour = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_START_AJOURHOLD_ALIAS);
-
-        messageQueueConsumerStartAjour.sendMessageAsync(KAN_VAERE_HVA_SOM_HELST_STRING);
+    public void execute(Set<String> environments) {
+        for (String environment : environments) {
+            try {
+                MessageQueueConsumer messageQueueConsumerStartAjour = messageQueueServiceFactory.createMessageQueueConsumer(environment, TpsConstants.REQUEST_QUEUE_START_AJOURHOLD_ALIAS);
+                messageQueueConsumerStartAjour.sendMessageAsync(KAN_VAERE_HVA_SOM_HELST_STRING);
+            } catch (JMSException e) {
+                LOGGER.error("Kunne ikke starte aujorhold", e);
+            }
+        }
     }
 
 }

@@ -32,10 +32,7 @@ public class DefaultSkdMeldingRequestTest {
 
     @Mock
     private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
-
-    @Mock
-    private SkdStartAjourhold skdStartAjourhold;
-
+    
     @InjectMocks
     private DefaultSkdMeldingRequest skdMeldingRequest;
 
@@ -49,10 +46,8 @@ public class DefaultSkdMeldingRequestTest {
 
     @Test
     public void callsAuthorisationService() throws Exception {
-
         skdMeldingRequest.execute("test", skdMeldingDefinition, "test");
 
         verify(ForbiddenCallHandlerServiceMock).authoriseRestCall(skdMeldingDefinition);
-        verify(skdStartAjourhold).execute("test");
     }
 }

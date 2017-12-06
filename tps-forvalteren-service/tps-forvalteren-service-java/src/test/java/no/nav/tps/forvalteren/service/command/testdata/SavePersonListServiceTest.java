@@ -73,7 +73,7 @@ public class SavePersonListServiceTest {
 
         when(personRepository.findById(person.getId())).thenReturn(person);
         when(hentUtdaterteRelasjonIder.execute(person, person)).thenReturn(utdaterteRelasjonIder);
-        when(adresseRepository.findAdresseByPersonId(person.getId())).thenReturn(boadresse);
+        //when(adresseRepository.findAdresseByPersonId(person.getId())).thenReturn(boadresse);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class SavePersonListServiceTest {
         verify(oppdaterRelasjonReferanser).execute(person, person);
         verify(hentUtdaterteRelasjonIder).execute(person, person);
         verify(uppercaseDataInPerson).execute(person);
-        verify(adresseRepository).findAdresseByPersonId(person.getId());
+       // verify(adresseRepository).findAdresseByPersonId(person.getId());
         verify(personRepository).save(persons);
         verify(relasjonRepository).deleteByIdIn(utdaterteRelasjonIder);
 
@@ -101,7 +101,7 @@ public class SavePersonListServiceTest {
         verify(oppdaterRelasjonReferanser, never()).execute(person, person);
         verify(hentUtdaterteRelasjonIder, never()).execute(person, person);
         verify(uppercaseDataInPerson).execute(person);
-        verify(adresseRepository, never()).findAdresseByPersonId(person.getId());
+       // verify(adresseRepository, never()).findAdresseByPersonId(person.getId());
         verify(personRepository).save(persons);
         verify(relasjonRepository, never()).deleteByIdIn(utdaterteRelasjonIder);
 

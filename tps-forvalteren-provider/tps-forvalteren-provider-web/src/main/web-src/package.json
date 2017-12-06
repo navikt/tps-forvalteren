@@ -8,6 +8,10 @@
     "start": "gulp serve.dev --color",
     "build": "gulp build.prod --color"
   },
+  "repository": {
+    "type": "git",
+    "url": "stash.devillo.no/scm/fel/tps-forvalteren.git"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
