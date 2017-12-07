@@ -267,12 +267,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     function (result) {
                         for (var i = 0; i < $scope.personer.length; i++) {
                             if ($scope.control[i] && $scope.control[i].velg) {
-                                nullstillControl(i);
+                                $scope.control[i] = {};
                                 originalPersoner[i] = angular.copy($scope.personer[i]);
                                 etablerAdressetype(originalPersoner[i]);
                                 fixDatoForDatepicker(originalPersoner[i]);
                                 fixCase(originalPersoner[i]);
-                                $scope.personer[i] = angular.copy(originalPersoner[i]);
                             }
                         }
                         $scope.oppdaterValgt();
@@ -340,16 +339,11 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
                         $scope.personer[i] = JSON.parse(JSON.stringify(originalPersoner[i]));
-                        nullstillControl(i);
+                        $scope.control[i] = {};
                     }
                 }
+                $scope.slice = $scope.personer.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                 $scope.oppdaterValgt();
-            }
-
-            function nullstillControl (index) {
-                $scope.control[index].endret = false;
-                $scope.control[index].velg = false;
-                $scope.control[index].aapen = false;
             }
 
             function bekrefterLagring (index) {

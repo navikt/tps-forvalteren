@@ -15,7 +15,7 @@
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
                         <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
                              flex layout-align="center center"
-                             ng-show="personer.length == 0">
+                             ng-show="!personer || personer.length == 0">
                             <div>
                                 <md-icon md-svg-icon="assets/icons/ic_people_outline_black_24px.svg"
                                          class="testdata-big-icon"></md-icon>

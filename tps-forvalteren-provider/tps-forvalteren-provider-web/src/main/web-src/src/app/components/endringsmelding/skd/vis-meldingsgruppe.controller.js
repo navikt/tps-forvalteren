@@ -202,7 +202,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     function () {
                         $scope.meldinger.forEach(function (melding, index) {
                             if ($scope.control[index] && $scope.control[index].velg) {
-                                nullstillControl(index);
+                                $scope.control[index] = {};
                                 originalMeldinger[index] = angular.copy(melding);
                             }
                         });
@@ -247,16 +247,11 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
                         $scope.meldinger[i] = JSON.parse(JSON.stringify(originalMeldinger[i]));
-                        nullstillControl(i);
+                        $scope.control[i] = {};
                     }
                 }
+                $scope.slice = $scope.meldinger.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                 $scope.oppdaterValgt();
-            }
-
-            function nullstillControl (index) {
-                $scope.control[index].endret = false;
-                $scope.control[index].velg = false;
-                $scope.control[index].aapen = false;
             }
 
             function bekrefterLagring (index) {

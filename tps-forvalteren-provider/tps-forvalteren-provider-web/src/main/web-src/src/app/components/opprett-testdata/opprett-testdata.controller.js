@@ -67,7 +67,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                     $scope.kriterier.push($scope.kriterium);
                     cleanupRow();
                 } else {
-                    var confirm = $mdDialog.confirm()
+                    var confirm = $mdDialog.alert()
                         .title('Begrensning')
                         .textContent('Maks 1000 testpersoner kan opprettes av gangen!')
                         .ariaLabel('Maks 1000 testpersoner kan opperettes per gang.')
@@ -79,7 +79,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
             };
 
             function opprettComplete () {
-                var confirm = $mdDialog.confirm()
+                var confirm = $mdDialog.alert()
                     .title('Bekreftelse')
                     .textContent('Oppretting av testpersoner er fullført!')
                     .ariaLabel('Bekrefter oppretting av testpersoner')
