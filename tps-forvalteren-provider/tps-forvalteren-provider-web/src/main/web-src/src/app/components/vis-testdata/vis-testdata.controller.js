@@ -14,8 +14,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.aapneAlleFaner = false;
 
-            function setHeaderButtons (antall_personer) {
-                var disable_send_til_tps_button = antall_personer < 1;
+            function setHeaderButtons () {
                 headerService.setButtons([{
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
@@ -29,7 +28,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
                     disabled: function () {
-                        return $scope.visEndret || disable_send_til_tps_button
+                        return $scope.visEndret || !$scope.personer || $scope.personer.length == 0
                     },
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
@@ -111,10 +110,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             function hentTestpersoner () {
                 $scope.showSpinner = true;
                 $scope.personer = undefined;
-                testdataService.getGruppe($scope.gruppeId).then(
+                testdataService.getGruppe($scope.gruppeId, true).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
-                        setHeaderButtons(result.data.personer.length);
+                        setHeaderButtons();
                         setHeaderIcons();
                         originalPersoner = result.data.personer;
                         prepOriginalPersoner();
@@ -123,6 +122,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
                         oppdaterFunksjonsknapper();
+                        headerService.eventUpdate();
                         $scope.showSpinner = false;
                     },
                     function (error) {

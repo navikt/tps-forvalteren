@@ -10,8 +10,8 @@ angular.module('tps-forvalteren.directives')
             templateUrl: 'app/directives/gruppeinfo/vis-gruppeinfo.html',
             controller: ["$scope", 'utilsService', function ($scope, utilsService) {
 
-                function hentGruppe () {
-                    $scope.service.getGruppe($scope.gruppeId).then(
+                function hentGruppe (force) {
+                    $scope.service.getGruppe($scope.gruppeId, force).then(
                         function (result) {
                             $scope.gruppe = result.data;
                         },
@@ -22,7 +22,7 @@ angular.module('tps-forvalteren.directives')
                 }
 
                 $scope.$on('gruppeEvent', function (event, arg) {
-                    hentGruppe();
+                    hentGruppe(true);
                 });
 
                 hentGruppe();
