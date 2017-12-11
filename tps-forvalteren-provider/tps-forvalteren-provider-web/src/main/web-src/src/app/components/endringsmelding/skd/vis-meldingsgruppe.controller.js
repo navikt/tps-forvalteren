@@ -13,8 +13,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             $scope.aapneAlleFaner = false;
             $scope.meldingAsText = [];
 
-            function setHeaderButtons (meldingCount) {
-                var disable_send_til_tps_button = meldingCount < 1;
+            function setHeaderButtons () {
                 headerService.setButtons([{
                     text: 'Legg til meldinger',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
@@ -39,7 +38,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
                     disabled: function () {
-                        return $scope.visEndret || disable_send_til_tps_button;
+                        return $scope.visEndret || !$scope.meldinger || $scope.meldinger.length == 0
                     },
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
@@ -348,10 +347,10 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             function fetchMeldingsgruppe () {
                 $scope.showSpinner = true;
                 $scope.meldinger = undefined;
-                endringsmeldingService.getGruppe($scope.gruppeId).then(
+                endringsmeldingService.getGruppe($scope.gruppeId, true).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
-                        setHeaderButtons(result.data.meldinger ? result.data.meldinger.length : 0);
+                        setHeaderButtons();
                         setHeaderIcons();
                         prepTranstype(result.data.meldinger);
                         originalMeldinger = result.data.meldinger;
@@ -362,6 +361,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         $scope.antallValgt = 0;
                         $scope.alleMeldinger.checked = false;
                         oppdaterFunksjonsknapper();
+                        headerService.eventUpdate();
                         $scope.showSpinner = false;
                     },
                     function (error) {
