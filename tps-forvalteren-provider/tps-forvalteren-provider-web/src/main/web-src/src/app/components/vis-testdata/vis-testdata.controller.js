@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
+    .controller('VisTestdataCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
         'headerService', 'toggleservice',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService, toggleservice) {
+        function ($scope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService, toggleservice) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -96,7 +96,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.velgAlle = function () {
                 var enabled = 0;
-               $scope.personer.forEach(function (person, index ) {
+                $scope.personer.forEach(function (person, index ) {
                     $scope.control[index] = $scope.control[index] || {};
                     if (!$scope.control[index].disabled) {
                         $scope.control[index].velg = !$scope.allePersoner.checked;
@@ -388,7 +388,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 });
             }
 
-            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+            $scope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
                     bekreftRelokasjon(next, current);
@@ -412,12 +412,14 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             $scope.toggleFane = function (index) {
-                if (!checkIt) {
-                    toggleservice.toggleFane($scope.control, index);
-                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
-                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
+                if ($scope.requestForm.$valid) {
+                    if (!checkIt) {
+                        toggleservice.toggleFane($scope.control, index);
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
+                    }
+                    checkIt = false;
                 }
-                checkIt = false;
             };
 
             $scope.$watch('pager.startIndex', function () {
