@@ -51,7 +51,7 @@
                                            aria-label="Lagre valgte rader">Lagre
                                 </md-button>
                                 <div>
-                                    <md-button class="md-accent md-raised md-title"
+                                    <md-button class="md-accent md-raised md-title" ng-disabled="requestForm.$invalid"
                                                ng-click="toggleAlleFaner()"
                                                aria-label="Åpne/lukke alle">
                                         <md-icon ng-class="{flipped: aapneAlleFaner}"
