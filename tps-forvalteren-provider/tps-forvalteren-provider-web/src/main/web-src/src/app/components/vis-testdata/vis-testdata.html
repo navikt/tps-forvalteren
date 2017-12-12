@@ -9,7 +9,7 @@
                 <div layout="row">
                     <h3 class="tpsf-testdata-personer-header">Testpersoner<span ng-show="personer.length>0">&nbsp;({{personer.length}})</span>
                     </h3>
-                    <paginering contents="personer" slice="slice" pager="pager" layout="column" flex layout-align="start end"></paginering>
+                    <paginering contents="personer" slice="slice" pager="pager" disabled="requestForm.$invalid" layout="column" flex layout-align="start end"></paginering>
                 </div>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
@@ -75,7 +75,7 @@
                                  ng-mouseover="height = 5"
                                  ng-mouseleave="height = 1" ng-class="control[$index + pager.startIndex].aapen ? 'testdata-open-card' : ''">
                             <md-card-content flex class="testdata-card-content">
-                                <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" ng-click="toggleFane($index + pager.startIndex)">
+                                <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" disable="true" ng-click="toggleFane($index + pager.startIndex)">
                                     <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
                                                  ng-model="control[$index + pager.startIndex].velg"
                                                  ng-change="oppdaterValgt($index + pager.startIndex)"
@@ -98,8 +98,7 @@
                                         <md-button id="cancel" ng-class="{flipped: control[$index + pager.startIndex].aapen}"
                                                    class="md-icon-button"
                                                    type="button" style="margin-top: -10px;"
-                                                   aria-label="Vis testdata detaljer"
-                                                   ng-disabled="!requestForm.$valid">
+                                                   aria-label="Vis testdata detaljer">
                                             <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
                                         </md-button>
                                     </div>

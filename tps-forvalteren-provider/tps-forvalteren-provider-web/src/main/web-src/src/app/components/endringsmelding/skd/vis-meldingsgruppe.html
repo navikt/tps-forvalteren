@@ -7,7 +7,7 @@
             <div layout="column" flex-gt-md="66" style="margin-top:15px;">
                 <div layout="row">
                     <h3 class="tpsf-meldinger-header">SKD Endringsmeldinger<span ng-show="meldinger.length>0">&nbsp;({{meldinger.length}})</span></h3>
-                    <paginering contents="meldinger" slice="slice" pager="pager" page-size="10" layout="column" flex layout-align="start end"></paginering>
+                    <paginering contents="meldinger" slice="slice" pager="pager" disabled="requestForm.$invalid" page-size="10" layout="column" flex layout-align="start end"></paginering>
                 </div>
                 <md-card id="tpsf-meldinger-main" class="tps-vk-top">
                     <md-card-content flex class="tpsf-meldinger-card-content md-whiteframe-1p">
@@ -85,8 +85,7 @@
                                         <md-button id="cancel" ng-class="{flipped: control[$index + pager.startIndex].aapen}"
                                                    class="md-icon-button"
                                                    type="button" style="margin-top: -10px;"
-                                                   aria-label="Vis meldinger detaljer"
-                                                   ng-disabled="!requestForm.$valid">
+                                                   aria-label="Vis meldinger detaljer">
                                             <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
                                         </md-button>
                                     </div>

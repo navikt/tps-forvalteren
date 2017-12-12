@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
-    .controller('SkdVisMeldigsgruppeCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', '$copyToClipboard', 'endringsmeldingService',
+    .controller('SkdVisMeldigsgruppeCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', '$copyToClipboard', 'endringsmeldingService',
         'utilsService', 'locationService', 'headerService', 'toggleservice',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, $copyToClipboard, endringsmeldingService, utilsService, locationService,
+        function ($scope, $stateParams, $filter, $mdDialog, $copyToClipboard, endringsmeldingService, utilsService, locationService,
                   headerService, toggleservice) {
 
             $scope.meldingstypeT1 = "app/components/endringsmelding/skd/meldingstype/meldingstype-t1.html";
@@ -298,7 +298,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 fetchMeldingsgruppe();
             });
 
-            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+            $scope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
                     bekreftRelokasjon(next, current);
@@ -390,12 +390,14 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             };
 
             $scope.toggleFane = function (index) {
-                if (!checkIt) {
-                    toggleservice.toggleFane($scope.control, index);
-                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
-                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
+                if ($scope.requestForm.$valid) {
+                    if (!checkIt) {
+                        toggleservice.toggleFane($scope.control, index);
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
+                    }
+                    checkIt = false;
                 }
-                checkIt = false;
             };
 
             $scope.$watch('pager.startIndex', function () {
