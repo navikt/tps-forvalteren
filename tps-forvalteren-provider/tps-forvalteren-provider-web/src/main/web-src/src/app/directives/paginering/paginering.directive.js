@@ -21,7 +21,7 @@ angular.module('tps-forvalteren.directives')
                 });
 
                 $scope.setPage = function (page) {
-                    if ($scope.contents && !$scope.disabled) {
+                    if ($scope.contents && !$scope.disabled && (!$scope.pager || page <= $scope.pager.totalPages)) {
                         $scope.pager = pagerService.getPager($scope.contents.length, page, $scope.pageLen);
                         $scope.slice = $scope.contents.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                     }
