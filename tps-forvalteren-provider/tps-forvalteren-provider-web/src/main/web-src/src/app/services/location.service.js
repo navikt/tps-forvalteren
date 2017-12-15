@@ -17,8 +17,8 @@ angular.module('tps-forvalteren.service')
             $state.go('endringer');
         };
 
-        self.redirectToServiceRutineState = function () {
-            $state.go('servicerutine');
+        self.redirectToServiceRutineState = function (rutine) {
+            $state.go('servicerutine', {serviceRutineName: rutine});
         };
 
         self.redirectToGT = function() {

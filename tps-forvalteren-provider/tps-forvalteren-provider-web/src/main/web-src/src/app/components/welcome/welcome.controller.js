@@ -4,7 +4,7 @@ angular.module('tps-forvalteren.welcome',[])
 
             $scope.visTestdataKnapp = false;
 
-            $scope.serviceRutineState = function () {
+            $scope.openServiceRutine = function () {
                 locationService.redirectToServiceRutineState();
             };
 

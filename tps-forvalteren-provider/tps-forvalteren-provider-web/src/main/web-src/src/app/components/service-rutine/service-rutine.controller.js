@@ -1,6 +1,8 @@
 angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService',
-        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService', 'headerService',
+        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService, headerService, underHeaderService) {
+
+            headerService.setHeader('Servicerutiner');
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
@@ -12,6 +14,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
             $scope.personsData = {};
             $scope.toggle = false;
             $scope.isArray = angular.isArray;
+            $scope.showMenu = false;
 
             var requiredParameters = [];
             var isValidServiceRutineName = false;
@@ -19,6 +22,10 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
 
             $scope.loadServiceRutineTemplate = function () {
                 return isValidServiceRutineName && !apiError;
+            };
+
+            $scope.openServiceRutine = function (rutine) {
+                locationService.redirectToServiceRutineState(rutine);
             };
 
             $scope.submit = function () {
@@ -57,6 +64,20 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 });
             };
 
+            headerService.setButtons([{
+                icon: 'assets/icons/keyboard_arrow_down.svg',
+                text: "Velg servicerutine",
+                click: function (ev) {
+                    var confirm = $mdDialog.confirm({
+                        controller: 'VelgServiceRutineCtrl',
+                        templateUrl: 'app/components/service-rutine/velg-service-rutine/velg-service-rutine.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose:true
+                    });
+                    $mdDialog.show(confirm);
+                }
+            }]);
 
             $scope.clearResponseForm = function () {
                 $scope.personsData = {};

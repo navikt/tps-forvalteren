@@ -1,10 +1,13 @@
-<div class="tps-vk-service-rutine-dashboard" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+<div class="tps-vk-service-rutine-dashboard tps-content" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
   <!-- Velkomstsmelding -->
-  <div ng-show="!loadServiceRutineTemplate() && !loadEndringsmeldingTemplate()" layout="column" flex>
-      <ng-include src="'app/components/welcome/welcome.html'"></ng-include>
-  </div>
 
     <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>
+
+        <div class="menus" layout-wrap="" layout="row"  style="">
+            <div layout="column" flex="100" flex-sm="100" flex-xs="100" layout-align="start center">
+
+            </div>
+        </div>
 
         <div class="tps-vk-top md-whiteframe-z2">
           <h2 class="md-title">{{serviceRutineName}}</h2>

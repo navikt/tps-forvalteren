@@ -19,6 +19,10 @@ angular.module('tps-forvalteren')
                 locationService.redirectToTestgruppe();
             };
 
+            $scope.openServiceRutine = function () {
+                locationService.redirectToServiceRutineState();
+            };
+
             $scope.goBack = function () {
                 window.history.back();
             };
