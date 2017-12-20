@@ -30,7 +30,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
     private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
 
     private static final Pattern HUSNUMMER_PATTERN = Pattern.compile("(\\d+)");
-    private static final Pattern HUSBOKSTAV_PATTERN = Pattern.compile("([a-zA-ZæÆøØåÅáÁ])");
+    private static final Pattern HUSBOKSTAV_PATTERN = Pattern.compile("([A-ZÆØÅÁ])");
 
     @Override
     public boolean isSupported(SkdParametersCreator creator) {

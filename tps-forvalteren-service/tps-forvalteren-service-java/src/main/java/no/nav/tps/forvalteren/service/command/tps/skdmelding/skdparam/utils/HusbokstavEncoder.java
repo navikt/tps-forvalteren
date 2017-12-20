@@ -1,75 +1,49 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HusbokstavEncoder {
 
-    public String encode(String husbokstav) {
-        switch (husbokstav) {
-        case "A":
-            return "9901";
-        case "B":
-            return "9902";
-        case "C":
-            return "9903";
-        case "D":
-            return "9904";
-        case "E":
-            return "9905";
-        case "F":
-            return "9906";
-        case "G":
-            return "9907";
-        case "H":
-            return "9908";
-        case "I":
-            return "9909";
-        case "J":
-            return "9910";
-        case "K":
-            return "9911";
-        case "L":
-            return "9912";
-        case "M":
-            return "9913";
-        case "N":
-            return "9914";
-        case "O":
-            return "9915";
-        case "P":
-            return "9916";
-        case "Q":
-            return "9917";
-        case "R":
-            return "9918";
-        case "S":
-            return "9919";
-        case "T":
-            return "9920";
-        case "U":
-            return "9921";
-        case "V":
-            return "9922";
-        case "W":
-            return "9923";
-        case "X":
-            return "9924";
-        case "Y":
-            return "9925";
-        case "Z":
-            return "9926";
-        case "Æ":
-            return "9927";
-        case "Ø":
-            return "9928";
-        case "Å":
-            return "9929";
-        case "Á":
-            return "9930";
-        default:
-            throw new IllegalArgumentException("Husbokstaven: " + husbokstav + " er ikke en gyldig husbokstav.");
-        }
-
+    private static Map<String, String> encodingMap;
+    static {
+        encodingMap = new HashMap<>();
+        encodingMap.put("A", "9901");
+        encodingMap.put("B", "9902");
+        encodingMap.put("C", "9903");
+        encodingMap.put("D", "9904");
+        encodingMap.put("E", "9905");
+        encodingMap.put("F", "9906");
+        encodingMap.put("G", "9907");
+        encodingMap.put("H", "9908");
+        encodingMap.put("I", "9909");
+        encodingMap.put("J", "9910");
+        encodingMap.put("K", "9911");
+        encodingMap.put("L", "9912");
+        encodingMap.put("M", "9913");
+        encodingMap.put("N", "9914");
+        encodingMap.put("O", "9915");
+        encodingMap.put("P", "9916");
+        encodingMap.put("Q", "9917");
+        encodingMap.put("R", "9918");
+        encodingMap.put("S", "9919");
+        encodingMap.put("T", "9920");
+        encodingMap.put("U", "9921");
+        encodingMap.put("V", "9922");
+        encodingMap.put("W", "9923");
+        encodingMap.put("X", "9924");
+        encodingMap.put("Y", "9925");
+        encodingMap.put("Z", "9926");
+        encodingMap.put("Æ", "9927");
+        encodingMap.put("Ø", "9928");
+        encodingMap.put("Å", "9929");
+        encodingMap.put("Á", "9930");
     }
+    
+    public String encode(String husbokstav) {
+        return encodingMap.get(husbokstav);
+    }
+    
 }
