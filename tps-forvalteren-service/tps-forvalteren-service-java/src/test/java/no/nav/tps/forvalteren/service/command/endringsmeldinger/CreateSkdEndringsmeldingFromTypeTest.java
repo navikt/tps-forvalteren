@@ -1,10 +1,8 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,8 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -25,9 +21,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
-import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
-import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonProcessingException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateSkdEndringsmeldingFromTypeTest {
@@ -39,16 +33,13 @@ public class CreateSkdEndringsmeldingFromTypeTest {
     private MessageProvider messageProvider;
 
     @Mock
-    private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-
-    @Mock
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
     @Mock
-    private ObjectMapper mapper;
+    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
 
     @Mock
-    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
+    private SaveSkdEndringsmelding saveSkdEndringsmelding;
 
     @InjectMocks
     private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
@@ -68,7 +59,7 @@ public class CreateSkdEndringsmeldingFromTypeTest {
     private static final String MELDING_NAVN = "navn";
 
     @Before
-    public void setup() throws JsonProcessingException {
+    public void setup() {
         when(rsMeldingstype.getId()).thenReturn(MELDING_ID);
         when(skdEndringsmeldingGruppeRepository.findById(GRUPPE_ID)).thenReturn(gruppe);
         when(rsNewSkdEndringsmelding.getMeldingstype()).thenReturn(MELDINGSTYPE);
@@ -77,12 +68,11 @@ public class CreateSkdEndringsmeldingFromTypeTest {
     }
 
     @Test
-    public void checkThatMeldingGetsSaved() throws JsonProcessingException {
+    public void checkThatMeldingGetsSaved() {
         createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
 
         verify(GetRsMeldingstypeFromTypeText).execute(MELDINGSTYPE);
-        verify(mapper).writeValueAsString(rsMeldingstype);
-        verify(skdEndringsmeldingRepository).save(any(SkdEndringsmelding.class));
+        verify(saveSkdEndringsmelding).execute(any(RsMeldingstype.class), any(SkdEndringsmelding.class));
     }
 
     @Test
@@ -94,17 +84,6 @@ public class CreateSkdEndringsmeldingFromTypeTest {
         createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
 
         verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);
-    }
-
-    @Test
-    public void throwsSkdEndringsmeldingJsonProcessingException() throws JsonProcessingException {
-        doThrow(SkdEndringsmeldingJsonProcessingException.class).when(mapper).writeValueAsString(rsMeldingstype);
-
-        expectedException.expect(SkdEndringsmeldingJsonProcessingException.class);
-
-        createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
-
-        verify(messageProvider).get(SKD_ENDRINGSMELDING_JSON_PROCESSING, MELDING_ID);
     }
 
 }

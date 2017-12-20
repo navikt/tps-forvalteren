@@ -36,7 +36,7 @@ public class SkdFelterContainerTrans2 implements SkdFelterContainer{
 
         int startPosition;
         int endPosition = 61;
-        for(int counter = 0; counter < 13; counter++) {
+        for(int counter = 1; counter < 14; counter++) {
             startPosition = endPosition + 1;
             endPosition += 6;
             skdFelter.add(new SkdFeltDefinisjon("barnFodsdato" + counter, "000000", rekkefoelge++, 6, startPosition, endPosition));

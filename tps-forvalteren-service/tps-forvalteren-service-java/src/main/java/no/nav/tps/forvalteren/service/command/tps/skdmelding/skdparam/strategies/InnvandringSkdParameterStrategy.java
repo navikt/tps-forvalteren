@@ -86,7 +86,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
                 skdParams.put("adressenavn", ((Matrikkeladresse) boadresse).getMellomnavn());
             } else {
                 skdParams.put("gateGaard", ((Gateadresse) boadresse).getGatekode());
-                addHusBrukAndBokstavFestenr(skdParams, person, boadresse);
+                addHusBrukAndBokstavFestenr(skdParams, boadresse);
                 String adresse = ((Gateadresse) boadresse).getAdresse();
                 if (adresse != null) {
                     int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
@@ -134,7 +134,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put("statuskode", "1");
     }
     
-    private void addHusBrukAndBokstavFestenr(Map<String, String> skdParams, Person person, Adresse boadresse) {
+    private void addHusBrukAndBokstavFestenr(Map<String, String> skdParams, Adresse boadresse) {
         Gateadresse gateadresse = (Gateadresse) boadresse;
         if(gateadresse.getHusnummer() != null) {
             Matcher husbokstavMatcher = HUSBOKSTAV_PATTERN.matcher(gateadresse.getHusnummer());

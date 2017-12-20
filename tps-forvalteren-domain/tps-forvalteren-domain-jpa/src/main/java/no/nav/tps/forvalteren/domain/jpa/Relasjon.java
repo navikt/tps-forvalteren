@@ -35,11 +35,11 @@ public class Relasjon {
     @Column(name = "RELASJON_ID", nullable = false, updatable = false)
     private Long id;
 
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "person_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Person person;
 
-    @JoinColumn(name = "person_relasjon_id")
+    @JoinColumn(name = "person_relasjon_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Person personRelasjonMed;
 

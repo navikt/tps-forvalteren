@@ -63,14 +63,14 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 $scope.kriterier.forEach(function(kriterium) {
                    count += Number(kriterium.antall);
                 });
-                if (count + Number($scope.kriterium.antall) <= 1000) {
+                if (count + Number($scope.kriterium.antall) <= 10000) {
                     $scope.kriterier.push($scope.kriterium);
                     cleanupRow();
                 } else {
                     var confirm = $mdDialog.alert()
                         .title('Begrensning')
-                        .textContent('Maks 1000 testpersoner kan opprettes av gangen!')
-                        .ariaLabel('Maks 1000 testpersoner kan opperettes per gang.')
+                        .textContent('Maks 10 000 testpersoner kan opprettes av gangen!')
+                        .ariaLabel('Maks 10 000 testpersoner kan opperettes per gang.')
                         .ok('OK');
                     $mdDialog.show(confirm).then(function() {
                         // Empty function

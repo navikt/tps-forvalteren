@@ -26,6 +26,4 @@ public class Gateadresse extends Adresse {
     @Column(name = "GATEKODE", length = 5)
     private String gatekode;
 
-
-
 }

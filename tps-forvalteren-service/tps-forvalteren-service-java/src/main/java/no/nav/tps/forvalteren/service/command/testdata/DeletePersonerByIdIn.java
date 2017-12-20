@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_SUM_IN_QUERY;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,10 @@ public class DeletePersonerByIdIn {
 
     @Autowired
     private DoedsmeldingRepository doedsmeldingRepository;
-
-    private static final int ORACLE_MAX_SUM_IN_QUERY = 1000;
-
+    
     public void execute(List<Long> ids) {
         if (ids.size() > ORACLE_MAX_SUM_IN_QUERY) {
-            List<List<Long>> partitionsIds = Lists.partition(ids, 1000);
+            List<List<Long>> partitionsIds = Lists.partition(ids, ORACLE_MAX_SUM_IN_QUERY);
             for (List<Long> partition : partitionsIds) {
                 doedsmeldingRepository.deleteByPersonIdIn(partition);
                 relasjonRepository.deleteByPersonRelasjonMedIdIn(partition);

@@ -8,7 +8,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingLoggRepository;
 
 @Service
-public class GetLogForGruppe {
+public class GetLoggForGruppe {
 
     @Autowired
     private SkdEndringsmeldingLoggRepository skdEndringsmeldingLoggRepository;

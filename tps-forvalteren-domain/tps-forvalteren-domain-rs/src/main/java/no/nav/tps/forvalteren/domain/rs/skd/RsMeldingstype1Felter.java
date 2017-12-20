@@ -17,13 +17,7 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
     private String fodselsdato;
 
     private String personnummer;
-
-    private String maskindato;
-
-    private String maskintid;
-
-    private String aarsakskode;
-
+    
     private String regDato;
 
     private String statuskode;
@@ -207,9 +201,7 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
     private String vigselsdato;
 
     private String medlKirken;
-
-    private String sekvensnr;
-
+    
     private String bolignr;
 
     private String dufId;

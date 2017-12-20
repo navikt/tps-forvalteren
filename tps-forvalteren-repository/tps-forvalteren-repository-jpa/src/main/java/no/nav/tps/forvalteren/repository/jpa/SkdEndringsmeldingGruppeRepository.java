@@ -11,7 +11,7 @@ public interface SkdEndringsmeldingGruppeRepository extends Repository<SkdEndrin
 
     SkdEndringsmeldingGruppe findById(Long id);
 
-    void save(SkdEndringsmeldingGruppe skdEndringsmeldingGruppe);
+    SkdEndringsmeldingGruppe save(SkdEndringsmeldingGruppe skdEndringsmeldingGruppe);
 
     void deleteById(Long id);
 }

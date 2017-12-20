@@ -1,5 +1,18 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -8,10 +21,12 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -20,19 +35,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPers
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataControllerTest {
@@ -73,6 +76,15 @@ public class TestdataControllerTest {
     @Mock
     private SaveGruppe saveGruppe;
 
+    @Mock
+    private LagreTilTps lagreTilTps;
+
+    @Mock
+    private DeleteGruppeById deleteGruppeById;
+
+    @Mock
+    private SavePersonBulk savePersonBulk;
+
     @InjectMocks
     private TestdataController testdataController;
 
@@ -100,7 +112,7 @@ public class TestdataControllerTest {
         verify(opprettPersonerFraIdenter).execute(identer);
         verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
         verify(setGruppeIdOnPersons).setGruppeId(personerSomSkalPersisteres, GRUPPE_ID);
-        verify(savePersonListService).execute(personerSomSkalPersisteres);
+        verify(savePersonBulk).execute(personerSomSkalPersisteres);
 
     }
 
@@ -152,6 +164,15 @@ public class TestdataControllerTest {
     }
 
     @Test
+    public void lagreTilTips() {
+        List<String> environments = new ArrayList<>();
+
+        testdataController.lagreTilTPS(GRUPPE_ID, environments);
+
+        verify(lagreTilTps).execute(GRUPPE_ID, environments);
+    }
+
+    @Test
     public void getGrupper() {
         Gruppe gruppe = new Gruppe();
         RsSimpleGruppe rsSimpleGruppe = new RsSimpleGruppe();
@@ -192,6 +213,13 @@ public class TestdataControllerTest {
         testdataController.createGruppe(rsGruppe);
 
         verify(saveGruppe).execute(gruppe);
+    }
+
+    @Test
+    public void deleteGruppe() {
+        testdataController.deleteGruppe(GRUPPE_ID);
+
+        verify(deleteGruppeById).execute(GRUPPE_ID);
     }
 
 }

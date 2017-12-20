@@ -6,10 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -31,9 +29,6 @@ public class SendEndringsmeldingGruppeToTps {
 
     @Autowired
     private MessageProvider messageProvider;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @Autowired
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
@@ -61,7 +56,7 @@ public class SendEndringsmeldingGruppeToTps {
 
     @Autowired
     private SkdStartAjourhold skdStartAjourhold;
-    
+
     public void execute(Long gruppeId, String environment) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
         if (gruppe != null) {
@@ -69,26 +64,29 @@ public class SendEndringsmeldingGruppeToTps {
 
             List<RsMeldingstype> rsMeldingstyper = skdEndringsmeldinger.stream()
                     .map(melding -> convertJsonToRsMeldingstype.execute(melding))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());  
 
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
             for (RsMeldingstype melding : rsMeldingstyper) {
                 String skdMelding = convertMeldingFromJsonToText.execute(melding);
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
-                skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
-                SkdEndringsmeldingLogg log = new SkdEndringsmeldingLogg();
-                log.setEndringsmelding(skdMelding);
-                log.setBeskrivelse(melding.getBeskrivelse());
-                log.setEnvironment(environment);
-                log.setMeldingsgruppeId(gruppeId);
-                skdEndringsmeldingLoggRepository.save(log);
+                saveLogg(skdMelding, melding, gruppeId, environment);
             }
-
-        } else {
+            skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
+        } else { 
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
         }
 
+    }
+
+    private void saveLogg(String skdMelding, RsMeldingstype melding, Long gruppeId, String environment) {
+        SkdEndringsmeldingLogg log = new SkdEndringsmeldingLogg();
+        log.setEndringsmelding(skdMelding);
+        log.setBeskrivelse(melding.getBeskrivelse());
+        log.setEnvironment(environment);
+        log.setMeldingsgruppeId(gruppeId);
+        skdEndringsmeldingLoggRepository.save(log);
     }
 
 }

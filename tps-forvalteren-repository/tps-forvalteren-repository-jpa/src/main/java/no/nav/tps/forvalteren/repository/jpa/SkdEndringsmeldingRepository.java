@@ -10,9 +10,7 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     SkdEndringsmelding findById(Long id);
 
-    List<SkdEndringsmelding> findByIdIn(List<Long> ids);
-
-    void save(SkdEndringsmelding skdEndringsmelding);
+    SkdEndringsmelding save(SkdEndringsmelding skdEndringsmelding);
 
     void deleteByIdIn(List<Long> ids);
 

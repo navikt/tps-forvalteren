@@ -18,9 +18,6 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
     void deleteByIdIn(Set<Long> ids);
 
     void deleteByPersonRelasjonMedIdIn(List<Long> personIds);
-
-    void deleteAllByPersonRelasjonMed(Person person);
-    void deleteAllByPerson(Person person);
     
     void save(Relasjon relasjon);
 

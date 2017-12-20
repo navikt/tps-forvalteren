@@ -15,13 +15,7 @@ import lombok.Setter;
 public class RsMeldingstype2Felter extends RsMeldingstype {
 
     private String fodselsnr;
-
-    private String maskindato;
-
-    private String maskintid;
-
-    private String aarsakskode;
-
+    
     private String barnFodsdato1;
     private String barnPersnr1;
     private String barnNavn1;
@@ -86,7 +80,5 @@ public class RsMeldingstype2Felter extends RsMeldingstype {
     private String barnPersnr13;
     private String barnNavn13;
     private String barnKjoenn13;
-
-    private String sekvensnr;
-
+    
 }

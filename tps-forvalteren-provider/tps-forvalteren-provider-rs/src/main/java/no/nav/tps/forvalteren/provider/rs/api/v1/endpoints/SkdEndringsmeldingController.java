@@ -33,7 +33,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLogForGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
@@ -80,7 +80,7 @@ public class SkdEndringsmeldingController {
     private SendEndringsmeldingGruppeToTps sendEndringsmeldingGruppeToTps;
 
     @Autowired
-    private GetLogForGruppe getLogForGruppe;
+    private GetLoggForGruppe getLoggForGruppe;
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
@@ -170,8 +170,8 @@ public class SkdEndringsmeldingController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
     @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)
-    public List<RsSkdEndringsmeldingLogg> getLog(@PathVariable("gruppeId") Long gruppeId) {
-        List<SkdEndringsmeldingLogg> log = getLogForGruppe.execute(gruppeId);
+    public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
+        List<SkdEndringsmeldingLogg> log = getLoggForGruppe.execute(gruppeId);
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
     }
 
