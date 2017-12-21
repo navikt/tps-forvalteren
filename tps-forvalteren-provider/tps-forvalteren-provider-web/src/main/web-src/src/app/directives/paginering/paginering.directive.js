@@ -16,7 +16,7 @@ angular.module('tps-forvalteren.directives')
 
                 $scope.$watch('contents', function (newVal) {
                     if (newVal) {
-                        $scope.setPage(1);
+                        $scope.setPage(0);
                     }
                 });
 
