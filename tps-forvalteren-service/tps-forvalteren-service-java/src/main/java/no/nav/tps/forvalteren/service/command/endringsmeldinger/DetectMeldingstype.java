@@ -38,12 +38,12 @@ public class DetectMeldingstype {
 
     public RsMeldingstype execute(String melding) {
         String meldingstype = melding.substring(TRANSTYPE_START_POSITION, TRANSTYPE_END_POSITION);
-        switch (meldingstype) {
-        case "1":
+        switch (meldingstype.charAt(0)) {
+        case '1':
             return createT1(melding);
-        case "2":
-        case "3":
-        case "4":
+        case '2':
+        case '3':
+        case '4':
             return createT2(melding);
         default:
             throw new IllegalMeldingstypeException(messageProvider.get(SKD_ILLEGAL_MELDINGSTYPE, meldingstype));
