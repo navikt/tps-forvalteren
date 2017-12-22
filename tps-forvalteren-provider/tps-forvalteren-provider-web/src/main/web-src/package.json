@@ -8,6 +8,10 @@
     "start": "gulp serve.dev --color",
     "build": "gulp build.prod --color"
   },
+  "repository": {
+    "type": "git",
+    "url": "stash.devillo.no/scm/fel/tps-forvalteren.git"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -42,6 +46,7 @@
     "angular-ui-router": "^0.4.0",
     "gulp-livereload": "^3.8.1",
     "highlight.js": "^9.8.0",
+    "lodash": "^4.17.4",
     "moment": "^2.15.2",
     "nav-frontend-core": "^4.0.5",
     "nav-frontend-knapper-style": "^0.3.2",

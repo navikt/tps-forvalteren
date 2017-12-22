@@ -52,8 +52,8 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
     }
 
     private void addDefaultParam(Map<String, String> skdParams) {
-        skdParams.put("T1-AARSAKSKODE", AARSAKSKODE_FOR_DOEDSMELDING);
-        skdParams.put("T1-TRANSTYPE", TRANSTYPE_FOR_DOEDSMELDING);
-        skdParams.put("T1-STATUSKODE", STATUSKODE_FOR_DOEDSMELDING);
+        skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_DOEDSMELDING);
+        skdParams.put(SkdConstants.TRANSTYPE, TRANSTYPE_FOR_DOEDSMELDING);
+        skdParams.put("statuskode", STATUSKODE_FOR_DOEDSMELDING);
     }
 }

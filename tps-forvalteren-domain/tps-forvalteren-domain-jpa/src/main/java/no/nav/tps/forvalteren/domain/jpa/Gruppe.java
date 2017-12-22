@@ -1,12 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +16,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
@@ -52,9 +52,8 @@ public class Gruppe extends ChangeStamp {
     private List<Person> personer = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "T_GRUPPE_TAG",
-            joinColumns = { @JoinColumn(name = "GRUPPE_ID", nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "TAG_ID", nullable = false, updatable = false) })
+    @JoinTable(name = "T_GRUPPE_TAG", joinColumns = { @JoinColumn(name = "GRUPPE_ID", nullable = false, updatable = false) }, inverseJoinColumns = {
+            @JoinColumn(name = "TAG_ID", nullable = false, updatable = false) })
     private List<Tag> tags = new ArrayList<>();
 
 }

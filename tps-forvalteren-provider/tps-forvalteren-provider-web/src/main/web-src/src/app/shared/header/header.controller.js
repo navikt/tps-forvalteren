@@ -4,6 +4,7 @@ angular.module('tps-forvalteren')
         function ($scope, $mdDialog, authenticationService, locationService, appInfoService, utilsService) {
 
             $scope.visTestdataKnapp = false;
+            $scope.visSkdEndringsmeldingKnapp = false;
 
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {
@@ -19,12 +20,12 @@ angular.module('tps-forvalteren')
                 locationService.redirectToTestgruppe();
             };
 
-            $scope.openServiceRutine = function () {
-                locationService.redirectToServiceRutineState();
+            $scope.openVisSkdEndringsmelding = function () {
+                locationService.redirectToSkdEndringsmeldingGrupper();
             };
 
-            $scope.goBack = function () {
-                window.history.back();
+            $scope.openServiceRutine = function () {
+                locationService.redirectToServiceRutineState();
             };
 
             $scope.goHome = function () {
@@ -34,6 +35,17 @@ angular.module('tps-forvalteren')
             $scope.isRoot = locationService.isRoot();
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+
+            $scope.$on('updateEvent', function () {
+                if ($scope.header && $scope.header.buttons) {
+                    $scope.header.buttons.forEach(function(button) {
+                        if (button.disabled) {
+                            button.status = button.disabled();
+                        }
+                    });
+                }
+            });
 
             $scope.om = function () {
                 var confirm = $mdDialog.confirm()

@@ -1,0 +1,31 @@
+<div layout="column" flex-gt-md="33" id="tpsf-endringslogg-description-block" ng-cloak>
+    <md-card>
+        <md-card-content class="side-content md-whiteframe-1p">
+            <h3 style="margin-top: 0;">Innsendingslogg</h3>
+
+            <div class="md-raised" style="height: 150px; text-align: center; margin-top: 100px;"
+                 flex layout-align="center center"
+                 ng-show="logg.length === 0">
+                <div>Ingen innsendinger registert</div>
+            </div>
+
+            <md-content class="scroll-area" ng-if="logg.length > 0">
+                <div layout="row">
+                    <div flex="10" class="tpsf-endringslogg-report">Miljø</div>
+                    <div flex="35" class="tpsf-endringslogg-report">Tidspunkt</div>
+                    <div flex="15" class="tpsf-endringslogg-report">Utført av</div>
+                    <div flex="30">Melding</div>
+                </div>
+                <hr>
+                <div ng-repeat="melding in logg | orderBy: ['miljoe','-utfoertDato']">
+                    <div layout="row" title="{{melding.raw}}" ng-click="showMelding(melding)" ng-class="$index%2==0 ? 'tpsf-endringslogg-row-even' : 'tpsf-endringslogg-row-odd'">
+                        <span flex="10" class="tpsf-endringslogg-report">{{melding.miljoe}}</span>
+                        <span flex="35" class="tpsf-endringslogg-report">{{melding.utfoertDato | date:'dd-MM-yyyy HH:mm:ss'}}</span>
+                        <span flex="15" class="tpsf-endringslogg-report">{{melding.utfoertAv}}</span>
+                        <span flex="30" flex>{{melding.beskrivelse}}</span>
+                    </div>
+                </div>
+            </md-content>
+        </md-card-content>
+    </md-card>
+</div>

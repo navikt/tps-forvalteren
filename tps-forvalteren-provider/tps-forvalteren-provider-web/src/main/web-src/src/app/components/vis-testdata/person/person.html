@@ -3,7 +3,7 @@
         <md-tooltip>Fornavn</md-tooltip>
         <label>Fornavn</label>
         <input name="fornavn" ng-required="true" md-maxlength="50" md-autofocus
-               ng-model="person.fornavn" ng-change="endret($index)"/>
+               ng-model="person.fornavn" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.fornavn.$error"
              ng-show="requestForm.fornavn.$dirty">
             <div ng-message="required">Verdi er påkrevd</div>
@@ -15,7 +15,7 @@
         <md-tooltip>Mellomnavn</md-tooltip>
         <label>Mellomnavn</label>
         <input name="mellomnavn" ng-required="false" md-maxlength="50"
-               ng-model="person.mellomnavn" ng-change="endret($index)"/>
+               ng-model="person.mellomnavn" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.mellomnavn.$error"
              ng-show="requestForm.mellomnavn.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -26,7 +26,7 @@
         <md-tooltip>Etternavn</md-tooltip>
         <label>Etternavn</label>
         <input name="etternavn" ng-required="true" md-maxlength="50"
-               ng-model="person.etternavn" ng-change="endret($index)"/>
+               ng-model="person.etternavn" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.etternavn.$error"
              ng-show="requestForm.etternavn.$dirty">
             <div ng-message="required">Verdi er påkrevd</div>
@@ -41,7 +41,7 @@
         <md-datepicker name="regdato"
                        ng-model="person.regdato"
                        md-current-view="year"
-                       ng-change="endret($index)">
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.regdato.$error"
              ng-show="requestForm.regdato.$pristine">
@@ -53,7 +53,7 @@
         <md-tooltip>Statsborgerskap</md-tooltip>
         <label>Statsborgerskap</label>
         <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
-               ng-model="person.statsborgerskap" ng-change="endret($index)"/>
+               ng-model="person.statsborgerskap" ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.statsborgerskap.$error"
              ng-show="requestForm.statsborgerskap.$dirty">
             <div ng-message="minlength">Verdi har for få tegn</div>
@@ -65,7 +65,7 @@
         <md-tooltip>Spesialregister</md-tooltip>
         <label>Spesialregister</label>
         <md-select ng-model="person.spesreg" class="md-no-underline"
-                   ng-change="endret($index)">
+                   ng-change="endret($index + pager.startIndex)">
             <md-option value=""><em>Uspesifisert</em></md-option>
             <md-option value="KLIE">Klientadresse</md-option>
             <md-option value="MILI">Militær</md-option>
@@ -85,7 +85,7 @@
         <md-datepicker name="spesregDato"
                        md-current-view="year"
                        ng-model="person.spesregDato"
-                       ng-change="endret($index)">
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.spesregDato.$error"
              ng-show="requestForm.spesregDato.$pristine">
@@ -99,7 +99,7 @@
         <md-datepicker name="doedsdato"
                        md-current-view="year"
                        ng-model="person.doedsdato"
-                       ng-change="endret($index)">
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.doedsdato.$error"
              ng-show="requestForm.doedsdato.$pristine">

@@ -1,29 +1,35 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
-        'headerService',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, underHeaderService) {
+    .controller('VisTestdataCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
+        'headerService', 'toggleservice',
+        function ($scope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService, toggleservice) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
             $scope.matradresse = "app/components/vis-testdata/adresse/matrikkeladresse.html";
             $scope.postadresse = "app/components/vis-testdata/adresse/postadresse.html";
 
+            $scope.service = testdataService;
+
             $scope.gruppeId = $stateParams.gruppeId;
 
             $scope.aapneAlleFaner = false;
 
-            var setHeaderButtons = function (antall_personer) {
-                var disable_send_til_tps_button = antall_personer < 1;
-                underHeaderService.setButtons([{
+            function setHeaderButtons () {
+                headerService.setButtons([{
                     text: 'Legg til testpersoner',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
+                    disabled: function () {
+                        return $scope.visEndret
+                    },
                     click: function () {
                         locationService.redirectToOpprettTestdata($scope.gruppeId);
                     }
                 }, {
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
-                    disabled: disable_send_til_tps_button,
+                    disabled: function () {
+                        return $scope.visEndret || !$scope.personer || $scope.personer.length == 0
+                    },
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
                             controller: 'SendTilTpsCtrl',
@@ -34,16 +40,16 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $mdDialog.show(confirm);
                     }
                 }]);
-            };
+            }
 
-            var setHeaderIcons = function () {
-                underHeaderService.setIcons([{
+            function setHeaderIcons () {
+                headerService.setIcons([{
                     icon: 'assets/icons/ic_mode_edit_black_24px.svg',
                     title: 'Endre testgruppe',
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
                             controller: 'EndreGruppeCtrl',
-                            templateUrl: 'app/components/vis-testdata/endregruppe/endregruppe.html',
+                            templateUrl: 'app/components/vis-testdata/endregruppe/endre-gruppe.html',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             locals: {
@@ -65,7 +71,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         personTekst += $scope.personer.length > 1 ? 'er' : '';
                         var confirm = $mdDialog.confirm()
                             .title('Bekreft sletting')
-                            .htmlContent('Ønsker du å slette gruppe <strong>' + underHeaderService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
+                            .htmlContent('Ønsker du å slette gruppe <strong>' + headerService.getHeader().name + '</strong>' + personTekst + '?<br><br>' +
                                 'Denne handlingen vil ikke slette testpersonene fra TPS, dersom de er opprettet der.')
                             .ariaLabel('Bekreft sletting')
                             .ok('OK')
@@ -81,7 +87,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         });
                     }
                 }]);
-            };
+            }
 
             $scope.allePersoner = {checked: false};
             $scope.personer = [];
@@ -90,25 +96,24 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.velgAlle = function () {
                 var enabled = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
-                    }
-                    if (!$scope.control[i].disabled) {
-                        $scope.control[i].velg = !$scope.allePersoner.checked;
+                $scope.personer.forEach(function (person, index ) {
+                    $scope.control[index] = $scope.control[index] || {};
+                    if (!$scope.control[index].disabled) {
+                        $scope.control[index].velg = !$scope.allePersoner.checked;
                         enabled++;
                     }
-                }
+                });
                 $scope.antallValgt = !$scope.allePersoner.checked ? enabled : 0;
                 oppdaterFunksjonsknapper();
             };
 
-            var hentTestpersoner = function () {
+            function hentTestpersoner () {
+                $scope.showSpinner = true;
                 $scope.personer = undefined;
-                testdataService.getTestpersoner($scope.gruppeId).then(
+                testdataService.getGruppe($scope.gruppeId, true).then(
                     function (result) {
-                        underHeaderService.setHeader(result.data.navn);
-                        setHeaderButtons(result.data.personer.length);
+                        headerService.setHeader(result.data.navn);
+                        setHeaderButtons();
                         setHeaderIcons();
                         originalPersoner = result.data.personer;
                         prepOriginalPersoner();
@@ -117,22 +122,16 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         $scope.antallEndret = 0;
                         $scope.antallValgt = 0;
                         oppdaterFunksjonsknapper();
+                        headerService.eventUpdate();
+                        $scope.showSpinner = false;
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                        underHeaderService.setHeader("Testdata");
+                        headerService.setHeader("Testdata");
+                        $scope.showSpinner = false;
                     }
                 );
-            };
-
-            $scope.personIsDead = function (index) {
-                if ($scope.personer[index].doedsdato) {
-                    // Is now similar to backend
-                    // Does not check for if doedsdato is in future
-                    return true;
-                }
-                return false;
-            };
+            }
 
             function prepOriginalPersoner () {
                 for (var i = 0; i < originalPersoner.length; i++) {
@@ -161,15 +160,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             }
 
-            var prepPersoner = function () {
-                for (var index = 0; index < $scope.personer.length; index++) {
-                    fixKommunenr($scope.personer[index]);
-                    fixPostnummer($scope.personer[index]);
-                }
-            };
-
             // Datofix kjøres etter denne
-            var etablerAdressetype = function (person) {
+            function etablerAdressetype (person) {
                 if (person.boadresse) {
                     if (person.boadresse.adressetype === 'GATE') {
                         person.gateadresse = angular.copy(person.boadresse);
@@ -183,57 +175,20 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     person.boadresse = {};
                     person.boadresse.adressetype = 'GATE';
                 }
-            };
+            }
 
             // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
-            var fixDatoForDatepicker = function (person) {
-                person.regdato = person.regdato ? person.regdato : null;
-                person.spesregDato = person.spesregDato ? person.spesregDato : null;
-                person.doedsdato = person.doedsdato ? person.doedsdato : null;
-
-                if (!person.boadresse || !person.boadresse.gateadresse || !person.boadresse.gateadresse.flytteDato) {
-                    person.gateadresse = person.gateadresse && !Array.isArray(person.gateadresse) ? person.gateadresse : {};
-                    person.gateadresse.flytteDato = null;
-                }
-
-                if (!person.boadresse || !person.boadresse.matrikkeladresse || !person.boadresse.matrikkeladresse.flytteDato) {
-                    person.matrikkeladresse = person.matrikkeladresse ? person.matrikkeladresse : {};
-                    person.matrikkeladresse.flytteDato = null;
-                }
-            };
+            function fixDatoForDatepicker (person) {
+                person.regdato = person.regdato || null;
+                person.spesregDato = person.spesregDato || null;
+                person.doedsdato = person.doedsdato || null;
+                person.gateadresse = person.gateadresse || {};
+                person.gateadresse.flyttedato = person.gateadresse.flyttedato || null;
+                person.matrikkeladresse = person.matrikkeladresse || {};
+                person.matrikkeladresse.flyttedato = person.matrikkeladresse.flyttedato || null;
+            }
 
             var oppdaterFane = undefined;
-            var checkIt = false;
-
-            $scope.toggleFane = function (index) {
-                if (!$scope.control[index]) {
-                    $scope.control[index] = {};
-                }
-                if (!checkIt) {
-                    $scope.control[index].aapen = !$scope.control[index].aapen;
-                }
-                checkIt = false;
-                checkAndModifyAggregateOpenCloseButton();
-            };
-
-            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
-                checkIt = true;
-            };
-
-            function checkAndModifyAggregateOpenCloseButton () {
-                var allOpen = true;
-                var allClosed = true;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if ($scope.control[i] && $scope.control[i].aapen) {
-                        allClosed = false;
-                    } else {
-                        allOpen = false;
-                    }
-                }
-                if ($scope.aapneAlleFaner && allClosed || !$scope.aapneAlleFaner && allOpen)  {
-                    $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                }
-            }
 
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
@@ -284,7 +239,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.visEndret = endret > 0;
             };
 
-            var sletteTestpersoner = function () {
+            function sletteTestpersoner () {
                 var identer = [];
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i].velg) {
@@ -299,7 +254,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         utilsService.showAlertError(error);
                     }
                 );
-            };
+            }
 
             $scope.lagre = function () {
                 var buffer = [];
@@ -312,17 +267,17 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     function (result) {
                         for (var i = 0; i < $scope.personer.length; i++) {
                             if ($scope.control[i] && $scope.control[i].velg) {
-                                nullstillControl(i);
+                                $scope.control[i] = {};
                                 originalPersoner[i] = angular.copy($scope.personer[i]);
                                 etablerAdressetype(originalPersoner[i]);
                                 fixDatoForDatepicker(originalPersoner[i]);
                                 fixCase(originalPersoner[i]);
-                                $scope.personer[i] = angular.copy(originalPersoner[i]);
                             }
                         }
                         $scope.oppdaterValgt();
                         bekrefterLagring();
-                        checkAndModifyAggregateOpenCloseButton();
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
                     },
                     function (error) {
                         utilsService.showAlertError(error);
@@ -330,7 +285,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 );
             };
 
-            var prepLagrePerson = function (person) {
+            function prepLagrePerson (person) {
                 var adressetype = person.boadresse.adressetype;
                 if (adressetype === 'GATE') {
                     person.boadresse = angular.copy(person.gateadresse);
@@ -340,10 +295,20 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     person.gateadresse = undefined;
                 }
                 person.boadresse.adressetype = adressetype;
+                fixTimezone(person.boadresse.flyttedato);
+                fixTimezone(person.regdato);
+                fixTimezone(person.spesregDato);
+                fixTimezone(person.doedsdato);
                 return person;
-            };
+            }
 
-            var oppdaterFunksjonsknapper = function () {
+            function fixTimezone (date) {
+                if (date && date.toString().length > 19) {
+                    date.setMinutes(date.getTimezoneOffset() * -1);
+                }
+            }
+
+            function oppdaterFunksjonsknapper () {
                 var endret = false;
                 for (var i = 0; i < $scope.control.length; i++) {
                     if ($scope.control[i]) {
@@ -354,7 +319,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
 
                 $scope.visEndret = endret;
-            };
+            }
 
             $scope.endret = function (index) {
                 var originalPerson = JSON.stringify(originalPersoner[index]).replace(/null/g, '""') // Angular legger på $$hashKey, fjerner den
@@ -370,23 +335,18 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.oppdaterValgt();
             };
 
-            var avbrytLagring = function () {
+            function avbrytLagring () {
                 for (var i = 0; i < $scope.personer.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
                         $scope.personer[i] = JSON.parse(JSON.stringify(originalPersoner[i]));
-                        nullstillControl(i);
+                        $scope.control[i] = {};
                     }
                 }
+                $scope.slice = $scope.personer.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                 $scope.oppdaterValgt();
-            };
+            }
 
-            var nullstillControl = function (index) {
-                $scope.control[index].endret = false;
-                $scope.control[index].velg = false;
-                $scope.control[index].aapen = false;
-            };
-
-            var bekrefterLagring = function (index) {
+            function bekrefterLagring (index) {
                 var confirm = $mdDialog.confirm()
                     .title('Bekrefter lagring')
                     .textContent('Lagring er utført')
@@ -395,7 +355,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
                 $mdDialog.show(confirm).then(function () {
                 });
-            };
+            }
 
             $scope.avbryteDialog = function () {
                 var confirm = $mdDialog.confirm()
@@ -412,7 +372,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 });
             };
 
-            var bekreftRelokasjon = function (next, current) {
+            function bekreftRelokasjon (next, current) {
                 var confirm = $mdDialog.confirm()
                     .title('Du har endringer som ikke er lagret')
                     .textContent('Trykk OK for å forlate siden.')
@@ -426,9 +386,9 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }, function () {
 
                 });
-            };
+            }
 
-            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+            $scope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
                     bekreftRelokasjon(next, current);
@@ -441,14 +401,36 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             };
 
-            $scope.toggleAlleFaner = function () {
-                $scope.aapneAlleFaner = !$scope.aapneAlleFaner;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
+            $scope.$watch('visEndret', function () {
+                headerService.eventUpdate();
+            });
+
+            var checkIt = false;
+
+            $scope.checkIt = function () { // la være å toggle fane hvis det er checkbox som klikkes
+                checkIt = true;
+            };
+
+            $scope.toggleFane = function (index) {
+                if ($scope.requestForm.$valid) {
+                    if (!checkIt) {
+                        toggleservice.toggleFane($scope.control, index);
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
                     }
-                    $scope.control[i].aapen = $scope.aapneAlleFaner;
+                    checkIt = false;
                 }
+            };
+
+            $scope.$watch('pager.startIndex', function () {
+                if ($scope.personer) {
+                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
+                }
+            });
+
+            $scope.toggleAlleFaner = function () {
+                $scope.aapneAlleFaner = toggleservice.toggleAlleFaner($scope.aapneAlleFaner, $scope.control, $scope.pager);
             };
 
             hentTestpersoner();

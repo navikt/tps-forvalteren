@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,10 +17,10 @@ public class RsSimpleRelasjon {
     private Long id;
 
     @NotNull
-    private RsPerson person;
+    private RsSimplePerson person;
 
     @NotNull
-    private RsPerson personRelasjonMed;
+    private RsSimplePerson personRelasjonMed;
 
     @NotNull
     private String relasjonTypeNavn;

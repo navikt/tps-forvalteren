@@ -1,0 +1,40 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Oppdater testgruppe dialog">
+        <form name="tpsForm">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Send til TPS i {{miljoe | uppercase}}-miljø</h2>
+                <p>Velg miljø meldingsgruppen skal sendes til:</p>
+
+                <md-content>
+                    <div layout="row" flex>
+                        <md-input-container flex="30">
+                            <label>Velg TPS miljø</label>
+                            <md-select ng-model="valgtMiljoe">
+                                <md-option ng-repeat="miljoe in miljoer" ng-value="miljoe">{{miljoe | uppercase}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </md-dialog-content>
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Lukk">
+                    <md-tooltip md-direction="top">Lukk dialog</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Lukk</md-button>
+                </md-input-container>
+                <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
+                    <md-tooltip md-direction="top">Send inn til TPS</md-tooltip>
+                    <md-button class="md-button md-raised md-accent"
+                               ng-disabled="!valgtMiljoe"
+                               ng-click="send()">Send inn
+                    </md-button>
+                </md-input-container>
+            </md-dialog-actions>
+
+        </form>
+        <div layout="row" class="md-dialog-content" ng-show="showSpinner">
+            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </md-dialog>
+
+</div>

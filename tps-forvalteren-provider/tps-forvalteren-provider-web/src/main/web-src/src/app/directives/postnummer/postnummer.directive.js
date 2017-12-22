@@ -5,7 +5,8 @@ angular.module('tps-forvalteren.directives')
             scope: {
                 postnummer: '=',
                 endretFn: '=',
-                index: '='
+                index: '=',
+                paakrevet: '='
             },
             templateUrl: 'app/directives/postnummer/postnummer.html',
             controller: ['$scope', 'kodeverkService', 'utilsService', '$timeout', function ($scope, kodeverkService, utilsService, $timeout) {

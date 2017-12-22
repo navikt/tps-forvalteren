@@ -37,19 +37,32 @@ angular.module('tps-forvalteren.service')
             $state.go("opprett-testdata", {gruppeId: index});
         };
 
+        self.redirectToSkdEndringsmeldingGrupper = function() {
+            $state.go("skd-meldingsgrupper");
+        };
+
+        self.redirectToOpprettSkdMeldinger = function(index) {
+            $state.go("skd-vis-meldingsgruppe", {gruppeId: index});
+        };
+
         self.isServicerutineState = function(){
             return $state.current.name === 'servicerutine';
         };
 
         self.redirectUrl = function(url, param) {
-            if ('/' === url) {
-                self.redirectToHomeState();
-            } else {
-                if (url.indexOf('/:') !== -1) {
-                    $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
-                }
-                else {
-                    $state.go(url.substr(1)); // Ta bort ledende "/"}
+            if (url.indexOf('/:') !== -1) {
+                $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
+            }
+            else {
+                switch (url) {
+                    case '/endringsmelding/skd/grupper':
+                        self.redirectToSkdEndringsmeldingGrupper();
+                        break;
+                    case '/testgruppe':
+                        self.redirectToTestgruppe();
+                        break;
+                    default:
+                        self.redirectToHomeState();
                 }
             }
         };

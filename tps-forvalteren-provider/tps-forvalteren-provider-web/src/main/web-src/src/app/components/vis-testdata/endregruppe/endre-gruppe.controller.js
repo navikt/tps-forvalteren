@@ -1,8 +1,8 @@
 angular.module('tps-forvalteren.vis-testdata.endregruppe', ['ngMaterial'])
-    .controller('EndreGruppeCtrl', ['$scope', '$mdDialog', 'testdataService', '$location', 'headerService', 'utilsService', '$rootScope',
-        function ($scope, $mdDialog, testdataService, $location, headerService, utilsService, $rootScope) {
+    .controller('EndreGruppeCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'testdataService', 'headerService', 'utilsService',
+        function ($scope, $mdDialog, $rootScope, $stateParams, testdataService, headerService, utilsService) {
 
-            var gruppeId = $location.url().match(/\d+/g);
+            var gruppeId = $stateParams.gruppeId;
 
             var testgrupper = [];
             testdataService.hentTestgrupper().then(

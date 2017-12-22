@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import static org.mockito.Matchers.anySet;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,14 +16,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LagreTilTpsTest {
 
     private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
-
-    @InjectMocks
-    private LagreTilTps lagreTilTps;
 
     @Mock
     private SkdMessageSenderTrans1 skdMessageSenderTrans1;
@@ -35,6 +34,12 @@ public class LagreTilTpsTest {
 
     @Mock
     private CreateDoedsmeldinger createDoedsmeldinger;
+
+    @Mock
+    private SkdStartAjourhold skdStartAjourhold;
+
+    @InjectMocks
+    private LagreTilTps lagreTilTps;
 
     private List<Person> persons = new ArrayList<>();
     private Person person = aMalePerson().build();
@@ -55,5 +60,6 @@ public class LagreTilTpsTest {
         verify(skdMessageSenderTrans1).execute(NAVN_INNVANDRINGSMELDING, persons, environments);
         verify(createRelasjoner).execute(persons, environments);
         verify(createDoedsmeldinger).execute(gruppeId, environments);
+        verify(skdStartAjourhold).execute(anySet());
     }
 }

@@ -21,24 +21,24 @@ public class BarnetranseSkdParameterStrategy {
     }
 
     private void addSkdParametersExtractedFromForelder(Map<String, String> skdParams, Person forelder) {
-        skdParams.put("T2-FODSELSNR", forelder.getIdent());
+        skdParams.put("fodselsnr", forelder.getIdent());
     }
 
     private void addSkdParametersExtractedFromBarn(Map<String, String> skdParams, List<Person> barn) {
         for (int counter = 0; counter < barn.size(); counter++) {
             Person currentBarn = barn.get(counter);
-            skdParams.put("T2-BARN-FODSDATO" + counter, currentBarn.getIdent().substring(0, 6));
-            skdParams.put("T2-BARN-PERSNR" + counter, currentBarn.getIdent().substring(6));
+            skdParams.put("barnFodsdato" + counter, currentBarn.getIdent().substring(0, 6));
+            skdParams.put("barnPersnr" + counter, currentBarn.getIdent().substring(6));
         }
     }
 
     private void addDefaultParameters(Map<String, String> skdParams) {
         String maskindato = GetStringVersionOfLocalDateTime.yyyyMMdd(LocalDateTime.now());
         String maskintid = GetStringVersionOfLocalDateTime.hhMMss(LocalDateTime.now());
-        skdParams.put("T2-MASKINDATO", maskindato);
-        skdParams.put("T2-MASKINTID", maskintid);
-        skdParams.put("T2-TRANSTYPE", "2");
-        skdParams.put("T2-AARSAKSKODE", "98");
+        skdParams.put("maskindato", maskindato);
+        skdParams.put("maskintid", maskintid);
+        skdParams.put("transtype", "2");
+        skdParams.put("aarsakskode", "98");
     }
 
 }

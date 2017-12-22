@@ -1,18 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
+import java.util.Set;
+import javax.jms.JMSException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.tps.SkdMeldingRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.jms.JMSException;
-import java.util.Set;
 
 @Service
 public class DefaultSendSkdMeldingTilGitteMiljoer implements SendSkdMeldingTilGitteMiljoer {
@@ -25,15 +25,15 @@ public class DefaultSendSkdMeldingTilGitteMiljoer implements SendSkdMeldingTilGi
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
-    public void execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments){
+    public void execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments) {
         Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
 
-        for(String env : envToCheck){
+        for (String env : envToCheck) {
             sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env);
         }
     }
 
-    private void sendSkdMelding(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment){
+    private void sendSkdMelding(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) {
         try {
             skdMeldingRequest.execute(skdMelding, skdMeldingDefinition, environment);
         } catch (JMSException jmsException) {
