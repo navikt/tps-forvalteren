@@ -4,7 +4,7 @@
         <label>Stedsnavn</label>
         <input name="matrMellomnavn" ng-required="false" md-maxlength="25"
                ng-model="person.matrikkeladresse.mellomnavn"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.matrMellomnavn.$error"
              ng-show="requestForm.matrMellomnavn.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -16,7 +16,7 @@
         <label>Gårdsnr</label>
         <input name="gardsnr" ng-required="false" md-maxlength="4"
                ng-model="person.matrikkeladresse.gardsnr"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gardsnr.$error"
              ng-show="requestForm.gardsnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -28,7 +28,7 @@
         <label>Bruksnr</label>
         <input name="bruksnr" ng-required="false" md-maxlength="4"
                ng-model="person.matrikkeladresse.bruksnr"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.bruksnr.$error"
              ng-show="requestForm.bruksnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -40,7 +40,7 @@
         <label>Festenr</label>
         <input name="festenr" ng-required="false" md-maxlength="4"
                ng-model="person.matrikkeladresse.festenr"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.festenr.$error"
              ng-show="requestForm.festenr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -52,24 +52,24 @@
         <label>Undernr</label>
         <input name="undernr" ng-required="false" md-maxlength="3"
                ng-model="person.matrikkeladresse.undernr"
-               ng-change="endret($index)"/>
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.undernr.$error"
              ng-show="requestForm.undernr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
 
-    <postnummer postnummer="person.matrikkeladresse.postnr" endret-fn="endret" index="$index"></postnummer>
+    <postnummer postnummer="person.matrikkeladresse.postnr" endret-fn="endret" index="$index + pager.startIndex"></postnummer>
 
-    <kommunenr kommunenr="person.matrikkeladresse.kommunenr" endret-fn="endret" index="$index"></kommunenr>
+    <kommunenr kommunenr="person.matrikkeladresse.kommunenr" endret-fn="endret" index="$index + pager.startIndex"></kommunenr>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Flyttedato</md-tooltip>
         <label>Flyttedato</label>
         <md-datepicker name="matrFlyttedato"
                        md-current-view="year"
-                       ng-model="person.matrikkeladresse.flytteDato"
-                       ng-change="endret($index)">
+                       ng-model="person.matrikkeladresse.flyttedato"
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.matrFlyttedato.$error"
              ng-show="requestForm.matrFlyttedato.$pristine">

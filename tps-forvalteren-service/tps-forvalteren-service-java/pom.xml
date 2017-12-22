@@ -69,7 +69,7 @@
             <artifactId>tps-forvalteren-domain-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        
     </dependencies>
     
 </project>

@@ -143,6 +143,11 @@ angular.module('tps-forvalteren.service')
                     text: error.config.url + ' finnes ikke',
                     ariaLabel: 'Opprett siden på server og forsøk igjen.'
                 },
+                405: {
+                    title: 'Ikke tilgang til metode',
+                    text: 'Ikke tilgang til metode ' + error.config.url,
+                    ariaLabel: 'Gi tilgang evt. opprett siden på server og forsøk igjen.'
+                },
                 500: {
                     title: 'Serverfeil',
                     text: 'Fikk ikke hentet informasjon fra server.',

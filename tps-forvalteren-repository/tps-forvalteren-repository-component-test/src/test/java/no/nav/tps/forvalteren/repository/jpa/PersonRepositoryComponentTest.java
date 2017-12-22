@@ -57,7 +57,7 @@ public class PersonRepositoryComponentTest {
         ids.add(kari.getId());
         repository.deleteByIdIn(ids);
 
-        List<Person> result = repository.findAllByOrderByIdAsc();
+        List<Person> result = testRepository.findAll();
         assertThat(result, hasSize(0));
 
     }
@@ -68,10 +68,8 @@ public class PersonRepositoryComponentTest {
         List<Person> persons = Arrays.asList(personOla, personKari);
         repository.save(persons);
 
-        Iterable<Person> result = testRepository.findAll();
-        List<Person> resultList = new ArrayList<>();
+        List<Person> resultList = testRepository.findAll();
 
-        result.forEach(resultList::add);
         assertThat(resultList, hasSize(2));
         assertThat(resultList, hasItem(personOla));
         assertThat(resultList, hasItem(personKari));
@@ -81,7 +79,7 @@ public class PersonRepositoryComponentTest {
     @Rollback
     public void FindByIdentInReturnsAll() {
         List<Person> persons = Arrays.asList(personOla, personKari);
-        repository.save(persons);
+        testRepository.save(persons);
 
         List<String> identList = persons.stream()
                 .map(Person::getIdent)
