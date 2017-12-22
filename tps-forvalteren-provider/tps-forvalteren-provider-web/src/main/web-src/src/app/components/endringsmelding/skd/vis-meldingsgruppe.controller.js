@@ -124,8 +124,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 oppdaterFunksjonsknapper();
             };
 
-            var oppdaterFane = undefined;
-
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
                     .title('Bekreft sletting')
@@ -142,8 +140,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             };
 
             $scope.oppdaterValgt = function () {
-                oppdaterFane = true;
-
                 var endret = 0;
                 for (var i = 0; i < $scope.meldinger.length; i++) {
                     $scope.control[i] = $scope.control[i] || {};
@@ -153,16 +149,16 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 }
 
                 var valgt = 0;
-                for (var i = 0; i < $scope.meldinger.length; i++) {
+                for (var j = 0; j < $scope.meldinger.length; j++) {
                     if (endret > 0) {
-                        $scope.control[i].disabled = !$scope.control[i].endret;
-                        if (!$scope.control[i].endret) {
-                            $scope.control[i].velg = false;
+                        $scope.control[j].disabled = !$scope.control[j].endret;
+                        if (!$scope.control[j].endret) {
+                            $scope.control[j].velg = false;
                         }
                     } else {
-                        $scope.control[i].disabled = false;
+                        $scope.control[j].disabled = false;
                     }
-                    if ($scope.control[i].velg) {
+                    if ($scope.control[j].velg) {
                         valgt++;
                     }
                 }
@@ -362,6 +358,8 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         $scope.alleMeldinger.checked = false;
                         oppdaterFunksjonsknapper();
                         headerService.eventUpdate();
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
                         $scope.showSpinner = false;
                     },
                     function (error) {
