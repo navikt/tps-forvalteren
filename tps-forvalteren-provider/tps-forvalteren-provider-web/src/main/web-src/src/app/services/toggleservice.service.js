@@ -17,6 +17,9 @@ angular.module('tps-forvalteren.service')
         self.checkAggregateOpenCloseButtonNextState = function (state, control, pager, total) {
             var allOpen = true;
             var allClosed = true;
+            if (!pager) {
+                return false;
+            }
             for (var i = pager.startIndex; i < pager.endIndex + 1; i++) {
                 if (i < total && control[i] && control[i].aapen) {
                     allClosed = false;

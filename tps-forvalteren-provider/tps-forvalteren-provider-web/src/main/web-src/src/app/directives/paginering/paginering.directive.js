@@ -16,12 +16,12 @@ angular.module('tps-forvalteren.directives')
 
                 $scope.$watch('contents', function (newVal) {
                     if (newVal) {
-                        $scope.setPage(0);
+                        $scope.setPage(1);
                     }
                 });
 
                 $scope.setPage = function (page) {
-                    if ($scope.contents && !$scope.disabled && (!$scope.pager || page <= $scope.pager.totalPages)) {
+                    if ($scope.contents && !$scope.disabled && (!$scope.pager || page == 1 || page <= $scope.pager.totalPages)) {
                         $scope.pager = pagerService.getPager($scope.contents.length, page, $scope.pageLen);
                         $scope.slice = $scope.contents.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                     }
