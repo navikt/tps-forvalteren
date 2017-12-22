@@ -13,5 +13,10 @@ angular.module('tps-forvalteren.service-rutine.velg-service-rutine', ['ngMateria
 
             };
 
+            $scope.range = function(n) {
+                 console.log("testing");
+                return new Array(n);
+            };
+
 
         }]);

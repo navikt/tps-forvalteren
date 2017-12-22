@@ -31,7 +31,8 @@
                     <md-input-container flex-gt-xs flex="20" class="tps-vk-input-container">
                         <label>Miljø</label>
                         <md-select ng-model="formData.environment" required>
-                            <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                            <md-option  ng-repeat="env in environments" ng-value="env" >{{env}}</md-option>
+
                         </md-select>
                     </md-input-container>
 

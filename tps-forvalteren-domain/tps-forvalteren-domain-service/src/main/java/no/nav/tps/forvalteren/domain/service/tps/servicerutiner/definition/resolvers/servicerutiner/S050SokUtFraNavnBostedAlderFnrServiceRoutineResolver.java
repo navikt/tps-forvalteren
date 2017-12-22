@@ -47,7 +47,7 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .required()
                 .type(TpsParameterType.STRING)
                 //.values("A0")
-                .value("A2")
+                .value("A0")
                 .and()
 
                 .parameter()

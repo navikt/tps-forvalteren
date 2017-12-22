@@ -6,24 +6,25 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAn
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentUtvandringRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentKontaktinformasjonServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
-public class S016Utvandring implements ServiceRoutineResolver{
+public class S600HentKontaktinformasjon implements ServiceRoutineResolver {
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("FS03-FDNUMMER-SOAIHIST-O")
-                .internalName("Hent Adresselinjehistorikk")
-                .javaClass(TpsHentUtvandringRequest.class)
+                .name("FS03-FDNUMMER-KONTINFO-O")
+                .internalName("Hent Kontaktinformasjon")
+                .javaClass(TpsHentKontaktinformasjonServiceRoutineRequest.class)
                 .config()
                 .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
                 .and()
+
                 .parameter()
                 .name("fnr")
                 .required()
@@ -34,32 +35,12 @@ public class S016Utvandring implements ServiceRoutineResolver{
                 .name("aksjonsKode")
                 .required()
                 .type(TpsParameterType.STRING)
-                .value("A0")
-                .and()
-
-                .parameter()
-                .name("aksjonsDato")
-                .optional()
-                .type(TpsParameterType.DATE)
-                .and()
-
-                .parameter()
-                .name("infoType")
-                .required()
-                .type(TpsParameterType.STRING)
-                .values("ALLE", "STAT", "OPPH", "ARBE", "INVA", "UTVA")
-                .and()
-
-                .parameter()
-                .name("buffNr")
-                .required()
-                .type(TpsParameterType.STRING)
-                .values("1", "2", "3", "4", "5")
+                .values("A0")
                 .and()
 
                 .transformer()
                 .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
-                .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataS016"))
+                .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataS600"))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
@@ -70,5 +51,5 @@ public class S016Utvandring implements ServiceRoutineResolver{
                 .addSecurity()
 
                 .build();
-    }
+    };
 }

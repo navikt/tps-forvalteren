@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.config;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.*;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,13 +16,6 @@ import com.fasterxml.jackson.xml.XmlMapper;
 
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S010Adressehistorikk;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S015HentAdresselinjehistorikk;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S016Utvandring;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
@@ -68,6 +62,12 @@ public class CommandConfig {
     }
 
     @Bean
+    ServiceRoutineResolver hentTknr() { return new S002HentTknr();}
+
+    @Bean
+    ServiceRoutineResolver hentAdresser() {return new S103HentAdresser();}
+
+    @Bean
     ServiceRoutineResolver hentAdresseLinjehistorikk() {
         return new S015HentAdresselinjehistorikk();
     }
@@ -88,9 +88,21 @@ public class CommandConfig {
     }
 
     @Bean
+    ServiceRoutineResolver hentKontaktinformasjon(){ return new S600HentKontaktinformasjon();}
+
+    @Bean
     ServiceRoutineResolver hentPersonSok() {
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
+
+    @Bean
+    ServiceRoutineResolver hentFnrHistorikk() {return new S011HentFNRDNRHistorikk();}
+
+    @Bean
+    ServiceRoutineResolver hentRelasjoner() {return new S005Relasjoner();}
+
+    @Bean
+    ServiceRoutineResolver hentPersonopplysninger() {return new S004HentPersonopplysninger();}
 
     @Bean
     SkdMeldingResolver innvandring() {

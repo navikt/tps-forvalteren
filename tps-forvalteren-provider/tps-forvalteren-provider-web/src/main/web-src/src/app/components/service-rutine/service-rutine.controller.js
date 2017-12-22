@@ -48,6 +48,11 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
 
                     $scope.responseData = response;
 
+                    $scope.adresseHistorikk = response.data1;
+
+                    console.log($scope.adresseHistorikk);
+                    console.log($scope.responseData);
+
                     /* Brukes kun til å hente Tags som skal inn i servicerutinenes html fil */
                     // var jup = utilsService.flattenObject($scope.responseData);
                     // var str = JSON.stringify(jup, null, 2);
@@ -62,6 +67,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.loading = false;
                     showAlertTPSError(error);
                 });
+
             };
 
             headerService.setButtons([{
@@ -257,6 +263,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                             $scope.formData[parameter] = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
+                        case 'infoType':
                         case 'adresseTypeS103':
                         case 'kilde':
                         case 'buffNr':
