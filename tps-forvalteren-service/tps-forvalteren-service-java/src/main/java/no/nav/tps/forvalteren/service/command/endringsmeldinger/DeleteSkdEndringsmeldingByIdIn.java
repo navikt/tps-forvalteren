@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_SUM_IN_QUERY;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class DeleteSkdEndringsmeldingByIdIn {
     private SkdEndringsmeldingRepository repository;
     
     public void execute(List<Long> ids) {
-        if (ids.size() > ORACLE_MAX_SUM_IN_QUERY) {
+        if (ids.size() > ORACLE_MAX_IN_SET_ELEMENTS) {
             List<List<Long>> partitionsIds = Lists.partition(ids, 1000);
             for (List<Long> partition : partitionsIds) {
                 repository.deleteByIdIn(partition);

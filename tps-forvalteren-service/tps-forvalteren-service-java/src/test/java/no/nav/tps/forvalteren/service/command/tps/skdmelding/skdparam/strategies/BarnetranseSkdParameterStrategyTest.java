@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;

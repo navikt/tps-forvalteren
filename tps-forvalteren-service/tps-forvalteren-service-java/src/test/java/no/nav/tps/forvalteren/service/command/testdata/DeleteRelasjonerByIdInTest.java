@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_SUM_IN_QUERY;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,7 +30,7 @@ public class DeleteRelasjonerByIdInTest {
     
     @Before
     public void setup() {
-        when(personIds.size()).thenReturn(ORACLE_MAX_SUM_IN_QUERY);
+        when(personIds.size()).thenReturn(ORACLE_MAX_IN_SET_ELEMENTS);
     }
     
     @Test
@@ -42,7 +42,7 @@ public class DeleteRelasjonerByIdInTest {
 
     @Test
     public void verifyServiceCallWithMoreRelasjonerThanMaxInQuery() {
-        when(personIds.size()).thenReturn(ORACLE_MAX_SUM_IN_QUERY * 10);
+        when(personIds.size()).thenReturn(ORACLE_MAX_IN_SET_ELEMENTS * 10);
         
         deleteRelasjonerByIdIn.execute(personIds);
         
