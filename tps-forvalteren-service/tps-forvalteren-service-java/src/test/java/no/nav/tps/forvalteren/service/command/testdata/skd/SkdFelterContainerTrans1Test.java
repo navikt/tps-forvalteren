@@ -38,7 +38,7 @@ public class SkdFelterContainerTrans1Test {
 
     @Test
     public void listContainsAllSkdFeltDefinisjoner() {
-        final int SKD_FELT_DEFINISJONER_SIZE = 135;
+        final int SKD_FELT_DEFINISJONER_SIZE = 144;
         assertThat(skdFeltDefinisjoner, hasSize(SKD_FELT_DEFINISJONER_SIZE));
     }
 

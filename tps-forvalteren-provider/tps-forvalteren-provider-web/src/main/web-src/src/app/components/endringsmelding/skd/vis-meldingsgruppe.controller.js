@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
-    .controller('SkdVisMeldigsgruppeCtrl', ['$scope', '$rootScope', '$stateParams', '$filter', '$mdDialog', '$copyToClipboard', 'endringsmeldingService',
+    .controller('SkdVisMeldigsgruppeCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', '$copyToClipboard', 'endringsmeldingService',
         'utilsService', 'locationService', 'headerService', 'toggleservice',
-        function ($scope, $rootScope, $stateParams, $filter, $mdDialog, $copyToClipboard, endringsmeldingService, utilsService, locationService,
+        function ($scope, $stateParams, $filter, $mdDialog, $copyToClipboard, endringsmeldingService, utilsService, locationService,
                   headerService, toggleservice) {
 
             $scope.meldingstypeT1 = "app/components/endringsmelding/skd/meldingstype/meldingstype-t1.html";
@@ -13,8 +13,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             $scope.aapneAlleFaner = false;
             $scope.meldingAsText = [];
 
-            function setHeaderButtons (meldingCount) {
-                var disable_send_til_tps_button = meldingCount < 1;
+            function setHeaderButtons () {
                 headerService.setButtons([{
                     text: 'Legg til meldinger',
                     icon: 'assets/icons/ic_add_circle_outline_black_24px.svg',
@@ -39,7 +38,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
                     disabled: function () {
-                        return $scope.visEndret || disable_send_til_tps_button;
+                        return $scope.visEndret || !$scope.meldinger || $scope.meldinger.length == 0
                     },
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
@@ -125,8 +124,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 oppdaterFunksjonsknapper();
             };
 
-            var oppdaterFane = undefined;
-
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
                     .title('Bekreft sletting')
@@ -143,8 +140,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             };
 
             $scope.oppdaterValgt = function () {
-                oppdaterFane = true;
-
                 var endret = 0;
                 for (var i = 0; i < $scope.meldinger.length; i++) {
                     $scope.control[i] = $scope.control[i] || {};
@@ -154,16 +149,16 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 }
 
                 var valgt = 0;
-                for (var i = 0; i < $scope.meldinger.length; i++) {
+                for (var j = 0; j < $scope.meldinger.length; j++) {
                     if (endret > 0) {
-                        $scope.control[i].disabled = !$scope.control[i].endret;
-                        if (!$scope.control[i].endret) {
-                            $scope.control[i].velg = false;
+                        $scope.control[j].disabled = !$scope.control[j].endret;
+                        if (!$scope.control[j].endret) {
+                            $scope.control[j].velg = false;
                         }
                     } else {
-                        $scope.control[i].disabled = false;
+                        $scope.control[j].disabled = false;
                     }
-                    if ($scope.control[i].velg) {
+                    if ($scope.control[j].velg) {
                         valgt++;
                     }
                 }
@@ -202,7 +197,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     function () {
                         $scope.meldinger.forEach(function (melding, index) {
                             if ($scope.control[index] && $scope.control[index].velg) {
-                                nullstillControl(index);
+                                $scope.control[index] = {};
                                 originalMeldinger[index] = angular.copy(melding);
                             }
                         });
@@ -247,16 +242,11 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 for (var i = 0; i < $scope.meldinger.length; i++) {
                     if ($scope.control[i] && $scope.control[i].velg) {
                         $scope.meldinger[i] = JSON.parse(JSON.stringify(originalMeldinger[i]));
-                        nullstillControl(i);
+                        $scope.control[i] = {};
                     }
                 }
+                $scope.slice = $scope.meldinger.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                 $scope.oppdaterValgt();
-            }
-
-            function nullstillControl (index) {
-                $scope.control[index].endret = false;
-                $scope.control[index].velg = false;
-                $scope.control[index].aapen = false;
             }
 
             function bekrefterLagring (index) {
@@ -304,7 +294,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 fetchMeldingsgruppe();
             });
 
-            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+            $scope.$on('$stateChangeStart', function (event, next, current) {
                 if ($scope.visEndret) {
                     event.preventDefault();
                     bekreftRelokasjon(next, current);
@@ -353,10 +343,10 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             function fetchMeldingsgruppe () {
                 $scope.showSpinner = true;
                 $scope.meldinger = undefined;
-                endringsmeldingService.getGruppe($scope.gruppeId).then(
+                endringsmeldingService.getGruppe($scope.gruppeId, true).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
-                        setHeaderButtons(result.data.meldinger ? result.data.meldinger.length : 0);
+                        setHeaderButtons();
                         setHeaderIcons();
                         prepTranstype(result.data.meldinger);
                         originalMeldinger = result.data.meldinger;
@@ -367,6 +357,9 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         $scope.antallValgt = 0;
                         $scope.alleMeldinger.checked = false;
                         oppdaterFunksjonsknapper();
+                        headerService.eventUpdate();
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
                         $scope.showSpinner = false;
                     },
                     function (error) {
@@ -395,12 +388,14 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             };
 
             $scope.toggleFane = function (index) {
-                if (!checkIt) {
-                    toggleservice.toggleFane($scope.control, index);
-                    $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
-                        $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
+                if ($scope.requestForm.$valid) {
+                    if (!checkIt) {
+                        toggleservice.toggleFane($scope.control, index);
+                        $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(
+                            $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.meldinger.length);
+                    }
+                    checkIt = false;
                 }
-                checkIt = false;
             };
 
             $scope.$watch('pager.startIndex', function () {

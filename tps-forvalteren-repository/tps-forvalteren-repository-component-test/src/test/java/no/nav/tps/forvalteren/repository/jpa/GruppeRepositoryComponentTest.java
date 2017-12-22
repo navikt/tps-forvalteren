@@ -73,12 +73,11 @@ public class GruppeRepositoryComponentTest {
     @Test
     @Rollback
     public void deleteById() {
-        Gruppe nyGruppe = new Gruppe();
         Gruppe savedGruppe = testRepository.save(gruppe);
 
         repository.deleteById(savedGruppe.getId());
 
-        Gruppe result = testRepository.findOne(savedGruppe.getId());
+        Gruppe result = repository.findById(savedGruppe.getId());
 
         assertThat(result, is(nullValue()));
     }

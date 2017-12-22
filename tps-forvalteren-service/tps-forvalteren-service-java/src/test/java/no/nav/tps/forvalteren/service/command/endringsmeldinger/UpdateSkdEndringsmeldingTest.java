@@ -35,20 +35,20 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingNotFo
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateSkdEndringsmeldingTest {
 
-    @InjectMocks
-    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
-    @Mock
-    private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-
-    @Mock
-    private ObjectMapper mapper;
-
+    
     @Mock
     private MessageProvider messageProvider;
+    
+    @Mock
+    private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
+    
+    @Mock
+    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+
+    @InjectMocks
+    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
 
     private RsMeldingstype meldingType1 = Mockito.mock(RsMeldingstype1Felter.class);
 
@@ -65,7 +65,7 @@ public class UpdateSkdEndringsmeldingTest {
     private List<RsMeldingstype> meldinger = new ArrayList<>(Arrays.asList(meldingType1, meldingType2));
 
     @Before
-    public void setup() throws JsonProcessingException {
+    public void setup() {
         when(meldingType1.getId()).thenReturn(MELDING_ID1);
         when(meldingType2.getId()).thenReturn(MELDING_ID2);
         when(skdEndringsmeldingRepository.findById(MELDING_ID1)).thenReturn(skdMelding1);
@@ -77,32 +77,16 @@ public class UpdateSkdEndringsmeldingTest {
     }
 
     @Test
-    public void updateMeldingHappyPath() throws JsonProcessingException {
+    public void updateMeldingHappyPath() {
         updateSkdEndringsmelding.execute(meldinger);
 
         verify(skdEndringsmeldingRepository).findById(MELDING_ID1);
         verify(skdEndringsmeldingRepository).findById(MELDING_ID2);
-
-        verify(mapper).writeValueAsString(meldingType1);
-        verify(mapper).writeValueAsString(meldingType2);
-
-        verify(skdEndringsmeldingRepository).save(skdMelding1);
-        verify(skdEndringsmeldingRepository).save(skdMelding2);
+        
+        verify(saveSkdEndringsmelding).execute(meldinger.get(0), skdMelding1);
+        verify(saveSkdEndringsmelding).execute(meldinger.get(1), skdMelding2);
     }
-
-    @Test
-    public void checkThatJsonExceptionGetsThrown() throws JsonProcessingException {
-        doThrow(JsonProcessingException.class).when(mapper).writeValueAsString(meldingType1);
-
-        expectedException.expect(SkdEndringsmeldingJsonProcessingException.class);
-        expectedException.expectMessage("json");
-
-        updateSkdEndringsmelding.execute(meldinger);
-
-        verify(messageProvider).get(SKD_ENDRINGSMELDING_JSON_PROCESSING, MELDING_ID1);
-        verify(messageProvider).get(SKD_ENDRINGSMELDING_JSON_PROCESSING, MELDING_ID2);
-    }
-
+    
     @Test
     public void skdEndringsmeldingThrowsExceptionWhenNotExists() {
         when(skdEndringsmeldingRepository.findById(any())).thenReturn(null);

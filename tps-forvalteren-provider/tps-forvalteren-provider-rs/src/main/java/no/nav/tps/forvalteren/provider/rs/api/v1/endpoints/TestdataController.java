@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdA
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
@@ -90,6 +91,9 @@ public class TestdataController {
 
     @Autowired
     private LagreTilTps lagreTilTps;
+    
+    @Autowired
+    private SavePersonBulk savePersonBulk;
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
@@ -97,11 +101,13 @@ public class TestdataController {
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
-        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(ekstraherIdenterFraTestdataRequests.execute(testdataRequests));
+        
+        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
+        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
 
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdOnPersons.setGruppeId(personerSomSkalPersisteres, gruppeId);
-        savePersonListService.execute(personerSomSkalPersisteres);
+        savePersonBulk.execute(personerSomSkalPersisteres);
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")

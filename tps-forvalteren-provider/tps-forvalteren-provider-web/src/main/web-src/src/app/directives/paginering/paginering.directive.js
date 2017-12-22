@@ -6,13 +6,13 @@ angular.module('tps-forvalteren.directives')
                 contents: '=',
                 slice: '=',
                 pager: '=',
-                pageSize: '='
+                pageSize: '=',
+                disabled: '='
             },
             templateUrl: 'app/directives/paginering/paginering.html',
             controller: ['$scope', '$timeout', 'pagerService', function ($scope, $timeout, pagerService) {
 
                 $scope.pageLen = $scope.pageSize || 20;
-                $scope.pager = {};
 
                 $scope.$watch('contents', function (newVal) {
                     if (newVal) {
@@ -21,15 +21,11 @@ angular.module('tps-forvalteren.directives')
                 });
 
                 $scope.setPage = function (page) {
-                    if (page < 1 || page > $scope.pager.totalPages) {
-                        return;
+                    if ($scope.contents && !$scope.disabled && (!$scope.pager || page == 1 || page <= $scope.pager.totalPages)) {
+                        $scope.pager = pagerService.getPager($scope.contents.length, page, $scope.pageLen);
+                        $scope.slice = $scope.contents.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
                     }
-
-                    // get pager object from service
-                    $scope.pager = pagerService.getPager($scope.contents.length, page, $scope.pageLen);
-
-                    $scope.slice = $scope.contents.slice($scope.pager.startIndex, $scope.pager.endIndex + 1);
-                }
+                };
             }]
         };
     }]);

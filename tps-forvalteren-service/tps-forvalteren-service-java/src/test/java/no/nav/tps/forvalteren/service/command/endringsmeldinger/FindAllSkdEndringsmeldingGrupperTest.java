@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aGruppe;
+import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -29,8 +29,8 @@ public class FindAllSkdEndringsmeldingGrupperTest {
     @Test
     public void checkThatFindAllGrupperReturnsAllGrupper() {
         List<SkdEndringsmeldingGruppe> grupper = new ArrayList<>();
-        grupper.add(aGruppe().build());
-        grupper.add(aGruppe().build());
+        grupper.add(aSkdEndringsmeldingGruppe().build());
+        grupper.add(aSkdEndringsmeldingGruppe().build());
 
         when(repository.findAllByOrderByIdAsc()).thenReturn(grupper);
         List<SkdEndringsmeldingGruppe> result = findAllSkdEndringsmeldingGrupper.execute();

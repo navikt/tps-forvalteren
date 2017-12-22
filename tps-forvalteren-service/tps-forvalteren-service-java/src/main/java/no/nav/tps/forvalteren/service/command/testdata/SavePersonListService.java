@@ -6,7 +6,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
@@ -38,13 +37,14 @@ public class SavePersonListService {
 
     public void execute(List<Person> personer) {
 
-        Set<Long> utdaterteRelasjonIder = new HashSet<>();
         for (Person person : personer) {
+            Set<Long> utdaterteRelasjonIder = new HashSet<>();
 
-            Person personFraDB = personRepository.findById(person.getId());
-            if (personFraDB != null) {
-                oppdaterRelasjonReferanser.execute(person, personFraDB);
-                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personFraDB);
+            Person personDb = personRepository.findById(person.getId());
+            if (personDb != null) {
+                oppdaterRelasjonReferanser.execute(person, personDb);
+                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
+                adresseRepository.deleteAllByPerson(personDb);
             }
 
             uppercaseDataInPerson.execute(person);
@@ -56,21 +56,14 @@ public class SavePersonListService {
 
             if (person.getBoadresse() != null) {
                 person.getBoadresse().setPerson(person);
-                Adresse personAdresseDB = adresseRepository.findAdresseByPersonId(person.getId());
-                if (personAdresseDB != null) {
-                    adresseRepository.deleteById(personAdresseDB.getId());
-                }
+                adresseRepository.save(person.getBoadresse());
             }
 
-            person.setOpprettetDato(null);
-            person.setOpprettetAv(null);
-            person.setEndretDato(null);
-            person.setEndretAv(null);
-        }
-        personRepository.save(personer);
+            if (!utdaterteRelasjonIder.isEmpty()) {
+                relasjonRepository.deleteByIdIn(utdaterteRelasjonIder);
+            }
 
-        if (!utdaterteRelasjonIder.isEmpty()) {
-            relasjonRepository.deleteByIdIn(utdaterteRelasjonIder);
+            personRepository.save(person);
         }
 
     }

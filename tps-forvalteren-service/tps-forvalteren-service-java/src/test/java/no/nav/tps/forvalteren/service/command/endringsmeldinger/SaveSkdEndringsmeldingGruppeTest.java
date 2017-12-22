@@ -28,4 +28,5 @@ public class SaveSkdEndringsmeldingGruppeTest {
         saveSkdEndringsmeldingGruppe.execute(gruppe);
         verify(repository).save(gruppe);
     }
+
 }

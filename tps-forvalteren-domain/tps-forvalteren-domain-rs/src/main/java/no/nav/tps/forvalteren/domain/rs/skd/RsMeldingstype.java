@@ -20,6 +20,17 @@ import lombok.Setter;
 public abstract class RsMeldingstype {
 
     private Long id;
+    
     private String beskrivelse;
+    
+    private String transtype;
+    
+    private String maskindato;
+
+    private String maskintid;
+
+    private String aarsakskode;
+
+    private String sekvensnr;
 
 }

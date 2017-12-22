@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_SKD_ENDRINGSMELDING_LOGG")
@@ -42,6 +42,12 @@ public class SkdEndringsmeldingLogg {
 
     @Column(name = "ENDRINGSMELDING", nullable = false, updatable = false)
     private String endringsmelding;
+
+    @Column(name = "BESKRIVELSE", nullable = false, updatable = false)
+    private String beskrivelse;
+
+    @Column(name = "ENVIRONMENT", nullable = false, updatable = false)
+    private String environment;
 
     @CreatedDate
     @Column(name = "INNSENDT_DATO", nullable = false, updatable = false)
