@@ -14,8 +14,7 @@
             <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <!-- Input fields rows -->
-                <fieldset>
-                <legend>Select og inputfelt for {{serviceRutineName}}</legend>
+                <legend class="tpsf-sr-inputform-legend">Select og inputfelt for {{serviceRutineName}}</legend>
                 <div ng-repeat="field in fields" ng-init="parentIndex = $index" >
                     <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%4)==0"  >
 
@@ -24,20 +23,18 @@
                                          form-data="formData" select-values="selectValues" input-param-name="fields[parentIndex+i]"></tps-input-field>
                     </div>
                 </div>
-              </fieldset>
 
                 <!-- lowest row-->
-                <div class="tps-vk-submit-container" layout-gt-xs="row" layout="column" layout-align>
-                    <md-input-container flex-gt-xs flex="20" class="tps-vk-input-container">
+                <div class="tps-vk-submit-container" layout-gt-xs="row" layout-wrap layout-align>
+                    <md-input-container flex-gt-xs flex="25" class="tps-vk-input-container" layout="row">
                         <label>Miljø</label>
-                        <md-select ng-model="formData.environment" required>
-                            <md-option  ng-repeat="env in environments" ng-value="env" >{{env}}</md-option>
-
+                        <md-select flex="100" ng-model="formData.environment" required>
+                            <md-option ng-repeat="env in environments.environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
 
-                    <md-input-container flex-gt-xs flex="80" class="tps-vk-input-container tps-vk-form-btns"
-                                        layout-align="center center">
+                    <md-input-container flex-gt-xs flex="75" class="tps-vk-input-container tps-vk-form-btns"
+                                        layout-align>
                         <!-- Submit request Button -->
                         <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
                                    ng-disabled="requestForm.$invalid || loading">
@@ -84,7 +81,7 @@
         <!-- Footer Response -->
         <md-content flex="5" class="tps-vk-status-container md-whiteframe-z2" layout="row" layout-align="start center">
             <div class="tps-vk-hits" flex="45" layout="row" layout-align="start center">
-                <div class="tps-vk-hits-meesage" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0 ">
+                <div class="tps-vk-hits-message" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0 ">
                      Treff: {{ getAntallTreff(personsData)  }}
                 </div>
                 <div ng-show='formData["buffNr"]' class="tps-vk-hits-message" flex="20" layout-align="center center" ng-if="personsData" ng-show="getAntallTreff(personsData) != 0" >

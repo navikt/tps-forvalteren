@@ -34,7 +34,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.loading = true;
 
                 serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
-
+                    //console.log(params);
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
@@ -49,9 +49,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.responseData = response;
 
                     $scope.adresseHistorikk = response.data1;
-
-                    console.log($scope.adresseHistorikk);
-                    console.log($scope.responseData);
 
                     /* Brukes kun til å hente Tags som skal inn i servicerutinenes html fil */
                     // var jup = utilsService.flattenObject($scope.responseData);
@@ -90,6 +87,8 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.toggle = false;
                 $scope.svarStatus = null;
                 $scope.xmlForm = null;
+                $scope.adresseHistorikk = null;
+                $scope.responseData = null;
             };
 
             $scope.isRequired = function (type) {

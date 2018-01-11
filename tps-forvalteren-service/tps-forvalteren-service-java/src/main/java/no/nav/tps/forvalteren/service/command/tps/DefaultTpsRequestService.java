@@ -40,6 +40,9 @@ public class DefaultTpsRequestService implements TpsRequestService {
             forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 
+        String servicerutineNavn = tpsRequest.getServiceRutinenavn().replace("-TESTDATA", "");
+        tpsRequest.setServiceRutinenavn(servicerutineNavn);
+
         String xml = xmlMapper.writeValueAsString(tpsRequest);
 
         Request request = new Request(xml, tpsRequest, context);

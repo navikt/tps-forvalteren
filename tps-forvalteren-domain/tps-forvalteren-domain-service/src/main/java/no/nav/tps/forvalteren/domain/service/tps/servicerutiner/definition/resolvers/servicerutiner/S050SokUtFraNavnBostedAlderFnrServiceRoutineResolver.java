@@ -4,6 +4,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsSokPersonServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 
@@ -92,7 +93,8 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .transformer()
                 .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
                 .postSend(removeUnauthorizedFnrFromResponse("antallTotalt", "antallFS050"))
-                .postSend(extractDataListFromXml("personDataS050", "enPersonRes", "antallTotalt"))
+                .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataS050"))
+                //.postSend(extractDataListFromXml("personDataS050", "enPersonRes", "antallTotalt"))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 

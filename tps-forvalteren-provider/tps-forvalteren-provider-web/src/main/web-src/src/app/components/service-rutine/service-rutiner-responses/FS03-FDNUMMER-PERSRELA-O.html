@@ -49,6 +49,8 @@
                         <div layout="row">
                             <tps-output-field label="doSystem" flex="30" field-model="relasjon_a.doSystem" title="doSystem"></tps-output-field>
                             <tps-output-field label="doSaksbehandler" flex="30" field-model="relasjon_a.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                            <tps-output-field label="adresseStatus" flex="30" field-model="relasjon_a.adresseStatus" title="adresseStatus"></tps-output-field>
+                            <tps-output-field label="adrStatusBeskr" flex="30" field-model="relasjon_a.adrStatusBeskr" title="adrStatusBeskr"></tps-output-field>
                         </div>
                     </div>
                     <div layout="column" ng-if="!isArray(adresseHistorikk['relasjoner']['relasjon'])">
@@ -76,6 +78,8 @@
                         <div layout="row">
                             <tps-output-field label="doSystem" flex="30" field-model="responseData.data1.relasjoner.relasjon.doSystem" title="doSystem"></tps-output-field>
                             <tps-output-field label="doSaksbehandler" flex="30" field-model="responseData.data1.relasjoner.relasjon.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                            <tps-output-field label="adresseStatus" flex="30" field-model="responseData.data1.releasjoner.relasjon.adresseStatus" title="adresseStatus"></tps-output-field>
+                            <tps-output-field label="adrStatusBeskr" flex="30" field-model="responseData.data1.releasjoner.relasjon.adrStatusBeskr" title="adrStatusBeskr"></tps-output-field>
                         </div>
                     </div>
                 </div>

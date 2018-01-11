@@ -1,0 +1,6 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>FNR Liste</label>
+    <textarea name="nFnrInput" id="nFnrInput" ng-required="isRequired('nFnr')" ng-pattern="/^(\d{11}[\W\s]*)+$/" ng-model="formData.nFnr" ></textarea>
+    <div ng-messages="requestForm.fnrListeInput.$error" ng-show="requestForm.fnrListeInput.$touched"></div>
+</md-input-container>
+
