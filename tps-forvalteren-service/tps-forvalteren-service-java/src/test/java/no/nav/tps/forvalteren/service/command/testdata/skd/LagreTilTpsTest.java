@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 
@@ -22,6 +23,7 @@ import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 public class LagreTilTpsTest {
 
     private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
+    private static final boolean ADD_HEADER = true;
 
     @Mock
     private SkdMessageSenderTrans1 skdMessageSenderTrans1;
@@ -37,6 +39,9 @@ public class LagreTilTpsTest {
 
     @Mock
     private SkdStartAjourhold skdStartAjourhold;
+
+    @Mock
+    private SkdMeldingResolver innvandring;
 
     @InjectMocks
     private LagreTilTps lagreTilTps;
@@ -57,9 +62,9 @@ public class LagreTilTpsTest {
     @Test
     public void checkThatServicesGetsCalled() {
         verify(findPersonsNotInEnvironments).execute(gruppeId, environments);
-        verify(skdMessageSenderTrans1).execute(NAVN_INNVANDRINGSMELDING, persons, environments);
-        verify(createRelasjoner).execute(persons, environments);
-        verify(createDoedsmeldinger).execute(gruppeId, environments);
+        verify(skdMessageSenderTrans1).execute(NAVN_INNVANDRINGSMELDING, persons, ADD_HEADER);
+        verify(createRelasjoner).execute(persons, ADD_HEADER);
+        verify(createDoedsmeldinger).execute(gruppeId, ADD_HEADER);
         verify(skdStartAjourhold).execute(anySet());
     }
 }

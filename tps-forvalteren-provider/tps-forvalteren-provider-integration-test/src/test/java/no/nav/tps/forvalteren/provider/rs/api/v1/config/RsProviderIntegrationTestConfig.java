@@ -1,13 +1,10 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.config;
 
-import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
-import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
+import static org.mockito.Mockito.mock;
+
+import java.io.IOException;
+import javax.jms.Queue;
+import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.mockito.Mockito;
@@ -20,11 +17,14 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import javax.jms.Queue;
-import javax.jms.QueueConnectionFactory;
-import java.io.IOException;
-
-import static org.mockito.Mockito.mock;
+import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
+import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
+import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
 
 @Configuration
 @ComponentScan(basePackageClasses = TestUserDetails.class)
@@ -37,7 +37,6 @@ public class RsProviderIntegrationTestConfig {
 
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
-
 
     @Bean
     @Primary
@@ -95,4 +94,5 @@ public class RsProviderIntegrationTestConfig {
         jmsTemplate.setReceiveTimeout(100);
         return jmsTemplate;
     }
+
 }

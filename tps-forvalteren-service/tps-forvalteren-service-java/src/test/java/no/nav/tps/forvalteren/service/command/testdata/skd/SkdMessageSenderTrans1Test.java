@@ -7,13 +7,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -39,9 +36,6 @@ public class SkdMessageSenderTrans1Test {
     private SkdMessageSenderTrans1 skdMessageSenderTrans1;
 
     @Mock
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
-
-    @Mock
     private SkdParametersCreatorService skdParametersCreatorService;
 
     @Mock
@@ -53,31 +47,29 @@ public class SkdMessageSenderTrans1Test {
     @Mock
     private GetSkdMeldingByName getSkdMeldingByName;
 
+    @Mock
+    private GenerateSkdMelding generateSkdMelding;
+
+    private static final boolean ADD_HEADER = true;
     private final String VIGSEL = "Vigsel";
     private final String INNVANDRING = "Innvandring";
     private final String SKDMELDING = "SKDMELDING";
 
-    private List<String> environments = new ArrayList<>(Arrays.asList("u2", "u6"));
     private Person person = PersonProvider.aMalePerson().build();
     private Person person2 = PersonProvider.aMalePerson().build();
     private Person person3 = PersonProvider.aMalePerson().build();
     private List<Person> persons = new ArrayList<>();
-
-    @Before
-    public void setup() {
-
-    }
 
     @Test
     public void illegalSkdMeldingByNameThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         when(getSkdMeldingByName.execute(anyString())).thenReturn(Optional.empty());
 
-        skdMessageSenderTrans1.execute(VIGSEL, persons, environments);
+        skdMessageSenderTrans1.execute(VIGSEL, persons, ADD_HEADER);
     }
 
     @Test
-    public void checkThatInnvandringSkdMeldingGetsSentMultipleTimes() {
+    public void checkThatIGenerateSkdMeldingGetsCalledMultipleTimes() {
         persons.add(person);
         persons.add(person2);
         persons.add(person3);
@@ -88,11 +80,13 @@ public class SkdMessageSenderTrans1Test {
 
         when(getSkdMeldingByName.execute(INNVANDRING)).thenReturn(skdRequestMeldingDefinitionOptional);
         when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(skdParametere);
-        when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer)).thenReturn(SKDMELDING);
+        when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
 
-        skdMessageSenderTrans1.execute(INNVANDRING, persons, environments);
+        skdMessageSenderTrans1.execute(INNVANDRING, persons, ADD_HEADER);
 
-        verify(sendSkdMeldingTilGitteMiljoer, times(3)).execute(SKDMELDING, skdRequestMeldingDefinitionOptional.get(), new HashSet<>(environments));
+        verify(generateSkdMelding, times(1)).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
+        verify(generateSkdMelding, times(1)).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
+        verify(generateSkdMelding, times(1)).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
     }
 
 }

@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,9 +20,6 @@ public class SkdMessageSenderTrans2 {
     private String deployedEnvironment;
 
     @Autowired
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
-
-    @Autowired
     private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;
 
     @Autowired
@@ -34,17 +31,17 @@ public class SkdMessageSenderTrans2 {
     @Autowired
     private BarnetranseSkdParameterStrategy barnetranseSkdParameterStrategy;
 
-    public void execute(String skdMeldingNavn, Person forelder, List<Person> barn, List<String> environments) {
+    public List<String> execute(String skdMeldingNavn, Person forelder, List<Person> barn, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
-
+        List<String> skdMeldinger = new ArrayList<>();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
-            TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
             Map<String, String> skdParametere = barnetranseSkdParameterStrategy.execute(forelder, barn);
-            String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer);
-            sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, new HashSet<>(environments));
+            String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, addHeader);
+            skdMeldinger.add(skdMelding);
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
         }
+        return skdMeldinger;
     }
 
 }

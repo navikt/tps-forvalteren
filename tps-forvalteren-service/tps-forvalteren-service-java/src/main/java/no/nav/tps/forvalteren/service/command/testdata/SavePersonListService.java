@@ -56,7 +56,7 @@ public class SavePersonListService {
 
             if (person.getBoadresse() != null) {
                 person.getBoadresse().setPerson(person);
-                adresseRepository.save(person.getBoadresse());
+                //adresseRepository.save(person.getBoadresse());
             }
 
             if (!utdaterteRelasjonIder.isEmpty()) {

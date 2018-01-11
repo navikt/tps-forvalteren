@@ -8,6 +8,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
 
             $scope.kriterier = [];
             $scope.kriterium = {};
+            $scope.withAdresse = false;
             $scope.startOfEra = new Date(1900,0,1); // Month is 0-indexed
             $scope.today = new Date();
             $scope.editMode = true;
@@ -44,8 +45,9 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
             $scope.opprettTestpersoner = function () {
                 $scope.editMode = false;
                 $scope.showSpinner = true;
+                
                 fixDates();
-                testdataService.opprettTestpersoner(gruppeId, $scope.kriterier).then(
+                testdataService.opprettTestpersoner(gruppeId, $scope.kriterier, $scope.withAdresse).then(
                     function (result) {
                         $scope.showSpinner = false;
                         opprettComplete();

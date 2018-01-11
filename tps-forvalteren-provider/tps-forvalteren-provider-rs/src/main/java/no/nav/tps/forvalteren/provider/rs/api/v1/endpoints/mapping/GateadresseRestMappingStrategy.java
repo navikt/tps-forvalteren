@@ -14,12 +14,14 @@ public class GateadresseRestMappingStrategy implements MappingStrategy {
         factory.classMap(RsGateadresse.class, Gateadresse.class)
                 .field("personId", "person.id")
                 .field("gateadresse", "adresse")
+                .field("adresseId", "id")
                 .byDefault()
                 .register();
 
         factory.classMap(Gateadresse.class, RsGateadresse.class)
                 .field("person.id", "personId")
                 .field("adresse", "gateadresse")
+                .field("id", "adresseId")
                 .byDefault()
                 .register();
     }

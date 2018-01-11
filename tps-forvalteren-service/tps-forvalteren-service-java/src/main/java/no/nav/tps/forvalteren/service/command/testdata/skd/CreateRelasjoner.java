@@ -22,25 +22,25 @@ public class CreateRelasjoner {
     @Autowired
     private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
-    public void execute(List<Person> personerSomIkkeEksitererITpsMiljoe, List<String> environments) {
+    public List<String> execute(List<Person> personerSomIkkeEksitererITpsMiljoe, boolean addHeader) {
         List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITpsMiljoe);
-
+        List<String> skdMeldinger = new ArrayList<>();
         for (Person person : personerMedRelasjoner) {
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
             boolean hasBarn = false;
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
                 if ("Vigsel".equals(skdMeldingNavn)) {
-                    skdMessageSenderTrans1.execute(skdMeldingNavn, Arrays.asList(person), environments);
+                    skdMeldinger.addAll(skdMessageSenderTrans1.execute(skdMeldingNavn, Arrays.asList(person), addHeader));
                 } else if ("Familieendring".equals(skdMeldingNavn)) {
                     hasBarn = true;
                 }
             }
             if (hasBarn) {
-                persistBarnTransRecordsToTps.execute(person, environments);
+                skdMeldinger.addAll(persistBarnTransRecordsToTps.execute(person, addHeader));
             }
         }
-
+        return skdMeldinger;
     }
 
     private String getSkdMeldingNavn(Relasjon relasjon) {
