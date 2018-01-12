@@ -19,7 +19,7 @@ public class LagreTilTps {
     private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
 
     @Autowired
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Autowired
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
@@ -42,7 +42,7 @@ public class LagreTilTps {
     public void execute(Long gruppeId, List<String> environments) {
         List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(gruppeId, environments);
         List<String> skdMeldinger = new ArrayList<>();
-        List<String> innvandringsMeldinger = skdMessageSenderTrans1.execute(NAVN_INNVANDRINGSMELDING, personerSomIkkeEksitererITpsMiljoe, true);
+        List<String> innvandringsMeldinger = skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, personerSomIkkeEksitererITpsMiljoe, true);
         List<String> relasjonsMeldinger = createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, true);
         List<String> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);
         skdMeldinger.addAll(innvandringsMeldinger);

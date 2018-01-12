@@ -17,7 +17,7 @@ public class CreateRelasjoner {
     private RelasjonRepository relasjonRepository;
 
     @Autowired
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Autowired
     private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
@@ -31,7 +31,7 @@ public class CreateRelasjoner {
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
                 if ("Vigsel".equals(skdMeldingNavn)) {
-                    skdMeldinger.addAll(skdMessageSenderTrans1.execute(skdMeldingNavn, Arrays.asList(person), addHeader));
+                    skdMeldinger.addAll(skdMessageCreatorTrans1.execute(skdMeldingNavn, Arrays.asList(person), addHeader));
                 } else if ("Familieendring".equals(skdMeldingNavn)) {
                     hasBarn = true;
                 }

@@ -11,7 +11,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOn
 @Service
 public class DefaultSetDummyAdresseOnPersons implements SetDummyAdresseOnPersons {
 
-    private static final LocalDateTime NOW = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
+    private static final LocalDateTime FLYTTEDATO = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
     private static final String GATEADRESSE = "SANNERGATA";
     private static final String HUSNR = "2";
     private static final String POSTNR = "0557";
@@ -27,7 +27,7 @@ public class DefaultSetDummyAdresseOnPersons implements SetDummyAdresseOnPersons
             adresse.setKommunenr(KOMMUNENR);
             adresse.setAdresse(GATEADRESSE);
             adresse.setPostnr(POSTNR);
-            adresse.setFlyttedato(NOW);
+            adresse.setFlyttedato(FLYTTEDATO);
             adresse.setPerson(person);
             person.setBoadresse(adresse);
         }

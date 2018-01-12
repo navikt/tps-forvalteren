@@ -20,13 +20,14 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsm
 import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageSenderTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 
 @Service
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
     private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
     private static final int NAVN_MAX_LENGTH = 50;
+    
     @Autowired
     private MessageProvider messageProvider;
     
@@ -34,7 +35,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
     @Autowired
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Autowired
     private CreateRelasjoner createRelasjoner;
@@ -62,7 +63,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
             List<String> skdMeldinger = new ArrayList<>();
-            List<String> innvandringsMeldinger = skdMessageSenderTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), false);
+            List<String> innvandringsMeldinger = skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), false);
             List<String> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
             List<String> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
             skdMeldinger.addAll(innvandringsMeldinger);

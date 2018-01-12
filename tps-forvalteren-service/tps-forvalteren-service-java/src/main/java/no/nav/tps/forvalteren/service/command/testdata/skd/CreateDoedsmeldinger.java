@@ -18,7 +18,7 @@ public class CreateDoedsmeldinger {
     private static final String NAVN_DOEDSMELDING = "Doedsmelding";
 
     @Autowired
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Autowired
     private FindGruppeById findGruppeById;
@@ -38,7 +38,7 @@ public class CreateDoedsmeldinger {
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(personerIGruppen);
         List<String> skdMeldinger = new ArrayList<>();
         if (!doedePersonerWithoutDoedsmelding.isEmpty()) { 
-            skdMeldinger.addAll(skdMessageSenderTrans1.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, addHeader));
+            skdMeldinger.addAll(skdMessageCreatorTrans1.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, addHeader));
             saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
         return skdMeldinger;

@@ -29,7 +29,7 @@ public class PersistBarnTransRecordsToTpsTest {
     private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
     @Mock
-    private SkdMessageSenderTrans2 skdMessageSenderTrans2;
+    private SkdMessageCreatorTrans2 skdMessageCreatorTrans2;
 
     @Mock
     private FinnBarnTilForelder finnBarnTilForelder;
@@ -61,7 +61,7 @@ public class PersistBarnTransRecordsToTpsTest {
         persistBarnTransRecordsToTps.execute(forelder, ADD_HEADER);
 
         verify(finnBarnTilForelder).execute(forelder);
-        verify(skdMessageSenderTrans2).execute("Familieendring", forelder, barn, ADD_HEADER);
+        verify(skdMessageCreatorTrans2).execute("Familieendring", forelder, barn, ADD_HEADER);
     }
 
     @Test
@@ -76,8 +76,8 @@ public class PersistBarnTransRecordsToTpsTest {
         persistBarnTransRecordsToTps.execute(forelder, ADD_HEADER);
 
         verify(finnBarnTilForelder).execute(forelder);
-        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord1, ADD_HEADER);
-        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord2, ADD_HEADER);
+        verify(skdMessageCreatorTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord1, ADD_HEADER);
+        verify(skdMessageCreatorTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord2, ADD_HEADER);
     }
 
 }

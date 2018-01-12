@@ -12,7 +12,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FinnBarnTilForelder;
 public class PersistBarnTransRecordsToTps {
 
     @Autowired
-    private SkdMessageSenderTrans2 skdMessageSenderTrans2;
+    private SkdMessageCreatorTrans2 skdMessageCreatorTrans2;
 
     @Autowired
     private FinnBarnTilForelder finnBarnTilForelder;
@@ -27,12 +27,12 @@ public class PersistBarnTransRecordsToTps {
         if (barn.size() > MAX_BARN) {
             throw new IllegalArgumentException("Personen har for mange barn.");
         } else if (barn.size() <= MAX_BARN_PER_RECORD) {
-            skdMeldinger.addAll(skdMessageSenderTrans2.execute(SKD_MELDING_NAVN, forelder, barn, addHeader));
+            skdMeldinger.addAll(skdMessageCreatorTrans2.execute(SKD_MELDING_NAVN, forelder, barn, addHeader));
         } else {
             List<Person> barnRecord1 = barn.subList(0, 13);
             List<Person> barnRecord2 = barn.subList(13, barn.size());
-            skdMeldinger.addAll(skdMessageSenderTrans2.execute(SKD_MELDING_NAVN, forelder, barnRecord1, addHeader));
-            skdMeldinger.addAll(skdMessageSenderTrans2.execute(SKD_MELDING_NAVN, forelder, barnRecord2, addHeader));
+            skdMeldinger.addAll(skdMessageCreatorTrans2.execute(SKD_MELDING_NAVN, forelder, barnRecord1, addHeader));
+            skdMeldinger.addAll(skdMessageCreatorTrans2.execute(SKD_MELDING_NAVN, forelder, barnRecord2, addHeader));
         }
         return skdMeldinger;
     }

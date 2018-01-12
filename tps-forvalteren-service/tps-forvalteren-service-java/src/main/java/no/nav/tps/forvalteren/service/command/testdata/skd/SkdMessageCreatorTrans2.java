@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -14,10 +13,7 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies.BarnetranseSkdParameterStrategy;
 
 @Service
-public class SkdMessageSenderTrans2 {
-
-    @Value("${environment.class}")
-    private String deployedEnvironment;
+public class SkdMessageCreatorTrans2 {
 
     @Autowired
     private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;

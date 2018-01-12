@@ -34,7 +34,7 @@ public class CreateRelasjonerTest {
     private RelasjonRepository relasjonRepository;
 
     @Mock
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Mock
     private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
@@ -60,8 +60,8 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person2), ADD_HEADER);
-        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person3), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person2), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person3), ADD_HEADER);
         verify(persistBarnTransRecordsToTps).execute(person2, ADD_HEADER);
     }
 
@@ -75,8 +75,8 @@ public class CreateRelasjonerTest {
         verify(relasjonRepository, times(1)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person2), ADD_HEADER);
-        verify(skdMessageSenderTrans1).execute("Vigsel", Arrays.asList(person3), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person2), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person3), ADD_HEADER);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class CreateRelasjonerTest {
     public void checkThatNothingGetsCalled() {
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
-        verify(skdMessageSenderTrans1, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
+        verify(skdMessageCreatorTrans1, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
     }
 
 }

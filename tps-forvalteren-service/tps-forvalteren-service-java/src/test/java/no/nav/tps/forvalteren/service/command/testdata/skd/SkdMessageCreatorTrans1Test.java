@@ -27,13 +27,13 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersCreatorService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SkdMessageSenderTrans1Test {
+public class SkdMessageCreatorTrans1Test {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Mock
     private SkdParametersCreatorService skdParametersCreatorService;
@@ -65,7 +65,7 @@ public class SkdMessageSenderTrans1Test {
         expectedException.expect(IllegalArgumentException.class);
         when(getSkdMeldingByName.execute(anyString())).thenReturn(Optional.empty());
 
-        skdMessageSenderTrans1.execute(VIGSEL, persons, ADD_HEADER);
+        skdMessageCreatorTrans1.execute(VIGSEL, persons, ADD_HEADER);
     }
 
     @Test
@@ -82,11 +82,11 @@ public class SkdMessageSenderTrans1Test {
         when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(skdParametere);
         when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
 
-        skdMessageSenderTrans1.execute(INNVANDRING, persons, ADD_HEADER);
+        skdMessageCreatorTrans1.execute(INNVANDRING, persons, ADD_HEADER);
 
-        verify(generateSkdMelding, times(1)).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
-        verify(generateSkdMelding, times(1)).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
-        verify(generateSkdMelding, times(1)).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
+        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
+        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
+        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
     }
 
 }
