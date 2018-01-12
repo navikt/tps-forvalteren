@@ -2,10 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTran
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
     private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
-    private static final int NAVN_MAX_LENGTH = 50;
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired
     private MessageProvider messageProvider;
@@ -79,9 +78,12 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
     }
 
     private String setNavnWithUniqueId(String navn) {
-        String paddedNavn = StringUtils.rightPad(navn, NAVN_MAX_LENGTH);
-        String uniqueId = UUID.randomUUID().toString();
-        return paddedNavn.substring(0, 43) + " (" + uniqueId.substring(9, 13) + ")";
+        String identifier = " (" + SECURE_RANDOM.nextInt(9999) + ")";
+        if (navn.length() + identifier.length() <= 50) {
+            return navn + identifier;
+        } else {
+            return navn.substring(0, 50 - identifier.length()) + identifier;
+        }
     }
 
 }

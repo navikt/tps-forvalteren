@@ -44,7 +44,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                     icon: 'assets/icons/ic_launch_black_24px.svg',
                     hide: $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") === -1,
                     disabled: function () {
-                        return $scope.visEndret
+                        return $scope.visEndret || !$scope.personer || $scope.personer.length === 0
                     },
                     click: function () {
                         testdataService.opprettSkdEndringsmeldingGruppe($scope.gruppeId).then(
