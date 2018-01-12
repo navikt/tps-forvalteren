@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 
@@ -32,6 +33,9 @@ public class DeleteGruppeByIdTest {
     @Mock
     private DeleteRelasjonerByIdIn deleteRelasjonerByIdIn;
 
+    @Mock
+    private DoedsmeldingRepository doedsmeldingRepository;
+    
     @InjectMocks
     private DeleteGruppeById deleteGruppeById;
 
@@ -52,6 +56,7 @@ public class DeleteGruppeByIdTest {
         verify(deleteRelasjonerByIdIn).execute((List<Long>) argThat(hasItem(gruppe.getPersoner().get(0).getId())));
         verify(personRepository).deleteByGruppeId(GRUPPE_ID);
         verify(gruppeRepository).deleteById(GRUPPE_ID);
+        verify(doedsmeldingRepository).deleteByPersonIdIn((List<Long>) argThat(hasItem(gruppe.getPersoner().get(0).getId())));
     }
 
 }
