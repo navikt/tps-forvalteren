@@ -6,6 +6,9 @@
                 <div flex="5"></div>
                 <div layout="column">
                     <div layout="row" layout-wrap>
+                        <tps-output-field label="fodselsnummer" flex="20" field-model="responseData.data1.fodselsnummer" title="fodselsnummer"></tps-output-field>
+                        <tps-output-field label="identType" flex="20" field-model="responseData.data1.identType" title="identType"></tps-output-field>
+
                         <tps-output-field label="adrTidspunktReg" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
                         <tps-output-field label="datoFom" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.datoFom" title="datoFom"></tps-output-field>
                         <tps-output-field label="kommuneNavn" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommuneNavn" title="kommuneNavn"></tps-output-field>
@@ -189,6 +192,59 @@
                         <tps-output-field label="tilleggsLinje" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.tilleggsLinje" title="tilleggsLinje"></tps-output-field>
                         <tps-output-field label="kommunenr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommunenr" title="kommunenr"></tps-output-field>
                         <tps-output-field label="husbokstav" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.husbokstav" title="husbokstav"></tps-output-field>
+                        <div layout="row" layout-wrap ng-if="isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])"
+                             ng-repeat="vari in adresseHistorikk.bruker.relasjoner.relasjon">
+                            <tps-output-field label="typeRelasjon" flex="20" field-model="vari.typeRelasjon" title="typeRelasjon"></tps-output-field>
+                            <tps-output-field label="typeRelBeskr" flex="20" field-model="vari.typeRelBeskr" title="typeRelBeskr"></tps-output-field>
+                            <tps-output-field label="fnrRelasjon" flex="20" field-model="vari.fnrRelasjon" title="fnrRelasjon"></tps-output-field>
+                            <tps-output-field label="identTypeRelasjon" flex="20" field-model="vari.identTypeRelasjon" title="identTypeRelasjon"></tps-output-field>
+                            <tps-output-field label="gjeldendePersonnavn" flex="20" field-model="vari.relPersonnavn.gjeldendePersonnavn" title="gjeldendePersonnavn"></tps-output-field>
+                            <tps-output-field label="kortnavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.kortnavn" title="kortnavn"></tps-output-field>
+                            <tps-output-field label="fornavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.fornavn" title="fornavn"></tps-output-field>
+                            <tps-output-field label="mellomnavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.mellomnavn" title="mellomnavn"></tps-output-field>
+                            <tps-output-field label="etternavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.etternavn" title="etternavn"></tps-output-field>
+                            <tps-output-field label="navnTidspunkt" flex="20" field-model="vari.relPersonnavn.allePersonnavn.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
+                            <tps-output-field label="navnSystem" flex="20" field-model="vari.relPersonnavn.allePersonnavn.navnSystem" title="navnSystem"></tps-output-field>
+                            <tps-output-field label="navnSaksbehandler" flex="20" field-model="vari.relPersonnavn.allePersonnavn.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjon" flex="20" field-model="vari.relDiskresjonsDetalj.kodeDiskresjon" title="kodeDiskresjon"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjonBeskr" flex="20" field-model="vari.relDiskresjonsDetalj.kodeDiskresjonBeskr" title="kodeDiskresjonBeskr"></tps-output-field>
+                            <tps-output-field label="datoDiskresjon" flex="20" field-model="vari.relDiskresjonsDetalj.datoDiskresjon" title="datoDiskresjon"></tps-output-field>
+                            <tps-output-field label="diskresjonsTidspunkt" flex="20" field-model="vari.relDiskresjonsDetalj.diskresjonsTidspunkt" title="diskresjonsTidspunkt"></tps-output-field>
+                            <tps-output-field label="diskresjonSystem" flex="20" field-model="vari.relDiskresjonsDetalj.diskresjonSystem" title="diskresjonSystem"></tps-output-field>
+                            <tps-output-field label="diskresjonSaksbehandler" flex="20" field-model="vari.relDiskresjonsDetalj.diskresjonSaksbehandler" title="diskresjonSaksbehandler"></tps-output-field>
+                            <tps-output-field label="relDatoDo" flex="20" field-model="vari.relDatoDoDetalj.relDatoDo" title="relDatoDo"></tps-output-field>
+                            <tps-output-field label="doTidspunkt" flex="20" field-model="vari.relDatoDoDetalj.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                            <tps-output-field label="doSystem" flex="20" field-model="vari.relDatoDoDetalj.doSystem" title="doSystem"></tps-output-field>
+                            <tps-output-field label="doSaksbehandler" flex="20" field-model="vari.relDatoDoDetalj.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                            <tps-output-field label="adresseStatus" flex="20" field-model="vari.adresseInfo.adresseStatus" title="adresseStatus"></tps-output-field>
+                            <tps-output-field label="adresseStatusBeskr" flex="20" field-model="vari.adresseInfo.adresseStatusBeskr" title="adresseStatusBeskr"></tps-output-field>
+                        </div>
+                        <div layout="row" layout-wrap ng-if="!isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])">
+                            <tps-output-field label="typeRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.typeRelasjon" title="typeRelasjon"></tps-output-field>
+                            <tps-output-field label="typeRelBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.typeRelBeskr" title="typeRelBeskr"></tps-output-field>
+                            <tps-output-field label="fnrRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.fnrRelasjon" title="fnrRelasjon"></tps-output-field>
+                            <tps-output-field label="identTypeRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.identTypeRelasjon" title="identTypeRelasjon"></tps-output-field>
+                            <tps-output-field label="gjeldendePersonnavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.gjeldendePersonnavn" title="gjeldendePersonnavn"></tps-output-field>
+                            <tps-output-field label="kortnavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.kortnavn" title="kortnavn"></tps-output-field>
+                            <tps-output-field label="fornavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.fornavn" title="fornavn"></tps-output-field>
+                            <tps-output-field label="mellomnavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.mellomnavn" title="mellomnavn"></tps-output-field>
+                            <tps-output-field label="etternavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.etternavn" title="etternavn"></tps-output-field>
+                            <tps-output-field label="navnTidspunkt" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
+                            <tps-output-field label="navnSystem" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.navnSystem" title="navnSystem"></tps-output-field>
+                            <tps-output-field label="navnSaksbehandler" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.kodeDiskresjon" title="kodeDiskresjon"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjonBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.kodeDiskresjonBeskr" title="kodeDiskresjonBeskr"></tps-output-field>
+                            <tps-output-field label="datoDiskresjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.datoDiskresjon" title="datoDiskresjon"></tps-output-field>
+                            <tps-output-field label="diskresjonsTidspunkt" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.diskresjonsTidspunkt" title="diskresjonsTidspunkt"></tps-output-field>
+                            <tps-output-field label="diskresjonSystem" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.diskresjonSystem" title="diskresjonSystem"></tps-output-field>
+                            <tps-output-field label="diskresjonSaksbehandler" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.diskresjonSaksbehandler" title="diskresjonSaksbehandler"></tps-output-field>
+                            <tps-output-field label="relDatoDo" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.relDatoDo" title="relDatoDo"></tps-output-field>
+                            <tps-output-field label="doTidspunkt" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                            <tps-output-field label="doSystem" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.doSystem" title="doSystem"></tps-output-field>
+                            <tps-output-field label="doSaksbehandler" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                            <tps-output-field label="adresseStatus" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.adresseInfo.adresseStatus" title="adresseStatus"></tps-output-field>
+                            <tps-output-field label="adresseStatusBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.adresseInfo.adresseStatusBeskr" title="adresseStatusBeskr"></tps-output-field>
+                        </div>
                     </div>
                 </div>
             </div>
