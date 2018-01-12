@@ -71,9 +71,6 @@ public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
             builder.queryParam(entry.getKey(), entry.getValue());
         }
 
-        // Original builder-url med Vera:
-        // https://vera.adeo.no/api/v1/deploylog?filterUndeployed=true&application=tpsws&onlyLatest=true
-
         return builder.build().encode().toUriString();
     }
 
