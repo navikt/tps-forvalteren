@@ -57,9 +57,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
         if (testdataGruppe != null) {
             SkdEndringsmeldingGruppe gruppe = new SkdEndringsmeldingGruppe();
-            String paddedNavn = StringUtils.rightPad(testdataGruppe.getNavn(), NAVN_MAX_LENGTH);
-            String newName = paddedNavn.substring(0, 43) + " (" + UUID.randomUUID().toString().substring(9, 13) + ")";
-            gruppe.setNavn(newName);
+            gruppe.setNavn(setNavnWithUniqueId(testdataGruppe.getNavn()));
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
             List<String> skdMeldinger = new ArrayList<>();
@@ -78,6 +76,12 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             throw new GruppeNotFoundException(messageProvider.get(GRUPPE_NOT_FOUND_KEY, gruppeId));
         }
         
+    }
+    
+    private String setNavnWithUniqueId(String navn) {
+        String paddedNavn = StringUtils.rightPad(navn, NAVN_MAX_LENGTH);
+        String id =  UUID.randomUUID().toString();
+        return paddedNavn.substring(0, 43) + " (" + id.substring(9, 13) + ")";
     }
 
 }
