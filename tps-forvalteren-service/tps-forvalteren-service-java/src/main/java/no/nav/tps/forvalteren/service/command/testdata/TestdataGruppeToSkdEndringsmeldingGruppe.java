@@ -27,10 +27,10 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
     private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
     private static final int NAVN_MAX_LENGTH = 50;
-    
+
     @Autowired
     private MessageProvider messageProvider;
-    
+
     @Autowired
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
@@ -75,13 +75,13 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
         } else {
             throw new GruppeNotFoundException(messageProvider.get(GRUPPE_NOT_FOUND_KEY, gruppeId));
         }
-        
+
     }
-    
+
     private String setNavnWithUniqueId(String navn) {
         String paddedNavn = StringUtils.rightPad(navn, NAVN_MAX_LENGTH);
-        String id =  UUID.randomUUID().toString();
-        return paddedNavn.substring(0, 43) + " (" + id.substring(9, 13) + ")";
+        String uniqueId = UUID.randomUUID().toString();
+        return paddedNavn.substring(0, 43) + " (" + uniqueId.substring(9, 13) + ")";
     }
 
 }
