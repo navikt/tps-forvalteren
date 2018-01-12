@@ -20,21 +20,25 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
+import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
@@ -91,9 +95,15 @@ public class TestdataController {
 
     @Autowired
     private LagreTilTps lagreTilTps;
-    
+
     @Autowired
     private SavePersonBulk savePersonBulk;
+
+    @Autowired
+    private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
+
+    @Autowired
+    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
@@ -101,10 +111,13 @@ public class TestdataController {
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
-        
+
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
 
+        if (personKriterierListe.isWithAdresse()) {
+            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
+        }
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdOnPersons.setGruppeId(personerSomSkalPersisteres, gruppeId);
         savePersonBulk.execute(personerSomSkalPersisteres);
@@ -188,4 +201,14 @@ public class TestdataController {
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         deleteGruppeById.execute(gruppeId);
     }
+
+    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "testdataGruppeToSkdEndringsmeldingGruppe") })
+    @RequestMapping(value = "/skd/{gruppeId}", method = RequestMethod.GET)
+    public RsSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe(@PathVariable("gruppeId") Long gruppeId) {
+        SkdEndringsmeldingGruppe newSkdEndringsmeldingGruppe = testdataGruppeToSkdEndringsmeldingGruppe.execute(gruppeId);
+        return mapper.map(newSkdEndringsmeldingGruppe, RsSkdEndringsmeldingGruppe.class);
+    }
+
 }
