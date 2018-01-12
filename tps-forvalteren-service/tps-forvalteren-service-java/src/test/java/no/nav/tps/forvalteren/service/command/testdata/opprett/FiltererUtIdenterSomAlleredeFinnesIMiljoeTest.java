@@ -56,7 +56,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         testdataRequest2.setIdenterGenerertForKriterie(new HashSet<>());
 
         environments.add("test");
-        when(getEnvironmentsCommand.getEnvironmentsFromVera(anyString())).thenReturn(environments);
+        when(getEnvironmentsCommand.getEnvironmentsFromFasit(anyString())).thenReturn(environments);
     }
 
     @Test

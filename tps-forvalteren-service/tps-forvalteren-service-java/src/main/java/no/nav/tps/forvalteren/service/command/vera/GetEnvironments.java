@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.vera;
 
-import no.nav.tps.forvalteren.consumer.rs.vera.VeraConsumer;
+import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +11,9 @@ import java.util.Set;
 public class GetEnvironments {
 
     @Autowired
-    private VeraConsumer veraConsumer;
+    private FetchEnvironmentsConsumer fetchEnvironmentsConsumer;
 
-    public Set<String> getEnvironmentsFromVera(String application) {
-        return veraConsumer.getEnvironments(application);
+    public Set<String> getEnvironmentsFromFasit(String application) {
+        return fetchEnvironmentsConsumer.getEnvironments(application);
     }
 }

@@ -26,7 +26,7 @@ public class DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe implements Filtere
             alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
         }
 
-        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }

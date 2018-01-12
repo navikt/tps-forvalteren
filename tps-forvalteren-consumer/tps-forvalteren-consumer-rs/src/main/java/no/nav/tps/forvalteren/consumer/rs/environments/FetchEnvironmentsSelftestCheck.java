@@ -1,18 +1,18 @@
-package no.nav.tps.forvalteren.consumer.rs.vera;
+package no.nav.tps.forvalteren.consumer.rs.environments;
 
 import no.nav.freg.common.autoconfigure.selftest.spi.SelftestCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import static no.nav.tps.forvalteren.consumer.rs.vera.DefaultVeraConsumer.BASE_URL;
+import static no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager.BASE_URL;
 
 @Component
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false", matchIfMissing = true)
-public class VeraSelftestCheck implements SelftestCheck {
+public class FetchEnvironmentsSelftestCheck implements SelftestCheck {
 
     @Autowired
-    private VeraConsumer consumer;
+    private FetchEnvironmentsConsumer consumer;
 
     private static final String FASIT_ALIAS = "deployLog_v1";
 
@@ -24,7 +24,7 @@ public class VeraSelftestCheck implements SelftestCheck {
 
     @Override
     public String getDescription() {
-        return "Ping av Vera";
+        return "Ping av Tpsws";
     }
 
     @Override

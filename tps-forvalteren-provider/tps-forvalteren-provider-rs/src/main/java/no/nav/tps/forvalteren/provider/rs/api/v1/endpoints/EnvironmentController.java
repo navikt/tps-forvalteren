@@ -38,7 +38,7 @@ public class EnvironmentController {
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getEnvironments")})
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Environment getEnvironments() {
-        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
 
         Environment environment = new Environment();
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));

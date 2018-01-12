@@ -48,7 +48,7 @@ public class EnvironmentControllerTest {
 
     @Before
     public void setUp() {
-        when( getEnvironmentsCommandMock.getEnvironmentsFromVera("tpsws") ).thenReturn(ENVIRONMENTS_Q);
+        when( getEnvironmentsCommandMock.getEnvironmentsFromFasit("tpsws") ).thenReturn(ENVIRONMENTS_Q);
         when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
     }
 
