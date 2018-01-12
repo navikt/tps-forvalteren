@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-//import static no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager.BASE_URL;
+import static no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager.BASE_URL;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,11 +40,11 @@ public class FetchEnvironmentsSelftestCheckTest{
         assertThat(result, containsString("deployLog_v1"));
     }
 
-//    @Test
-//    public void includesEndpointUrlInEndpoint() {
-//        String result = selftestCheck.getEndpoint();
-//        assertThat(result, containsString(BASE_URL));
-//    }
+    @Test
+    public void includesEndpointUrlInEndpoint() {
+        String result = selftestCheck.getEndpoint();
+        assertThat(result, containsString(BASE_URL));
+    }
 
     @Test
     public void isVital() {
