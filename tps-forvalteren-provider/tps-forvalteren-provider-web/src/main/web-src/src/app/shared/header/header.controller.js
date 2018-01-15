@@ -5,6 +5,7 @@ angular.module('tps-forvalteren')
 
             $scope.visTestdataKnapp = false;
             $scope.visSkdEndringsmeldingKnapp = false;
+            $scope.visSendDoedsmeldingKnapp = true;
 
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {
@@ -27,6 +28,11 @@ angular.module('tps-forvalteren')
             $scope.goHome = function () {
                 locationService.redirectToHomeState();
             };
+
+            $scope.openVisSendDoedsmelding = function(){
+                locationService.redirectToSendDoedsmeldinger();
+            }
+
 
             $scope.isRoot = locationService.isRoot();
 

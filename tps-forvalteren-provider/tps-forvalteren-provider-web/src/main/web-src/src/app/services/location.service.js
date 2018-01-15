@@ -49,6 +49,10 @@ angular.module('tps-forvalteren.service')
             return $state.current.name === 'servicerutine';
         };
 
+        self.redirectToSendDoedsmeldinger = function(){
+            $state.go("send-doedsmeldinger");
+        }
+
         self.redirectUrl = function(url, param) {
             if (url.indexOf('/:') !== -1) {
                 $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
