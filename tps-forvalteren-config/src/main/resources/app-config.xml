@@ -5,6 +5,12 @@
 
     <name>tps-forvalteren</name>
 
+    <serverOptions>
+        <customProperties parentObject="TransactionService">
+            <property key="totalTranLifetimeTimeout" value="1800"/>
+        </customProperties>
+    </serverOptions>
+    
     <selftest>
         <path>/tps-forvalteren/internal/selftest</path>
         <humanReadablePath>/tps-forvalteren/internal/selftest</humanReadablePath>
