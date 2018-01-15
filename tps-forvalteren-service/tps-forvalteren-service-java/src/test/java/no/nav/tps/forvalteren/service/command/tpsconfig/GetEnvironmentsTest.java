@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.vera;
+package no.nav.tps.forvalteren.service.command.tpsconfig;
 
 
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsConsumer;

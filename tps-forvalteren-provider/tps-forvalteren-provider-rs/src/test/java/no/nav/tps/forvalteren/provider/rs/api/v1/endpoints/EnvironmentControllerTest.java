@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import no.nav.tps.forvalteren.domain.service.environment.Environment;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
