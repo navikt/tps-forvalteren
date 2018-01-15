@@ -5,5 +5,5 @@ import java.util.Map;
 @FunctionalInterface
 public interface SkdOpprettSkdMeldingMedHeaderOgInnhold {
 
-    String execute(Map<String, String> skdInputMap, SkdFelterContainer skdFelterContainer);
+    String execute(Map<String, String> skdInputMap, SkdFelterContainer skdFelterContainer, boolean addHeader);
 }

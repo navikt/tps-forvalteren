@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class CreateDoedsmeldinger {
     private static final String NAVN_DOEDSMELDING = "Doedsmelding";
 
     @Autowired
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     @Autowired
     private FindGruppeById findGruppeById;
@@ -31,15 +32,16 @@ public class CreateDoedsmeldinger {
     @Autowired
     private SaveDoedsmeldingToDB saveDoedsmeldingToDB;
 
-    public void execute(Long gruppeId, List<String> environments) {
+    public List<String> execute(Long gruppeId, boolean addHeader) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(personerIGruppen);
-
-        if (!doedePersonerWithoutDoedsmelding.isEmpty()) {
-            skdMessageSenderTrans1.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, environments);
+        List<String> skdMeldinger = new ArrayList<>();
+        if (!doedePersonerWithoutDoedsmelding.isEmpty()) { 
+            skdMeldinger.addAll(skdMessageCreatorTrans1.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, addHeader));
             saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
+        return skdMeldinger;
     }
 
     private List<Person> findDoedePersonerWithoutDoedsmelding(List<Person> personer) {

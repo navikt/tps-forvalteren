@@ -13,8 +13,8 @@ angular.module('tps-forvalteren.service')
             return gruppeCache;
         };
 
-        self.opprettTestpersoner = function(gruppeId, kriterier){
-            return $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier});
+        self.opprettTestpersoner = function(gruppeId, kriterier, withAdresse){
+            return $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier, withAdresse: withAdresse});
         };
 
         self.sletteTestpersoner = function(identer){
@@ -48,4 +48,9 @@ angular.module('tps-forvalteren.service')
         self.sendTilTps = function (gruppeId, miljoer) {
             return $http.post(url + 'tps/' + gruppeId, miljoer);
         };
+        
+        self.opprettSkdEndringsmeldingGruppe = function (gruppeId) {
+            return $http.get(url + "skd/" + gruppeId);
+        }
+        
     }]);

@@ -14,11 +14,13 @@ public class MatrikkeladresseRestMappingStrategy implements MappingStrategy {
     public void register(MapperFactory factory) {
         factory.classMap(RsMatrikkeladresse.class, Matrikkeladresse.class)
                 .field("personId", "person.id")
+                .field("adresseId", "id")
                 .byDefault()
                 .register();
 
         factory.classMap(Matrikkeladresse.class, RsMatrikkeladresse.class)
                 .field("person.id", "personId")
+                .field("id", "adresseId")
                 .byDefault()
                 .register();
     }

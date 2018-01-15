@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import no.nav.tps.forvalteren.domain.service.environment.Environment;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,10 +40,13 @@ public class EnvironmentControllerTest {
     private HttpSession httpSessionMock;
 
     @Mock
-    public GetEnvironments getEnvironmentsCommandMock;
+    private GetEnvironments getEnvironmentsCommandMock;
 
     @Mock
-    public FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironmentMock;
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironmentMock;
+
+    @Mock
+    private UserContextHolder userContextHolder;
 
     @InjectMocks
     private EnvironmentController controller;

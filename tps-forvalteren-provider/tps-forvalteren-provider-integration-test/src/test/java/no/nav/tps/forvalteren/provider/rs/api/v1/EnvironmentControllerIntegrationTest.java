@@ -1,8 +1,11 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
 import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
+
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -15,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class EnvironmentControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
 
     @Test
+    @WithUserDetails(TestUserDetails.USERNAME)
     public void getsEnvironments() throws Exception {
 
         mvc.perform(get("/api/v1/environments"))
