@@ -4,12 +4,6 @@
              xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
 
     <name>tps-forvalteren</name>
-
-    <serverOptions>
-        <customProperties parentObject="TransactionService">
-            <property key="totalTranLifetimeTimeout" value="1800"/>
-        </customProperties>
-    </serverOptions>
     
     <selftest>
         <path>/tps-forvalteren/internal/selftest</path>
