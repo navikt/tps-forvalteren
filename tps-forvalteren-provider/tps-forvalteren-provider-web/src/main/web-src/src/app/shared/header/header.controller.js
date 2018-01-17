@@ -5,6 +5,7 @@ angular.module('tps-forvalteren')
 
             $scope.visTestdataKnapp = false;
             $scope.visSkdEndringsmeldingKnapp = false;
+            $scope.visServiceRutineKnapp = false;
 
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {
@@ -36,6 +37,7 @@ angular.module('tps-forvalteren')
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
 
             $scope.$on('updateEvent', function () {
                 if ($scope.header && $scope.header.buttons) {

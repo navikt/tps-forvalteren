@@ -4,6 +4,7 @@ angular.module('tps-forvalteren.welcome',[])
 
             $scope.visTestdataKnapp = false;
             $scope.visSkdEndringsmeldingKnapp = false;
+            $scope.visServiceRutineKnapp = false;
 
             $scope.openServiceRutine = function () {
                 locationService.redirectToServiceRutineState();
@@ -23,4 +24,5 @@ angular.module('tps-forvalteren.welcome',[])
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
-        }]);
+            $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
+    }]);
