@@ -31,10 +31,10 @@ public class DefaultTestdataIdenterFetcher implements TestdataIdenterFetcher {
 
         testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
 
-        taBortOverflodigeIdenterFraTestRequests(testdataRequests);
-
         testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
 
+        taBortOverflodigeIdenterFraTestRequests(testdataRequests);
+        
         if (!erAlleKriterieOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
         }
@@ -55,9 +55,9 @@ public class DefaultTestdataIdenterFetcher implements TestdataIdenterFetcher {
 
                     testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequestSingelList);
 
-                    taBortOverflodigeIdenterFraTestRequests(testdataRequestSingelList);
-
                     testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequestSingelList);
+
+                    taBortOverflodigeIdenterFraTestRequests(testdataRequestSingelList);
 
                     request.getIdenterTilgjengligIMiljoe().addAll(testdataRequestSingelList.get(0).getIdenterTilgjengligIMiljoe());
 
