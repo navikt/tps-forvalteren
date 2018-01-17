@@ -13,10 +13,7 @@ public class TestUserDetails implements UserDetailsService {
 
     public static final String USERNAME = "test_username";
     public static final String DISPLAY_NAME = "test_dn";
-
-    public static final String ACCESS_ROLE = "0000-GA-NORG_Skriv";
-
-
+    
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 

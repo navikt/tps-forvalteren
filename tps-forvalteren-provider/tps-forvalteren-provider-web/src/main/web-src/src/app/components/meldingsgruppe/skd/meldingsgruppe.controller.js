@@ -35,7 +35,6 @@ angular.module('tps-forvalteren.skd-meldingsgruppe', [])
                     },
                     function (error) {
                         utilsService.showAlertError(error);
-                        $scope.meldingsgrupper = [{navn: 'test', beskrivelse: 'test'}];
                     }
                 );
             };

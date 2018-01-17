@@ -5,7 +5,6 @@ angular.module('tps-forvalteren')
 
             $scope.visTestdataKnapp = false;
             $scope.visSkdEndringsmeldingKnapp = false;
-            $scope.visServiceRutineKnapp = false;
 
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {

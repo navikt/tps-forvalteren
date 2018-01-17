@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,7 +29,7 @@ public class PersistBarnTransRecordsToTpsTest {
     private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
     @Mock
-    private SkdMessageSenderTrans2 skdMessageSenderTrans2;
+    private SkdMessageCreatorTrans2 skdMessageCreatorTrans2;
 
     @Mock
     private FinnBarnTilForelder finnBarnTilForelder;
@@ -38,8 +37,8 @@ public class PersistBarnTransRecordsToTpsTest {
     @Mock
     private List<Person> barn = new ArrayList<>();
 
+    private static final boolean ADD_HEADER = true;
     private Person forelder = aMalePerson().build();
-    private List<String> environments = new ArrayList<>(Arrays.asList("u5", "u6"));
 
     @Before
     public void setup() {
@@ -52,17 +51,17 @@ public class PersistBarnTransRecordsToTpsTest {
 
         exception.expect(IllegalArgumentException.class);
 
-        persistBarnTransRecordsToTps.execute(forelder, environments);
+        persistBarnTransRecordsToTps.execute(forelder, ADD_HEADER);
     }
 
     @Test
     public void checkThatOneMessageIsSent() {
         when(barn.size()).thenReturn(13);
 
-        persistBarnTransRecordsToTps.execute(forelder, environments);
+        persistBarnTransRecordsToTps.execute(forelder, ADD_HEADER);
 
         verify(finnBarnTilForelder).execute(forelder);
-        verify(skdMessageSenderTrans2).execute("Familieendring", forelder, barn, environments);
+        verify(skdMessageCreatorTrans2).execute("Familieendring", forelder, barn, ADD_HEADER);
     }
 
     @Test
@@ -74,11 +73,11 @@ public class PersistBarnTransRecordsToTpsTest {
         when(barn.subList(0, 13)).thenReturn(barnRecord1);
         when(barn.subList(13, 26)).thenReturn(barnRecord2);
 
-        persistBarnTransRecordsToTps.execute(forelder, environments);
+        persistBarnTransRecordsToTps.execute(forelder, ADD_HEADER);
 
         verify(finnBarnTilForelder).execute(forelder);
-        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord1, environments);
-        verify(skdMessageSenderTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord2, environments);
+        verify(skdMessageCreatorTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord1, ADD_HEADER);
+        verify(skdMessageCreatorTrans2, atLeastOnce()).execute("Familieendring", forelder, barnRecord2, ADD_HEADER);
     }
 
 }

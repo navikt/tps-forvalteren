@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.REMOVE;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class Person extends ChangeStamp {
     private LocalDateTime doedsdato;
 
     @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = REMOVE)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private Adresse boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)

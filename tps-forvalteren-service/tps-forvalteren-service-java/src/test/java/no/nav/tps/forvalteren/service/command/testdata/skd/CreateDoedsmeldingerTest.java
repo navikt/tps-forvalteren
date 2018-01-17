@@ -3,7 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -35,7 +36,7 @@ public class CreateDoedsmeldingerTest {
 
     private static final Long GRUPPE_ID = 1L;
     private static final Long GRUPPE_ID_NO_DEAD_PERSONS = 2L;
-    private static final List<String> ENVS = Arrays.asList("u5", "u6");
+    private static final boolean ADD_HEADER = true;
 
     private List<Person> personer;
     private List<Person> doedePersoner;
@@ -43,7 +44,7 @@ public class CreateDoedsmeldingerTest {
     private List<Person> doedePersonerWithoutDoedsmelding;
 
     @Mock
-    private SkdMessageSenderTrans1 skdMessageSenderTrans1Mock;
+    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1Mock;
 
     @Mock
     private FindGruppeById findGruppeByIdMock;
@@ -90,15 +91,15 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
-        createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
+        createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER);
 
-        verify(skdMessageSenderTrans1Mock).execute(anyString(), personCaptor.capture(), eq(ENVS));
+        verify(skdMessageCreatorTrans1Mock).execute(anyString(), personCaptor.capture(), eq(ADD_HEADER));
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
     }
 
     @Test
     public void saveDoedsmeldingToDBCalledWithDoedePersonerWithoutDoedsmelding() {
-        createDoedsmeldinger.execute(GRUPPE_ID, ENVS);
+        createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER);
 
         verify(saveDoedsmeldingToDBMock).execute(personCaptor.capture());
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
@@ -106,9 +107,9 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void noFurtherCallsWhenNoDoedePersoner() {
-        createDoedsmeldinger.execute(GRUPPE_ID_NO_DEAD_PERSONS, ENVS);
+        createDoedsmeldinger.execute(GRUPPE_ID_NO_DEAD_PERSONS, ADD_HEADER);
 
-        verify(skdMessageSenderTrans1Mock, never()).execute(any(), any(), any());
-        verify(saveDoedsmeldingToDBMock, never()).execute(any());
+        verify(skdMessageCreatorTrans1Mock, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
+        verify(saveDoedsmeldingToDBMock, never()).execute(anyListOf(Person.class));
     }
 }

@@ -16,11 +16,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
@@ -29,6 +31,7 @@ import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
+import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
@@ -85,6 +88,9 @@ public class TestdataControllerTest {
     @Mock
     private SavePersonBulk savePersonBulk;
 
+    @Mock
+    private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
+    
     @InjectMocks
     private TestdataController testdataController;
 
@@ -220,6 +226,15 @@ public class TestdataControllerTest {
         testdataController.deleteGruppe(GRUPPE_ID);
 
         verify(deleteGruppeById).execute(GRUPPE_ID);
+    }
+    
+    @Test
+    public void testdataGruppeToSkdEndringsmeldingGruppe() {
+        SkdEndringsmeldingGruppe gruppe = new SkdEndringsmeldingGruppe();
+        when(testdataGruppeToSkdEndringsmeldingGruppe.execute(GRUPPE_ID)).thenReturn(gruppe);
+        testdataController.testdataGruppeToSkdEndringsmeldingGruppe(GRUPPE_ID);
+        verify(testdataGruppeToSkdEndringsmeldingGruppe).execute(GRUPPE_ID);
+        verify(mapper).map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
 
 }
