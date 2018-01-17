@@ -1,4 +1,3 @@
-
 angular.module('tps-forvalteren')
     .controller('HeaderCtrl', ['$scope', '$mdDialog', 'authenticationService', 'locationService', 'appInfoService', 'utilsService',
         function ($scope, $mdDialog, authenticationService, locationService, appInfoService, utilsService) {
@@ -35,12 +34,12 @@ angular.module('tps-forvalteren')
             $scope.isRoot = locationService.isRoot();
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
-            $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0 && !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
 
             $scope.$on('updateEvent', function () {
                 if ($scope.header && $scope.header.buttons) {
-                    $scope.header.buttons.forEach(function(button) {
+                    $scope.header.buttons.forEach(function (button) {
                         if (button.disabled) {
                             button.status = button.disabled();
                         }
@@ -52,8 +51,8 @@ angular.module('tps-forvalteren')
                 var confirm = $mdDialog.confirm()
                     .title('Om TPS-Forvalteren')
                     .htmlContent('<table><tr><td>Versjon:</td><td>' + $scope.appInfo.applicationVersion + '</td></tr>' +
-                                 '<tr><td>Miljø:</td><td>' + $scope.appInfo.environment.toUpperCase() + '</td></tr>' +
-                                 '<tr><td>Vertsmaskin:</td><td>' + $scope.appInfo.hostName + '</td></tr></table>')
+                        '<tr><td>Miljø:</td><td>' + $scope.appInfo.environment.toUpperCase() + '</td></tr>' +
+                        '<tr><td>Vertsmaskin:</td><td>' + $scope.appInfo.hostName + '</td></tr></table>')
                     .ariaLabel('Detaljer om TPS-forvalteren')
                     .ok('OK')
                     .clickOutsideToClose(true);
@@ -63,6 +62,6 @@ angular.module('tps-forvalteren')
             appInfoService.getInfo().then(function (result) {
                 $scope.appInfo = result.data;
             }, function (error) {
-                 utilsService.showAlertError(error);
+                utilsService.showAlertError(error);
             });
         }]);

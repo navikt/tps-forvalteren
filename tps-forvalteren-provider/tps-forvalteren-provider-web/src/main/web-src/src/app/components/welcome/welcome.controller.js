@@ -6,7 +6,7 @@ angular.module('tps-forvalteren.welcome',[])
             $scope.visSkdEndringsmeldingKnapp = false;
             $scope.visServiceRutineKnapp = false;
 
-            $scope.serviceRutineState = function () {
+            $scope.openServiceRutine = function () {
                 locationService.redirectToServiceRutineState();
             };
 
