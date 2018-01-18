@@ -1,6 +1,6 @@
 <md-input-container class="tps-vk-input-container" flex>
     <label>Antall Fnr</label>
-    <input name="aFnrInput" id="aFnrInput" ng-required="isRequired('antallFnr')" md-maxlength="2" ng-pattern="[0-9]{2}" ng-model="formData.antallFnr" />
+    <input name="aFnrInput" id="aFnrInput" ng-required="isRequired('antallFnr')" md-maxlength="2" ng-pattern="[0-9]{2}" ng-model="formData.antallFnr"/>
     <div ng-messages="requestForm.aFnrInput.$error">
         <div ng-message="pattern">Feltet kan kun inneholde tall</div>
         <div ng-message="md-maxlength">Feltet kan maksimalt inneholde tre siffer</div>
