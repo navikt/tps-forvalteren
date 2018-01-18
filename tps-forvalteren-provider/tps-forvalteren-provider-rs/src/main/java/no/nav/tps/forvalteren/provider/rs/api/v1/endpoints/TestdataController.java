@@ -32,8 +32,8 @@ import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
+import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -46,7 +46,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 
-@Transactional
 @RestController
 @RequestMapping(value = "api/v1/testdata")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
@@ -97,13 +96,13 @@ public class TestdataController {
     private LagreTilTps lagreTilTps;
 
     @Autowired
-    private SavePersonBulk savePersonBulk;
-
-    @Autowired
     private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
 
     @Autowired
     private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
+
+    @Autowired
+    private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
@@ -119,10 +118,10 @@ public class TestdataController {
             setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
         }
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
-        setGruppeIdOnPersons.setGruppeId(personerSomSkalPersisteres, gruppeId);
-        savePersonBulk.execute(personerSomSkalPersisteres);
+        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
@@ -131,6 +130,7 @@ public class TestdataController {
         deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
@@ -140,6 +140,7 @@ public class TestdataController {
         savePersonListService.execute(personer);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
@@ -167,6 +168,7 @@ public class TestdataController {
         lagreTilTps.execute(gruppeId, environments);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -176,6 +178,7 @@ public class TestdataController {
         return mapper.mapAsList(grupper, RsSimpleGruppe.class);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
@@ -185,6 +188,7 @@ public class TestdataController {
         return mapper.map(gruppe, RsGruppe.class);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
@@ -194,6 +198,7 @@ public class TestdataController {
         saveGruppe.execute(gruppe);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
@@ -202,6 +207,7 @@ public class TestdataController {
         deleteGruppeById.execute(gruppeId);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "testdataGruppeToSkdEndringsmeldingGruppe") })
