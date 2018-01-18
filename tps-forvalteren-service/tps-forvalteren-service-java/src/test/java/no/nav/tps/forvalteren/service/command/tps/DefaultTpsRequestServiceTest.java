@@ -27,14 +27,15 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.springframework.test.context.TestPropertySource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultTpsRequestServiceTest {
 
-    private static final String ENVIRONMENT         = "environment";
+    private static final String ENVIRONMENT = "environment";
 
     private static final String REQUEST_XML = "<request></request>";
-    private static final String RESPONSE_XML        = "<responses><response>response</response></responses>";
+    private static final String RESPONSE_XML = "<responses><response>response</response></responses>";
 
 
     private static final String NAME = "name";
@@ -71,6 +72,7 @@ public class DefaultTpsRequestServiceTest {
         TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
         TpsRequestContext context = createDefaultContext();
 
+        when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
 
         verify(ForbiddenCallHandlerServiceMock).authoriseRestCall(serviceRoutine);
@@ -86,6 +88,7 @@ public class DefaultTpsRequestServiceTest {
         TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
         TpsRequestContext context = createDefaultContext();
 
+        when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
@@ -103,6 +106,7 @@ public class DefaultTpsRequestServiceTest {
         TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
         TpsRequestContext context = createDefaultContext();
 
+        when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
@@ -114,6 +118,27 @@ public class DefaultTpsRequestServiceTest {
 
 
     }
+
+    @Test
+    public void callDubidubi() throws Exception {
+        InOrder inOrder = inOrder(messageQueueConsumerMock, transformationService);
+
+        TpsServiceRoutineRequest tpsRequestMock = mock(TpsServiceRoutineRequest.class);
+        TpsServiceRoutineDefinitionRequest serviceRoutine = createDefaultServiceRoutine();
+        TpsRequestContext context = createDefaultContext();
+
+        when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine-TESTDATA");
+        when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
+
+        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
+
+        when(messageQueueConsumerMock.sendMessage(REQUEST_XML)).thenReturn(RESPONSE_XML);
+
+        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML);
+        inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));
+
+    }
+
 
     private TpsRequestContext createDefaultContext() {
 
