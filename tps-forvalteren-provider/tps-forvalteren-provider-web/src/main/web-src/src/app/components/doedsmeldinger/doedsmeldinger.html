@@ -1,0 +1,25 @@
+<div class="tps-vk-service-rutine-dashboard tps-content" layout="column" flex layout-padding ng-cloak>
+    <h3 style="margin-left: 10px; margin-bottom: 10px;">Send dødsmelding</h3>
+    <div class="tps-vk-top md-whiteframe-z1 " layout="column">
+        <div flex="80" layout="row" layout-align="start end">
+            <form name="requestForm" ng-submit="requestForm.$valid && submit()" flex="80" layout="row" layout-align="center start ">
+                <tps-input-field flex="25" layout="col" input-param-name="'fnr'" form-data="formData" select-values=""
+                                 ng-required="true"></tps-input-field>
+                <div flex="5"></div>
+                <tps-input-field flex="25" layout="col" input-param-name="'dodsdato'" form-data="formData"></tps-input-field>
+                <div flex="5"></div>
+                <md-input-container flex="25" class="tps-vk-input-container">
+                    <label>Miljø</label>
+                    <md-select ng-model="formData.environment" required>
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                    </md-select>
+                </md-input-container>
+                <div flex="5"></div>
+                <md-button align="center" type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn" ng-disabled="!requestForm.$valid">
+                    Send
+                </md-button>
+            </form>
+        </div>
+        <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+    </div>
+</div>
