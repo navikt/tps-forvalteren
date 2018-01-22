@@ -14,7 +14,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
             $scope.personsData = {};
             $scope.toggle = false;
             $scope.isArray = angular.isArray;
-            $scope.showMenu = false;
 
             var requiredParameters = [];
             var isValidServiceRutineName = false;

@@ -48,7 +48,7 @@ public class ServiceController extends BaseProvider {
 
         tpsRequestParameters.put(TPS_SERVICE_ROUTINE_PARAM_NAME, serviceRutinenavn);
 
-        replaceAndSplitParameterListe(tpsRequestParameters);
+        putFnrIntoRequestParameters(tpsRequestParameters);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
@@ -59,7 +59,7 @@ public class ServiceController extends BaseProvider {
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }
 
-    private void replaceAndSplitParameterListe(Map<String, Object> tpsRequestParameters) {
+    private void putFnrIntoRequestParameters(Map<String, Object> tpsRequestParameters) {
         if (tpsRequestParameters.containsKey("nFnr")) {
             String fnrStringListe = (String) tpsRequestParameters.get("nFnr");
             tpsRequestParameters.put("fnr", fnrStringListe);

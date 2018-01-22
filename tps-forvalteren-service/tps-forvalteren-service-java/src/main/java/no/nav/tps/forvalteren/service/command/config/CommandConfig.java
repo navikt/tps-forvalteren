@@ -72,37 +72,31 @@ public class CommandConfig {
 
     @Bean
     ServiceRoutineResolver sjekkTps() {
-
         return new S000SjekkTpsTilgjengelig();
     }
 
     @Bean
     ServiceRoutineResolver hentGT() {
-
         return new S610HentGT();
     }
 
     @Bean
     ServiceRoutineResolver hentTknr() {
-
         return new S002HentTknr();
     }
 
     @Bean
     ServiceRoutineResolver hentAdresser() {
-
         return new S103HentAdresser();
     }
 
     @Bean
     ServiceRoutineResolver hentAdresseLinjehistorikk() {
-
         return new S015HentAdresselinjehistorikk();
     }
 
     @Bean
     ServiceRoutineResolver hentAdressehistorikk() {
-
         return new S010Adressehistorikk();
     }
 
@@ -113,73 +107,61 @@ public class CommandConfig {
 
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnrTestdata() {
-
         return new M201HentFnrNavnDiskresjonPaFlerePersonerTestdata();
     }
 
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnr() {
-
         return new M201HentFnrNavnDiskresjonPaFlerePersoner();
     }
 
     @Bean
     ServiceRoutineResolver hentKontaktinformasjon() {
-
         return new S600HentKontaktinformasjon();
     }
 
     @Bean
     ServiceRoutineResolver hentPersonSok() {
-
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
 
     @Bean
     ServiceRoutineResolver hentFnrHistorikk() {
-
         return new S011HentFnrDnrHistorikk();
     }
 
     @Bean
     ServiceRoutineResolver hentTknrHistorikk() {
-
         return new S013HentTknrHistorikk();
     }
 
     @Bean
     ServiceRoutineResolver hentRelasjoner() {
-
         return new S005Relasjoner();
     }
 
     @Bean
     ServiceRoutineResolver hentPersonopplysninger() {
-
         return new S004HentPersonopplysninger();
     }
 
     @Bean
     ServiceRoutineResolver hentVergemaal() {
-
         return new S137HentVergemaal();
     }
 
     @Bean
     SkdMeldingResolver innvandring() {
-
         return new InnvandringAarsakskode02();
     }
 
     @Bean
     SkdMeldingResolver vigsel() {
-
         return new VigselAarsakskode11();
     }
 
     @Bean
     SkdMeldingResolver doedsmelding() {
-
         return new DoedsmeldingAarsakskode43();
     }
 

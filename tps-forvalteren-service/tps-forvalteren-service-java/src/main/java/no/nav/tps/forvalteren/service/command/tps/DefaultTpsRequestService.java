@@ -40,7 +40,7 @@ public class DefaultTpsRequestService implements TpsRequestService {
             forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 
-        tpsRequest.setServiceRutinenavn(sjekkServiceRutineNavn(tpsRequest.getServiceRutinenavn()));
+        tpsRequest.setServiceRutinenavn(removeTestdataFromServicerutinenavn(tpsRequest.getServiceRutinenavn()));
         String xml = xmlMapper.writeValueAsString(tpsRequest);
 
         Request request = new Request(xml, tpsRequest, context);
@@ -54,13 +54,12 @@ public class DefaultTpsRequestService implements TpsRequestService {
         return response;
     }
 
-    private String sjekkServiceRutineNavn(String serviceRutinenavn){
-        String serviceRutine = serviceRutinenavn;
-        if(serviceRutine.endsWith("TESTDATA")){
-            serviceRutine = serviceRutine.replace("-TESTDATA", "");
-        }
+    private String removeTestdataFromServicerutinenavn(String serviceRutinenavn){
 
-        return serviceRutine;
+        if(serviceRutinenavn.endsWith("TESTDATA")){
+            return serviceRutinenavn.replace("-TESTDATA", "");
+        }
+        return serviceRutinenavn;
     }
 
 }

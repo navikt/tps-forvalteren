@@ -11,9 +11,4 @@ angular.module('tps-forvalteren.service-rutine.velg-service-rutine', ['ngMateria
                 locationService.redirectToServiceRutineState(rutine);
             };
 
-            $scope.range = function(n) {
-                return new Array(n);
-            };
-
-
         }]);

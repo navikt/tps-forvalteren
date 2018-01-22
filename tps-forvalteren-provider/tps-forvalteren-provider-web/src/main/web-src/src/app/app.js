@@ -244,7 +244,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('servicerutine', {
-                url: "/service-rutine/{serviceRutineName}",
+                url: "/servicerutine/{serviceRutineName}",
                 params: {
                     serviceRutineName: null
                 },
@@ -276,7 +276,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('velg-servicerutine', {
-                url: "/service-rutine/velg-service-rutine",
+                url: "/servicerutine/velg-service-rutine",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();

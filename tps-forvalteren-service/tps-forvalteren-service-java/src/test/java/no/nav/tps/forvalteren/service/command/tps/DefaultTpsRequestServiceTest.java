@@ -120,7 +120,7 @@ public class DefaultTpsRequestServiceTest {
     }
 
     @Test
-    public void callDubidubi() throws Exception {
+    public void callsCorrectServicerutineWithTestdata() throws Exception {
         InOrder inOrder = inOrder(messageQueueConsumerMock, transformationService);
 
         TpsServiceRoutineRequest tpsRequestMock = mock(TpsServiceRoutineRequest.class);

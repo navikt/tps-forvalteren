@@ -49,7 +49,7 @@ public class S013HentTknrHistorikk implements ServiceRoutineResolver{
 
                 .securityBuilder()
                 .addRequiredSearchAuthorisationStrategy(DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation())
-                .addRequiredSearchAuthorisationStrategy((EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation()))
+                .addRequiredSearchAuthorisationStrategy(EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation())
                 .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
 
