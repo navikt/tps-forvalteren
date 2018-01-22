@@ -1,6 +1,8 @@
 angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService',
-        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService', 'headerService',
+        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService, headerService, underHeaderService) {
+
+            headerService.setHeader('Servicerutiner');
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
@@ -21,13 +23,16 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 return isValidServiceRutineName && !apiError;
             };
 
+            $scope.openServiceRutine = function (rutine) {
+                locationService.redirectToServiceRutineState(rutine);
+            };
+
             $scope.submit = function () {
             var params = utilsService.createParametersFromFormData($scope.formData);
 
                 $scope.loading = true;
 
                 serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
-
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
@@ -40,6 +45,8 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.returStatus = response.status.kode;
 
                     $scope.responseData = response;
+
+                    $scope.adresseHistorikk = response.data1;
 
                     /* Brukes kun til å hente Tags som skal inn i servicerutinenes html fil */
                     // var jup = utilsService.flattenObject($scope.responseData);
@@ -55,14 +62,31 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.loading = false;
                     showAlertTPSError(error);
                 });
+
             };
 
+            headerService.setButtons([{
+                icon: 'assets/icons/keyboard_arrow_down.svg',
+                text: "Velg servicerutine",
+                click: function (ev) {
+                    var confirm = $mdDialog.confirm({
+                        controller: 'VelgServiceRutineCtrl',
+                        templateUrl: 'app/components/service-rutine/velg-service-rutine/velg-service-rutine.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose:true
+                    });
+                    $mdDialog.show(confirm);
+                }
+            }]);
 
             $scope.clearResponseForm = function () {
                 $scope.personsData = {};
                 $scope.toggle = false;
                 $scope.svarStatus = null;
                 $scope.xmlForm = null;
+                $scope.adresseHistorikk = null;
+                $scope.responseData = null;
             };
 
             $scope.isRequired = function (type) {
@@ -236,6 +260,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                             $scope.formData[parameter] = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
+                        case 'infoType':
                         case 'adresseTypeS103':
                         case 'kilde':
                         case 'buffNr':

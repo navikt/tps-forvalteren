@@ -8,12 +8,11 @@ import lombok.Setter;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentByFnrRequest;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
-public class TpsHentUtvandringRequest extends TpsServiceRoutineHentByFnrRequest {
+public class TpsSjekkTpsTilgjengeligServiceRoutineRequest extends TpsServiceRoutineHentByFnrRequest {
 
-    private String infoType;
-    private String buffNr;
 }
