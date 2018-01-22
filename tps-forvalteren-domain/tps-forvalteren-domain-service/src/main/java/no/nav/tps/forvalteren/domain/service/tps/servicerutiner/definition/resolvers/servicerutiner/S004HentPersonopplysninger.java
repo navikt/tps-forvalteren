@@ -57,5 +57,5 @@ public class S004HentPersonopplysninger implements ServiceRoutineResolver {
                 .addSecurity()
 
                 .build();
-    };
+    }
 }

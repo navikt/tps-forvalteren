@@ -7,14 +7,13 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrDnrHistorikkServiceRoutineRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentUtvandringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
-public class S011HentFNRDNRHistorikk implements ServiceRoutineResolver{
+public class S011HentFnrDnrHistorikk implements ServiceRoutineResolver{
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {

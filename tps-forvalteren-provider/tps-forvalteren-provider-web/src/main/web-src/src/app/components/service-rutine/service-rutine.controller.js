@@ -34,7 +34,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.loading = true;
 
                 serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
-                    //console.log(params);
                     $scope.loading = false;
                     $scope.clearResponseForm();
 

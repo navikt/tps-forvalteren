@@ -65,5 +65,5 @@ public class S103HentAdresser implements ServiceRoutineResolver {
                 .addSecurity()
 
                 .build();
-    };
+    }
 }

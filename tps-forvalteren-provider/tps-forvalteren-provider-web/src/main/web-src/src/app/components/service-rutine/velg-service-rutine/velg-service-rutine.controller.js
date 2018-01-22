@@ -7,14 +7,11 @@ angular.module('tps-forvalteren.service-rutine.velg-service-rutine', ['ngMateria
                 $mdDialog.hide();
             };
             $scope.send = function (rutine) {
-
                 $mdDialog.hide();
                 locationService.redirectToServiceRutineState(rutine);
-
             };
 
             $scope.range = function(n) {
-                 console.log("testing");
                 return new Array(n);
             };
 

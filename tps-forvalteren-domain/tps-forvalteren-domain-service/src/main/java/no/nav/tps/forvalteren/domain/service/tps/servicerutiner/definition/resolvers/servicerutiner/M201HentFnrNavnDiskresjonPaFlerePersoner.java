@@ -45,7 +45,6 @@ public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineR
                 .transformer()
                 .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
                 .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataM201"))
-                //.postSend(ResponseDataListTransformer.extractDataListFromXml("personDataM201", "EFnr", "antallFM201"))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 

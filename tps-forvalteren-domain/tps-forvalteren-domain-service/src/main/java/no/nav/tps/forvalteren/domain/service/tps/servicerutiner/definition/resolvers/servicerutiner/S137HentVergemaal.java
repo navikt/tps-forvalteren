@@ -51,5 +51,5 @@ public class S137HentVergemaal implements ServiceRoutineResolver {
                 .addSecurity()
 
                 .build();
-    };
+    }
 }

@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S004HentPersonopplysninger;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S005Relasjoner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S010Adressehistorikk;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S011HentFNRDNRHistorikk;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S011HentFnrDnrHistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S013HentTknrHistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S015HentAdresselinjehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S016Utvandring;
@@ -71,30 +71,38 @@ public class CommandConfig {
     }
 
     @Bean
-    ServiceRoutineResolver sjekkTps() { return new S000SjekkTpsTilgjengelig(); }
+    ServiceRoutineResolver sjekkTps() {
+
+        return new S000SjekkTpsTilgjengelig();
+    }
 
     @Bean
     ServiceRoutineResolver hentGT() {
+
         return new S610HentGT();
     }
 
     @Bean
     ServiceRoutineResolver hentTknr() {
+
         return new S002HentTknr();
     }
 
     @Bean
     ServiceRoutineResolver hentAdresser() {
+
         return new S103HentAdresser();
     }
 
     @Bean
     ServiceRoutineResolver hentAdresseLinjehistorikk() {
+
         return new S015HentAdresselinjehistorikk();
     }
 
     @Bean
     ServiceRoutineResolver hentAdressehistorikk() {
+
         return new S010Adressehistorikk();
     }
 
@@ -105,59 +113,73 @@ public class CommandConfig {
 
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnrTestdata() {
+
         return new M201HentFnrNavnDiskresjonPaFlerePersonerTestdata();
     }
 
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnr() {
+
         return new M201HentFnrNavnDiskresjonPaFlerePersoner();
     }
 
     @Bean
     ServiceRoutineResolver hentKontaktinformasjon() {
+
         return new S600HentKontaktinformasjon();
     }
 
     @Bean
     ServiceRoutineResolver hentPersonSok() {
+
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
 
     @Bean
     ServiceRoutineResolver hentFnrHistorikk() {
-        return new S011HentFNRDNRHistorikk();
+
+        return new S011HentFnrDnrHistorikk();
     }
 
     @Bean
     ServiceRoutineResolver hentTknrHistorikk() {
+
         return new S013HentTknrHistorikk();
     }
 
     @Bean
     ServiceRoutineResolver hentRelasjoner() {
+
         return new S005Relasjoner();
     }
 
     @Bean
     ServiceRoutineResolver hentPersonopplysninger() {
+
         return new S004HentPersonopplysninger();
     }
 
     @Bean
-    ServiceRoutineResolver hentVergemaal() { return new S137HentVergemaal(); }
+    ServiceRoutineResolver hentVergemaal() {
+
+        return new S137HentVergemaal();
+    }
 
     @Bean
     SkdMeldingResolver innvandring() {
+
         return new InnvandringAarsakskode02();
     }
 
     @Bean
     SkdMeldingResolver vigsel() {
+
         return new VigselAarsakskode11();
     }
 
     @Bean
     SkdMeldingResolver doedsmelding() {
+
         return new DoedsmeldingAarsakskode43();
     }
 

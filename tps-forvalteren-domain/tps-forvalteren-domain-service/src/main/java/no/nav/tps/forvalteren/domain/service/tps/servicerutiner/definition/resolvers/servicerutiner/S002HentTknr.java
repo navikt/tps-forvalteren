@@ -6,7 +6,6 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAn
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentPersonServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentTknrServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
@@ -65,5 +64,5 @@ public class S002HentTknr implements ServiceRoutineResolver {
                 .addSecurity()
 
                 .build();
-    };
+    }
 }

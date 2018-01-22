@@ -51,5 +51,5 @@ public class S600HentKontaktinformasjon implements ServiceRoutineResolver {
                 .addSecurity()
 
                 .build();
-    };
+    }
 }
