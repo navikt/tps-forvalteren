@@ -1,4 +1,3 @@
-
 angular.module('tps-forvalteren.factory')
     .factory('serviceRutineFactory', ['$http', function ($http) {
 
@@ -69,13 +68,17 @@ angular.module('tps-forvalteren.factory')
         };
 
         serviceRutineFactory.loadFromServerEnvironments = function () {
-            return $http({method: 'GET', url: urlGetEnvironments}).then(function (res) {
-                environments = res.data;
-                isSetEnvironments = true;
+            if (isSetEnvironments) {
                 return environments;
-            }, function (error) {
-                return error;
-            });
+            } else {
+                return $http({method: 'GET', url: urlGetEnvironments}).then(function (res) {
+                    environments = res.data;
+                    isSetEnvironments = true;
+                    return environments;
+                }, function (error) {
+                    return error;
+                });
+            }
         };
 
         serviceRutineFactory.getServiceRutines = function () {

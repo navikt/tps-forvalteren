@@ -9,5 +9,4 @@ public interface FetchEnvironmentsConsumer {
 
     Set<String> getEnvironments(String application, boolean usage);
 
-    boolean ping();
 }

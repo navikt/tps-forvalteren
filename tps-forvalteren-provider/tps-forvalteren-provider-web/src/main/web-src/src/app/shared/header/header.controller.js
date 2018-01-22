@@ -57,7 +57,7 @@ angular.module('tps-forvalteren')
 
             appInfoService.getInfo().then(function (result) {
                 $scope.appInfo = result.data;
-            }, function (error) {
+                }, function (error) {
                  utilsService.showAlertError(error);
             });
         }]);

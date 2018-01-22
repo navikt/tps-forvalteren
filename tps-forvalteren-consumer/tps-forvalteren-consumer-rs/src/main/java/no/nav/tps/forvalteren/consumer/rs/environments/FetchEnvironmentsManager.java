@@ -24,7 +24,6 @@ public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FetchEnvironmentsManager.class);
 
-    private static final String PING_TPSWS = "tpsws";
     protected static final String BASE_URL = "https://fasit.adeo.no/api/v2";
 
     private RestTemplate template = new RestTemplate();
@@ -72,17 +71,6 @@ public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
         }
 
         return builder.build().encode().toUriString();
-    }
-
-    @Override
-    public boolean ping() {
-        try {
-            this.getEnvironments(PING_TPSWS);
-        } catch (RuntimeException e) {
-            LOGGER.warn("An exception was encountered while pinging Fasit: {}", e.toString());
-            throw e;
-        }
-        return true;
     }
 
     private enum Service {

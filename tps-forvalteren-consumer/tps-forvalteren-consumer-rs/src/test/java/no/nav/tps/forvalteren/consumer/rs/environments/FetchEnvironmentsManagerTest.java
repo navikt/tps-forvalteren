@@ -26,8 +26,6 @@ import org.springframework.web.client.RestTemplate;
 @RunWith(MockitoJUnitRunner.class)
 public class FetchEnvironmentsManagerTest {
 
-    private static final String FASIT_DOES_NOT_ANSWER_ERROR = "Fasit does not answer";
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -82,30 +80,4 @@ public class FetchEnvironmentsManagerTest {
         assertThat(consumer.getEnvironments("tpsws"), containsInAnyOrder("p", "q4", "t3"));
     }
 
-    @Test
-    public void pingReturnsTrueWhenFasitRespondsNormally() throws Exception {
-
-        FetchEnvironmentsApplication[] returnedApplications = new FetchEnvironmentsApplication[]{p, q4, t3};
-
-        when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenReturn(returnedApplications);
-
-        boolean result = consumer.ping();
-
-        assertThat(result, is(true));
-    }
-
-    @Test
-    public void pingThrowsExceptionWhenFasitThrowsException() throws Exception {
-
-        RuntimeException thrownException = new RuntimeException(FASIT_DOES_NOT_ANSWER_ERROR);
-
-        when( restTemplateMock.getForObject(anyString(), anyObject()) ).thenThrow(thrownException);
-
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage(FASIT_DOES_NOT_ANSWER_ERROR);
-
-        boolean result = consumer.ping();
-
-        assertThat(result, is(false));
-    }
 }
