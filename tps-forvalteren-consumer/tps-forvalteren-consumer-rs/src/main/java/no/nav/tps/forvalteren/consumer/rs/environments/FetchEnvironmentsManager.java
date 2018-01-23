@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.consumer.rs.environments;
 
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toSet;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toSet;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
