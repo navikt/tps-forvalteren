@@ -1,7 +1,4 @@
-package no.nav.tps.forvalteren.consumer.rs.vera;
-
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toSet;
+package no.nav.tps.forvalteren.consumer.rs.environments;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toSet;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -20,16 +17,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 
 @Component
-public class DefaultVeraConsumer implements VeraConsumer {
+public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultVeraConsumer.class);
-
-    private static final String PING_VERA = "tpsws";
-    protected static final String BASE_URL = "https://vera.adeo.no/api/v1";
+    protected static final String BASE_URL = "https://fasit.adeo.no/api/v2";
 
     private RestTemplate template = new RestTemplate();
 
-    public DefaultVeraConsumer() {
+    public FetchEnvironmentsManager() {
         List<HttpMessageConverter<?>> messageConverters = singletonList(new MappingJackson2HttpMessageConverter());
         template.setMessageConverters(messageConverters);
     }
@@ -37,29 +31,27 @@ public class DefaultVeraConsumer implements VeraConsumer {
     /* Get environments */
     @Override
     public Set<String> getEnvironments(String application) {
-        return getEnvironments(application, true, true);
+        return getEnvironments(application, true);
     }
 
     @Override
-    public Set<String> getEnvironments(String application, boolean onlyLatest, boolean filterUndeployed) {
-        Collection<VeraApplication> applications = getApplications(application, onlyLatest, filterUndeployed);
+    public Set<String> getEnvironments(String application, boolean usage) {
+        Collection<FetchEnvironmentsApplication> applications = getApplications(application, usage);
 
         return applications.stream()
-                .map(VeraApplication::getEnvironment)
+                .map(FetchEnvironmentsApplication::getEnvironment)
                 .collect(toSet());
     }
 
-    private Collection<VeraApplication> getApplications(String application, boolean onlyLatest, boolean filterUndeployed) {
+    private Collection<FetchEnvironmentsApplication> getApplications(String application, boolean usage) {
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("application", application);
-        parameters.put("onlyLatest", onlyLatest);
-        parameters.put("filterUndeployed", filterUndeployed);
+        parameters.put("usage", usage);
 
         String url = buildUrl(Service.DEPLOYLOG, parameters);
 
-        VeraApplication[] applications = template.getForObject(url, VeraApplication[].class);
-
+        FetchEnvironmentsApplication[] applications = template.getForObject(url, FetchEnvironmentsApplication[].class);
         return Arrays.asList(applications);
     }
 
@@ -76,19 +68,8 @@ public class DefaultVeraConsumer implements VeraConsumer {
         return builder.build().encode().toUriString();
     }
 
-    @Override
-    public boolean ping() {
-        try {
-            this.getEnvironments(PING_VERA);
-        } catch (RuntimeException e) {
-            LOGGER.warn("An exception was encountered while pinging Vera: {}", e.toString());
-            throw e;
-        }
-        return true;
-    }
-
     private enum Service {
-        DEPLOYLOG("deploylog");
+        DEPLOYLOG("applicationinstances");
 
         private String serviceName;
 

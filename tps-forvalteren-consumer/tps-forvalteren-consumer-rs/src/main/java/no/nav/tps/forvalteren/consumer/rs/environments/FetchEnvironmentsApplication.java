@@ -1,7 +1,7 @@
-package no.nav.tps.forvalteren.consumer.rs.vera;
+package no.nav.tps.forvalteren.consumer.rs.environments;
 
 
-public class VeraApplication {
+public class FetchEnvironmentsApplication {
 
     private String application;
     private String environment;

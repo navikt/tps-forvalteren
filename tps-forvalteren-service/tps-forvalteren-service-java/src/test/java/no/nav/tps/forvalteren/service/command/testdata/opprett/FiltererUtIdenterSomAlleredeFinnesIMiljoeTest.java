@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         testdataRequest2.setIdenterGenerertForKriterie(new HashSet<>());
 
         environments.add("test");
-        when(getEnvironmentsCommand.getEnvironmentsFromVera(anyString())).thenReturn(environments);
+        when(getEnvironmentsCommand.getEnvironmentsFromFasit(anyString())).thenReturn(environments);
     }
 
     @Test
