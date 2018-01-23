@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineHentByFnrRequest;
 
-
 @Getter
 @Setter
 @NoArgsConstructor

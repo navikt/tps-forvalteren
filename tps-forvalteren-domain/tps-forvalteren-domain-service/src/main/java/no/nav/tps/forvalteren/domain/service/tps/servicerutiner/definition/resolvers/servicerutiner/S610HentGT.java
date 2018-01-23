@@ -34,7 +34,7 @@ public class S610HentGT implements ServiceRoutineResolver{
                     .name("aksjonsKode")
                     .required()
                     .type(TpsParameterType.STRING)
-                    .value("B0")
+                    .values("A0", "B0")
                 .and()
 
                 .transformer()

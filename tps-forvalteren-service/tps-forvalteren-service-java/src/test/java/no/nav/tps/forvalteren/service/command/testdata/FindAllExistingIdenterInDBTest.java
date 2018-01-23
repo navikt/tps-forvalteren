@@ -1,8 +1,15 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,22 +17,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindAllExistingIdenterInDBTest {
 
     @Mock
-    private PersonRepository repository;
+    private FindPersonerByIdIn findPersonerByIdIn;
 
     @InjectMocks
     private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -51,7 +50,7 @@ public class FindAllExistingIdenterInDBTest {
 
     @Test
     public void removesExistingIdenter() {
-        when(repository.findByIdentIn(any(List.class))).thenReturn(existingIdenterInDB);
+        when(findPersonerByIdIn.execute(any(List.class))).thenReturn(existingIdenterInDB);
         Set<String> result = findIdenterNotUsedInDB.filtrer(new HashSet<>(newIdenter));
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(newIdenter.get(2)));

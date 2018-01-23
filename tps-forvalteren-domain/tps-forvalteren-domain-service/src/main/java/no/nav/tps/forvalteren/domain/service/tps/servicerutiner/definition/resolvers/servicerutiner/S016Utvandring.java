@@ -24,6 +24,7 @@ public class S016Utvandring implements ServiceRoutineResolver{
                 .config()
                 .requestQueue(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)
                 .and()
+
                 .parameter()
                 .name("fnr")
                 .required()
@@ -47,12 +48,14 @@ public class S016Utvandring implements ServiceRoutineResolver{
                 .name("infoType")
                 .required()
                 .type(TpsParameterType.STRING)
+                .values("ALLE", "STAT", "OPPH", "ARBE", "INVA", "UTVA")
                 .and()
 
                 .parameter()
                 .name("buffNr")
                 .required()
                 .type(TpsParameterType.STRING)
+                .values("1", "2", "3", "4", "5")
                 .and()
 
                 .transformer()

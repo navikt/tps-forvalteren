@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
 
     <name>tps-forvalteren</name>
-
+    
     <selftest>
         <path>/tps-forvalteren/internal/selftest</path>
         <humanReadablePath>/tps-forvalteren/internal/selftest</humanReadablePath>

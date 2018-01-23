@@ -5,298 +5,246 @@
             <div class="tps-vk-response-expanded">
                 <div flex="5"></div>
                 <div layout="column">
-                    <div layout="row">
-                        <tps-output-field label="adrTidspunktReg" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
-                        <tps-output-field label="datoFom" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.datoFom" title="datoFom"></tps-output-field>
-                        <tps-output-field label="kommuneNavn" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommuneNavn" title="kommuneNavn"></tps-output-field>
-                        <tps-output-field label="postboksnr" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.postboksnr" title="postboksnr"></tps-output-field>
-                        <tps-output-field label="poststed" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.poststed" title="poststed"></tps-output-field>
-                    </div>
+                    <div layout="row" layout-wrap>
+                        <tps-output-field label="fodselsnummer" flex="20" field-model="responseData.data1.fodselsnummer" title="fodselsnummer"></tps-output-field>
+                        <tps-output-field label="identType" flex="20" field-model="responseData.data1.identType" title="identType"></tps-output-field>
 
-                    <div layout="row">
-                        <tps-output-field label="bolignr" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.bolignr" title="bolignr"></tps-output-field>
-                        <tps-output-field label="adrSaksbehandler" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
-                        <tps-output-field label="datoTom" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.datoTom" title="datoTom"></tps-output-field>
-                        <tps-output-field label="postnr" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.postnr" title="postnr"></tps-output-field>
-                        <tps-output-field label="adrSystem" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrSystem" title="adrSystem"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="gatekode" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.gatekode" title="gatekode"></tps-output-field>
-                        <tps-output-field label="husnr" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.husnr" title="husnr"></tps-output-field>
-                        <tps-output-field label="typeAdresseNavNorge" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.typeAdresseNavNorge" title="typeAdresseNavNorge"></tps-output-field>
-                        <tps-output-field label="beskrTypeTilleggsLinje" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.beskrTypeTilleggsLinje" title="beskrTypeTilleggsLinje"></tps-output-field>
-                        <tps-output-field label="typeTilleggsLinje" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.typeTilleggsLinje" title="typeTilleggsLinje"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="gatenavn" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.gatenavn" title="gatenavn"></tps-output-field>
-                        <tps-output-field label="postboksAnlegg" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.postboksAnlegg" title="postboksAnlegg"></tps-output-field>
-                        <tps-output-field label="eiendomsnavn" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.eiendomsnavn" title="eiendomsnavn"></tps-output-field>
-                        <tps-output-field label="behov" flex="30" field-model="responseData.data1.bruker.behov" title="behov"></tps-output-field>
-                        <tps-output-field label="datoUmyndiggjort" flex="30" field-model="responseData.data1.bruker.datoUmyndiggjort" title="datoUmyndiggjort"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="beskrBankValuta" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.beskrBankValuta" title="beskrBankValuta"></tps-output-field>
-                        <tps-output-field label="bankAdresse2" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse2" title="bankAdresse2"></tps-output-field>
-                        <tps-output-field label="bankAdresse1" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse1" title="bankAdresse1"></tps-output-field>
-                        <tps-output-field label="giroNrUtland" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.giroNrUtland" title="giroNrUtland"></tps-output-field>
-                        <tps-output-field label="regSaksbehandler" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.regSaksbehandler" title="regSaksbehandler"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="bankLand" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankLand" title="bankLand"></tps-output-field>
-                        <tps-output-field label="bankValuta" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankValuta" title="bankValuta"></tps-output-field>
-                        <tps-output-field label="bankLandKode" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankLandKode" title="bankLandKode"></tps-output-field>
-                        <tps-output-field label="swiftKodeUtland" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.swiftKodeUtland" title="swiftKodeUtland"></tps-output-field>
-                        <tps-output-field label="regSystem" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.regSystem" title="regSystem"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="bankNavnUtland" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankNavnUtland" title="bankNavnUtland"></tps-output-field>
-                        <tps-output-field label="iban" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.iban" title="iban"></tps-output-field>
-                        <tps-output-field label="regTidspunkt" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.regTidspunkt" title="regTidspunkt"></tps-output-field>
-                        <tps-output-field label="bankAdresse3" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse3" title="bankAdresse3"></tps-output-field>
-                        <tps-output-field label="bankKodeUtland" flex="30" field-model="responseData.data1.bruker.bankkontoUtland.bankKodeUtland" title="bankKodeUtland"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="relasjoner" flex="30" field-model="responseData.data1.bruker.relasjoner" title="relasjoner"></tps-output-field>
-                        <tps-output-field label="NAVenhet" flex="30" field-model="responseData.data1.bruker.NAVenhet" title="NAVenhet"></tps-output-field>
-                        <tps-output-field label="sivilstand" flex="30" field-model="responseData.data1.sivilstand" title="sivilstand"></tps-output-field>
-                        <tps-output-field label="kodePersonstatus" flex="30" field-model="responseData.data1.personstatusDetalj.kodePersonstatus" title="kodePersonstatus"></tps-output-field>
-                        <tps-output-field label="psTidspunkt" flex="30" field-model="responseData.data1.personstatusDetalj.psTidspunkt" title="psTidspunkt"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="psSystem" flex="30" field-model="responseData.data1.personstatusDetalj.psSystem" title="psSystem"></tps-output-field>
-                        <tps-output-field label="datoPersonstatus" flex="30" field-model="responseData.data1.personstatusDetalj.datoPersonstatus" title="datoPersonstatus"></tps-output-field>
-                        <tps-output-field label="kodePersonstatusBeskr" flex="30" field-model="responseData.data1.personstatusDetalj.kodePersonstatusBeskr" title="kodePersonstatusBeskr"></tps-output-field>
-                        <tps-output-field label="psSaksbehandler" flex="30" field-model="responseData.data1.personstatusDetalj.psSaksbehandler" title="psSaksbehandler"></tps-output-field>
-                        <tps-output-field label="fodselsdato" flex="30" field-model="responseData.data1.fodselsdato" title="fodselsdato"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="datoDo" flex="30" field-model="responseData.data1.datoDo" title="datoDo"></tps-output-field>
-                        <tps-output-field label="regSystem" flex="30" field-model="responseData.data1.bankkontoNorge.regSystem" title="regSystem"></tps-output-field>
-                        <tps-output-field label="regSaksbehandler" flex="30" field-model="responseData.data1.bankkontoNorge.regSaksbehandler" title="regSaksbehandler"></tps-output-field>
-                        <tps-output-field label="kontoNummer" flex="30" field-model="responseData.data1.bankkontoNorge.kontoNummer" title="kontoNummer"></tps-output-field>
-                        <tps-output-field label="regTidspunkt" flex="30" field-model="responseData.data1.bankkontoNorge.regTidspunkt" title="regTidspunkt"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="banknavn" flex="30" field-model="responseData.data1.bankkontoNorge.banknavn" title="banknavn"></tps-output-field>
-                        <tps-output-field label="postLand" flex="30" field-model="responseData.data1.postAdresse.postLand" title="postLand"></tps-output-field>
-                        <tps-output-field label="postLandKode" flex="30" field-model="responseData.data1.postAdresse.postLandKode" title="postLandKode"></tps-output-field>
-                        <tps-output-field label="adresseType" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adresseType" title="adresseType"></tps-output-field>
-                        <tps-output-field label="landKode" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.landKode" title="landKode"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="adrTidspunktReg" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
-                        <tps-output-field label="datoFom" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.datoFom" title="datoFom"></tps-output-field>
-                        <tps-output-field label="adresse3" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adresse3" title="adresse3"></tps-output-field>
-                        <tps-output-field label="adresse1" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adresse1" title="adresse1"></tps-output-field>
-                        <tps-output-field label="adresse2" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adresse2" title="adresse2"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="poststed" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.poststed" title="poststed"></tps-output-field>
-                        <tps-output-field label="beskrAdrType" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.beskrAdrType" title="beskrAdrType"></tps-output-field>
-                        <tps-output-field label="adrSaksbehandler" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
-                        <tps-output-field label="datoTom" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.datoTom" title="datoTom"></tps-output-field>
-                        <tps-output-field label="postnr" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.postnr" title="postnr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="adrSystem" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.adrSystem" title="adrSystem"></tps-output-field>
-                        <tps-output-field label="land" flex="30" field-model="responseData.data1.postAdresse.fullPostAdresse.land" title="land"></tps-output-field>
-                        <tps-output-field label="postAdresse2" flex="30" field-model="responseData.data1.postAdresse.postAdresse2" title="postAdresse2"></tps-output-field>
-                        <tps-output-field label="postAdresse1" flex="30" field-model="responseData.data1.postAdresse.postAdresse1" title="postAdresse1"></tps-output-field>
-                        <tps-output-field label="postPostnr" flex="30" field-model="responseData.data1.postAdresse.postPostnr" title="postPostnr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="postPoststed" flex="30" field-model="responseData.data1.postAdresse.postPoststed" title="postPoststed"></tps-output-field>
-                        <tps-output-field label="postAdresse3" flex="30" field-model="responseData.data1.postAdresse.postAdresse3" title="postAdresse3"></tps-output-field>
-                        <tps-output-field label="fodestedTidspunkt" flex="30" field-model="responseData.data1.fodestedDetalj.fodestedTidspunkt" title="fodestedTidspunkt"></tps-output-field>
-                        <tps-output-field label="fodestedSystem" flex="30" field-model="responseData.data1.fodestedDetalj.fodestedSystem" title="fodestedSystem"></tps-output-field>
-                        <tps-output-field label="fodestedSaksbehandler" flex="30" field-model="responseData.data1.fodestedDetalj.fodestedSaksbehandler" title="fodestedSaksbehandler"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="identType" flex="30" field-model="responseData.data1.identType" title="identType"></tps-output-field>
-                        <tps-output-field label="boAdresse2" flex="30" field-model="responseData.data1.bostedsAdresse.boAdresse2" title="boAdresse2"></tps-output-field>
-                        <tps-output-field label="boPoststed" flex="30" field-model="responseData.data1.bostedsAdresse.boPoststed" title="boPoststed"></tps-output-field>
-                        <tps-output-field label="boAdresse1" flex="30" field-model="responseData.data1.bostedsAdresse.boAdresse1" title="boAdresse1"></tps-output-field>
-                        <tps-output-field label="boPostnr" flex="30" field-model="responseData.data1.bostedsAdresse.boPostnr" title="boPostnr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="adresseType" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adresseType" title="adresseType"></tps-output-field>
-                        <tps-output-field label="bokstav" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.offAdresse.bokstav" title="bokstav"></tps-output-field>
-                        <tps-output-field label="husnr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.offAdresse.husnr" title="husnr"></tps-output-field>
-                        <tps-output-field label="gateNavn" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.offAdresse.gateNavn" title="gateNavn"></tps-output-field>
-                        <tps-output-field label="kommunenr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.kommunenr" title="kommunenr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="landKode" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.landKode" title="landKode"></tps-output-field>
-                        <tps-output-field label="adrTidspunktReg" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
-                        <tps-output-field label="datoFom" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.datoFom" title="datoFom"></tps-output-field>
-                        <tps-output-field label="kommuneNavn" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.kommuneNavn" title="kommuneNavn"></tps-output-field>
-                        <tps-output-field label="adresse1" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adresse1" title="adresse1"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="tilleggsAdresseSKD" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.tilleggsAdresseSKD" title="tilleggsAdresseSKD"></tps-output-field>
-                        <tps-output-field label="adresse2" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adresse2" title="adresse2"></tps-output-field>
-                        <tps-output-field label="tknr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.tknr" title="tknr"></tps-output-field>
-                        <tps-output-field label="poststed" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.poststed" title="poststed"></tps-output-field>
-                        <tps-output-field label="bolignr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.bolignr" title="bolignr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="beskrAdrType" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.beskrAdrType" title="beskrAdrType"></tps-output-field>
-                        <tps-output-field label="adrSaksbehandler" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
-                        <tps-output-field label="datoTom" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.datoTom" title="datoTom"></tps-output-field>
-                        <tps-output-field label="undernr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.undernr" title="undernr"></tps-output-field>
-                        <tps-output-field label="gardsnr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.gardsnr" title="gardsnr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="festenr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.festenr" title="festenr"></tps-output-field>
-                        <tps-output-field label="mellomAdresse" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.mellomAdresse" title="mellomAdresse"></tps-output-field>
-                        <tps-output-field label="bruksnr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.bruksnr" title="bruksnr"></tps-output-field>
-                        <tps-output-field label="postnr" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.postnr" title="postnr"></tps-output-field>
-                        <tps-output-field label="adrSystem" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adrSystem" title="adrSystem"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="tkNavn" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.tkNavn" title="tkNavn"></tps-output-field>
-                        <tps-output-field label="land" flex="30" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.land" title="land"></tps-output-field>
-                        <tps-output-field label="fodselsnummer" flex="30" field-model="responseData.data1.fodselsnummer" title="fodselsnummer"></tps-output-field>
-                        <tps-output-field label="kodeStatsborgerskapBeskr" flex="30" field-model="responseData.data1.statsborgerskapDetalj.kodeStatsborgerskapBeskr" title="kodeStatsborgerskapBeskr"></tps-output-field>
-                        <tps-output-field label="sbSystem" flex="30" field-model="responseData.data1.statsborgerskapDetalj.sbSystem" title="sbSystem"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="sbTidspunkt" flex="30" field-model="responseData.data1.statsborgerskapDetalj.sbTidspunkt" title="sbTidspunkt"></tps-output-field>
-                        <tps-output-field label="kodeStatsborgerskap" flex="30" field-model="responseData.data1.statsborgerskapDetalj.kodeStatsborgerskap" title="kodeStatsborgerskap"></tps-output-field>
-                        <tps-output-field label="sbSaksbehandler" flex="30" field-model="responseData.data1.statsborgerskapDetalj.sbSaksbehandler" title="sbSaksbehandler"></tps-output-field>
-                        <tps-output-field label="datoStatsborgerskap" flex="30" field-model="responseData.data1.statsborgerskapDetalj.datoStatsborgerskap" title="datoStatsborgerskap"></tps-output-field>
-                        <tps-output-field label="doSystem" flex="30" field-model="responseData.data1.datoDoDetalj.doSystem" title="doSystem"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="doSaksbehandler" flex="30" field-model="responseData.data1.datoDoDetalj.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
-                        <tps-output-field label="doTidspunkt" flex="30" field-model="responseData.data1.datoDoDetalj.doTidspunkt" title="doTidspunkt"></tps-output-field>
-                        <tps-output-field label="fodested" flex="30" field-model="responseData.data1.fodested" title="fodested"></tps-output-field>
-                        <tps-output-field label="gjeldendePersonnavn" flex="30" field-model="responseData.data1.personnavn.gjeldendePersonnavn" title="gjeldendePersonnavn"></tps-output-field>
-                        <tps-output-field label="kortnavn" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.kortnavn" title="kortnavn"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="navnTidspunkt" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
-                        <tps-output-field label="mellomnavn" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.mellomnavn" title="mellomnavn"></tps-output-field>
-                        <tps-output-field label="etternavn" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.etternavn" title="etternavn"></tps-output-field>
-                        <tps-output-field label="navnSaksbehandler" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
-                        <tps-output-field label="fornavn" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.fornavn" title="fornavn"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="navnSystem" flex="30" field-model="responseData.data1.personnavn.allePersonnavn.navnSystem" title="navnSystem"></tps-output-field>
-                        <tps-output-field label="sivilstSaksbehandler" flex="30" field-model="responseData.data1.sivilstandDetalj.sivilstSaksbehandler" title="sivilstSaksbehandler"></tps-output-field>
-                        <tps-output-field label="kodeSivilstandBeskr" flex="30" field-model="responseData.data1.sivilstandDetalj.kodeSivilstandBeskr" title="kodeSivilstandBeskr"></tps-output-field>
-                        <tps-output-field label="kodeSivilstand" flex="30" field-model="responseData.data1.sivilstandDetalj.kodeSivilstand" title="kodeSivilstand"></tps-output-field>
-                        <tps-output-field label="datoSivilstand" flex="30" field-model="responseData.data1.sivilstandDetalj.datoSivilstand" title="datoSivilstand"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="sivilstTidspunkt" flex="30" field-model="responseData.data1.sivilstandDetalj.sivilstTidspunkt" title="sivilstTidspunkt"></tps-output-field>
-                        <tps-output-field label="sivilstSystem" flex="30" field-model="responseData.data1.sivilstandDetalj.sivilstSystem" title="sivilstSystem"></tps-output-field>
-                        <tps-output-field label="antallTotalt" flex="30" field-model="responseData.antallTotalt" title="antallTotalt"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="statsborgerskap" flex="30" field-model="responseData.data1.statsborgerskap" title="statsborgerskap"></tps-output-field>
-                        <tps-output-field label="kjonn" flex="30" field-model="responseData.data1.kjonn" title="kjonn"></tps-output-field>
-                        <tps-output-field label="fnrSystem" flex="30" field-model="responseData.data1.fodselsnummerDetalj.fnrSystem" title="fnrSystem"></tps-output-field>
-                        <tps-output-field label="fnrTidspunkt" flex="30" field-model="responseData.data1.fodselsnummerDetalj.fnrTidspunkt" title="fnrTidspunkt"></tps-output-field>
-                        <tps-output-field label="fnrSaksbehandler" flex="30" field-model="responseData.data1.fodselsnummerDetalj.fnrSaksbehandler" title="fnrSaksbehandler"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="sikrFom" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.sikrFom" title="sikrFom"></tps-output-field>
-                        <tps-output-field label="beskrSikkerhetsTiltak" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.beskrSikkerhetsTiltak" title="beskrSikkerhetsTiltak"></tps-output-field>
-                        <tps-output-field label="sikrTom" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.sikrTom" title="sikrTom"></tps-output-field>
-                        <tps-output-field label="opprettetSystem" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.opprettetSystem" title="opprettetSystem"></tps-output-field>
-                        <tps-output-field label="opprettetSaksbehandler" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.opprettetSaksbehandler" title="opprettetSaksbehandler"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="opprettetTidspunkt" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.opprettetTidspunkt" title="opprettetTidspunkt"></tps-output-field>
-                        <tps-output-field label="typeSikkerhetsTiltak" flex="30" field-model="responseData.data1.bruker.sikkerhetsTiltak.typeSikkerhetsTiltak" title="typeSikkerhetsTiltak"></tps-output-field>
-                        <tps-output-field label="sprak" flex="30" field-model="responseData.data1.bruker.preferanser.sprak" title="sprak"></tps-output-field>
-                        <tps-output-field label="harVerge" flex="30" field-model="responseData.data1.bruker.harVerge" title="harVerge"></tps-output-field>
-                        <tps-output-field label="kodeNAVenhetBeskr" flex="30" field-model="responseData.data1.bruker.NAVenhetDetalj.kodeNAVenhetBeskr" title="kodeNAVenhetBeskr"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="NAVenhetSaksbehandler" flex="30" field-model="responseData.data1.bruker.NAVenhetDetalj.NAVenhetSaksbehandler" title="NAVenhetSaksbehandler"></tps-output-field>
-                        <tps-output-field label="datoNAVenhet" flex="30" field-model="responseData.data1.bruker.NAVenhetDetalj.datoNAVenhet" title="datoNAVenhet"></tps-output-field>
-                        <tps-output-field label="NAVenhetTidspunkt" flex="30" field-model="responseData.data1.bruker.NAVenhetDetalj.NAVenhetTidspunkt" title="NAVenhetTidspunkt"></tps-output-field>
-                        <tps-output-field label="NAVenhetSystem" flex="30" field-model="responseData.data1.bruker.NAVenhetDetalj.NAVenhetSystem" title="NAVenhetSystem"></tps-output-field>
-                        <tps-output-field label="kodeNAVenhet" flex="30" field-model="responseData.data1.bruker.NAVenhetDetalj.kodeNAVenhet" title="kodeNAVenhet"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="kommunenr" flex="30" field-model="responseData.data1.bruker.geografiskTilknytning.kommunenr" title="kommunenr"></tps-output-field>
-                        <tps-output-field label="landKode" flex="30" field-model="responseData.data1.bruker.geografiskTilknytning.landKode" title="landKode"></tps-output-field>
-                        <tps-output-field label="bydel" flex="30" field-model="responseData.data1.bruker.geografiskTilknytning.bydel" title="bydel"></tps-output-field>
-                        <tps-output-field label="telefoner" flex="30" field-model="responseData.data1.bruker.telefoner" title="telefoner"></tps-output-field>
-                        <tps-output-field label="adresseType" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresseType" title="adresseType"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="beskrAdrType" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.beskrAdrType" title="beskrAdrType"></tps-output-field>
-                        <tps-output-field label="adrSaksbehandler" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
-                        <tps-output-field label="datoTom" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.datoTom" title="datoTom"></tps-output-field>
-                        <tps-output-field label="landKode" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.landKode" title="landKode"></tps-output-field>
-                        <tps-output-field label="adrTidspunktReg" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="adrSystem" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adrSystem" title="adrSystem"></tps-output-field>
-                        <tps-output-field label="datoFom" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.datoFom" title="datoFom"></tps-output-field>
-                        <tps-output-field label="land" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.land" title="land"></tps-output-field>
-                        <tps-output-field label="adresse3" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresse3" title="adresse3"></tps-output-field>
-                        <tps-output-field label="adresse1" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresse1" title="adresse1"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="adresse2" flex="30" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresse2" title="adresse2"></tps-output-field>
-                        <tps-output-field label="regelForGeografiskTilknytning" flex="30" field-model="responseData.data1.bruker.regelForGeografiskTilknytning" title="regelForGeografiskTilknytning"></tps-output-field>
-                        <tps-output-field label="umyndigSaksbehandler" flex="30" field-model="responseData.data1.bruker.umyndigDetalj.umyndigSaksbehandler" title="umyndigSaksbehandler"></tps-output-field>
-                        <tps-output-field label="umyndigSystem" flex="30" field-model="responseData.data1.bruker.umyndigDetalj.umyndigSystem" title="umyndigSystem"></tps-output-field>
-                        <tps-output-field label="umyndigTidspunkt" flex="30" field-model="responseData.data1.bruker.umyndigDetalj.umyndigTidspunkt" title="umyndigTidspunkt"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="diskresjonSaksbehandler" flex="30" field-model="responseData.data1.bruker.diskresjonDetalj.diskresjonSaksbehandler" title="diskresjonSaksbehandler"></tps-output-field>
-                        <tps-output-field label="diskresjonTidspunkt" flex="30" field-model="responseData.data1.bruker.diskresjonDetalj.diskresjonTidspunkt" title="diskresjonTidspunkt"></tps-output-field>
-                        <tps-output-field label="diskresjonSystem" flex="30" field-model="responseData.data1.bruker.diskresjonDetalj.diskresjonSystem" title="diskresjonSystem"></tps-output-field>
-                        <tps-output-field label="kodeDiskresjonBeskr" flex="30" field-model="responseData.data1.bruker.diskresjonDetalj.kodeDiskresjonBeskr" title="kodeDiskresjonBeskr"></tps-output-field>
-                        <tps-output-field label="datoDiskresjon" flex="30" field-model="responseData.data1.bruker.diskresjonDetalj.datoDiskresjon" title="datoDiskresjon"></tps-output-field>
-                    </div>
-
-                    <div layout="row">
-                        <tps-output-field label="kodeDiskresjon" flex="30" field-model="responseData.data1.bruker.diskresjonDetalj.kodeDiskresjon" title="kodeDiskresjon"></tps-output-field>
-                        <tps-output-field label="beskrTypeAdresseNavNorge" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.beskrTypeAdresseNavNorge" title="beskrTypeAdresseNavNorge"></tps-output-field>
-                        <tps-output-field label="tilleggsLinje" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.tilleggsLinje" title="tilleggsLinje"></tps-output-field>
-                        <tps-output-field label="kommunenr" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommunenr" title="kommunenr"></tps-output-field>
-                        <tps-output-field label="husbokstav" flex="30" field-model="responseData.data1.bruker.postadresseNorgeNAV.husbokstav" title="husbokstav"></tps-output-field>
+                        <tps-output-field label="adrTidspunktReg" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
+                        <tps-output-field label="datoFom" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.datoFom" title="datoFom"></tps-output-field>
+                        <tps-output-field label="kommuneNavn" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommuneNavn" title="kommuneNavn"></tps-output-field>
+                        <tps-output-field label="postboksnr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.postboksnr" title="postboksnr"></tps-output-field>
+                        <tps-output-field label="poststed" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.poststed" title="poststed"></tps-output-field>
+                        <tps-output-field label="bolignr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.bolignr" title="bolignr"></tps-output-field>
+                        <tps-output-field label="adrSaksbehandler" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoTom" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.datoTom" title="datoTom"></tps-output-field>
+                        <tps-output-field label="postnr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.postnr" title="postnr"></tps-output-field>
+                        <tps-output-field label="adrSystem" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.adrSystem" title="adrSystem"></tps-output-field>
+                        <tps-output-field label="gatekode" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.gatekode" title="gatekode"></tps-output-field>
+                        <tps-output-field label="husnr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.husnr" title="husnr"></tps-output-field>
+                        <tps-output-field label="typeAdresseNavNorge" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.typeAdresseNavNorge" title="typeAdresseNavNorge"></tps-output-field>
+                        <tps-output-field label="beskrTypeTilleggsLinje" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.beskrTypeTilleggsLinje" title="beskrTypeTilleggsLinje"></tps-output-field>
+                        <tps-output-field label="typeTilleggsLinje" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.typeTilleggsLinje" title="typeTilleggsLinje"></tps-output-field>
+                        <tps-output-field label="gatenavn" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.gatenavn" title="gatenavn"></tps-output-field>
+                        <tps-output-field label="postboksAnlegg" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.postboksAnlegg" title="postboksAnlegg"></tps-output-field>
+                        <tps-output-field label="eiendomsnavn" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.eiendomsnavn" title="eiendomsnavn"></tps-output-field>
+                        <tps-output-field label="behov" flex="20" field-model="responseData.data1.bruker.behov" title="behov"></tps-output-field>
+                        <tps-output-field label="datoUmyndiggjort" flex="20" field-model="responseData.data1.bruker.datoUmyndiggjort" title="datoUmyndiggjort"></tps-output-field>
+                        <tps-output-field label="beskrBankValuta" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.beskrBankValuta" title="beskrBankValuta"></tps-output-field>
+                        <tps-output-field label="bankAdresse2" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse2" title="bankAdresse2"></tps-output-field>
+                        <tps-output-field label="bankAdresse1" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse1" title="bankAdresse1"></tps-output-field>
+                        <tps-output-field label="giroNrUtland" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.giroNrUtland" title="giroNrUtland"></tps-output-field>
+                        <tps-output-field label="regSaksbehandler" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.regSaksbehandler" title="regSaksbehandler"></tps-output-field>
+                        <tps-output-field label="bankLand" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankLand" title="bankLand"></tps-output-field>
+                        <tps-output-field label="bankValuta" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankValuta" title="bankValuta"></tps-output-field>
+                        <tps-output-field label="bankLandKode" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankLandKode" title="bankLandKode"></tps-output-field>
+                        <tps-output-field label="swiftKodeUtland" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.swiftKodeUtland" title="swiftKodeUtland"></tps-output-field>
+                        <tps-output-field label="regSystem" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.regSystem" title="regSystem"></tps-output-field>
+                        <tps-output-field label="bankNavnUtland" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankNavnUtland" title="bankNavnUtland"></tps-output-field>
+                        <tps-output-field label="iban" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.iban" title="iban"></tps-output-field>
+                        <tps-output-field label="regTidspunkt" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.regTidspunkt" title="regTidspunkt"></tps-output-field>
+                        <tps-output-field label="bankAdresse3" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse3" title="bankAdresse3"></tps-output-field>
+                        <tps-output-field label="bankKodeUtland" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankKodeUtland" title="bankKodeUtland"></tps-output-field>
+                        <tps-output-field label="relasjoner" flex="20" field-model="responseData.data1.bruker.relasjoner" title="relasjoner"></tps-output-field>
+                        <tps-output-field label="NAVenhet" flex="20" field-model="responseData.data1.bruker.NAVenhet" title="NAVenhet"></tps-output-field>
+                        <tps-output-field label="sivilstand" flex="20" field-model="responseData.data1.sivilstand" title="sivilstand"></tps-output-field>
+                        <tps-output-field label="kodePersonstatus" flex="20" field-model="responseData.data1.personstatusDetalj.kodePersonstatus" title="kodePersonstatus"></tps-output-field>
+                        <tps-output-field label="psTidspunkt" flex="20" field-model="responseData.data1.personstatusDetalj.psTidspunkt" title="psTidspunkt"></tps-output-field>
+                        <tps-output-field label="psSystem" flex="20" field-model="responseData.data1.personstatusDetalj.psSystem" title="psSystem"></tps-output-field>
+                        <tps-output-field label="datoPersonstatus" flex="20" field-model="responseData.data1.personstatusDetalj.datoPersonstatus" title="datoPersonstatus"></tps-output-field>
+                        <tps-output-field label="kodePersonstatusBeskr" flex="20" field-model="responseData.data1.personstatusDetalj.kodePersonstatusBeskr" title="kodePersonstatusBeskr"></tps-output-field>
+                        <tps-output-field label="psSaksbehandler" flex="20" field-model="responseData.data1.personstatusDetalj.psSaksbehandler" title="psSaksbehandler"></tps-output-field>
+                        <tps-output-field label="fodselsdato" flex="20" field-model="responseData.data1.fodselsdato" title="fodselsdato"></tps-output-field>
+                        <tps-output-field label="datoDo" flex="20" field-model="responseData.data1.datoDo" title="datoDo"></tps-output-field>
+                        <tps-output-field label="regSystem" flex="20" field-model="responseData.data1.bankkontoNorge.regSystem" title="regSystem"></tps-output-field>
+                        <tps-output-field label="regSaksbehandler" flex="20" field-model="responseData.data1.bankkontoNorge.regSaksbehandler" title="regSaksbehandler"></tps-output-field>
+                        <tps-output-field label="kontoNummer" flex="20" field-model="responseData.data1.bankkontoNorge.kontoNummer" title="kontoNummer"></tps-output-field>
+                        <tps-output-field label="regTidspunkt" flex="20" field-model="responseData.data1.bankkontoNorge.regTidspunkt" title="regTidspunkt"></tps-output-field>
+                        <tps-output-field label="banknavn" flex="20" field-model="responseData.data1.bankkontoNorge.banknavn" title="banknavn"></tps-output-field>
+                        <tps-output-field label="postLand" flex="20" field-model="responseData.data1.postAdresse.postLand" title="postLand"></tps-output-field>
+                        <tps-output-field label="postLandKode" flex="20" field-model="responseData.data1.postAdresse.postLandKode" title="postLandKode"></tps-output-field>
+                        <tps-output-field label="adresseType" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adresseType" title="adresseType"></tps-output-field>
+                        <tps-output-field label="landKode" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.landKode" title="landKode"></tps-output-field>
+                        <tps-output-field label="adrTidspunktReg" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
+                        <tps-output-field label="datoFom" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.datoFom" title="datoFom"></tps-output-field>
+                        <tps-output-field label="adresse3" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adresse3" title="adresse3"></tps-output-field>
+                        <tps-output-field label="adresse1" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adresse1" title="adresse1"></tps-output-field>
+                        <tps-output-field label="adresse2" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adresse2" title="adresse2"></tps-output-field>
+                        <tps-output-field label="poststed" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.poststed" title="poststed"></tps-output-field>
+                        <tps-output-field label="beskrAdrType" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.beskrAdrType" title="beskrAdrType"></tps-output-field>
+                        <tps-output-field label="adrSaksbehandler" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoTom" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.datoTom" title="datoTom"></tps-output-field>
+                        <tps-output-field label="postnr" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.postnr" title="postnr"></tps-output-field>
+                        <tps-output-field label="adrSystem" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.adrSystem" title="adrSystem"></tps-output-field>
+                        <tps-output-field label="land" flex="20" field-model="responseData.data1.postAdresse.fullPostAdresse.land" title="land"></tps-output-field>
+                        <tps-output-field label="postAdresse2" flex="20" field-model="responseData.data1.postAdresse.postAdresse2" title="postAdresse2"></tps-output-field>
+                        <tps-output-field label="postAdresse1" flex="20" field-model="responseData.data1.postAdresse.postAdresse1" title="postAdresse1"></tps-output-field>
+                        <tps-output-field label="postPostnr" flex="20" field-model="responseData.data1.postAdresse.postPostnr" title="postPostnr"></tps-output-field>
+                        <tps-output-field label="postPoststed" flex="20" field-model="responseData.data1.postAdresse.postPoststed" title="postPoststed"></tps-output-field>
+                        <tps-output-field label="postAdresse3" flex="20" field-model="responseData.data1.postAdresse.postAdresse3" title="postAdresse3"></tps-output-field>
+                        <tps-output-field label="fodestedTidspunkt" flex="20" field-model="responseData.data1.fodestedDetalj.fodestedTidspunkt" title="fodestedTidspunkt"></tps-output-field>
+                        <tps-output-field label="fodestedSystem" flex="20" field-model="responseData.data1.fodestedDetalj.fodestedSystem" title="fodestedSystem"></tps-output-field>
+                        <tps-output-field label="fodestedSaksbehandler" flex="20" field-model="responseData.data1.fodestedDetalj.fodestedSaksbehandler" title="fodestedSaksbehandler"></tps-output-field>
+                        <tps-output-field label="identType" flex="20" field-model="responseData.data1.identType" title="identType"></tps-output-field>
+                        <tps-output-field label="boAdresse2" flex="20" field-model="responseData.data1.bostedsAdresse.boAdresse2" title="boAdresse2"></tps-output-field>
+                        <tps-output-field label="boPoststed" flex="20" field-model="responseData.data1.bostedsAdresse.boPoststed" title="boPoststed"></tps-output-field>
+                        <tps-output-field label="boAdresse1" flex="20" field-model="responseData.data1.bostedsAdresse.boAdresse1" title="boAdresse1"></tps-output-field>
+                        <tps-output-field label="boPostnr" flex="20" field-model="responseData.data1.bostedsAdresse.boPostnr" title="boPostnr"></tps-output-field>
+                        <tps-output-field label="adresseType" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adresseType" title="adresseType"></tps-output-field>
+                        <tps-output-field label="bokstav" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.offAdresse.bokstav" title="bokstav"></tps-output-field>
+                        <tps-output-field label="husnr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.offAdresse.husnr" title="husnr"></tps-output-field>
+                        <tps-output-field label="gateNavn" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.offAdresse.gateNavn" title="gateNavn"></tps-output-field>
+                        <tps-output-field label="kommunenr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.kommunenr" title="kommunenr"></tps-output-field>
+                        <tps-output-field label="landKode" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.landKode" title="landKode"></tps-output-field>
+                        <tps-output-field label="adrTidspunktReg" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
+                        <tps-output-field label="datoFom" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.datoFom" title="datoFom"></tps-output-field>
+                        <tps-output-field label="kommuneNavn" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.kommuneNavn" title="kommuneNavn"></tps-output-field>
+                        <tps-output-field label="adresse1" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adresse1" title="adresse1"></tps-output-field>
+                        <tps-output-field label="tilleggsAdresseSKD" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.tilleggsAdresseSKD" title="tilleggsAdresseSKD"></tps-output-field>
+                        <tps-output-field label="adresse2" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adresse2" title="adresse2"></tps-output-field>
+                        <tps-output-field label="tknr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.tknr" title="tknr"></tps-output-field>
+                        <tps-output-field label="poststed" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.poststed" title="poststed"></tps-output-field>
+                        <tps-output-field label="bolignr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.bolignr" title="bolignr"></tps-output-field>
+                        <tps-output-field label="beskrAdrType" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.beskrAdrType" title="beskrAdrType"></tps-output-field>
+                        <tps-output-field label="adrSaksbehandler" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoTom" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.datoTom" title="datoTom"></tps-output-field>
+                        <tps-output-field label="undernr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.undernr" title="undernr"></tps-output-field>
+                        <tps-output-field label="gardsnr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.gardsnr" title="gardsnr"></tps-output-field>
+                        <tps-output-field label="festenr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.festenr" title="festenr"></tps-output-field>
+                        <tps-output-field label="mellomAdresse" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.mellomAdresse" title="mellomAdresse"></tps-output-field>
+                        <tps-output-field label="bruksnr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.matrAdresse.bruksnr" title="bruksnr"></tps-output-field>
+                        <tps-output-field label="postnr" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.postnr" title="postnr"></tps-output-field>
+                        <tps-output-field label="adrSystem" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.adrSystem" title="adrSystem"></tps-output-field>
+                        <tps-output-field label="tkNavn" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.tkNavn" title="tkNavn"></tps-output-field>
+                        <tps-output-field label="land" flex="20" field-model="responseData.data1.bostedsAdresse.fullBostedsAdresse.land" title="land"></tps-output-field>
+                        <tps-output-field label="fodselsnummer" flex="20" field-model="responseData.data1.fodselsnummer" title="fodselsnummer"></tps-output-field>
+                        <tps-output-field label="kodeStatsborgerskapBeskr" flex="20" field-model="responseData.data1.statsborgerskapDetalj.kodeStatsborgerskapBeskr" title="kodeStatsborgerskapBeskr"></tps-output-field>
+                        <tps-output-field label="sbSystem" flex="20" field-model="responseData.data1.statsborgerskapDetalj.sbSystem" title="sbSystem"></tps-output-field>
+                        <tps-output-field label="sbTidspunkt" flex="20" field-model="responseData.data1.statsborgerskapDetalj.sbTidspunkt" title="sbTidspunkt"></tps-output-field>
+                        <tps-output-field label="kodeStatsborgerskap" flex="20" field-model="responseData.data1.statsborgerskapDetalj.kodeStatsborgerskap" title="kodeStatsborgerskap"></tps-output-field>
+                        <tps-output-field label="sbSaksbehandler" flex="20" field-model="responseData.data1.statsborgerskapDetalj.sbSaksbehandler" title="sbSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoStatsborgerskap" flex="20" field-model="responseData.data1.statsborgerskapDetalj.datoStatsborgerskap" title="datoStatsborgerskap"></tps-output-field>
+                        <tps-output-field label="doSystem" flex="20" field-model="responseData.data1.datoDoDetalj.doSystem" title="doSystem"></tps-output-field>
+                        <tps-output-field label="doSaksbehandler" flex="20" field-model="responseData.data1.datoDoDetalj.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                        <tps-output-field label="doTidspunkt" flex="20" field-model="responseData.data1.datoDoDetalj.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                        <tps-output-field label="fodested" flex="20" field-model="responseData.data1.fodested" title="fodested"></tps-output-field>
+                        <tps-output-field label="gjeldendePersonnavn" flex="20" field-model="responseData.data1.personnavn.gjeldendePersonnavn" title="gjeldendePersonnavn"></tps-output-field>
+                        <tps-output-field label="kortnavn" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.kortnavn" title="kortnavn"></tps-output-field>
+                        <tps-output-field label="navnTidspunkt" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
+                        <tps-output-field label="mellomnavn" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.mellomnavn" title="mellomnavn"></tps-output-field>
+                        <tps-output-field label="etternavn" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.etternavn" title="etternavn"></tps-output-field>
+                        <tps-output-field label="navnSaksbehandler" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
+                        <tps-output-field label="fornavn" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.fornavn" title="fornavn"></tps-output-field>
+                        <tps-output-field label="navnSystem" flex="20" field-model="responseData.data1.personnavn.allePersonnavn.navnSystem" title="navnSystem"></tps-output-field>
+                        <tps-output-field label="sivilstSaksbehandler" flex="20" field-model="responseData.data1.sivilstandDetalj.sivilstSaksbehandler" title="sivilstSaksbehandler"></tps-output-field>
+                        <tps-output-field label="kodeSivilstandBeskr" flex="20" field-model="responseData.data1.sivilstandDetalj.kodeSivilstandBeskr" title="kodeSivilstandBeskr"></tps-output-field>
+                        <tps-output-field label="kodeSivilstand" flex="20" field-model="responseData.data1.sivilstandDetalj.kodeSivilstand" title="kodeSivilstand"></tps-output-field>
+                        <tps-output-field label="datoSivilstand" flex="20" field-model="responseData.data1.sivilstandDetalj.datoSivilstand" title="datoSivilstand"></tps-output-field>
+                        <tps-output-field label="sivilstTidspunkt" flex="20" field-model="responseData.data1.sivilstandDetalj.sivilstTidspunkt" title="sivilstTidspunkt"></tps-output-field>
+                        <tps-output-field label="sivilstSystem" flex="20" field-model="responseData.data1.sivilstandDetalj.sivilstSystem" title="sivilstSystem"></tps-output-field>
+                        <tps-output-field label="antallTotalt" flex="20" field-model="responseData.antallTotalt" title="antallTotalt"></tps-output-field>
+                        <tps-output-field label="statsborgerskap" flex="20" field-model="responseData.data1.statsborgerskap" title="statsborgerskap"></tps-output-field>
+                        <tps-output-field label="kjonn" flex="20" field-model="responseData.data1.kjonn" title="kjonn"></tps-output-field>
+                        <tps-output-field label="fnrSystem" flex="20" field-model="responseData.data1.fodselsnummerDetalj.fnrSystem" title="fnrSystem"></tps-output-field>
+                        <tps-output-field label="fnrTidspunkt" flex="20" field-model="responseData.data1.fodselsnummerDetalj.fnrTidspunkt" title="fnrTidspunkt"></tps-output-field>
+                        <tps-output-field label="fnrSaksbehandler" flex="20" field-model="responseData.data1.fodselsnummerDetalj.fnrSaksbehandler" title="fnrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="sikrFom" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.sikrFom" title="sikrFom"></tps-output-field>
+                        <tps-output-field label="beskrSikkerhetsTiltak" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.beskrSikkerhetsTiltak" title="beskrSikkerhetsTiltak"></tps-output-field>
+                        <tps-output-field label="sikrTom" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.sikrTom" title="sikrTom"></tps-output-field>
+                        <tps-output-field label="opprettetSystem" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.opprettetSystem" title="opprettetSystem"></tps-output-field>
+                        <tps-output-field label="opprettetSaksbehandler" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.opprettetSaksbehandler" title="opprettetSaksbehandler"></tps-output-field>
+                        <tps-output-field label="opprettetTidspunkt" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.opprettetTidspunkt" title="opprettetTidspunkt"></tps-output-field>
+                        <tps-output-field label="typeSikkerhetsTiltak" flex="20" field-model="responseData.data1.bruker.sikkerhetsTiltak.typeSikkerhetsTiltak" title="typeSikkerhetsTiltak"></tps-output-field>
+                        <tps-output-field label="sprak" flex="20" field-model="responseData.data1.bruker.preferanser.sprak" title="sprak"></tps-output-field>
+                        <tps-output-field label="harVerge" flex="20" field-model="responseData.data1.bruker.harVerge" title="harVerge"></tps-output-field>
+                        <tps-output-field label="kodeNAVenhetBeskr" flex="20" field-model="responseData.data1.bruker.NAVenhetDetalj.kodeNAVenhetBeskr" title="kodeNAVenhetBeskr"></tps-output-field>
+                        <tps-output-field label="NAVenhetSaksbehandler" flex="20" field-model="responseData.data1.bruker.NAVenhetDetalj.NAVenhetSaksbehandler" title="NAVenhetSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoNAVenhet" flex="20" field-model="responseData.data1.bruker.NAVenhetDetalj.datoNAVenhet" title="datoNAVenhet"></tps-output-field>
+                        <tps-output-field label="NAVenhetTidspunkt" flex="20" field-model="responseData.data1.bruker.NAVenhetDetalj.NAVenhetTidspunkt" title="NAVenhetTidspunkt"></tps-output-field>
+                        <tps-output-field label="NAVenhetSystem" flex="20" field-model="responseData.data1.bruker.NAVenhetDetalj.NAVenhetSystem" title="NAVenhetSystem"></tps-output-field>
+                        <tps-output-field label="kodeNAVenhet" flex="20" field-model="responseData.data1.bruker.NAVenhetDetalj.kodeNAVenhet" title="kodeNAVenhet"></tps-output-field>
+                        <tps-output-field label="kommunenr" flex="20" field-model="responseData.data1.bruker.geografiskTilknytning.kommunenr" title="kommunenr"></tps-output-field>
+                        <tps-output-field label="landKode" flex="20" field-model="responseData.data1.bruker.geografiskTilknytning.landKode" title="landKode"></tps-output-field>
+                        <tps-output-field label="bydel" flex="20" field-model="responseData.data1.bruker.geografiskTilknytning.bydel" title="bydel"></tps-output-field>
+                        <tps-output-field label="telefoner" flex="20" field-model="responseData.data1.bruker.telefoner" title="telefoner"></tps-output-field>
+                        <tps-output-field label="adresseType" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresseType" title="adresseType"></tps-output-field>
+                        <tps-output-field label="beskrAdrType" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.beskrAdrType" title="beskrAdrType"></tps-output-field>
+                        <tps-output-field label="adrSaksbehandler" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoTom" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.datoTom" title="datoTom"></tps-output-field>
+                        <tps-output-field label="landKode" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.landKode" title="landKode"></tps-output-field>
+                        <tps-output-field label="adrTidspunktReg" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
+                        <tps-output-field label="adrSystem" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adrSystem" title="adrSystem"></tps-output-field>
+                        <tps-output-field label="datoFom" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.datoFom" title="datoFom"></tps-output-field>
+                        <tps-output-field label="land" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.land" title="land"></tps-output-field>
+                        <tps-output-field label="adresse3" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresse3" title="adresse3"></tps-output-field>
+                        <tps-output-field label="adresse1" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresse1" title="adresse1"></tps-output-field>
+                        <tps-output-field label="adresse2" flex="20" field-model="responseData.data1.bruker.postadresseUtlandNAV.adresse2" title="adresse2"></tps-output-field>
+                        <tps-output-field label="regelForGeografiskTilknytning" flex="20" field-model="responseData.data1.bruker.regelForGeografiskTilknytning" title="regelForGeografiskTilknytning"></tps-output-field>
+                        <tps-output-field label="umyndigSaksbehandler" flex="20" field-model="responseData.data1.bruker.umyndigDetalj.umyndigSaksbehandler" title="umyndigSaksbehandler"></tps-output-field>
+                        <tps-output-field label="umyndigSystem" flex="20" field-model="responseData.data1.bruker.umyndigDetalj.umyndigSystem" title="umyndigSystem"></tps-output-field>
+                        <tps-output-field label="umyndigTidspunkt" flex="20" field-model="responseData.data1.bruker.umyndigDetalj.umyndigTidspunkt" title="umyndigTidspunkt"></tps-output-field>
+                        <tps-output-field label="diskresjonSaksbehandler" flex="20" field-model="responseData.data1.bruker.diskresjonDetalj.diskresjonSaksbehandler" title="diskresjonSaksbehandler"></tps-output-field>
+                        <tps-output-field label="diskresjonTidspunkt" flex="20" field-model="responseData.data1.bruker.diskresjonDetalj.diskresjonTidspunkt" title="diskresjonTidspunkt"></tps-output-field>
+                        <tps-output-field label="diskresjonSystem" flex="20" field-model="responseData.data1.bruker.diskresjonDetalj.diskresjonSystem" title="diskresjonSystem"></tps-output-field>
+                        <tps-output-field label="kodeDiskresjonBeskr" flex="20" field-model="responseData.data1.bruker.diskresjonDetalj.kodeDiskresjonBeskr" title="kodeDiskresjonBeskr"></tps-output-field>
+                        <tps-output-field label="datoDiskresjon" flex="20" field-model="responseData.data1.bruker.diskresjonDetalj.datoDiskresjon" title="datoDiskresjon"></tps-output-field>
+                        <tps-output-field label="kodeDiskresjon" flex="20" field-model="responseData.data1.bruker.diskresjonDetalj.kodeDiskresjon" title="kodeDiskresjon"></tps-output-field>
+                        <tps-output-field label="beskrTypeAdresseNavNorge" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.beskrTypeAdresseNavNorge" title="beskrTypeAdresseNavNorge"></tps-output-field>
+                        <tps-output-field label="tilleggsLinje" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.tilleggsLinje" title="tilleggsLinje"></tps-output-field>
+                        <tps-output-field label="kommunenr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommunenr" title="kommunenr"></tps-output-field>
+                        <tps-output-field label="husbokstav" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.husbokstav" title="husbokstav"></tps-output-field>
+                        <div layout="row" layout-wrap ng-if="isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])"
+                             ng-repeat="vari in adresseHistorikk.bruker.relasjoner.relasjon">
+                            <tps-output-field label="typeRelasjon" flex="20" field-model="vari.typeRelasjon" title="typeRelasjon"></tps-output-field>
+                            <tps-output-field label="typeRelBeskr" flex="20" field-model="vari.typeRelBeskr" title="typeRelBeskr"></tps-output-field>
+                            <tps-output-field label="fnrRelasjon" flex="20" field-model="vari.fnrRelasjon" title="fnrRelasjon"></tps-output-field>
+                            <tps-output-field label="identTypeRelasjon" flex="20" field-model="vari.identTypeRelasjon" title="identTypeRelasjon"></tps-output-field>
+                            <tps-output-field label="gjeldendePersonnavn" flex="20" field-model="vari.relPersonnavn.gjeldendePersonnavn" title="gjeldendePersonnavn"></tps-output-field>
+                            <tps-output-field label="kortnavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.kortnavn" title="kortnavn"></tps-output-field>
+                            <tps-output-field label="fornavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.fornavn" title="fornavn"></tps-output-field>
+                            <tps-output-field label="mellomnavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.mellomnavn" title="mellomnavn"></tps-output-field>
+                            <tps-output-field label="etternavn" flex="20" field-model="vari.relPersonnavn.allePersonnavn.etternavn" title="etternavn"></tps-output-field>
+                            <tps-output-field label="navnTidspunkt" flex="20" field-model="vari.relPersonnavn.allePersonnavn.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
+                            <tps-output-field label="navnSystem" flex="20" field-model="vari.relPersonnavn.allePersonnavn.navnSystem" title="navnSystem"></tps-output-field>
+                            <tps-output-field label="navnSaksbehandler" flex="20" field-model="vari.relPersonnavn.allePersonnavn.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjon" flex="20" field-model="vari.relDiskresjonsDetalj.kodeDiskresjon" title="kodeDiskresjon"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjonBeskr" flex="20" field-model="vari.relDiskresjonsDetalj.kodeDiskresjonBeskr" title="kodeDiskresjonBeskr"></tps-output-field>
+                            <tps-output-field label="datoDiskresjon" flex="20" field-model="vari.relDiskresjonsDetalj.datoDiskresjon" title="datoDiskresjon"></tps-output-field>
+                            <tps-output-field label="diskresjonsTidspunkt" flex="20" field-model="vari.relDiskresjonsDetalj.diskresjonsTidspunkt" title="diskresjonsTidspunkt"></tps-output-field>
+                            <tps-output-field label="diskresjonSystem" flex="20" field-model="vari.relDiskresjonsDetalj.diskresjonSystem" title="diskresjonSystem"></tps-output-field>
+                            <tps-output-field label="diskresjonSaksbehandler" flex="20" field-model="vari.relDiskresjonsDetalj.diskresjonSaksbehandler" title="diskresjonSaksbehandler"></tps-output-field>
+                            <tps-output-field label="relDatoDo" flex="20" field-model="vari.relDatoDoDetalj.relDatoDo" title="relDatoDo"></tps-output-field>
+                            <tps-output-field label="doTidspunkt" flex="20" field-model="vari.relDatoDoDetalj.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                            <tps-output-field label="doSystem" flex="20" field-model="vari.relDatoDoDetalj.doSystem" title="doSystem"></tps-output-field>
+                            <tps-output-field label="doSaksbehandler" flex="20" field-model="vari.relDatoDoDetalj.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                            <tps-output-field label="adresseStatus" flex="20" field-model="vari.adresseInfo.adresseStatus" title="adresseStatus"></tps-output-field>
+                            <tps-output-field label="adresseStatusBeskr" flex="20" field-model="vari.adresseInfo.adresseStatusBeskr" title="adresseStatusBeskr"></tps-output-field>
+                        </div>
+                        <div layout="row" layout-wrap ng-if="!isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])">
+                            <tps-output-field label="typeRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.typeRelasjon" title="typeRelasjon"></tps-output-field>
+                            <tps-output-field label="typeRelBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.typeRelBeskr" title="typeRelBeskr"></tps-output-field>
+                            <tps-output-field label="fnrRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.fnrRelasjon" title="fnrRelasjon"></tps-output-field>
+                            <tps-output-field label="identTypeRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.identTypeRelasjon" title="identTypeRelasjon"></tps-output-field>
+                            <tps-output-field label="gjeldendePersonnavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.gjeldendePersonnavn" title="gjeldendePersonnavn"></tps-output-field>
+                            <tps-output-field label="kortnavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.kortnavn" title="kortnavn"></tps-output-field>
+                            <tps-output-field label="fornavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.fornavn" title="fornavn"></tps-output-field>
+                            <tps-output-field label="mellomnavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.mellomnavn" title="mellomnavn"></tps-output-field>
+                            <tps-output-field label="etternavn" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.etternavn" title="etternavn"></tps-output-field>
+                            <tps-output-field label="navnTidspunkt" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
+                            <tps-output-field label="navnSystem" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.navnSystem" title="navnSystem"></tps-output-field>
+                            <tps-output-field label="navnSaksbehandler" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relPersonnavn.allePersonnavn.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.kodeDiskresjon" title="kodeDiskresjon"></tps-output-field>
+                            <tps-output-field label="kodeDiskresjonBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.kodeDiskresjonBeskr" title="kodeDiskresjonBeskr"></tps-output-field>
+                            <tps-output-field label="datoDiskresjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.datoDiskresjon" title="datoDiskresjon"></tps-output-field>
+                            <tps-output-field label="diskresjonsTidspunkt" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.diskresjonsTidspunkt" title="diskresjonsTidspunkt"></tps-output-field>
+                            <tps-output-field label="diskresjonSystem" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.diskresjonSystem" title="diskresjonSystem"></tps-output-field>
+                            <tps-output-field label="diskresjonSaksbehandler" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDiskresjonsDetalj.diskresjonSaksbehandler" title="diskresjonSaksbehandler"></tps-output-field>
+                            <tps-output-field label="relDatoDo" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.relDatoDo" title="relDatoDo"></tps-output-field>
+                            <tps-output-field label="doTidspunkt" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                            <tps-output-field label="doSystem" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.doSystem" title="doSystem"></tps-output-field>
+                            <tps-output-field label="doSaksbehandler" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.relDatoDoDetalj.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                            <tps-output-field label="adresseStatus" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.adresseInfo.adresseStatus" title="adresseStatus"></tps-output-field>
+                            <tps-output-field label="adresseStatusBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.adresseInfo.adresseStatusBeskr" title="adresseStatusBeskr"></tps-output-field>
+                        </div>
                     </div>
                 </div>
             </div>

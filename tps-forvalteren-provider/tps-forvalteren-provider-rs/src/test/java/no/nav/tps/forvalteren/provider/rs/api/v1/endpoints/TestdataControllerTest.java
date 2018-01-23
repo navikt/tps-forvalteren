@@ -28,8 +28,8 @@ import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
+import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -86,11 +86,11 @@ public class TestdataControllerTest {
     private DeleteGruppeById deleteGruppeById;
 
     @Mock
-    private SavePersonBulk savePersonBulk;
+    private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
 
     @Mock
-    private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
-    
+    private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
+
     @InjectMocks
     private TestdataController testdataController;
 
@@ -117,9 +117,7 @@ public class TestdataControllerTest {
         verify(ekstraherIdenterFraTestdataRequests).execute(testdataRequestsList);
         verify(opprettPersonerFraIdenter).execute(identer);
         verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
-        verify(setGruppeIdOnPersons).setGruppeId(personerSomSkalPersisteres, GRUPPE_ID);
-        verify(savePersonBulk).execute(personerSomSkalPersisteres);
-
+        verify(setGruppeIdAndSavePersonBulkTx).execute(personerSomSkalPersisteres, GRUPPE_ID);
     }
 
     @Test
@@ -227,7 +225,7 @@ public class TestdataControllerTest {
 
         verify(deleteGruppeById).execute(GRUPPE_ID);
     }
-    
+
     @Test
     public void testdataGruppeToSkdEndringsmeldingGruppe() {
         SkdEndringsmeldingGruppe gruppe = new SkdEndringsmeldingGruppe();

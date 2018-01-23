@@ -1,0 +1,192 @@
+<div flex-xs flex-gt-xs="1" layout="column">
+    <md-item class="tps-vk-response" ng-show="responseData">
+        <md-item-content >
+            <!-- Results expanded   -->
+            <div class="tps-vk-response-expanded">
+                <div flex="5"></div>
+                <div layout="column">
+                    <div layout="row">
+                        <tps-output-field label="fnr" flex="30" field-model="responseData.data1.fnr" title="fnr"></tps-output-field>
+                        <tps-output-field label="fnrTidspunkt" flex="30" field-model="responseData.data1.fnrTidspunkt" title="fnrTidspunkt"></tps-output-field>
+                        <tps-output-field label="fnrSystem" flex="30" field-model="responseData.data1.fnrSystem" title="fnrSystem"></tps-output-field>
+                        <tps-output-field label="fnrSaksbehandler" flex="30" field-model="responseData.data1.fnrSaksbehandler" title="fnrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="spesregType" flex="30" field-model="responseData.data1.spesregType" title="spesregType"></tps-output-field>
+                    </div>
+                    <div layout="row">
+                        <tps-output-field label="kortnavn" flex="30" field-model="responseData.data1.kortnavn" title="kortnavn"></tps-output-field>
+                        <tps-output-field label="navnTidspunkt" flex="30" field-model="responseData.data1.navnTidspunkt" title="navnTidspunkt"></tps-output-field>
+                        <tps-output-field label="navnSystem" flex="30" field-model="responseData.data1.navnSystem" title="navnSystem"></tps-output-field>
+                        <tps-output-field label="navnSaksbehandler" flex="30" field-model="responseData.data1.navnSaksbehandler" title="navnSaksbehandler"></tps-output-field>
+                        <tps-output-field label="tknr" flex="30" field-model="responseData.data1.tknr" title="tknr"></tps-output-field>
+                    </div>
+                    <div layout="row">
+                        <tps-output-field label="tknrTidspunkt" flex="30" field-model="responseData.data1.tknrTidspunkt" title="tknrTidspunkt"></tps-output-field>
+                        <tps-output-field label="tknrSystem" flex="30" field-model="responseData.data1.tknrSystem" title="tknrSystem"></tps-output-field>
+                        <tps-output-field label="tknrSaksbehandler" flex="30" field-model="responseData.data1.tknrSaksbehandler" title="tknrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="datoDo" flex="30" field-model="responseData.data1.datoDo" title="datoDo"></tps-output-field>
+                        <tps-output-field label="doTidspunkt" flex="30" field-model="responseData.data1.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                    </div>
+                    <div layout="row">
+                        <tps-output-field label="doSystem" flex="30" field-model="responseData.data1.doSystem" title="doSystem"></tps-output-field>
+                        <tps-output-field label="doSaksbehandler" flex="30" field-model="responseData.data1.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                        <tps-output-field label="kodeFodeland" flex="30" field-model="responseData.data1.kodeFodeland" title="kodeFodeland"></tps-output-field>
+                        <tps-output-field label="fodeLand" flex="30" field-model="responseData.data1.fodeLand" title="fodeLand"></tps-output-field>
+                    </div>
+                    <div layout="row">
+                        <tps-output-field label="antallStatsborgerskap" flex="30" field-model="responseData.data1.antallStatsborgerskap" title="antallStatsborgerskap"></tps-output-field>
+                        <tps-output-field label="antallOppholdstillatelse" flex="30" field-model="responseData.data1.antallOppholdstillatelse" title="antallOppholdstillatelse"></tps-output-field>
+                        <tps-output-field label="antallArbeidstillatelse" flex="30" field-model="responseData.data1.antallArbeidstillatelse" title="antallArbeidstillatelse"></tps-output-field>
+                        <tps-output-field label="antallInnvandring" flex="30" field-model="responseData.data1.antallInnvandring" title="antallInnvandring"></tps-output-field>
+                        <tps-output-field label="antallUtvandring" flex="30" field-model="responseData.data1.antallUtvandring" title="antallUtvandring"></tps-output-field>
+                    </div>
+                    <!-- Statsborgerskap -->
+                    <div layout="column" ng-if="isArray(adresseHistorikk['statsborgerskap']['statsborger'])"
+                        ng-repeat="statsb in adresseHistorikk.statsborgerskap.statsborger">
+                        <div layout="row">
+                            <tps-output-field label="kodeLand" flex="30" field-model="statsb.kodeLand" title="kodeLand"></tps-output-field>
+                            <tps-output-field label="land" flex="30" field-model="statsb.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="statsb.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="statsb.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="statsb.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="statsb.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="statsb.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+
+                    </div>
+                    <div layout="column" ng-if="!isArray(adresseHistorikk['statsborgerskap']['statsborger'])&& adresseHistorikk.antallStatsborgerskap !== 0">
+                        <div layout="row">
+                            <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.kodeLand" title="kodeLand"></tps-output-field>
+                            <tps-output-field label="land" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+
+                    <!-- Oppholdstillatelse -->
+                    <div layout="column" ng-if="isArray(adresseHistorikk['oppholdstillatelse']['opphold'])"
+                        ng-repeat="stats_b in adresseHistorikk.oppholdstillatelse.opphold">
+                        <div layout="row">
+                            <tps-output-field label="typeTillatelse" flex="30" field-model="stats_b.typeTillatelse" title="typeTillatelse"></tps-output-field>
+                            <tps-output-field label="beskrTillatelse" flex="30" field-model="stats_b.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="stats_b.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="stats_b.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="stats_b.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="stats_b.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="stats_b.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+
+                    <div layout="column" ng-if="!isArray(adresseHistorikk['oppholdstillatelse']['opphold']) && adresseHistorikk.antallOppholdstillatelse !== 0">
+                        <div layout="row">
+                            <tps-output-field label="typeTillatelse" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.typeTillatelse" title="typeTillatelse"></tps-output-field>
+                            <tps-output-field label="beskrTillatelse" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+
+
+                    <!-- Arbeidstillatelse -->
+                    <div layout="column" ng-if="isArray(adresseHistorikk['arbeidstillatelser']['arbeidstillatelse'])"
+                        ng-repeat="stats_c in adresseHistorikk.arbeidstillatelser.arbeidstillatelse">
+                        <div layout="row">
+                            <tps-output-field label="typeTillatelse" flex="30" field-model="stats_c.typeTillatelse" title="typeTillatelse"></tps-output-field>
+                            <tps-output-field label="beskrTillatelse" flex="30" field-model="stats_c.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="stats_c.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="stats_c.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="stats_c.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="stats_c.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="stats_c.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                    <div layout="column" ng-if="!isArray(adresseHistorikk['arbeidstillatelser']['arbeidstillatelse']) && adresseHistorikk.antallArbeidstillatelse !== 0">
+                        <div layout="row">
+                            <tps-output-field label="typeTillatelse" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.typeTillatelse" title="typeTillatelse"></tps-output-field>
+                            <tps-output-field label="beskrTillatelse" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                    <!-- Innvandring -->
+                    <div layout="column" ng-if="isArray(adresseHistorikk['innvandringer']['innvandring'])"
+                        ng-repeat="stats_d in adresseHistorikk.innvandringer.innvandring">
+                        <div layout="row">
+                            <tps-output-field label="kodeLand" flex="30" field-model="stats_d.kodeLand" title="kodeLand"></tps-output-field>
+                            <tps-output-field label="land" flex="30" field-model="stats_d.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="stats_d.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="stats_d.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="stats_d.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="stats_d.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="stats_d.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                    <div layout="column" ng-if="!isArray(adresseHistorikk['innvandringer']['innvandring']) && adresseHistorikk.antallInnvandring !== 0">
+                        <div layout="row">
+                            <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.innvandringer.innvandring.kodeLand" title="kodeLand"></tps-output-field>
+                            <tps-output-field label="land" flex="30" field-model="responseData.data1.innvandringer.innvandring.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="responseData.data1.innvandringer.innvandring.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="responseData.data1.innvandringer.innvandring.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="responseData.data1.innvandringer.innvandring.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="responseData.data1.innvandringer.innvandring.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="responseData.data1.innvandringer.innvandring.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                    <!-- Utvandring -->
+                    <div layout="column" ng-if="isArray(adresseHistorikk['utvandringer']['utvandring'])"
+                        ng-repeat="stats_e in adresseHistorikk.utvandringer.utvandring">
+                        <div layout="row">
+                            <tps-output-field label="kodeLand" flex="30" field-model="stats_e.kodeLand" title="kodeLand"></tps-output-field>
+                            <tps-output-field label="land" flex="30" field-model="stats_e.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="stats_e.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="stats_e.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="stats_e.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="stats_e.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="stats_e.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                    <div layout="column" ng-if="!isArray(adresseHistorikk['utvandringer']['utvandring']) && adresseHistorikk.antallUtvandring !== 0">
+                        <div layout="row">
+                            <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.utvandringer.utvandring.kodeLand" title="kodeLand"></tps-output-field>
+                            <tps-output-field label="land" flex="30" field-model="responseData.data1.utvandringer.utvandring.land" title="land"></tps-output-field>
+                            <tps-output-field label="fom" flex="30" field-model="responseData.data1.utvandringer.utvandring.fom" title="fom"></tps-output-field>
+                            <tps-output-field label="tom" flex="30" field-model="responseData.data1.utvandringer.utvandring.tom" title="tom"></tps-output-field>
+                            <tps-output-field label="tidspunkt" flex="30" field-model="responseData.data1.utvandringer.utvandring.tidspunkt" title="tidspunkt"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="system" flex="30" field-model="responseData.data1.utvandringer.utvandring.system" title="system"></tps-output-field>
+                            <tps-output-field label="saksbehandler" flex="30" field-model="responseData.data1.utvandringer.utvandring.saksbehandler" title="saksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </md-item-content>
+    </md-item>
+</div>

@@ -33,6 +33,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.loading = true;
 
                 serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
+
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
@@ -62,7 +63,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.loading = false;
                     showAlertTPSError(error);
                 });
-
             };
 
             headerService.setButtons([{
