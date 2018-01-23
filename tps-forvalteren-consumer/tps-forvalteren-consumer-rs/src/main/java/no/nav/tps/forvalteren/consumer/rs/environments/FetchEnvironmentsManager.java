@@ -22,8 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FetchEnvironmentsManager.class);
-
     protected static final String BASE_URL = "https://fasit.adeo.no/api/v2";
 
     private RestTemplate template = new RestTemplate();
