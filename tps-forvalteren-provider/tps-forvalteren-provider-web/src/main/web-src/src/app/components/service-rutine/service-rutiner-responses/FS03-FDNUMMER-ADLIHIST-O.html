@@ -1,0 +1,79 @@
+<div flex-xs flex-gt-xs="1" layout="column">
+    <md-item class="tps-vk-response" ng-show="responseData">
+        <md-item-content >
+            <!-- Results expanded   -->
+            <div class="tps-vk-response-expanded">
+                <div flex="5"></div>
+                <div layout="column">
+                    <div layout="row">
+                        <tps-output-field label="fnr" flex="30" field-model="responseData.data1.fnr" title="fnr"></tps-output-field>
+                        <tps-output-field label="fnrTidspunkt" flex="30" field-model="responseData.data1.fnrTidspunkt" title="fnrTidspunkt"></tps-output-field>
+                        <tps-output-field label="fnrSystem" flex="30" field-model="responseData.data1.fnrSystem" title="fnrSystem"></tps-output-field>
+                        <tps-output-field label="fnrSaksbehandler" flex="30" field-model="responseData.data1.fnrSaksbehandler" title="fnrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="spesregType" flex="30" field-model="responseData.data1.spesregType" title="spesregType"></tps-output-field>
+                    </div>
+                    <div layout="row">
+                        <tps-output-field label="kortnavn" flex="30" field-model="responseData.data1.kortnavn" title="kortnavn"></tps-output-field>
+                        <tps-output-field label="datoDo" flex="30" field-model="responseData.data1.datoDo" title="datoDo"></tps-output-field>
+                        <tps-output-field label="doTidspunkt" flex="30" field-model="responseData.data1.doTidspunkt" title="doTidspunkt"></tps-output-field>
+                        <tps-output-field label="doSystem" flex="30" field-model="responseData.data1.doSystem" title="doSystem"></tps-output-field>
+                        <tps-output-field label="doSaksbehandler" flex="30" field-model="responseData.data1.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
+                    </div>
+                    <div layout="row">
+                        <tps-output-field label="tknr" flex="30" field-model="responseData.data1.tknr" title="tknr"></tps-output-field>
+                        <tps-output-field label="tknrTidspunkt" flex="30" field-model="responseData.data1.tknrTidspunkt" title="tknrTidspunkt"></tps-output-field>
+                        <tps-output-field label="tknrSystem" flex="30" field-model="responseData.data1.tknrSystem" title="tknrSystem"></tps-output-field>
+                        <tps-output-field label="tknrSaksbehandler" flex="30" field-model="responseData.data1.tknrSaksbehandler" title="tknrSaksbehandler"></tps-output-field>
+                        <tps-output-field label="antallFS015" flex="30" field-model="responseData.data1.antallFS015" title="antallFS015"></tps-output-field>
+                    </div>
+                    <div class="tpsf-sr-response" layout="column" ng-if="isArray(adresseHistorikk['adresseLinjeHistorikk']['adresseLinje'])"
+                        ng-repeat="adresse in adresseHistorikk.adresseLinjeHistorikk.adresseLinjer">
+                        <div layout="row">
+                            <tps-output-field label="datoFom" flex="30" field-model="adresse.datoFom" title="datoFom"></tps-output-field>
+                            <tps-output-field label="datoTom" flex="30" field-model="adresse.datoTom" title="datoTom"></tps-output-field>
+                            <tps-output-field label="adresseType" flex="30" field-model="adresse.adresseType" title="adresseType"></tps-output-field>
+                            <tps-output-field label="beskrAdresseType" flex="30" field-model="adresse.beskrAdresseType" title="beskrAdresseType"></tps-output-field>
+                            <tps-output-field label="adresse1" flex="30" field-model="adresse.adresse1" title="adresse1"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="adresse2" flex="30" field-model="adresse.adresse2" title="adresse2"></tps-output-field>
+                            <tps-output-field label="adresse3" flex="30" field-model="adresse.adresse3" title="adresse3"></tps-output-field>
+                            <tps-output-field label="postNr" flex="30" field-model="adresse.postNr" title="postNr"></tps-output-field>
+                            <tps-output-field label="poststed" flex="30" field-model="adresse.poststed" title="poststed"></tps-output-field>
+                            <tps-output-field label="kodeLand" flex="30" field-model="adresse.kodeLand" title="kodeLand"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="land" flex="30" field-model="adresse.land" title="land"></tps-output-field>
+                            <tps-output-field label="adrTidspunktReg" flex="30" field-model="adresse.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
+                            <tps-output-field label="adrSystem" flex="30" field-model="adresse.adrSystem" title="adrSystem"></tps-output-field>
+                            <tps-output-field label="adrSaksbehandler" flex="30" field-model="adresse.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                    <div class="tpsf-sr-response" layout="column" ng-if="!isArray(adresseHistorikk['adresseLinjeHistorikk']['adresseLinje'])">
+
+                        <div layout="row">
+                            <tps-output-field label="datoFom" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.datoFom" title="datoFom"></tps-output-field>
+                            <tps-output-field label="datoTom" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.datoTom" title="datoTom"></tps-output-field>
+                            <tps-output-field label="adresseType" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adresseType" title="adresseType"></tps-output-field>
+                            <tps-output-field label="beskrAdresseType" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.beskrAdresseType" title="beskrAdresseType"></tps-output-field>
+                            <tps-output-field label="adresse1" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adresse1" title="adresse1"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="adresse2" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adresse2" title="adresse2"></tps-output-field>
+                            <tps-output-field label="adresse3" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adresse3" title="adresse3"></tps-output-field>
+                            <tps-output-field label="postNr" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.postNr" title="postNr"></tps-output-field>
+                            <tps-output-field label="poststed" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.poststed" title="poststed"></tps-output-field>
+                            <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.kodeLand" title="kodeLand"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="land" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.land" title="land"></tps-output-field>
+                            <tps-output-field label="adrTidspunktReg" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adrTidspunktReg" title="adrTidspunktReg"></tps-output-field>
+                            <tps-output-field label="adrSystem" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adrSystem" title="adrSystem"></tps-output-field>
+                            <tps-output-field label="adrSaksbehandler" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-item-content>
+    </md-item>
+</div>

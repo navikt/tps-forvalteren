@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class SavePersonListService {
     @Autowired
     private HentUtdaterteRelasjonIder hentUtdaterteRelasjonIder;
 
+    @Transactional
     public void execute(List<Person> personer) {
 
         for (Person person : personer) {

@@ -5,6 +5,7 @@ angular.module('tps-forvalteren')
 
             $scope.visTestdataKnapp = false;
             $scope.visSkdEndringsmeldingKnapp = false;
+            $scope.visServiceRutineKnapp = false;
             $scope.visSendDoedsmeldingKnapp = true;
 
             $scope.logout = function () {
@@ -25,6 +26,10 @@ angular.module('tps-forvalteren')
                 locationService.redirectToSkdEndringsmeldingGrupper();
             };
 
+            $scope.openServiceRutine = function () {
+                locationService.redirectToServiceRutineState();
+            };
+
             $scope.goHome = function () {
                 locationService.redirectToHomeState();
             };
@@ -38,6 +43,7 @@ angular.module('tps-forvalteren')
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0 && !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
 
             $scope.$on('updateEvent', function () {
                 if ($scope.header && $scope.header.buttons) {

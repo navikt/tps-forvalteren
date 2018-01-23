@@ -35,7 +35,6 @@ angular.module('tps-forvalteren.factory')
             return $http({method: 'GET', url: urlRoutinesBase}).then(function (response) {
                 if (response.data) {
                     var serviceRutineList = response.data;
-
                     for (var i = 0; i < serviceRutineList.length; i++) {
                         serviceRutines[serviceRutineList[i].name] = serviceRutineList[i];
                     }

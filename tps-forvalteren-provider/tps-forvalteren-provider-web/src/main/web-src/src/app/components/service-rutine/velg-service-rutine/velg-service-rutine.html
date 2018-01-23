@@ -1,0 +1,47 @@
+<div class="md-padding" id="popupContainer dad" style="min-width: 50%;">
+
+    <md-dialog aria-label="Oppdater testgruppe dialog" id="tpsf-sr-dialog">
+        <form name="tpsForm">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Servicerutiner</h2>
+                <p>Velg den servicerutinen du ønsker å vise:</p>
+
+                <div layout="row" layout-align="space-between">
+                    <div layout="column">
+                        <h3>Personopplysninger:</h3>
+                        <a href="" ng-click="send('FS03-FDNUMMER-TKNUMMER-O')">S002 - Hent TKNR</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-PERSDATA-O')">S004 - Hent personopplysninger</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-PERSRELA-O')">S005 - Hent relasjoner</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-ADRESSER-O')">S103 - Hent adresser</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-KERNINFO-O')">S610 - Hent kjerneinformasjon</a>
+                        <h3>Søk:</h3>
+                        <a href="" ng-click="send('FS03-NAADRSOK-PERSDATA-O')">S050 - Søk ut fra navn/boadresse/fødselsdato/alder</a>
+                    </div>
+                    <div layout="column">
+                        <h3>Historiske personopplysninger:</h3>
+                        <a href="" ng-click="send('FS03-FDNUMMER-ADRHISTO-O')">S010 - Hent boadressehistorikk</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-FNRHISTO-O')">S011 - Hent FNR/DNR historikk</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-TKNRHIST-O')">S013 - Hent TKNR historikk</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-ADLIHIST-O')">S015 - Hent linjeadresse historikk</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-SOAIHIST-O')">S016 - Hent historikk over Innv/utv/stasb/opph/arb</a>
+                        <h3>Listefunksjoner:</h3>
+                        <a href="" ng-click="send('FS03-FDLISTER-DISKNAVN-M')">M201 - Hent liste av navn/spesreg</a>
+                    </div>
+                    <div layout="column">
+                        <h3>Diverse:</h3>
+                        <a href="" ng-click="send('FS03-OTILGANG-TILSRTPS-O')">S000 - Sjekk om TPS er tilgjengelig</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-KONTINFO-O')">S600 - Hent kontaktinformasjon</a>
+                        <a href="" ng-click="send('FS03-FDNUMMER-VERGMAAL-O')">S137 - Hent vergemål</a>
+                    </div>
+                </div>
+
+            </md-dialog-content>
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Lukk">
+                    <md-tooltip md-direction="top">Lukk dialog</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Lukk</md-button>
+                </md-input-container>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</div>
