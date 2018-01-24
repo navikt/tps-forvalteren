@@ -44,7 +44,7 @@
                         <tps-output-field label="regTidspunkt" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.regTidspunkt" title="regTidspunkt"></tps-output-field>
                         <tps-output-field label="bankAdresse3" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankAdresse3" title="bankAdresse3"></tps-output-field>
                         <tps-output-field label="bankKodeUtland" flex="20" field-model="responseData.data1.bruker.bankkontoUtland.bankKodeUtland" title="bankKodeUtland"></tps-output-field>
-                        <tps-output-field label="relasjoner" flex="20" field-model="responseData.data1.bruker.relasjoner" title="relasjoner"></tps-output-field>
+                        <tps-output-field label="relasjoner" flex="20" ng-if="responseData.data1.bruker.relasjoner != '[object Object]'"field-model="responseData.data1.bruker.relasjoner" title="relasjoner"></tps-output-field>
                         <tps-output-field label="NAVenhet" flex="20" field-model="responseData.data1.bruker.NAVenhet" title="NAVenhet"></tps-output-field>
                         <tps-output-field label="sivilstand" flex="20" field-model="responseData.data1.sivilstand" title="sivilstand"></tps-output-field>
                         <tps-output-field label="kodePersonstatus" flex="20" field-model="responseData.data1.personstatusDetalj.kodePersonstatus" title="kodePersonstatus"></tps-output-field>
@@ -192,7 +192,7 @@
                         <tps-output-field label="tilleggsLinje" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.tilleggsLinje" title="tilleggsLinje"></tps-output-field>
                         <tps-output-field label="kommunenr" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.kommunenr" title="kommunenr"></tps-output-field>
                         <tps-output-field label="husbokstav" flex="20" field-model="responseData.data1.bruker.postadresseNorgeNAV.husbokstav" title="husbokstav"></tps-output-field>
-                        <div layout="row" layout-wrap ng-if="isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])"
+                        <div layout="row" layout-wrap flex="100" ng-if="isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])"
                              ng-repeat="vari in adresseHistorikk.bruker.relasjoner.relasjon">
                             <tps-output-field label="typeRelasjon" flex="20" field-model="vari.typeRelasjon" title="typeRelasjon"></tps-output-field>
                             <tps-output-field label="typeRelBeskr" flex="20" field-model="vari.typeRelBeskr" title="typeRelBeskr"></tps-output-field>
@@ -219,7 +219,7 @@
                             <tps-output-field label="adresseStatus" flex="20" field-model="vari.adresseInfo.adresseStatus" title="adresseStatus"></tps-output-field>
                             <tps-output-field label="adresseStatusBeskr" flex="20" field-model="vari.adresseInfo.adresseStatusBeskr" title="adresseStatusBeskr"></tps-output-field>
                         </div>
-                        <div layout="row" layout-wrap ng-if="!isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])">
+                        <div layout="row" layout-wrap flex="100" ng-if="!isArray(adresseHistorikk['bruker']['relasjoner']['relasjon'])">
                             <tps-output-field label="typeRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.typeRelasjon" title="typeRelasjon"></tps-output-field>
                             <tps-output-field label="typeRelBeskr" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.typeRelBeskr" title="typeRelBeskr"></tps-output-field>
                             <tps-output-field label="fnrRelasjon" flex="20" field-model="responseData.data1.bruker.relasjoner.relasjon.fnrRelasjon" title="fnrRelasjon"></tps-output-field>

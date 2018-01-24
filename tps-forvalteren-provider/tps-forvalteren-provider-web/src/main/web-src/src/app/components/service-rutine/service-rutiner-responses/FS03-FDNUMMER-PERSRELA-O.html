@@ -23,7 +23,7 @@
                         <tps-output-field label="endringsDato" flex="30" field-model="responseData.data1.endringsDato" title="endringsDato"></tps-output-field>
                         <tps-output-field label="antallRelasjoner" flex="30" field-model="responseData.data1.antallRelasjoner" title="antallRelasjoner"></tps-output-field>
                     </div>
-                    <div class="tpsf-sr-response" layout="column" ng-if="isArray(adresseHistorikk['relasjoner']['relasjon'])"
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="isArray(adresseHistorikk['relasjoner']['relasjon'])"
                          ng-repeat="relasjon_a in adresseHistorikk.relasjoner.relasjon">
                         <div layout="row">
                             <tps-output-field label="typeRelasjon" flex="30" field-model="relasjon_a.typeRelasjon" title="typeRelasjon"></tps-output-field>
@@ -53,7 +53,7 @@
                             <tps-output-field label="adrStatusBeskr" flex="30" field-model="relasjon_a.adrStatusBeskr" title="adrStatusBeskr"></tps-output-field>
                         </div>
                     </div>
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['relasjoner']['relasjon'])">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['relasjoner']['relasjon'])">
                         <div layout="row">
                             <tps-output-field label="typeRelasjon" flex="30" field-model="responseData.data1.relasjoner.relasjon.typeRelasjon" title="typeRelasjon"></tps-output-field>
                             <tps-output-field label="fnrRelasjon" flex="30" field-model="responseData.data1.relasjoner.relasjon.fnrRelasjon" title="fnrRelasjon"></tps-output-field>

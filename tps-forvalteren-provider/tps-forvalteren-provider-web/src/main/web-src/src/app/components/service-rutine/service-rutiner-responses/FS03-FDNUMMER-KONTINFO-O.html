@@ -152,7 +152,7 @@
                     <tps-output-field label="ekSystem" flex="20" field-model="responseData.data1.person.bruker.preferanser.foretrukketElektroniskKanal.ekSystem" title="ekSystem"></tps-output-field>
                     <tps-output-field label="ekSaksbehandler" flex="20" field-model="responseData.data1.person.bruker.preferanser.foretrukketElektroniskKanal.ekSaksbehandler" title="ekSaksbehandler"></tps-output-field>
 
-                    <div class="tpsf-sr-response" layout="row" layout-wrap ng-repeat="vari in adresseHistorikk.person.bruker.elektroniskKommunikasjon.epost" >
+                    <div class="tpsf-sr-response" layout="row" layout-wrap flex="100" ng-repeat="vari in adresseHistorikk.person.bruker.elektroniskKommunikasjon.epost" >
                         <tps-output-field label="epostDatoFom" flex="20" field-model="vari.epostDatoFom" title="epostDatoFom"></tps-output-field>
                         <tps-output-field label="epostDatoTom" flex="20" field-model="vari.epostDatoTom" title="epostDatoTom"></tps-output-field>
                         <tps-output-field label="epostType" flex="20" field-model="vari.epostType" title="epostType"></tps-output-field>
@@ -163,7 +163,7 @@
                         <tps-output-field label="epostSaksbehandler" flex="20" field-model="responseData.data1.person.bruker.elektroniskKommunikasjon.epostSaksbehandler" title="epostSaksbehandler"></tps-output-field>
                     </div>
 
-                    <div class="tpsf-sr-response" layout="row" layout-wrap ng-repeat="vari in adresseHistorikk.person.bruker.elektroniskKommunikasjon.meldingsboks">
+                    <div class="tpsf-sr-response" layout="row" layout-wrap flex="100" ng-repeat="vari in adresseHistorikk.person.bruker.elektroniskKommunikasjon.meldingsboks">
                         <tps-output-field label="mbDatoFom" flex="20" field-model="vari.mbDatoFom" title="mbDatoFom"></tps-output-field>
                         <tps-output-field label="mbDatoTom" flex="20" field-model="vari.mbDatoTom" title="mbDatoTom"></tps-output-field>
                         <tps-output-field label="mbType" flex="20" field-model="vari.mbType" title="mbType"></tps-output-field>
@@ -174,7 +174,7 @@
                         <tps-output-field label="mbSaksbehandler" flex="20" field-model="vari.mbSaksbehandler" title="mbSaksbehandler"></tps-output-field>
                     </div>
 
-                    <div class="tpsf-sr-response" layout="row" layout-wrap ng-repeat="vari in adresseHistorikk.person.bruker.elektroniskKommunikasjon.telefon">
+                    <div class="tpsf-sr-response" layout="row" layout-wrap flex="100" ng-repeat="vari in adresseHistorikk.person.bruker.elektroniskKommunikasjon.telefon">
                         <tps-output-field label="tlfDatoFom" flex="20" field-model="vari.tlfDatoFom" title="tlfDatoFom"></tps-output-field>
                         <tps-output-field label="tlfDatoTom" flex="20" field-model="vari.tlfDatoTom" title="tlfDatoTom"></tps-output-field>
                         <tps-output-field label="tlfType" flex="20" field-model="vari.tlfType" title="tlfType"></tps-output-field>
