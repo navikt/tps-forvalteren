@@ -33,7 +33,7 @@
 
                     </div>
 
-                    <div class="tpsf-sr-response" layout="column" ng-if="isArray(adresseHistorikk['historiskeFnr']['historiskFnr'])"
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="isArray(adresseHistorikk['historiskeFnr']['historiskFnr'])"
                          ng-repeat="histFnr in adresseHistorikk.historiskeFnr.historiskFnr">
                         <div layout="row">
                             <tps-output-field label="fnr" flex="30" field-model="histFnr.fnr" title="fnr"></tps-output-field>
@@ -50,7 +50,7 @@
 
                         </div>
                     </div>
-                    <div class="tpsf-sr-response" layout="column" ng-if="!isArray(adresseHistorikk['historiskeFnr']['historiskFnr'])">
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="!isArray(adresseHistorikk['historiskeFnr']['historiskFnr'])">
                         <div layout="row">
                             <tps-output-field label="fnr" flex="30" field-model="responseData.data1.historiskeFnr.historiskFnr.fnr" title="fnr"></tps-output-field>
                             <tps-output-field label="datoIdentFom" flex="30" field-model="responseData.data1.historiskeFnr.historiskFnr.datoIdentFom" title="datoIdentFom"></tps-output-field>

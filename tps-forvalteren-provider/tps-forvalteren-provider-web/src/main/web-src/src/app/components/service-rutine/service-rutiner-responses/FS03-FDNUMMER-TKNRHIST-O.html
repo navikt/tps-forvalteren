@@ -24,7 +24,7 @@
                     <tps-output-field label="doSaksbehandler" flex="20" field-model="responseData.data1.doSaksbehandler" title="doSaksbehandler"></tps-output-field>
                     <tps-output-field label="antallFS013" flex="20" field-model="responseData.data1.antallFS013" title="antallFS013"></tps-output-field>
 
-                    <div layout="row" layout-wrap ng-if="isArray(adresseHistorikk['tknrHistorikk']['tknrInfo'])"
+                    <div layout="row" layout-wrap flex="100" ng-if="isArray(adresseHistorikk['tknrHistorikk']['tknrInfo'])"
                          ng-repeat="vari in adresseHistorikk.tknrHistorikk.tknrInfo">
                         <tps-output-field label="tknr" flex="20" field-model="vari.tknr" title="tknr"></tps-output-field>
                         <tps-output-field label="tknrKnytningFom" flex="20" field-model="vari.tknrKnytningFom" title="tknrKnytningFom"></tps-output-field>
@@ -33,7 +33,7 @@
                         <tps-output-field label="tknrSystem" flex="20" field-model="vari.tknrSystem" title="tknrSystem"></tps-output-field>
                         <tps-output-field label="tknrSaksbehandler" flex="20" field-model="vari.tknrSaksbehandler" title="tknrSaksbehandler"></tps-output-field>
                     </div>
-                    <div layout="row" layout-wrap ng-if="!isArray(adresseHistorikk['tknrHistorikk']['tknrInfo'])">
+                    <div layout="row" layout-wrap flex="100" ng-if="!isArray(adresseHistorikk['tknrHistorikk']['tknrInfo'])">
                         <tps-output-field label="tknr" flex="20" field-model="responsedata.data1.tknr" title="tknr"></tps-output-field>
                         <tps-output-field label="tknrKnytningFom" flex="20" field-model="responsedata.data1.tknrKnytningFom" title="tknrKnytningFom"></tps-output-field>
                         <tps-output-field label="tknrKnytningTom" flex="20" field-model="responsedata.data1.tknrKnytningTom" title="tknrKnytningTom"></tps-output-field>
