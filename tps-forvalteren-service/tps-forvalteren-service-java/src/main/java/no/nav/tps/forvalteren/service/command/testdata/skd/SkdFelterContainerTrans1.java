@@ -20,6 +20,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.REG_
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.SIVILSTAND;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.SLEKTSNAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.STATSBORGERSKAP;
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.STATUSKODE;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILDELINGSKODE;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE;
 
@@ -60,7 +61,7 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon(TRANSTYPE, "0", 5, 1, 26, 26));
         skdFelter.add(new SkdFeltDefinisjon(AARSAKSKODE, "00", 6, 2, 27, 28));
         skdFelter.add(new SkdFeltDefinisjon(REG_DATO, "00000000", 7, 8, 29, 36));
-        skdFelter.add(new SkdFeltDefinisjon("statuskode", " ", 8, 1, 37, 37));
+        skdFelter.add(new SkdFeltDefinisjon(STATUSKODE, " ", 8, 1, 37, 37));
         skdFelter.add(new SkdFeltDefinisjon(DOEDSDATO, "00000000", 9, 8, 38, 45));
         skdFelter.add(new SkdFeltDefinisjon(SLEKTSNAVN, WHITESPACE_50_STK, 10, 50, 46, 95));
         skdFelter.add(new SkdFeltDefinisjon(FORNAVN, WHITESPACE_50_STK, 11, 50, 96, 145));
