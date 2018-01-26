@@ -20,7 +20,7 @@ public class Gateadresse extends Adresse {
     @Column(name = "GATEADRESSE", length = 50)
     private String adresse;
 
-    @Column(name = "HUSNUMMER", length = 4)
+    @Column(name = "HUSNUMMER", length = 5)
     private String husnummer;
 
     @Column(name = "GATEKODE", length = 5)
