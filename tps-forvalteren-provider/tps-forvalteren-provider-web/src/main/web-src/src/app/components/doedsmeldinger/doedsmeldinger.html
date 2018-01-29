@@ -22,4 +22,35 @@
         </div>
         <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
     </div>
+    <!-- Historikk -->
+    <md-content flex="80" class="tps-vk-bottom md-whiteframe-z1">
+        <div class="tps-vk-top">
+            <form flex="1" name="historikk" layout-align="start start">
+                <div name="historikk-header">
+                    <hr>
+                    <div layout="row" flex>
+                        <h5 class="" flex="20">Identnummer</h5>
+                        <h5 class="" flex="20">Handling</h5>
+                        <h5 class="" flex="20">Dato</h5>
+                        <h5 class="" flex="20">Miljø</h5>
+                        <h5 class="" flex="20">Tilstand</h5>
+                    </div>
+                    <hr>
+                </div>
+                <div name="historikk-response">
+                    <div layout="row" flex>
+                        <tps-output-field label="FNR" field-model="" title="Fødselsnummer"></tps-output-field>
+                        <tps-output-field label="Handling" field-model="" title="Handling"></tps-output-field>
+                        <tps-output-field label="Dato" field-model="" title="Dato"></tps-output-field>
+                        <tps-output-field label="Miljø" field-model="" title="Miljø"></tps-output-field>
+                        <tps-output-field label="Status" field-model="" title="Status"></tps-output-field>
+                        <md-button class="md-icon-button" ng-show="harHistorikk" aria-label="VisHistorikk">
+                            <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+
 </div>

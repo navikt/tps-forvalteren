@@ -38,9 +38,10 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
 
                     var response = res.data.response;
                     var xml = res.data.xml;
+                    console.log(xml);
 
                     $scope.xmlForm = utilsService.formatXml(xml);
-
+                    console.log($scope.xmlForm);
                     $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
                     $scope.returStatus = response.status.kode;
 

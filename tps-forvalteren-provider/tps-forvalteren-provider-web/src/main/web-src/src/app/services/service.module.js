@@ -10,3 +10,4 @@ require('./kodeverk.service');
 require('./appInfo.service');
 require('./endringsmelding.service');
 require('./toggleservice.service');
+require('./doedsmelding.service');
