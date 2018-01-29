@@ -36,11 +36,11 @@ public class DeathRow extends ChangeStamp {
     @Column(name = "IDENT", nullable = false)
     private String ident;
 
-    @Column(name = "ACTION", nullable = false)
-    private String action;
+    @Column(name = "HANDLING", nullable = false)
+    private String handling;
 
-    @Column(name = "ENVIRONMENT", nullable = false)
-    private String environment;
+    @Column(name = "MILJOE", nullable = false)
+    private String miljoe;
 
     @Column(name = "STATUS")
     private String status;

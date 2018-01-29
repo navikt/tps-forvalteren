@@ -8,11 +8,12 @@ public class DeathRowProvider {
     
     public static DeathRow.DeathRowBuilder aDeathRow() {
         return DeathRow.builder()
-                .action("Ny dødsdato")
+                .handling("Ny dødsdato")
                 .doedsdato(LocalDate.now())
-                .environment("u5")
+                .miljoe("u5")
                 .ident("99887712345")
                 .status("finnes i TPS")
                 .tilstand("Ikke sendt inn");
     }
+    
 }
