@@ -22,7 +22,7 @@ import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "T_DEATH_RO")
+@Table(name = "T_DEATH_ROW")
 public class DeathRow extends ChangeStamp {
 
     private static final String SEQ = "T_DEATH_ROW_SEQ";
