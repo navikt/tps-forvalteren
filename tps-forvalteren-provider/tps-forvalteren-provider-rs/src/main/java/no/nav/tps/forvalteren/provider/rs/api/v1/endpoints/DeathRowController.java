@@ -3,6 +3,9 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import java.util.List;
 import java.util.Set;
 
+import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.DeathRow;
+import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
@@ -24,9 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "api/v1/doedsmelding")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
-public class DoedsmeldingController {
+public class DeathRowController {
 
     private static final String REST_SERVICE_NAME = "testdata";
+
+    @Autowired
+    private MapperFacade mapper;
 
     @Autowired
     private CreateDodsmelding createDodsmelding;
@@ -42,9 +48,9 @@ public class DoedsmeldingController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding")})
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
-    public void createMelding(@RequestBody JSONObject dMelding){
-
-        createDodsmelding.execute(dMelding);
+    public void createMelding(@RequestBody RsDeathRow dMelding){
+        DeathRow deathRow = mapper.map(dMelding, DeathRow.class);
+        createDodsmelding.execute(deathRow);
     }
 
     @LogExceptions

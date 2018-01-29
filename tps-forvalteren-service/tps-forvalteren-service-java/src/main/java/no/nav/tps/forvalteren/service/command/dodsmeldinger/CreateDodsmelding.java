@@ -1,19 +1,20 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
-import java.util.List;
-
-import no.nav.tps.forvalteren.domain.rs.dodsmelding.RsDodsmeldingType;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
-import org.json.JSONObject;
+import no.nav.tps.forvalteren.domain.jpa.DeathRow;
+import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
+
 
 @Service
 public class CreateDodsmelding {
 
-    private ConvertJsonToRsDodsmeldingType convertJsonToRsDodsmeldingType;
+    @Autowired
+    private DeathRowRepository deathRowRepository;
 
-    public void execute(JSONObject dodsmelding) {
-
+    public void execute(DeathRow dodsmelding) {
+        deathRowRepository.save(dodsmelding);
         //String skdDodsmelding = convertJsonToRsDodsmeldingType.execute(dodsmelding);
 
     }
