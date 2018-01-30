@@ -66,16 +66,15 @@
         <label>Spesialregister</label>
         <md-select ng-model="person.spesreg" class="md-no-underline"
                    ng-change="endret($index + pager.startIndex)">
-            <md-option value=""><em>Uspesifisert</em></md-option>
-            <md-option value="KLIE">Klientadresse</md-option>
-            <md-option value="MILI">Militær</md-option>
-            <md-option value="PEND">Pendler</md-option>
-            <md-option value="SPFO">Sperret adresse, fortrolig</md-option>
-            <md-option value="SPSF">Sperret adresse, strengt fortrolig</md-option>
-            <md-option value="SVAL">Svalbard</md-option>
-            <md-option value="UFB ">Uten fast bopel</md-option>
-            <md-option value="URIK">I utenrikstjeneste</md-option>
-            <md-option value="VABO">Vanlig bosatt</md-option>
+            <md-option value="0">Vanlig bosatt</md-option>
+            <md-option value="6">KODE6, Sperret adresse, strengt fortrolig</md-option>
+            <md-option value="7">KODE7, Sperret adresse, fortrolig</md-option>
+            <md-option value="4">Klientadresse</md-option>
+            <md-option value="2">Militær</md-option>
+            <md-option value="8">Pendler</md-option>
+            <md-option value="3">Svalbard</md-option>
+            <md-option value="5">Uten fast bopel</md-option>
+            <md-option value="1">I utenrikstjeneste</md-option>
         </md-select>
     </md-input-container>
 
