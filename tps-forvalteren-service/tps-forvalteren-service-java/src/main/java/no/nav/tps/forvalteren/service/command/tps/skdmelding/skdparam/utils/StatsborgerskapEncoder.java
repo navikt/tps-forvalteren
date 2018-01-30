@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
     Generert fra "Landkoder TPS FELLES og TSS 20170209.xlsx" - "TPS Felles"
  */
 @Service
+@SuppressWarnings("checkstyle:com.puppycrawl.tools.checkstyle.checks.metrics.JavaNCSSCheck")
 public class StatsborgerskapEncoder {
 
     private static final Map<String, String> statsborgerskapMap = new HashMap<>();
