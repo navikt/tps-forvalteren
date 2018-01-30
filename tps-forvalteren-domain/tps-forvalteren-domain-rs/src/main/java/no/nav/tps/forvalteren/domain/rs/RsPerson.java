@@ -44,7 +44,7 @@ public class RsPerson {
 
     private String statsborgerskap;
 
-    @Size(min = 4, max = 4)
+    @Size(min = 1, max = 1)
     private String spesreg;
 
     private LocalDateTime spesregDato;
