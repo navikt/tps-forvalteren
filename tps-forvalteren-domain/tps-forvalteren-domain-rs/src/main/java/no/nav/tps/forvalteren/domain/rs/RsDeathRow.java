@@ -23,7 +23,7 @@ public class RsDeathRow {
 
     @NotBlank
     @Size(min = 11, max = 11)
-    private String ident;
+    private String[] ident;
 
     @NotBlank
     @Size(min = 1, max = 50)

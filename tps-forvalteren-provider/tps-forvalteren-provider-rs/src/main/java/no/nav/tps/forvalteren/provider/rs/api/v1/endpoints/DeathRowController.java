@@ -15,6 +15,8 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -31,8 +33,7 @@ public class DeathRowController {
 
     private static final String REST_SERVICE_NAME = "testdata";
 
-    @Autowired
-    private MapperFacade mapper;
+
 
     @Autowired
     private CreateDodsmelding createDodsmelding;
@@ -49,8 +50,7 @@ public class DeathRowController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding")})
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
     public void createMelding(@RequestBody RsDeathRow dMelding){
-        DeathRow deathRow = mapper.map(dMelding, DeathRow.class);
-        createDodsmelding.execute(deathRow);
+        createDodsmelding.execute(dMelding);
     }
 
     @LogExceptions

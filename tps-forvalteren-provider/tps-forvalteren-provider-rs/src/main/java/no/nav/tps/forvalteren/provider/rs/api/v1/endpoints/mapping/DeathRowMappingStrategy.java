@@ -14,9 +14,13 @@ public class DeathRowMappingStrategy implements MappingStrategy {
     public void register(MapperFactory factory) {
         factory.classMap(DeathRow.class, RsDeathRow.class)
                 .field("endretDato", "bruker")
-                .field("endretAv", "tidspunkt").byDefault().register();
+                .field("endretAv", "tidspunkt")
+                .byDefault()
+                .register();
         
-        factory.classMap(RsDeathRow.class, DeathRow.class).byDefault().register();
+        factory.classMap(RsDeathRow.class, DeathRow.class)
+                .byDefault()
+                .register();
     }
 
 }
