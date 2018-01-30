@@ -7,7 +7,7 @@
 
                 <tps-output-field label="antallTotalt" flex="20" field-model="adresseHistorikk.antallTotalt" title="antallTotalt"></tps-output-field>
 
-                <div class="tpsf-sr-response" layout="row" layout-wrap ng-if="isArray(adresseHistorikk['enPersonRes'])"
+                <div class="tpsf-sr-response" layout="row" flex="100" layout-wrap ng-if="isArray(adresseHistorikk['enPersonRes'])"
                      ng-repeat="vari in adresseHistorikk.enPersonRes">
                     <tps-output-field label="fnr" flex="20" field-model="vari.fnr" title="fnr"></tps-output-field>
                     <tps-output-field label="spesregType" flex="20" field-model="vari.personData.spesregType" title="spesregType"></tps-output-field>
@@ -21,7 +21,7 @@
                     <tps-output-field label="mellomnavn" flex="20" field-model="vari.navn.mellomnavn" title="mellomnavn"></tps-output-field>
                     <tps-output-field label="etternavn" flex="20" field-model="vari.navn.etternavn" title="etternavn"></tps-output-field>
                     <tps-output-field label="tidligerenavn" flex="20" field-model="vari.navn.tidligerenavn" title="tidligerenavn"></tps-output-field>
-                    <div layout="row" layout-wrap ng-show="vari.personData.personStatus == 'UTVA'">
+                    <div layout="row" layout-wrap flex="100" ng-show="vari.personData.personStatus == 'UTVA'">
                         <tps-output-field label="adresseType" flex="20" field-model="vari.adresse.postAdresse.adresseType" title="adresseType"></tps-output-field>
                         <tps-output-field label="adresse1" flex="20" field-model="vari.adresse.postAdresse.adresse1" title="adresse1"></tps-output-field>
                         <tps-output-field label="adresse2" flex="20" field-model="vari.adresse.postAdresse.adresse2" title="adresse2"></tps-output-field>
@@ -31,7 +31,7 @@
                         <tps-output-field label="landKode" flex="20" field-model="vari.adresse.postAdresse.landKode" title="landKode"></tps-output-field>
                         <tps-output-field label="landKode" flex="20" field-model="vari.adresse.postAdresse.landKode" title="landKode"></tps-output-field>
                     </div>
-                    <div layout="row" layout-wrap ng-show="vari.personData.personStatus == 'BOSA'">
+                    <div layout="row" layout-wrap flex="100" ng-show="vari.personData.personStatus == 'BOSA'">
                         <tps-output-field label="adresseType" flex="20" field-model="vari.adresse.boAdresse.adresseType" title="adresseType"></tps-output-field>
                         <tps-output-field label="adresse1" flex="20" field-model="vari.adresse.boAdresse.adresse1" title="adresse1"></tps-output-field>
                         <tps-output-field label="adresse2" flex="20" field-model="vari.adresse.boAdresse.adresse2" title="adresse2"></tps-output-field>
@@ -42,7 +42,7 @@
                     </div>
 
                 </div>
-                <div class="tpsf-sr-response" layout="row" layout-wrap ng-if="!isArray(adresseHistorikk['enPersonRes'])">
+                <div class="tpsf-sr-response" flex="100" layout="row" layout-wrap ng-if="!isArray(adresseHistorikk['enPersonRes'])">
                     <tps-output-field label="fnr" flex="20" field-model="adresseHistorikk.enPersonRes.fnr" title="fnr"></tps-output-field>
                     <tps-output-field label="spesregType" flex="20" field-model="adresseHistorikk.enPersonRes.personData.spesregType" title="spesregType"></tps-output-field>
                     <tps-output-field label="kjonn" flex="20" field-model="adresseHistorikk.enPersonRes.personData.kjonn" title="kjonn"></tps-output-field>
@@ -55,7 +55,7 @@
                     <tps-output-field label="mellomnavn" flex="20" field-model="adresseHistorikk.enPersonRes.navn.mellomnavn" title="mellomnavn"></tps-output-field>
                     <tps-output-field label="etternavn" flex="20" field-model="adresseHistorikk.enPersonRes.navn.etternavn" title="etternavn"></tps-output-field>
                     <tps-output-field label="tidligerenavn" flex="20" field-model="adresseHistorikk.enPersonRes.navn.tidligerenavn" title="tidligerenavn"></tps-output-field>
-                    <div layout="row" layout-wrap ng-show="adresseHistorikk.enPersonRes.personData.personStatus == 'UTVA'">
+                    <div layout="row" layout-wrap flex="100" ng-show="adresseHistorikk.enPersonRes.personData.personStatus == 'UTVA'">
                         <tps-output-field label="adresseType" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.postAdresse.adresseType" title="adresseType"></tps-output-field>
                         <tps-output-field label="adresse1" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.postAdresse.adresse1" title="adresse1"></tps-output-field>
                         <tps-output-field label="adresse2" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.postAdresse.adresse2" title="adresse2"></tps-output-field>
@@ -65,7 +65,7 @@
                         <tps-output-field label="landKode" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.postAdresse.landKode" title="landKode"></tps-output-field>
                         <tps-output-field label="landKode" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.postAdresse.landKode" title="landKode"></tps-output-field>
                     </div>
-                    <div layout="row" layout-wrap ng-show="adresseHistorikk.enPersonRes.personData.personStatus == 'BOSA'">
+                    <div layout="row" layout-wrap flex="100" ng-show="adresseHistorikk.enPersonRes.personData.personStatus == 'BOSA'">
                         <tps-output-field label="adresseType" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.boAdresse.adresseType" title="adresseType"></tps-output-field>
                         <tps-output-field label="adresse1" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.boAdresse.adresse1" title="adresse1"></tps-output-field>
                         <tps-output-field label="adresse2" flex="20" field-model="adresseHistorikk.enPersonRes.adresse.boAdresse.adresse2" title="adresse2"></tps-output-field>

@@ -40,7 +40,7 @@
                         <tps-output-field label="antallUtvandring" flex="30" field-model="responseData.data1.antallUtvandring" title="antallUtvandring"></tps-output-field>
                     </div>
                     <!-- Statsborgerskap -->
-                    <div layout="column" ng-if="isArray(adresseHistorikk['statsborgerskap']['statsborger'])"
+                    <div layout="column" flex="100" ng-if="isArray(adresseHistorikk['statsborgerskap']['statsborger'])"
                         ng-repeat="statsb in adresseHistorikk.statsborgerskap.statsborger">
                         <div layout="row">
                             <tps-output-field label="kodeLand" flex="30" field-model="statsb.kodeLand" title="kodeLand"></tps-output-field>
@@ -55,7 +55,7 @@
                         </div>
 
                     </div>
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['statsborgerskap']['statsborger'])&& adresseHistorikk.antallStatsborgerskap !== 0">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['statsborgerskap']['statsborger'])&& adresseHistorikk.antallStatsborgerskap !== 0">
                         <div layout="row">
                             <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.kodeLand" title="kodeLand"></tps-output-field>
                             <tps-output-field label="land" flex="30" field-model="responseData.data1.statsborgerskap.statsborger.land" title="land"></tps-output-field>
@@ -70,7 +70,7 @@
                     </div>
 
                     <!-- Oppholdstillatelse -->
-                    <div layout="column" ng-if="isArray(adresseHistorikk['oppholdstillatelse']['opphold'])"
+                    <div layout="column" flex="100" ng-if="isArray(adresseHistorikk['oppholdstillatelse']['opphold'])"
                         ng-repeat="stats_b in adresseHistorikk.oppholdstillatelse.opphold">
                         <div layout="row">
                             <tps-output-field label="typeTillatelse" flex="30" field-model="stats_b.typeTillatelse" title="typeTillatelse"></tps-output-field>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['oppholdstillatelse']['opphold']) && adresseHistorikk.antallOppholdstillatelse !== 0">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['oppholdstillatelse']['opphold']) && adresseHistorikk.antallOppholdstillatelse !== 0">
                         <div layout="row">
                             <tps-output-field label="typeTillatelse" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.typeTillatelse" title="typeTillatelse"></tps-output-field>
                             <tps-output-field label="beskrTillatelse" flex="30" field-model="responseData.data1.oppholdstillatelse.opphold.land" title="land"></tps-output-field>
@@ -101,7 +101,7 @@
 
 
                     <!-- Arbeidstillatelse -->
-                    <div layout="column" ng-if="isArray(adresseHistorikk['arbeidstillatelser']['arbeidstillatelse'])"
+                    <div layout="column" flex="100" ng-if="isArray(adresseHistorikk['arbeidstillatelser']['arbeidstillatelse'])"
                         ng-repeat="stats_c in adresseHistorikk.arbeidstillatelser.arbeidstillatelse">
                         <div layout="row">
                             <tps-output-field label="typeTillatelse" flex="30" field-model="stats_c.typeTillatelse" title="typeTillatelse"></tps-output-field>
@@ -115,7 +115,7 @@
                             <tps-output-field label="saksbehandler" flex="30" field-model="stats_c.saksbehandler" title="saksbehandler"></tps-output-field>
                         </div>
                     </div>
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['arbeidstillatelser']['arbeidstillatelse']) && adresseHistorikk.antallArbeidstillatelse !== 0">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['arbeidstillatelser']['arbeidstillatelse']) && adresseHistorikk.antallArbeidstillatelse !== 0">
                         <div layout="row">
                             <tps-output-field label="typeTillatelse" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.typeTillatelse" title="typeTillatelse"></tps-output-field>
                             <tps-output-field label="beskrTillatelse" flex="30" field-model="responseData.data1.arbeidstillatelser.arbeidstillatelse.land" title="land"></tps-output-field>
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                     <!-- Innvandring -->
-                    <div layout="column" ng-if="isArray(adresseHistorikk['innvandringer']['innvandring'])"
+                    <div layout="column" flex="100" ng-if="isArray(adresseHistorikk['innvandringer']['innvandring'])"
                         ng-repeat="stats_d in adresseHistorikk.innvandringer.innvandring">
                         <div layout="row">
                             <tps-output-field label="kodeLand" flex="30" field-model="stats_d.kodeLand" title="kodeLand"></tps-output-field>
@@ -143,7 +143,7 @@
                             <tps-output-field label="saksbehandler" flex="30" field-model="stats_d.saksbehandler" title="saksbehandler"></tps-output-field>
                         </div>
                     </div>
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['innvandringer']['innvandring']) && adresseHistorikk.antallInnvandring !== 0">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['innvandringer']['innvandring']) && adresseHistorikk.antallInnvandring !== 0">
                         <div layout="row">
                             <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.innvandringer.innvandring.kodeLand" title="kodeLand"></tps-output-field>
                             <tps-output-field label="land" flex="30" field-model="responseData.data1.innvandringer.innvandring.land" title="land"></tps-output-field>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                     <!-- Utvandring -->
-                    <div layout="column" ng-if="isArray(adresseHistorikk['utvandringer']['utvandring'])"
+                    <div layout="column" flex="100" ng-if="isArray(adresseHistorikk['utvandringer']['utvandring'])"
                         ng-repeat="stats_e in adresseHistorikk.utvandringer.utvandring">
                         <div layout="row">
                             <tps-output-field label="kodeLand" flex="30" field-model="stats_e.kodeLand" title="kodeLand"></tps-output-field>
@@ -171,7 +171,7 @@
                             <tps-output-field label="saksbehandler" flex="30" field-model="stats_e.saksbehandler" title="saksbehandler"></tps-output-field>
                         </div>
                     </div>
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['utvandringer']['utvandring']) && adresseHistorikk.antallUtvandring !== 0">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['utvandringer']['utvandring']) && adresseHistorikk.antallUtvandring !== 0">
                         <div layout="row">
                             <tps-output-field label="kodeLand" flex="30" field-model="responseData.data1.utvandringer.utvandring.kodeLand" title="kodeLand"></tps-output-field>
                             <tps-output-field label="land" flex="30" field-model="responseData.data1.utvandringer.utvandring.land" title="land"></tps-output-field>

@@ -13,8 +13,9 @@ import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.service.environment.Environment;
 import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
+
 
 @RestController
 @RequestMapping(value = "api/v1")
@@ -35,7 +36,7 @@ public class EnvironmentController {
     private boolean currentEnvironmentIsProd;
 
     /**
-     * Get a set of available environments from Vera
+     * Get a set of available environments from Fasit
      *
      * @return a set of environment names
      */
@@ -43,7 +44,7 @@ public class EnvironmentController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getEnvironments") })
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Environment getEnvironments() {
-        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromVera("tpsws");
+        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
 
         Environment environment = new Environment();
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
@@ -53,5 +54,5 @@ public class EnvironmentController {
 
         return environment;
     }
-    
+
 }

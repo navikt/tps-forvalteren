@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
     .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService', 'headerService',
-        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService, headerService, underHeaderService) {
+        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService, headerService) {
 
             headerService.setHeader('Servicerutiner');
 
@@ -33,6 +33,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.loading = true;
 
                 serviceRutineFactory.getServiceRutineResponse($scope.serviceRutineName, params).then(function (res) {
+
                     $scope.loading = false;
                     $scope.clearResponseForm();
 
@@ -63,7 +64,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.loading = false;
                     showAlertTPSError(error);
                 });
-
             };
 
             headerService.setButtons([{
@@ -261,7 +261,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                             $scope.formData[parameter] = utilsService.getCurrentFormattedDate();
                             break;
                         case 'aksjonsKode':
-                        case 'infoType':
                         case 'adresseTypeS103':
                         case 'kilde':
                         case 'buffNr':
