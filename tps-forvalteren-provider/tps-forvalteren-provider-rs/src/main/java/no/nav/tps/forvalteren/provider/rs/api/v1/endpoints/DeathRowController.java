@@ -1,27 +1,26 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import java.util.List;
-import java.util.Set;
-
-import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.domain.jpa.DeathRow;
-import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import javax.transaction.Transactional;
-
-import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
-import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Set;
+import ma.glasnost.orika.MapperFacade;
+import no.nav.freg.metrics.annotations.Metrics;
+import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.domain.jpa.DeathRow;
+import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
+import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterForDodsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
 @Transactional
 @RestController
@@ -37,11 +36,14 @@ public class DeathRowController {
     @Autowired
     private CreateDodsmelding createDodsmelding;
 
+    @Autowired
+    private SjekkIdenterForDodsmelding sjekkIdenterForDodsmelding;
+
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter")})
-    @RequestMapping(value = "/checkpersoner", method = RequestMethod.GET)
-    public Set<IdentMedStatus> checkIdList(@RequestBody List<String> personIdListe) {
-        return null;
+    @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
+    public Set<IdentMedStatus> checkIdList(@RequestBody List<RsDeathRow> doedsmeldinger) {
+        return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(doedsmeldinger);
     }
 
 
