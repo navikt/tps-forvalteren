@@ -12,4 +12,5 @@ public interface DeathRowRepository extends Repository<DeathRow, Long> {
 
     void deleteById(Long id);
 
+
 }

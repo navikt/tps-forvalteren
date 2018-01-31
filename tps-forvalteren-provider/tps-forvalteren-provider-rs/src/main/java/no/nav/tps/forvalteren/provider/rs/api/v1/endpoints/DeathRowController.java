@@ -64,8 +64,11 @@ public class DeathRowController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding")})
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
-    public void createMelding(@RequestBody RsDeathRow dMelding){
-        createDodsmelding.execute(dMelding);
+    public void createMelding(@RequestBody RsDeathRowBulk rsDeathRowBulk) { //RsDeathRow dMelding){
+        List<DeathRow> deathRowList = mapper.map(rsDeathRowBulk, List.class);
+        for(DeathRow deathrow : deathRowList){
+            createDodsmelding.execute(deathrow);
+        }
     }
 
     @LogExceptions

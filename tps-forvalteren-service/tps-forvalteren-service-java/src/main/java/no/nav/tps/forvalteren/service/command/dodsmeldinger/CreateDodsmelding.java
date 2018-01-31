@@ -20,29 +20,8 @@ public class CreateDodsmelding {
     @Autowired
     private DeathRowRepository deathRowRepository;
 
-    public void execute(RsDeathRow dodsmelding) {
-        DeathRow death;
-
-        List<String> identer = Arrays.asList(dodsmelding.getIdent());
-        List<DeathRow> deathRows = new ArrayList<>();
-
-        for(int i = 0; i < identer.size(); i++) {
-            death = new DeathRow();
-
-            death.setId(dodsmelding.getId()+1);
-            death.setIdent(identer.get(i));
-            death.setHandling(dodsmelding.getHandling());
-            death.setMiljoe(dodsmelding.getMiljoe());
-            death.setDoedsdato(dodsmelding.getDoedsdato());
-            death.setStatus(dodsmelding.getStatus());
-            death.setTilstand(dodsmelding.getTilstand());
-
-            deathRows.add(death);
-        }
-
-        for(DeathRow deathRow : deathRows) {
-            deathRowRepository.save(deathRow);
-        }
+    public void execute(DeathRow dodsmelding) {
+        deathRowRepository.save(dodsmelding);
     }
 
 
