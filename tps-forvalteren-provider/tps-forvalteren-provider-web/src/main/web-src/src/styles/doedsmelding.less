@@ -1,39 +1,50 @@
-.tps-vk-service-rutine-dashboard {
+.doedsmelding-dashboard {
 
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  display: block;
+  margin-left: 20%;
+  margin-right: 20%;
 
-  .tps-no-scroll-view {
+  .no-scroll-view {
     height: 88%;
   }
 
-  .tps-vk-top {
+  .top {
     margin-bottom: 10px;
     background-color: white;
     padding: 10px 15px;
     position: relative;
 
-    .tps-vk-input-container {
-      margin: 4px 10px 5px 0;
+    .center {
+      margin: 0 auto;
+    }
+    .input-container {
+      margin: 14px 10px 5px 0;
       label {
         z-index: auto;
       }
     }
-    .tps-vk-datepicker-container {
+    .datepicker-container {
       margin: 4px 10px 5px -16px;
       label {
         z-index: auto;
       }
     }
-    .tps-vk-form-btns {
+    .card-content {
+      padding-bottom: 0;
+      padding-top: 10px;
+      margin: -3px 0;
+    }
+    .form-btns {
       text-align: center;
 
       @media (min-width: 600px) {
         text-align: right;
       }
 
-      .tps-vk-refresh-btn {
+      .refresh-btn {
         width: 40px;
         height: 40px;
         z-index: auto;
@@ -50,6 +61,9 @@
       right: 0;
       left: 0;
       bottom: 0;
+    }
+    .align-button {
+      margin-top: -10px;
     }
   }
 

@@ -26,7 +26,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.vis-testdata.sendtiltps', 'tps-forvalteren.skd-meldingsgruppe', 'tps-forvalteren.skd-meldingsgruppe.nygruppe',
     'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding',
     'tps-forvalteren.providers', 'tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', 'tps-forvalteren.service-rutine',
-    'tps-forvalteren.service-rutine.velg-service-rutine', 'tps-forvalteren.doedsmeldinger']);
+    'tps-forvalteren.service-rutine.velg-service-rutine', 'tps-forvalteren.doedsmeldinger', 'tps-forvalteren.doedsmeldinger.endremelding']);
 
 require('./shared/index');
 
@@ -63,7 +63,7 @@ app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function
     };
     $mdDateLocaleProvider.parseDate = function(dateString) {
         var m = moment(dateString, 'DD-MM-YYYY', true);
-        return m.isValid() ? m.toDate() : ' ';
+        return m.isValid() ? m.toDate() : new Date(NaN);
     };
 }]);
 
@@ -412,7 +412,7 @@ app.filter('removeDuplicateKeys', function () {
     return function (inputObject, objectComp) {
         var outputObject = {};
         for(var i in inputObject){
-            jsonObject = inputObject[i];
+            var jsonObject = inputObject[i];
             if(jsonObject.fieldData.indexOf("[") ){
                 var res = jsonObject.fieldData.split("[");
                 jsonObject.fieldData = res[0];
