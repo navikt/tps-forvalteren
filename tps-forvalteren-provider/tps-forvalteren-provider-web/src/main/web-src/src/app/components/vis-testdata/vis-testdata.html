@@ -108,7 +108,12 @@
                                 <div layout="row" ng-if="control[$index + pager.startIndex].aapen">
                                     <div class="line" flex="auto">
                                         <div ng-include="persondetalj"></div>
-                                        <h3 class="testdata-sub-header">Boadresse</h3>
+                                        <div layout="row">
+                                            <h3 class="testdata-sub-header">Boadresse</h3>
+                                            <md-icon class="info-icon" ng-mouseover="showAddrInfo()"
+                                                     md-svg-icon="assets/icons/ic_info_outline_black_24px.svg"></md-icon>
+                                            <div flex></div>
+                                        </div>
                                         <md-radio-group ng-model="person.boadresse.adressetype"
                                                         layout="row" class="testdata-adr-btn">
                                             <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
