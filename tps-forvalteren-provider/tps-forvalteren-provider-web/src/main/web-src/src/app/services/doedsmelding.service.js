@@ -1,38 +1,30 @@
 angular.module('tps-forvalteren.service')
-    .service('doedsmeldingerService', ['$http', function($http){
+    .service('doedsmeldingService', ['$http', '$q', function ($http, $q) {
 
         var self = this;
-        var url = 'api/v1/doedsmelding';
+        var url = 'api/v1/doedsmelding/';
 
-        // Sjekke om identen er allerede død.
-        self.getIsDead = function() {
-
+        self.opprett = function (melding) {
+            return $http.post(url, melding);
         };
 
-        // Lag en dødsmelding på ident.
-        self.createDoedsmelding = function() {
-
+        self.slett = function (ident) {
+            return $http.post(url + "delete/" + ident);
         };
 
-        // Oppdater dødsmelding på ident
-        self.updateDoedsmelding = function() {
-
+        self.endre = function (melding) {
+            return $http.post(url + 'edit', melding);
         };
 
-        // annuller en dødsmelding
-        self.deleteDoedsmelding = function() {
-
+        self.hent = function () {
+            return $http.get(url);
         };
 
-        // Lagre dødsmelding til db
-        self.storeDoedsmelding = function() {
-
+        self.sendSkjema = function (meldinger) {
+            return $http.post(url + 'send', meldinger);
         };
 
-        // Lese dødsmeldinger fra db
-        self.retriveDoedsmelding = function(id) {
-            return $http.get(url + '/liste/' + id);
-        };
+        self.toemSkjema = function () {
+            return $http.post(url + "delete");
+        }
     }]);
-
-

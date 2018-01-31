@@ -1,91 +1,110 @@
 angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
-    .controller('SendDoedsmeldingerCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'locationService', 'utilsService', 'headerService', 'doedsmeldingerService',
-        function ($scope, $mdDialog, $rootScope, $stateParams, locationService, utilsService, headerService, doedsmeldingerService) {
+    .controller('SendDoedsmeldingerCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'locationService', 'utilsService', 'headerService', 'doedsmeldingService',
+        function ($scope, $mdDialog, $rootScope, $stateParams, locationService, utilsService, headerService, doedsmeldingService) {
 
             headerService.setHeader('Dødsmelding');
 
-            $scope.formData = {};
-            $scope.mockDB = [];
-            $scope.params = {};
+            $scope.handlinger = [{handling: 'Sette dødsdato', action: 'C'},
+                {handling: 'Endre dødsdato', action: 'U'},
+                {handling: 'Slette dødsdato', action: 'D'}];
 
-            $scope.submit = function() {
-                $scope.params = utilsService.createParametersFromFormData($scope.formData)
+            $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
+            $scope.today = new Date();
+            $scope.melding = {};
 
-                console.log($scope.params);
+            function getMeldinger() {
+                doedsmeldingService.hent().then(
+                    function (result) {
+                        $scope.meldinger = result.data;
+                    },
+                    function (error) {
+                        utilsService.showAlertError(error);
+                    }
+                );
+            }
 
-                $scope.loggTilMockDB($scope.params)
-
-
-
+            $scope.checkDato = function () {
+                if ($scope.melding && $scope.melding.handling === 'D') {
+                    $scope.melding.doedsdato = undefined;
+                    $scope.$broadcast('md-calendar-change', $scope.melding.doedsdato);
+                }
             };
 
-            $scope.clearForm = function() {
-
+            $scope.add = function () {
+                $scope.melding.identer = $scope.identer.split(/[\W\s]+/g);
+                doedsmeldingService.opprett($scope.melding).then(function () {
+                        getMeldinger();
+                    }, function (error) {
+                        utilsService.showAlertError(error);
+                    }
+                );
             };
 
+            $scope.delete = function (index) {
+                doedsmeldingService.slett($scope.meldinger[index].ident).then(function () {
+                        $scope.meldinger.splice(index, 1);
+                    }, function (error) {
+                        utilsService.showAlertError(error);
+                    }
+                );
+            };
 
+            $scope.edit = function (index) {
+                endreMelding(index);
+            };
 
-            var init = function() {
+            var endreMelding = function (index, ev) {
+                var confirm = $mdDialog.confirm({
+                    controller: 'EndreMeldingCtrl',
+                    templateUrl: 'app/components/doedsmeldinger/endremelding/endre-melding.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        melding: $scope.meldinger[index],
+                        miljoer: $scope.$resolve.environmentsPromise,
+                        handlinger: $scope.handlinger,
+                        startOfEra: $scope.startOfEra,
+                        today: $scope.today
+                    }
+                });
+                $mdDialog.show(confirm);
+            };
+
+            var init = function () {
                 var environments = $scope.$resolve.environmentsPromise;
-                if(environments.status !== undefined){
-                    utilsService.showAlertError(environments);
-                } else {
-                    $scope.environments = utilsService.sortEnvironments(environments.environments);
-                }
-
-                // USING MOCK
-                $scope.populerMockDB();
-                $scope.hentFraMockDB();
-
+                $scope.environments = utilsService.sortEnvironments(environments.environments);
             };
 
-            // MOCK FUNCTIONS
-
-            $scope.loggTilMockDB = function(params) {
-                $scope.mockDB.push(params);
-                console.log("mockDB: " + $scope.mockDB);
-
-                var personTilMockDB = '<?xml version="1.0" encoding="ISO-8859-1"?>' +
-                                        '<sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.rtv.no/NamespaceSFE"> ' +
-                                            '<sfeAjourforing> ' +
-                                                '<systemInfo> ' +
-                                                    '<kilde>BI00</kilde> ' +
-                                                    '<brukerID>HMA2970</brukerID> ' +
-                                                '</systemInfo> ' +
-                                                '<endreDodsdato> ' +
-                                                    '<offentligIdent>' + $scope.params.fnrInput+'</offentligIdent> ' +
-                                                    '<dodsDato>2005-06-10</dodsDato> ' +
-                                                '</endreDodsdato> ' +
-                                            '</sfeAjourforing> ' +
-                                            '<sfeTilbakeMelding> ' +
-                                                '<svarStatus> ' +
-                                                    '<returStatus>00</returStatus> ' +
-                                                    '<returMelding> </returMelding> ' +
-                                                    '<utfyllendeMelding> </utfyllendeMelding> ' +
-                                                '</svarStatus> ' +
-                                            '</sfeTilbakeMelding> ' +
-                                        '</sfePersonData>'
-
-
-                console.log("persontil MOck: " + $scope.params.getElementsByName("fnr"));
+            $scope.toemSkjema = function () {
+                var confirm = $mdDialog.confirm()
+                    .title('Bekrefting sletting')
+                    .textContent("Vennligst bekreft sletting av alle dødsmeldinger i lokal database:")
+                    .ariaLabel('Bekreft tømming av skjema.')
+                    .ok('Tøm skjema')
+                    .cancel('Avbryt');
+                $mdDialog.show(confirm).then(function () {
+                    doedsmeldingService.toemSkjema().then(function () {
+                        $scope.meldinger = [];
+                    }, function (error) {
+                        utilsService.showAlertError(error);
+                    });
+                });
             };
 
-            $scope.populerMockDB = function() {
-                $scope.mockDB.push('<?xml version="1.0" encoding="ISO-8859-1"?><sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.rtv.no/NamespaceSFE"> <sfeAjourforing> <systemInfo> <kilde>BI00</kilde> <brukerID>HMA2970</brukerID> </systemInfo> <endreDodsdato> <offentligIdent>26217300346</offentligIdent> <dodsDato>2005-06-10</dodsDato> </endreDodsdato> </sfeAjourforing> <sfeTilbakeMelding> <svarStatus> <returStatus>00</returStatus> <returMelding> </returMelding> <utfyllendeMelding> </utfyllendeMelding> </svarStatus> </sfeTilbakeMelding> </sfePersonData>',
-                                    '<?xml version="1.0" encoding="ISO-8859-1"?><sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.rtv.no/NamespaceSFE"> <sfeAjourforing> <systemInfo> <kilde>BI00</kilde> <brukerID>HMA2970</brukerID> </systemInfo> <endreDodsdato> <offentligIdent>26217300347</offentligIdent> <dodsDato>2005-06-11</dodsDato> </endreDodsdato> </sfeAjourforing> <sfeTilbakeMelding> <svarStatus> <returStatus>00</returStatus> <returMelding> </returMelding> <utfyllendeMelding> </utfyllendeMelding> </svarStatus> </sfeTilbakeMelding> </sfePersonData>',
-                                    '<?xml version="1.0" encoding="ISO-8859-1"?><sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.rtv.no/NamespaceSFE"> <sfeAjourforing> <systemInfo> <kilde>BI00</kilde> <brukerID>HMA2970</brukerID> </systemInfo> <endreDodsdato> <offentligIdent>26217300348</offentligIdent> <dodsDato>2005-06-12</dodsDato> </endreDodsdato> </sfeAjourforing> <sfeTilbakeMelding> <svarStatus> <returStatus>00</returStatus> <returMelding> </returMelding> <utfyllendeMelding> </utfyllendeMelding> </svarStatus> </sfeTilbakeMelding> </sfePersonData>');
+            $scope.sendTilTps = function () {
+                doedsmeldingService.sendSkjema($scope.meldinger).then(function () {
+                    var alert = $mdDialog.alert()
+                        .title('Meldinger sendt')
+                        .textContent('Sending av dødsmeldinger til TPS er utført!')
+                        .ariaLabel('Dødsmeldinger er sendt til TPS.')
+                        .ok('OK');
+                    $mdDialog.show(alert);
+                }, function (error) {
+                    utilsService.showAlertError(error);
+                })
             };
-
-            $scope.hentFraMockDB = function() {
-                for(var i = 0; i < $scope.mockDB.length; i++ ) {
-                    var person = utilsService.formatXml($scope.mockDB[i]);
-                    console.log(person);
-                    //console.log(person.)
-                }
-            };
-
-
 
             init();
+            getMeldinger();
 
         }]);
