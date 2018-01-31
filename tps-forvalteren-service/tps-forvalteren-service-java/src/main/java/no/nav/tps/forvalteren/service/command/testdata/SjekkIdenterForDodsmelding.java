@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
+import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
@@ -25,8 +25,8 @@ public class SjekkIdenterForDodsmelding extends SjekkIdenter {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    public Set<IdentMedStatus> finnGyldigeOgLedigeIdenterForDoedsmeldinger(List<RsDeathRow> doedsmeldinger) {
-        Set<String> ukjenteIdenter = doedsmeldinger.stream().map(RsDeathRow::getIdent).collect(Collectors.toSet());
+    public Set<IdentMedStatus> finnGyldigeOgLedigeIdenterForDoedsmeldinger(List<DeathRow> doedsmeldinger) {
+        Set<String> ukjenteIdenter = doedsmeldinger.stream().map(DeathRow::getIdent).collect(Collectors.toSet());
         Map<String, String> identerMedStatus = new HashMap<>();
 
         Set<String> gyldigeIdenter = sjekkOmGyldigeIdenter.execute(ukjenteIdenter);
@@ -50,7 +50,7 @@ public class SjekkIdenterForDodsmelding extends SjekkIdenter {
         return ledigeIdenterDBOgMiljo;
     }
 
-    private String getEnvironmentFromDoedsmeldinger(List<RsDeathRow> doedsmeldinger) {
+    private String getEnvironmentFromDoedsmeldinger(List<DeathRow> doedsmeldinger) {
         String environment = doedsmeldinger.get(0).getMiljoe();
         doedsmeldinger.forEach(doedsmelding -> {
             if (!doedsmelding.getMiljoe().equals(environment)) {
