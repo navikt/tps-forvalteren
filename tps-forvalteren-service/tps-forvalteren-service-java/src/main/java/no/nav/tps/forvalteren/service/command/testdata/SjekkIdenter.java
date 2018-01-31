@@ -11,6 +11,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
+import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+
 
 @Service
 public class SjekkIdenter {
@@ -27,9 +30,9 @@ public class SjekkIdenter {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    private static final String IKKE_GYLDIG = "IG";
-    private static final String IKKE_LEDIG = "IL";
-    private static final String LEDIG_OG_GYLDIG = "LOG";
+    protected static final String IKKE_GYLDIG = "IG";
+    protected static final String IKKE_LEDIG = "IL";
+    protected static final String LEDIG_OG_GYLDIG = "LOG";
 
     public Set<IdentMedStatus> finnGyldigeOgLedigeIdenter(List<String> identListe) {
         Set<String> ukjenteIdenter = new HashSet<>(identListe);
@@ -43,7 +46,7 @@ public class SjekkIdenter {
         return mapToIdentMedStatusSet(identerMedStatus);
     }
 
-    private void setStatusOnDifference(Set<String> firstIdentSet, Set<String> secondIdentSet, Map<String, String> identerMedStatus, String status) {
+    protected void setStatusOnDifference(Set<String> firstIdentSet, Set<String> secondIdentSet, Map<String, String> identerMedStatus, String status) {
         Set<String> identer = new HashSet<>(firstIdentSet);
         identer.removeAll(secondIdentSet);
         insertIntoMap(identerMedStatus, identer, status);
@@ -62,7 +65,7 @@ public class SjekkIdenter {
         return ledigeIdenterDBOgMiljo;
     }
 
-    private Set<IdentMedStatus> mapToIdentMedStatusSet(Map<String, String> identer) {
+    protected Set<IdentMedStatus> mapToIdentMedStatusSet(Map<String, String> identer) {
         Set<IdentMedStatus> identerMedStatus = new HashSet<>();
         for (Map.Entry<String, String> entry : identer.entrySet()) {
             identerMedStatus.add(new IdentMedStatus(entry.getKey(), entry.getValue()));
@@ -70,7 +73,7 @@ public class SjekkIdenter {
         return identerMedStatus;
     }
 
-    private void insertIntoMap(Map<String, String> identer, Set<String> gyldigeIdenter, String status) {
+    protected void insertIntoMap(Map<String, String> identer, Set<String> gyldigeIdenter, String status) {
         for (String ident : gyldigeIdenter) {
             identer.put(ident, status);
         }
