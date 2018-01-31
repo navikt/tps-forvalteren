@@ -5,11 +5,11 @@ angular.module('tps-forvalteren.service')
         var url = 'api/v1/doedsmelding/';
 
         self.opprett = function (melding) {
-            return $http.post(url, melding);
+            return $http.post(url + "opprett/", melding);
         };
 
         self.slett = function (ident) {
-            return $http.post(url + "delete/" + ident);
+            return $http.post(url + "delete"); // /" + ident);
         };
 
         self.endre = function (melding) {

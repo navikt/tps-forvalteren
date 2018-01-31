@@ -13,11 +13,13 @@ import javax.transaction.Transactional;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +44,9 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 public class DeathRowController {
 
     private static final String REST_SERVICE_NAME = "testdata";
+
+    @Autowired
+    private DeathRowRepository deathRowRepository;
 
     @Autowired
     private MapperFacade mapper;
@@ -73,14 +78,14 @@ public class DeathRowController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding")})
-    @RequestMapping(value = "/deletemelding", method = RequestMethod.POST)
-    public void deleteMelding(){
-
+    @RequestMapping(value = "/delete/{ident}", method = RequestMethod.POST)
+    public void deleteMelding(@PathVariable("ident") String ident){
+        deathRowRepository.deleteById(deathRowRepository.findByIdent(ident).getId());
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentLogg")})
-    @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<?> getMeldingLogg(){
         return null;
     }

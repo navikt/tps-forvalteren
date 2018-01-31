@@ -41,7 +41,7 @@ public class RsDeathRow {
 
     @NotNull
     private LocalDate doedsdato;
-    
+
     private LocalDateTime tidspunkt;
     
     private String bruker;
