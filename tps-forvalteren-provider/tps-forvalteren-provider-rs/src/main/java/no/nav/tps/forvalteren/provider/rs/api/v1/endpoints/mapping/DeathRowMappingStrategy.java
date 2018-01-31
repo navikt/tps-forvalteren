@@ -26,16 +26,18 @@ public class DeathRowMappingStrategy implements MappingStrategy {
                 .customize(new CustomMapper<RsDeathRowBulk, List>() {
                     @Override
                     public void mapAtoB(RsDeathRowBulk rsDeathRowBulk, List deathRowList, MappingContext context) {
-                        rsDeathRowBulk.getIdenter().forEach(ident -> {
-                            deathRowList.add(DeathRow.builder()
-                                    .ident(ident)
-                                    .tilstand(rsDeathRowBulk.getTilstand())
-                                    .status(rsDeathRowBulk.getStatus())
-                                    .miljoe(rsDeathRowBulk.getMiljoe())
-                                    .handling(rsDeathRowBulk.getHandling())
-                                    .doedsdato(rsDeathRowBulk.getDoedsdato())
-                                    .build());
-                        });
+                        if (rsDeathRowBulk.getIdenter() != null) {
+                            rsDeathRowBulk.getIdenter().forEach(ident -> {
+                                deathRowList.add(DeathRow.builder()
+                                        .ident(ident)
+                                        .tilstand(rsDeathRowBulk.getTilstand())
+                                        .status(rsDeathRowBulk.getStatus())
+                                        .miljoe(rsDeathRowBulk.getMiljoe())
+                                        .handling(rsDeathRowBulk.getHandling())
+                                        .doedsdato(rsDeathRowBulk.getDoedsdato())
+                                        .build());
+                            });
+                        }
                     }
                 })
                 .register();
