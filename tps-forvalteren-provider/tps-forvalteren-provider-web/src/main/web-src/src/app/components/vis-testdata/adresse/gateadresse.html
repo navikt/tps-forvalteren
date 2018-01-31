@@ -6,7 +6,7 @@
                ng-model="person.gateadresse.gateadresse"
                ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gateadresse.$error"
-             ng-show="requestForm.gateadresse.$dirty">
+             ng-show="requestForm.gateadresse.$error">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
@@ -18,7 +18,7 @@
                ng-model="person.gateadresse.husnummer"
                ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.husnummer.$error"
-             ng-show="requestForm.husnummer.$dirty">
+             ng-show="requestForm.husnummer.$error">
             <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="pattern">En til fire sifre + evt husbokstav forventet</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -32,18 +32,18 @@
                ng-model="person.gateadresse.gatekode"
                ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gatekode.$error"
-             ng-show="requestForm.gatekode.$dirty">
+             ng-show="requestForm.gatekode.$error">
             <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="pattern">Fem sifre forventet (evt. med ledende nuller)</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
 
-    <postnummer postnummer="person.gateadresse.postnr" endret-fn="endret"
+    <postnummer postnummer="person.gateadresse.postnr" endret-fn="endret" class="autocomplete"
                 index="$index + pager.startIndex" paakrevet="person.gateadresse.gateadresse">
     </postnummer>
 
-    <kommunenr kommunenr="person.gateadresse.kommunenr" endret-fn="endret"
+    <kommunenr kommunenr="person.gateadresse.kommunenr" endret-fn="endret" class="autocomplete"
                index="$index + pager.startIndex" paakrevet="person.gateadresse.gateadresse">
     </kommunenr>
 
@@ -57,7 +57,7 @@
                        ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.gtFlytteDato.$error"
-             ng-show="requestForm.gtFlytteDato.$pristine">
+             ng-show="requestForm.gtFlytteDato.$error">
             <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>

@@ -386,7 +386,7 @@ app.filter('removeDuplicateKeys', function () {
     return function (inputObject, objectComp) {
         var outputObject = {};
         for(var i in inputObject){
-            jsonObject = inputObject[i];
+            var jsonObject = inputObject[i];
             if(jsonObject.fieldData.indexOf("[") ){
                 var res = jsonObject.fieldData.split("[");
                 jsonObject.fieldData = res[0];
