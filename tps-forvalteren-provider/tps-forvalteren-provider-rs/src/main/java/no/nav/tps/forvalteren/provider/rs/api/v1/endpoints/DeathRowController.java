@@ -1,11 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import java.util.List;
-import java.util.Set;
-
-import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.domain.jpa.DeathRow;
-import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
@@ -20,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +29,8 @@ import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRowBulk;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
+import no.nav.tps.forvalteren.service.command.dodsmeldinger.FindAllDeathRows;
+import no.nav.tps.forvalteren.service.command.dodsmeldinger.UpdateDeathRow;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterForDodsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
@@ -56,6 +53,12 @@ public class DeathRowController {
 
     @Autowired
     private SjekkIdenterForDodsmelding sjekkIdenterForDodsmelding;
+
+    @Autowired
+    private FindAllDeathRows findAllDeathRows;
+
+    @Autowired
+    private UpdateDeathRow updateDeathRow;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter")})
@@ -85,10 +88,19 @@ public class DeathRowController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentLogg")})
-    @RequestMapping(method = RequestMethod.GET)
-    public List<?> getMeldingLogg(){
-        return null;
+    @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
+    public List<RsDeathRow> getMeldingLogg() {
+        List<DeathRow> deathRowList = findAllDeathRows.execute();
+        return mapper.mapAsList(deathRowList, RsDeathRow.class);
     }
 
-
+    @Transactional
+    @LogExceptions
+    @PutMapping(value = "/oppdater")
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterMelding") })
+    public RsDeathRow updateMelding(@RequestBody RsDeathRow rsDeathRow) {
+        DeathRow mappedDeathRow = mapper.map(rsDeathRow, DeathRow.class);
+        DeathRow updatedDeathRow = updateDeathRow.execute(mappedDeathRow);
+        return mapper.map(updatedDeathRow, RsDeathRow.class);
+    }
 }

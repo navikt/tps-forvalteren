@@ -1,12 +1,11 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ public class RsDeathRow {
 
     @NotBlank
     @Size(min = 11, max = 11)
-    private String[] ident;
+    private String ident;
 
     @NotBlank
     @Size(min = 1, max = 50)
