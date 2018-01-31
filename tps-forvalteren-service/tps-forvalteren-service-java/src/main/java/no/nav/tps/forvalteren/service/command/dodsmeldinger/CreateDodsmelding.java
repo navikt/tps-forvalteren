@@ -1,17 +1,9 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
-import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
-import org.json.JSONObject;
+import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 
 
 @Service

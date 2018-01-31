@@ -9,7 +9,7 @@ angular.module('tps-forvalteren.service')
         };
 
         self.slett = function (ident) {
-            return $http.post(url + "delete"); // /" + ident);
+            return $http.post(url + "delete" + ident);
         };
 
         self.endre = function (melding) {
