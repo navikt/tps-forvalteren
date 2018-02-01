@@ -9,7 +9,7 @@
                           ng-pattern="/^(\d{11}[\W\s]*)+$/">
             </textarea>
                 <div class="validation-messages" ng-messages="requestForm.ident.$error" ng-show="requestForm.ident.$dirty">
-                    <div ng-message="required">Feltet er påkrevet</div>
+                    <div ng-message="required">Feltet er påkrevd</div>
                     <div ng-message="pattern">Identer med 11 sifre og separatortegn er forventet</div>
                 </div>
             </md-input-container>
@@ -94,7 +94,7 @@
             </md-card>
         </div>
     </form>
-    <div layout-align="end end" layout="row">
+    <div layout-align="end end" layout="row" class="btn-group">
             <md-input-container class="input-row" aria-label="Avbryt">
                 <md-button class="md-button md-raised" ng-click="toemSkjema()"
                            ng-hide="meldinger.length === 0">Tøm skjema</md-button>

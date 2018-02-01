@@ -10,13 +10,13 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
             $scope.today = new Date();
-            $scope.melding = {};
 
             function getMeldinger() {
                 $scope.progress = true;
                 doedsmeldingService.hent().then(
                     function (result) {
                         $scope.meldinger = result.data;
+                        clearRequestForm();
                         $scope.progress = false;
                     },
                     function (error) {
@@ -37,14 +37,23 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 $scope.melding.identer = $scope.identer.split(/[\W\s]+/g);
                 doedsmeldingService.opprett($scope.melding).then(function () {
                         getMeldinger();
+                        clearRequestForm();
                     }, function (error) {
                         utilsService.showAlertError(error);
                     }
                 );
             };
 
+            function clearRequestForm () {
+                $scope.identer = undefined;
+                $scope.melding = {};
+                $scope.melding.doedsdato = null;
+                $scope.requestForm.$setPristine();
+                $scope.requestForm.$setUntouched();
+            }
+
             $scope.delete = function (index) {
-                doedsmeldingService.slett($scope.meldinger[index].ident).then(function () {
+                doedsmeldingService.slett($scope.meldinger[index].id).then(function () {
                         $scope.meldinger.splice(index, 1);
                     }, function (error) {
                         utilsService.showAlertError(error);
