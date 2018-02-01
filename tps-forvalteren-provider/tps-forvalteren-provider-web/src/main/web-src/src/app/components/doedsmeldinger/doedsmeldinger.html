@@ -1,67 +1,70 @@
 <span class="doedsmelding-dashboard" layout="column" flex layout-padding ng-cloak>
-    <h3 style="margin-left: 10px; margin-bottom: 10px;">Send dødsmelding</h3>
-    <div class="top md-whiteframe-z1" layout="column" style="margin: 0 20px;">
-        <div flex="80" layout="row" layout-align="start end">
-            <form name="requestForm" flex="100" layout="row" layout-align="center start">
-                <md-input-container class="input-container" flex="35" layout="col">
-                    <label>ID</label>
-                    <textarea name="ident" ng-model="identer" ng-required="true" cols="50" rows="1"
-                              ng-pattern="/^(\d{11}[\W\s]*)+$/">
-                </textarea>
-                    <div class="validation-messages" ng-messages="requestForm.ident.$error" ng-show="requestForm.ident.$dirty">
-                        <div ng-message="required">Feltet er påkrevet</div>
-                        <div ng-message="pattern">Identer med 11 sifre og separatortegn er forventet</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="input-container" flex="15" layout="col">
-                    <label>Handling</label>
-                    <md-select ng-model="melding.handling" required ng-change="checkDato()">
-                        <md-option><em>Velg</em></md-option>
-                        <md-option ng-repeat="valg in handlinger" ng-value="valg.action">{{valg.handling}}</md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container class="input-container"
-                                    flex="20"
-                                    aria-label="Dato for melding">
-                    <label>Dødsdato</label>
-                    <md-datepicker name="dato" ng-required="melding.handling === 'C' || melding.handling === 'U'"
-                                   ng-disabled="melding.handling === 'D'"
-                                   md-current-view="year"
-                                   ng-model="melding.doedsdato"
-                                   md-min-date="startOfEra"
-                                   md-max-date="today">
-                    </md-datepicker>
-                    <div ng-messages="requestForm.dato.$error" ng-show="requestForm.dato.$pristine" ng-messages-multiple>
-                        <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                        <div ng-message="mindate">Dato kan ikke være før 01-01-1900</div>
-                        <div ng-message="maxdate">Dato kan ikke være etter "Født før", eventuelt dagens dato</div>
-                    </div>
-                </md-input-container>
-                <md-input-container flex="10" class="input-container">
-                    <label>Miljø</label>
-                    <md-select ng-model="melding.miljoe" required>
-                        <md-option><em>Velg</em></md-option>
-                        <md-option ng-repeat="miljoe in environments" value="{{miljoe}}">{{miljoe}}</md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container class="input-container">
-                    <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                               ng-click="add()" ng-disabled="!requestForm.$valid">
-                        <md-icon md-svg-icon="assets/icons/ic_person_add_black_24px.svg"></md-icon>
-                        Legg til
-                    </md-button>
-                </md-input-container>
-            </form>
-        </div>
+    <md-progress-linear class="progress" md-mode="indeterminate" ng-show="progress"></md-progress-linear>
+    <h3 class="title">Send dødsmelding</h3>
+    <div class="top md-whiteframe-z1 request-form" layout="column">
+        <form name="requestForm" flex="100" layout="row" flex class="accent">
+            <md-input-container class="input-container" flex="40" layout="col">
+                <label>ID</label>
+                <textarea name="ident" ng-model="identer" ng-required="true" cols="50" rows="1"
+                          ng-pattern="/^(\d{11}[\W\s]*)+$/">
+            </textarea>
+                <div class="validation-messages" ng-messages="requestForm.ident.$error" ng-show="requestForm.ident.$dirty">
+                    <div ng-message="required">Feltet er påkrevet</div>
+                    <div ng-message="pattern">Identer med 11 sifre og separatortegn er forventet</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="input-container" flex="15">
+                <label>Handling</label>
+                <md-select name="handling" ng-model="melding.handling" ng-required="true" ng-change="checkDato()">
+                    <md-option><em>Velg</em></md-option>
+                    <md-option ng-repeat="valg in handlinger" ng-value="valg.action">{{valg.handling}}</md-option>
+                </md-select>
+                <div ng-messages="requestForm.handling.$error" ng-show="requestForm.handling.$dirty">
+                    <div ng-message="required">Feltet er påkrevd</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="input-container" flex="20" aria-label="Dato for melding">
+                <label>Dødsdato</label>
+                <md-datepicker name="doedsdato" ng-required="melding.handling === 'C' || melding.handling === 'U'"
+                               ng-disabled="melding.handling === 'D'"
+                               md-current-view="year"
+                               ng-model="melding.doedsdato"
+                               md-min-date="startOfEra"
+                               md-max-date="today">
+                </md-datepicker>
+                <div ng-messages="requestForm.doedsdato.$error" ng-show="requestForm.doedsdato.$dirty" ng-messages-multiple>
+                    <div ng-message="required">Feltet er påkrevd</div>
+                    <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                    <div ng-message="mindate">Dato kan ikke være før 01-01-1880</div>
+                    <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex="10" class="input-container">
+                <label>Miljø</label>
+                <md-select name="miljoe" ng-model="melding.miljoe" ng-required="true">
+                    <md-option><em>Velg</em></md-option>
+                    <md-option ng-repeat="miljoe in environments" value="{{miljoe}}">{{miljoe}}</md-option>
+                </md-select>
+                <div ng-messages="requestForm.miljoe.$error" ng-show="requestForm.miljoe.$dirty">
+                    <div ng-message="required">Feltet er påkrevd</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="button-container">
+                <md-button type="submit" class="md-button md-raised md-accent"
+                           ng-click="add()" ng-disabled="!requestForm.$valid">
+                    <md-icon md-svg-icon="assets/icons/ic_person_add_black_24px.svg"></md-icon>
+                    Legg til
+                </md-button>
+            </md-input-container>
+        </form>
     </div>
     <!-- Resulting Response -->
 
-    <form name="responseForm" class="top center" style="background-color: transparent;">
+    <form name="responseForm" class="top transparent response-form">
         <h3 layout="row" class="flexbox-parent" ng-hide="meldinger.length === 0">
-            <span flex="5"></span>
-            <span flex="10">Ident</span>
-            <span flex="15">Handling</span>
-            <span flex="10">Dødsdato</span>
+            <span flex="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ident</span>
+            <span flex="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handling</span>
+            <span flex="10">&nbsp;Dødsdato</span>
             <span flex="10">Miljø</span>
             <span flex="10">Bruker</span>
             <span flex="15">Tidspunkt</span>
@@ -72,7 +75,7 @@
                      ng-mouseover="height = 5"
                      ng-mouseleave="height = 1">
                 <md-card-content flex class="card-content">
-                    <div layout="row" >
+                    <div layout="row">
                         <div flex="15">{{melding.ident}}</div>
                         <div flex="15">{{melding.handling | doedshandling}}</div>
                         <div flex="10">{{melding.doedsdato | date:'dd-MM-yyyy' }}</div>
@@ -94,14 +97,12 @@
     <div layout-align="end end" layout="row">
             <md-input-container class="input-row" aria-label="Avbryt">
                 <md-button class="md-button md-raised" ng-click="toemSkjema()"
-                ng-hide="meldinger.length === 0">Tøm skjema</md-button>
+                           ng-hide="meldinger.length === 0">Tøm skjema</md-button>
             </md-input-container>
             <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
                 <md-button class="md-button md-raised md-accent" ng-click="sendTilTps()"
                            ng-hide="meldinger.length === 0">Send til TPS</md-button>
             </md-input-container>
     </div>
-
-    <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
 
 </span>
