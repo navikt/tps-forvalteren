@@ -13,12 +13,15 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             $scope.melding = {};
 
             function getMeldinger() {
+                $scope.progress = true;
                 doedsmeldingService.hent().then(
                     function (result) {
                         $scope.meldinger = result.data;
+                        $scope.progress = false;
                     },
                     function (error) {
                         utilsService.showAlertError(error);
+                        $scope.progress = false;
                     }
                 );
             }
