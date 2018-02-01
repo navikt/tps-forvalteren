@@ -17,10 +17,14 @@ public class DeathRowMappingStrategy implements MappingStrategy {
     @Override
     public void register(MapperFactory factory) {
         factory.classMap(DeathRow.class, RsDeathRow.class)
-                .field("endretDato", "bruker")
-                .field("endretAv", "tidspunkt").byDefault().register();
+                .field("endretDato", "tidspunkt")
+                .field("endretAv", "bruker").byDefault().register();
 
-        factory.classMap(RsDeathRow.class, DeathRow.class).byDefault().register();
+
+        factory.classMap(RsDeathRow.class, DeathRow.class)
+                .field("tidspunkt","endretDato")
+                .field("bruker", "endretAv").byDefault().register();
+
 
         factory.classMap(RsDeathRowBulk.class, List.class)
                 .customize(new CustomMapper<RsDeathRowBulk, List>() {
@@ -29,6 +33,7 @@ public class DeathRowMappingStrategy implements MappingStrategy {
                         if (rsDeathRowBulk.getIdenter() != null) {
                             rsDeathRowBulk.getIdenter().forEach(ident -> {
                                 deathRowList.add(DeathRow.builder()
+                                        .id(rsDeathRowBulk.getId())
                                         .ident(ident)
                                         .tilstand(rsDeathRowBulk.getTilstand())
                                         .status(rsDeathRowBulk.getStatus())

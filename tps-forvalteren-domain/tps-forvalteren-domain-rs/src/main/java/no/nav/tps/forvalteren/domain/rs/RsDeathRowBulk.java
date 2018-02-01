@@ -20,6 +20,8 @@ import lombok.Setter;
 @Builder
 public class RsDeathRowBulk {
 
+    private Long id;
+
     @NotBlank
     @Size(min = 11, max = 11)
     private List<String> identer;
