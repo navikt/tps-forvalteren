@@ -65,7 +65,7 @@ public class DeathRowController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding")})
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
-    public void createMelding(@RequestBody RsDeathRowBulk rsDeathRowBulk) { //RsDeathRow dMelding){
+    public void createMelding(@RequestBody RsDeathRowBulk rsDeathRowBulk) {
         List<DeathRow> deathRowList = mapper.map(rsDeathRowBulk, List.class);
         for(DeathRow deathrow : deathRowList){
             createDodsmelding.execute(deathrow);
@@ -76,6 +76,7 @@ public class DeathRowController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding")})
     @RequestMapping(value = "/delete/{ident}", method = RequestMethod.POST)
     public void deleteMelding(@PathVariable("ident") String ident){
+
         deathRowRepository.deleteById(deathRowRepository.findByIdent(ident).getId());
     }
 
@@ -89,11 +90,26 @@ public class DeathRowController {
 
     @Transactional
     @LogExceptions
-    @PutMapping(value = "/oppdater")
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterMelding") })
     public RsDeathRow updateMelding(@RequestBody RsDeathRow rsDeathRow) {
         DeathRow mappedDeathRow = mapper.map(rsDeathRow, DeathRow.class);
         DeathRow updatedDeathRow = updateDeathRow.execute(mappedDeathRow);
         return mapper.map(updatedDeathRow, RsDeathRow.class);
     }
+
+    @LogExceptions
+    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema")})
+    public void sendToTps(@RequestBody Object object) {
+
+    }
+
+    @LogExceptions
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma")})
+    public void tomSkjema(){
+
+    }
+
 }
