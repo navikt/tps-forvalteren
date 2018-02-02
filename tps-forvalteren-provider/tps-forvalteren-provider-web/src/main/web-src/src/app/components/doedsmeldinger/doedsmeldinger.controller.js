@@ -28,13 +28,57 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 );
             }
 
-            $scope.getType = function (chip) {
-                return parseInt(chip.substr(0,1)) > 3 ? 'dnr' :
-                    parseInt(chip.substr(2,1)) > 2 ? 'bnr' : 'fnr' ;
+            $scope.sjekkgyldig = function () {
+                if ($scope.melding.miljoe && $scope.melding.identer.length > 0) {
+                    var identer = [];
+                    $scope.melding.identer.forEach(function (ident) {
+                        identer.push(ident.ident);
+                    });
+                    doedsmeldingService.sjekkgyldig({miljoe: $scope.melding.miljoe, identer: identer}).then(
+                        function (result) {
+                            var elementer = document.getElementsByName('chips-template');
+                            result.data.forEach(function (personStatus, index) {
+                                $scope.melding.identer.forEach(function (meldingIdent) {
+                                    if (personStatus.ident === meldingIdent.ident) {
+                                        elementer[index].parentElement.parentElement.style.backgroundColor = personStatus === 'FIN' ? 'yellowgreen' : 'indianred';
+                                    }
+                                });
+                            });
+                        }, function (error) {
+                            utilsService.showAlertError(error);
+                            // var elementer = document.getElementsByName('chips-template');
+                            // $scope.melding.identer.forEach(function (meldingIdent, index) {
+                            //     elementer[index].parentElement.parentElement.style.backgroundColor = index % 2 === 0 ? 'yellowgreen' : 'indianred';
+                            // });
+                        }
+                    );
+                }
             };
 
-            $scope.validateChip = function(chip) {
-                return !!chip.match(/^\d{11}$/) ? undefined : null;
+            $scope.getType = function (ident) {
+                return parseInt(ident.substr(0, 1)) > 3 ? 'dnr' :
+                    parseInt(ident.substr(2, 1)) > 2 ? 'bnr' : 'fnr';
+            };
+
+            $scope.addMultipleChips = function (chip) {
+                var seperatedString = angular.copy(chip);
+                seperatedString = seperatedString.toString();
+                var chipsArray = seperatedString.split(/[\W\s]+/);
+                chipsArray.forEach( function (chipToAdd) {
+                    if (chipToAdd.match(/^\d{11}$/)) {
+                        var found = false;
+                        $scope.melding.identer.forEach(function (element) {
+                            if (chipToAdd === element) {
+                                found = true;
+                            }
+                        });
+                        if (!found) {
+                            $scope.melding.identer.push(chipToAdd);
+                        }
+                    }
+                });
+                $scope.sjekkgyldig();
+                return null;
             };
 
             $scope.checkDato = function () {
@@ -54,7 +98,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 );
             };
 
-            function clearRequestForm () {
+            function clearRequestForm() {
                 $scope.melding = {};
                 $scope.melding.identer = [];
                 $scope.melding.doedsdato = null;

@@ -1,20 +1,21 @@
-<span class="doedsmelding-dashboard" layout="column" flex layout-padding ng-cloak>
+<div class="doedsmelding-dashboard" layout="column" flex layout-padding ng-cloak>
     <md-progress-linear class="progress" md-mode="indeterminate" ng-show="progress"></md-progress-linear>
     <h3 class="title">Send dødsmelding</h3>
     <div class="top md-whiteframe-z1 request-form" layout="column">
         <form name="requestForm" flex="100" layout="row" flex class="accent">
-                <md-chips ng-model="melding.identer" name="ident" readonly="false" md-enable-chip-edit="true" flex="40"
-                          style="margin-top: -3px; margin-right: 10px; margin-bottom: 30px;"
-                          md-separator-keys="separators" md-transform-chip="validateChip($chip)" md-add-on-blur="true"
+            <div flex="40" style="margin-top: -3px; margin-right: 10px; margin-bottom: 30px;">
+                <md-chips ng-model="melding.identer" name="ident" readonly="false" md-enable-chip-edit="true"
+                          md-separator-keys="separators" md-transform-chip="addMultipleChips($chip)" md-add-on-blur="true"
                           placeholder="Legg til ident...">
-                    <md-chip-template>
+                    <md-chip-template name="chips-template">
                         <strong>{{$chip}}</strong>
                         <em>({{getType($chip)}})</em>
                     </md-chip-template>
                 </md-chips>
-                <div class="errors" ng-messages="requestForm.ident.$error">
-                    <div ng-message="required">Feltet er påkrevd</div>
-                </div>
+            </div>
+            <div class="errors" ng-messages="requestForm.ident.$error">
+                <div ng-message="required">Feltet er påkrevd</div>
+            </div>
             <md-input-container class="input-container" flex="15">
                 <label>Handling</label>
                 <md-select name="handling" ng-model="melding.handling" ng-required="true" ng-change="checkDato()">
@@ -43,7 +44,7 @@
             </md-input-container>
             <md-input-container flex="10" class="input-container">
                 <label>Miljø</label>
-                <md-select name="miljoe" ng-model="melding.miljoe" ng-required="true">
+                <md-select name="miljoe" ng-model="melding.miljoe" ng-required="true" ng-change="sjekkgyldig()">
                     <md-option><em>Velg</em></md-option>
                     <md-option ng-repeat="miljoe in environments" value="{{miljoe}}">{{miljoe}}</md-option>
                 </md-select>
@@ -89,7 +90,7 @@
                             <md-icon md-svg-icon="assets/icons/ic_mode_edit_black_24px.svg" aria-label="Endre melding"></md-icon>
                         </md-button>
                         <md-button class="md-icon-button align-button" ng-click="delete($index)">
-                             <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" aria-label="Slette melding"></md-icon>
+                            <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" aria-label="Slette melding"></md-icon>
                         </md-button>
                     </div>
                 </md-card-content>
@@ -97,14 +98,15 @@
         </div>
     </form>
     <div layout-align="end end" layout="row" class="btn-group">
-            <md-input-container class="input-row" aria-label="Avbryt">
-                <md-button class="md-button md-raised" ng-click="toemSkjema()"
-                           ng-hide="meldinger.length === 0">Tøm skjema</md-button>
-            </md-input-container>
-            <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
-                <md-button class="md-button md-raised md-accent" ng-click="sendTilTps()"
-                           ng-hide="meldinger.length === 0">Send til TPS</md-button>
-            </md-input-container>
+        <md-input-container class="input-row" aria-label="Avbryt">
+            <md-button class="md-button md-raised" ng-click="toemSkjema()"
+                       ng-hide="meldinger.length === 0">Tøm skjema
+            </md-button>
+        </md-input-container>
+        <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
+            <md-button class="md-button md-raised md-accent" ng-click="sendTilTps()"
+                       ng-hide="meldinger.length === 0">Send til TPS
+            </md-button>
+        </md-input-container>
     </div>
-
-</span>
+</div>
