@@ -78,7 +78,6 @@ public class DeathRowController {
         List<DeathRow> deathRowList = mapper.map(rsDeathRowBulk, List.class);
         for(DeathRow deathrow : deathRowList){
             deathrow.setEndretAv(userContextHolder.getUser().getUsername());
-            System.out.println(userContextHolder.getUser().getUsername());
             createDodsmelding.execute(deathrow);
         }
     }

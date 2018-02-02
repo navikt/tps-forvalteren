@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +13,10 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindDoedePersoner;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerWithoutDoedsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,27 +27,68 @@ public class LagreDodsmeldingTilTps {
     private FindAllDeathRowTasks findAllDeathRowTasks;
 
     @Autowired
-    private FindAllDeathRows findAllDeathRows;
-
-    @Autowired
     private SkdMessageCreatorTrans1 skdCreator;
 
     @Autowired
-    FindPersonerWithoutDoedsmelding findDoedePersonerWithoutDoedsmelding;
+    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 
     @Autowired
-    FindDoedePersoner findDoedePersoner;
+    private FindPersonerWithoutDoedsmelding findDoedePersonerWithoutDoedsmelding;
+
+    @Autowired
+    private FindDoedePersoner findDoedePersoner;
 
     @Autowired
     private SkdMeldingResolver innvandring;
 
+    @Autowired
+    private SkdStartAjourhold skdStartAjourhold;
+
+    @Autowired
+    private SaveDoedsmeldingToDB saveDoedsmeldingToDB;
+
     public void execute() {
 
         List<List<DeathRow>> deathRowTasks = findAllDeathRowTasks.execute();
-        System.out.println(deathRowTasks);
 
+        List<Person> deleteDeathRowPersonList = new ArrayList<>();
+        List<Person> createDeathRowPersonList = new ArrayList<>();
 
+        for(List<DeathRow> list : deathRowTasks){
+            for(DeathRow melding : list){
 
+                Person person = new Person();
+                person.setId(melding.getId());
+                person.setIdent(melding.getIdent());
+                person.setDoedsdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                person.setRegdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+
+                if(melding.getHandling().equals("D")){
+                    deleteDeathRowPersonList.add(person);
+                } else if( melding.getHandling().equals("C")) {
+                    createDeathRowPersonList.add(person);
+                } else {
+                    continue;
+                }
+
+            }
+        }
+        System.out.println("DeleteDeathRowPersonList: " + deleteDeathRowPersonList);
+        System.out.println("CreateDeathRowPersonList: " + createDeathRowPersonList);
+
+        List<String> skdMeldinger = createDoedsmeldinger(createDeathRowPersonList);
+
+        TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
+        List<String> envi = new ArrayList<String>();
+        for( String skdmelding : skdMeldinger) {
+
+            envi.add("U5");
+
+            Set<String> env = new HashSet<>();
+            env.add("U5");
+            sendSkdMeldingTilGitteMiljoer.execute(skdmelding, skdRequestMeldingDefinition, env);
+        }
+        skdStartAjourhold.execute(new HashSet<>(envi));
     }
 
 
@@ -51,6 +98,7 @@ public class LagreDodsmeldingTilTps {
         List<String> skdDodsmelding = new ArrayList<>();
         if(!doedePersonerWithoutDoedsmelding.isEmpty()){
             skdDodsmelding.addAll(skdCreator.execute("Doedsmelding", doedePersonerWithoutDoedsmelding, true));
+            //saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
 
         return skdDodsmelding;
@@ -61,8 +109,4 @@ public class LagreDodsmeldingTilTps {
         return doedePersonerWithoutDoedsmelding;
     }
 
-
-    private void sendTilTps(){
-
-    }
 }
