@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
-import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 
 @Service
@@ -30,9 +28,9 @@ public class SjekkIdenter {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    protected static final String IKKE_GYLDIG = "IG";
-    protected static final String IKKE_LEDIG = "IL";
-    protected static final String LEDIG_OG_GYLDIG = "LOG";
+    private static final String IKKE_GYLDIG = "IG";
+    private static final String IKKE_LEDIG = "IL";
+    private static final String LEDIG_OG_GYLDIG = "LOG";
 
     public Set<IdentMedStatus> finnGyldigeOgLedigeIdenter(List<String> identListe) {
         Set<String> ukjenteIdenter = new HashSet<>(identListe);

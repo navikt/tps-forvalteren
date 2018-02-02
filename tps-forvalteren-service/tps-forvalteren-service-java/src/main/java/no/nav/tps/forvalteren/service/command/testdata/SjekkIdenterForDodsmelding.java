@@ -8,13 +8,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
 @Service
 public class SjekkIdenterForDodsmelding extends SjekkIdenter {
+
+    private static final String IKKE_GYLDIG = "IG";
+    private static final String FINNES = "FIN";
+    private static final String LEDIG_OG_GYLDIG = "LOG";
 
     @Autowired
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
@@ -25,15 +27,15 @@ public class SjekkIdenterForDodsmelding extends SjekkIdenter {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    public Set<IdentMedStatus> finnGyldigeOgLedigeIdenterForDoedsmeldinger(List<DeathRow> doedsmeldinger) {
-        Set<String> ukjenteIdenter = doedsmeldinger.stream().map(DeathRow::getIdent).collect(Collectors.toSet());
+    public Set<IdentMedStatus> finnGyldigeOgLedigeIdenterForDoedsmeldinger(List<String> identer, String miljo) {
+        Set<String> ukjenteIdenter = new HashSet<>(identer);
         Map<String, String> identerMedStatus = new HashMap<>();
 
         Set<String> gyldigeIdenter = sjekkOmGyldigeIdenter.execute(ukjenteIdenter);
         setStatusOnDifference(ukjenteIdenter, gyldigeIdenter, identerMedStatus, IKKE_GYLDIG);
 
-        Set<String> ledigeIdenterDBOgMiljo = finnLedigeIdenterDBOgMiljoOgSetStatus(identerMedStatus, gyldigeIdenter, getEnvironmentFromDoedsmeldinger(doedsmeldinger));
-        setStatusOnDifference(gyldigeIdenter, ledigeIdenterDBOgMiljo, identerMedStatus, IKKE_LEDIG);
+        Set<String> ledigeIdenterDBOgMiljo = finnLedigeIdenterDBOgMiljoOgSetStatus(identerMedStatus, gyldigeIdenter, miljo);
+        setStatusOnDifference(gyldigeIdenter, ledigeIdenterDBOgMiljo, identerMedStatus, FINNES);
         return mapToIdentMedStatusSet(identerMedStatus);
     }
 
@@ -48,15 +50,5 @@ public class SjekkIdenterForDodsmelding extends SjekkIdenter {
 
         insertIntoMap(identerMedStatus, ledigeIdenterDBOgMiljo, LEDIG_OG_GYLDIG);
         return ledigeIdenterDBOgMiljo;
-    }
-
-    private String getEnvironmentFromDoedsmeldinger(List<DeathRow> doedsmeldinger) {
-        String environment = doedsmeldinger.get(0).getMiljoe();
-        doedsmeldinger.forEach(doedsmelding -> {
-            if (!doedsmelding.getMiljoe().equals(environment)) {
-                throw new RuntimeException("Dødsmeldinger må være for samme miljø");
-            }
-        });
-        return environment;
     }
 }

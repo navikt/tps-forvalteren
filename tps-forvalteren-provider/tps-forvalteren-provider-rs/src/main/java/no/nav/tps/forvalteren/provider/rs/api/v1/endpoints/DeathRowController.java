@@ -53,8 +53,7 @@ public class DeathRowController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter")})
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdList(@RequestBody RsDeathRowBulk rsDeathRowBulk) {
-        List<DeathRow> deathRowList = mapper.map(rsDeathRowBulk, List.class);
-        return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(deathRowList);
+        return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowBulk.getIdenter(), rsDeathRowBulk.getMiljoe());
     }
 
 
