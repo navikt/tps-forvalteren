@@ -15,6 +15,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.FindAllDeathRows;
+import no.nav.tps.forvalteren.service.command.dodsmeldinger.LagreDodsmeldingTilTps;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.UpdateDeathRow;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterForDodsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
@@ -53,6 +54,9 @@ public class DeathRowController {
 
     @Autowired
     private UpdateDeathRow updateDeathRow;
+
+    @Autowired
+    private LagreDodsmeldingTilTps sendDodsmeldingTilTps;
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -111,8 +115,8 @@ public class DeathRowController {
     @LogExceptions
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema")})
-    public void sendToTps(@RequestBody Object object) {
-
+    public void sendToTps() {
+        sendDodsmeldingTilTps.execute();
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
