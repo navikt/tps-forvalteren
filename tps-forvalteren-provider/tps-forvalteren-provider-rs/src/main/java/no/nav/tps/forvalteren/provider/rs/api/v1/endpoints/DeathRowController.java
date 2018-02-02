@@ -10,6 +10,7 @@ import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRowBulk;
+import no.nav.tps.forvalteren.domain.rs.RsDeathRowCheckIdent;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
@@ -65,8 +66,8 @@ public class DeathRowController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter")})
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
-    public Set<IdentMedStatus> checkIdList(@RequestBody RsDeathRowBulk rsDeathRowBulk) {
-        return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowBulk.getIdenter(), rsDeathRowBulk.getMiljoe());
+    public Set<IdentMedStatus> checkIdList(@RequestBody RsDeathRowCheckIdent rsDeathRowCheckIdent) {
+        return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowCheckIdent.getIdenter(), rsDeathRowCheckIdent.getMiljoe());
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
