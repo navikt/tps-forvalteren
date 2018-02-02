@@ -3,16 +3,18 @@
     <h3 class="title">Send dødsmelding</h3>
     <div class="top md-whiteframe-z1 request-form" layout="column">
         <form name="requestForm" flex="100" layout="row" flex class="accent">
-            <md-input-container class="input-container" flex="40" layout="col">
-                <label>ID</label>
-                <textarea name="ident" ng-model="identer" ng-required="true" cols="50" rows="1"
-                          ng-pattern="/^(\d{11}[\W\s]*)+$/">
-            </textarea>
-                <div class="validation-messages" ng-messages="requestForm.ident.$error" ng-show="requestForm.ident.$dirty">
-                    <div ng-message="required">Feltet er påkrevet</div>
-                    <div ng-message="pattern">Identer med 11 sifre og separatortegn er forventet</div>
+                <md-chips ng-model="melding.identer" name="ident" readonly="false" md-enable-chip-edit="true" flex="40"
+                          style="margin-top: -3px; margin-right: 10px; margin-bottom: 30px;"
+                          md-separator-keys="separators" md-transform-chip="validateChip($chip)" md-add-on-blur="true"
+                          placeholder="Legg til ident...">
+                    <md-chip-template>
+                        <strong>{{$chip}}</strong>
+                        <em>({{getType($chip)}})</em>
+                    </md-chip-template>
+                </md-chips>
+                <div class="errors" ng-messages="requestForm.ident.$error">
+                    <div ng-message="required">Feltet er påkrevd</div>
                 </div>
-            </md-input-container>
             <md-input-container class="input-container" flex="15">
                 <label>Handling</label>
                 <md-select name="handling" ng-model="melding.handling" ng-required="true" ng-change="checkDato()">
@@ -51,7 +53,7 @@
             </md-input-container>
             <md-input-container class="button-container">
                 <md-button type="submit" class="md-button md-raised md-accent"
-                           ng-click="add()" ng-disabled="!requestForm.$valid">
+                           ng-click="add()" ng-disabled="!requestForm.$valid || melding.identer.length === 0">
                     <md-icon md-svg-icon="assets/icons/ic_person_add_black_24px.svg"></md-icon>
                     Legg til
                 </md-button>
@@ -94,7 +96,7 @@
             </md-card>
         </div>
     </form>
-    <div layout-align="end end" layout="row">
+    <div layout-align="end end" layout="row" class="btn-group">
             <md-input-container class="input-row" aria-label="Avbryt">
                 <md-button class="md-button md-raised" ng-click="toemSkjema()"
                            ng-hide="meldinger.length === 0">Tøm skjema</md-button>

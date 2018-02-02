@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
-    .controller('SendDoedsmeldingerCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', 'locationService', 'utilsService', 'headerService', 'doedsmeldingService',
-        function ($scope, $mdDialog, $rootScope, $stateParams, locationService, utilsService, headerService, doedsmeldingService) {
+    .controller('SendDoedsmeldingerCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', '$mdConstant', 'locationService', 'utilsService', 'headerService', 'doedsmeldingService',
+        function ($scope, $mdDialog, $rootScope, $stateParams, $mdConstant, locationService, utilsService, headerService, doedsmeldingService) {
 
             headerService.setHeader('Dødsmelding');
 
@@ -10,13 +10,15 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
             $scope.today = new Date();
-            $scope.melding = {};
+
+            $scope.separators = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.COMMA, $mdConstant.KEY_CODE.SEMICOLON, $mdConstant.KEY_CODE.SPACE, $mdConstant.KEY_CODE.TAB];
 
             function getMeldinger() {
                 $scope.progress = true;
                 doedsmeldingService.hent().then(
                     function (result) {
                         $scope.meldinger = result.data;
+                        clearRequestForm();
                         $scope.progress = false;
                     },
                     function (error) {
@@ -26,6 +28,15 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 );
             }
 
+            $scope.getType = function (chip) {
+                return parseInt(chip.substr(0,1)) > 3 ? 'dnr' :
+                    parseInt(chip.substr(2,1)) > 2 ? 'bnr' : 'fnr' ;
+            };
+
+            $scope.validateChip = function(chip) {
+                return !!chip.match(/^\d{11}$/) ? undefined : null;
+            };
+
             $scope.checkDato = function () {
                 if ($scope.melding && $scope.melding.handling === 'D') {
                     $scope.melding.doedsdato = undefined;
@@ -34,17 +45,25 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             };
 
             $scope.add = function () {
-                $scope.melding.identer = $scope.identer.split(/[\W\s]+/g);
                 doedsmeldingService.opprett($scope.melding).then(function () {
                         getMeldinger();
+                        clearRequestForm();
                     }, function (error) {
                         utilsService.showAlertError(error);
                     }
                 );
             };
 
+            function clearRequestForm () {
+                $scope.melding = {};
+                $scope.melding.identer = [];
+                $scope.melding.doedsdato = null;
+                $scope.requestForm.$setPristine();
+                $scope.requestForm.$setUntouched();
+            }
+
             $scope.delete = function (index) {
-                doedsmeldingService.slett($scope.meldinger[index].ident).then(function () {
+                doedsmeldingService.slett($scope.meldinger[index].id).then(function () {
                         $scope.meldinger.splice(index, 1);
                     }, function (error) {
                         utilsService.showAlertError(error);
@@ -109,5 +128,4 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             init();
             getMeldinger();
-
         }]);
