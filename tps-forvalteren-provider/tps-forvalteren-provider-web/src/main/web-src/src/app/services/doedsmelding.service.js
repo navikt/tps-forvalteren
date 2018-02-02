@@ -26,5 +26,9 @@ angular.module('tps-forvalteren.service')
 
         self.toemSkjema = function () {
             return $http.post(url + "delete");
-        }
+        };
+
+        self.sjekkgyldig = function (personer) {
+            return $http.post(url + 'checkpersoner', personer);
+        };
     }]);
