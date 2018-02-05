@@ -64,7 +64,7 @@
     <!-- Resulting Response -->
 
     <form name="responseForm" class="top transparent response-form">
-        <h3 layout="row" class="flexbox-parent" ng-hide="meldinger.length === 0">
+        <h3 layout="row" class="flexbox-parent" ng-if="showResponse()">
             <span flex="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ident</span>
             <span flex="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handling</span>
             <span flex="10">&nbsp;Dødsdato</span>
@@ -73,20 +73,20 @@
             <span flex="15">Tidspunkt</span>
             <span flex="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</span>
         </h3>
-        <div ng-repeat="melding in meldinger">
+        <div ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
             <md-card id="melding{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
                      ng-init="height = 1"
                      ng-mouseover="height = 5"
                      ng-mouseleave="height = 1">
                 <md-card-content flex class="card-content">
                     <div layout="row">
-                        <div flex="15">{{melding.ident}}</div>
-                        <div flex="15">{{melding.handling | doedshandling}}</div>
-                        <div flex="10">{{melding.doedsdato | date:'dd-MM-yyyy' }}</div>
-                        <div flex="10">{{melding.miljoe }}</div>
-                        <div flex="10">{{melding.bruker | titlecase}}</div>
-                        <div flex="20">{{melding.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
-                        <div flex="10">{{melding.status}}</div>
+                        <div flex="15">{{message.ident}}</div>
+                        <div flex="15">{{message.handling | doedshandling}}</div>
+                        <div flex="10">{{message.doedsdato | date:'dd-MM-yyyy' }}</div>
+                        <div flex="10">{{message.miljoe }}</div>
+                        <div flex="10">{{message.bruker | titlecase}}</div>
+                        <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                        <div flex="10">{{message.status}}</div>
                         <div flex></div>
                         <md-button class="md-icon-button align-button" ng-click="edit($index)">
                             <md-icon md-svg-icon="assets/icons/ic_mode_edit_black_24px.svg" aria-label="Endre melding"></md-icon>
@@ -99,15 +99,15 @@
             </md-card>
         </div>
     </form>
-    <div layout-align="end end" layout="row" class="btn-group">
+    <div layout-align="end end" layout="row" class="btn-group" ng-show="showResponse()">
         <md-input-container class="input-row" aria-label="Avbryt">
-            <md-button class="md-button md-raised" ng-click="toemSkjema()"
-                       ng-hide="meldinger.length === 0">Tøm skjema
+            <md-button class="md-button md-raised"
+                       ng-click="toemSkjema()">Tøm skjema
             </md-button>
         </md-input-container>
         <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
-            <md-button class="md-button md-raised md-accent" ng-click="sendTilTps()"
-                       ng-hide="meldinger.length === 0">Send til TPS
+            <md-button class="md-button md-raised md-accent"
+                       ng-click="sendTilTps()">Send til TPS
             </md-button>
         </md-input-container>
     </div>
