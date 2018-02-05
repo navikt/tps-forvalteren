@@ -4,6 +4,9 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             headerService.setHeader('Dødsmelding');
 
+            var environments = $scope.$resolve.environmentsPromise;
+            $scope.environments = utilsService.sortEnvironments(environments.environments);
+
             $scope.handlinger = [{handling: 'Sette dødsdato', action: 'C'},
                 {handling: 'Endre dødsdato', action: 'U'},
                 {handling: 'Slette dødsdato', action: 'D'}];
@@ -153,11 +156,6 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 $mdDialog.show(confirm);
             };
 
-            var init = function () {
-                var environments = $scope.$resolve.environmentsPromise;
-                $scope.environments = utilsService.sortEnvironments(environments.environments);
-            };
-
             $scope.toemSkjema = function () {
                 var confirm = $mdDialog.confirm()
                     .title('Bekrefting sletting')
@@ -183,7 +181,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             $scope.sendTilTps = function () {
                 var meldinger = [];
                 $scope.meldinger.forEach(function (melding) {
-                    if (melding.miljoe === $scope.melding.miljoe) {
+                    if (!$scope.melding.miljoe || 'Velg' === $scope.melding.miljoe || melding.miljoe === $scope.melding.miljoe) {
                         meldinger.push(melding);
                     }
                 });
@@ -199,6 +197,5 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 })
             };
 
-            init();
             getMeldinger();
         }]);
