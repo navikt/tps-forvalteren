@@ -57,7 +57,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 var seperatedString = angular.copy(chip);
                 seperatedString = seperatedString.toString();
                 var chipsArray = seperatedString.split(/[\W\s]+/);
-                chipsArray.forEach( function (chipToAdd) {
+                chipsArray.forEach(function (chipToAdd) {
                     if (chipToAdd.match(/^\d{11}$/)) {
                         var found = false;
                         $scope.melding.identer.forEach(function (element) {
@@ -74,6 +74,21 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 return null;
             };
 
+            $scope.showResponse = function () {
+                var match = false;
+                if ((!$scope.melding || !$scope.melding.miljoe || $scope.melding.miljoe === 'Velg') &&
+                    (!$scope.meldinger || $scope.meldinger.length > 0)) {
+                    match = true;
+                } else {
+                    $scope.meldinger.forEach(function (melding) {
+                        if (melding.miljoe === $scope.melding.miljoe) {
+                            match = true;
+                        }
+                    });
+                }
+                return match;
+            };
+
             $scope.checkDato = function () {
                 if ($scope.melding && $scope.melding.handling === 'D') {
                     $scope.melding.doedsdato = undefined;
@@ -84,9 +99,9 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             $scope.add = function () {
                 var identer = [];
                 $scope.melding.identer.forEach(function (ident) {
-                   if (identStatus[ident]) {
-                       identer.push(ident);
-                   }
+                    if (identStatus[ident]) {
+                        identer.push(ident);
+                    }
                 });
                 $scope.melding.identer = identer;
                 doedsmeldingService.opprett($scope.melding).then(function () {
@@ -99,9 +114,10 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             };
 
             function clearRequestForm() {
-                $scope.melding = {};
+                $scope.melding = $scope.melding ? $scope.melding : {};
                 $scope.melding.identer = [];
                 $scope.melding.doedsdato = null;
+                $scope.melding.handling = undefined;
                 $scope.requestForm.$setPristine();
                 $scope.requestForm.$setUntouched();
             }
@@ -149,8 +165,14 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                     .ok('Tøm skjema')
                     .cancel('Avbryt');
                 $mdDialog.show(confirm).then(function () {
-                    doedsmeldingService.toemSkjema().then(function () {
-                        $scope.meldinger = [];
+                    doedsmeldingService.toemSkjema($scope.melding.miljoe).then(function () {
+                        var meldinger = [];
+                        $scope.meldinger.forEach(function (melding) {
+                            if ($scope.melding && $scope.melding.miljoe && 'Velg' !== $scope.melding.miljoe && melding.miljoe !== $scope.melding.miljoe) {
+                                meldinger.push(melding);
+                            }
+                        });
+                        $scope.meldinger = meldinger;
                     }, function (error) {
                         utilsService.showAlertError(error);
                     });
@@ -158,7 +180,13 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             };
 
             $scope.sendTilTps = function () {
-                doedsmeldingService.sendSkjema($scope.meldinger).then(function () {
+                var meldinger = [];
+                $scope.meldinger.forEach(function (melding) {
+                    if (melding.miljoe === $scope.melding.miljoe) {
+                        meldinger.push(melding);
+                    }
+                });
+                doedsmeldingService.sendSkjema(meldinger).then(function () {
                     var alert = $mdDialog.alert()
                         .title('Meldinger sendt')
                         .textContent('Sending av dødsmeldinger til TPS er utført!')
