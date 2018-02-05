@@ -9,7 +9,7 @@
                           placeholder="Legg til ident...">
                     <md-chip-template name="chips-template">
                         <strong>{{$chip}}</strong>
-                        <em>({{getType($chip)}})</em>
+                        <em>({{$chip | identtype }})</em>
                     </md-chip-template>
                 </md-chips>
             </div>
@@ -71,6 +71,7 @@
             <span flex="10">Miljø</span>
             <span flex="10">Bruker</span>
             <span flex="15">Tidspunkt</span>
+            <span flex="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</span>
         </h3>
         <div ng-repeat="melding in meldinger">
             <md-card id="melding{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
@@ -84,7 +85,8 @@
                         <div flex="10">{{melding.doedsdato | date:'dd-MM-yyyy' }}</div>
                         <div flex="10">{{melding.miljoe }}</div>
                         <div flex="10">{{melding.bruker | titlecase}}</div>
-                        <div flex="15">{{melding.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                        <div flex="20">{{melding.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                        <div flex="10">{{melding.status}}</div>
                         <div flex></div>
                         <md-button class="md-icon-button align-button" ng-click="edit($index)">
                             <md-icon md-svg-icon="assets/icons/ic_mode_edit_black_24px.svg" aria-label="Endre melding"></md-icon>

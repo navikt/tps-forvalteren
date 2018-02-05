@@ -10,6 +10,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
             $scope.today = new Date();
+            var identStatus = [];
 
             $scope.separators = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.COMMA, $mdConstant.KEY_CODE.SEMICOLON, $mdConstant.KEY_CODE.SPACE, $mdConstant.KEY_CODE.TAB];
 
@@ -32,32 +33,24 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 if ($scope.melding.miljoe && $scope.melding.identer.length > 0) {
                     var identer = [];
                     $scope.melding.identer.forEach(function (ident) {
-                        identer.push(ident.ident);
+                        identer.push(ident);
                     });
                     doedsmeldingService.sjekkgyldig({miljoe: $scope.melding.miljoe, identer: identer}).then(
                         function (result) {
                             var elementer = document.getElementsByName('chips-template');
-                            result.data.forEach(function (personStatus, index) {
-                                $scope.melding.identer.forEach(function (meldingIdent) {
-                                    if (personStatus.ident === meldingIdent.ident) {
-                                        elementer[index].parentElement.parentElement.style.backgroundColor = personStatus === 'FIN' ? 'yellowgreen' : 'indianred';
+                            for (var i = 0; i < result.data.length; i++) {
+                                $scope.melding.identer.forEach(function (meldingIdent, index) {
+                                    if (result.data[i].ident === meldingIdent) {
+                                        elementer[index].parentElement.parentElement.style.backgroundColor = result.data[i].status === 'FIN' ? 'yellowgreen' : 'indianred';
+                                        identStatus[result.data[i].ident] = result.data[i].status === 'FIN';
                                     }
                                 });
-                            });
+                            }
                         }, function (error) {
                             utilsService.showAlertError(error);
-                            // var elementer = document.getElementsByName('chips-template');
-                            // $scope.melding.identer.forEach(function (meldingIdent, index) {
-                            //     elementer[index].parentElement.parentElement.style.backgroundColor = index % 2 === 0 ? 'yellowgreen' : 'indianred';
-                            // });
                         }
                     );
                 }
-            };
-
-            $scope.getType = function (ident) {
-                return parseInt(ident.substr(0, 1)) > 3 ? 'dnr' :
-                    parseInt(ident.substr(2, 1)) > 2 ? 'bnr' : 'fnr';
             };
 
             $scope.addMultipleChips = function (chip) {
@@ -89,6 +82,13 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             };
 
             $scope.add = function () {
+                var identer = [];
+                $scope.melding.identer.forEach(function (ident) {
+                   if (identStatus[ident]) {
+                       identer.push(ident);
+                   }
+                });
+                $scope.melding.identer = identer;
                 doedsmeldingService.opprett($scope.melding).then(function () {
                         getMeldinger();
                         clearRequestForm();
