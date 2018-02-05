@@ -1,10 +1,27 @@
 
 #bokser-lenker {
 
-  .lenkeboks { min-height: 300px; }
-  .lenkeboks a { padding: 30px; }body {
-                                   margin: 0;
-                                 }
+  .lenkeboks {
+    min-height: 300px;
+    min-width: 220px;
+    @media (max-width: 1000px) {
+      min-width: auto;
+    }
+  }
+  .lenkeboks a {
+    padding: 30px;
+  }
+  body {
+    margin: 0;
+  }
+
+  .breaktext {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    hyphens: none;
+  }
+
 
   a {
     background-color: transparent;

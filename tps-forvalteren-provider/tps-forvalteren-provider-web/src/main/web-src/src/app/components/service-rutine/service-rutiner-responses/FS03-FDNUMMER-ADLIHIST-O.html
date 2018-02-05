@@ -26,7 +26,7 @@
                         <tps-output-field label="tknrSaksbehandler" flex="30" field-model="responseData.data1.tknrSaksbehandler" title="tknrSaksbehandler"></tps-output-field>
                         <tps-output-field label="antallFS015" flex="30" field-model="responseData.data1.antallFS015" title="antallFS015"></tps-output-field>
                     </div>
-                    <div class="tpsf-sr-response" layout="column" ng-if="isArray(adresseHistorikk['adresseLinjeHistorikk']['adresseLinje'])"
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="isArray(adresseHistorikk['adresseLinjeHistorikk']['adresseLinje'])"
                         ng-repeat="adresse in adresseHistorikk.adresseLinjeHistorikk.adresseLinjer">
                         <div layout="row">
                             <tps-output-field label="datoFom" flex="30" field-model="adresse.datoFom" title="datoFom"></tps-output-field>
@@ -49,7 +49,7 @@
                             <tps-output-field label="adrSaksbehandler" flex="30" field-model="adresse.adrSaksbehandler" title="adrSaksbehandler"></tps-output-field>
                         </div>
                     </div>
-                    <div class="tpsf-sr-response" layout="column" ng-if="!isArray(adresseHistorikk['adresseLinjeHistorikk']['adresseLinje'])">
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="!isArray(adresseHistorikk['adresseLinjeHistorikk']['adresseLinje'])">
 
                         <div layout="row">
                             <tps-output-field label="datoFom" flex="30" field-model="responseData.data1.adresseLinjeHistorikk.adresseLinje.datoFom" title="datoFom"></tps-output-field>

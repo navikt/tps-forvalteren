@@ -16,10 +16,10 @@
                 <!-- Input fields rows -->
                 <legend class="tpsf-sr-inputform-legend">Select og inputfelt for {{serviceRutineName}}</legend>
                 <div ng-repeat="field in fields" ng-init="parentIndex = $index" >
-                    <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%4)==0"  >
+                    <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%5)==0"  >
 
-                        <!-- Array har storrelse 4 bare grunnet ville ha 4 fields i bredden -->
-                        <tps-input-field data-ng-repeat="i in [0,1,2,3]" ng-if="fields[parentIndex+i]"
+                        <!-- Array har storrelse 4 bare grunnet ville ha 4 fields i  -->
+                        <tps-input-field  data-ng-repeat="i in [0,1,2,3,4]" ng-if="fields[parentIndex+i]"
                                          form-data="formData" select-values="selectValues" input-param-name="fields[parentIndex+i]"></tps-input-field>
                     </div>
                 </div>

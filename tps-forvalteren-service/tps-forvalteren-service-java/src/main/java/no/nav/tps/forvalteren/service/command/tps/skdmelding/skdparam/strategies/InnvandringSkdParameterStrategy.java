@@ -19,12 +19,16 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.HusbokstavEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.StatsborgerskapEncoder;
 
 @Service
 public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
     @Autowired
     private HusbokstavEncoder husbokstavEncoder;
+    
+    @Autowired
+    private StatsborgerskapEncoder statsborgerskapEncoder;
     
     private static final String TILDELINGSKODE_FOR_OPPRETT = "1";
     private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
@@ -54,7 +58,7 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.FORNAVN, person.getFornavn());
         skdParams.put(SkdConstants.MELLOMNAVN, person.getMellomnavn());
         skdParams.put(SkdConstants.SLEKTSNAVN, person.getEtternavn());
-        skdParams.put(SkdConstants.STATSBORGERSKAP, person.getStatsborgerskap());
+        skdParams.put(SkdConstants.STATSBORGERSKAP, statsborgerskapEncoder.encode(person.getStatsborgerskap()));
 
         String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
         String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());

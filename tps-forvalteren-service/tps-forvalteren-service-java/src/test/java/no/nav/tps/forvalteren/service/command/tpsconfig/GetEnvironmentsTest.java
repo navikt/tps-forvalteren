@@ -1,7 +1,7 @@
-package no.nav.tps.forvalteren.service.command.vera;
+package no.nav.tps.forvalteren.service.command.tpsconfig;
 
 
-import no.nav.tps.forvalteren.consumer.rs.vera.VeraConsumer;
+import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ public class GetEnvironmentsTest {
     private static final String APPLICATION = "tpsws";
 
     @Mock
-    private VeraConsumer veraConsumerMock;
+    private FetchEnvironmentsConsumer veraConsumerMock;
 
     @InjectMocks
     GetEnvironments getEnvironments;
@@ -25,7 +25,7 @@ public class GetEnvironmentsTest {
 
     @Test
     public void callsGetEnvironmentsOnVeraConsumer() {
-        getEnvironments.getEnvironmentsFromVera(APPLICATION);
+        getEnvironments.getEnvironmentsFromFasit(APPLICATION);
 
         verify(veraConsumerMock).getEnvironments(eq(APPLICATION));
     }

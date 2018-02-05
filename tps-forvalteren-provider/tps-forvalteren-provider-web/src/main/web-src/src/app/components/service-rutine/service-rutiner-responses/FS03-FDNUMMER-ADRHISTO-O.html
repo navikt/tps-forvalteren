@@ -12,7 +12,7 @@
                         <tps-output-field label="datoDo" flex="30" field-model="responseData.data1.datoDo" title="datoDo"></tps-output-field>
                         <tps-output-field label="antallFS010" name="antall" flex="30" field-model="responseData.data1.antallFS010" title="antallFS010"></tps-output-field>
                     </div>
-                    <div class="tpsf-sr-response" layout="column" ng-if="isArray(adresseHistorikk['boAdresser']['boAdresse'])"
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="isArray(adresseHistorikk['boAdresser']['boAdresse'])"
                          ng-repeat="adresse in adresseHistorikk.boAdresser.boAdresse">
                         <div layout="row">
                             <tps-output-field label="adresseFom" flex="30" field-model="adresse.adresseFom" title="adresseFom"></tps-output-field>
@@ -34,7 +34,7 @@
                             <tps-output-field label="kommunenavn" flex="30" field-model="adresse.kommuneNavn" title="kommunenavn"></tps-output-field>
                         </div>
                     </div>
-                    <div layout="column" ng-if="!isArray(adresseHistorikk['boAdresser']['boAdresse'])">
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['boAdresser']['boAdresse'])">
                         <div layout="row">
                             <tps-output-field label="adresseFom" flex="30" field-model="responseData.data1.boAdresser.boAdresse.adresseFom" title="adresseFom"></tps-output-field>
                             <tps-output-field label="adresseTom" flex="30" field-model="responseData.data1.boAdresser.boAdresse.adresseTom" title="adresseTom"></tps-output-field>

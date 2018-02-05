@@ -63,7 +63,7 @@ public class Person extends ChangeStamp {
     @Column(name = "STATSBORGERSKAP", length = 3)
     private String statsborgerskap;
 
-    @Column(name = "SPESREG", length = 4)
+    @Column(name = "SPESREG", length = 1)
     private String spesreg;
 
     @Column(name = "SPESREG_DATO")

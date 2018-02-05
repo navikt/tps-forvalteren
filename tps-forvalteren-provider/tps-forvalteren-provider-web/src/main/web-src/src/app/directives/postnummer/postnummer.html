@@ -1,15 +1,21 @@
-<md-autocomplete md-no-cache="false"
-                 md-selected-item="poststed"
-                 md-selected-item-change="endring()"
-                 md-items="poststed in getPostnummerMatches(postnummerSoek)"
-                 md-search-text="postnummerSoek"
-                 md-item-text="poststed.visningsnavn" ng-required="paakrevet"
-                 md-require-match="true" md-select-on-match="true" md-delay="300"
-                 placeholder="Postnummer" md-floating-label="Postnummer">
-    <md-item-template>
-        <span md-highlight-text="postnummerSoek" md-highlight-flags="i">{{ poststed.visningsnavn }}</span>
-    </md-item-template>
-    <md-not-found>
-        Ingen treff funnet
-    </md-not-found>
-</md-autocomplete>
+<form name="autocompleteForm">
+    <md-autocomplete md-input-name="postnr" md-no-cache="false"
+                     md-selected-item="poststed"
+                     md-selected-item-change="endring()"
+                     md-items="poststed in getPostnummerMatches(postnummerSoek)"
+                     md-search-text="postnummerSoek"
+                     md-item-text="poststed.visningsnavn" ng-required="paakrevet"
+                     md-require-match="true" md-select-on-match="true" md-delay="300"
+                     placeholder="Postnummer" md-floating-label="Postnummer">
+        <md-item-template xmlns="http://xmlns.jcp.org/jsf/passthrough">
+            <span md-highlight-text="postnummerSoek" md-highlight-flags="i">{{ poststed.visningsnavn }}</span>
+        </md-item-template>
+        <div ng-messages="autocompleteForm.postnr.$error"
+             ng-show="autocompleteForm.postnr.$error">
+            <div ng-message="required">Feltet er påkrevd</div>
+        </div>
+        <md-not-found>
+            Ingen treff funnet
+        </md-not-found>
+    </md-autocomplete>
+</form>
