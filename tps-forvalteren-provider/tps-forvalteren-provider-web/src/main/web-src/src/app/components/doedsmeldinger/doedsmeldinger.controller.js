@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
-    .controller('SendDoedsmeldingerCtrl', ['$scope', '$mdDialog', '$rootScope', '$stateParams', '$mdConstant', 'locationService', 'utilsService', 'headerService', 'doedsmeldingService',
-        function ($scope, $mdDialog, $rootScope, $stateParams, $mdConstant, locationService, utilsService, headerService, doedsmeldingService) {
+    .controller('SendDoedsmeldingerCtrl', ['$scope', '$mdDialog', '$mdConstant', 'utilsService', 'headerService', 'doedsmeldingService',
+        function ($scope, $mdDialog, $mdConstant, utilsService, headerService, doedsmeldingService) {
 
             headerService.setHeader('Dødsmelding');
 
@@ -118,6 +118,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 $scope.melding.identer = [];
                 $scope.melding.doedsdato = null;
                 $scope.melding.handling = undefined;
+                $scope.melding.miljoe = undefined;
                 $scope.requestForm.$setPristine();
                 $scope.requestForm.$setUntouched();
             }

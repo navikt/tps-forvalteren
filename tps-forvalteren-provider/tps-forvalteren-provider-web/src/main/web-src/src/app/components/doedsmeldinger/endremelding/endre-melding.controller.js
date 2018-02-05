@@ -16,7 +16,7 @@ angular.module('tps-forvalteren.doedsmeldinger.endremelding', ['ngMaterial'])
 
             $scope.checkDato = function() {
                 if ($scope.oppdatering && $scope.oppdatering.handling === 'D') {
-                    $scope.oppdatering.doedsdato = undefined;
+                    $scope.oppdatering.doedsdato = null;
                     $scope.$broadcast('md-calendar-change', $scope.oppdatering.doedsdato);
                 }
             };

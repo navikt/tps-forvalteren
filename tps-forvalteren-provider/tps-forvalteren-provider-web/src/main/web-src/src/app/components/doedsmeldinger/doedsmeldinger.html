@@ -54,7 +54,7 @@
             </md-input-container>
             <md-input-container class="button-container">
                 <md-button type="submit" class="md-button md-raised md-accent"
-                           ng-click="add()" ng-disabled="!requestForm.$valid || melding.identer.length === 0">
+                           ng-click="add()" ng-disabled="!requestForm.$valid || melding.identer.length === 0 || melding.handling === 'Velg' || melding.miljoe === 'Velg'">
                     <md-icon md-svg-icon="assets/icons/ic_person_add_black_24px.svg"></md-icon>
                     Legg til
                 </md-button>

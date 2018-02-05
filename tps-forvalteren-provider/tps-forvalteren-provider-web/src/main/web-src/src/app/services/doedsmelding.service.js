@@ -1,5 +1,5 @@
 angular.module('tps-forvalteren.service')
-    .service('doedsmeldingService', ['$http', '$q', function ($http, $q) {
+    .service('doedsmeldingService', ['$http', function ($http) {
 
         var self = this;
         var url = 'api/v1/doedsmelding/';
