@@ -440,6 +440,16 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
             };
 
+            $scope.showAddrInfo = function () {
+                var info = $mdDialog.alert()
+                    .title('Adresseinfo')
+                    .htmlContent('Når gatenavn evt stedsnavn angis må alle tilhørende felter ha verdi for å utgjøre en gyldig adresse.')
+                    .ariaLabel('Informasjon om adresse')
+                    .ok('OK')
+                    .clickOutsideToClose(true);
+                $mdDialog.show(info);
+            };
+
             $scope.$watch('pager.startIndex', function () {
                 if ($scope.personer) {
                     $scope.aapneAlleFaner = toggleservice.checkAggregateOpenCloseButtonNextState(

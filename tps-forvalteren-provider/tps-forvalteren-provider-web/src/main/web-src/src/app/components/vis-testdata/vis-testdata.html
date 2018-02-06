@@ -5,11 +5,13 @@
         </div>
 
         <div layout="column" layout-gt-md="row" class="tpsf-testdata-container">
-            <div layout="column" flex-gt-md="66" style="margin-top:15px;">
+            <form name="requestForm" layout="column" flex-gt-md="66" style="margin-top:15px;">
                 <div layout="row">
                     <h3 class="tpsf-testdata-personer-header">Testpersoner<span ng-show="personer.length>0">&nbsp;({{personer.length}})</span>
                     </h3>
-                    <paginering contents="personer" slice="slice" pager="pager" disabled="requestForm.$invalid" layout="column" flex layout-align="start end"></paginering>
+                    <div flex></div>
+                    <div ng-show="requestForm.$invalid" class="alert warning">Åpen fane inneholder feil og blokkerer andre valg</div>
+                    <paginering contents="personer" slice="slice" pager="pager" disabled="requestForm.$invalid" layout="column" layout-align="start end"></paginering>
                 </div>
                 <md-card id="vis-testdata-main" class="tps-vk-top">
                     <md-card-content flex class="testdata-card-content md-whiteframe-1p">
@@ -67,7 +69,7 @@
 
                 <!-- Resulting Response -->
 
-                <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
+                <div class="tps-vk-top" style="background-color: transparent;">
 
                     <div ng-repeat="person in slice">
                         <md-card id="person_{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
@@ -93,7 +95,7 @@
                                     </div>
 
                                     <div flex></div>
-                                    <div flex="5" ng-if="control[$index + pager.startIndex].endret" style="color: red;">Endret</div>
+                                    <div flex="5" ng-if="control[$index + pager.startIndex].endret" class="alert">Endret</div>
                                     <div flex="5">
                                         <md-button id="cancel" ng-class="{flipped: control[$index + pager.startIndex].aapen}"
                                                    class="md-icon-button"
@@ -106,7 +108,12 @@
                                 <div layout="row" ng-if="control[$index + pager.startIndex].aapen">
                                     <div class="line" flex="auto">
                                         <div ng-include="persondetalj"></div>
-                                        <h3 class="testdata-sub-header">Boadresse</h3>
+                                        <div layout="row">
+                                            <h3 class="testdata-sub-header">Boadresse</h3>
+                                            <md-icon class="info-icon" ng-click="showAddrInfo()"
+                                                     md-svg-icon="assets/icons/ic_info_outline_black_24px.svg"></md-icon>
+                                            <div flex></div>
+                                        </div>
                                         <md-radio-group ng-model="person.boadresse.adressetype"
                                                         layout="row" class="testdata-adr-btn">
                                             <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
@@ -122,8 +129,8 @@
                             </md-card-content>
                         </md-card>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
             <vis-gruppeinfo service="service" gruppe-id="gruppeId"></vis-gruppeinfo>
         </div>
     </div>
