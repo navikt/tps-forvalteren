@@ -2,7 +2,7 @@ angular.module('tps-forvalteren.filter')
     .filter('miljoefilter', function() {
     return function(items, miljoe) {
 
-        if (!miljoe || '' === miljoe || 'Velg' === miljoe) {
+        if (!items || !miljoe || '' === miljoe || 'Velg' === miljoe) {
             return items;
         }
 

@@ -8,7 +8,7 @@
                     <md-input-container class="input-container" layout="col">
                         <label>Handling</label>
                         <md-select ng-model="oppdatering.handling" class="md-no-underline" required ng-change="checkDato()">
-                            <md-option><em>Velg</em></md-option>
+                            <md-option><em>{{SELECT}}</em></md-option>
                             <md-option ng-repeat="valg in handlinger" ng-value="valg.action">{{valg.handling}}</md-option>
                         </md-select>
                         <div ng-messages="requestForm2.handling.$error" ng-show="requestForm2.handling.$pristine">
@@ -37,7 +37,7 @@
                     <md-input-container class="input-container">
                         <label>Miljø</label>
                         <md-select name="miljoe" ng-model="oppdatering.miljoe" class="md-no-underline" required>
-                            <md-option><em>Velg</em></md-option>
+                            <md-option><em>{{SELECT}}</em></md-option>
                             <md-option ng-repeat="miljoe in miljoer" value="{{miljoe}}">{{miljoe}}</md-option>
                         </md-select>
                         <div ng-messages="requestForm2.miljoe.$error" ng-show="requestForm2.miljoe.$pristine">
@@ -55,7 +55,7 @@
                 <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
                     <md-tooltip md-direction="top">Lagre endret melding</md-tooltip>
                     <md-button class="md-button md-raised md-accent" ng-click="oppdater()"
-                               ng-disabled="requestForm2.$invalid || oppdatering.handling === 'Velg' || oppdatering.miljoe === 'Velg'">Lagre
+                               ng-disabled="requestForm2.$invalid || oppdatering.handling === SELECT || oppdatering.miljoe === SELECT">Lagre
                     </md-button>
                 </md-input-container>
             </md-dialog-actions>

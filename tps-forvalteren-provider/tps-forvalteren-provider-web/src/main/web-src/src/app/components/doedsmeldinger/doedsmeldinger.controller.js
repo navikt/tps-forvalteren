@@ -13,9 +13,10 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
             $scope.today = new Date();
-            var identStatus = [];
 
             $scope.separators = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.COMMA, $mdConstant.KEY_CODE.SEMICOLON, $mdConstant.KEY_CODE.SPACE, $mdConstant.KEY_CODE.TAB];
+            $scope.SELECT = 'Velg';
+            var identStatus = [];
 
             function getMeldinger() {
                 $scope.progress = true;
@@ -27,13 +28,14 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                     },
                     function (error) {
                         utilsService.showAlertError(error);
+                        clearRequestForm();
                         $scope.progress = false;
                     }
                 );
             }
 
             $scope.sjekkgyldig = function () {
-                if ($scope.melding.miljoe && $scope.melding.identer.length > 0) {
+                if ($scope.melding.miljoe && $scope.SELECT !== $scope.melding.miljoe && $scope.melding.identer.length > 0) {
                     var identer = [];
                     $scope.melding.identer.forEach(function (ident) {
                         identer.push(ident);
@@ -79,22 +81,24 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             $scope.showResponse = function () {
                 var match = false;
-                if ((!$scope.melding || !$scope.melding.miljoe || $scope.melding.miljoe === 'Velg') &&
-                    (!$scope.meldinger || $scope.meldinger.length > 0)) {
-                    match = true;
-                } else {
-                    $scope.meldinger.forEach(function (melding) {
-                        if (melding.miljoe === $scope.melding.miljoe) {
-                            match = true;
-                        }
-                    });
+                if ($scope.meldinger && $scope.meldinger.length > 0) {
+
+                    if (!$scope.melding.miljoe || $scope.SELECT === $scope.melding.miljoe) {
+                        match = true;
+                    } else {
+                        $scope.meldinger.forEach(function (melding) {
+                            if (melding.miljoe === $scope.melding.miljoe) {
+                                match = true;
+                            }
+                        });
+                    }
                 }
                 return match;
             };
 
             $scope.checkDato = function () {
                 if ($scope.melding && $scope.melding.handling === 'D') {
-                    $scope.melding.doedsdato = undefined;
+                    $scope.melding.doedsdato = null;
                     $scope.$broadcast('md-calendar-change', $scope.melding.doedsdato);
                 }
             };
@@ -150,7 +154,8 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         miljoer: $scope.$resolve.environmentsPromise,
                         handlinger: $scope.handlinger,
                         startOfEra: $scope.startOfEra,
-                        today: $scope.today
+                        today: $scope.today,
+                        select: $scope.SELECT
                     }
                 });
                 $mdDialog.show(confirm);
@@ -167,7 +172,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                     doedsmeldingService.toemSkjema($scope.melding.miljoe).then(function () {
                         var meldinger = [];
                         $scope.meldinger.forEach(function (melding) {
-                            if ($scope.melding && $scope.melding.miljoe && 'Velg' !== $scope.melding.miljoe && melding.miljoe !== $scope.melding.miljoe) {
+                            if ($scope.melding && $scope.melding.miljoe && $scope.SELECT !== $scope.melding.miljoe && melding.miljoe !== $scope.melding.miljoe) {
                                 meldinger.push(melding);
                             }
                         });
@@ -181,7 +186,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             $scope.sendTilTps = function () {
                 var meldinger = [];
                 $scope.meldinger.forEach(function (melding) {
-                    if (!$scope.melding.miljoe || 'Velg' === $scope.melding.miljoe || melding.miljoe === $scope.melding.miljoe) {
+                    if (!$scope.melding.miljoe || $scope.SELECT === $scope.melding.miljoe || melding.miljoe === $scope.melding.miljoe) {
                         meldinger.push(melding);
                     }
                 });
