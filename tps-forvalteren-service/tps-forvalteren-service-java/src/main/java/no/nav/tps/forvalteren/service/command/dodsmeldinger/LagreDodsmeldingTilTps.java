@@ -51,7 +51,9 @@ public class LagreDodsmeldingTilTps {
 
         List<List<DeathRow>> deathRowTasks = findAllDeathRowTasks.execute();
 
+        // Liste med annuleringer av dødsmelding
         List<Person> deleteDeathRowPersonList = new ArrayList<>();
+        // Liste med oppretting av dødsmelding
         List<Person> createDeathRowPersonList = new ArrayList<>();
 
         for(List<DeathRow> list : deathRowTasks){
@@ -61,6 +63,7 @@ public class LagreDodsmeldingTilTps {
                 person.setId(melding.getId());
                 person.setIdent(melding.getIdent());
                 person.setDoedsdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+
                 person.setRegdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
 
                 if(melding.getHandling().equals("D")){
@@ -73,22 +76,25 @@ public class LagreDodsmeldingTilTps {
 
             }
         }
-        System.out.println("DeleteDeathRowPersonList: " + deleteDeathRowPersonList);
-        System.out.println("CreateDeathRowPersonList: " + createDeathRowPersonList);
+        //System.out.println("DeleteDeathRowPersonList: " + deleteDeathRowPersonList);
+        //System.out.println("CreateDeathRowPersonList: " + createDeathRowPersonList);
 
         List<String> skdMeldinger = createDoedsmeldinger(createDeathRowPersonList);
 
         TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
-        List<String> envi = new ArrayList<String>();
+        List<String> environments = new ArrayList<String>();
         for( String skdmelding : skdMeldinger) {
 
-            envi.add("U5");
+            // Manipulering av streng for å matche det som sendes i testdata.
+            //skdmelding = skdmelding.replace(skdmelding.substring(57, 71), "20180205000000");
 
-            Set<String> env = new HashSet<>();
-            env.add("U5");
-            sendSkdMeldingTilGitteMiljoer.execute(skdmelding, skdRequestMeldingDefinition, env);
+            Set<String> environment = new HashSet<>();
+            environment.add("U5");
+
+            sendSkdMeldingTilGitteMiljoer.execute(skdmelding, skdRequestMeldingDefinition, environment);
         }
-        skdStartAjourhold.execute(new HashSet<>(envi));
+        environments.add("U5");
+        skdStartAjourhold.execute(new HashSet<>(environments));
     }
 
 
@@ -96,11 +102,12 @@ public class LagreDodsmeldingTilTps {
 
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(deathRowPersonList);
         List<String> skdDodsmelding = new ArrayList<>();
+
         if(!doedePersonerWithoutDoedsmelding.isEmpty()){
             skdDodsmelding.addAll(skdCreator.execute("Doedsmelding", doedePersonerWithoutDoedsmelding, true));
             //saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
-
+        //System.out.println("SkdMelding: " + skdDodsmelding);
         return skdDodsmelding;
     }
     private List<Person> findDoedePersonerWithoutDoedsmelding(List<Person> personer) {

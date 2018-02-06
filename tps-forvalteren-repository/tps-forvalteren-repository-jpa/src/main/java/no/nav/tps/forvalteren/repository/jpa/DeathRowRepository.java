@@ -15,6 +15,12 @@ public interface DeathRowRepository extends Repository<DeathRow, Long> {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
+    void deleteAllBy();
+
+    void deleteAllByMiljoe(String miljoe);
+
     List<DeathRow> findAll();
 
     List<DeathRow> findAllByHandling(String handling);

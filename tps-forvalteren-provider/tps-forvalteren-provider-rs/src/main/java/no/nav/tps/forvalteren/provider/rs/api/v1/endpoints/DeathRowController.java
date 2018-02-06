@@ -3,7 +3,9 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 
+import com.sun.istack.Nullable;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -86,7 +88,7 @@ public class DeathRowController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding")})
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public void deleteMelding(@PathVariable("ident") Long id){
+    public void deleteMelding(@PathVariable("id") Long id){
         deathRowRepository.deleteById(id);
     }
 
@@ -120,9 +122,14 @@ public class DeathRowController {
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/clearskjema/{miljoe}", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma")})
-    public void tomSkjema(){
+    public void tomSkjema(@Nullable @PathVariable("miljoe")  String miljoe){
+        if (miljoe != null){
+            deathRowRepository.deleteAllByMiljoe(miljoe);
+        } else {
+            deathRowRepository.deleteAll();
+        }
 
     }
 
