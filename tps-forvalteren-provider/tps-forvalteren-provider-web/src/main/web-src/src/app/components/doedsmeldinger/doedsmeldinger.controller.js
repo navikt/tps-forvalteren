@@ -19,17 +19,17 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             var identStatus = [];
 
             function getMeldinger() {
-                $scope.progress = true;
+                $scope.showProgress = true;
                 doedsmeldingService.hent().then(
                     function (result) {
                         $scope.meldinger = result.data;
                         clearRequestForm();
-                        $scope.progress = false;
+                        $scope.showProgress = false;
                     },
                     function (error) {
                         utilsService.showAlertError(error);
                         clearRequestForm();
-                        $scope.progress = false;
+                        $scope.showProgress = false;
                     }
                 );
             }
@@ -184,6 +184,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             };
 
             $scope.sendTilTps = function () {
+                $scope.showProgress = true;
                 var meldinger = [];
                 $scope.meldinger.forEach(function (melding) {
                     if (!$scope.melding.miljoe || $scope.SELECT === $scope.melding.miljoe || melding.miljoe === $scope.melding.miljoe) {
@@ -197,8 +198,10 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         .ariaLabel('Dødsmeldinger er sendt til TPS.')
                         .ok('OK');
                     $mdDialog.show(alert);
+                    $scope.showProgress = false;
                 }, function (error) {
                     utilsService.showAlertError(error);
+                    $scope.showProgress = false;
                 })
             };
 
