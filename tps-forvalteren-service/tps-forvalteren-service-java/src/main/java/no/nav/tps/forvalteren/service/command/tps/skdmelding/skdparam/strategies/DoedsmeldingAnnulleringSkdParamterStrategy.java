@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class DoedsmeldingAnnulleringSkdParamterStrategy implements SkdParameters
 
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "45";
     private static final String TRANSTYPE_FOR_DOEDSMELDING = "1";
-    private static final String STATUSKODE_FOR_DOEDSMELDING = "5";
+    private static final String STATUSKODE_FOR_DOEDSMELDING = "1";
 
     @Autowired
     private SetAdresse setAdresse;
@@ -49,7 +50,7 @@ public class DoedsmeldingAnnulleringSkdParamterStrategy implements SkdParameters
         skdParams.put(SkdConstants.MASKINTID, hhMMss);
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
 
-        String doedsdatoStringVersion = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getDoedsdato());
+        String doedsdatoStringVersion = GetStringVersionOfLocalDateTime.yyyyMMdd(LocalDateTime.now());
 
         skdParams.put(SkdConstants.REG_DATO, doedsdatoStringVersion);
     }
@@ -58,6 +59,8 @@ public class DoedsmeldingAnnulleringSkdParamterStrategy implements SkdParameters
         skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_DOEDSMELDING);
         skdParams.put(SkdConstants.TRANSTYPE, TRANSTYPE_FOR_DOEDSMELDING);
         skdParams.put(SkdConstants.STATUSKODE, STATUSKODE_FOR_DOEDSMELDING);
+
+
     }
 
 }

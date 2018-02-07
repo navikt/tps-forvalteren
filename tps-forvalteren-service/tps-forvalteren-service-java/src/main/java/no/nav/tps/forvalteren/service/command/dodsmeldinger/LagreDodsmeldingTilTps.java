@@ -3,25 +3,41 @@ package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.FindDoedePersoner;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerWithoutDoedsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
+import no.nav.tps.forvalteren.service.command.testdata.SjekkDoedsmeldingSentForPerson;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LagreDodsmeldingTilTps {
+
+    @Autowired
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+
+    @Autowired
+    private GetEnvironments getEnvironments;
+
+    @Autowired
+    private DeathRowRepository deathRowRepository;
 
     @Autowired
     private FindAllDeathRowTasks findAllDeathRowTasks;
@@ -34,6 +50,9 @@ public class LagreDodsmeldingTilTps {
 
     @Autowired
     private FindPersonerWithoutDoedsmelding findDoedePersonerWithoutDoedsmelding;
+
+    @Autowired
+    private SjekkDoedsmeldingSentForPerson sjekkDoedsmeldingSentForPerson;
 
     @Autowired
     private FindDoedePersoner findDoedePersoner;
@@ -62,41 +81,53 @@ public class LagreDodsmeldingTilTps {
                 Person person = new Person();
                 person.setId(melding.getId());
                 person.setIdent(melding.getIdent());
-                person.setDoedsdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                person.setRegdato(LocalDateTime.now());
 
-                person.setRegdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                if(melding.getHandling().equals("C")){
+                    person.setDoedsdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                    person.setRegdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                }
 
                 if(melding.getHandling().equals("D")){
+                    /* Setter en dummy adresse*/
+                    Gateadresse adr = new Gateadresse();
+                    adr.setAdresse("SANNERGATA");
+                    adr.setHusnummer("2");
+                    adr.setGatekode("12345");
+                    adr.setId(person.getId());
+                    adr.setPerson(person);
+                    adr.setFlyttedato(LocalDateTime.now());
+                    adr.setPostnr("1069");
+                    adr.setKommunenr("1111");
+                    person.setBoadresse(adr);
+
+
+
+
                     deleteDeathRowPersonList.add(person);
                 } else if( melding.getHandling().equals("C")) {
                     createDeathRowPersonList.add(person);
                 } else {
                     continue;
                 }
-
             }
         }
-        //System.out.println("DeleteDeathRowPersonList: " + deleteDeathRowPersonList);
-        //System.out.println("CreateDeathRowPersonList: " + createDeathRowPersonList);
 
-        List<String> skdMeldinger = createDoedsmeldinger(createDeathRowPersonList);
+        List<String> skdMeldinger = new ArrayList<>();
+        skdMeldinger.addAll(createDoedsmeldingerAnnullering(deleteDeathRowPersonList));
+        skdMeldinger.addAll(createDoedsmeldinger(createDeathRowPersonList));
 
         TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
-        List<String> environments = new ArrayList<String>();
+        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
+        Set<String> environment;
         for( String skdmelding : skdMeldinger) {
-
-            // Manipulering av streng for å matche det som sendes i testdata.
-            //skdmelding = skdmelding.replace(skdmelding.substring(57, 71), "20180205000000");
-
-            Set<String> environment = new HashSet<>();
-            environment.add("U5");
-
+            environment = new HashSet<>(Arrays.asList(getEnvironmentFromSkdDoedsmelding(skdmelding)));
             sendSkdMeldingTilGitteMiljoer.execute(skdmelding, skdRequestMeldingDefinition, environment);
+            environment.clear();
         }
-        environments.add("U5");
+
         skdStartAjourhold.execute(new HashSet<>(environments));
     }
-
 
     private List<String> createDoedsmeldinger(List<Person> deathRowPersonList){
 
@@ -105,15 +136,32 @@ public class LagreDodsmeldingTilTps {
 
         if(!doedePersonerWithoutDoedsmelding.isEmpty()){
             skdDodsmelding.addAll(skdCreator.execute("Doedsmelding", doedePersonerWithoutDoedsmelding, true));
-            //saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
-        //System.out.println("SkdMelding: " + skdDodsmelding);
+
         return skdDodsmelding;
     }
+     private List<String> createDoedsmeldingerAnnullering(List<Person> deleteDeathRowPersonList) {
+
+        List<String> skdDodsmeldingAnnulering = new ArrayList<>();
+
+        if(!deleteDeathRowPersonList.isEmpty()){
+            skdDodsmeldingAnnulering.addAll(skdCreator.execute("DoedsmeldingAnnullering", deleteDeathRowPersonList ,true));
+        }
+
+        return skdDodsmeldingAnnulering;
+     }
+
     private List<Person> findDoedePersonerWithoutDoedsmelding(List<Person> personer) {
         List<Person> doedePersoner = findDoedePersoner.execute(personer);
-        List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding.execute(doedePersoner);
-        return doedePersonerWithoutDoedsmelding;
+        return doedePersoner;
     }
 
+    private String getEnvironmentFromSkdDoedsmelding(String skdmelding){
+
+        return deathRowRepository.findByIdent(skdmelding.substring(46, 57)).getMiljoe();
+    }
+
+
+
 }
+

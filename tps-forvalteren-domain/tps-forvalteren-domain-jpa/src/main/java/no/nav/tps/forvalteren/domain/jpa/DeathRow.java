@@ -48,7 +48,7 @@ public class DeathRow extends ChangeStamp {
     @Column(name = "TILSTAND")
     private String tilstand;
 
-    @Column(name = "DOEDSDATO", nullable = false)
+    @Column(name = "DOEDSDATO")
     private LocalDate doedsdato;
 
 }

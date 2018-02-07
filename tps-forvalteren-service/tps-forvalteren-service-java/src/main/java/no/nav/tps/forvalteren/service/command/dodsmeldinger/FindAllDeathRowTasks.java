@@ -25,7 +25,9 @@ public class FindAllDeathRowTasks {
         List<DeathRow> allDeathRowTaskU = repository.findAllByHandling("U");
 
         for(DeathRow updateDeathRowTask : allDeathRowTaskU) {
+            updateDeathRowTask.setHandling("D");
             allDeathRowTaskD.add(updateDeathRowTask);
+            updateDeathRowTask.setHandling("C");
             allDeathRowTaskC.add(updateDeathRowTask);
         }
 
