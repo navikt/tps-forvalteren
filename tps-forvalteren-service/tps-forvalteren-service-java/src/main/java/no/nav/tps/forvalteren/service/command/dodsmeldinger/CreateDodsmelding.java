@@ -13,6 +13,7 @@ public class CreateDodsmelding {
     private DeathRowRepository deathRowRepository;
 
     public void execute(DeathRow dodsmelding) {
+        dodsmelding.setStatus("Ikke sendt");
         deathRowRepository.save(dodsmelding);
     }
 

@@ -108,6 +108,7 @@ public class DeathRowController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterMelding") })
     public RsDeathRow updateMelding(@RequestBody RsDeathRow rsDeathRow) {
         DeathRow mappedDeathRow = mapper.map(rsDeathRow, DeathRow.class);
+        mappedDeathRow.setStatus("Ikke sendt");
         DeathRow updatedDeathRow = updateDeathRow.execute(mappedDeathRow);
         return mapper.map(updatedDeathRow, RsDeathRow.class);
     }
