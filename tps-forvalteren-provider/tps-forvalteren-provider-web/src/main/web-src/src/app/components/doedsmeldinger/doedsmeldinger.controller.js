@@ -155,7 +155,8 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         handlinger: $scope.handlinger,
                         startOfEra: $scope.startOfEra,
                         today: $scope.today,
-                        select: $scope.SELECT
+                        select: $scope.SELECT,
+                        getMeldinger : getMeldinger
                     }
                 });
                 $mdDialog.show(confirm);
@@ -199,6 +200,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         .ok('OK');
                     $mdDialog.show(alert);
                     $scope.showProgress = false;
+                    getMeldinger();
                 }, function (error) {
                     utilsService.showAlertError(error);
                     $scope.showProgress = false;
