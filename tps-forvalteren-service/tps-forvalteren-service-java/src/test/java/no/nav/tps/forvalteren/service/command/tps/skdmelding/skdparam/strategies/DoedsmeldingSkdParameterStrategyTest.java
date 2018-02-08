@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class DoedsmeldingSkdParameterStrategyTest {
 
     private static final String FNR = "01234567890";
     private static final LocalDateTime REGDATO = LocalDateTime.of(2017, 9, 29, 15, 38, 0);
-    private static final LocalDateTime DOEDSDATO = LocalDateTime.of(2017, 10, 2, 8, 0, 0);
+    private static final LocalDate DOEDSDATO = LocalDate.of(2017, 10, 2);
 
     private static final String REGDATO_DATE_STRING = "20170929";
     private static final String REGDATO_TIME_STRING = "153800";

@@ -72,7 +72,7 @@ public class LagreDodsmeldingTilTps {
                 person.setRegdato(LocalDateTime.now());
 
                 if ("C".equals(melding.getHandling())) {
-                    person.setDoedsdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                    person.setDoedsdato(melding.getDoedsdato());
                     person.setRegdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
                     createDeathRowPersonList.add(person);
 

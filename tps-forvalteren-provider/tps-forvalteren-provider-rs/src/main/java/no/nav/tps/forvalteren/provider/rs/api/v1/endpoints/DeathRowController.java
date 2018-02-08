@@ -126,12 +126,10 @@ public class DeathRowController {
     @RequestMapping(value = "/clearskjema/{miljoe}", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma")})
     public void tomSkjema(@Nullable @PathVariable("miljoe")  String miljoe){
-        if (miljoe != null){
+        if (!miljoe.equals("undefined")){
             deathRowRepository.deleteAllByMiljoe(miljoe);
         } else {
             deathRowRepository.deleteAll();
         }
-
     }
-
 }
