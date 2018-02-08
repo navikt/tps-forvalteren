@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.doedsmeldinger.endremelding', ['ngMaterial'])
     .controller('EndreMeldingCtrl', ['$scope', '$mdDialog', 'utilsService', 'doedsmeldingService',
-        function ($scope, $mdDialog, utilsService, doedsmeldingService, melding, miljoer, handlinger, startOfEra, today, select) {
+        function ($scope, $mdDialog, utilsService, doedsmeldingService, melding, miljoer, handlinger, startOfEra, today, select, getMeldinger) {
 
             $scope.melding = this.melding;
             $scope.miljoer = utilsService.sortEnvironments(this.miljoer.environments);
@@ -8,6 +8,7 @@ angular.module('tps-forvalteren.doedsmeldinger.endremelding', ['ngMaterial'])
             $scope.startOfEra = this.startOfEra;
             $scope.today = this.today;
             $scope.SELECT = this.select;
+            $scope.getMeldinger = this.getMeldinger;
 
             $scope.oppdatering = angular.copy($scope.melding);
 
@@ -29,6 +30,7 @@ angular.module('tps-forvalteren.doedsmeldinger.endremelding', ['ngMaterial'])
                         $scope.melding.doedsdato = $scope.oppdatering.doedsdato;
                         $scope.melding.miljoe = $scope.oppdatering.miljoe;
                         $mdDialog.hide();
+                        $scope.getMeldinger();
                     },
                     function (error) {
                         $mdDialog.hide();
