@@ -6,7 +6,7 @@
             <div flex="40" style="margin-top: -3px; margin-right: 10px; margin-bottom: 30px;">
                 <md-chips ng-model="melding.identer" name="ident" readonly="false" md-enable-chip-edit="true"
                           md-separator-keys="separators" md-transform-chip="addMultipleChips($chip)" md-add-on-blur="true"
-                          placeholder="Legg til ident...">
+                          placeholder="Legg til ident ...">
                     <md-chip-template name="chips-template">
                         <strong>{{$chip}}</strong>
                         <em>({{$chip | identtype }})</em>
