@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.HusbokstavEncoder;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.StatsborgerskapEncoder;
 
@@ -60,8 +60,8 @@ public class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.SLEKTSNAVN, person.getEtternavn());
         skdParams.put(SkdConstants.STATSBORGERSKAP, statsborgerskapEncoder.encode(person.getStatsborgerskap()));
 
-        String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
-        String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());
+        String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
+        String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
         skdParams.put(SkdConstants.MASKINTID, hhMMss);
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);

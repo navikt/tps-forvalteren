@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class FindDoedePersonerTest {
     public void setup() {
         findDoedePersoner = new FindDoedePersoner();
 
-        LocalDateTime doedsdato = LocalDateTime.now();
+        LocalDate doedsdato = LocalDate.now();
 
         personer = Arrays.asList(anAlivePersonMock1, anAlivePersonMock2, aDeadPersonMock1, aDeadPersonMock2);
         alivePersoner = Arrays.asList(anAlivePersonMock1, anAlivePersonMock2);

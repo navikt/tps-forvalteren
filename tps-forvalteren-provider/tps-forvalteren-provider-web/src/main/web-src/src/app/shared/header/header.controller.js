@@ -3,10 +3,6 @@ angular.module('tps-forvalteren')
     .controller('HeaderCtrl', ['$scope', '$mdDialog', 'authenticationService', 'locationService', 'appInfoService', 'utilsService',
         function ($scope, $mdDialog, authenticationService, locationService, appInfoService, utilsService) {
 
-            $scope.visTestdataKnapp = false;
-            $scope.visSkdEndringsmeldingKnapp = false;
-            $scope.visServiceRutineKnapp = false;
-
             $scope.logout = function () {
                 authenticationService.invalidateSession(function () {
                     locationService.redirectToLoginState();
@@ -33,10 +29,15 @@ angular.module('tps-forvalteren')
                 locationService.redirectToHomeState();
             };
 
+            $scope.openVisSendDoedsmelding = function(){
+                locationService.redirectToSendDoedsmeldinger();
+            };
+
             $scope.isRoot = locationService.isRoot();
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0 && !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSendDoedsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0;
             $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
 
             $scope.$on('updateEvent', function () {

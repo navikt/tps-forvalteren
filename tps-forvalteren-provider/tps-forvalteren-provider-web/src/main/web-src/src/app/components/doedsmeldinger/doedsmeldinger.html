@@ -1,0 +1,114 @@
+<div class="doedsmelding-dashboard" layout="column" flex layout-padding ng-cloak>
+    <md-progress-linear class="progress" md-mode="indeterminate" ng-show="showProgress"></md-progress-linear>
+    <h3 class="title">Send dødsmelding</h3>
+    <div class="top md-whiteframe-z1 request-form" layout="column">
+        <form name="requestForm" flex="100" layout="row" flex class="accent">
+            <div flex="40" style="margin-top: -3px; margin-right: 10px; margin-bottom: 30px;">
+                <md-chips ng-model="melding.identer" name="ident" readonly="false" md-enable-chip-edit="true"
+                          md-separator-keys="separators" md-transform-chip="addMultipleChips($chip)" md-add-on-blur="true"
+                          placeholder="Legg til ident...">
+                    <md-chip-template name="chips-template">
+                        <strong>{{$chip}}</strong>
+                        <em>({{$chip | identtype }})</em>
+                    </md-chip-template>
+                </md-chips>
+            </div>
+            <div class="errors" ng-messages="requestForm.ident.$error">
+                <div ng-message="required">Feltet er påkrevd</div>
+            </div>
+            <md-input-container class="input-container" flex="15">
+                <label>Handling</label>
+                <md-select name="handling" ng-model="melding.handling" ng-required="true" ng-change="checkDato()">
+                    <md-option><em>{{SELECT}}</em></md-option>
+                    <md-option ng-repeat="valg in handlinger" ng-value="valg.action">{{valg.handling}}</md-option>
+                </md-select>
+                <div ng-messages="requestForm.handling.$error" ng-show="requestForm.handling.$dirty">
+                    <div ng-message="required">Feltet er påkrevd</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="input-container" flex="20" aria-label="Dato for melding">
+                <label>Dødsdato</label>
+                <md-datepicker name="doedsdato" ng-required="melding.handling === 'C' || melding.handling === 'U'"
+                               ng-disabled="melding.handling === 'D'"
+                               md-current-view="year"
+                               ng-model="melding.doedsdato"
+                               md-min-date="startOfEra"
+                               md-max-date="today">
+                </md-datepicker>
+                <div ng-messages="requestForm.doedsdato.$error" ng-show="requestForm.doedsdato.$dirty" ng-messages-multiple>
+                    <div ng-message="required">Feltet er påkrevd</div>
+                    <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                    <div ng-message="mindate">Dato kan ikke være før 01-01-1880</div>
+                    <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex="10" class="input-container">
+                <label>Miljø</label>
+                <md-select name="miljoe" ng-model="melding.miljoe" ng-required="true" ng-change="sjekkgyldig()">
+                    <md-option><em>{{SELECT}}</em></md-option>
+                    <md-option ng-repeat="miljoe in environments" value="{{miljoe}}">{{miljoe}}</md-option>
+                </md-select>
+                <div ng-messages="requestForm.miljoe.$error" ng-show="requestForm.miljoe.$dirty">
+                    <div ng-message="required">Feltet er påkrevd</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="button-container">
+                <md-button type="submit" class="md-button md-raised md-accent"
+                           ng-click="add()" ng-disabled="!requestForm.$valid || melding.identer.length === 0 || melding.handling === SELECT || melding.miljoe === SELECT">
+                    <md-icon md-svg-icon="assets/icons/ic_person_add_black_24px.svg"></md-icon>
+                    Legg til
+                </md-button>
+            </md-input-container>
+        </form>
+    </div>
+    <!-- Resulting Response -->
+
+    <form name="responseForm" class="top transparent response-form">
+        <h3 layout="row" class="flexbox-parent" ng-if="showResponse()">
+            <span flex="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ident</span>
+            <span flex="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handling</span>
+            <span flex="10">&nbsp;Dødsdato</span>
+            <span flex="10">Miljø</span>
+            <span flex="10">Bruker</span>
+            <span flex="15">Tidspunkt</span>
+            <span flex="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</span>
+        </h3>
+        <div ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
+            <md-card id="melding{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
+                     ng-init="height = 1"
+                     ng-mouseover="height = 5"
+                     ng-mouseleave="height = 1">
+                <md-card-content flex class="card-content">
+                    <div layout="row">
+                        <div flex="15">{{message.ident}}</div>
+                        <div flex="15">{{message.handling | doedshandling}}</div>
+                        <div flex="10">{{message.doedsdato | date:'dd-MM-yyyy' }}</div>
+                        <div flex="10">{{message.miljoe }}</div>
+                        <div flex="10">{{message.bruker | titlecase}}</div>
+                        <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                        <div flex="10">{{message.status}}</div>
+                        <div flex></div>
+                        <md-button class="md-icon-button align-button" ng-click="edit($index)">
+                            <md-icon md-svg-icon="assets/icons/ic_mode_edit_black_24px.svg" aria-label="Endre melding"></md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button align-button" ng-click="delete($index)">
+                            <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" aria-label="Slette melding"></md-icon>
+                        </md-button>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </form>
+    <div layout-align="end end" layout="row" class="btn-group" ng-show="showResponse()">
+        <md-input-container class="input-row" aria-label="Avbryt">
+            <md-button class="md-button md-raised"
+                       ng-click="toemSkjema()">Tøm skjema
+            </md-button>
+        </md-input-container>
+        <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
+            <md-button class="md-button md-raised md-accent"
+                       ng-click="sendTilTps()">Send til TPS
+            </md-button>
+        </md-input-container>
+    </div>
+</div>

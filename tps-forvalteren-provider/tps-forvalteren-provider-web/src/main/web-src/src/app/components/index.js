@@ -16,3 +16,5 @@ require('./endringsmelding/skd/vis-meldingsgruppe.controller');
 require('./endringsmelding/skd/endregruppe/endre-gruppe.controller');
 require('./endringsmelding/skd/nymelding/ny-melding.controller');
 require('./endringsmelding/skd/sendtiltps/send-til-tps.controller');
+require('./doedsmeldinger/doedsmeldinger.controller');
+require('./doedsmeldinger/endremelding/endre-melding.controller');

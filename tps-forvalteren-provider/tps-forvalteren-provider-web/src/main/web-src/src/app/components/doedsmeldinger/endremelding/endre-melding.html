@@ -1,0 +1,65 @@
+<div class="doedsmelding-dashboard md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Endre doedsmelding dialog" class="top">
+        <form name="requestForm2">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Endre melding for ident {{melding.ident}}</h2>
+                <div layout="row">
+                    <md-input-container class="input-container" layout="col">
+                        <label>Handling</label>
+                        <md-select ng-model="oppdatering.handling" class="md-no-underline" required ng-change="checkDato()">
+                            <md-option><em>{{SELECT}}</em></md-option>
+                            <md-option ng-repeat="valg in handlinger" ng-value="valg.action">{{valg.handling}}</md-option>
+                        </md-select>
+                        <div ng-messages="requestForm2.handling.$error" ng-show="requestForm2.handling.$pristine">
+                            <div ng-message="required">Feltet er påkrevd</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="input-container"
+                                        aria-label="Dato for melding">
+                        <label>Dødsdato</label>
+                        <md-datepicker name="doedsdato"
+                                       ng-required="oppdatering.handling === 'C' || oppdatering.handling === 'U'"
+                                       ng-disabled="oppdatering.handling === 'D'"
+                                       md-placeholder="Angi dato"
+                                       md-current-view="year"
+                                       ng-model="oppdatering.doedsdato"
+                                       md-min-date="startOfEra"
+                                       md-max-date="today">
+                        </md-datepicker>
+                        <div ng-messages="requestForm2.doedsdato.$error" ng-show="requestForm2.doedsdato.$pristine" ng-messages-multiple>
+                            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                            <div ng-message="mindate">Dato kan ikke være før 01-01-1900</div>
+                            <div ng-message="maxdate">Dato kan ikke være etter "Født før", eventuelt dagens dato</div>
+                        </div>
+                    </md-input-container>
+                    <div flex="5"></div>
+                    <md-input-container class="input-container">
+                        <label>Miljø</label>
+                        <md-select name="miljoe" ng-model="oppdatering.miljoe" class="md-no-underline" required>
+                            <md-option><em>{{SELECT}}</em></md-option>
+                            <md-option ng-repeat="miljoe in miljoer" value="{{miljoe}}">{{miljoe}}</md-option>
+                        </md-select>
+                        <div ng-messages="requestForm2.miljoe.$error" ng-show="requestForm2.miljoe.$pristine">
+                            <div ng-message="required">Feltet er påkrevd</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Avbryt">
+                    <md-tooltip md-direction="top">Avbryt endret melding</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Avbryt</md-button>
+                </md-input-container>
+                <md-input-container class="testdata-input-row" aria-label="Lagre oppdatert gruppeinfo">
+                    <md-tooltip md-direction="top">Lagre endret melding</md-tooltip>
+                    <md-button class="md-button md-raised md-accent" ng-click="oppdater()"
+                               ng-disabled="requestForm2.$invalid || oppdatering.handling === SELECT || oppdatering.miljoe === SELECT">Lagre
+                    </md-button>
+                </md-input-container>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+
+</div>

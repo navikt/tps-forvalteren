@@ -22,13 +22,13 @@ public class GetStringVersionOfLocalDateTimeTest {
 
     @Test
     public void checkThatYyyyMmDdReturnsCorrectDate() {
-        String result = GetStringVersionOfLocalDateTime.yyyyMMdd(TIME);
+        String result = ConvertDateToString.yyyyMMdd(TIME);
         assertThat(result, is("20170908"));
     }
 
     @Test
     public void checkThatHhMmSsReturnsCorrectDate() {
-        String result = GetStringVersionOfLocalDateTime.hhMMss(TIME);
+        String result = ConvertDateToString.hhMMss(TIME);
         assertThat(result, is("090204"));
     }
 

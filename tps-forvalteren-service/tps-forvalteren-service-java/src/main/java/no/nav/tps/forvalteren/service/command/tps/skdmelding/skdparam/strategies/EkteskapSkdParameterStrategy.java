@@ -16,7 +16,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 
 @Service
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
@@ -48,8 +48,8 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
         skdParams.put(SkdConstants.PERSONNUMMER, person.getIdent().substring(6, 11));
 
-        String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
-        String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());
+        String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
+        String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
         skdParams.put(SkdConstants.MASKINTID, hhMMss);
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
