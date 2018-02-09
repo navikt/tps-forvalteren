@@ -70,6 +70,17 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                                 found = true;
                             }
                         });
+                        $scope.meldinger.forEach(function (melding) {
+                            if (chipToAdd === melding.ident) {
+                                found = true;
+                                var alert = $mdDialog.alert()
+                                    .title('Duplikat ident')
+                                    .textContent('Ident finnes allerede og kan ikke legges til!')
+                                    .ariaLabel('Duplikat ident kan ikke legges til.')
+                                    .ok('OK');
+                                $mdDialog.show(alert);
+                            }
+                        });
                         if (!found) {
                             $scope.melding.identer.push(chipToAdd);
                         }
