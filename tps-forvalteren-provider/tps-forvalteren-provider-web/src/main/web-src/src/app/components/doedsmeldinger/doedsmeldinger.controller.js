@@ -122,7 +122,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             };
 
             function fixDate(date) {
-                return new Date(date.getTime() + (12 * 3600 * 1000));
+                return date ? new Date(date.getTime() + (12 * 3600 * 1000)) : null;
             }
 
             function clearRequestForm() {
