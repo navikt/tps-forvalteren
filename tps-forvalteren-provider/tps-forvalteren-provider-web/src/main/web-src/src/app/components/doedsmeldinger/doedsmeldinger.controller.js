@@ -111,6 +111,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                     }
                 });
                 $scope.melding.identer = identer;
+                $scope.melding.doedsdato = fixDate($scope.melding.doedsdato);
                 doedsmeldingService.opprett($scope.melding).then(function () {
                         getMeldinger();
                         clearRequestForm();
@@ -119,6 +120,10 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                     }
                 );
             };
+
+            function fixDate(date) {
+                return new Date(date.getTime() + (12 * 3600 * 1000));
+            }
 
             function clearRequestForm() {
                 $scope.melding = $scope.melding ? $scope.melding : {};
