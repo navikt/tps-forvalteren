@@ -3,9 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
 
-import com.sun.istack.Nullable;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -66,7 +64,7 @@ public class DeathRowController {
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdList(@RequestBody RsDeathRowCheckIdent rsDeathRowCheckIdent) {
         return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowCheckIdent.getIdenter(), rsDeathRowCheckIdent.getMiljoe());
@@ -74,11 +72,11 @@ public class DeathRowController {
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding") })
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
     public void createMelding(@RequestBody RsDeathRowBulk rsDeathRowBulk) {
         List<DeathRow> deathRowList = mapper.map(rsDeathRowBulk, List.class);
-        for(DeathRow deathrow : deathRowList){
+        for (DeathRow deathrow : deathRowList) {
             deathrow.setEndretAv(userContextHolder.getUser().getUsername());
             createDodsmelding.execute(deathrow);
         }
@@ -86,15 +84,15 @@ public class DeathRowController {
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding") })
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public void deleteMelding(@PathVariable("id") Long id){
+    public void deleteMelding(@PathVariable("id") Long id) {
         deathRowRepository.deleteById(id);
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentLogg")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentLogg") })
     @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
     public List<RsDeathRow> getMeldingLogg() {
         List<DeathRow> deathRowList = findAllDeathRows.execute();
@@ -116,7 +114,7 @@ public class DeathRowController {
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema") })
     public void sendToTps() {
         sendDodsmeldingTilTps.execute();
     }
@@ -124,9 +122,9 @@ public class DeathRowController {
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @RequestMapping(value = "/clearskjema/{miljoe}", method = RequestMethod.POST)
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma")})
-    public void tomSkjema(@Nullable @PathVariable("miljoe")  String miljoe){
-        if (!miljoe.equals("undefined")){
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma") })
+    public void tomSkjema(@PathVariable("miljoe") String miljoe) {
+        if (!miljoe.equals("undefined")) {
             deathRowRepository.deleteAllByMiljoe(miljoe);
         } else {
             deathRowRepository.deleteAll();

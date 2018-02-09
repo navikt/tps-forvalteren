@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
@@ -22,6 +20,8 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitt
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LagreDodsmeldingTilTps {
