@@ -9,7 +9,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             $scope.handlinger = [{handling: 'Sette dødsdato', action: 'C'},
                 {handling: 'Endre dødsdato', action: 'U'},
-                {handling: 'Slette dødsdato', action: 'D'}];
+                {handling: 'Annulere dødsdato', action: 'D'}];
 
             $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
             $scope.today = new Date();

@@ -10,7 +10,7 @@ angular.module('tps-forvalteren.filter')
                 case 'U':
                     return 'Endre dødsdato';
                 case 'D':
-                    return 'Slette dødsdato';
+                    return 'Annulere dødsdato';
                 default:
                     return '';
             }

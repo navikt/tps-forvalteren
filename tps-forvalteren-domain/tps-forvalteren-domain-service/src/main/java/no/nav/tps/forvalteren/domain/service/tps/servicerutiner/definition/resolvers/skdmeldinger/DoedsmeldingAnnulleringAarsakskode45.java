@@ -6,7 +6,6 @@ import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingAnnulleringSkdParamtere;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 
 public class DoedsmeldingAnnulleringAarsakskode45 implements SkdMeldingResolver {
 
@@ -27,5 +26,4 @@ public class DoedsmeldingAnnulleringAarsakskode45 implements SkdMeldingResolver 
                 .addSecurity()
                 .build();
     }
-    
 }
