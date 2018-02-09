@@ -11,7 +11,7 @@ import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingAnnulleringSkdParamtere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
 
 @Service
@@ -44,13 +44,13 @@ public class DoedsmeldingAnnulleringSkdParamterStrategy implements SkdParameters
         skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
         skdParams.put(SkdConstants.PERSONNUMMER, person.getIdent().substring(6, 11));
 
-        String yyyyMMdd = GetStringVersionOfLocalDateTime.yyyyMMdd(person.getRegdato());
-        String hhMMss = GetStringVersionOfLocalDateTime.hhMMss(person.getRegdato());
+        String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
+        String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
         skdParams.put(SkdConstants.MASKINTID, hhMMss);
         skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
 
-        String doedsdatoStringVersion = GetStringVersionOfLocalDateTime.yyyyMMdd(LocalDateTime.now());
+        String doedsdatoStringVersion = ConvertDateToString.yyyyMMdd(LocalDateTime.now());
 
         skdParams.put(SkdConstants.REG_DATO, doedsdatoStringVersion);
     }

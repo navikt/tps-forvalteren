@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.GetStringVersionOfLocalDateTime;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 
 @Service
 public class BarnetranseSkdParameterStrategy {
@@ -33,8 +33,8 @@ public class BarnetranseSkdParameterStrategy {
     }
 
     private void addDefaultParameters(Map<String, String> skdParams) {
-        String maskindato = GetStringVersionOfLocalDateTime.yyyyMMdd(LocalDateTime.now());
-        String maskintid = GetStringVersionOfLocalDateTime.hhMMss(LocalDateTime.now());
+        String maskindato = ConvertDateToString.yyyyMMdd(LocalDateTime.now());
+        String maskintid = ConvertDateToString.hhMMss(LocalDateTime.now());
         skdParams.put("maskindato", maskindato);
         skdParams.put("maskintid", maskintid);
         skdParams.put("transtype", "2");
