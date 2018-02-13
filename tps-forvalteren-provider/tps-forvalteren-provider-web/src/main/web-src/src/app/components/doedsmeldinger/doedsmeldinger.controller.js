@@ -46,8 +46,10 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                             for (var i = 0; i < result.data.length; i++) {
                                 $scope.melding.identer.forEach(function (meldingIdent, index) {
                                     if (result.data[i].ident === meldingIdent) {
-                                        elementer[index].parentElement.parentElement.style.backgroundColor = result.data[i].status === 'FIN' ? 'yellowgreen' : 'indianred';
-                                        identStatus[result.data[i].ident] = result.data[i].status === 'FIN';
+                                        elementer[index].parentElement.parentElement.style.backgroundColor = result.data[i].status === 'LIM' ? 'yellowgreen' :
+                                            result.data[i].status === 'FIN' ? 'deepskyblue' : 'indianred';
+                                        elementer[index].parentElement.parentElement.title = result.data[i].status === 'FIN' ? 'Ident er allerede lagt til i liste under' : '';
+                                        identStatus[result.data[i].ident] = result.data[i].status === 'LIM';
                                     }
                                 });
                             }
@@ -161,7 +163,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         startOfEra: $scope.startOfEra,
                         today: $scope.today,
                         select: $scope.SELECT,
-                        getMeldinger : getMeldinger
+                        getMeldinger: getMeldinger
                     }
                 });
                 $mdDialog.show(confirm);
