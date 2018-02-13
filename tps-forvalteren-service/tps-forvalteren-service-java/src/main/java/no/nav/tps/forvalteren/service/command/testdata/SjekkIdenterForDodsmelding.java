@@ -35,7 +35,6 @@ public class SjekkIdenterForDodsmelding extends SjekkIdenter {
         Set<String> ledigeIdenterDBOgMiljo = finnLedigeIdenterDBOgMiljoOgSetStatus(identerMedStatus, gyldigeIdenter, miljo);
         setStatusOnDifference(gyldigeIdenter, ledigeIdenterDBOgMiljo, identerMedStatus, FINNES);
 
-        System.out.println(identerMedStatus);
         return mapToIdentMedStatusSet(identerMedStatus);
     }
 
