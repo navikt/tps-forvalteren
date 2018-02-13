@@ -22,4 +22,7 @@ public interface DeathRowRepository extends Repository<DeathRow, Long> {
     List<DeathRow> findAll();
 
     List<DeathRow> findAllByHandling(String handling);
+
+    DeathRow findByIdentAndMiljoe(String ident, String miljoe);
 }
+
