@@ -73,7 +73,7 @@ public class SendDodsmeldingTilTps {
 
                 if ("C".equals(melding.getHandling())) {
                     person.setDoedsdato(melding.getDoedsdato());
-                    person.setRegdato(LocalDateTime.of(melding.getDoedsdato(), LocalTime.now()));
+                    person.setRegdato(melding.getDoedsdato());
                     createDeathRowPersonList.add(person);
 
                 } else if ("D".equals(melding.getHandling())) {

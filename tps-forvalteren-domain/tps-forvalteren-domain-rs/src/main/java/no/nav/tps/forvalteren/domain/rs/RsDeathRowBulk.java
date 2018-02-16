@@ -41,7 +41,7 @@ public class RsDeathRowBulk {
     private String tilstand;
 
     @NotNull
-    private LocalDate doedsdato;
+    private LocalDateTime doedsdato;
 
     private LocalDateTime tidspunkt;
 

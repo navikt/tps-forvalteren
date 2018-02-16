@@ -51,7 +51,7 @@ public class DoedsmeldingSkdParameterStrategyTest {
 
         when(aPerson.getIdent()).thenReturn(FNR);
         when(aPerson.getRegdato()).thenReturn(REGDATO);
-        when(aPerson.getDoedsdato()).thenReturn(DOEDSDATO);
+        when(aPerson.getDoedsdato()).thenReturn(DOEDSDATO.atTime(12, 00));
     }
 
     @Test

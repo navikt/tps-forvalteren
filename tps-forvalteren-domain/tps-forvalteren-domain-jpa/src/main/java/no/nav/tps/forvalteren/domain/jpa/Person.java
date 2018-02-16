@@ -71,7 +71,7 @@ public class Person extends ChangeStamp {
     private LocalDateTime spesregDato;
 
     @Column(name = "DOEDSDATO")
-    private LocalDate doedsdato;
+    private LocalDateTime doedsdato;
 
     @JoinColumn(name = "ADRESSE_ID")
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)

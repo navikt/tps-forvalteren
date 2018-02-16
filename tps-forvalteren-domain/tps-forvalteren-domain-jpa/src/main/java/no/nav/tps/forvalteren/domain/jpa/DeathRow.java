@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,6 +49,6 @@ public class DeathRow extends ChangeStamp {
     private String tilstand;
 
     @Column(name = "DOEDSDATO")
-    private LocalDate doedsdato;
+    private LocalDateTime doedsdato;
 
 }

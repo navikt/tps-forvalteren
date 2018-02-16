@@ -38,7 +38,7 @@ public class RsDeathRow {
     @Size(min = 1, max = 50)
     private String tilstand;
 
-    private LocalDate doedsdato;
+    private LocalDateTime doedsdato;
 
     @NotNull
     private LocalDateTime tidspunkt;

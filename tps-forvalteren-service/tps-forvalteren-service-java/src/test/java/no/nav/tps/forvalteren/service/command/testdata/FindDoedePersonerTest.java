@@ -47,8 +47,8 @@ public class FindDoedePersonerTest {
 
         when(anAlivePersonMock1.getDoedsdato()).thenReturn(null);
         when(anAlivePersonMock2.getDoedsdato()).thenReturn(null);
-        when(aDeadPersonMock1.getDoedsdato()).thenReturn(doedsdato);
-        when(aDeadPersonMock2.getDoedsdato()).thenReturn(doedsdato);
+        when(aDeadPersonMock1.getDoedsdato()).thenReturn(doedsdato.atTime(12, 00));
+        when(aDeadPersonMock2.getDoedsdato()).thenReturn(doedsdato.atTime(12, 00));
     }
 
     @Test
