@@ -47,7 +47,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                                 $scope.melding.identer.forEach(function (meldingIdent, index) {
                                     if (result.data[i].ident === meldingIdent) {
                                         elementer[index].parentElement.parentElement.style.backgroundColor = result.data[i].status === 'LIM' ? 'yellowgreen' :
-                                            result.data[i].status === 'FIN' ? 'deepskyblue' : 'indianred';
+                                            result.data[i].status === 'FIN' ? 'yellow' : 'indianred';
                                         elementer[index].parentElement.parentElement.title = result.data[i].status === 'FIN' ? 'Ident er allerede lagt til i liste under' : '';
                                         identStatus[result.data[i].ident] = result.data[i].status === 'LIM';
                                     }

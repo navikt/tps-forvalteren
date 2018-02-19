@@ -7,15 +7,15 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
@@ -78,7 +78,7 @@ public class DeathRowMappingStrategyTest {
 
         deathRowList.forEach(deathRow -> {
             assertThat(deathRow.getId(), is(nullValue()));
-            assertThat(deathRow.getDoedsdato(), is(LocalDate.now().minusDays(1)));
+            assertThat(deathRow.getDoedsdato().toLocalDate(), is(LocalDate.now().minusDays(1)));
             assertThat(deathRow.getHandling(), is("handling"));
             assertThat(deathRow.getMiljoe(), is("miljoe"));
             assertThat(deathRow.getStatus(), is("status"));
