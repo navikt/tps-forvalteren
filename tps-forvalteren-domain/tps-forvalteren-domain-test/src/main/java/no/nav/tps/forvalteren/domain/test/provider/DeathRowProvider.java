@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 
-public class DeathRowProvider {
+public final class DeathRowProvider {
 
     private DeathRowProvider() {
 

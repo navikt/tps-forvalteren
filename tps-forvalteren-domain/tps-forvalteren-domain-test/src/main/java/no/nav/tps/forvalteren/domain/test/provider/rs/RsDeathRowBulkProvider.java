@@ -6,7 +6,7 @@ import java.util.List;
 
 import no.nav.tps.forvalteren.domain.rs.RsDeathRowBulk;
 
-public class RsDeathRowBulkProvider {
+public final class RsDeathRowBulkProvider {
 
     private RsDeathRowBulkProvider() {
 
