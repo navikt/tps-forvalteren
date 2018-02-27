@@ -23,9 +23,7 @@
                                        ng-disabled="oppdatering.handling === 'D'"
                                        md-placeholder="Angi dato"
                                        md-current-view="year"
-                                       ng-model="oppdatering.doedsdato"
-                                       md-min-date="startOfEra"
-                                       md-max-date="today">
+                                       ng-model="oppdatering.doedsdato">
                         </md-datepicker>
                         <div ng-messages="requestForm2.doedsdato.$error" ng-show="requestForm2.doedsdato.$pristine" ng-messages-multiple>
                             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>

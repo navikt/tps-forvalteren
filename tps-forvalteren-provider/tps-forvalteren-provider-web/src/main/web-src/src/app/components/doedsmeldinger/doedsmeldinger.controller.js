@@ -11,9 +11,6 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 {handling: 'Endre dødsdato', action: 'U'},
                 {handling: 'Annulere dødsdato', action: 'D'}];
 
-            $scope.startOfEra = new Date(1850, 0, 1); // Month is 0-indexed
-            $scope.today = new Date();
-
             $scope.separators = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.COMMA, $mdConstant.KEY_CODE.SEMICOLON, $mdConstant.KEY_CODE.SPACE, $mdConstant.KEY_CODE.TAB];
             $scope.SELECT = 'Velg';
             var identStatus = [];
@@ -160,8 +157,6 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         melding: $scope.meldinger[index],
                         miljoer: $scope.$resolve.environmentsPromise,
                         handlinger: $scope.handlinger,
-                        startOfEra: $scope.startOfEra,
-                        today: $scope.today,
                         select: $scope.SELECT,
                         getMeldinger: getMeldinger
                     }

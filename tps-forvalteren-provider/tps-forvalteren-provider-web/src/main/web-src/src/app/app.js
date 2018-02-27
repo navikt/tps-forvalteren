@@ -65,6 +65,8 @@ app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function
         var m = moment(dateString, 'DD-MM-YYYY', true);
         return m.isValid() ? m.toDate() : new Date(NaN);
     };
+    $mdDateLocaleProvider.firstRenderableDate = new Date(1850, 0, 1);
+    $mdDateLocaleProvider.lastRenderableDate = new Date(2099, 11, 31);
 }]);
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
