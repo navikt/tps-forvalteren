@@ -7,8 +7,11 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -101,7 +104,17 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
     @Test
     public void checkThatAllServicesGetsCalled() {
-        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, ENVIRONMENT);
+        String environment = "u5";
+        List<Long> ids = new ArrayList<>();
+        ids.add(100000000L);
+        ids.add(100000001L);
+        ids.add(100000002L);
+
+        RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps = new RsSkdEndringsmeldingIdListToTps();
+        skdEndringsmeldingIdListToTps.setEnvironment(environment);
+        skdEndringsmeldingIdListToTps.setIds(ids);
+
+        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
 
         verify(skdEndringsmeldingGruppeRepository).findById(GRUPPE_ID);
         verify(skdEndringsmeldingRepository).findAllByGruppe(gruppe);
@@ -125,7 +138,17 @@ public class SendEndringsmeldingGruppeToTpsTest {
         expectedException.expect(SkdEndringsmeldingGruppeNotFoundException.class);
         expectedException.expectMessage(message);
 
-        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, ENVIRONMENT);
+        String environment = "u5";
+        List<Long> ids = new ArrayList<>();
+        ids.add(100000000L);
+        ids.add(100000001L);
+        ids.add(100000002L);
+
+        RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps = new RsSkdEndringsmeldingIdListToTps();
+        skdEndringsmeldingIdListToTps.setEnvironment(environment);
+        skdEndringsmeldingIdListToTps.setIds(ids);
+
+        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
 
         verify(skdEndringsmeldingGruppeRepository).findById(GRUPPE_ID);
         verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);

@@ -12,6 +12,19 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
             $scope.aapneAlleFaner = false;
             $scope.meldingAsText = [];
+            $scope.valgteMeldinger = [];
+
+            function getAllCheckedMeldinger() {
+                //Pusher meldinger som er checked til $scope.valgteMeldinger
+                $scope.valgteMeldinger = [];
+
+                originalMeldinger.forEach(function (melding, index) {
+                    if ($scope.control[index] && $scope.control[index].velg) {
+                        $scope.valgteMeldinger.push(melding.id);
+                    }
+                });
+                return $scope.valgteMeldinger;
+            }
 
             function setHeaderButtons () {
                 headerService.setButtons([{
@@ -45,7 +58,10 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                             controller: 'SkdSendTilTpsCtrl',
                             templateUrl: 'app/components/endringsmelding/skd/sendtiltps/send-til-tps.html',
                             parent: angular.element(document.body),
-                            targetEvent: ev
+                            targetEvent: ev,
+                            locals: {
+                                meldinger: getAllCheckedMeldinger()
+                            }
                         });
                         $mdDialog.show(confirm);
                     }
@@ -141,6 +157,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
 
             $scope.oppdaterValgt = function () {
                 var endret = 0;
+
                 for (var i = 0; i < $scope.meldinger.length; i++) {
                     $scope.control[i] = $scope.control[i] || {};
                     if ($scope.control[i].endret) {
@@ -162,6 +179,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                         valgt++;
                     }
                 }
+
                 $scope.alleMeldinger.checked = (endret === 0 && $scope.meldinger.length === valgt) ||
                     (endret > 0 && endret === valgt);
                 $scope.antallEndret = endret;
@@ -346,10 +364,10 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 endringsmeldingService.getGruppe($scope.gruppeId, true).then(
                     function (result) {
                         headerService.setHeader(result.data.navn);
-                        setHeaderButtons();
                         setHeaderIcons();
                         prepTranstype(result.data.meldinger);
                         originalMeldinger = result.data.meldinger;
+                        setHeaderButtons();
                         $scope.meldinger = angular.copy(originalMeldinger);
                         $scope.control = [];
                         $scope.meldingAsText = [];

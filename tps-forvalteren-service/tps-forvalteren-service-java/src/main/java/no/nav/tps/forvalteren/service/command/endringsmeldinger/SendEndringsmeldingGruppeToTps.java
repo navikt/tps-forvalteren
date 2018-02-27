@@ -2,10 +2,13 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,14 +60,22 @@ public class SendEndringsmeldingGruppeToTps {
     @Autowired
     private SkdStartAjourhold skdStartAjourhold;
 
-    public void execute(Long gruppeId, String environment) {
+
+    public void execute(Long gruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
-        if (gruppe != null) {
-            List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingRepository.findAllByGruppe(gruppe);
+        if(gruppe != null) {
+            List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
+            String environment = skdEndringsmeldingIdListToTps.getEnvironment();
+            List<Long> idList = skdEndringsmeldingIdListToTps.getIds();
+
+            for(Long id : idList) {
+                SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
+                skdEndringsmeldinger.add(skdEndringsmelding);
+            }
 
             List<RsMeldingstype> rsMeldingstyper = skdEndringsmeldinger.stream()
                     .map(melding -> convertJsonToRsMeldingstype.execute(melding))
-                    .collect(Collectors.toList());  
+                    .collect(Collectors.toList());
 
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
             for (RsMeldingstype melding : rsMeldingstyper) {
@@ -73,11 +84,12 @@ public class SendEndringsmeldingGruppeToTps {
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
                 saveLogg(skdMelding, melding, gruppeId, environment);
             }
+
             skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
-        } else { 
+
+        } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
         }
-
     }
 
     private void saveLogg(String skdMelding, RsMeldingstype melding, Long gruppeId, String environment) {
@@ -88,5 +100,4 @@ public class SendEndringsmeldingGruppeToTps {
         log.setMeldingsgruppeId(gruppeId);
         skdEndringsmeldingLoggRepository.save(log);
     }
-
 }

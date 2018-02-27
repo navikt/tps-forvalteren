@@ -5,6 +5,8 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 import java.util.List;
 import javax.transaction.Transactional;
+
+import no.nav.tps.forvalteren.domain.rs.skd.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,13 +21,6 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingAsText;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
-import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
-import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
@@ -161,9 +156,9 @@ public class SkdEndringsmeldingController {
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendToTps") })
-    @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
-    public void sendToTps(@PathVariable Long gruppeId, @RequestBody String environment) {
-        sendEndringsmeldingGruppeToTps.execute(gruppeId, environment);
+    @RequestMapping(value = "/send/{gruppeId}", method = RequestMethod.POST)
+    public void sendToTps(@PathVariable Long gruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
+        sendEndringsmeldingGruppeToTps.execute(gruppeId, skdEndringsmeldingIdListToTps);
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
