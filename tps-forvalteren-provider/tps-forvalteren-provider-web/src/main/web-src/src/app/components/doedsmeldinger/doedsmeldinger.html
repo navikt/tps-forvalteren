@@ -31,9 +31,7 @@
                 <md-datepicker name="doedsdato" ng-required="melding.handling === 'C' || melding.handling === 'U'"
                                ng-disabled="melding.handling === 'D'"
                                md-current-view="year"
-                               ng-model="melding.doedsdato"
-                               md-min-date="startOfEra"
-                               md-max-date="today">
+                               ng-model="melding.doedsdato">
                 </md-datepicker>
                 <div ng-messages="requestForm.doedsdato.$error" ng-show="requestForm.doedsdato.$dirty" ng-messages-multiple>
                     <div ng-message="required">Feltet er påkrevd</div>
