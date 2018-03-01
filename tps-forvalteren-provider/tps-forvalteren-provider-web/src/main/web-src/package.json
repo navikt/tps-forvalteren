@@ -28,6 +28,7 @@
     "gulp-inject": "^4.1.0",
     "gulp-jshint": "^2.1.0",
     "gulp-less": "^3.4.0",
+    "gulp-util": "^3.0.8",
     "gulp-webpack": "^1.5.0",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
