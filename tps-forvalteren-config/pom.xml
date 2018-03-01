@@ -10,14 +10,6 @@
     <artifactId>tps-forvalteren-config</artifactId>
     <name>TPS Forvalteren :: Config</name>
 
-    <dependencies>
-        <!--SPRING-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-    </dependencies>
-
     <build>
         <testResources>
             <testResource>

@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-
+import org.springframework.stereotype.Component;
 
 @Configuration
 @Import({
@@ -31,13 +30,14 @@ import org.springframework.context.annotation.Import;
 })
 public class RestProviderConfig {
 
-    @Bean
-    ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-        mapper.findAndRegisterModules();
-        return mapper;
+    @Component
+    public class MyObjectMapper extends ObjectMapper {
+        public MyObjectMapper() {
+            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+            enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+            findAndRegisterModules();
+        }
     }
 }

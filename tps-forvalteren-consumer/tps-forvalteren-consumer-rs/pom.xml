@@ -38,12 +38,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--SELFTEST-->
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
-        </dependency>
-
         <!--SERVICES-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

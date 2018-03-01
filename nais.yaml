@@ -16,9 +16,6 @@ healthcheck:
     initialDelay: 30
     periodSeconds: 2
     failureThreshold: 140
-prometheus:
-  enabled: true
-  path: /metrics/prometheus
 resources:
   requests:
     cpu: 400m
@@ -30,10 +27,16 @@ fasitResources:
   used:
     - alias: "tps-forvalterenProperties"
       resourceType: applicationproperties
-    - alias: "srvtps-forvalteren"
-      resourceType: credential
     - alias: "tpsforvalterenDB"
       resourceType: datasource
+    - alias: "TPS_FORESPORSEL_XML_O"
+      resourceType: queue
+    - alias: "mqGateway"
+      resourceType: queuemaanger
+    - alias: "securityTokenService"
+      resourceType: baseurl
+    - alias: "srvtps-forvalteren"
+      resourceType: credential
     - alias: "virksomhet:Kodeverk_v2"
       resourceType: webserviceendpoint
     - alias: "virksomhet:EgenAnsatt_v1"

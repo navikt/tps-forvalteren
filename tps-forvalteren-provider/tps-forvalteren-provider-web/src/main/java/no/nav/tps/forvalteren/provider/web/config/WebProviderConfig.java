@@ -10,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @EnableConfigurationProperties
-@PropertySource("classpath:global.properties")
 @Import({RestProviderConfig.class,
         CommonConfig.class,
 })
