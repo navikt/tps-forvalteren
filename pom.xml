@@ -178,7 +178,8 @@
                 <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-provider-web</artifactId>
                 <version>${project.version}</version>
-                <classifier>classes</classifier>
+                <type>war</type>
+                <!--<classifier>classes</classifier>-->
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>

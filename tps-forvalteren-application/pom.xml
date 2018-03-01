@@ -23,11 +23,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
-            <artifactId>tps-forvalteren-provider-web</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-common-java</artifactId>
             <version>${project.version}</version>
         </dependency>
