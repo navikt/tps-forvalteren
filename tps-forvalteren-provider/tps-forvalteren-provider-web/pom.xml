@@ -10,8 +10,6 @@
     <artifactId>tps-forvalteren-provider-web</artifactId>
     <name>TPS Forvalteren :: Provider :: Web</name>
 
-    <packaging>war</packaging>
-
     <dependencies>
         <!--INTERNAL-->
         <dependency>
@@ -36,34 +34,6 @@
             <artifactId>bootstrap</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <!-- Imports messages.properties from tps-vedlikehold-common-java module -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-remote-resources-plugin</artifactId>
-                <configuration>
-                    <resourceBundles>
-                        <resourceBundle>no.nav.tps.forvalteren:tps-forvalteren-common-java:${project.version}</resourceBundle>
-                    </resourceBundles>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <attachClasses>true</attachClasses>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <profiles>
         <profile>
