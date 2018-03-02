@@ -8,20 +8,20 @@ port: 80
 healthcheck:
   liveness:
     path: /actuator/isAlive
-    initialDelay: 40
+    initialDelay: 15
     periodSeconds: 2
-    failureThreshold: 240
+    failureThreshold: 120
   readiness:
     path: /actuator/isReady
-    initialDelay: 40
+    initialDelay: 15
     periodSeconds: 2
-    failureThreshold: 240
+    failureThreshold: 120
 resources:
   requests:
-    cpu: 1
+    cpu: 0.75
     memory: 2056Mi
   limits:
-    cpu: 2056Mi
+    cpu: 1.5
     memory: 3000Mi
 fasitResources:
   used:
