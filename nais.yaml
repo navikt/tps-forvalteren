@@ -7,12 +7,12 @@ replicas:
 port: 80
 healthcheck:
   liveness:
-    path: /actuator/isAlive
+    path: actuator/isAlive
     initialDelay: 15
     periodSeconds: 2
     failureThreshold: 120
   readiness:
-    path: /actuator/isReady
+    path: actuator/isReady
     initialDelay: 15
     periodSeconds: 2
     failureThreshold: 120

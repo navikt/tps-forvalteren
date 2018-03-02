@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("actuator")
+@RequestMapping("/actuator")
 public class NaisEndpointController {
 
     @RequestMapping(value = "/isAlive", method = RequestMethod.GET)
