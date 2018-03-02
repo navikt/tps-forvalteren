@@ -10,7 +10,7 @@ healthcheck:
     path: /actuator/isAlive
     initialDelay: 30
     periodSeconds: 2
-    failureThreshold: 140
+    failureThreshold: 240
   readiness:
     path: /actuator/isReady
     initialDelay: 30
