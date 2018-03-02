@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tps-forvalteren-domain</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>tpsf-nais-release-12</version>
+        <version>tpsf-nais-release-14</version>
     </parent>
 
 
