@@ -15,7 +15,7 @@ healthcheck:
     path: /actuator/isReady
     initialDelay: 30
     periodSeconds: 2
-    failureThreshold: 140
+    failureThreshold: 240
 resources:
   requests:
     cpu: 400m
