@@ -32,7 +32,7 @@ fasitResources:
     - alias: "TPS_FORESPORSEL_XML_O"
       resourceType: queue
     - alias: "mqGateway"
-      resourceType: queuemaanger
+      resourceType: queuemanager
     - alias: "securityTokenService"
       resourceType: baseurl
     - alias: "srvtps-forvalteren"
