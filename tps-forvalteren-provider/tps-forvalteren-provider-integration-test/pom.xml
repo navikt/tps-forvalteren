@@ -4,7 +4,7 @@
     <parent>
         <artifactId>tps-forvalteren-provider</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>tpsf-nais-release-28</version>
+        <version>tpsf-nais-release-30</version>
     </parent>
 
     <artifactId>tps-forvalteren-provider-integration-test</artifactId>
