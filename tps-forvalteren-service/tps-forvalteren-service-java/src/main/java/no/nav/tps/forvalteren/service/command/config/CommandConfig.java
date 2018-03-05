@@ -46,13 +46,12 @@ public class CommandConfig {
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
-    @Value("${environment.class}")
+    @Value("${FASIT_ENVIRONMENT_NAME}")
     private String deployedEnvironment;
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws Exception {
-        String defaultEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
-        return messageQueueServiceFactory.createMessageQueueConsumer(defaultEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
     @Bean

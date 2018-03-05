@@ -5,7 +5,5 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 
 public interface FasitMessageQueueConsumer extends FasitQueueConsumer {
-    Queue getRequestQueue(String environment);
-    QueueManager getQueueManager(String environment);
-    void setRequestQueueAlias(String requestQueueAlias);
+    Queue getRequestQueue(String requestQueueAlias, String environment);
 }

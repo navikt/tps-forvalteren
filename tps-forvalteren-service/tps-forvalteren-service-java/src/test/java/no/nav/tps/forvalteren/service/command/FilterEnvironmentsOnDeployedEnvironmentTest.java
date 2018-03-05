@@ -34,7 +34,8 @@ public class FilterEnvironmentsOnDeployedEnvironmentTest {
         Set<String> ret = filterEnvironmentsOnDeployedEnvironment.execute(envIn);
 
         assertFalse(ret.contains("q1"));
-        assertFalse(ret.contains("t1"));
+
+        assertTrue(ret.contains("t1"));
         assertTrue(ret.contains("u1"));
         assertTrue(ret.contains("u2"));
     }

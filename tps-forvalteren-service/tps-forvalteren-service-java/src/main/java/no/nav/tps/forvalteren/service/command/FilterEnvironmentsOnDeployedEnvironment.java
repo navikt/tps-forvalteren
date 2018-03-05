@@ -8,7 +8,7 @@ import java.util.Set;
 @Service
 public class FilterEnvironmentsOnDeployedEnvironment {
 
-    @Value("${environment.class}")
+    @Value("${FASIT_ENVIRONMENT_NAME}")
     private String deployedEnvironment;
 
     public Set<String> execute(Set<String> environments) {
@@ -17,9 +17,11 @@ public class FilterEnvironmentsOnDeployedEnvironment {
         case 'u':
             return EnvironmentsFilter.create()
                     .include("u*")
+                    .include("t*")
                     .filter(environments);
         case 't':
             return EnvironmentsFilter.create()
+                    .include("u*")
                     .include("t*")
                     .filter(environments);
         case 'q':

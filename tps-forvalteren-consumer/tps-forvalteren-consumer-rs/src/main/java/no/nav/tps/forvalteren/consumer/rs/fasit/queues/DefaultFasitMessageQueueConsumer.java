@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Convenience class for exposing MQ resources.
@@ -12,51 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
  * It connects to tpsws Fasit resources
  */
 
+@Component
 public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsumer {
 
     @Autowired
     private FasitClient fasitClient;
 
-    private String applicationName;
-
-    private String requestQueueAlias;
-    private String queueManagerAlias;
-
-    public DefaultFasitMessageQueueConsumer(String application, String requestQueueAlias, String queueManagerAlias) {
-        this.applicationName = application;
-        this.requestQueueAlias = requestQueueAlias;
-        this.queueManagerAlias = queueManagerAlias;
+    @Override
+    public Queue getRequestQueue(String requestQueueAlias, String environment) {
+        return fasitClient.getQueue(requestQueueAlias, environment);
     }
 
     @Override
-    public void setRequestQueueAlias(String requestQueueAlias){
-        this.requestQueueAlias = requestQueueAlias;
-    }
-
-    @Override
-    public Queue getRequestQueue(String environment) {
-        return getQueue(requestQueueAlias, environment);
-    }
-
-    @Override
-    public Queue getQueue(String alias, String environment) {
-        return getApplication(environment)
-                .getQueue(alias);
-    }
-
-    @Override
-    public QueueManager getQueueManager(String environment) {
-        return getApplication(environment)
-                .getQueueManager(queueManagerAlias);
-    }
-
-    @Override
-    public QueueManager getQueueManager(String alias, String environment) {
-        return getApplication(environment)
-                .getQueueManager(alias);
-    }
-
-    private FasitClient.Application getApplication(String environment) {
-        return fasitClient.getApplication(applicationName, environment);
+    public QueueManager getQueueManager() {
+        return fasitClient.getQueueManager();
     }
 }

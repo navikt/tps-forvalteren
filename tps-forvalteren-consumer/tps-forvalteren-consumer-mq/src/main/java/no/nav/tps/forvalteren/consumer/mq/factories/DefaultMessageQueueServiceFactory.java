@@ -31,7 +31,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
 
-    @Value("${environment.class}")
+    @Value("${FASIT_ENVIRONMENT_NAME}")
     private String deployedEnvironment;
 
     /**
@@ -44,12 +44,11 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     @Override
     public DefaultMessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias) throws JMSException {
 
-        fasitMessageQueueConsumer.setRequestQueueAlias(requestQueueAlias);
-        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(environment);
-        Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(environment);
+        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager();
+        Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(requestQueueAlias, environment);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,
-                                                                    (deployedEnvironment+DEFAULT_ENVIRONMENT_NUMBER).toUpperCase() + CHANNEL_POSTFIX);
+                                                                    (deployedEnvironment).toUpperCase() + CHANNEL_POSTFIX);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 

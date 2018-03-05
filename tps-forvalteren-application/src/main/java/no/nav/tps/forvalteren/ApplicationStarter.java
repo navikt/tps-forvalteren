@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren;
 
-import no.nav.modig.core.context.ModigSecurityConstants;
 import no.nav.modig.testcertificates.TestCertificates;
 
 import javax.security.auth.message.config.AuthConfigFactory;
@@ -18,10 +17,6 @@ public class ApplicationStarter {
         }
 
         TestCertificates.setupKeyAndTrustStore();
-
-        //TODO Må endre dette modig security greiene.
-        System.setProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME, "srvtps-forvalter_u");
-        System.setProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD, "srvBg3VB1FsrfEN");
 
         SpringApplication.run(ApplicationStarter.class, args);
     }

@@ -49,6 +49,12 @@ public class TpswsConsumerConfig {
     @Value("${validering.virksomhet.egenansattv1.url}")
     private String egenAnsattAddress;
 
+    @Value("${SRVTPS_FORVALTEREN_USERNAME}")
+    private String srvtps_brukernavn;
+
+    @Value("${SRVTPS_FORVALTEREN_PASSWORD}")
+    private String srvtps_passowrd;
+
     @Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
         JaxWsProxyFactoryBean factoryBean = createJaxWsProxyFactoryBean();
@@ -95,6 +101,9 @@ public class TpswsConsumerConfig {
 
     private WSS4JOutInterceptor createSystemUsernameTokenOutInterceptor() {
         Map<String, Object> properties = new HashMap<String, Object>();
+
+        System.setProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME, srvtps_brukernavn);
+        System.setProperty(ModigSecurityConstants.SYSTEMUSER_PASSWORD, srvtps_passowrd);
 
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         properties.put(WSHandlerConstants.USER, System.getProperty(ModigSecurityConstants.SYSTEMUSER_USERNAME));

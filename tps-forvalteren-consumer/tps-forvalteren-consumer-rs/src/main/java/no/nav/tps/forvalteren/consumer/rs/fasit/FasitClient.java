@@ -15,13 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+
 import org.springframework.beans.factory.annotation.Value;
 
 public class FasitClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FasitClient.class);
 
-    private static final long CACHE_MAX_SIZE        = 100;
+    private static final long CACHE_MAX_SIZE = 100;
     private static final long CACHE_MINUTES_TO_LIVE = 30;
     private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
     private static final String PING_QUEUE_MANAGER_ALIAS = "mqGateway";
@@ -36,8 +37,17 @@ public class FasitClient {
 
     private Cache<String, ResourceElement> cache;
 
-    @Value("${environment.class}")
+    @Value("${FASIT_ENVIRONMENT_NAME}")
     private String deployedEnvironment;
+
+    @Value("${MQGATEWAY_HOSTNAME}")
+    private String mqHostname;
+
+    @Value("${MQGATEWAY_PORT}")
+    private String mqPort;
+
+    @Value("${MQGATEWAY_NAME}")
+    private String mqManagerName;
 
     public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
@@ -50,49 +60,39 @@ public class FasitClient {
         this.restClient.useCache(false); // The rest client's cache is never updated
     }
 
+    public QueueManager getQueueManager() {
+        return new QueueManager(mqManagerName, mqHostname, mqPort);
+    }
 
-    public ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
-        ResourceElement resource = getFromCache(alias, applicationName, environment, type);
+    public Queue getQueue(String alias, String environment) {
+        String queueName = getQueueName(alias, environment);
+        return new Queue(queueName, null);
+    }
 
-        if (resource != null) {
-            return resource;
+    private String getQueueName(String alias, String environment) {
+        String environmentForQueueName = environment;
+        if (environment.toUpperCase().contains("U")) {
+            environmentForQueueName = DEV_ENVIRONMENT;
         }
 
-        DomainDO domain = FasitUtilities.domainFor(environment);
-
-        resource = this.restClient.getResource(environment, alias, type, domain, applicationName);
-
-        addToCache(resource, alias, applicationName, environment, type);
-
-        return resource;
+        if (TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias)) {
+            return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_HENTING + alias;
+        } else {
+            return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
+        }
     }
 
-    /* Cache */
-
-    private ResourceElement getFromCache(String alias, String applicationName, String environment, ResourceTypeDO type) {
-        String identifier = getIdentifier(alias, applicationName, environment, type);
-        return cache.getIfPresent(identifier);
-    }
-
-    private void addToCache(ResourceElement resource, String alias, String applicationName, String environment, ResourceTypeDO type) {
-        String identifier = getIdentifier(alias, applicationName, environment, type);
-        cache.put(identifier, resource);
-    }
-
-    private String getIdentifier(String alias, String applicationName, String environment, ResourceTypeDO type) {
-        return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
-    }
-
+    // Ping på isReady()
     public boolean ping() {
         try {
-            String pingEnvironment = deployedEnvironment;
-            if(!"p".equalsIgnoreCase(deployedEnvironment)){
-                pingEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
+            String environmentClass = deployedEnvironment.substring(0,1);
+            if (!"p".equalsIgnoreCase(deployedEnvironment)) {
+                environmentClass = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
             }
 
-            DomainDO domain = FasitUtilities.domainFor(pingEnvironment);
+            DomainDO domain = FasitUtilities.domainFor(environmentClass);
 
-            this.restClient.getResource(pingEnvironment, PING_QUEUE_MANAGER_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
+            this.restClient.getResource(environmentClass, PING_QUEUE_MANAGER_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
         } catch (RuntimeException exception) {
             LOGGER.warn("Pinging Fasit failed with exception: {}", exception.toString());
             throw exception;
@@ -100,57 +100,4 @@ public class FasitClient {
         return true;
     }
 
-    /* Application */
-
-    public Application getApplication(String name, String environment) {
-        return new Application(name, environment);
-    }
-
-    /**
-     *  A convenience type used to keep track of the environment and application of interest
-     *  Helps reduce the size of method calls, and reduces the need for local variables
-     *
-     *  Used to access the FasitClient's internal methods
-     */
-    public class Application {
-        String environment;
-        String name;
-
-        protected Application(String name, String environment) {
-            this.name        = name;
-            this.environment = environment;
-        }
-
-        public QueueManager getQueueManager(String alias) {
-            String queueManagerEnvironment = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
-            if("p".equalsIgnoreCase(deployedEnvironment)) {
-                queueManagerEnvironment = environment;
-            }
-
-            ResourceElement resource = FasitClient.this.findResource(alias, name, queueManagerEnvironment, ResourceTypeDO.QueueManager);
-
-            String managerName = resource.getPropertyString("name");
-            String hostname    = resource.getPropertyString("hostname");
-            String port        = resource.getPropertyString("port");
-
-            return new QueueManager(managerName, hostname, port, queueManagerEnvironment);
-        }
-
-        public Queue getQueue(String alias) {
-            String queueName = getQueueName(alias, environment);
-            return new Queue(queueName, null);
-        }
-
-        private String getQueueName(String alias, String environment){
-            String environmentForQueueName = environment;
-            if(environment.toUpperCase().contains("U")){
-                environmentForQueueName = DEV_ENVIRONMENT;
-            }
-            if(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias)){
-                return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_HENTING + alias;
-            }
-            return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
-        }
-
-    }
 }
