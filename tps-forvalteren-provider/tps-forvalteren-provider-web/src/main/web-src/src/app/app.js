@@ -27,7 +27,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding',
     'tps-forvalteren.providers', 'tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', 'tps-forvalteren.service-rutine',
     'tps-forvalteren.service-rutine.velg-service-rutine', 'tps-forvalteren.doedsmeldinger', 'tps-forvalteren.doedsmeldinger.endremelding',
-    'tps-forvalteren.rawxml-melding.xml-melding']);
+    'tps-forvalteren.rawxml-melding']);
 
 
 require('./shared/index');
@@ -321,6 +321,32 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     'content@': {
                         templateUrl: "app/components/doedsmeldinger/doedsmeldinger.html",
                         controller: 'SendDoedsmeldingerCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('xml-melding', {
+                url: "/xml-melding/",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/rawxml-melding/xml-melding.html",
+                        controller: 'RawXmlCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",
