@@ -18,22 +18,6 @@ import org.springframework.context.annotation.Configuration;
 })
 public class FasitConfig {
 
-    @Autowired
-    private AutowireCapableBeanFactory beanFactory;
-
-//    @Bean
-//    public FasitMessageQueueConsumer getTpswsFasitMessageQueueQueueConsumer() {
-//        FasitMessageQueueConsumer consumer = new DefaultFasitMessageQueueConsumer(
-//                FasitConstants.FASIT_APPLICATION_NAME,
-//                TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
-//                FasitConstants.QUEUE_MANAGER_ALIAS
-//        );
-//
-//        /* Inject a FasitClient object */
-//        beanFactory.autowireBean(consumer);
-//        return consumer;
-//    }
-
     @Bean
     public FasitClient getFasitClient() {
         return new FasitClient(
