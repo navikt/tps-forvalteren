@@ -1,26 +1,29 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import java.util.List;
+import java.util.Map;
+
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.domain.rs.RsXmlMelding;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 @RestController
 @RequestMapping(value = "api/v1")
@@ -38,6 +41,9 @@ public class ServiceController extends BaseProvider {
 
     @Autowired
     private TpsRequestSender tpsRequestSender;
+
+    @Autowired
+    private TpsXmlSender tpsXmlSender;
 
     @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
     @LogExceptions
@@ -58,6 +64,15 @@ public class ServiceController extends BaseProvider {
 
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding")})
+    @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
+    public String sendXmlMelding(@RequestBody RsXmlMelding rsXmlMelding) throws Exception {
+
+        return tpsXmlSender.sendXml(rsXmlMelding);
+    }
+
 
     private void putFnrIntoRequestParameters(Map<String, Object> tpsRequestParameters) {
         if (tpsRequestParameters.containsKey("nFnr")) {
