@@ -23,8 +23,6 @@ import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerCons
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false", matchIfMissing = true)
 public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
-    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
-
     @Autowired
     private FasitMessageQueueConsumer fasitMessageQueueConsumer;
 
