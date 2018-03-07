@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import java.util.List;
 import java.util.Map;
 
 import no.nav.freg.metrics.annotations.Metrics;
@@ -65,6 +64,8 @@ public class ServiceController extends BaseProvider {
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }
 
+
+    //@PreAuthorize("hasRole('ROLE_TPSF_UTVIKLER')")
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding")})
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
