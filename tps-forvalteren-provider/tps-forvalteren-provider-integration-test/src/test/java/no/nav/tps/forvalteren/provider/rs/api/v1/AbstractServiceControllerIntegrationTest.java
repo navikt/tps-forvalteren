@@ -20,43 +20,43 @@ import static org.mockito.Matchers.any;
 
 public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
 
-    @Inject
-    protected RequestQueueListener requestQueueListener;
-
-    @Inject
-    private DefaultMessageQueueConsumer defaultMessageQueueConsumer;
-
-    private static final String BASE_URL = "/api/v1/service/";
-
-    private List<NameValuePair> params = new ArrayList<>();
-
-    protected abstract String getServiceName();
-
-    protected void addRequestParam(String key, Object val) {
-        params.add(new BasicNameValuePair(key, val.toString()));
-    }
-
-    protected String getUrl() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(BASE_URL);
-        sb.append(getServiceName());
-        if (!params.isEmpty()) {
-            sb.append("?");
-            sb.append(URLEncodedUtils.format(params, Charsets.UTF_8));
-        }
-        return sb.toString();
-    }
-
-    @Before
-    public void before() {
-        try {
-            Mockito.doReturn(requestQueueListener.getResponseQueue()).when(defaultMessageQueueConsumer).createTemporaryQueueFor(any(ActiveMQSession.class));
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void setResponseQueueMessage(String message) {
-        requestQueueListener.setResponseMessage(message);
-    }
+//    @Inject
+//    protected RequestQueueListener requestQueueListener;
+//
+//    @Inject
+//    private DefaultMessageQueueConsumer defaultMessageQueueConsumer;
+//
+//    private static final String BASE_URL = "/api/v1/service/";
+//
+//    private List<NameValuePair> params = new ArrayList<>();
+//
+//    protected abstract String getServiceName();
+//
+//    protected void addRequestParam(String key, Object val) {
+//        params.add(new BasicNameValuePair(key, val.toString()));
+//    }
+//
+//    protected String getUrl() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(BASE_URL);
+//        sb.append(getServiceName());
+//        if (!params.isEmpty()) {
+//            sb.append("?");
+//            sb.append(URLEncodedUtils.format(params, Charsets.UTF_8));
+//        }
+//        return sb.toString();
+//    }
+//
+//    @Before
+//    public void before() {
+//        try {
+//            Mockito.doReturn(requestQueueListener.getResponseQueue()).when(defaultMessageQueueConsumer).createTemporaryQueueFor(any(ActiveMQSession.class));
+//        } catch (JMSException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    protected void setResponseQueueMessage(String message) {
+//        requestQueueListener.setResponseMessage(message);
+//    }
 }
