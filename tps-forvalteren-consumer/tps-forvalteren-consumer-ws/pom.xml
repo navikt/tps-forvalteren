@@ -68,24 +68,40 @@
         <!-- MODIG -->
         <dependency>
             <groupId>no.nav.modig</groupId>
-            <artifactId>modig-security-ws</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.modig</groupId>
             <artifactId>modig-log-jaxws</artifactId>
         </dependency>
 
-        <!--Apache CXF-->
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-ws</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-sts</artifactId>
+        </dependency>
+
+        <!-- STS for å skaffe SAML til ws for tpsws-->
+        <!--<dependency>-->
+            <!--<groupId>no.nav.freg</groupId>-->
+            <!--<artifactId>freg-security-sts</artifactId>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+        </dependency>
+
 
         <!--SERVICES-->
         <dependency>
             <groupId>no.nav.aura.fasit</groupId>
             <artifactId>fasit-client-api</artifactId>
-            <version>5.8.1</version>
+            <version>5.8.9</version>
         </dependency>
 
         <!--LANGUAGE EXTENSIONS-->
@@ -99,6 +115,8 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
         </dependency>
+
+
     </dependencies>
 
 </project>

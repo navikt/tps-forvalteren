@@ -1,12 +1,11 @@
 package no.nav.tps.forvalteren.consumer.ws.kodeverk.config;
 
 import no.nav.tps.forvalteren.consumer.ws.kodeverk.mdc.CallIdGenerationMDCInterceptor;
-import org.apache.cxf.feature.LoggingFeature;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.apache.cxf.ws.addressing.WSAddressingFeature;
 
 import javax.xml.namespace.QName;
 import java.net.URL;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.ws.addressing.WSAddressingFeature;
 
 public class ConsumerConfigUtil {
 
@@ -24,7 +23,6 @@ public class ConsumerConfigUtil {
         factoryBean.setServiceClass(serviceClass);
         factoryBean.setAddress(endpointAddress);
         factoryBean.getFeatures().add(new WSAddressingFeature());
-        factoryBean.getFeatures().add(new LoggingFeature());
         factoryBean.getFeatures().add(new TimeoutFeature(timeout));
         factoryBean.getHandlers().add(new CallIdGenerationMDCInterceptor());
 

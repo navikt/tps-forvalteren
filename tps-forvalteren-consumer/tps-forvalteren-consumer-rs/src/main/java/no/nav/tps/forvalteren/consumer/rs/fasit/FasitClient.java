@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.consumer.rs.fasit;
 
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
@@ -10,12 +10,9 @@ import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
 import org.springframework.beans.factory.annotation.Value;
 
 public class FasitClient {
@@ -82,7 +79,7 @@ public class FasitClient {
         }
     }
 
-    // Ping på isReady()
+     // Ping på isReady()
     public boolean ping() {
         try {
             String environmentClass = deployedEnvironment.substring(0,1);

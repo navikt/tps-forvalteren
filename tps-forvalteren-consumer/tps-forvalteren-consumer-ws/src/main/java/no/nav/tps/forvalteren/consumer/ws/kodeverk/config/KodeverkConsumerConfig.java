@@ -2,12 +2,12 @@ package no.nav.tps.forvalteren.consumer.ws.kodeverk.config;
 
 import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkPortType;
 import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
+
+import javax.xml.namespace.QName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import javax.xml.namespace.QName;
 
 @Configuration
 @ComponentScan(basePackageClasses = KodeverkConsumer.class)

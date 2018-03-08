@@ -37,6 +37,8 @@ fasitResources:
       resourceType: baseurl
     - alias: "srvtps-forvalteren"
       resourceType: credential
+    - alias: "securityTokenService"
+      resourceType: baseurl
     - alias: "virksomhet:Kodeverk_v2"
       resourceType: webserviceendpoint
     - alias: "virksomhet:EgenAnsatt_v1"
