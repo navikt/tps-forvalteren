@@ -7,6 +7,8 @@ import java.util.Set;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.RsXmlMeldingKo;
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
@@ -18,12 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@PreAuthorize("hasRole('ROLE_ACCESS')")
 @RestController
 @RequestMapping(value = "api/v1")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
 public class HentKoerController {
 
     private static final String REST_SERVICE_NAME = "service";
+
+    private static final String[] QUEUES = {
+            "_411." + REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
+            "_412." + REQUEST_QUEUE_ENDRINGSMELDING_ALIAS
+    };
 
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
@@ -33,42 +41,49 @@ public class HentKoerController {
 
     @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
     @RequestMapping(value = "/queues", method = RequestMethod.GET)
     public List<RsXmlMeldingKo> getQueues() {
 
         RsXmlMeldingKo ko;
         Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
+        environments = removeDuplicateEnvironments(environments);
+
         List<RsXmlMeldingKo> koListe = new ArrayList<>();
 
-        for (String environment : environments){
-            ko = new RsXmlMeldingKo();
-            ko.setMiljo(environment);
-            ko.setKoNavn(checkIfLocalEnvironment(environment.toUpperCase()));
-            koListe.add(ko);
+        for (String environment : environments) {
+            for (int i = 0; i < QUEUES.length; i++) {
+                ko = new RsXmlMeldingKo();
+                ko.setMiljo(environment);
+                ko.setKoNavn(setQueueName(environment.toUpperCase(), QUEUES[i]));
+                koListe.add(ko);
+            }
         }
+
         return koListe;
     }
 
-    private String checkIfLocalEnvironment(String env) {
+    private String setQueueName(String env, String queue) {
 
         String queueName;
         switch (env.toUpperCase()) {
-            case "U5":
-                queueName = "QA.D8_411.TPS_FORESPORSEL_XML_O";
-                break;
-            case "U6":
-                queueName = "QA.D8_411.TPS_FORESPORSEL_XML_O";
-                break;
-            default:
-                queueName = "QA." + env.toUpperCase() + "_411.TPS_FORESPORSEL_XML_O";
-                break;
+        case "U5":
+        case "U6":
+            queueName = "QA.D8" + queue;
+            break;
+        default:
+            queueName = "QA." + env.toUpperCase() + queue;
+            break;
         }
         return queueName;
 
-
-        //
     }
 
+    private Set<String> removeDuplicateEnvironments(Set<String> env) {
+        if (env.contains("u5")) {
+            env.remove("u5");
+        }
+        return env;
+    }
 
 }

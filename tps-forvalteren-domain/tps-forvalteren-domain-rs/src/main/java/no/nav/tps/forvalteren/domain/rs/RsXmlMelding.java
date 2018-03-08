@@ -17,11 +17,6 @@ public class RsXmlMelding {
     private String melding;
 
     @NotNull
-    private String miljo;
-
-    @NotNull
     private String ko;
-
-    private String meldingtype;
 
 }
