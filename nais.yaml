@@ -25,25 +25,23 @@ resources:
     memory: 2054Mi
 fasitResources:
   used:
-    - alias: "tps-forvalterenProperties"
-      resourceType: applicationproperties
-    - alias: "tpsforvalterenDB"
-      resourceType: datasource
-    - alias: "TPS_FORESPORSEL_XML_O"
-      resourceType: queue
+    - alias: "ldap"
+      resourceType: ldap
     - alias: "mqGateway"
       resourceType: queuemanager
     - alias: "securityTokenService"
       resourceType: baseurl
     - alias: "srvtps-forvalteren"
       resourceType: credential
-    - alias: "securityTokenService"
-      resourceType: baseurl
-    - alias: "virksomhet:Kodeverk_v2"
+    - alias: "tpsforvalterenDB"
+      resourceType: datasource
+    - alias: "tps-forvalterenProperties"
+      resourceType: applicationproperties
+    - alias: "TPS_FORESPORSEL_XML_O"
+      resourceType: queue
+    - alias: "virksomhet:Diskresjonskode_v1"
       resourceType: webserviceendpoint
     - alias: "virksomhet:EgenAnsatt_v1"
       resourceType: webserviceendpoint
-    - alias: "virksomhet:Diskresjonskode_v1"
+    - alias: "virksomhet:Kodeverk_v2"
       resourceType: webserviceendpoint
-    - alias: "ldap"
-      resourceType: ldap
