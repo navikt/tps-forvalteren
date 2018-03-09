@@ -41,6 +41,10 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
 
+        System.out.println("username: "+ MessageQueueConsumerConstants.USERNAME);
+        System.out.println("password: "+ MessageQueueConsumerConstants.PASSWORD);
+        System.out.println("MQ queue name: "+ requestQueueName);
+
         Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
         connection.start();
 
