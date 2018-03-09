@@ -6,15 +6,15 @@ import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConne
 import no.nav.tps.forvalteren.consumer.rs.fasit.queues.FasitMessageQueueConsumer;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
+
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-
-import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
+import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_PREFIX;
 
 /**
  * Consumes information from Fasit and produces MessageQueueServices
@@ -46,7 +46,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(requestQueueAlias, environment);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,
-                                                                    (deployedEnvironment).toUpperCase() + CHANNEL_POSTFIX);
+                                                                    CHANNEL_PREFIX + queueManager.getName());
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 
