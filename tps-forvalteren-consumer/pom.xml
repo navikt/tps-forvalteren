@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>tpsf-nais-release-51</version>
+        <version>tpsf-nais-release-53</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
