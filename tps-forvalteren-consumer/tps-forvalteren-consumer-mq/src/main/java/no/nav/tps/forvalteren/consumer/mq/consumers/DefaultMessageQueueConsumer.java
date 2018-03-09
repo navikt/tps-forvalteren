@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQQueue;
+import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
 import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
 
@@ -48,6 +49,8 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         LOGGER.info("username: {}", MessageQueueConsumerConstants.USERNAME);
         LOGGER.info("password: {}", MessageQueueConsumerConstants.PASSWORD);
         LOGGER.info("MQ queue name: {}", requestQueueName);
+        LOGGER.info("MQ manager name: {}", ((MQQueueConnectionFactory) connectionFactory).getQueueManager());
+        LOGGER.info("MQ channel name: {}", ((MQQueueConnectionFactory) connectionFactory).getChannel());
 
         Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
         connection.start();
