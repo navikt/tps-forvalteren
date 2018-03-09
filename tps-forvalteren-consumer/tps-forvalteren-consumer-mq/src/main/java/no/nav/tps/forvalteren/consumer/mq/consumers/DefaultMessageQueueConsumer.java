@@ -45,9 +45,9 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
 
-        LOGGER.info("username: "+ MessageQueueConsumerConstants.USERNAME);
-        LOGGER.info("password: "+ MessageQueueConsumerConstants.PASSWORD);
-        LOGGER.info("MQ queue name: "+ requestQueueName);
+        LOGGER.info("username: {}", MessageQueueConsumerConstants.USERNAME);
+        LOGGER.info("password: {}", MessageQueueConsumerConstants.PASSWORD);
+        LOGGER.info("MQ queue name: {}", requestQueueName);
 
         Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
         connection.start();
