@@ -85,6 +85,5 @@ public class LagreTilTpsTest {
         verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
         verify(innvandring).resolve();
         verify(sendSkdMeldingTilGitteMiljoer).execute(melding1, skdRequestMeldingDefinition, new HashSet<>(environments));
-        verify(skdStartAjourhold).execute(anySet());
     }
 }

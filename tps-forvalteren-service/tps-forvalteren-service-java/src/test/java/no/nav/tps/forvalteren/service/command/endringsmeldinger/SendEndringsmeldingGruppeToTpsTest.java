@@ -112,7 +112,6 @@ public class SendEndringsmeldingGruppeToTpsTest {
         verify(skdAddHeaderToSkdMelding).execute(any(StringBuilder.class));
         verify(sendSkdMeldingTilGitteMiljoer).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
 
-        verify(skdStartAjourhold).execute(anySet());
         verify(skdEndringsmeldingLoggRepository).save(any(SkdEndringsmeldingLogg.class));
     }
 
