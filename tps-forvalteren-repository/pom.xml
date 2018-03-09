@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tps-forvalteren</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>tpsf-nais-release-64</version>
+        <version>tpsf-nais-release-66</version>
     </parent>
 
     <artifactId>tps-forvalteren-repository</artifactId>
