@@ -1,8 +1,10 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt;
 
-import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
-import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
-import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
+import no.nav.tjeneste.pip.egenansatt.v1.binding.EgenAnsattV1;
+import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
+import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
+
+import javax.xml.ws.soap.SOAPFaultException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -11,8 +13,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.xml.ws.soap.SOAPFaultException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -32,7 +32,7 @@ public class DefaultEgenAnsattConsumerTest {
     private DefaultEgenAnsattConsumer egenAnsattConsumer;
 
     @Mock
-    private PipEgenAnsattPortType egenAnsattPortType;
+    private EgenAnsattV1 egenAnsatt;
 
     @Mock
     SOAPFaultException soapFaultException;
@@ -43,7 +43,7 @@ public class DefaultEgenAnsattConsumerTest {
     @Test
     public void isEgenAnsattReturnsFalseWhenCalledWithEmptyString() {
         when(soapFaultException.getMessage()).thenReturn(DefaultEgenAnsattConsumer.EMPTY_FNR_TPSWS_ERROR);
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
         boolean result = egenAnsattConsumer.isEgenAnsatt("");
@@ -61,7 +61,7 @@ public class DefaultEgenAnsattConsumerTest {
     @Test
     public void isEgenAnsattReturnsFalseWhenCalledWithInvalidFnr() {
         when(soapFaultException.getMessage()).thenReturn(DefaultEgenAnsattConsumer.INVALID_FNR_TPSWS_ERROR);
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
         boolean result = egenAnsattConsumer.isEgenAnsatt("-1");
@@ -71,8 +71,8 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void pingReturnsTrueWhenErEgenAnsattRespondsNormally() throws Exception {
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
-                .thenReturn(new ErEgenAnsattEllerIFamilieMedEgenAnsattResponse());
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+                .thenReturn(new HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse());
 
         boolean result = egenAnsattConsumer.ping();
 
@@ -83,7 +83,7 @@ public class DefaultEgenAnsattConsumerTest {
     public void pingThrowsExceptionWhenIsEgenAnsattThrowsException() throws Exception {
         RuntimeException thrownException = new RuntimeException(THE_DATABASE_DOES_NOT_ANSWER_ERROR);
 
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(thrownException);
 
         expectedException.expect(RuntimeException.class);
@@ -95,7 +95,7 @@ public class DefaultEgenAnsattConsumerTest {
     @Test
     public void pingReturnsTrueWhenIsEgenAnsattThrowsPersonNotFoundException() throws Exception {
         when(soapFaultException.getMessage()).thenReturn(DefaultEgenAnsattConsumer.PERSON_NOT_FOUND_TPSWS_ERROR);
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
         boolean result = egenAnsattConsumer.ping();
@@ -106,7 +106,7 @@ public class DefaultEgenAnsattConsumerTest {
     @Test
     public void pingThrowsExceptionWhenIsEgenAnsattThrowsUncaughtSOAPFaultExceptionNotContaining() throws Exception {
         when(soapFaultException.getMessage()).thenReturn(SOAP_Fault_Error);
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
         expectedException.expect(SOAPFaultException.class);
@@ -116,13 +116,13 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void hentDiskresjonskodeRequestIsSentWithCorrectFNr() throws Exception {
-        when(egenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(any(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
-                .thenReturn(new ErEgenAnsattEllerIFamilieMedEgenAnsattResponse());
+        when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
+                .thenReturn(new HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse());
 
         egenAnsattConsumer.isEgenAnsatt(TEST_FNR);
 
-        ArgumentCaptor<ErEgenAnsattEllerIFamilieMedEgenAnsattRequest> captor = ArgumentCaptor.forClass(ErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class);
-        verify(egenAnsattPortType).erEgenAnsattEllerIFamilieMedEgenAnsatt(captor.capture());
+        ArgumentCaptor<HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest> captor = ArgumentCaptor.forClass(HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class);
+        verify(egenAnsatt).hentErEgenAnsattEllerIFamilieMedEgenAnsatt(captor.capture());
 
         assertThat(captor.getValue().getIdent(), is(equalTo(TEST_FNR)));
     }

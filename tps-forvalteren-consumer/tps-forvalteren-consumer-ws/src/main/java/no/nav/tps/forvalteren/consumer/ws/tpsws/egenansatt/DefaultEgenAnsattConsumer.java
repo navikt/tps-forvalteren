@@ -1,12 +1,11 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt;
 
-import javax.xml.ws.soap.SOAPFaultException;
-
 import no.nav.modig.common.MDCOperations;
-import no.nav.tjeneste.pip.pipegenansatt.v1.PipEgenAnsattPortType;
-import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
-import no.nav.tjeneste.pip.pipegenansatt.v1.meldinger.ErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
+import no.nav.tjeneste.pip.egenansatt.v1.binding.EgenAnsattV1;
+import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
+import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 
+import javax.xml.ws.soap.SOAPFaultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final String PING_FNR = "10108000398";
 
     @Autowired
-    private PipEgenAnsattPortType pipEgenAnsattPortType;
+    private EgenAnsattV1 pipEgenAnsatt;
 
     @Override
     public boolean ping() {
@@ -44,12 +43,12 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
             return false;
         }
 
-        ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
+        HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         try {
-            ErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsattPortType.erEgenAnsattEllerIFamilieMedEgenAnsatt(request);
+            HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(request);
 
             return response.isEgenAnsatt();
         } catch (SOAPFaultException exception) {
@@ -70,8 +69,8 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
     }
 
-    private ErEgenAnsattEllerIFamilieMedEgenAnsattRequest createRequest(String fnr) {
-        ErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = new ErEgenAnsattEllerIFamilieMedEgenAnsattRequest();
+    private HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest createRequest(String fnr) {
+        HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = new HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest();
         request.setIdent(fnr);
 
         return request;

@@ -53,7 +53,7 @@
         <!--Nav EgenAnsatt-tjeneste -->
         <dependency>
             <groupId>no.nav.tjenester.pip</groupId>
-            <artifactId>nav-pip-pipEgenAnsatt-v1-tjenestespesifikasjon</artifactId>
+            <artifactId>nav-pip-egenAnsatt-v1-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
 
