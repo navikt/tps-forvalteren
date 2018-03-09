@@ -54,6 +54,6 @@ public class LagreTilTps {
         for (String skdMelding : skdMeldinger) {
             sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, environmentsSet);
         }
-        skdStartAjourhold.execute(new HashSet<>(environments));
+        //skdStartAjourhold.execute(new HashSet<>(environments));
     }
 }

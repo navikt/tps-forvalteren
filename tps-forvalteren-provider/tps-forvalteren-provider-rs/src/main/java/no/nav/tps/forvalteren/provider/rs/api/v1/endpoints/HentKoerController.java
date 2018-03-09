@@ -29,8 +29,8 @@ public class HentKoerController {
     private static final String REST_SERVICE_NAME = "service";
 
     private static final String[] QUEUES = {
-            "_411." + REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
-            "_412." + REQUEST_QUEUE_ENDRINGSMELDING_ALIAS
+            "411." + REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
+            "412." + REQUEST_QUEUE_ENDRINGSMELDING_ALIAS
     };
 
     @Autowired
@@ -67,12 +67,16 @@ public class HentKoerController {
 
         String queueName;
         switch (env.toUpperCase()) {
+        case "T0":
+        case "Q0":
+            queueName = "QA." + env.toUpperCase() + queue;
+            break;
         case "U5":
         case "U6":
-            queueName = "QA.D8" + queue;
+            queueName = "QA.D8_" + queue;
             break;
         default:
-            queueName = "QA." + env.toUpperCase() + queue;
+            queueName = "QA." + env.toUpperCase() + "_" + queue;
             break;
         }
         return queueName;

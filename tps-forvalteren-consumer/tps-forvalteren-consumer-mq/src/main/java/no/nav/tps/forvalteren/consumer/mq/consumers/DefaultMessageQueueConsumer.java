@@ -1,9 +1,5 @@
 package no.nav.tps.forvalteren.consumer.mq.consumers;
 
-import com.ibm.mq.jms.MQQueue;
-import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
-import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -13,6 +9,10 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import com.ibm.mq.jms.MQQueue;
+import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
+import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
+
 public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
 
     private static final long DEFAULT_TIMEOUT = 5000;
@@ -21,6 +21,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     private static final String PING_MESSAGE = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><tpsPersonData xmlns=\"http://www.rtv.no/NamespaceTPS\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.rtv.no/NamespaceTPS H:\\SYSTEM~1\\SYSTEM~4\\FS03TP~1\\TPSDAT~1.XSD\"><tpsServiceRutine><serviceRutinenavn>FS03-OTILGANG-TILSRTPS-O</serviceRutinenavn></tpsServiceRutine></tpsPersonData>";
 
     private String requestQueueName;
+    private String responseQueueName;
     private ConnectionFactory connectionFactory;
 
     public DefaultMessageQueueConsumer(String requestQueueName, ConnectionFactory connectionFactory) {
@@ -29,8 +30,8 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     }
 
     @Override
-    public void sendMessageAsync(String requestMessageContent) throws JMSException{
-        sendMessage(requestMessageContent,ZERO_TIMEOUT);
+    public void sendMessageAsync(String requestMessageContent) throws JMSException {
+        sendMessage(requestMessageContent, ZERO_TIMEOUT);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
 
+        responseQueueName = requestQueueName.toUpperCase() + "_REPLY";
         Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
         connection.start();
 
@@ -49,7 +51,13 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         /* Prepare destinations */
         Destination requestDestination = session.createQueue(requestQueueName);
 
-        Destination responseDestination = createTemporaryQueueFor(session);
+        Destination responseDestination = null;
+
+        if (requestQueueName.toUpperCase().contains("SFE")) {
+            responseDestination = session.createQueue(responseQueueName);
+        } else {
+            responseDestination = createTemporaryQueueFor(session);
+        }
 
         if (requestDestination instanceof MQQueue) {
             ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
@@ -64,7 +72,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         producer.send(requestMessage);
 
         TextMessage responseMessage = null;
-        if(timeout > 0){
+        if (timeout > 0) {
             /* Wait for response */
             String attributes = String.format("JMSCorrelationID='%s'", requestMessage.getJMSMessageID());
 
