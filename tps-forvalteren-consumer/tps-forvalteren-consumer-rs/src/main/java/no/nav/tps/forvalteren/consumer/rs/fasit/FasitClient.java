@@ -60,7 +60,7 @@ public class FasitClient {
         this.restClient.useCache(false); // The rest client's cache is never updated
     }
 
-    public ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
+    private ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
         ResourceElement resource = getFromCache(alias, applicationName, environment, type);
 
         if (resource != null) {
@@ -91,7 +91,7 @@ public class FasitClient {
     }
 
     public QueueManager getQueueManager(String environment) {
-        ResourceElement resource = FasitClient.this.findResource(QUEUE_MANAGER_ALIAS, TPSF_FASIT_APP_NAME, environment, ResourceTypeDO.QueueManager);
+        ResourceElement resource = findResource(QUEUE_MANAGER_ALIAS, TPSF_FASIT_APP_NAME, environment, ResourceTypeDO.QueueManager);
 
         String managerName = resource.getPropertyString("name");
         String hostname    = resource.getPropertyString("hostname");
