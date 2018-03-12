@@ -16,6 +16,16 @@ healthcheck:
     initialDelay: 15
     periodSeconds: 2
     failureThreshold: 120
+management:
+ context-path: /internal
+ security.enabled: false
+endpoints:
+ enabled: false
+ health.enabled: true
+ jmx.enabled: false
+ prometheus:
+   enabled: true
+   sensitive: false
 resources:
   requests:
     cpu: 0.5

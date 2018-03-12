@@ -314,17 +314,21 @@
                 <version>${bootstrap.version}</version>
             </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>com.sun.xml.bind</groupId>-->
-                <!--<artifactId>jaxb-core</artifactId>-->
-                <!--<version>2.2.11</version>-->
-            <!--</dependency>-->
+            <!-- prometheus -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+            </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>com.sun.xml.bind</groupId>-->
-                <!--<artifactId>jaxb-impl</artifactId>-->
-                <!--<version>2.2.11</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-spring-legacy</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+            </dependency>
 
             <!-- Apache Commons IO -->
             <dependency>
