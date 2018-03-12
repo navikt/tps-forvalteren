@@ -98,7 +98,6 @@ public class SendDodsmeldingTilTps {
         skdMeldinger.addAll(createDoedsmeldinger(createDeathRowPersonList));
 
         TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
-        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
         Set<String> environment;
 
         for (String skdmelding : skdMeldinger) {
