@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_PREFIX;
+import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
 
 /**
  * Consumes information from Fasit and produces MessageQueueServices
@@ -46,7 +46,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(requestQueueAlias, environment);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,
-                                                                    CHANNEL_PREFIX + queueManager.getName());
+                                                                    (deployedEnvironment).toUpperCase() + CHANNEL_POSTFIX);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 
