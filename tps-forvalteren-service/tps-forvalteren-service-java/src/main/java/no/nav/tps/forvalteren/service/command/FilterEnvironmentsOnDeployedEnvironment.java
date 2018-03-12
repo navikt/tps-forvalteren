@@ -17,12 +17,12 @@ public class FilterEnvironmentsOnDeployedEnvironment {
         case 'u':
             return EnvironmentsFilter.create()
                     .include("u*")
-                    .include("t*")
                     .filter(environments);
         case 't':
             return EnvironmentsFilter.create()
                     .include("u*")
                     .include("t*")
+                    .include("q*")
                     .filter(environments);
         case 'q':
             return EnvironmentsFilter.create()
