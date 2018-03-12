@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
-import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LagreTilTps {
@@ -29,9 +28,6 @@ public class LagreTilTps {
 
     @Autowired
     private CreateDoedsmeldinger createDoedsmeldinger;
-
-    @Autowired
-    private SkdStartAjourhold skdStartAjourhold;
 
     @Autowired
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
@@ -54,6 +50,5 @@ public class LagreTilTps {
         for (String skdMelding : skdMeldinger) {
             sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, environmentsSet);
         }
-        //skdStartAjourhold.execute(new HashSet<>(environments));
     }
 }

@@ -3,8 +3,6 @@ package no.nav.tps.forvalteren.service.command.tps.xmlmelding;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageFixedQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.rs.RsXmlMelding;
-import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
-import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,7 @@ public class TpsXmlSender {
 
     private String getEnvironmentFromQueueName(String ko) {
 
-        return ko.substring(3, ko.indexOf("_"));
+        return ko.substring(3, ko.indexOf('_'));
     }
 
 }

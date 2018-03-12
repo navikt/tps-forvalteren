@@ -22,7 +22,6 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
-import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 
 @Service
 public class SendEndringsmeldingGruppeToTps {
@@ -54,9 +53,6 @@ public class SendEndringsmeldingGruppeToTps {
     @Autowired
     private SkdEndringsmeldingLoggRepository skdEndringsmeldingLoggRepository;
 
-    @Autowired
-    private SkdStartAjourhold skdStartAjourhold;
-
     public void execute(Long gruppeId, String environment) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
         if (gruppe != null) {
@@ -73,7 +69,6 @@ public class SendEndringsmeldingGruppeToTps {
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
                 saveLogg(skdMelding, melding, gruppeId, environment);
             }
-            skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
         } else { 
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
         }

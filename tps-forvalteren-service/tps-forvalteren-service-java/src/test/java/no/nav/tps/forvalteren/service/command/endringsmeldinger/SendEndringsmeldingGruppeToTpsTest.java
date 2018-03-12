@@ -31,7 +31,6 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
-import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SendEndringsmeldingGruppeToTpsTest {
@@ -65,9 +64,6 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
     @Mock
     private SkdEndringsmeldingLoggRepository skdEndringsmeldingLoggRepository;
-
-    @Mock
-    private SkdStartAjourhold skdStartAjourhold;
 
     @InjectMocks
     private SendEndringsmeldingGruppeToTps sendEndringsmeldingGruppeToTps;

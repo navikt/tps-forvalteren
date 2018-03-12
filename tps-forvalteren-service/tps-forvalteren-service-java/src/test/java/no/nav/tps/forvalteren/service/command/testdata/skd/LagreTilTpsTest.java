@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.mockito.Matchers.anySet;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +19,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
-import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LagreTilTpsTest {
@@ -39,9 +37,6 @@ public class LagreTilTpsTest {
 
     @Mock
     private CreateDoedsmeldinger createDoedsmeldinger;
-
-    @Mock
-    private SkdStartAjourhold skdStartAjourhold;
 
     @Mock
     private SkdMeldingResolver innvandring;
