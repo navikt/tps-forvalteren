@@ -11,7 +11,7 @@
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>tpsf-nais-release-68</version>
+    <version>tpsf-nais-release-70</version>
 
 
     <packaging>pom</packaging>
