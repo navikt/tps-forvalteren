@@ -25,7 +25,7 @@ public class DefaultFasitMessageQueueConsumer implements FasitMessageQueueConsum
     }
 
     @Override
-    public QueueManager getQueueManager() {
-        return fasitClient.getQueueManager();
+    public QueueManager getQueueManager(String environment) {
+        return fasitClient.getQueueManager(environment);
     }
 }

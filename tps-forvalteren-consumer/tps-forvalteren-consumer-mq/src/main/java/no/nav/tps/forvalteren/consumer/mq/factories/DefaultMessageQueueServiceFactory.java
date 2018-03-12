@@ -10,7 +10,6 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +28,6 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
 
-    @Value("${FASIT_ENVIRONMENT_NAME}")
-    private String deployedEnvironment;
-
     /**
      * Instantiates a new MessageQueueConsumer in the specified environment
      *
@@ -42,7 +38,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     @Override
     public DefaultMessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias) throws JMSException {
 
-        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager();
+        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(environment);
         Queue requestQueue        = fasitMessageQueueConsumer.getRequestQueue(requestQueueAlias, environment);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,

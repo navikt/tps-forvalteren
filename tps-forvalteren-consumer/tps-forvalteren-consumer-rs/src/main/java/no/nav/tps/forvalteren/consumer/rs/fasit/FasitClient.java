@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
+import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.TPSF_FASIT_APP_NAME;
+
 public class FasitClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FasitClient.class);
@@ -57,8 +60,44 @@ public class FasitClient {
         this.restClient.useCache(false); // The rest client's cache is never updated
     }
 
-    public QueueManager getQueueManager() {
-        return new QueueManager("MQLCLIENT01", "b27apvl057.preprod.local", "1413");
+    public ResourceElement findResource(String alias, String applicationName, String environment, ResourceTypeDO type) {
+        ResourceElement resource = getFromCache(alias, applicationName, environment, type);
+
+        if (resource != null) {
+            return resource;
+        }
+
+        DomainDO domain = FasitUtilities.domainFor(environment);
+
+        resource = this.restClient.getResource(environment, alias, type, domain, applicationName);
+
+        addToCache(resource, alias, applicationName, environment, type);
+
+        return resource;
+    }
+
+    private ResourceElement getFromCache(String alias, String applicationName, String environment, ResourceTypeDO type) {
+        String identifier = getIdentifier(alias, applicationName, environment, type);
+        return cache.getIfPresent(identifier);
+    }
+
+    private void addToCache(ResourceElement resource, String alias, String applicationName, String environment, ResourceTypeDO type) {
+        String identifier = getIdentifier(alias, applicationName, environment, type);
+        cache.put(identifier, resource);
+    }
+
+    private String getIdentifier(String alias, String applicationName, String environment, ResourceTypeDO type) {
+        return String.format("%s.%s.%s.%s", environment, applicationName, alias,  type.name());
+    }
+
+    public QueueManager getQueueManager(String environment) {
+        ResourceElement resource = FasitClient.this.findResource(QUEUE_MANAGER_ALIAS, TPSF_FASIT_APP_NAME, environment, ResourceTypeDO.QueueManager);
+
+        String managerName = resource.getPropertyString("name");
+        String hostname    = resource.getPropertyString("hostname");
+        String port        = resource.getPropertyString("port");
+
+        return new QueueManager(managerName, hostname, port);
     }
 
     public Queue getQueue(String alias, String environment) {
