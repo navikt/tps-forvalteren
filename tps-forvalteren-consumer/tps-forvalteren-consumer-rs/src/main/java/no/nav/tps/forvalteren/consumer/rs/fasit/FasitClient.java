@@ -58,7 +58,7 @@ public class FasitClient {
     }
 
     public QueueManager getQueueManager() {
-        return new QueueManager(mqManagerName, mqHostname, mqPort);
+        return new QueueManager("MQLCLIENT01", "b27apvl057.preprod.local", "1413");
     }
 
     public Queue getQueue(String alias, String environment) {
