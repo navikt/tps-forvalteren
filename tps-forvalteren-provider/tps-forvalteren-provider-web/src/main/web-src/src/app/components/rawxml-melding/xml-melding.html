@@ -22,13 +22,24 @@
                     </md-input-container>
                 </div>
 
-                <div flex=""></div>
-                <div class="input-container-div">
-                    <md-input-container  aria-label="Lagre oppdatert gruppeinfo">
+                <div layout="column">
+                    <md-input-container aria-label="Lagre oppdatert gruppeinfo">
                         <md-button type="submit" class="md-button md-raised md-accent" ng-disabled="xmlMelding-form.$invalid || !valgtKoe || !valgtMiljoe">
                             Send til TPS
                         </md-button>
                     </md-input-container>
+                </div>
+
+                <div class="input-container-div" flex="">
+                    <md-content class="xmlMelding-tps-vk-status-container">
+                        <div class="tps-vk-status" layout="row" ng-show="showStatus">
+                            <ng-md-icon class="tps-vk-status-icon" ng-class="returStatus == '00' ? 'success' : 'error'"
+                                        icon="fiber_manual_record"></ng-md-icon>
+                            <div class="xmlMelding-status-message">
+                                {{svarStatus}}
+                            </div>
+                        </div>
+                    </md-content>
                 </div>
             </div>
 
@@ -44,9 +55,9 @@
                     </md-input-container>
                 </div>
             </div>
-
             <br/>
         </form>
+
+
     </div>
-    <!-- Resulting Response -->
 </div>

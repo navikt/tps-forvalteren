@@ -8,6 +8,9 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             $scope.tpsMessageQueueList = [];
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
+            $scope.showStatus = true;
+            $scope.returStatus = "00";
+            $scope.svarStatus = "Meldingen er sendt";
 
             $scope.onChangeMiljoe = function () {
                 var queueList = [];
@@ -20,6 +23,12 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
                 $scope.valgtKoe = "";
                 $scope.displayQueues = queueList;
+            };
+
+            $scope.xmlFormatter = function (text) {
+                var xmlFormat = utilsService.formatXml(text);
+                $scope.melding = xmlFormat;
+                console.log($scope.melding);
             };
 
             $scope.onChangeQueue = function () {
@@ -85,5 +94,6 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             }
 
             hentAlleMiljoerOgKoer();
+
 
         }]);
