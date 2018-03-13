@@ -40,11 +40,16 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             };
 
             $scope.sendTilTps = function () {
+
                 console.log("Message is sent");
                 var objectToTps = {
                     koNavn: $scope.valgtKoe,
                     melding: $scope.melding
                 };
+
+                XmlmeldingService.send(objectToTps).then(function(response){
+                    console.log(response);
+                });
 
                 console.log(objectToTps);
             };
@@ -64,33 +69,48 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             }
 
             function hentAlleMiljoerOgKoer() {
-                //Skal gjøre et kall på et endepunkt, men er forelpig ikke klart så bruker dummydata
-                $scope.tpsMessageQueueList = [
-                    {
-                        "miljo": "u5",
-                        "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O"
-                    },
-                    {
-                        "miljo": "u6",
-                        "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O_TEST"
-                    },
-                    {
-                        "miljo": "u6",
-                        "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O_TEST2"
-                    },
-                    {
-                        "miljo": "u6",
-                        "koNavn": "QA.D8_411.SFE_ENDRINGSMELDING_TEST"
+
+                XmlmeldingService.hentKoer().then(
+                    function (result) {
+                        // debugger;
+
+                        $scope.tpsMessageQueueList = result.data;
+                        console.log($scope.tpsMessageQueueList);
+
+                        removeDuplicatesEnvironments()
+                        $scope.tpsMessageQueueList.forEach(function (obj) {
+                            console.log(obj);
+                            $scope.displayQueues.push(obj.koNavn);
+                            $scope.displayEnvironments.push(obj.miljo);
+                        });
+
+                        $scope.displayEnvironments = removeDuplicatesEnvironments();
+                        console.log($scope.displayEnvironments);
                     }
-                ];
+                );
 
-                $scope.tpsMessageQueueList.forEach(function (obj) {
-                    console.log(obj);
-                    $scope.displayQueues.push(obj.koNavn);
-                });
+                //Skal gjøre et kall på et endepunkt, men er forelpig ikke klart så bruker dummydata
 
-                $scope.displayEnvironments = removeDuplicatesEnvironments();
-                console.log($scope.displayEnvironments);
+
+                    // [
+                    // {
+                    //     "miljo": "u5",
+                    //     "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O"
+                    // },
+                    // {
+                    //     "miljo": "u6",
+                    //     "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O_TEST"
+                    // },
+                    // {
+                    //     "miljo": "u6",
+                    //     "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O_TEST2"
+                    // },
+                    // {
+                    //     "miljo": "u6",
+                    //     "koNavn": "QA.D8_411.SFE_ENDRINGSMELDING_TEST"
+                    // }
+
+
             }
 
             hentAlleMiljoerOgKoer();

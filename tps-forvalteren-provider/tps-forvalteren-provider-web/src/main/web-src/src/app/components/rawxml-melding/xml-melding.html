@@ -23,8 +23,8 @@
                 </div>
 
                 <div layout="column">
-                    <md-input-container aria-label="Lagre oppdatert gruppeinfo">
-                        <md-button type="submit" class="md-button md-raised md-accent" ng-disabled="xmlMelding-form.$invalid || !valgtKoe || !valgtMiljoe">
+                    <md-input-container aria-label="Send xml til tps">
+                        <md-button type="submit" class="md-button md-raised md-accent" ng-disabled="xmlMelding-form.$invalid || !valgtKoe || !valgtMiljoe" onclick="sendTilTps()">
                             Send til TPS
                         </md-button>
                     </md-input-container>
@@ -49,8 +49,7 @@
                         <md-tooltip>Skriv inn eller lim inn XML meding</md-tooltip>
                         <label>XML melding</label>
                         <textarea cols="120" name="xmlMelding" ng-model="melding" required class="textarea-xmlMelding"
-                                  placeholder="Skriv eller lim inn meldingg i XML format" minlength="10"
-                        >
+                                  placeholder="Skriv eller lim inn meldingg i XML format" minlength="10">
                         </textarea>
                     </md-input-container>
                 </div>
