@@ -41,7 +41,6 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
 
-        String responseQueueName = requestQueueName.toUpperCase() + "_REPLY";
         Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
         connection.start();
 
@@ -53,7 +52,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         Destination responseDestination = null;
 
         if (requestQueueName.toUpperCase().contains("SFE")) {
-            responseDestination = session.createQueue(responseQueueName);
+            responseDestination = session.createQueue(requestQueueName.toUpperCase() + "_REPLY");
         } else {
             responseDestination = createTemporaryQueueFor(session);
         }
