@@ -11,3 +11,4 @@ require('./appInfo.service');
 require('./endringsmelding.service');
 require('./toggleservice.service');
 require('./doedsmelding.service');
+require('./xml-melding.service');
