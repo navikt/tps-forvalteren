@@ -5,6 +5,6 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import javax.jms.JMSException;
 
 @FunctionalInterface
-public interface MessageQueueServiceFactory {
-    MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias) throws JMSException;
+public interface MessageFixedQueueServiceFactory {
+    MessageQueueConsumer createMessageQueueConsumerWithFixedQueueName(String environment, String fixedQueueName) throws JMSException;
 }
