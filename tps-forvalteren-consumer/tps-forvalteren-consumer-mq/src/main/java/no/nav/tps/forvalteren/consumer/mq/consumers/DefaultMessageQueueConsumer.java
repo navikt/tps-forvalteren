@@ -88,7 +88,8 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         /* Close the queues, the session, and the connection */
         connection.close();
 
-        LOGGER.info("Response: {}", responseMessage != null ? responseMessage.getText() : "");
+        String response = responseMessage != null ? responseMessage.getText() : "";
+        LOGGER.info("Response: {}", response);
         LOGGER.info("---------------------------");
 
         return responseMessage != null ? responseMessage.getText() : "";
