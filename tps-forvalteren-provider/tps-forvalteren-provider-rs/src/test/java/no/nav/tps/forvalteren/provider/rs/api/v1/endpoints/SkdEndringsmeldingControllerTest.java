@@ -8,8 +8,11 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import no.nav.tps.forvalteren.domain.rs.skd.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,14 +23,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingAsText;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
-import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
-import no.nav.tps.forvalteren.domain.rs.skd.RsRawMeldinger;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
@@ -192,10 +187,18 @@ public class SkdEndringsmeldingControllerTest {
     public void sendToTps() {
         Long gruppeId = 1337L;
         String environment = "u5";
-        
-        skdEndringsmeldingController.sendToTps(gruppeId, environment);
-        
-        verify(sendEndringsmeldingGruppeToTps).execute(gruppeId, environment);
+        List<Long> ids = new ArrayList<>();
+        ids.add(100000000L);
+        ids.add(100000001L);
+        ids.add(100000002L);
+
+        RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps = new RsSkdEndringsmeldingIdListToTps();
+        skdEndringsmeldingIdListToTps.setEnvironment(environment);
+        skdEndringsmeldingIdListToTps.setIds(ids);
+
+        skdEndringsmeldingController.sendToTps(gruppeId, skdEndringsmeldingIdListToTps);
+
+        verify(sendEndringsmeldingGruppeToTps).execute(gruppeId, skdEndringsmeldingIdListToTps);
     }
     
     @Test

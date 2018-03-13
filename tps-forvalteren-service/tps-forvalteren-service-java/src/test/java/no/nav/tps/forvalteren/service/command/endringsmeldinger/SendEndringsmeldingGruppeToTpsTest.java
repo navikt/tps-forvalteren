@@ -4,11 +4,15 @@ import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_EN
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -101,19 +105,32 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
     @Test
     public void checkThatAllServicesGetsCalled() {
-        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, ENVIRONMENT);
+        String environment = "u5";
+        List<Long> ids = new ArrayList<>();
+        ids.add(100000000L);
+        ids.add(100000001L);
+        ids.add(100000002L);
+
+        when(skdEndringsmeldingRepository.findById(100000000L)).thenReturn(skdEndringsmelding);
+        when(skdEndringsmeldingRepository.findById(100000001L)).thenReturn(skdEndringsmelding);
+        when(skdEndringsmeldingRepository.findById(100000002L)).thenReturn(skdEndringsmelding);
+
+        RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps = new RsSkdEndringsmeldingIdListToTps();
+        skdEndringsmeldingIdListToTps.setEnvironment(environment);
+        skdEndringsmeldingIdListToTps.setIds(ids);
+
+        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
 
         verify(skdEndringsmeldingGruppeRepository).findById(GRUPPE_ID);
-        verify(skdEndringsmeldingRepository).findAllByGruppe(gruppe);
-        verify(convertJsonToRsMeldingstype).execute(any(SkdEndringsmelding.class));
+        verify(convertJsonToRsMeldingstype, times(3)).execute(any(SkdEndringsmelding.class));
         verify(innvandring).resolve();
 
-        verify(convertMeldingFromJsonToText).execute(rsMeldingstype1Felter);
-        verify(skdAddHeaderToSkdMelding).execute(any(StringBuilder.class));
-        verify(sendSkdMeldingTilGitteMiljoer).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
+        verify(convertMeldingFromJsonToText, times(3)).execute(rsMeldingstype1Felter);
+        verify(skdAddHeaderToSkdMelding, times(3)).execute(any(StringBuilder.class));
+        verify(sendSkdMeldingTilGitteMiljoer, times(3)).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
 
         verify(skdStartAjourhold).execute(anySet());
-        verify(skdEndringsmeldingLoggRepository).save(any(SkdEndringsmeldingLogg.class));
+        verify(skdEndringsmeldingLoggRepository, times(3)).save(any(SkdEndringsmeldingLogg.class));
     }
 
     @Test
@@ -125,7 +142,17 @@ public class SendEndringsmeldingGruppeToTpsTest {
         expectedException.expect(SkdEndringsmeldingGruppeNotFoundException.class);
         expectedException.expectMessage(message);
 
-        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, ENVIRONMENT);
+        String environment = "u5";
+        List<Long> ids = new ArrayList<>();
+        ids.add(100000000L);
+        ids.add(100000001L);
+        ids.add(100000002L);
+
+        RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps = new RsSkdEndringsmeldingIdListToTps();
+        skdEndringsmeldingIdListToTps.setEnvironment(environment);
+        skdEndringsmeldingIdListToTps.setIds(ids);
+
+        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
 
         verify(skdEndringsmeldingGruppeRepository).findById(GRUPPE_ID);
         verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);

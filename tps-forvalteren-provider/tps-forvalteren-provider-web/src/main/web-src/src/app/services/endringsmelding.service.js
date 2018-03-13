@@ -40,8 +40,8 @@ angular.module('tps-forvalteren.service')
             return $http.post(url + '/convertmelding', melding);
         };
 
-        self.sendTilTps = function (gruppeId, miljoe) {
-            return $http.post(url + '/tps/' + gruppeId, miljoe);
+        self.sendTilTps = function (gruppeId, skdEndringsmeldingIdObjectToTps) {
+            return $http.post(url + '/send/' + gruppeId, skdEndringsmeldingIdObjectToTps);
         };
 
         self.getInnsendingslogg = function (gruppeId) {
