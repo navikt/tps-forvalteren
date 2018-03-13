@@ -15,7 +15,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
             $scope.valgteMeldinger = [];
 
             function getAllCheckedMeldinger() {
-                //Pusher meldinger som er checked til $scope.valgteMeldinger
                 $scope.valgteMeldinger = [];
 
                 originalMeldinger.forEach(function (melding, index) {
@@ -51,7 +50,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     text: 'Send til TPS',
                     icon: 'assets/icons/ic_send_black_24px.svg',
                     disabled: function () {
-                        return $scope.visEndret || !$scope.meldinger || $scope.meldinger.length == 0
+                        return $scope.antallValgt === 0;
                     },
                     click: function (ev) {
                         var confirm = $mdDialog.confirm({
@@ -137,6 +136,8 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                     }
                 }
                 $scope.antallValgt = !$scope.alleMeldinger.checked ? enabled : 0;
+
+                headerService.eventUpdate();
                 oppdaterFunksjonsknapper();
             };
 
@@ -185,6 +186,10 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe', ['ngMessages'])
                 $scope.antallEndret = endret;
                 $scope.antallValgt = valgt;
                 $scope.visEndret = endret > 0;
+
+                if($scope.antallValgt === 0 || $scope.antallValgt === 1) {
+                    headerService.eventUpdate();
+                }
             };
 
             function sletteMeldinger () {

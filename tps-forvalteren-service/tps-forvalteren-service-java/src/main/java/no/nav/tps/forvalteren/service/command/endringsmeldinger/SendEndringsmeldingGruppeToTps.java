@@ -61,8 +61,8 @@ public class SendEndringsmeldingGruppeToTps {
     private SkdStartAjourhold skdStartAjourhold;
 
 
-    public void execute(Long gruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
-        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
+    public void execute(Long skdMeldingsGruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
+        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(skdMeldingsGruppeId);
         if(gruppe != null) {
             List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
             String environment = skdEndringsmeldingIdListToTps.getEnvironment();
@@ -82,22 +82,22 @@ public class SendEndringsmeldingGruppeToTps {
                 String skdMelding = convertMeldingFromJsonToText.execute(melding);
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
-                saveLogg(skdMelding, melding, gruppeId, environment);
+                saveLogg(skdMelding, melding, skdMeldingsGruppeId, environment);
             }
 
             skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
 
         } else {
-            throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
+            throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, skdMeldingsGruppeId));
         }
     }
 
-    private void saveLogg(String skdMelding, RsMeldingstype melding, Long gruppeId, String environment) {
+    private void saveLogg(String skdMelding, RsMeldingstype melding, Long skdMeldingsGruppeId, String environment) {
         SkdEndringsmeldingLogg log = new SkdEndringsmeldingLogg();
         log.setEndringsmelding(skdMelding);
         log.setBeskrivelse(melding.getBeskrivelse());
         log.setEnvironment(environment);
-        log.setMeldingsgruppeId(gruppeId);
+        log.setMeldingsgruppeId(skdMeldingsGruppeId);
         skdEndringsmeldingLoggRepository.save(log);
     }
 }

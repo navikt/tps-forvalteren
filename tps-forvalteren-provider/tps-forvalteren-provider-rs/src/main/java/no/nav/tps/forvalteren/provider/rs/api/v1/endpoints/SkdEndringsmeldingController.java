@@ -156,9 +156,9 @@ public class SkdEndringsmeldingController {
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendToTps") })
-    @RequestMapping(value = "/send/{gruppeId}", method = RequestMethod.POST)
-    public void sendToTps(@PathVariable Long gruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
-        sendEndringsmeldingGruppeToTps.execute(gruppeId, skdEndringsmeldingIdListToTps);
+    @RequestMapping(value = "/send/{skdMeldingGruppeId}", method = RequestMethod.POST)
+    public void sendToTps(@PathVariable Long skdMeldingsGruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
+        sendEndringsmeldingGruppeToTps.execute(skdMeldingsGruppeId, skdEndringsmeldingIdListToTps);
     }
 
     @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
