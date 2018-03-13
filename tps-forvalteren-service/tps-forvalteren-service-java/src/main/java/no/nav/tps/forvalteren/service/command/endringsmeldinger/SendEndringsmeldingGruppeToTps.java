@@ -70,7 +70,9 @@ public class SendEndringsmeldingGruppeToTps {
 
             for(Long id : idList) {
                 SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
-                skdEndringsmeldinger.add(skdEndringsmelding);
+                if(skdEndringsmelding != null){
+                    skdEndringsmeldinger.add(skdEndringsmelding);
+                }
             }
 
             List<RsMeldingstype> rsMeldingstyper = skdEndringsmeldinger.stream()
@@ -83,7 +85,7 @@ public class SendEndringsmeldingGruppeToTps {
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
                 saveLogg(skdMelding, melding, skdMeldingsGruppeId, environment);
-            }
+             }
 
             skdStartAjourhold.execute(new HashSet<>(Arrays.asList(environment)));
 
