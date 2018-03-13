@@ -70,6 +70,7 @@
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <ojdbc.version>12.2.0.1</ojdbc.version>
         <orika.version>1.5.1</orika.version>
+        <micrometer.version>1.0.0-rc.9</micrometer.version>
         <mqjms.version>7.1</mqjms.version>
         <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
@@ -315,19 +316,17 @@
             </dependency>
 
             <!-- prometheus -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-actuator</artifactId>
-            </dependency>
 
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-spring-legacy</artifactId>
+                <version>${micrometer.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
             </dependency>
 
             <!-- Apache Commons IO -->
