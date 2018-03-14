@@ -10,7 +10,7 @@ import no.nav.tps.forvalteren.provider.rs.security.config.WebSecurityConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
 import no.nav.tps.forvalteren.service.config.ServiceConfig;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

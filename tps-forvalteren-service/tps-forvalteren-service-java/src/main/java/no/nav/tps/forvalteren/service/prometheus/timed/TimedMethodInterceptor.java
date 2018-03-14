@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.timed;
+package no.nav.tps.forvalteren.service.prometheus.timed;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;

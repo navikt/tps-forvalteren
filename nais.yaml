@@ -16,10 +16,6 @@ healthcheck:
     initialDelay: 15
     periodSeconds: 2
     failureThreshold: 120
-endpoints:
- enabled: false
- health.enabled: true
- jmx.enabled: false
 prometheus:
   enabled: true
   path: /internal/prometheus

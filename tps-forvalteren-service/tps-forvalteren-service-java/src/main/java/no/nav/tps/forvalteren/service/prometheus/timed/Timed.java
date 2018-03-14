@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.timed;
+package no.nav.tps.forvalteren.service.prometheus.timed;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
