@@ -57,7 +57,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         }
 
         if (requestDestination instanceof MQQueue) {
-            ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
+            ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);         //TODO: This method should be provider independent
         }
 
         /* Prepare request message */
