@@ -16,7 +16,6 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial
                     ids: meldinger
                 };
 
-                debugger;
                 endringsmeldingService.sendTilTps(gruppeId, skdEndringsmeldingIdObjectToTps).then(
                     function () {
                         $scope.showSpinner = false;

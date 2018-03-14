@@ -41,7 +41,6 @@ angular.module('tps-forvalteren.service')
         };
 
         self.sendTilTps = function (gruppeId, skdEndringsmeldingIdObjectToTps) {
-            debugger;
             return $http.post(url + '/send/' + gruppeId, skdEndringsmeldingIdObjectToTps);
         };
 
