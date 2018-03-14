@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial'])
-    .controller('SkdSendTilTpsCtrl', ['$scope', '$rootScope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'endringsmeldingService', 'utilsService',
-        function ($scope, $rootScope, $mdDialog, $stateParams, serviceRutineFactory, endringsmeldingService, utilsService) {
+    .controller('SkdSendTilTpsCtrl', ['$scope', '$rootScope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'endringsmeldingService', 'utilsService', 'meldinger',
+        function ($scope, $rootScope, $mdDialog, $stateParams, serviceRutineFactory, endringsmeldingService, utilsService, meldinger) {
 
             var gruppeId = $stateParams.gruppeId;
             $scope.showSpinner = false;
@@ -11,7 +11,13 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial
 
             $scope.send = function () {
                 $scope.showSpinner = true;
-                endringsmeldingService.sendTilTps(gruppeId, $scope.valgtMiljoe).then(
+                var skdEndringsmeldingIdObjectToTps = {
+                    environment: $scope.valgtMiljoe,
+                    ids: meldinger
+                };
+
+                debugger;
+                endringsmeldingService.sendTilTps(gruppeId, skdEndringsmeldingIdObjectToTps).then(
                     function () {
                         $scope.showSpinner = false;
                         $mdDialog.hide();

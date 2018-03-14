@@ -46,13 +46,6 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     @Override
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
 
-        LOGGER.info("---------------------------");
-        LOGGER.info("username: {}", MessageQueueConsumerConstants.USERNAME);
-        LOGGER.info("password: {}", MessageQueueConsumerConstants.PASSWORD);
-        LOGGER.info("MQ queue name: {}", requestQueueName);
-        LOGGER.info("MQ manager name: {}", ((MQQueueConnectionFactory) connectionFactory).getQueueManager());
-        LOGGER.info("MQ channel name: {}", ((MQQueueConnectionFactory) connectionFactory).getChannel());
-
         Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
         connection.start();
 
@@ -61,7 +54,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         /* Prepare destinations */
         Destination requestDestination = session.createQueue(requestQueueName);
 
-        Destination responseDestination = null;
+        Destination responseDestination;
 
         if (requestQueueName.toUpperCase().contains("SFE")) {
             responseDestination = session.createQueue(requestQueueName.toUpperCase() + "_REPLY");
@@ -94,15 +87,10 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         /* Close the queues, the session, and the connection */
         connection.close();
 
-        String response = responseMessage != null ? responseMessage.getText() : "";
-        LOGGER.info("Response: {}", response);
-        LOGGER.info("---------------------------");
-
         return responseMessage != null ? responseMessage.getText() : "";
-
     }
 
-    public Destination createTemporaryQueueFor(Session session) throws JMSException {
+    private Destination createTemporaryQueueFor(Session session) throws JMSException {
         return session.createTemporaryQueue();
     }
 
