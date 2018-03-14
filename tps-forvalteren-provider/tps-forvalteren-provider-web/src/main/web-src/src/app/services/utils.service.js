@@ -68,7 +68,7 @@ angular.module('tps-forvalteren.service')
 
         //TODO: use library for this
         self.formatXml = function (xml) {
-            if (xml) {
+            if (xml && xml.indexOf("<?xml version") !== -1) {
                 var reg = /(>)\s*(<)(\/*)/g;
                 var wsexp = / *(.*) +\n/g;
                 var contexp = /(<.+>)(.+\n)/g;
@@ -109,6 +109,7 @@ angular.module('tps-forvalteren.service')
 
                     indent += transitions[fromTo];
                     for (var j = 0; j < indent; j++) {
+
                         padding += '\t';
                     }
                     if (fromTo === 'opening->closing')
@@ -118,6 +119,8 @@ angular.module('tps-forvalteren.service')
                 }
 
                 return formatted;
+            }else {
+                return "Not xml";
             }
         };
 

@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
-    .controller('RawXmlCtrl', ['$scope', '$mdDialog', '$mdConstant', 'utilsService', 'headerService', 'XmlmeldingService',
-        function ($scope, $mdDialog, $mdConstant, utilsService, headerService, XmlmeldingService) {
+    .controller('RawXmlCtrl', ['$scope', '$mdDialog', '$mdConstant', 'utilsService', 'headerService', 'xmlmeldingService',
+        function ($scope, $mdDialog, $mdConstant, utilsService, headerService, xmlmeldingService) {
 
             headerService.setHeader('Send XML-melding');
 
@@ -8,9 +8,8 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             $scope.tpsMessageQueueList = [];
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
-            $scope.showStatus = true;
-            $scope.returStatus = "00";
-            $scope.svarStatus = "Meldingen er sendt";
+            $scope.showResponse = false;
+            $scope.responseMelding = "";
 
             $scope.onChangeMiljoe = function () {
                 var queueList = [];
@@ -20,16 +19,10 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         queueList.push(obj.koNavn);
                     }
                 });
-
                 $scope.valgtKoe = "";
                 $scope.displayQueues = queueList;
             };
 
-            $scope.xmlFormatter = function (text) {
-                var xmlFormat = utilsService.formatXml(text);
-                $scope.melding = xmlFormat;
-                console.log($scope.melding);
-            };
 
             $scope.onChangeQueue = function () {
                 $scope.tpsMessageQueueList.forEach(function (obj) {
@@ -40,18 +33,21 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             };
 
             $scope.sendTilTps = function () {
-
-                console.log("Message is sent");
                 var objectToTps = {
-                    koNavn: $scope.valgtKoe,
-                    melding: $scope.melding
+                    melding: $scope.melding,
+                    ko: $scope.valgtKoe
                 };
 
-                XmlmeldingService.send(objectToTps).then(function(response){
-                    console.log(response);
+                xmlmeldingService.send(objectToTps).then(function(response){
+                    $scope.showResponse = true;
+                    if (response.config.data.melding.indexOf("<?xml version") !== -1) {
+                        $scope.responseMelding = utilsService.formatXml(response.data.xml);
+                    } else {
+                        $scope.responseMelding = response.data.xml;
+                    }
+                }, function (error) {
+                    $scope.responseMelding = "Error";
                 });
-
-                console.log(objectToTps);
             };
 
             function removeDuplicatesEnvironments() {
@@ -70,46 +66,16 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             function hentAlleMiljoerOgKoer() {
 
-                XmlmeldingService.hentKoer().then(
-                    function (result) {
-                        // debugger;
-
+                xmlmeldingService.hentKoer().then(function (result) {
                         $scope.tpsMessageQueueList = result.data;
-                        console.log($scope.tpsMessageQueueList);
 
-                        removeDuplicatesEnvironments()
                         $scope.tpsMessageQueueList.forEach(function (obj) {
-                            console.log(obj);
                             $scope.displayQueues.push(obj.koNavn);
                             $scope.displayEnvironments.push(obj.miljo);
                         });
 
                         $scope.displayEnvironments = removeDuplicatesEnvironments();
-                        console.log($scope.displayEnvironments);
-                    }
-                );
-
-                //Skal gjøre et kall på et endepunkt, men er forelpig ikke klart så bruker dummydata
-
-
-                    // [
-                    // {
-                    //     "miljo": "u5",
-                    //     "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O"
-                    // },
-                    // {
-                    //     "miljo": "u6",
-                    //     "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O_TEST"
-                    // },
-                    // {
-                    //     "miljo": "u6",
-                    //     "koNavn": "QA.D8_411.TPS_FORESPORSEL_XML_O_TEST2"
-                    // },
-                    // {
-                    //     "miljo": "u6",
-                    //     "koNavn": "QA.D8_411.SFE_ENDRINGSMELDING_TEST"
-                    // }
-
+                    });
 
             }
 

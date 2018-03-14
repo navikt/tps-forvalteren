@@ -1,14 +1,14 @@
 angular.module('tps-forvalteren.service')
-    .service('XmlmeldingService', ['$http', function ($http) {
+    .service('xmlmeldingService', ['$http', function ($http) {
 
         var self = this;
-        var url = 'api/v1/'; //Skal endres.
+        var url = 'api/v1/';
 
         self.hentKoer = function () {
             return $http.get(url + "/queues");
         };
 
-        self.send = function () {
+        self.send = function (melding) {
             return $http.post(url + "/xmlmelding", melding);
         }
 
