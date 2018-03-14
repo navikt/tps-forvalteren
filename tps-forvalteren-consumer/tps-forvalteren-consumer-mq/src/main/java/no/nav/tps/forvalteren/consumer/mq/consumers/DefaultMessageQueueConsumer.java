@@ -34,8 +34,8 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
     }
 
     @Override
-    public void sendMessageAsync(String requestMessageContent) throws JMSException{
-        sendMessage(requestMessageContent,ZERO_TIMEOUT);
+    public void sendMessageAsync(String requestMessageContent) throws JMSException {
+        sendMessage(requestMessageContent, ZERO_TIMEOUT);
     }
 
     @Override
@@ -61,7 +61,13 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         /* Prepare destinations */
         Destination requestDestination = session.createQueue(requestQueueName);
 
-        Destination responseDestination = createTemporaryQueueFor(session);
+        Destination responseDestination = null;
+
+        if (requestQueueName.toUpperCase().contains("SFE")) {
+            responseDestination = session.createQueue(requestQueueName.toUpperCase() + "_REPLY");
+        } else {
+            responseDestination = createTemporaryQueueFor(session);
+        }
 
         if (requestDestination instanceof MQQueue) {
             ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);            //TODO: This method should be provider independent
@@ -76,7 +82,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         producer.send(requestMessage);
 
         TextMessage responseMessage = null;
-        if(timeout > 0){
+        if (timeout > 0) {
             /* Wait for response */
             String attributes = String.format("JMSCorrelationID='%s'", requestMessage.getJMSMessageID());
 

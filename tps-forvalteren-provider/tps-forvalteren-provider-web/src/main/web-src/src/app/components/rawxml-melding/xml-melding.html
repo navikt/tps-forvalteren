@@ -1,0 +1,61 @@
+<div class="xmlMelding-page" layout="column" flex layout-padding ng-cloak>
+    <!--<md-progress-linear class="progress" md-mode="indeterminate" ng-show="showProgress"></md-progress-linear>-->
+    <h3 class="title">Send XML melding</h3>
+    <div class="xmlMelding-content md-whiteframe-z1 request-form">
+        <!--Form - Sending a xml message-->
+        <form name="xmlMeldingForm" flex="100" class="accent" ng-submit="sendTilTps()">
+            <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column" flex="10">
+                    <md-input-container class="input-container">
+                        <label>Miljø</label>
+                        <md-select name="miljoe" ng-model="valgtMiljoe" ng-required="" ng-change="onChangeMiljoe()">
+                            <md-option ng-value="env" ng-repeat="env in displayEnvironments">{{ env }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div class="input-container-div" layout="column" flex="40">
+                    <md-input-container class="input-container">
+                        <label>Til k</label>
+                        <md-select name="tilKoe" ng-model="valgtKoe" ng-required="" ng-change="onChangeQueue()">
+                            <md-option ng-value="queue" ng-repeat="queue in displayQueues">{{ queue }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout="column">
+                    <md-input-container aria-label="Send xml til tps">
+                        <md-button type="submit" class="md-button md-raised md-accent" ng-click="sendTilTps()"
+                                   ng-disabled="xmlMeldingForm.$invalid || !valgtKoe || !valgtMiljoe">
+                            Send til TPS
+                        </md-button>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column">
+                    <md-input-container class="tps-vk-input-container">
+                        <md-tooltip>Skriv inn eller lim inn XML meding</md-tooltip>
+                        <label>XML melding</label>
+                        <textarea cols="120" name="xmlMelding" ng-model="melding" required class="textarea-xmlMelding"
+                                  placeholder="Skriv eller lim inn melding i XML format" minlength="1">
+                        </textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+
+    <!--View result of the request-->
+
+    <h3 ng-show="showResponse">Resultat</h3>
+    <div class="xmlMelding-content md-whiteframe-z1 xmlMelding-response" ng-show="showResponse">
+        <md-content flex="" class="tps-vk-bottom">
+            <div class="tps-vk-xml-panel" hljs hljs-source="responseMelding" hljs-language="xml">
+            </div>
+        </md-content>
+    </div>
+
+</div>

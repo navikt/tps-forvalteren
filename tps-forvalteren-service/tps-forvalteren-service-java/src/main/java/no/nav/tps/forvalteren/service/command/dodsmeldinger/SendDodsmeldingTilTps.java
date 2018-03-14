@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,7 +17,6 @@ import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnviro
 import no.nav.tps.forvalteren.service.command.testdata.FindDoedePersoner;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
-import no.nav.tps.forvalteren.service.command.tps.SkdStartAjourhold;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,9 +47,6 @@ public class SendDodsmeldingTilTps {
 
     @Autowired
     private SkdMeldingResolver innvandring;
-
-    @Autowired
-    private SkdStartAjourhold skdStartAjourhold;
 
     @Autowired
     private UpdateDeathRow updateDeathRow;
@@ -103,7 +98,6 @@ public class SendDodsmeldingTilTps {
         skdMeldinger.addAll(createDoedsmeldinger(createDeathRowPersonList));
 
         TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
-        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
         Set<String> environment;
 
         for (String skdmelding : skdMeldinger) {
@@ -111,8 +105,6 @@ public class SendDodsmeldingTilTps {
             sendSkdMeldingTilGitteMiljoer.execute(skdmelding, skdRequestMeldingDefinition, environment);
             environment.clear();
         }
-
-        skdStartAjourhold.execute(new HashSet<>(environments));
     }
 
     private List<String> createDoedsmeldinger(List<Person> deathRowPersonList) {

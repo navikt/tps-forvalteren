@@ -10,7 +10,7 @@ public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding
     private static final String WHITESPACE_20_STK = "                    ";
 
     private static final String KJORE_NUMMER = "000004421";
-    private static final String KODE_SYSTEM = "SKD ";
+    private static final String KODE_SYSTEM = "TPSF";
     private static final String MQ_HANDLE = "000000000";
     private static final String SKD_REFERANSE = WHITESPACE_20_STK;
 

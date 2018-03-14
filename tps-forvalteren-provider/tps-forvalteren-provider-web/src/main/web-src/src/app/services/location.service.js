@@ -53,6 +53,10 @@ angular.module('tps-forvalteren.service')
             $state.go("send-doedsmeldinger");
         }
 
+        self.redirectToRawXmlMelding = function(){
+            $state.go("xml-melding");
+        }
+
         self.redirectUrl = function(url, param) {
             if (url.indexOf('/:') !== -1) {
                 $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);

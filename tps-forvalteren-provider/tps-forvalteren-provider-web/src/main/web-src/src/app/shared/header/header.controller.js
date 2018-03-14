@@ -33,12 +33,18 @@ angular.module('tps-forvalteren')
                 locationService.redirectToSendDoedsmeldinger();
             };
 
+            $scope.openVisXmlMelding = function(){
+                locationService.redirectToRawXmlMelding();
+            };
+
             $scope.isRoot = locationService.isRoot();
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0 && !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visSendDoedsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0;
             $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
+            $scope.visRawXmlmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_UTVIKLER") >= 0 && !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visRawXmlmeldingKnapp = true;
 
             $scope.$on('updateEvent', function () {
                 if ($scope.header && $scope.header.buttons) {
