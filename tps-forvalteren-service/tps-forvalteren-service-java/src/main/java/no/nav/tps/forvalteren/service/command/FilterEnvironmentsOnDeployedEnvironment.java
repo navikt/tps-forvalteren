@@ -20,6 +20,7 @@ public class FilterEnvironmentsOnDeployedEnvironment {
                     .filter(environments);
         case 't':
             return EnvironmentsFilter.create()
+                    .include("u*")
                     .include("t*")
                     .include("q*")
                     .filter(environments);
