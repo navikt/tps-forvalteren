@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQQueue;
-import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
 import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
 
@@ -13,12 +12,8 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageQueueConsumer.class);
 
     private static final long DEFAULT_TIMEOUT = 5000;
     private static final long ZERO_TIMEOUT = 0;
@@ -55,7 +50,6 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         Destination requestDestination = session.createQueue(requestQueueName);
 
         Destination responseDestination;
-
         if (requestQueueName.toUpperCase().contains("SFE")) {
             responseDestination = session.createQueue(requestQueueName.toUpperCase() + "_REPLY");
         } else {
