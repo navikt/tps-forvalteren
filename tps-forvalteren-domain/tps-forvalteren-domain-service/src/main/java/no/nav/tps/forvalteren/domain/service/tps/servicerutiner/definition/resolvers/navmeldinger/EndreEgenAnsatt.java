@@ -18,8 +18,8 @@ public class EndreEgenAnsatt implements ServiceRoutineResolver {
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("")
-                .internalName("")
+                .name("endre_egen_ansatt")
+                .internalName("Endre Egen Ansatt")
                 .javaClass(TpsEndreEgenansattRequest.class)
                 .config()
                 .requestQueue(REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
@@ -39,14 +39,14 @@ public class EndreEgenAnsatt implements ServiceRoutineResolver {
 
                 .parameter()
                 .name("tom")
-                .required()
+                .optional()
                 .type(TpsParameterType.DATE)
                 .and()
 
                 .transformer()
                 .preSend(EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender())
-                .postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
-                .postSend(ResponseStatusTransformer.extractStatusFromXmlElement(""))
+                //.postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
+                .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()

@@ -10,7 +10,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreSikkerhetstiltakRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
@@ -18,8 +17,8 @@ public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("")
-                .internalName("")
+                .name("endre_sikkerhetstiltak")
+                .internalName("Endre SikkerhetsTiltak")
                 .javaClass(TpsEndreSikkerhetstiltakRequest.class)
                 .config()
                 .requestQueue(REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
@@ -57,8 +56,8 @@ public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
 
                 .transformer()
                 .preSend(EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender())
-                .postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
-                .postSend(ResponseStatusTransformer.extractStatusFromXmlElement(""))
+                //.postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
+                .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()
