@@ -10,11 +10,6 @@
     <artifactId>tps-forvalteren-application</artifactId>
     <name>TPS Forvalteren :: Application</name>
 
-    <!--<modules>-->
-        <!--<module>tps-forvalteren-application-jee</module>-->
-        <!--<module>tps-forvalteren-application-local</module>-->
-    <!--</modules>-->
-
     <dependencies>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
