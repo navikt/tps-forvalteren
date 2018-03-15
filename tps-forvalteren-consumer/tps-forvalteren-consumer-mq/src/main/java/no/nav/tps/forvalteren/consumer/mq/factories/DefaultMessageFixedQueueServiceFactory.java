@@ -9,7 +9,6 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,6 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
 
-    private static final String DEFAULT_DEV_ENVIRONMENT = "u6";
     /**
      * Instantiates a new MessageQueueConsumer in the specified environment
      *
