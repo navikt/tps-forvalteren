@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-service</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>merget-nais-features-6</version>
+        <version>merget-nais-features-8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
