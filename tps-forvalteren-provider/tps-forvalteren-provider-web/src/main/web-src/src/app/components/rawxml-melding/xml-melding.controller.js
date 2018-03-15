@@ -4,7 +4,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             headerService.setHeader('Send XML-melding');
 
-            $scope.melding = "<?xml version=\\\'1.0\\\' encoding=\\\'ISO-8859-1\\\'?>";
+            $scope.melding = "<?xml version=\'1.0\' encoding=\'ISO-8859-1\'?>";
             $scope.tpsMessageQueueList = [];
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
