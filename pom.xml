@@ -11,7 +11,7 @@
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>merget-nais-features-6</version>
+    <version>merget-nais-features-8</version>
 
 
     <packaging>pom</packaging>

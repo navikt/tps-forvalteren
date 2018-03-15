@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tps-forvalteren</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>merget-nais-features-6</version>
+        <version>merget-nais-features-8</version>
     </parent>
 
     <artifactId>tps-forvalteren-repository</artifactId>
