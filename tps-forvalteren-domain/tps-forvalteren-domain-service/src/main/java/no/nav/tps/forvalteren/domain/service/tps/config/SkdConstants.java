@@ -2,6 +2,8 @@ package no.nav.tps.forvalteren.domain.service.tps.config;
 
 public class SkdConstants {
 
+    public static final String TRANSTYPE_1 = "1";
+
     public static final String TILDELINGSKODE = "tildelingskode";
     public static final String FODSELSDATO = "fodselsdato";
     public static final String PERSONNUMMER = "personnummer";
@@ -54,3 +56,4 @@ public class SkdConstants {
     
     public static final String STATUSKODE = "statuskode";
 }
+

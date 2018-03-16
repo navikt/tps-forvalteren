@@ -5,23 +5,23 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteS
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringCreateSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringUpdateSkdParametere;
 
-public class InnvandringAarsakskode02 implements SkdMeldingResolver {
+public class InnvandringAarsakskode02Tildelingskode2Update implements SkdMeldingResolver {
 
-    public static final String INNVANDRING_CREATE_MLD_NAVN = "InnvandringCreate" ;
+    public static final String INNVANDRING_UPDATE_MLD_NAVN = "InnvandringUpdate" ;
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name(INNVANDRING_CREATE_MLD_NAVN)
+                .name(INNVANDRING_UPDATE_MLD_NAVN)
 
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
 
                 .skdParameters()
-                .addSkdParametersCreator(InnvandringCreateSkdParametere.innvandringParameterCreator())
+                .addSkdParametersCreator(InnvandringUpdateSkdParametere.innvandringUpdateParameterCreator())
                 .addParameterCreator()
 
                 .and()
