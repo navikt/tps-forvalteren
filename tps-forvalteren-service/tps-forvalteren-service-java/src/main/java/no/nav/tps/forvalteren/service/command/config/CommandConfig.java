@@ -6,6 +6,8 @@ import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørSikkerhetsTiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersonerTestdata;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S000SjekkTpsTilgjengelig;
@@ -157,6 +159,16 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver endreSikkerhetsTiltak() {
         return new EndreSikkerhetsTiltak();
+    }
+
+    @Bean
+    ServiceRoutineResolver opphorSikkerhetsTiltak() {
+        return new OpphørSikkerhetsTiltak();
+    }
+
+    @Bean
+    ServiceRoutineResolver opphosEgenAnsatt() {
+        return new OpphørEgenAnsatt();
     }
 
     @Bean
