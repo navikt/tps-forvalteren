@@ -51,7 +51,19 @@
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-consumer-ws</artifactId>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>com.sun.xml.bind</groupId>-->
+                    <!--<artifactId>jaxb-core</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.2.7</version>
         </dependency>
 
         <dependency>

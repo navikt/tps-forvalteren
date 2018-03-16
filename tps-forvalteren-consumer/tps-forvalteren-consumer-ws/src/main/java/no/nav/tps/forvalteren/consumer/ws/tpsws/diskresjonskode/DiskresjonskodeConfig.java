@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
-import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
 import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.ConsumerConfigUtil;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 
@@ -16,8 +16,8 @@ public class DiskresjonskodeConfig {
     @Value("${validering.virksomhet.diskresjonskodev1.url}")
     private String diskresjonskodeAddress;
 
-    private static final String DISKRESJONSKODE_WSDL_URL = "wsdl/Diskresjonskode.wsdl";
-    private static final QName DISKRESJON_QNAME = new QName("http://nav.no/tjeneste/pip/diskresjonskode/", "Diskresjonskode");
+    private static final String DISKRESJONSKODE_WSDL_URL = "wsdl/no/nav/tjeneste/pip/Diskresjonskode/Diskresjonskode.wsdl";
+    private static final QName DISKRESJON_QNAME = new QName("http://nav.no/tjeneste/pip/diskresjonskode/", "DiskresjonskodePortTypePort");
 
     @Bean
     DiskresjonskodePortType diskresjonskodePortType() {
@@ -25,8 +25,8 @@ public class DiskresjonskodeConfig {
     }
 
     @Bean
-    TpsfStsClient cxfStsClientDiskresjonskode(DiskresjonskodePortType diskresjonskodePortType) {
-        return new TpsfStsClient(ClientProxy.getClient(diskresjonskodePortType));
+    TpsfStsClient cxfStsClientDiskresjonskode(DiskresjonskodePortType diskresjonskode) {
+        return new TpsfStsClient(ClientProxy.getClient(diskresjonskode));
     }
 
 }
