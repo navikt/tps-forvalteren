@@ -2,11 +2,14 @@ package no.nav.tps.forvalteren.provider.rs;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,13 +36,10 @@ public abstract class AbstractRsProviderIntegrationTest {
     @Autowired(required = false)
     protected WebApplicationContext context;
 
-    @Autowired
+    @Mock
     protected DiskresjonskodeConsumer diskresjonskodeConsumerMock;
 
-    @Autowired
-    protected DiskresjonskodePortType diskresjonskodePortTypeMock;
-
-    @Autowired
+    @Mock
     protected EgenAnsattConsumer egenAnsattConsumerMock;
 
     protected MockMvc mvc;
@@ -61,8 +61,10 @@ public abstract class AbstractRsProviderIntegrationTest {
         }
 
         HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
-        response.setDiskresjonskode("1");
-        when(diskresjonskodeConsumerMock.getDiskresjonskodeResponse(any(String.class))).thenReturn(response);
+//        response.setDiskresjonskode("1");
+        response.setDiskresjonskode("");
+        doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
+        when(diskresjonskodeConsumerMock.getDiskresjonskodeResponse(anyString())).thenReturn(response);
 
         HentDiskresjonskodeBolkResponse bolkResponse = new HentDiskresjonskodeBolkResponse();
         when(diskresjonskodeConsumerMock.getDiskresjonskodeBolk(anyListOf(String.class))).thenReturn(bolkResponse);

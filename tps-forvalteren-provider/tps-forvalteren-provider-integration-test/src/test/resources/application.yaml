@@ -1,0 +1,71 @@
+application:
+  descriptiveName: tpsf
+  name: tpsf
+  version: 1
+
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl023.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TPSFORVALTERENU6)(INSTANCE_NAME=ccuf02)(UR=A)(SERVER=DEDICATED)))
+    username: TPSFORVALTEREN_U6
+    password: 5afWDfd0jLBn
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    continue-on-error: true
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: none
+        default_schema: TEST
+  messages:
+    basename: messages/messages
+  profiles:
+    active: local
+  main:
+    banner-mode: 'off'
+
+enable.caching: false
+node.hostname: localhost
+
+### JDBC SEssions Spring ###
+spring.session:
+  store-type: jdbc
+  timeout: 5
+  jdbc:
+    initializer.enabled: true
+    table-name: SPRING_SESSION
+
+## Flyway ##
+flyway:
+  check-location: true
+  locations: classpath:db/migration
+  enabled: true
+
+tps.forvalteren.production-mode: false
+
+environment.name: u6
+environment.class: u
+
+FASIT_ENVIRONMENT_NAME: u6
+
+MQGATEWAY_HOSTNAME: e26apvl121.test.local
+MQGATEWAY_PORT: 1411
+MQGATEWAY_NAME: MUXLSC01
+TPS_FORESPORSEL_XML_O_QUEUENAME: QA.D8_411.TPS_FORESPORSEL_XML_O
+
+kodeverkserver.url: https://modapp-t5.adeo.no/kodeverk/ws/Kodeverk/v2
+
+validering.virksomhet.diskresjonskodev1.url: https://wasapp-t5.adeo.no/tpsws/Diskresjonskode
+validering.virksomhet.egenansattv1.url: https://wasapp-t9.adeo.no/tpsws/EgenAnsatt_v1
+
+SRVTPS_FORVALTEREN_USERNAME: srvdrek_u
+SRVTPS_FORVALTEREN_PASSWORD: NCeyl5Tz83aO5hq
+
+SECURITYTOKENSERVICE_URL: https://sts-t6.test.local/SecurityTokenServiceProvider/
+
+ldap.url: ldap\://ldapgw.test.local
+ldap.basedn: dc\=test,dc\=local
+ldap.username: srvSSOLinux
+ldap.password: khFKL0GCusWe72
+ldap.domain: TEST.LOCAL
+ldap.serviceuser.basedn: ou\=ServiceAccounts,dc\=test,dc\=local
+ldap.user.basedn: ou\=NAV,ou\=BusinessUnits,dc\=test,dc\=local
+

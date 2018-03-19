@@ -10,6 +10,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Before;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import javax.jms.JMSException;
@@ -20,10 +21,10 @@ import static org.mockito.Matchers.any;
 
 public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
 
-    @Inject
+    @Autowired
     protected RequestQueueListener requestQueueListener;
 
-    @Inject
+    @Autowired
     private DefaultMessageQueueConsumer defaultMessageQueueConsumer;
 
     private static final String BASE_URL = "/api/v1/service/";

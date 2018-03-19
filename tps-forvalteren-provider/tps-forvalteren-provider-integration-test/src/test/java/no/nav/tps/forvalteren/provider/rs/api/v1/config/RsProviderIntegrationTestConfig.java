@@ -27,7 +27,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import static org.mockito.Mockito.mock;
 
 @Configuration
-@ComponentScan(basePackageClasses = TestUserDetails.class)
+@ComponentScan(basePackages = "no.nav.tps.forvalteren.provider")
 @EnableJms
 @Import({
         IntegrationTestConfig.class,
@@ -38,18 +38,16 @@ public class RsProviderIntegrationTestConfig {
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
 
-    @Bean
-    @Primary
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        return mock(DiskresjonskodePortType.class);
-    }
-
+//    @Bean
+//    public DiskresjonskodePortType diskresjonskodePortType() {
+//        return mock(DiskresjonskodePortType.class);
+//    }
+//
     @Bean
     @Primary
     public DiskresjonskodeConsumer diskresjonskodeConsumerMock() {
         return mock(DiskresjonskodeConsumer.class);
     }
-
 
     @Bean
     public UserDetailsService userDetailsService() {
