@@ -37,6 +37,9 @@ public abstract class AbstractRsProviderIntegrationTest {
     protected DiskresjonskodeConsumer diskresjonskodeConsumerMock;
 
     @Autowired
+    protected DiskresjonskodePortType diskresjonskodePortTypeMock;
+
+    @Autowired
     protected EgenAnsattConsumer egenAnsattConsumerMock;
 
     protected MockMvc mvc;

@@ -40,15 +40,16 @@ public class RsProviderIntegrationTestConfig {
 
     @Bean
     @Primary
-    public DiskresjonskodeConsumer diskresjonskodeConsumerMock() {
-        return mock(DiskresjonskodeConsumer.class);
+    public DiskresjonskodePortType diskresjonskodePortType() {
+        return mock(DiskresjonskodePortType.class);
     }
 
     @Bean
     @Primary
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        return mock(DiskresjonskodePortType.class);
+    public DiskresjonskodeConsumer diskresjonskodeConsumerMock() {
+        return mock(DiskresjonskodeConsumer.class);
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
