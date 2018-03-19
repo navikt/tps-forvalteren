@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.FASIT_APPLICATION_NAME;
 import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
-import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.TPSF_FASIT_APP_NAME;
 
 public class FasitClient {
 
@@ -91,7 +91,7 @@ public class FasitClient {
     }
 
     public QueueManager getQueueManager(String environment) {
-        ResourceElement resource = findResource(QUEUE_MANAGER_ALIAS, TPSF_FASIT_APP_NAME, environment, ResourceTypeDO.QueueManager);
+        ResourceElement resource = findResource(QUEUE_MANAGER_ALIAS, FASIT_APPLICATION_NAME, environment, ResourceTypeDO.QueueManager);
 
         String managerName = resource.getPropertyString("name");
         String hostname    = resource.getPropertyString("hostname");
