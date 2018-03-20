@@ -15,4 +15,6 @@ public interface GruppeRepository extends Repository<Gruppe, Long> {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
 }

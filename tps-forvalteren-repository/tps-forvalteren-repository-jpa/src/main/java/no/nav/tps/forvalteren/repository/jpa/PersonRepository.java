@@ -23,4 +23,5 @@ public interface PersonRepository extends Repository<Person, Long> {
     
     void deleteByGruppeId(Long gruppeId);
 
+    void deleteAll();
 }

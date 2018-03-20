@@ -21,4 +21,5 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
     
     void save(Relasjon relasjon);
 
+    void deleteAll();
 }
