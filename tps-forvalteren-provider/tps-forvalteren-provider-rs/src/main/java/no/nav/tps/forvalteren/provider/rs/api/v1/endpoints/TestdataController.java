@@ -3,18 +3,6 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
-import java.util.List;
-import java.util.Set;
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -27,6 +15,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
@@ -45,6 +34,18 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFe
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
@@ -164,8 +165,8 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
-    public void lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
-        lagreTilTps.execute(gruppeId, environments);
+    public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
+        return lagreTilTps.execute(gruppeId, environments);
     }
 
     @Transactional
