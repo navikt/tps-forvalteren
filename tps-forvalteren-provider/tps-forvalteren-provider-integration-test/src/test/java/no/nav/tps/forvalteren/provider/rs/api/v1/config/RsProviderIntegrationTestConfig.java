@@ -4,6 +4,7 @@ import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
 import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
@@ -38,11 +39,12 @@ public class RsProviderIntegrationTestConfig {
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
 
-//    @Bean
-//    public DiskresjonskodePortType diskresjonskodePortType() {
-//        return mock(DiskresjonskodePortType.class);
-//    }
-//
+    @Bean
+    @Primary
+    public DiskresjonskodePortType diskresjonskodePortType() {
+        return mock(DiskresjonskodePortType.class);
+    }
+
     @Bean
     @Primary
     public DiskresjonskodeConsumer diskresjonskodeConsumerMock() {
@@ -50,14 +52,30 @@ public class RsProviderIntegrationTestConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new TestUserDetails();
-    }
-
-    @Bean
     @Primary
     public EgenAnsattConsumer egenAnsattConsumer() {
         return mock(EgenAnsattConsumer.class);
+    }
+
+    /*
+    Legger til TpsfSts klient som mocker og @Primary, slik at Spring prioriterer Mockene når de finner flere bønner --
+    -- av type TpsfStsClient. Hvis man ikke mocker, men mocker consumer, så får man en feil om at input proxy type ikker er riktig bla bla...
+     */
+    @Bean(name = "cxfStsClientDiskresjonskode")
+    @Primary
+    public TpsfStsClient cxfStsClientDiskresjonskode(){
+        return mock(TpsfStsClient.class);
+    }
+
+    @Bean(name = "cxfStsClientEgenAnsatt")
+    @Primary
+    public TpsfStsClient cxfStsClientEgenAnsatt(){
+        return mock(TpsfStsClient.class);
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new TestUserDetails();
     }
 
     @Bean

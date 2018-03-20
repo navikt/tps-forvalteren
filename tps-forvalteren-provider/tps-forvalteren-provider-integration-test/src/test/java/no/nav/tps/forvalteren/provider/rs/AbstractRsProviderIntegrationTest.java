@@ -36,10 +36,10 @@ public abstract class AbstractRsProviderIntegrationTest {
     @Autowired(required = false)
     protected WebApplicationContext context;
 
-    @Mock
+    @Autowired
     protected DiskresjonskodeConsumer diskresjonskodeConsumerMock;
 
-    @Mock
+    @Autowired
     protected EgenAnsattConsumer egenAnsattConsumerMock;
 
     protected MockMvc mvc;
