@@ -37,9 +37,10 @@ public class LagreTilTps {
 	
 	@Autowired
 	private SkdMeldingResolver innvandring;
-	private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
+	private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
 	
 	public RsSkdMeldingResponse execute(Long gruppeId, List<String> environments) {
+		skdRequestMeldingDefinition = innvandring.resolve();
 		List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 		Set<String> environmentsSet = new HashSet<>(environments);
 		List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(gruppeId, environments);
@@ -76,8 +77,7 @@ public class LagreTilTps {
 	}
 	
 	private Map<String, String> mapStatus(Map<String, String> responseSkdMeldingerPerEnv, Set<String> environmentsSet) {
-		responseSkdMeldingerPerEnv.values()
-				.forEach(status -> status = status.equals("00") ? "OK" : status); //TODO Funker dette?
+		responseSkdMeldingerPerEnv.replaceAll((env,status)->status.equals("00") ? "OK" : status);
 		environmentsSet.forEach(env -> responseSkdMeldingerPerEnv.putIfAbsent(env, "Environment is not deployed"));
 		return responseSkdMeldingerPerEnv;
 	}
