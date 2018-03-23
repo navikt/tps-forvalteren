@@ -17,7 +17,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies
 public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements ServiceRoutineResolver { //NOSONAR
 
     @Override
-    public TpsServiceRoutineDefinitionRequest resolve() {
+    public TpsServiceRoutineDefinitionRequest resolve() { //NOSONAR
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
                 .name("FS03-NAADRSOK-PERSDATA-O")
                 .internalName("S050 Sok ut Fra navn")
