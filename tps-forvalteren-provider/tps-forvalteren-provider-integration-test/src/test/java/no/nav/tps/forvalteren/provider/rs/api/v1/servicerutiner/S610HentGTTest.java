@@ -93,10 +93,9 @@ public class S610HentGTTest extends AbstractServiceControllerIntegrationTest{
         TpsServiceRoutineResponse response = convertMvcResultToObject(result, TpsServiceRoutineResponse.class);
         HashMap data = (HashMap)((HashMap)response.getResponse()).get("data1");
 
-        assertThat(data.get("fodselsnummer"), is(fnrTest));
+        assertThat(data.get("fodselsnummer").toString(), is(fnrTest));
         assertThat(data.get("identType"), is("FNR"));
         assertThat(data.get("fodselsdato"), is("1970-05-27"));
-        assertThat(data.get(""), is("1970-05-27"));
 
     }
 
