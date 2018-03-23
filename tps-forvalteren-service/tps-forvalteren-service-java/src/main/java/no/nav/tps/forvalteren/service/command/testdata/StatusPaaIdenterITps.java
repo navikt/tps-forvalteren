@@ -33,7 +33,6 @@ public class StatusPaaIdenterITps {
 	@Autowired
 	private GetEnvironments getEnvironments;
 	
-	TpsRequestContext context = new TpsRequestContext();
 	@Autowired
 	private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 	@Autowired
@@ -46,7 +45,6 @@ public class StatusPaaIdenterITps {
 	
 	
 	public RsTpsStatusPaaIdenterResponse hentStatusPaaIdenterIAlleMiljoer(List<String> identer) {
-		context.setUser(userContextHolder.getUser());
 		List<TpsStatusPaaIdent> tpsStatusPaaIdentList = new ArrayList<>();
 		Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
 		for (String ident : identer) {
@@ -62,7 +60,8 @@ public class StatusPaaIdenterITps {
 	}
 	
 	private void settMiljoerDerIdenteneEksisterer(RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse, Map<String, Object> tpsRequestParameters) {
-		Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
+		Set<String> environmentsToCheck =
+				filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
 		
 		for (String env : environmentsToCheck) {
 			List<String> identerIMiljoet = finnIdenteneIMiljoet(env, tpsRequestParameters);
@@ -71,10 +70,10 @@ public class StatusPaaIdenterITps {
 	}
 	
 	private List<String> finnIdenteneIMiljoet(String env, Map<String, Object> tpsRequestParameters) {
-		context.setEnvironment(env);
 		TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
 				.get("serviceRutinenavn")), tpsRequestParameters);
-		TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+		TpsServiceRoutineResponse tpsResponse = tpsRequestSender
+				.sendTpsRequest(tpsServiceRoutineRequest, 	new TpsRequestContext(userContextHolder.getUser(),env));
 		List<String> identeneSomEksistererIMiljoet = new ArrayList<>(trekkUtIdenterFraResponse(tpsResponse));
 		return identeneSomEksistererIMiljoet;
 	}
