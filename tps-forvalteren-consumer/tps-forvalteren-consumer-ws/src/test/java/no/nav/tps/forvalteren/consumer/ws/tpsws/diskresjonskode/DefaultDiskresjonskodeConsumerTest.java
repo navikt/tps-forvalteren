@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
-import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;

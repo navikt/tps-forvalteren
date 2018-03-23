@@ -84,7 +84,7 @@ public class DefaultMessageQueueConsumer implements MessageQueueConsumer {
         return responseMessage != null ? responseMessage.getText() : "";
     }
 
-    private Destination createTemporaryQueueFor(Session session) throws JMSException {
+    public Destination createTemporaryQueueFor(Session session) throws JMSException {
         return session.createTemporaryQueue();
     }
 

@@ -53,9 +53,11 @@ public class FindPersonsNotInEnvironmentsTest {
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = new HashSet<>();
         identerSomIkkeFinnesiTPSiMiljoe.add(person.getIdent());
         identerSomIkkeFinnesiTPSiMiljoe.add(person2.getIdent());
+
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
 
-        List<Person> result = findPersonsNotInEnvironments.execute(GRUPPE_ID, environments);
+        List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
+
         assertThat(result, hasSize(2));
         assertThat(result, hasItems(person, person2));
     }
@@ -65,7 +67,7 @@ public class FindPersonsNotInEnvironmentsTest {
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = new HashSet<>();
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
 
-        List<Person> result = findPersonsNotInEnvironments.execute(GRUPPE_ID, environments);
+        List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
         assertThat(result, hasSize(0));
     }
 
@@ -75,7 +77,7 @@ public class FindPersonsNotInEnvironmentsTest {
         identerSomIkkeFinnesiTPSiMiljoe.add(person.getIdent());
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
 
-        List<Person> result = findPersonsNotInEnvironments.execute(GRUPPE_ID, environments);
+        List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(person));
     }
