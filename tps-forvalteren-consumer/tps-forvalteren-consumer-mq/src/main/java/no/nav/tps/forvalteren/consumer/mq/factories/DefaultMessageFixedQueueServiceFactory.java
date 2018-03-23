@@ -37,7 +37,8 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
     @Override
     public DefaultMessageQueueConsumer createMessageQueueConsumerWithFixedQueueName(String environment, String fixedQueueName) throws JMSException {
 
-        if(environment.toUpperCase().contains("D")){
+        environment = environment.toLowerCase();
+        if(environment.contains("d")){
             environment = "u6";
         }
 

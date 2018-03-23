@@ -112,4 +112,5 @@ public class RsProviderIntegrationTestConfig {
         return jmsTemplate;
     }
 
+
 }
