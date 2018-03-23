@@ -8,14 +8,40 @@
                 <md-checkbox ng-model="alleMiljoe" ng-click="velgAlleMiljoe()" aria-label="Velg alle miljø">
                     Velg alle
                 </md-checkbox>
+
                 <div layout="row" layout-align="space-between">
                     <div layout="column">
-                        <h3>{{miljoe | uppercase}}-miljø</h3>
+                        <h3>U-miljø</h3>
                         <md-checkbox ng-repeat="miljoe in miljoer track by $index" aria-label="Velg"
                                      ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
                             {{miljoe | uppercase}}
                         </md-checkbox>
                     </div>
+
+                    <div layout="column">
+                        <h3>T-miljø</h3>
+                        <md-checkbox ng-repeat="miljoe in miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{miljoe | uppercase}}
+                        </md-checkbox>
+                    </div>
+
+                    <div layout="column">
+                        <h3>Q-miljø</h3>
+                        <md-checkbox ng-repeat="miljoe in miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{miljoe | uppercase}}
+                        </md-checkbox>
+                    </div>
+
+                    <div layout="column">
+                        <h3>P-miljø</h3>
+                        <md-checkbox ng-repeat="miljoe in miljoer track by $index" aria-label="Velg"
+                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
+                            {{miljoe | uppercase}}
+                        </md-checkbox>
+                    </div>
+
                 </div>
             </md-dialog-content>
             <md-dialog-actions class="testdata-footer">

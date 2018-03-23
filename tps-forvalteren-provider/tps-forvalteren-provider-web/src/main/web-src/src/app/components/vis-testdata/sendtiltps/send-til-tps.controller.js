@@ -70,9 +70,23 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 });
             }
 
-            $scope.miljoer = serviceRutineFactory.getEnvironments().environments;
-            $scope.miljoer.sort(function (a, b) {
-                return a.substring(1) - b.substring(1);
-            });
-            $scope.miljoe = $scope.miljoer[0].substr(0,1);
+            function init() {
+                $scope.miljoer = serviceRutineFactory.getEnvironments().environments;
+                $scope.sortedMiljoer = {};
+
+                angular.forEach($scope.miljoer, function (miljoe) {
+                    var substrMiljoe = miljoe.charAt(0);
+
+                    if($scope.sortedMiljoer[substrMiljoe]) {
+                        $scope.sortedMiljoer[substrMiljoe].push(miljoe);
+                    } else {
+                        $scope.sortedMiljoer[substrMiljoe] = [];
+                        $scope.sortedMiljoer[substrMiljoe].push(miljoe);
+                    }
+                });
+            }
+
+            init();
+
+
         }]);
