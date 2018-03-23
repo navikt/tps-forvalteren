@@ -69,7 +69,6 @@ public class StatusPaaIdenterITps {
 	}
 	
 	private List<String> finnIdenteneIMiljoet(String env, Map<String, Object> tpsRequestParameters) {
-		//bygg melding
 		context.setEnvironment(env);
 		TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
 				.get("serviceRutinenavn")), tpsRequestParameters);
