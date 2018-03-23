@@ -7,6 +7,6 @@ import javax.jms.JMSException;
 @FunctionalInterface
 public interface SkdMeldingRequest {
 
-    void execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException;
+    String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException;
 
 }
