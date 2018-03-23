@@ -14,7 +14,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transform
 import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation;
 import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation;
 
-public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements ServiceRoutineResolver {
+public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements ServiceRoutineResolver { //NOSONAR
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
