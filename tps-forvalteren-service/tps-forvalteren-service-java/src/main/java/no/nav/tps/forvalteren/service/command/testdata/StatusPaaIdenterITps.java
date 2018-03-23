@@ -11,14 +11,13 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +29,10 @@ import java.util.Set;
  */
 @Service
 public class StatusPaaIdenterITps {
-	private static final Set<String> ALLE_MILJOER = new HashSet<>(Arrays.asList("u6", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11"));
+	
+	@Autowired
+	private GetEnvironments getEnvironments;
+	
 	TpsRequestContext context = new TpsRequestContext();
 	@Autowired
 	private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
@@ -60,7 +62,7 @@ public class StatusPaaIdenterITps {
 	}
 	
 	private void settMiljoerDerIdenteneEksisterer(RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse, Map<String, Object> tpsRequestParameters) {
-		Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(ALLE_MILJOER);
+		Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
 		
 		for (String env : environmentsToCheck) {
 			List<String> identerIMiljoet = finnIdenteneIMiljoet(env, tpsRequestParameters);

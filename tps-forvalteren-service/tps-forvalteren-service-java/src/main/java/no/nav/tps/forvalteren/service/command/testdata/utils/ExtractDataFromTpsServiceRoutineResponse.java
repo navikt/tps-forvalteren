@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 public class ExtractDataFromTpsServiceRoutineResponse {
 	public static Set<String> trekkUtIdenterFraResponse(TpsServiceRoutineResponse tpsResponse) {
 		LinkedHashMap responseMap = (LinkedHashMap) tpsResponse.getResponse();

@@ -16,6 +16,7 @@ import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,9 @@ public class StatusPaaIdenterITpsTest {
 	
 	private String MQ_xmlResponse_envT1 = resourceUrlToString(Resources.getResource("service/tpsstatuspaaidenter/MQ_Response_envT1.xml"));
 	private String MQ_xmlResponse_envT2 = resourceUrlToString(Resources.getResource("service/tpsstatuspaaidenter/MQ_Response_envT2.xml"));
+	
+	@Mock
+	private GetEnvironments getEnvironments;
 	@Mock
 	private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 	@Mock
@@ -109,6 +113,7 @@ public class StatusPaaIdenterITpsTest {
 	}
 	
 	private void stubTestedServiceDependencies() {
+		when(getEnvironments.getEnvironmentsFromFasit(any())).thenReturn(ALLE_MILJOER);
 		when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(ALLE_MILJOER);
 		when(userContextHolder.getUser()).thenReturn(user);
 		
