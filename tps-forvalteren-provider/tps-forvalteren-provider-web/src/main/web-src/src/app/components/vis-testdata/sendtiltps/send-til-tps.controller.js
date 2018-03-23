@@ -72,8 +72,11 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             function init() {
                 $scope.miljoer = serviceRutineFactory.getEnvironments().environments;
-                $scope.sortedMiljoer = {};
+                $scope.miljoer.sort(function (a, b) {
+                    return a.substring(1) - b.substring(1);
+                });
 
+                $scope.sortedMiljoer = {};
                 angular.forEach($scope.miljoer, function (miljoe) {
                     var substrMiljoe = miljoe.charAt(0);
 
