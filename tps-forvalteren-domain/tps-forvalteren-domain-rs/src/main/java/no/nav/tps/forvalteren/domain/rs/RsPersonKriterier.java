@@ -34,6 +34,10 @@ public class RsPersonKriterier {
 
     private String etternavn;
 
+    private String sivilstand;
+
+    private String innvandretFraLand;
+
     @NotNull
     @Min(1)
     @Max(99)

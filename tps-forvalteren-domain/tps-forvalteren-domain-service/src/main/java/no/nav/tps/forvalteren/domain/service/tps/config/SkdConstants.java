@@ -20,6 +20,7 @@ public class SkdConstants {
     public static final String FRA_LAND_REGDATO = "fraLandRegdato";
     public static final String FRA_LAND_FLYTTEDATO = "fraLandFlyttedato";
     public static final String REG_DATO_FAM_NR = "regdatoFamnr";
+    public static final String INNVANDRET_FRA_LAND = "innvandretFraLand";
 
     public static final String POSTADRESSE_ADR_1 = "adresse1";
     public static final String POSTADRESSE_ADR_2 = "adresse2";

@@ -47,6 +47,8 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdParams.put(SkdConstants.SLEKTSNAVN, person.getEtternavn());
         skdParams.put(SkdConstants.STATSBORGERSKAP, statsborgerskapEncoder.encode(person.getStatsborgerskap()));
 
+        skdParams.put(SkdConstants.SIVILSTAND, person.getSivilstand());
+        skdParams.put(SkdConstants.INNVANDRET_FRA_LAND, person.getInnvandretFraLand());
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
@@ -58,6 +60,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdParams.put(SkdConstants.FRA_LAND_REGDATO, yyyyMMdd);
         skdParams.put(SkdConstants.FRA_LAND_FLYTTEDATO, yyyyMMdd);
         skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
+
 
         setAdresse.execute(skdParams, person);
         addSpesreg(skdParams, person);
@@ -76,10 +79,10 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     private void addDefaultParam(Map<String, String> skdParams) {
         skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNVANDRING);
 
-        skdParams.put("innvandretFraLand", "001");
+        //skdParams.put("innvandretFraLand", "001");
         skdParams.put("familienummer", "08096740140");
         skdParams.put("personkode", "1");
-        skdParams.put(SIVILSTAND, "1");
+        //skdParams.put(SIVILSTAND, "1");
         skdParams.put(TRANSTYPE, TRANSTYPE_1);
         skdParams.put("statuskode", "1");
     }

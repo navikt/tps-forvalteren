@@ -24,7 +24,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTran
 @Service
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
-    private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
+    private static final String NAVN_INNVANDRINGSMELDING = "InnvandringCreate";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired

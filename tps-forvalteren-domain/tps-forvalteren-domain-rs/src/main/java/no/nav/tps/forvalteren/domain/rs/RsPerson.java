@@ -51,6 +51,10 @@ public class RsPerson {
 
     private LocalDateTime doedsdato;
 
+    private String sivilstand;
+
+    private String innvandretFraLand;
+
     private RsAdresse boadresse;
 
     private List<RsPostadresse> postadresse;
