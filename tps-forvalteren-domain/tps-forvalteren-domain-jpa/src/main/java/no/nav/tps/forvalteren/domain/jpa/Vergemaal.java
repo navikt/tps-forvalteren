@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,7 +33,7 @@ public class Vergemaal {
     @Column(name = "VERGEMAAL_ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "IDENT", nullable = false, length = 11)
+    @JoinColumn(name = "IDENT", nullable = false)
     private String ident;
 
     @Column(name = "SAKS_ID", nullable = false)
@@ -50,7 +51,7 @@ public class Vergemaal {
     @Column(name = "INTERNVERGE_ID", nullable = false)
     private String vergeid;
 
-    @Column(name = "VERGE_FNR", length = 11)
+    @JoinColumn(name = "VERGE_FNR")
     private String vergefnr;
 
     @Column(name = "VERGETYPE", length = 3)

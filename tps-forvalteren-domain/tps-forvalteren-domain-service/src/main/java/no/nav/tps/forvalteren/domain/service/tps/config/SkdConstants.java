@@ -55,5 +55,15 @@ public class SkdConstants {
     public static final String DOEDSDATO = "datoDoed";
     
     public static final String STATUSKODE = "statuskode";
+
+    public static final String SAKSID = "saksId";
+    public static final String EMBETE = "embete";
+    public static final String SAKSTYPE = "saksType";
+    public static final String VEDTAKSDATO = "vedtaksDato";
+    public static final String INTERN_VERGE_ID = "internVergeId";
+    public static final String VERGE_FNR_DNR = "vergeFnrDnr";
+    public static final String VERGETYPE = "vergeType";
+    public static final String MANDATTYPE = "mandatType";
+    public static final String MANDATTEKST = "mandatTekst";
 }
 

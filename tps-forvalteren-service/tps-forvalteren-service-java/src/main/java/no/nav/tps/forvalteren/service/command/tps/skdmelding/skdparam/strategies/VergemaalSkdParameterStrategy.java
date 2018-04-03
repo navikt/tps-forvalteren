@@ -67,6 +67,18 @@ public class VergemaalSkdParameterStrategy implements SkdParametersStrategy {
     }
     private void addSkdParameterExtractedFromVergemaal(Map<String, String> skdParams, Vergemaal vergemaal)
     {
+        String yyyyMMdd = ConvertDateToString.yyyyMMdd(vergemaal.getVedtaksdato());
+
+        skdParams.put(SkdConstants.SAKSID, vergemaal.getSaksid());
+        skdParams.put(SkdConstants.EMBETE, vergemaal.getEmbete());
+        skdParams.put(SkdConstants.SAKSTYPE, vergemaal.getSakstype());
+        skdParams.put(SkdConstants.VEDTAKSDATO, yyyyMMdd);
+        skdParams.put(SkdConstants.INTERN_VERGE_ID, vergemaal.getVergeid());
+        skdParams.put(SkdConstants.VERGE_FNR_DNR, vergemaal.getVergefnr());
+        skdParams.put(SkdConstants.VERGETYPE, vergemaal.getVergetype());
+        skdParams.put(SkdConstants.MANDATTYPE, vergemaal.getMandattype());
+        skdParams.put(SkdConstants.MANDATTEKST, vergemaal.getMandattekst());
+
         /*
         skdParams.put(SkdConstants.SAKS_ID, vergemaal.getSaksid());
         skdParams.put(SkdConstants.EMBETE, vergemaal.getEmbete());

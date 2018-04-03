@@ -37,6 +37,9 @@ public class LagreTilTps {
     private CreateDoedsmeldinger createDoedsmeldinger;
 
     @Autowired
+    private CreateVergemaal createVergemaal;
+
+    @Autowired
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 
     @Autowired
@@ -65,6 +68,7 @@ public class LagreTilTps {
         listTpsResponsene.addAll( sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendDoedsmeldinger( gruppeId, environmentsSet));
+        listTpsResponsene.addAll( sendVergemaalsmeldinger( personerSomIkkeEksitererITpsMiljoe, environmentsSet));
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene);
     }
@@ -105,6 +109,16 @@ public class LagreTilTps {
         List<String> updateInnvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
         updateInnvandringsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
+            listTpsResponsene.add(tpsResponse);
+        });
+        return listTpsResponsene;
+    }
+
+    private List<SendSkdMeldingTilTpsResponse> sendVergemaalsmeldinger( List<Person> personerSomIkkeEksistererITpsMiljoe, Set<String> environmentsSet) {
+        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+        List<String> vergemaalsMeldinger = createVergemaal.execute(personerSomIkkeEksistererITpsMiljoe, true);
+        vergemaalsMeldinger.forEach(skdMelding ->{
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Vergemaal", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
