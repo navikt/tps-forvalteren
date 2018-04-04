@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjoner;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Java-representasjon av skdmeldingen. Objektet bærer verdiene til de utfylte elementene i skd-meldingen.
@@ -98,6 +102,7 @@ public class SkdMeldingTrans1 {
 	private String foedselstype;
 	private String morsSiviltilstand;
 	private String ekteskapPartnerskapNr;
+	private String ektefelleEkteskapPartnerskapNr;
 	private String vigselstype;
 	private String forsByrde;
 	private String dombevilling;
@@ -159,9 +164,43 @@ public class SkdMeldingTrans1 {
 	private String mandattype;
 	private String mandatTekst;
 	private String reserverFramtidigBruk;
-	private String ektefelleEkteskapPartnerskapNr;
 	
-	//TODO Lag toString() som lager skdMeldingen i string format
+	public String toString() {
+		StringBuilder skdMelding = new StringBuilder();
+		int meldingslengde = 1500;
+		if (header != null) {
+			skdMelding.append(header);
+			meldingslengde=meldingslengde+header.length();
+		}
+		
+		SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDefinisjon -> {
+			try {
+				String parameterverdien = getMeldingsverdien(skdFeltDefinisjon);
+				skdMelding.append(parameterverdien == null ?
+						skdFeltDefinisjon.getDefaultVerdi() : addDefaultValueToEndOfString(parameterverdien, skdFeltDefinisjon));
+			} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+				throw new RuntimeException(e.getMessage(), e);
+			}
+		});
+		
+		skdMelding.setLength(meldingslengde);
+		skdMelding.trimToSize();
+		return skdMelding.toString();
+	}
+	
+	private String addDefaultValueToEndOfString(String parameterverdien, SkdFeltDefinisjoner skdFeltDefinisjon) {
+		if (!skdFeltDefinisjon.isValueLastInSkdField()) {
+			return parameterverdien + skdFeltDefinisjon.getDefaultVerdi().substring(parameterverdien.length());
+		} else {
+			return skdFeltDefinisjon.getDefaultVerdi().substring(0,
+					(skdFeltDefinisjon.getDefaultVerdi().length() - parameterverdien.length())) + parameterverdien;
+		}
+	}
+	
+	private String getMeldingsverdien(SkdFeltDefinisjoner skdFeltDefinisjon) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		return ((String) getClass().getMethod("get" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()))
+				.invoke(this));
+	}
 	
 	//TODO Lag fromJson(Json json)
 }
