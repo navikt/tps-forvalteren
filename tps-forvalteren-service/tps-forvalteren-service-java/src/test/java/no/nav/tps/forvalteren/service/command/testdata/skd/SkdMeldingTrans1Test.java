@@ -31,7 +31,8 @@ public class SkdMeldingTrans1Test {
 	public static Collection testparameters() {
 		return Arrays.asList(new Object[][]{
 				{createDoedsmelding(), "skdmeldinger/doedsmelding.txt"},
-				{createVigselsmelding(), "skdmeldinger/vigselsmelding.txt"}});
+				{createVigselsmelding(), "skdmeldinger/vigselsmelding.txt"},
+				{createInnvandringsmelding(),"skdmeldinger/innvandringsmelding.txt"}});
 	}
 	
 	@Before
@@ -51,6 +52,41 @@ public class SkdMeldingTrans1Test {
 		System.out.println(SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList()
 				.stream()
 				.collect(Collectors.summingInt(SkdFeltDefinisjoner::getAntallBytesAvsatt)));
+	}
+	
+	private static SkdMeldingTrans1 createInnvandringsmelding() {
+		return SkdMeldingTrans1.builder()
+				.header("000000000TPSF0000044210211                    ")
+				.slektsnavn("LAPP")
+				.fraLandRegdato("20180404")
+				.personkode("1")
+				.statuskode("1")
+				.regDato("20180404")
+				.familienummer("08096740140")
+				.adressenavn("SANNERGATA")
+				.spesRegType("2")
+				.postnummer("0557")
+				.fraLandFlyttedato("20180404")
+				.kommunenummer("0301")
+				.regdatoAdr("20180404")
+				.aarsakskode("02")
+				.regdatoFamnr("20180404")
+				.statsborgerskap("000")
+				.tildelingskode("1")
+				.transtype("1")
+				.personnummer("50136")
+				.innvandretFraLand("001")
+				.fornavn("ABSURD")
+				.maskintid("142656")
+				.sivilstand("1")
+				.flyttedatoAdr("20000101")
+				.husBruk("2")
+				.fodselsdato("250416")
+				.gateGaard("16188")
+				.datoSpesRegType("20180301")
+				.maskindato("20180404")
+				.adressetype("O")
+				.build();
 	}
 	
 	private static SkdMeldingTrans1 createVigselsmelding() {
