@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class SkdMeldingTrans1 {
+	private String header;
 	private String fodselsdato;
 	private String personnummer;
 	private String maskindato;
@@ -57,10 +58,10 @@ public class SkdMeldingTrans1 {
 	private String tilleggsadresse;
 	private String postnummer;
 	private String valgkrets;
-	private String adresse1;
-	private String adresse2;
-	private String adresse3;
-	private String postadrLand;
+	private String postadresse1;
+	private String postadresse2;
+	private String postadresse3;
+	private String postadresseLand;
 	private String innvandretFraLand;
 	private String fraLandRegdato;
 	private String fraLandFlyttedato;
@@ -96,17 +97,16 @@ public class SkdMeldingTrans1 {
 	private String tildelingskode;
 	private String foedselstype;
 	private String morsSiviltilstand;
-	private String ekteskPartnskNr;
-	private String ektfEkteskPartnskNr;
+	private String ekteskapPartnerskapNr;
 	private String vigselstype;
 	private String forsByrde;
 	private String dombevilling;
 	private String antallBarn;
-	private String tidlSivilstand;
-	private String ektfTidlSivilstand;
+	private String tidligereSivilstand;
+	private String ektefelleTidligereSivilstand;
 	private String hjemmel;
 	private String fylke;
-	private String vigselskomm;
+	private String vigselskommune;
 	private String tidlSepDomBev;
 	private String begjertAv;
 	private String registrGrunnlag;
@@ -159,4 +159,9 @@ public class SkdMeldingTrans1 {
 	private String mandattype;
 	private String mandatTekst;
 	private String reserverFramtidigBruk;
+	private String ektefelleEkteskapPartnerskapNr;
+	
+	//TODO Lag toString() som lager skdMeldingen i string format
+	
+	//TODO Lag fromJson(Json json)
 }

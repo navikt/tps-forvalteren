@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
@@ -27,61 +28,58 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
 
     @Override
-    public Map<String, String> execute(Person person) {
-        String tildelingskodeForInnvandirngsmelding = hentTildelingskode();
+    public SkdMeldingTrans1 execute(Person person) {
 
-        HashMap<String, String> skdParams = new HashMap<>();
-        skdParams.put(SkdConstants.TILDELINGSKODE, tildelingskodeForInnvandirngsmelding);
+        SkdMeldingTrans1 skdMeldingTrans1 = SkdMeldingTrans1.builder().tildelingskode(hentTildelingskode()).build();
 
-        addSkdParametersExtractedFromPerson(skdParams, person);
-        addDefaultParam(skdParams);
+        addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
+        addDefaultParam(skdMeldingTrans1);
 
-        return skdParams;
+        return skdMeldingTrans1;
     }
 
-    private void addSkdParametersExtractedFromPerson(Map<String, String> skdParams, Person person) {
-        skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
-        skdParams.put(SkdConstants.PERSONNUMMER, person.getIdent().substring(6, 11));
-        skdParams.put(SkdConstants.FORNAVN, person.getFornavn());
-        skdParams.put(SkdConstants.MELLOMNAVN, person.getMellomnavn());
-        skdParams.put(SkdConstants.SLEKTSNAVN, person.getEtternavn());
-        skdParams.put(SkdConstants.STATSBORGERSKAP, statsborgerskapEncoder.encode(person.getStatsborgerskap()));
+    private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
+        skdMeldingTrans1.setFodselsdato(person.getIdent().substring(0, 6));
+        skdMeldingTrans1.setPersonnummer(person.getIdent().substring(6, 11));
+        skdMeldingTrans1.setFornavn(person.getFornavn());
+        skdMeldingTrans1.setMellomnavn(person.getMellomnavn());
+        skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
+        skdMeldingTrans1.setStatsborgerskap(statsborgerskapEncoder.encode(person.getStatsborgerskap()));
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
-        skdParams.put(SkdConstants.MASKINTID, hhMMss);
-        skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
-        skdParams.put(SkdConstants.REG_DATO, yyyyMMdd);
-        skdParams.put(SkdConstants.REG_DATO_ADR, yyyyMMdd);
-        skdParams.put(SkdConstants.FLYTTEDATO_ADR, yyyyMMdd);
-        skdParams.put(SkdConstants.FRA_LAND_REGDATO, yyyyMMdd);
-        skdParams.put(SkdConstants.FRA_LAND_FLYTTEDATO, yyyyMMdd);
-        skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
+        skdMeldingTrans1.setMaskintid(hhMMss);
+        skdMeldingTrans1.setMaskindato( yyyyMMdd);
+        skdMeldingTrans1.setRegDato( yyyyMMdd);
+        skdMeldingTrans1.setRegdatoAdr( yyyyMMdd);
+        skdMeldingTrans1.setFlyttedatoAdr( yyyyMMdd);
+        skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
+        skdMeldingTrans1.setFraLandFlyttedato(yyyyMMdd);
+        skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
-        setAdresse.execute(skdParams, person);
-        addSpesreg(skdParams, person);
+        setAdresse.execute(skdMeldingTrans1, person);
+        addSpesreg(skdMeldingTrans1, person);
     }
 
-    private void addSpesreg(Map<String, String> skdParams, Person person) {
+    private void addSpesreg( SkdMeldingTrans1 skdMeldingTrans1, Person person) {
         if (person.getSpesreg() != null) {
-            skdParams.put("spesRegType", person.getSpesreg());
+            skdMeldingTrans1.setSpesRegType( person.getSpesreg());
         }
         LocalDateTime spesregDato = person.getSpesregDato();
         if (spesregDato != null) {
-            skdParams.put("datoSpesRegType", String.format("%04d%02d%02d", spesregDato.getYear(), spesregDato.getMonthValue(), spesregDato.getDayOfMonth()));
+            skdMeldingTrans1.setDatoSpesRegType( String.format("%04d%02d%02d", spesregDato.getYear(), spesregDato.getMonthValue(), spesregDato.getDayOfMonth()));
         }
     }
 
-    private void addDefaultParam(Map<String, String> skdParams) {
-        skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNVANDRING);
-
-        skdParams.put("innvandretFraLand", "001");
-        skdParams.put("familienummer", "08096740140");
-        skdParams.put("personkode", "1");
-        skdParams.put(SIVILSTAND, "1");
-        skdParams.put(TRANSTYPE, TRANSTYPE_1);
-        skdParams.put("statuskode", "1");
+    private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
+        skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_INNVANDRING);
+        skdMeldingTrans1.setInnvandretFraLand( "001");
+        skdMeldingTrans1.setFamilienummer("08096740140");
+        skdMeldingTrans1.setPersonkode("1");
+        skdMeldingTrans1.setSivilstand("1");
+        skdMeldingTrans1.setTranstype(TRANSTYPE_1);
+        skdMeldingTrans1.setStatuskode( "1");
     }
     
 }

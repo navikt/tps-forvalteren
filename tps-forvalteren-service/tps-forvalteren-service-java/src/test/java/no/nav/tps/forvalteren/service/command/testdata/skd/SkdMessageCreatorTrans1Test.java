@@ -78,7 +78,7 @@ public class SkdMessageCreatorTrans1Test {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = Optional.of(tpsSkdRequestMeldingDefinition);
 
         when(getSkdMeldingByName.execute(INNVANDRING)).thenReturn(skdRequestMeldingDefinitionOptional);
-        when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(skdParametere);
+        when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(new SkdMeldingTrans1());
         when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
 
         skdMessageCreatorTrans1.execute(INNVANDRING, persons, ADD_HEADER);

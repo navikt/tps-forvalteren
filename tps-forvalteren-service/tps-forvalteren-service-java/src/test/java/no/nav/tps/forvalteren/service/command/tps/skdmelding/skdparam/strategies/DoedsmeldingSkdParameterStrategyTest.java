@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
+
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,16 +67,16 @@ public class DoedsmeldingSkdParameterStrategyTest {
 
     @Test
     public void createCorrectSkdParameterMapFromPerson() {
-        Map<String, String> result = doedsmeldingSkdParameterStrategy.execute(aPerson);
+        SkdMeldingTrans1 result = doedsmeldingSkdParameterStrategy.execute(aPerson);
 
-        assertThat(result.get(SkdConstants.FODSELSDATO), is(equalTo(FNR.substring(0, 6))));
-        assertThat(result.get(SkdConstants.PERSONNUMMER), is(equalTo(FNR.substring(6, 11))));
-        assertThat(result.get(SkdConstants.MASKINTID), is(equalTo(REGDATO_TIME_STRING)));
-        assertThat(result.get(SkdConstants.MASKINDATO), is(equalTo(REGDATO_DATE_STRING)));
-        assertThat(result.get(SkdConstants.REG_DATO), is(equalTo(DOEDSDATO_DATE_STRING)));
-        assertThat(result.get(SkdConstants.DOEDSDATO), is(equalTo(DOEDSDATO_DATE_STRING)));
-        assertThat(result.get(AARSAKSKODE_KEY), is(equalTo(AARSAKSKODE_FOR_DOEDSMELDING)));
-        assertThat(result.get(TRANSTYPE_KEY), is(equalTo(TRANSTYPE_FOR_DOEDSMELDING)));
-        assertThat(result.get(STATUSKODE_KEY), is(equalTo(STATUSKODE_FOR_DOEDSMELDING)));
+        assertThat(result.getFodselsdato(), is(equalTo(FNR.substring(0, 6))));
+        assertThat(result.getPersonnummer(), is(equalTo(FNR.substring(6, 11))));
+        assertThat(result.getMaskintid(), is(equalTo(REGDATO_TIME_STRING)));
+        assertThat(result.getMaskindato(), is(equalTo(REGDATO_DATE_STRING)));
+        assertThat(result.getRegDato(), is(equalTo(DOEDSDATO_DATE_STRING)));
+        assertThat(result.getDatoDoed(), is(equalTo(DOEDSDATO_DATE_STRING)));
+        assertThat(result.getAarsakskode(), is(equalTo(AARSAKSKODE_FOR_DOEDSMELDING)));
+        assertThat(result.getTranstype(), is(equalTo(TRANSTYPE_FOR_DOEDSMELDING)));
+        assertThat(result.getStatuskode(), is(equalTo(STATUSKODE_FOR_DOEDSMELDING)));
     }
 }

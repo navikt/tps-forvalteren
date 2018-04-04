@@ -17,7 +17,7 @@ public class SkdMessageCreatorTrans1 {
     private GetSkdMeldingByName getSkdMeldingByName;
 
     @Autowired
-    private SkdFelterContainerTrans1 skdFelterContainer;
+    private SkdFelterContainerTrans1 skdFelterContainer; //TODO Fjerne avhengigheten. flytte dentil toString i SkdMeldingTrans1
 
     @Autowired
     private GenerateSkdMelding generateSkdMelding;
