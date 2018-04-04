@@ -4,7 +4,7 @@ import java.util.List;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.domain.rs.RsXmlMeldingKo;
+import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.GetQueuesFromEnvironment;
@@ -30,7 +30,7 @@ public class HentKoerController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
     @RequestMapping(value = "/queues", method = RequestMethod.GET)
-    public List<RsXmlMeldingKo> getQueues() {
+    public List<RsTpsMeldingKo> getQueues() {
         return getQueuesFromEnvironment.execute();
     }
 
