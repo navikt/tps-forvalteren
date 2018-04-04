@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.tps.forvalteren.domain.rs.RsXmlMeldingKo;
+import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
@@ -29,17 +29,17 @@ public class GetQueuesFromEnvironment {
     @Autowired
     private GetEnvironments getEnvironments;
 
-    public List<RsXmlMeldingKo> execute() {
+    public List<RsTpsMeldingKo> execute() {
 
-        RsXmlMeldingKo ko;
+        RsTpsMeldingKo ko;
         Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
         removeDuplicateTestEnvironments(environments);
 
-        List<RsXmlMeldingKo> koListe = new ArrayList<>();
+        List<RsTpsMeldingKo> koListe = new ArrayList<>();
 
         for (String environment : environments) {
             for (int i = 0; i < QUEUES.length; i++) {
-                ko = new RsXmlMeldingKo();
+                ko = new RsTpsMeldingKo();
                 ko.setMiljo(environment);
                 ko.setKoNavn(getQueueName.execute(environment.toUpperCase(), QUEUES[i]));
                 koListe.add(ko);
