@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class SkdMeldingTrans1 {
 	private String fodselsdato;
