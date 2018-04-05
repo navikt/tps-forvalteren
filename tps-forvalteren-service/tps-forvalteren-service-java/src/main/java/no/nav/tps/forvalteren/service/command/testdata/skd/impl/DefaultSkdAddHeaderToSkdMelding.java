@@ -5,7 +5,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding {
+public class DefaultSkdAddHeaderToSkdMelding implements SkdAddHeaderToSkdMelding { //TODO bytt ut helt med DefaultSkdGetHeaderForSkdMelding
 
     private static final String WHITESPACE_20_STK = "                    ";
 

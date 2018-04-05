@@ -12,24 +12,24 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName
 
 @Service
 public class SkdMessageCreatorTrans1 {
-
-    @Autowired
+	
     private GetSkdMeldingByName getSkdMeldingByName;
-
-    @Autowired
-    private SkdFelterContainerTrans1 skdFelterContainer;
-
-    @Autowired
     private GenerateSkdMelding generateSkdMelding;
-
-    public List<String> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
+    
+	@Autowired
+	public SkdMessageCreatorTrans1(GetSkdMeldingByName getSkdMeldingByName, GenerateSkdMelding generateSkdMelding) {
+		this.getSkdMeldingByName = getSkdMeldingByName;
+		this.generateSkdMelding = generateSkdMelding;
+	}
+	
+	public List<String> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
         List<String> skdMeldinger = new ArrayList<>();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
             for (Person person : persons) {
-                String skdMelding = generateSkdMelding.execute(skdFelterContainer, skdRequestMeldingDefinition, person, addHeader);
-                skdMeldinger.add(skdMelding);
+                SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, person, addHeader);
+                skdMeldinger.add(skdMelding.toString());
             }
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
