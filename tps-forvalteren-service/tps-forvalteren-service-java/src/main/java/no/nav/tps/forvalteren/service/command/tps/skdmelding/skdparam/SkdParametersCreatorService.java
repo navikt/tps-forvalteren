@@ -14,10 +14,14 @@ import static no.nav.tps.forvalteren.common.java.message.MessageConstants.UNKNOW
 
 @Service
 public class SkdParametersCreatorService {
-
-    @Autowired
+    
     private List<SkdParametersStrategy> skdParametersStrategies;
-
+    
+    @Autowired
+    public SkdParametersCreatorService(List<SkdParametersStrategy> skdParametersStrategies) {
+        this.skdParametersStrategies = skdParametersStrategies;
+    }
+    
     public SkdMeldingTrans1 execute(TpsSkdRequestMeldingDefinition skdMeldingDefinition, Person person) {
         for (SkdParametersStrategy strategy : skdParametersStrategies) {
             if (strategy.isSupported(skdMeldingDefinition.getSkdParametersCreator())) {
