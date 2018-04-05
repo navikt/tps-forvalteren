@@ -16,14 +16,11 @@ public class GenerateSkdMelding {
     @Autowired
     private SkdGetHeaderForSkdMelding skdGetHeaderForSkdMelding;
     
-    @Autowired
-    private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;
-    
-    public String execute(SkdFelterContainer skdFelterContainer, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Person person, boolean addHeader) {
+    public SkdMeldingTrans1 execute( TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Person person, boolean addHeader) {
 		SkdMeldingTrans1 skdMelding = skdParametersCreatorService.execute(skdRequestMeldingDefinition, person);
         if (addHeader) {
 			skdMelding.setHeader( skdGetHeaderForSkdMelding.execute(skdMelding));
         }
-        return skdMelding.toString();
+        return skdMelding;
     }
 }

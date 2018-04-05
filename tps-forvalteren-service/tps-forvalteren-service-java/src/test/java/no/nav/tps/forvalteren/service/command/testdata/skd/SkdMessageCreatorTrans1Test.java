@@ -68,7 +68,7 @@ public class SkdMessageCreatorTrans1Test {
     }
 
     @Test
-    public void checkThatIGenerateSkdMeldingGetsCalledMultipleTimes() {
+    public void checkThatGenerateSkdMeldingGetsCalledMultipleTimes() {
         persons.add(person);
         persons.add(person2);
         persons.add(person3);
@@ -83,9 +83,9 @@ public class SkdMessageCreatorTrans1Test {
 
         skdMessageCreatorTrans1.execute(INNVANDRING, persons, ADD_HEADER);
 
-        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
-        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
-        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
+        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
+        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
+        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
     }
 
 }

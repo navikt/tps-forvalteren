@@ -15,10 +15,7 @@ public class SkdMessageCreatorTrans1 {
 
     @Autowired
     private GetSkdMeldingByName getSkdMeldingByName;
-
-    @Autowired
-    private SkdFelterContainerTrans1 skdFelterContainer; //TODO Fjerne avhengigheten. flytte dentil toString i SkdMeldingTrans1
-
+    
     @Autowired
     private GenerateSkdMelding generateSkdMelding;
 
@@ -28,8 +25,8 @@ public class SkdMessageCreatorTrans1 {
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
             for (Person person : persons) {
-                String skdMelding = generateSkdMelding.execute(skdFelterContainer, skdRequestMeldingDefinition, person, addHeader);
-                skdMeldinger.add(skdMelding);
+                SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, person, addHeader);
+                skdMeldinger.add(skdMelding.toString());
             }
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
