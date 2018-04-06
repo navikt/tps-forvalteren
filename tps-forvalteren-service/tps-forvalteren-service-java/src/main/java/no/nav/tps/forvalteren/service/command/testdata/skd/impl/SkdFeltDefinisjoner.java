@@ -161,7 +161,7 @@ public enum SkdFeltDefinisjoner {
 	VERGETYPE("vergetype", "   ", 145, 3, 1244, 1246),
 	MANDATTYPE("mandattype", "   ", 146, 3, 1247, 1249),
 	MANDAT_TEKST("mandatTekst", WHITESPACE_100_STK, 147, 100, 1250, 1349),
-	RESERVER_FRAMTIDIG_BRUK("reserverFramtidigBruk", WHITESPACE_100_STK + WHITESPACE_50_STK + " ", 148, 151);
+	RESERVER_FRAMTIDIG_BRUK("reserverFramtidigBruk", WHITESPACE_100_STK + WHITESPACE_50_STK + " ", 148, 151, 1350,1500);
 	
 	private String variabelNavn;
 	private String defaultVerdi;
@@ -191,13 +191,6 @@ public enum SkdFeltDefinisjoner {
 		this.tilByte = tilByte;
 	}
 	
-	SkdFeltDefinisjoner(String variabelnavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt) {
-		this.variabelNavn = variabelnavn;
-		this.defaultVerdi = defaultVerdi;
-		this.idRekkefolge = idRekkefolge;
-		this.antallBytesAvsatt = antallByesAvsatt;
-	}
-	
 	public static List<SkdFeltDefinisjoner> getAllFeltDefinisjonerInSortedList() {
 		return Arrays.asList(SkdFeltDefinisjoner.values())
 				.stream()
@@ -205,6 +198,10 @@ public enum SkdFeltDefinisjoner {
 				.collect(Collectors.toList());
 	}
 	
+	public String extractMeldingsfeltverdiFromString(String skdMeldingUtenHeader) {
+		String extractedValue= skdMeldingUtenHeader.substring(this.getFraByte() - 1,this.getTilByte());
+		return extractedValue.equals(this.getDefaultVerdi())? null : extractedValue.trim();
+	}
 }
 
 class Whitespace {
