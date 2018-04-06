@@ -134,6 +134,25 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 isMiljoeSelected();
             };
 
+            $scope.velgAlleFraQMiljoe = function () {
+                if($scope.sortedMiljoer.q) {
+                    $scope.sortedMiljoer.q.forEach( function (env, index) {
+                        $scope.valgteMiljoer.q[index] = !$scope.alleQMiljoer;
+                    });
+                }
+
+                var sortedMiljoer_length = antallMiljoerTotalt();
+                var valgteMiljoer_counter = antallValgteMiljoer();
+
+                if(sortedMiljoer_length === valgteMiljoer_counter) {
+                    $scope.alleMiljoe = true;
+                } else {
+                    $scope.alleMiljoe = false;
+                }
+
+                isMiljoeSelected();
+            };
+
             $scope.oppdaterVelgAlle = function () {
                 var allEnvironmentsChecked = true;
                 var sortedMiljoer_length = antallMiljoerTotalt();
