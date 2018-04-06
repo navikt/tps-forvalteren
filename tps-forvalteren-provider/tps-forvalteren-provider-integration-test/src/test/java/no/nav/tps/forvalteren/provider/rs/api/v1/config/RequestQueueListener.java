@@ -12,37 +12,37 @@ import javax.jms.TextMessage;
 @Component
 public class RequestQueueListener {
 
-//    @Inject
-//    private Queue responseQueue;
-//
-//    @Inject
-//    private JmsTemplate jmsTemplate;
-//
-//    private String responseMessageAsString;
+    @Inject
+    private Queue responseQueue;
 
-//    public void setResponseMessage(String responseMessage) {
-//        responseMessageAsString = responseMessage;
-//    }
-//
-//    @JmsListener(destination = RsProviderIntegrationTestConfig.TPS_TEST_REQUEST_QUEUE)
-//    public void onMessageReceived(TextMessage textMessage) {
-//        try {
-//            addMeldingToQueue(responseMessageAsString, textMessage.getJMSMessageID());
-//            setResponseMessage(null);
-//        } catch (JMSException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void addMeldingToQueue(final String meldingXml, final String correlationId) {
-//        jmsTemplate.send(responseQueue, session -> {
-//            final TextMessage msg = session.createTextMessage(meldingXml);
-//            msg.setJMSCorrelationID(correlationId);
-//            return msg;
-//        });
-//    }
-//
-//    public Queue getResponseQueue() {
-//        return responseQueue;
-//    }
+    @Inject
+    private JmsTemplate jmsTemplate;
+
+    private String responseMessageAsString;
+
+    public void setResponseMessage(String responseMessage) {
+        responseMessageAsString = responseMessage;
+    }
+
+    @JmsListener(destination = RsProviderIntegrationTestConfig.TPS_TEST_REQUEST_QUEUE)
+    public void onMessageReceived(TextMessage textMessage) {
+        try {
+            addMeldingToQueue(responseMessageAsString, textMessage.getJMSMessageID());
+            setResponseMessage(null);
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addMeldingToQueue(final String meldingXml, final String correlationId) {
+        jmsTemplate.send(responseQueue, session -> {
+            final TextMessage msg = session.createTextMessage(meldingXml);
+            msg.setJMSCorrelationID(correlationId);
+            return msg;
+        });
+    }
+
+    public Queue getResponseQueue() {
+        return responseQueue;
+    }
 }

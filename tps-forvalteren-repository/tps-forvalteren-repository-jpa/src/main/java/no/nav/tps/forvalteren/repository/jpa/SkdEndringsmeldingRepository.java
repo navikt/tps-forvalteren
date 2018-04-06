@@ -16,4 +16,5 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     List<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe);
 
+    void deleteAll();
 }

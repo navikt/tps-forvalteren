@@ -1,12 +1,8 @@
 package no.nav.tps.forvalteren.service.command.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersonerTestdata;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S000SjekkTpsTilgjengelig;
@@ -27,9 +23,11 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAnnulleringAarsakskode45;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11;
 import no.nav.tps.forvalteren.service.command.Command;
+
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +35,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
-
-    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
 
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
@@ -62,13 +60,6 @@ public class CommandConfig {
         return xmlMapper;
     }
 
-//    @Bean
-//    ObjectMapper objectMapper() {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-//        return objectMapper;
-//    }
 
     @Bean
     ServiceRoutineResolver sjekkTps() {
@@ -153,6 +144,11 @@ public class CommandConfig {
     @Bean
     SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
+    }
+
+    @Bean
+    SkdMeldingResolver innvandringUpdate() {
+        return new InnvandringAarsakskode02Tildelingskode2Update();
     }
 
     @Bean

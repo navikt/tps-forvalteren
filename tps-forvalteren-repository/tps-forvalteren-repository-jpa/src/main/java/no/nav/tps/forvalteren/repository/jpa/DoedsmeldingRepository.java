@@ -12,4 +12,6 @@ public interface DoedsmeldingRepository extends Repository<Doedsmelding, Long> {
     Iterable<Doedsmelding> save(Iterable<Doedsmelding> doedsmeldinger);
 
     void deleteByPersonIdIn(List<Long> personIds);
+
+    void deleteAll();
 }

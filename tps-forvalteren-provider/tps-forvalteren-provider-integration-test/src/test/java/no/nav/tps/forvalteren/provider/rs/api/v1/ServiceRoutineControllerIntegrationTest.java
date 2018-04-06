@@ -17,14 +17,14 @@ public class ServiceRoutineControllerIntegrationTest extends AbstractRsProviderI
 
     }
 
-//    private static final String URL = "/api/v1/serviceroutine";
-//
-//    @Test
-//    @WithUserDetails(TestUserDetails.USERNAME)
-//    public void getAllServiceRoutines() throws Exception {
-//
-//        mvc.perform(get(URL))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(16)));
-//    }
+    private static final String URL = "/api/v1/serviceroutine";
+
+    @Test
+    @WithUserDetails(TestUserDetails.USERNAME)
+    public void getAllServiceRoutines() throws Exception {
+
+        mvc.perform(get(URL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(16)));
+    }
 }

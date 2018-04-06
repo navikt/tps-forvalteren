@@ -11,7 +11,7 @@
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>4.7.0-SNAPSHOT</version>
+    <version>4.9.0-SNAPSHOT</version>
 
 
     <packaging>pom</packaging>
@@ -46,7 +46,7 @@
         <modig-log-jaxws.version>1.1.3</modig-log-jaxws.version>
         <modig-security.version>3.0.5</modig-security.version>
         <modig-testcertificates.version>1.2.2</modig-testcertificates.version>
-        <diskresjonskode-v1.version>1.1.0</diskresjonskode-v1.version>
+        <diskresjonskode-v1.version>1.2.3</diskresjonskode-v1.version>
         <pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
         <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
