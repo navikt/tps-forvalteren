@@ -148,6 +148,10 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                                 env_status = false;
                             }
                         });
+
+                        if($scope.sortedMiljoer.u.length !== $scope.valgteMiljoer.u.length) {
+                            env_status = false;
+                        }
                         $scope.alleUMiljoer = env_status;
                     }
 
@@ -158,6 +162,10 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                                 env_status = false;
                             }
                         });
+
+                        if($scope.sortedMiljoer.t.length !== $scope.valgteMiljoer.t.length) {
+                            env_status = false;
+                        }
                         $scope.alleTMiljoer = env_status;
                     }
 
@@ -168,6 +176,10 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                                 env_status = false;
                             }
                         });
+
+                        if($scope.sortedMiljoer.q.length !== $scope.valgteMiljoer.q.length) {
+                            env_status = false;
+                        }
                         $scope.alleQMiljoer = env_status;
                     }
 
