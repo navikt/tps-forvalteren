@@ -82,7 +82,7 @@ public class SkdMessageCreatorTrans1Test {
         
         when(getSkdMeldingByName.execute(INNVANDRING)).thenReturn(skdRequestMeldingDefinitionOptional);
         when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(new SkdMeldingTrans1());
-        when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
+//        when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
 
         skdMessageCreatorTrans1.execute(INNVANDRING, persons, ADD_HEADER);
 

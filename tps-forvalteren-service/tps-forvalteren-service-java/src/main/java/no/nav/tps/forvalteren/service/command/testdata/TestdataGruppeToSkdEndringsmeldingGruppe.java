@@ -5,6 +5,10 @@ import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,16 +63,17 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             gruppe.setNavn(setNavnWithUniqueId(testdataGruppe.getNavn()));
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
-            List<String> skdMeldinger = new ArrayList<>();
-            List<String> innvandringsMeldinger = skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), false);
-            List<String> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
-            List<String> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
+            List<SkdMelding> skdMeldinger = new ArrayList<>();
+            List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), false);
+            List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
+            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
             skdMeldinger.addAll(innvandringsMeldinger);
             skdMeldinger.addAll(relasjonsMeldinger);
             skdMeldinger.addAll(doedsMeldinger);
 
             gruppe = skdEndringsmeldingGruppeRepository.save(gruppe);
-            List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(skdMeldinger);
+            List<String> skdMeldingStrings = skdMeldinger.stream().map(SkdMelding::toString).collect(Collectors.toList()); //Midlertidig løsning. Ønsker å refakturere createMeldingWithMeldingstype med (SkdMelding skdmelding) som input.
+            List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(skdMeldingStrings);
             saveSkdEndringsmeldingerFromText.execute(rsMeldinger, gruppe.getId());
             return gruppe;
         } else {

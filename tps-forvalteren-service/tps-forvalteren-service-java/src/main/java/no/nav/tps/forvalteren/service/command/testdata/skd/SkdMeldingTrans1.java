@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SkdMeldingTrans1 {
+public class SkdMeldingTrans1 implements SkdMelding {
 	private String header;
 	private String fodselsdato;
 	private String personnummer;
@@ -165,6 +165,11 @@ public class SkdMeldingTrans1 {
 	private String mandatTekst;
 	private String reserverFramtidigBruk;
 	
+	public String getFodselsnummer() {
+		return getFodselsdato()+getPersonnummer();
+	}
+	
+	@Override
 	public String toString() {
 		StringBuilder skdMelding = new StringBuilder();
 		int meldingslengde = 1500;

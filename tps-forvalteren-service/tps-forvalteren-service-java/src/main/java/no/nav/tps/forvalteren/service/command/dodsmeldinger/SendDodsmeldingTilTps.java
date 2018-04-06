@@ -16,6 +16,9 @@ import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.FindDoedePersoner;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans2;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +26,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SendDodsmeldingTilTps {
-
-    @Autowired
-    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
-
-    @Autowired
-    private GetEnvironments getEnvironments;
-
+    
     @Autowired
     private DeathRowRepository deathRowRepository;
 
@@ -93,24 +90,24 @@ public class SendDodsmeldingTilTps {
             }
         }
 
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         skdMeldinger.addAll(createDoedsmeldingerAnnullering(deleteDeathRowPersonList));
         skdMeldinger.addAll(createDoedsmeldinger(createDeathRowPersonList));
 
         TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
         Set<String> environment;
 
-        for (String skdmelding : skdMeldinger) {
+        for (SkdMeldingTrans1 skdmelding : skdMeldinger) {
             environment = new HashSet<>(Arrays.asList(getEnvironmentFromSkdDoedsmelding(skdmelding)));
-            sendSkdMeldingTilGitteMiljoer.execute(skdmelding, skdRequestMeldingDefinition, environment);
+            sendSkdMeldingTilGitteMiljoer.execute(skdmelding.toString(), skdRequestMeldingDefinition, environment);
             environment.clear();
         }
     }
 
-    private List<String> createDoedsmeldinger(List<Person> deathRowPersonList) {
+    private List<SkdMeldingTrans1> createDoedsmeldinger(List<Person> deathRowPersonList) {
 
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersoner.execute(deathRowPersonList);
-        List<String> skdDodsmelding = new ArrayList<>();
+        List<SkdMeldingTrans1> skdDodsmelding = new ArrayList<>();
 
         if (!doedePersonerWithoutDoedsmelding.isEmpty()) {
             skdDodsmelding.addAll(skdCreator.execute("Doedsmelding", doedePersonerWithoutDoedsmelding, true));
@@ -118,9 +115,9 @@ public class SendDodsmeldingTilTps {
         return skdDodsmelding;
     }
 
-    private List<String> createDoedsmeldingerAnnullering(List<Person> deleteDeathRowPersonList) {
+    private List<SkdMeldingTrans1> createDoedsmeldingerAnnullering(List<Person> deleteDeathRowPersonList) {
 
-        List<String> skdDodsmeldingAnnulering = new ArrayList<>();
+        List<SkdMeldingTrans1> skdDodsmeldingAnnulering = new ArrayList<>();
 
         if (!deleteDeathRowPersonList.isEmpty()) {
             skdDodsmeldingAnnulering.addAll(skdCreator.execute("DoedsmeldingAnnullering", deleteDeathRowPersonList, true));
@@ -129,9 +126,9 @@ public class SendDodsmeldingTilTps {
         return skdDodsmeldingAnnulering;
     }
 
-    private String getEnvironmentFromSkdDoedsmelding(String skdmelding) {
+    private String getEnvironmentFromSkdDoedsmelding(SkdMeldingTrans1 skdmelding) {
 
-        return deathRowRepository.findByIdent(skdmelding.substring(46, 57)).getMiljoe();
+        return deathRowRepository.findByIdent(skdmelding.getFodselsnummer()).getMiljoe();
     }
 }
 

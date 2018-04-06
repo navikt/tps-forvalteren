@@ -22,14 +22,14 @@ public class SkdMessageCreatorTrans1 {
 		this.generateSkdMelding = generateSkdMelding;
 	}
 	
-	public List<String> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
+	public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
             for (Person person : persons) {
                 SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, person, addHeader);
-                skdMeldinger.add(skdMelding.toString());
+                skdMeldinger.add(skdMelding);
             }
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");

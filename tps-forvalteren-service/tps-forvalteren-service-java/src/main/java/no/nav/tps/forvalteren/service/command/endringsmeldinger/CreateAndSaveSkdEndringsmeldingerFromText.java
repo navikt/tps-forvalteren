@@ -21,6 +21,7 @@ public class CreateAndSaveSkdEndringsmeldingerFromText {
 
     public void execute(Long gruppeId, RsRawMeldinger rawMeldinger) {
         List<String> meldinger = splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw());
+        //TODO Unmarshal meldinger til java-representasjonen SkdMelding
         List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(meldinger);
         saveSkdEndringsmeldingerFromText.execute(rsMeldinger, gruppeId);
     }
