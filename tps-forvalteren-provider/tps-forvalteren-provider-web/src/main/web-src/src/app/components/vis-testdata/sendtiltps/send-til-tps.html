@@ -12,32 +12,33 @@
                 <div layout="row" layout-align="space-between">
                     <div layout="column">
                         <h3>U-miljø</h3>
+                        <md-checkbox ng-model="alleUMiljoer" ng-click="velgAlleFraUMiljoe()" aria-label="Velg alle miljø">
+                            Velg alle
+                        </md-checkbox>
                         <md-checkbox ng-repeat="miljoe in sortedMiljoer.u track by $index" aria-label="Velg"
-                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
+                                     ng-model="valgteMiljoer.u[$index]" ng-change="oppdaterVelgAlle()">
                             {{miljoe | uppercase}}
                         </md-checkbox>
                     </div>
 
                     <div layout="column">
                         <h3>T-miljø</h3>
+                        <md-checkbox ng-model="alleTMiljoer" ng-click="velgAlleFraTMiljoe()" aria-label="Velg alle miljø">
+                            Velg alle
+                        </md-checkbox>
                         <md-checkbox ng-repeat="miljoe in sortedMiljoer.t track by $index" aria-label="Velg"
-                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
+                                     ng-model="valgteMiljoer.t[$index]" ng-change="oppdaterVelgAlle()">
                             {{miljoe | uppercase}}
                         </md-checkbox>
                     </div>
 
                     <div layout="column">
                         <h3>Q-miljø</h3>
-                        <md-checkbox ng-repeat="miljoe in sortedMiljoer.q track by $index" aria-label="Velg"
-                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
-                            {{miljoe | uppercase}}
+                        <md-checkbox ng-model="alleQMiljoer" ng-click="velgAlleFraQMiljoe()" aria-label="Velg alle miljø">
+                            Velg alle
                         </md-checkbox>
-                    </div>
-
-                    <div layout="column">
-                        <h3>P-miljø</h3>
-                        <md-checkbox ng-repeat="miljoe in sortedMiljoer.p track by $index" aria-label="Velg"
-                                     ng-model="valgteMiljoer[$index]" ng-change="oppdaterVelgAlle()">
+                        <md-checkbox ng-repeat="miljoe in sortedMiljoer.q track by $index" aria-label="Velg"
+                                     ng-model="valgteMiljoer.q[$index]" ng-change="oppdaterVelgAlle()">
                             {{miljoe | uppercase}}
                         </md-checkbox>
                     </div>

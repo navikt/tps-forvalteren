@@ -4,9 +4,6 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
 
             headerService.setHeader('Dødsmelding');
 
-            var environments = $scope.$resolve.environmentsPromise;
-            $scope.environments = utilsService.sortEnvironments(environments.environments);
-
             $scope.handlinger = [{handling: 'Sette dødsdato', action: 'C'},
                 {handling: 'Endre dødsdato', action: 'U'},
                 {handling: 'Annulere dødsdato', action: 'D'}];
@@ -209,5 +206,49 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 })
             };
 
+            function sortEnvironmentsForDisplay(environments) {
+                var filteredEnvironments = {};
+                var sortedEnvironments = [];
+
+                environments = utilsService.sortEnvironments(environments);
+
+                angular.forEach(environments, function (env) {
+                    var substrMiljoe = env.charAt(0);
+
+                    if(filteredEnvironments[substrMiljoe]) {
+                        filteredEnvironments[substrMiljoe].push(env);
+                    } else {
+                        filteredEnvironments[substrMiljoe] = [];
+                        filteredEnvironments[substrMiljoe].push(env);
+                    }
+                });
+
+                if (filteredEnvironments['u']) {
+                    angular.forEach(filteredEnvironments['u'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['t']) {
+                    angular.forEach(filteredEnvironments['t'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['q']) {
+                    angular.forEach(filteredEnvironments['q'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                return sortedEnvironments;
+            }
+
+            function getEnvironments() {
+                var environments = $scope.$resolve.environmentsPromise;
+                $scope.environments = sortEnvironmentsForDisplay(environments.environments);
+            }
+
+            getEnvironments();
             getMeldinger();
         }]);
