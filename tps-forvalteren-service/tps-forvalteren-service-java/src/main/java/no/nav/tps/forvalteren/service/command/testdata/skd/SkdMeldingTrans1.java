@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 @AllArgsConstructor
 @Builder
 public class SkdMeldingTrans1 implements SkdMelding {
+	private static int meldingslengdeUtenHeader = 1500;
 	private String header;
 	private String fodselsdato;
 	private String personnummer;
@@ -165,31 +166,41 @@ public class SkdMeldingTrans1 implements SkdMelding {
 	private String mandatTekst;
 	private String reserverFramtidigBruk;
 	
+	/**
+	 * This method unmarshals the string and constructs a new, java-represented SkdMeldingTrans1.
+	 */
+	public static SkdMeldingTrans1 unmarshal(String skdMeldingInStringFormat) { //constructFromString()
+		SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
+		if (skdMeldingInStringFormat.length() > meldingslengdeUtenHeader) {
+			int headerlength = skdMeldingInStringFormat.length() - meldingslengdeUtenHeader;
+			skdMeldingTrans1.setHeader(skdMeldingInStringFormat.substring(0, headerlength));
+			skdMeldingInStringFormat = skdMeldingInStringFormat.substring(headerlength);
+		}
+		final String skdMeldingString = skdMeldingInStringFormat;
+		SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList()
+				.forEach(skdFeltDef ->
+						skdMeldingTrans1.setMeldingsVerdi(skdFeltDef, skdFeltDef.extractMeldingsfeltverdiFromString(skdMeldingString)));
+		return skdMeldingTrans1;
+	}
+	
+	
 	public String getFodselsnummer() {
-		return getFodselsdato()+getPersonnummer();
+		return getFodselsdato() + getPersonnummer();
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder skdMelding = new StringBuilder();
-		int meldingslengde = 1500;
 		if (header != null) {
 			skdMelding.append(header);
-			meldingslengde=meldingslengde+header.length();
 		}
 		
 		SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDefinisjon -> {
-			try {
-				String parameterverdien = getMeldingsverdien(skdFeltDefinisjon);
-				skdMelding.append(parameterverdien == null ?
-						skdFeltDefinisjon.getDefaultVerdi() : addDefaultValueToEndOfString(parameterverdien, skdFeltDefinisjon));
-			} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
+			String parameterverdien = getMeldingsverdien(skdFeltDefinisjon);
+			skdMelding.append(parameterverdien == null ?
+					skdFeltDefinisjon.getDefaultVerdi() : addDefaultValueToEndOfString(parameterverdien, skdFeltDefinisjon));
 		});
 		
-		skdMelding.setLength(meldingslengde);
-		skdMelding.trimToSize();
 		return skdMelding.toString();
 	}
 	
@@ -202,10 +213,22 @@ public class SkdMeldingTrans1 implements SkdMelding {
 		}
 	}
 	
-	private String getMeldingsverdien(SkdFeltDefinisjoner skdFeltDefinisjon) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		return ((String) getClass().getMethod("get" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()))
-				.invoke(this));
+	public String getMeldingsverdien(SkdFeltDefinisjoner skdFeltDefinisjon) {
+		try {
+			return ((String) getClass().getMethod("get" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()))
+					.invoke(this));
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
 	}
 	
-	//TODO Lag fromJson(Json json)
+	public void setMeldingsVerdi(SkdFeltDefinisjoner skdFeltDefinisjon, String feltverdi) {
+		try {
+			getClass().getMethod("set" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()), String.class)
+					.invoke(this, feltverdi);
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
 }
