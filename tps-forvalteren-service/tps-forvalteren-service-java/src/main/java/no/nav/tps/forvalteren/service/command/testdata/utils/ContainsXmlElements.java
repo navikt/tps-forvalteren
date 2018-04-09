@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 public class ContainsXmlElements {
 
     public boolean execute(String message) {
-        if (message.matches(".*[</>].*")) {
-            return true;
+        String xmlCharacters = "^</>";
+        for (char c : xmlCharacters.toCharArray()) {
+            if (message.indexOf(c) != -1) {
+                return true;
+            }
         }
         return false;
     }
