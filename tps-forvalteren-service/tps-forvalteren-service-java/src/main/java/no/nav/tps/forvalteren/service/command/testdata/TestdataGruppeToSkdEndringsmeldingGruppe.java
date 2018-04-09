@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTran
 @Service
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
-    private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired
@@ -64,7 +64,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
             List<SkdMelding> skdMeldinger = new ArrayList<>();
-            List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), false);
+            List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, testdataGruppe.getPersoner(), false);
             List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
             skdMeldinger.addAll(innvandringsMeldinger);

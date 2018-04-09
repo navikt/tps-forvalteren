@@ -21,36 +21,14 @@ public class SkdConstants {
     public static final String FRA_LAND_FLYTTEDATO = "fraLandFlyttedato";
     public static final String REG_DATO_FAM_NR = "regdatoFamnr";
 
-    public static final String POSTADRESSE_ADR_1 = "adresse1";
-    public static final String POSTADRESSE_ADR_2 = "adresse2";
-    public static final String POSTADRESSE_ADR_3 = "adresse3";
-
-    public static final String POSTADRESSE_LAND  = "postadrLand";
     public static final String SIVILSTAND = "sivilstand";
-    public static final String TIDLIGERE_SIVILSTAND = "tidlSivilstand";
-    public static final String EKTEFELLE_TIDLIGERE_SIVILSTAND = "ektfTidlSivilstand";
     public static final String REGDATO_SIVILSTAND = "regdatoSivilstand";
     public static final String TRANSTYPE = "transtype";
 
-    public static final String VIGSELSTYPE = "vigselstype";
-    public static final String VIGSELSKOMMUNE = "vigselskomm";
-
     public static final String EKTEFELLE_PARTNER_PERSONNUMMMER = "ektefellePartnerPnr";
     public static final String EKTEFELLE_PARTNER_FODSELSDATO = "ektefellePartnerFdato";
-    public static final String EKTEFELLE_PARTNER_NAVN = "ektefellePartnerNavn";
-
-    public static final String EKTESKAP_PARTNERSKAP_NUMMER = "ekteskPartnskNr";
-    public static final String EKTEFELLE_EKTESKAP_PARTNERSKAP_NUMMER = "ektfEkteskPartnskNr";
-
-    public static final String FAMILIENUMMER = "familienummer";
 
     public static final String AARSAKSKODE = "aarsakskode";
-
-    public static final String BRUKERIDENT = "brukerident";
-
-    public static final String EKTEFELLER_PARTNER_STATBORGERSKAP = "ektefellePartnerStatsb";
-
-    public static final String SEKVENSNUMMER = "sekvensnr";
 
     public static final String DOEDSDATO = "datoDoed";
     
