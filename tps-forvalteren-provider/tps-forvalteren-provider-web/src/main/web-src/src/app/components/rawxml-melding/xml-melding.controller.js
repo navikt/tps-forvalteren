@@ -50,7 +50,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                 });
             };
 
-            function removeDuplicatesEnvironments() {
+            function removeDuplicateEnvironments() {
                 var environments = [];
 
                 $scope.tpsMessageQueueList.forEach(function (obj) {
@@ -64,22 +64,63 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                 return environments;
             }
 
+            function sortEnvironmentsForDisplay(environments) {
+                var filteredEnvironments = {};
+                var sortedEnvironments = [];
+
+                environments.sort(function (a, b) {
+                    return a.substring(1) - b.substring(1);
+                });
+
+                angular.forEach(environments, function (env) {
+                    var substrMiljoe = env.charAt(0);
+
+                    if(filteredEnvironments[substrMiljoe]) {
+                        filteredEnvironments[substrMiljoe].push(env);
+                    } else {
+                        filteredEnvironments[substrMiljoe] = [];
+                        filteredEnvironments[substrMiljoe].push(env);
+                    }
+                });
+
+                if (filteredEnvironments['u']) {
+                    angular.forEach(filteredEnvironments['u'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['t']) {
+                    angular.forEach(filteredEnvironments['t'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['q']) {
+                    angular.forEach(filteredEnvironments['q'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                return sortedEnvironments;
+            }
+
             function hentAlleMiljoerOgKoer() {
 
                 xmlmeldingService.hentKoer().then(function (result) {
+                        var environments = [];
                         $scope.tpsMessageQueueList = result.data;
 
                         $scope.tpsMessageQueueList.forEach(function (obj) {
                             $scope.displayQueues.push(obj.koNavn);
-                            $scope.displayEnvironments.push(obj.miljo);
+                            environments.push(obj.miljo);
                         });
 
-                        $scope.displayEnvironments = removeDuplicatesEnvironments();
-                    });
+                        environments = removeDuplicateEnvironments();
 
+                        $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
+                });
             }
 
             hentAlleMiljoerOgKoer();
-
 
         }]);

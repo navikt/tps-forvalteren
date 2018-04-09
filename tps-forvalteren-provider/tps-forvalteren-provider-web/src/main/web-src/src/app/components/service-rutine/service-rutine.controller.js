@@ -265,6 +265,44 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
 
+            function sortEnvironmentsForDisplay(environments) {
+                var filteredEnvironments = {};
+                var sortedEnvironments = [];
+
+                environments = utilsService.sortEnvironments(environments);
+
+                angular.forEach(environments, function (env) {
+                    var substrMiljoe = env.charAt(0);
+
+                    if(filteredEnvironments[substrMiljoe]) {
+                        filteredEnvironments[substrMiljoe].push(env);
+                    } else {
+                        filteredEnvironments[substrMiljoe] = [];
+                        filteredEnvironments[substrMiljoe].push(env);
+                    }
+                });
+
+                if (filteredEnvironments['u']) {
+                    angular.forEach(filteredEnvironments['u'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['t']) {
+                    angular.forEach(filteredEnvironments['t'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['q']) {
+                    angular.forEach(filteredEnvironments['q'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                return sortedEnvironments;
+            }
+
             // ##################################
 
             function init() {
@@ -276,7 +314,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 }
 
                 if (environmentsPromise) {
-                    $scope.environments = serviceRutineFactory.getEnvironments();
+                    $scope.environments = sortEnvironmentsForDisplay(serviceRutineFactory.getEnvironments().environments);
                     apiError = false;
                 } else {
                     apiError = true;

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsXmlMelding {
+public class RsTpsMelding {
 
     @NotNull
     private String melding;

@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial'])
     .controller('SkdSendTilTpsCtrl', ['$scope', '$rootScope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'endringsmeldingService', 'utilsService', 'meldinger',
         function ($scope, $rootScope, $mdDialog, $stateParams, serviceRutineFactory, endringsmeldingService, utilsService, meldinger) {
-
+//
             var gruppeId = $stateParams.gruppeId;
             $scope.showSpinner = false;
 
@@ -37,10 +37,49 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial
                 );
             };
 
-            $scope.miljoer = serviceRutineFactory.getEnvironments().environments;
-            $scope.miljoer.sort(function (a, b) {
-                return a.substring(1) - b.substring(1);
-            });
-            $scope.miljoe = $scope.miljoer[0].substr(0,1);
+            function sortEnvironmentsForDisplay(environments) {
+                var filteredEnvironments = {};
+                var sortedEnvironments = [];
+
+                environments = utilsService.sortEnvironments(environments);
+
+                angular.forEach(environments, function (env) {
+                    var substrMiljoe = env.charAt(0);
+
+                    if(filteredEnvironments[substrMiljoe]) {
+                        filteredEnvironments[substrMiljoe].push(env);
+                    } else {
+                        filteredEnvironments[substrMiljoe] = [];
+                        filteredEnvironments[substrMiljoe].push(env);
+                    }
+                });
+
+                if (filteredEnvironments['u']) {
+                    angular.forEach(filteredEnvironments['u'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['t']) {
+                    angular.forEach(filteredEnvironments['t'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['q']) {
+                    angular.forEach(filteredEnvironments['q'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                return sortedEnvironments;
+            }
+
+            function init() {
+                $scope.miljoer = sortEnvironmentsForDisplay(serviceRutineFactory.getEnvironments().environments);
+                $scope.miljoe = $scope.miljoer[0].substr(0,1);
+            }
+
+            init();
 
         }]);

@@ -5,7 +5,7 @@ import java.util.Map;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.RsPureXmlMessageResponse;
-import no.nav.tps.forvalteren.domain.rs.RsXmlMelding;
+import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -71,10 +71,10 @@ public class ServiceController extends BaseProvider {
     @LogExceptions
     @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding")})
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
-    public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsXmlMelding rsXmlMelding) throws Exception {
+    public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
 
         RsPureXmlMessageResponse response = new RsPureXmlMessageResponse();
-        response.setXml(tpsXmlSender.sendXml(rsXmlMelding));
+        response.setXml(tpsXmlSender.sendTpsMelding(rsTpsMelding));
         return response;
     }
 

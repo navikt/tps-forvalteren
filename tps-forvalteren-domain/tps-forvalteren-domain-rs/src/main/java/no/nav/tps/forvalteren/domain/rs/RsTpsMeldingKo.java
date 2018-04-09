@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsXmlMeldingKo {
+public class RsTpsMeldingKo {
 
     private String miljo;
 
