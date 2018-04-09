@@ -72,7 +72,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     @Mock
     private List<RsMeldingstype> rsMeldinger;
 
-    private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
+    private static final String NAVN_INNVANDRINGSMELDING = "InnvandringCreate";
     private static final Long GRUPPE_ID = 1337L;
     private static final boolean ADD_HEADER = false;
     private static final String melding1 = "1", melding2 = "2", melding3 = "3";
