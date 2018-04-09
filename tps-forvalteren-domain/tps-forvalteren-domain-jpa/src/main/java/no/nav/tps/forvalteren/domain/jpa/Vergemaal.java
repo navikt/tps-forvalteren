@@ -48,11 +48,11 @@ public class Vergemaal {
     @Column(name = "VEDTAKSDATO")
     private LocalDateTime vedtaksdato;
 
-    @Column(name = "INTERNVERGE_ID", nullable = false)
-    private String vergeid;
+    @Column(name = "INTERN_VERGE_ID", nullable = false)
+    private String internVergeId;
 
     @JoinColumn(name = "VERGE_FNR")
-    private String vergefnr;
+    private String vergeFnrDnr;
 
     @Column(name = "VERGETYPE", length = 3)
     private String vergetype;
@@ -61,6 +61,6 @@ public class Vergemaal {
     private String mandattype;
 
     @Column(name = "MANDATTEKST")
-    private String mandattekst;
+    private String mandatTekst;
 
 }
