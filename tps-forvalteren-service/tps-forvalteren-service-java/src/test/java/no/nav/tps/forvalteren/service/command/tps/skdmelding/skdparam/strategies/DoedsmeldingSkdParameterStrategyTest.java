@@ -17,7 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringCreateSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,7 +57,7 @@ public class DoedsmeldingSkdParameterStrategyTest {
     @Test
     public void isSupportedTest() {
         SkdParametersCreator correctObject = mock(DoedsmeldingSkdParametere.class);
-        SkdParametersCreator incorrectObject = mock(InnvandringSkdParametere.class);
+        SkdParametersCreator incorrectObject = mock(InnvandringCreateSkdParametere.class);
 
         assertThat(doedsmeldingSkdParameterStrategy.isSupported(correctObject), is(true));
         assertThat(doedsmeldingSkdParameterStrategy.isSupported(incorrectObject), is(false));

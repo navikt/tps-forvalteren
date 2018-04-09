@@ -10,4 +10,6 @@ public interface SkdEndringsmeldingLoggRepository extends Repository<SkdEndrings
     SkdEndringsmeldingLogg save(SkdEndringsmeldingLogg skdEndringsmeldingLogg);
 
     List<SkdEndringsmeldingLogg> findAllByMeldingsgruppeId(Long gruppeId);
+
+    void deleteAll();
 }
