@@ -72,8 +72,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             skdMeldinger.addAll(doedsMeldinger);
 
             gruppe = skdEndringsmeldingGruppeRepository.save(gruppe);
-            List<String> skdMeldingStrings = skdMeldinger.stream().map(SkdMelding::toString).collect(Collectors.toList()); //Midlertidig løsning. Ønsker å refakturere createMeldingWithMeldingstype med (SkdMelding skdmelding) som input.
-            List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(skdMeldingStrings);
+            List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(skdMeldinger);
             saveSkdEndringsmeldingerFromText.execute(rsMeldinger, gruppe.getId());
             return gruppe;
         } else {

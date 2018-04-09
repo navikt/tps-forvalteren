@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultSkdInputParamsToSkdMeldingInnhold implements SkdInputParamsToSkdMeldingInnhold { //TODO bytte ut denne med SkdMeldingTrans1.toString.
+public class DefaultSkdInputParamsToSkdMeldingInnhold implements SkdInputParamsToSkdMeldingInnhold { //TODO bytte ut denne med SkdMelding.toString.
 
     public StringBuilder execute(Map<String, String> skdInputMap, SkdFelterContainer skdFelterContainer) {
         StringBuilder skdMelding = new StringBuilder();

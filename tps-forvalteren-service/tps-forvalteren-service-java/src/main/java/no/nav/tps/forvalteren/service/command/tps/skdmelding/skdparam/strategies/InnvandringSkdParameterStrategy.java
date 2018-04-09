@@ -1,21 +1,16 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.StatsborgerskapEncoder;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.SIVILSTAND;
-import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE;
-import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
+import java.time.LocalDateTime;
 
 public abstract class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
