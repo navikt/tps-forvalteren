@@ -8,12 +8,12 @@ import org.junit.Test;
 /**
  * @author Jarl Øystein Samseth, Visma Consulting
  */
-public class SkdFeltDefinisjonerTest {
+public class SkdFeltDefinisjonerTrans1Test {
 	SkdMeldingTrans1 skdMeldingTrans1 = createVigselsmelding();
 	String skdMeldingStringUtenHeader = skdMeldingTrans1.toString();
 	@Test
 	public void extractMeldingsverdiFromString() {
-		SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDef ->
+		SkdFeltDefinisjonerTrans1.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDef ->
 				assertEquals( skdMeldingTrans1.getMeldingsverdien(skdFeltDef), skdFeltDef.extractMeldingsfeltverdiFromString(skdMeldingStringUtenHeader)));
 	}
 	

@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static org.junit.Assert.assertEquals;
 
 import com.google.common.io.Resources;
-import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjoner;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjonerTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.utils.AssertEqualSkdMeldingTrans1;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,13 +43,13 @@ public class SkdMeldingTrans1Test {
 	}
 	
 	@Test
-	public void shouldReturnStringSkdMessage() {
+	public void shouldReturnStringSkdMessageFromToStringMethod() {
 		assertEquals(skdMessageString, skdMeldingTrans1.toString());
 	}
 	
 	@Test
 	public void shouldSetMeldingsverdiAngittVedSkdFeltDefinisjoner() {
-		SkdFeltDefinisjoner skdFeltDefinisjon_antallBarn = SkdFeltDefinisjoner.ANTALL_BARN;
+		SkdFeltDefinisjonerTrans1 skdFeltDefinisjon_antallBarn = SkdFeltDefinisjonerTrans1.ANTALL_BARN;
 		SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
 		String antallbarn = "12";
 		skdMeldingTrans1.setMeldingsVerdi(skdFeltDefinisjon_antallBarn, antallbarn);

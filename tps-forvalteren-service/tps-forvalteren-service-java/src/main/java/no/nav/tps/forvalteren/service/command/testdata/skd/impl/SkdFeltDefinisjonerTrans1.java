@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author Jarl Øystein Samseth, Visma Consulting
  */
 @Getter
-public enum SkdFeltDefinisjoner {
+public enum SkdFeltDefinisjonerTrans1 {
 	FODSELSDATO("fodselsdato", "000000", 1, 6, 1, 6),
 	PERSONNUMMER("personnummer", "00000", 2, 5, 7, 11),
 	MASKINDATO("maskindato", "00000000", 3, 8, 12, 19),
@@ -171,7 +171,10 @@ public enum SkdFeltDefinisjoner {
 	private int tilByte;
 	private boolean isValueLastInSkdField = false;
 	
-	SkdFeltDefinisjoner(String variabelnavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt, int fraByte, int tilByte, boolean isValueLastInSkdField) {
+	public static final int TRANSTYPE_START_POSITION = 25;
+	public static final int TRANSTYPE_END_POSITION = 26;
+	
+	SkdFeltDefinisjonerTrans1(String variabelnavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt, int fraByte, int tilByte, boolean isValueLastInSkdField) {
 		this.variabelNavn = variabelnavn;
 		this.defaultVerdi = defaultVerdi;
 		this.idRekkefolge = idRekkefolge;
@@ -181,8 +184,8 @@ public enum SkdFeltDefinisjoner {
 		this.isValueLastInSkdField = isValueLastInSkdField;
 	}
 	
-	SkdFeltDefinisjoner(String variabelnavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt,
-						int fraByte, int tilByte) {
+	SkdFeltDefinisjonerTrans1(String variabelnavn, String defaultVerdi, int idRekkefolge, int antallByesAvsatt,
+							  int fraByte, int tilByte) {
 		this.variabelNavn = variabelnavn;
 		this.defaultVerdi = defaultVerdi;
 		this.idRekkefolge = idRekkefolge;
@@ -191,10 +194,10 @@ public enum SkdFeltDefinisjoner {
 		this.tilByte = tilByte;
 	}
 	
-	public static List<SkdFeltDefinisjoner> getAllFeltDefinisjonerInSortedList() {
-		return Arrays.asList(SkdFeltDefinisjoner.values())
+	public static List<SkdFeltDefinisjonerTrans1> getAllFeltDefinisjonerInSortedList() {
+		return Arrays.asList(SkdFeltDefinisjonerTrans1.values())
 				.stream()
-				.sorted(Comparator.comparingInt(SkdFeltDefinisjoner::getIdRekkefolge))
+				.sorted(Comparator.comparingInt(SkdFeltDefinisjonerTrans1::getIdRekkefolge))
 				.collect(Collectors.toList());
 	}
 	

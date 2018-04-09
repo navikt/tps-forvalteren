@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjoner;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjonerTrans1;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -177,7 +177,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 			skdMeldingInStringFormat = skdMeldingInStringFormat.substring(headerlength);
 		}
 		final String skdMeldingString = skdMeldingInStringFormat;
-		SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList()
+		SkdFeltDefinisjonerTrans1.getAllFeltDefinisjonerInSortedList()
 				.forEach(skdFeltDef ->
 						skdMeldingTrans1.setMeldingsVerdi(skdFeltDef, skdFeltDef.extractMeldingsfeltverdiFromString(skdMeldingString)));
 		return skdMeldingTrans1;
@@ -195,7 +195,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 			skdMelding.append(header);
 		}
 		
-		SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDefinisjon -> {
+		SkdFeltDefinisjonerTrans1.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDefinisjon -> {
 			String parameterverdien = getMeldingsverdien(skdFeltDefinisjon);
 			skdMelding.append(parameterverdien == null ?
 					skdFeltDefinisjon.getDefaultVerdi() : addDefaultValueToEndOfString(parameterverdien, skdFeltDefinisjon));
@@ -204,7 +204,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 		return skdMelding.toString();
 	}
 	
-	private String addDefaultValueToEndOfString(String parameterverdien, SkdFeltDefinisjoner skdFeltDefinisjon) {
+	private String addDefaultValueToEndOfString(String parameterverdien, SkdFeltDefinisjonerTrans1 skdFeltDefinisjon) {
 		if (!skdFeltDefinisjon.isValueLastInSkdField()) {
 			return parameterverdien + skdFeltDefinisjon.getDefaultVerdi().substring(parameterverdien.length());
 		} else {
@@ -213,7 +213,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 		}
 	}
 	
-	public String getMeldingsverdien(SkdFeltDefinisjoner skdFeltDefinisjon) {
+	public String getMeldingsverdien(SkdFeltDefinisjonerTrans1 skdFeltDefinisjon) {
 		try {
 			return ((String) getClass().getMethod("get" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()))
 					.invoke(this));
@@ -222,7 +222,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 		}
 	}
 	
-	public void setMeldingsVerdi(SkdFeltDefinisjoner skdFeltDefinisjon, String feltverdi) {
+	public void setMeldingsVerdi(SkdFeltDefinisjonerTrans1 skdFeltDefinisjon, String feltverdi) {
 		try {
 			getClass().getMethod("set" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()), String.class)
 					.invoke(this, feltverdi);
