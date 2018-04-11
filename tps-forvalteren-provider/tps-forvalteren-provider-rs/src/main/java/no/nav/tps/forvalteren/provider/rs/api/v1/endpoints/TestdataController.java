@@ -111,7 +111,6 @@ public class TestdataController {
 	@Autowired
 	private StatusPaaIdenterITps statusPaaIdenterITps;
 	
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier")})
 	@RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
@@ -129,7 +128,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons")})
 	@RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
@@ -138,7 +136,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons")})
 	@RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
@@ -148,7 +145,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_ACCESS')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList")})
 	@RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
@@ -156,7 +152,6 @@ public class TestdataController {
 		return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner")})
 	@RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
@@ -167,7 +162,6 @@ public class TestdataController {
 		savePersonListService.execute(personer);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS")})
 	@RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
@@ -176,7 +170,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_ACCESS')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper")})
 	@RequestMapping(value = "/grupper", method = RequestMethod.GET)
@@ -186,7 +179,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_ACCESS')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe")})
 	@RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
@@ -196,7 +188,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe")})
 	@RequestMapping(value = "/gruppe", method = RequestMethod.POST)
@@ -206,7 +197,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe")})
 	@RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
@@ -215,7 +205,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
 	@LogExceptions
 	@Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "testdataGruppeToSkdEndringsmeldingGruppe")})
 	@RequestMapping(value = "/skd/{gruppeId}", method = RequestMethod.GET)
@@ -225,7 +214,6 @@ public class TestdataController {
 	}
 	
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_ACCESS')")
 	@LogExceptions
 	@GetMapping(value = "/tpsStatus")
 	public RsTpsStatusPaaIdenterResponse getTestdataStatusFromTpsInAllEnvironments(@RequestParam("identer") List<String> identer) {

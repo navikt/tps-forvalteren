@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@PreAuthorize("hasRole('ROLE_ACCESS')")
 @RestController
 @RequestMapping(value = "api/v1")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
@@ -26,7 +25,6 @@ public class HentKoerController {
     @Autowired
     private GetQueuesFromEnvironment getQueuesFromEnvironment;
 
-    @PreAuthorize("hasRole('ROLE_ACCESS')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
     @RequestMapping(value = "/queues", method = RequestMethod.GET)
