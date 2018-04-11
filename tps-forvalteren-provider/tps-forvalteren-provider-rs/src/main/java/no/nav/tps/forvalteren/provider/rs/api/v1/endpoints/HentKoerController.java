@@ -10,7 +10,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.GetQueuesFromEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

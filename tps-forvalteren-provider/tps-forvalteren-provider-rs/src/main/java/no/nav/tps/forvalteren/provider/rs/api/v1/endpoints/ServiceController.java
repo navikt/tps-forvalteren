@@ -17,7 +17,6 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequ
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +47,7 @@ public class ServiceController extends BaseProvider {
 
     @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService") })
     @RequestMapping(value = "/service/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getService(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
         loggSporing(serviceRutinenavn, tpsRequestParameters);
@@ -66,10 +65,8 @@ public class ServiceController extends BaseProvider {
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }
 
-
-    @PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
     @LogExceptions
-    @Metrics(value = "provider", tags = {@Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding")})
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
     public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
 
@@ -77,7 +74,6 @@ public class ServiceController extends BaseProvider {
         response.setXml(tpsXmlSender.sendTpsMelding(rsTpsMelding));
         return response;
     }
-
 
     private void putFnrIntoRequestParameters(Map<String, Object> tpsRequestParameters) {
         if (tpsRequestParameters.containsKey("nFnr")) {
