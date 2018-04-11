@@ -20,10 +20,16 @@ public class DoedsmeldingAnnulleringSkdParamterStrategy implements SkdParameters
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "45";
     private static final String TRANSTYPE_FOR_DOEDSMELDING = "1";
     private static final String STATUSKODE_FOR_DOEDSMELDING = "1";
+    private static final String TILDELINGSKODE_DOEDSMELDING_ANNULERING = "0";
 
     @Autowired
     private SetAdresse setAdresse;
-    
+
+    @Override
+    public String hentTildelingskode() {
+        return TILDELINGSKODE_DOEDSMELDING_ANNULERING;
+    }
+
     @Override
     public boolean isSupported(SkdParametersCreator creator) {
         return creator instanceof DoedsmeldingAnnulleringSkdParamtere;
@@ -31,8 +37,11 @@ public class DoedsmeldingAnnulleringSkdParamterStrategy implements SkdParameters
 
     @Override
     public Map<String, String> execute(Person person) {
+        String tildelingskodeForDodsmeldingAnnulering = hentTildelingskode();
+
         HashMap<String, String> skdParams = new HashMap<>();
-        
+        skdParams.put(SkdConstants.TILDELINGSKODE, tildelingskodeForDodsmeldingAnnulering);
+
         addSkdParametersExtractedFromPerson(skdParams, person);
         setAdresse.execute(skdParams, person);
         addDefaultParam(skdParams);

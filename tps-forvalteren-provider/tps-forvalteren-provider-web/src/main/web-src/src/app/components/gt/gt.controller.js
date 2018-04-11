@@ -80,13 +80,52 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                 $scope.xmlFormUtvandring = undefined;
                 $scope.utvandringStatus = undefined;
             };
+            
+            function sortEnvironmentsForDisplay(environments) {
+                var filteredEnvironments = {};
+                var sortedEnvironments = [];
+
+                environments = utilsService.sortEnvironments(environments);
+
+                angular.forEach(environments, function (env) {
+                    var substrMiljoe = env.charAt(0);
+
+                    if(filteredEnvironments[substrMiljoe]) {
+                        filteredEnvironments[substrMiljoe].push(env);
+                    } else {
+                        filteredEnvironments[substrMiljoe] = [];
+                        filteredEnvironments[substrMiljoe].push(env);
+                    }
+                });
+
+                if (filteredEnvironments['u']) {
+                    angular.forEach(filteredEnvironments['u'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['t']) {
+                    angular.forEach(filteredEnvironments['t'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['q']) {
+                    angular.forEach(filteredEnvironments['q'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                return sortedEnvironments;
+            }
 
             var init = function() {
                 var environments = $scope.$resolve.environmentsPromise;
                 if(environments.status !== undefined){
                     utilsService.showAlertError(environments);
                 } else {
-                    $scope.environments = utilsService.sortEnvironments(environments.environments);
+                    $scope.environments = sortEnvironmentsForDisplay(environments.environments);
+                    // $scope.environments = utilsService.sortEnvironments(environments.environments);
                 }
             };
 

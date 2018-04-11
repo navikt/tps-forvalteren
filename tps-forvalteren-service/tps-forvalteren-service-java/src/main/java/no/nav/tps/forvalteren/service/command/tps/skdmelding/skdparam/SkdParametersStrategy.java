@@ -7,6 +7,8 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 
 public interface SkdParametersStrategy {
 
+    String hentTildelingskode();
+
     boolean isSupported(SkdParametersCreator creator);
 
     Map<String,String> execute(Person person);

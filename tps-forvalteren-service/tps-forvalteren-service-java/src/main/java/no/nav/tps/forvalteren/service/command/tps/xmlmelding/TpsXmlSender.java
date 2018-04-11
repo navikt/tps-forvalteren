@@ -1,8 +1,12 @@
 package no.nav.tps.forvalteren.service.command.tps.xmlmelding;
 
+import javax.jms.JMSException;
+
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageFixedQueueServiceFactory;
-import no.nav.tps.forvalteren.domain.rs.RsXmlMelding;
+import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.utils.ContainsXmlElements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +16,19 @@ public class TpsXmlSender {
     @Autowired
     private MessageFixedQueueServiceFactory messageFixedQueueServiceFactory;
 
-    public String sendXml(RsXmlMelding rsXmlMelding) throws Exception {
+    @Autowired
+    private SkdAddHeaderToSkdMelding skdAddHeaderToSkdMelding;
 
-        String response = "";
+    @Autowired
+    private ContainsXmlElements containsXmlElements;
 
-        MessageQueueConsumer messageQueueConsumer = messageFixedQueueServiceFactory.createMessageQueueConsumerWithFixedQueueName(getEnvironmentFromQueueName(rsXmlMelding.getKo()), rsXmlMelding.getKo());
-        response = messageQueueConsumer.sendMessage(rsXmlMelding.getMelding());
+    public String sendTpsMelding(RsTpsMelding rsTpsMelding) throws JMSException {
 
-        return response;
+        addHeaderIfSkdMelding(rsTpsMelding);
+
+        MessageQueueConsumer messageQueueConsumer = messageFixedQueueServiceFactory.createMessageQueueConsumerWithFixedQueueName(getEnvironmentFromQueueName(rsTpsMelding.getKo()), rsTpsMelding.getKo());
+
+        return messageQueueConsumer.sendMessage(rsTpsMelding.getMelding());
     }
 
     private String getEnvironmentFromQueueName(String ko) {
@@ -27,4 +36,13 @@ public class TpsXmlSender {
         return ko.substring(3, ko.indexOf('_'));
     }
 
+    private void addHeaderIfSkdMelding(RsTpsMelding rsTpsMelding) {
+
+        if (!containsXmlElements.execute(rsTpsMelding.getMelding())) {
+            StringBuilder skdMelding = new StringBuilder(rsTpsMelding.getMelding());
+
+            StringBuilder rsTpsMeldingMedHeader = skdAddHeaderToSkdMelding.execute(skdMelding);
+            rsTpsMelding.setMelding(rsTpsMeldingMedHeader.toString());
+        }
+    }
 }

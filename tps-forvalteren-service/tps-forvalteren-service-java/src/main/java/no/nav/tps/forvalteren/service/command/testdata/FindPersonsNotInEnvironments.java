@@ -13,16 +13,11 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 @Service
 public class FindPersonsNotInEnvironments {
 
-    @Autowired
-    private FindGruppeById findGruppeById;
 
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    public List<Person> execute(Long gruppeId, List<String> environments) {
-        Gruppe gruppe = findGruppeById.execute(gruppeId);
-        List<Person> personerIGruppen = gruppe.getPersoner();
-
+    public List<Person> execute(List<Person> personerIGruppen, List<String> environments) {
         List<String> identer = ekstraherIdenterFraPersoner(personerIGruppen);
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer, new HashSet<>(environments));
 

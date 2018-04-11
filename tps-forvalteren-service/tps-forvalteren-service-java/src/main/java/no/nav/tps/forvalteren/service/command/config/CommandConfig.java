@@ -28,9 +28,11 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAnnulleringAarsakskode45;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11;
 import no.nav.tps.forvalteren.service.command.Command;
+
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +43,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
-
-    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
 
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
@@ -63,13 +63,6 @@ public class CommandConfig {
         return xmlMapper;
     }
 
-    //    @Bean
-    //    ObjectMapper objectMapper() {
-    //        ObjectMapper objectMapper = new ObjectMapper();
-    //        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    //        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-    //        return objectMapper;
-    //    }
 
     @Bean
     ServiceRoutineResolver sjekkTps() {
@@ -174,6 +167,11 @@ public class CommandConfig {
     @Bean
     SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
+    }
+
+    @Bean
+    SkdMeldingResolver innvandringUpdate() {
+        return new InnvandringAarsakskode02Tildelingskode2Update();
     }
 
     @Bean

@@ -11,4 +11,5 @@ public interface AdresseRepository extends Repository<Adresse, Long> {
 
     void save(Adresse adresse);
 
+    void deleteAll();
 }
