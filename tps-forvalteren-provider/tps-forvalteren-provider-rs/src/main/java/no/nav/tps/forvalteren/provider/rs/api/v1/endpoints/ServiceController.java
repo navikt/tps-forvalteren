@@ -17,6 +17,8 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequ
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,7 @@ public class ServiceController extends BaseProvider {
     @Autowired
     private TpsRequestSender tpsRequestSender;
 
-    @Autowired
+    @Autowired(required=false)
     private TpsXmlSender tpsXmlSender;
 
     @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
@@ -68,6 +70,7 @@ public class ServiceController extends BaseProvider {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
+    @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
     public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
 
         RsPureXmlMessageResponse response = new RsPureXmlMessageResponse();
