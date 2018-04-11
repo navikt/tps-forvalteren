@@ -17,7 +17,6 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequ
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +43,7 @@ public class ServiceController extends BaseProvider {
     @Autowired
     private TpsRequestSender tpsRequestSender;
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     private TpsXmlSender tpsXmlSender;
 
     @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
