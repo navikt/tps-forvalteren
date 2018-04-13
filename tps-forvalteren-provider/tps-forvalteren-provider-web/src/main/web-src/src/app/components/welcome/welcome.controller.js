@@ -23,7 +23,7 @@ angular.module('tps-forvalteren.welcome',[])
             };
 
             $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
-            $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0 && !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
             $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
-            $scope.visSendDoedsmeldingKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SKDMELDING") >= 0;
+            $scope.visSendDoedsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
     }]);

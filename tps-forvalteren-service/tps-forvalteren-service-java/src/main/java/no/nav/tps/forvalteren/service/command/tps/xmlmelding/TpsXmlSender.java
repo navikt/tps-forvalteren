@@ -8,9 +8,11 @@ import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.ContainsXmlElements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
 public class TpsXmlSender {
 
     @Autowired
