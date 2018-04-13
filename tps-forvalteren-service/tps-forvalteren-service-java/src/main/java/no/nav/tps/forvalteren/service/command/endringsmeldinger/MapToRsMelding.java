@@ -19,46 +19,46 @@ import java.util.Map;
 
 @Service
 public class MapToRsMelding {
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private SkdFelterContainerTrans2 skdFelterContainerTrans2;
-
-    public RsMeldingstype execute(SkdMelding melding) {
-        if (melding instanceof SkdMeldingTrans1){
-            return createT1(((SkdMeldingTrans1) melding));
-        }else {
-            return createT2(((SkdMeldingTrans2) melding).getSkdMelding()); //TODO getSkdMelding og skdFelterContainerTrans2 er midlertidig løsning inntil mapping og java-representasjon for skdMeldingTrans2 er på plass.
-        }
-    }
-
-    private RsMeldingstype createT1(SkdMeldingTrans1 melding) {
-        RsMeldingstype1Felter rsMeldingstype= MapBetweenRsMeldingstypeAndSkdMelding.map(melding);
-        rsMeldingstype.setBeskrivelse("IDENT: " + rsMeldingstype.getFodselsdato() + rsMeldingstype.getPersonnummer() + " - AARSAKSKODE: " + rsMeldingstype.getAarsakskode());
-//        meldingFelter.put("meldingstype", "t1");
-        return rsMeldingstype;
-    }
-
-    private RsMeldingstype createT2(String melding) {
-        List<SkdFeltDefinisjon> felter = skdFelterContainerTrans2.hentSkdFelter();
-        Map<String, String> meldingFelter = new HashMap<>();
-        populateMapWithFelter(melding, meldingFelter, felter);
-        meldingFelter.put("meldingstype", "t2");
-        String beskrivelse = "IDENT: " + meldingFelter.get("fodselsnr") + " - AARSAKSKODE: " + meldingFelter.get("aarsakskode");
-        meldingFelter.put("beskrivelse", beskrivelse);
-        return objectMapper.convertValue(meldingFelter, RsMeldingstype2Felter.class);
-    }
-
-    private void populateMapWithFelter(String melding, Map<String, String> meldingFelter, List<SkdFeltDefinisjon> felter) {
-        for (SkdFeltDefinisjon felt : felter) {
-            if (felt.getFraByte() != 0 && felt.getTilByte() != 0) {
-                String extractedValue = melding.substring(felt.getFraByte() - 1, felt.getTilByte());
-                String trimmedValue = extractedValue.trim();
-                meldingFelter.put(felt.getNokkelNavn(), trimmedValue);
-            }
-        }
-    }
-
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	@Autowired
+	private SkdFelterContainerTrans2 skdFelterContainerTrans2;
+	
+	public RsMeldingstype execute(SkdMelding melding) {
+		if (melding instanceof SkdMeldingTrans1) {
+			return createT1(((SkdMeldingTrans1) melding));
+		} else {
+			return createT2(((SkdMeldingTrans2) melding).getSkdMelding()); //TODO getSkdMelding og skdFelterContainerTrans2 er midlertidig løsning inntil mapping og java-representasjon for skdMeldingTrans2 er på plass.
+		}
+	}
+	
+	private RsMeldingstype createT1(SkdMeldingTrans1 melding) {
+		RsMeldingstype1Felter rsMeldingstype = MapBetweenRsMeldingstypeAndSkdMelding.map(melding);
+		rsMeldingstype.setBeskrivelse("IDENT: " + rsMeldingstype.getFodselsdato() + rsMeldingstype.getPersonnummer() + " - AARSAKSKODE: " + rsMeldingstype
+				.getAarsakskode());
+ 		return rsMeldingstype;
+	}
+	
+	private RsMeldingstype createT2(String melding) {
+		List<SkdFeltDefinisjon> felter = skdFelterContainerTrans2.hentSkdFelter();
+		Map<String, String> meldingFelter = new HashMap<>();
+		populateMapWithFelter(melding, meldingFelter, felter);
+		meldingFelter.put("meldingstype", "t2");
+		String beskrivelse = "IDENT: " + meldingFelter.get("fodselsnr") + " - AARSAKSKODE: " + meldingFelter.get("aarsakskode");
+		meldingFelter.put("beskrivelse", beskrivelse);
+		return objectMapper.convertValue(meldingFelter, RsMeldingstype2Felter.class);
+	}
+	
+	private void populateMapWithFelter(String melding, Map<String, String> meldingFelter, List<SkdFeltDefinisjon> felter) {
+		for (SkdFeltDefinisjon felt : felter) {
+			if (felt.getFraByte() != 0 && felt.getTilByte() != 0) {
+				String extractedValue = melding.substring(felt.getFraByte() - 1, felt.getTilByte());
+				String trimmedValue = extractedValue.trim();
+				meldingFelter.put(felt.getNokkelNavn(), trimmedValue);
+			}
+		}
+	}
+	
 }
