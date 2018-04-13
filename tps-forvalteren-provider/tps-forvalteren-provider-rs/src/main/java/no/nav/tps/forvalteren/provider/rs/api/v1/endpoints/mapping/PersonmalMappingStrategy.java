@@ -17,16 +17,16 @@ public class PersonmalMappingStrategy implements MappingStrategy {
                 .customize(new CustomMapper<RsPersonMal, Personmal>() {
                     @Override
                     public void mapAtoB(RsPersonMal rsPersonMal, Personmal personmal, MappingContext mappingContext) {
-                        personmal.setMaxAntallBarn(Integer.parseInt(rsPersonMal.getMaxantallbarn()));
-                        personmal.setMinAntallBarn(Integer.parseInt(rsPersonMal.getMinantallbarn()));
+                        personmal.setMaxAntallBarn(Integer.parseInt(rsPersonMal.getMaxAntallBarn()));
+                        personmal.setMinAntallBarn(Integer.parseInt(rsPersonMal.getMinAntallBarn()));
                     }
                 }).byDefault().register();
 
         factory.classMap(Personmal.class, RsPersonMal.class)
                 .customize(new CustomMapper<Personmal, RsPersonMal>() {
                     public void mapBtoA(Personmal personmal, RsPersonMal rsPersonMal, MappingContext mappingContext) {
-                        rsPersonMal.setMaxantallbarn(String.valueOf(personmal.getMaxAntallBarn()));
-                        rsPersonMal.setMinantallbarn(String.valueOf(personmal.getMinAntallBarn()));
+                        rsPersonMal.setMaxAntallBarn(String.valueOf(personmal.getMaxAntallBarn()));
+                        rsPersonMal.setMinAntallBarn(String.valueOf(personmal.getMinAntallBarn()));
 
                     }
                 }).byDefault().register();

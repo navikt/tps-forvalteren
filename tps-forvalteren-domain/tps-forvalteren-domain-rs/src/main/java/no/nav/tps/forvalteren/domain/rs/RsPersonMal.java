@@ -16,10 +16,10 @@ import lombok.Setter;
 public class RsPersonMal {
 
     @Size(min=1, max = 8)
-    private String fodtetter;
+    private String fodtEtter;
 
     @Size(min=1, max = 8)
-    private String fodtfor;
+    private String fodtFor;
 
     @Size(min=1, max = 8)
     private String kjonn;
@@ -31,7 +31,7 @@ public class RsPersonMal {
     private String spesreg;
 
     @Size(min=1, max = 8)
-    private String spesregdato;
+    private String spesregDato;
 
     @Size(max = 8)
     private String doedsdato;
@@ -40,67 +40,67 @@ public class RsPersonMal {
     private String sivilstand;
 
     @Size(max = 3)
-    private String innvandretfraland;
+    private String innvandretFraLand;
 
     @Size(max = 2)
-    private String minantallbarn;
+    private String minAntallBarn;
 
     @Size(max = 2)
-    private String maxantallbarn;
+    private String maxAntallBarn;
 
     @Size(max = 50)
     private String gateadresse;
 
     @Size(max = 4)
-    private String gatehusnr;
+    private String gateHusnr;
 
     @Size(max = 4)
-    private String gatepostnr;
+    private String gatePostnr;
 
     @Size(max = 4)
-    private String gatekommunenr;
+    private String gateKommunenr;
 
     @Size(max = 8)
-    private String gateflyttedatofra;
+    private String gateFlyttedatoFra;
 
     @Size(max = 8)
-    private String gateflyttedatotil;
+    private String gateFlyttedatoTil;
 
     @Size(max = 30)
-    private String postlinje1;
+    private String postLinje1;
 
     @Size(max = 30)
-    private String postlinje2;
+    private String postLinje2;
 
     @Size(max = 30)
-    private String postlinje3;
+    private String postLinje3;
 
     @Size(max = 3)
-    private String postland;
+    private String postLand;
 
     @Size(max = 5)
-    private String postgardnr;
+    private String postGardnr;
 
     @Size(max = 4)
-    private String postbruksnr;
+    private String postBruksnr;
 
     @Size(max = 4)
-    private String postfestenr;
+    private String postFestenr;
 
     @Size(max = 3)
-    private String postundernr;
+    private String postUndernr;
 
     @Size(max = 4)
-    private String postpostnr;
+    private String postPostnr;
 
     @Size(max = 4)
-    private String postkommunenr;
+    private String postKommunenr;
 
     @Size(max = 8)
-    private String postflyttedatofra;
+    private String postFlyttedatoFra;
 
     @Size(max = 8)
-    private String postflyttedatotil;
+    private String postFlyttedatoTil;
 
 
 
