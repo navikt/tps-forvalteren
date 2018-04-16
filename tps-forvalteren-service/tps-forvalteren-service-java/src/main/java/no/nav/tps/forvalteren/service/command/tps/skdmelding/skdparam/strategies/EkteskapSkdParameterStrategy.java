@@ -4,108 +4,98 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.Sivilstand;
-import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
-
-    private static final String AARSAKSKODE_FOR_VIGSEL = "11";
-    private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
-    private static final String TILDELINGSKODE_PARTNERSKAP = "0";
-
-    @Autowired
-    private RelasjonRepository relasjonRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Override
-    public String hentTildelingskode() {
-        return TILDELINGSKODE_PARTNERSKAP;
-    }
-
-    @Override
-    public boolean isSupported(SkdParametersCreator creator) {
-        return creator instanceof EkteskapSkdParametere;
-    }
-
-    @Override
-    public Map<String, String> execute(Person person) {
-        String tildelingskodeForPartnerskap = hentTildelingskode();
-
-        HashMap<String, String> skdParams = new HashMap<>();
-        skdParams.put(SkdConstants.TILDELINGSKODE, tildelingskodeForPartnerskap);
-
-        addSkdParametersExtractedFromPerson(skdParams, person);
-
-        return skdParams;
-    }
-
-    private void addSkdParametersExtractedFromPerson(Map<String, String> skdParams, Person person) {
-        skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
-        skdParams.put(SkdConstants.PERSONNUMMER, person.getIdent().substring(6, 11));
-
-        String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
-        String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
-
-        skdParams.put(SkdConstants.MASKINTID, hhMMss);
-        skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
-        skdParams.put(SkdConstants.REGDATO_SIVILSTAND, yyyyMMdd);
-        skdParams.put(SkdConstants.REG_DATO, yyyyMMdd);
-        skdParams.put(SkdConstants.REG_DATO_FAM_NR, yyyyMMdd);
-
-        Person ektefelle = null;
-        List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
-        for (Relasjon relasjon : personRelasjoner) {
-            if (RelasjonType.EKTEFELLE.getRelasjonTypeNavn().equals(relasjon.getRelasjonTypeNavn())) {
-                ektefelle = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
-                break;
-            }
-        }
-        if (ektefelle == null) {
-            return;
-        }
-
-        if (person.getKjonn().equals(ektefelle.getKjonn())) {
-            skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP);
-            skdParams.put(SkdConstants.SIVILSTAND, Integer.toString(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode()));
-        } else {
-            skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_VIGSEL);
-            skdParams.put(SkdConstants.SIVILSTAND, Integer.toString(Sivilstand.GIFT.getRelasjonTypeKode()));
-        }
-
-        skdParams.put(SkdConstants.FAMILIENUMMER, ektefelle.getIdent());
-
-        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO, ektefelle.getIdent().substring(0, 6));
-        skdParams.put(SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER, ektefelle.getIdent().substring(6, 11));
-
-        skdParams.put(SkdConstants.EKTEFELLE_EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
-        skdParams.put(SkdConstants.EKTESKAP_PARTNERSKAP_NUMMER, Integer.toString(1));
-
-        skdParams.put(SkdConstants.VIGSELSTYPE, Integer.toString(1));
-
-        skdParams.put(SkdConstants.TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
-        skdParams.put(SkdConstants.EKTEFELLE_TIDLIGERE_SIVILSTAND, Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
-
-        skdParams.put(SkdConstants.VIGSELSKOMMUNE, "0301"); // OSLO kommunenummer.
-
-        addDefaultParam(skdParams);
-    }
-
-    private void addDefaultParam(Map<String, String> skdParams) {
-        skdParams.put(SkdConstants.TRANSTYPE, "1");
-    }
-
+	
+	private static final String AARSAKSKODE_FOR_VIGSEL = "11";
+	private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
+	private static final String TILDELINGSKODE_PARTNERSKAP = "0";
+	
+	@Autowired
+	private RelasjonRepository relasjonRepository;
+	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Override
+	public String hentTildelingskode() {
+		return TILDELINGSKODE_PARTNERSKAP;
+	}
+	
+	@Override
+	public boolean isSupported(SkdParametersCreator creator) {
+		return creator instanceof EkteskapSkdParametere;
+	}
+	
+	@Override
+	public SkdMeldingTrans1 execute(Person person) {
+		SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
+		skdMeldingTrans1.setTildelingskode(hentTildelingskode());
+		
+		addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
+		skdMeldingTrans1.setTranstype("1");
+		
+		return skdMeldingTrans1;
+	}
+	
+	private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
+		skdMeldingTrans1.setFodselsdato(person.getIdent().substring(0, 6));
+		skdMeldingTrans1.setPersonnummer(person.getIdent().substring(6, 11));
+		
+		String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
+		String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
+		
+		skdMeldingTrans1.setMaskintid(hhMMss);
+		skdMeldingTrans1.setMaskindato(yyyyMMdd);
+		skdMeldingTrans1.setRegdatoSivilstand(yyyyMMdd);
+		skdMeldingTrans1.setRegDato(yyyyMMdd);
+		skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
+		
+		Person ektefelle = null;
+		List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
+		for (Relasjon relasjon : personRelasjoner) {
+			if (RelasjonType.EKTEFELLE.getRelasjonTypeNavn().equals(relasjon.getRelasjonTypeNavn())) {
+				ektefelle = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
+				break;
+			}
+		}
+		if (ektefelle == null) {
+			return;
+		}
+		
+		if (person.getKjonn().equals(ektefelle.getKjonn())) {
+			skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP);
+			skdMeldingTrans1.setSivilstand(Integer.toString(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode()));
+		} else {
+			skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_VIGSEL);
+			skdMeldingTrans1.setSivilstand(Integer.toString(Sivilstand.GIFT.getRelasjonTypeKode()));
+		}
+		
+		skdMeldingTrans1.setFamilienummer(ektefelle.getIdent());
+		
+		skdMeldingTrans1.setEktefellePartnerFoedselsdato(ektefelle.getIdent().substring(0, 6));
+		skdMeldingTrans1.setEktefellePartnerPersonnr(ektefelle.getIdent().substring(6, 11));
+		skdMeldingTrans1.setEktefelleEkteskapPartnerskapNr(Integer.toString(1));
+		skdMeldingTrans1.setEkteskapPartnerskapNr(Integer.toString(1));
+		
+		skdMeldingTrans1.setVigselstype(Integer.toString(1));
+		
+		skdMeldingTrans1.setTidligereSivilstand(Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
+		skdMeldingTrans1.setEktefelleTidligereSivilstand(Integer.toString(Sivilstand.UGIFT.getRelasjonTypeKode()));
+		
+		skdMeldingTrans1.setVigselskommune("0301"); // OSLO kommunenummer.
+	}
+	
 }

@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -63,12 +65,13 @@ public class SkdMessageCreatorTrans1Test {
     public void illegalSkdMeldingByNameThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         when(getSkdMeldingByName.execute(anyString())).thenReturn(Optional.empty());
-
+        
         skdMessageCreatorTrans1.execute(VIGSEL, persons, ADD_HEADER);
     }
 
     @Test
-    public void checkThatIGenerateSkdMeldingGetsCalledMultipleTimes() {
+    @Ignore("Skal kastes. Erstattes med ny test som gir mer verdi enn verify.")
+    public void checkThatGenerateSkdMeldingGetsCalledMultipleTimes() {
         persons.add(person);
         persons.add(person2);
         persons.add(person3);
@@ -76,16 +79,16 @@ public class SkdMessageCreatorTrans1Test {
 
         TpsSkdRequestMeldingDefinition tpsSkdRequestMeldingDefinition = new InnvandringAarsakskode02().resolve();
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = Optional.of(tpsSkdRequestMeldingDefinition);
-
+        
         when(getSkdMeldingByName.execute(INNVANDRING)).thenReturn(skdRequestMeldingDefinitionOptional);
-        when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(skdParametere);
+        when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(new SkdMeldingTrans1());
         when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
 
         skdMessageCreatorTrans1.execute(INNVANDRING, persons, ADD_HEADER);
 
-        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
-        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
-        verify(generateSkdMelding).execute(skdFelterContainer, skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
+        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
+        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
+        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
     }
 
 }

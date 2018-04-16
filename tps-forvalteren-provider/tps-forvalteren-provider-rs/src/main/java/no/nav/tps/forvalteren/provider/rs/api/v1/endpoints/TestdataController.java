@@ -14,6 +14,7 @@ import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
@@ -39,6 +40,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFe
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -106,8 +108,12 @@ public class TestdataController {
 
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
+
     @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
+
+    @Autowired
+    private CreateTestdataPerson createTestdataPerson;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
@@ -124,6 +130,14 @@ public class TestdataController {
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
     }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
+    @RequestMapping(value = "/personer_/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMal rsPersonMal, int antallPersoner) {
+        createTestdataPerson.execute(gruppeId, rsPersonMal, antallPersoner);
+    }
+
 
     @Transactional
     @LogExceptions

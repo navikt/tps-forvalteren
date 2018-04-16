@@ -8,14 +8,18 @@ import java.util.Optional;
 
 @Service
 public class DefaultGetSkdMeldingByName implements GetSkdMeldingByName {
-
-    @Autowired
-    private GetTpsSkdmeldingService getTpsSkdmeldingService;
-
-    public Optional<TpsSkdRequestMeldingDefinition> execute(String skdMeldingName) {
-        return getTpsSkdmeldingService.execute()
-                .stream()
-                .filter(request -> request.getName().equalsIgnoreCase(skdMeldingName))
-                .findFirst();
-    }
+	
+	private GetTpsSkdmeldingService getTpsSkdmeldingService;
+	
+	@Autowired
+	public DefaultGetSkdMeldingByName(GetTpsSkdmeldingService getTpsSkdmeldingService) {
+		this.getTpsSkdmeldingService = getTpsSkdmeldingService;
+	}
+	
+	public Optional<TpsSkdRequestMeldingDefinition> execute(String skdMeldingName) {
+		return getTpsSkdmeldingService.execute()
+				.stream()
+				.filter(request -> request.getName().equalsIgnoreCase(skdMeldingName))
+				.findFirst();
+	}
 }
