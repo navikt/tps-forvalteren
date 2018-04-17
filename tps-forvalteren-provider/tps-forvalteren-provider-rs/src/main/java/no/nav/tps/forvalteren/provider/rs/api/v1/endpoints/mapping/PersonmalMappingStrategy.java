@@ -20,7 +20,10 @@ public class PersonmalMappingStrategy implements MappingStrategy {
                         personmal.setMaxAntallBarn(Integer.parseInt(rsPersonMal.getMaxAntallBarn()));
                         personmal.setMinAntallBarn(Integer.parseInt(rsPersonMal.getMinAntallBarn()));
                     }
-                }).byDefault().register();
+                })
+                .field("bruker", "opprettetAv")
+                .byDefault()
+                .register();
 
         factory.classMap(Personmal.class, RsPersonMal.class)
                 .customize(new CustomMapper<Personmal, RsPersonMal>() {
@@ -29,7 +32,10 @@ public class PersonmalMappingStrategy implements MappingStrategy {
                         rsPersonMal.setMinAntallBarn(String.valueOf(personmal.getMinAntallBarn()));
 
                     }
-                }).byDefault().register();
+                })
+                .field("opprettetAv", "bruker")
+                .byDefault()
+                .register();
 
     }
 }

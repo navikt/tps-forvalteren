@@ -1,8 +1,12 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import ma.glasnost.orika.MapperFacade;
-import static no.nav.tps.forvalteren.domain.test.provider.PersonmalProvider.personmalA;
 import no.nav.tps.forvalteren.domain.jpa.Personmal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonmalProvider.personmalA;
+import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,16 +25,31 @@ public class PersonmalMappingStrategyTest {
 
     @Before
     public void setup() {
-
+        mapperFacade = MapperTestUtils.createMapperFacadeForMappingStrategy(personmalMappingStrategy);
     }
 
     @Test
     public void MapsFromJpaPersonmalToRsPersonmal() {
+        RsPersonMal rsPersonMal = mapperFacade.map(PERSONMAL_A, RsPersonMal.class);
 
+        assertThat(rsPersonMal.getKjonn(), is(PERSONMAL_A.getKjonn()));
+        assertThat(rsPersonMal.getMinAntallBarn(), is(String.valueOf(PERSONMAL_A.getMinAntallBarn())));
+        assertThat(rsPersonMal.getMaxAntallBarn(), is(String.valueOf(PERSONMAL_A.getMinAntallBarn())));
+        assertThat(rsPersonMal.getGateadresse(), is(PERSONMAL_A.getGateadresse()));
+        assertThat(rsPersonMal.getGatePostnr(), is(PERSONMAL_A.getGatePostnr()));
+        assertThat(rsPersonMal.getFodtEtter(), is(PERSONMAL_A.getFodtEtter()));
+        assertThat(rsPersonMal.getFodtFor(), is(PERSONMAL_A.getFodtFor()));
     }
 
     @Test
     public void MapsFromRsPersonmalToJpaPersonmal() {
+        RsPersonMal rsPersonMal = mapperFacade.map(PERSONMAL_A, RsPersonMal.class);
+        Personmal personmal = mapperFacade.map(rsPersonMal, Personmal.class);
+
+        assertThat(personmal.getKjonn(), is(rsPersonMal.getKjonn()));
+        assertThat(personmal.getMinAntallBarn(), is(Integer.parseInt(rsPersonMal.getMinAntallBarn())));
+        assertThat(personmal.getMaxAntallBarn(), is(Integer.parseInt(rsPersonMal.getMaxAntallBarn())));
+        assertThat(personmal.getGateadresse(), is(rsPersonMal.getGateadresse()));
 
     }
 }

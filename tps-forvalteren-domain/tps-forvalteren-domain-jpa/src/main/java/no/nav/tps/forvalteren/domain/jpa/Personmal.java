@@ -29,7 +29,7 @@ public class Personmal extends ChangeStamp {
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
     @Column(name = "PERSONMAL_ID", nullable = false, updatable = false)
-    private Long personmalId;
+    private Long id;
 
     @Column(name = "PERSONMAL_NAVN", nullable = false)
     private String personmalNavn;
