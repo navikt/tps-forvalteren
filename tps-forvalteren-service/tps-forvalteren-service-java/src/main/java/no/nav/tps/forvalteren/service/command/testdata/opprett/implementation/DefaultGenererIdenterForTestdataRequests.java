@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.GenererIdenterForTestdataRequests;
@@ -18,14 +19,13 @@ public class DefaultGenererIdenterForTestdataRequests implements GenererIdenterF
     @Autowired
     private FiktiveIdenterGenerator fiktiveIdenterGenerator;
 
-    public List<TestdataRequest> execute(RsPersonKriteriumRequest personKriterierRequest) {
+    public List<TestdataRequest> execute(RsPersonMal rsPersonMal, int antallIdenter) {
         List<TestdataRequest> requests = new ArrayList<>();
-        for (RsPersonKriterier kriterie : personKriterierRequest.getPersonKriterierListe()) {
-            TestdataRequest request = new TestdataRequest(kriterie);
-            request.setIdenterGenerertForKriterie(fiktiveIdenterGenerator.genererFiktiveIdenter(kriterie));
-            taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriterie());
-            requests.add(request);
-        }
+        TestdataRequest request = new TestdataRequest(rsPersonMal);
+        request.setIdenterGenerertForKriterie(fiktiveIdenterGenerator.genererFiktiveIdenter(rsPersonMal, antallIdenter));
+        taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriterie());
+        requests.add(request);
+
         return requests;
     }
 

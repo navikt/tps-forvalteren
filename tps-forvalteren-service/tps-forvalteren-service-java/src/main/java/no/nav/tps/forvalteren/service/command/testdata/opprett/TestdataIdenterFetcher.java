@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-
 import java.util.List;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 
 @FunctionalInterface
 public interface TestdataIdenterFetcher {
 
-    List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe);
+    List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonMal rsPersonMal, int antallIdenter);
 
 }

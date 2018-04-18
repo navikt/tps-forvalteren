@@ -1,13 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
+import java.util.List;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FiltererUtIdenterSomAlleredeFinnesIMiljoe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.Testdata;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DefaultTestdata implements Testdata {
@@ -24,20 +24,19 @@ public class DefaultTestdata implements Testdata {
     @Autowired
     private DefaultFiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
 
-
-    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests){
+    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests) {
         filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
     }
 
-    public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests){
+    public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests) {
         filtererUtIdenterSomAlleredeFinnesIMiljoe.execute(testdataRequests);
     }
 
-    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){
-        return genererIdenterForTestdataRequests.execute(personKriterierRequest);
+    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonMal personMalRequest, int antallIdenter) {
+        return genererIdenterForTestdataRequests.execute(personMalRequest, antallIdenter);
     }
 
-    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request){
-        taBortOverfloedigIdenterITestdataRequest.execute(request);
+    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request, int antallIdenter) {
+        taBortOverfloedigIdenterITestdataRequest.execute(request, antallIdenter);
     }
 }

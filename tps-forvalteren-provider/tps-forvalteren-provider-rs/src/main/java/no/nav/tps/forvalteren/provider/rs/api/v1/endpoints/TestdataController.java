@@ -115,27 +115,33 @@ public class TestdataController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
-    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
-        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
-
-        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
-
-        if (personKriterierListe.isWithAdresse()) {
-            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
-        }
-        setNameOnPersonsService.execute(personerSomSkalPersisteres);
-        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
-    }
+//    @LogExceptions
+//    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
+//    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
+//    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
+//        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
+//
+//        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
+//        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
+//
+//        if (personKriterierListe.isWithAdresse()) {
+//            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
+//        }
+//        setNameOnPersonsService.execute(personerSomSkalPersisteres);
+//        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
+//    }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
-    @RequestMapping(value = "/personer_/{gruppeId}", method = RequestMethod.POST)
-    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMal rsPersonMal, int antallPersoner) {
-        createTestdataPerson.execute(gruppeId, rsPersonMal, antallPersoner);
+    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMal rsPersonMal){//, int antallPersoner) {
+
+        System.out.println(gruppeId);
+        System.out.println(rsPersonMal.toString());
+        //System.out.println(antallPersoner);
+
+
+        //createTestdataPerson.execute(gruppeId, rsPersonMal, antallPersoner);
     }
 
 
