@@ -6,7 +6,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 public class MapBetweenRsMeldingstypeAndSkdMelding {
 	
 	/** Metoden mapper alle felter som eksisterer i skdMeldingTrans1. SkdMeldingTrans1 inneholder ikke RsMeldingstype sin "id" og "beskrivelse" */
-	public static RsMeldingstype1Felter map(SkdMeldingTrans1 skdMeldingTrans1) {
+	public static RsMeldingstype1Felter map(SkdMeldingTrans1 skdMeldingTrans1) { //TODO bytt ut med Orika BoundMapperFacade (uten cyclicCondition)
 		RsMeldingstype1Felter rsMeldingstype1Felter = new RsMeldingstype1Felter();
 		rsMeldingstype1Felter.setTranstype(skdMeldingTrans1.getTranstype());
 		rsMeldingstype1Felter.setMaskindato(skdMeldingTrans1.getMaskindato());
