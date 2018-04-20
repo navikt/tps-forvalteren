@@ -13,7 +13,6 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
@@ -27,17 +26,12 @@ import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdA
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
-import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
@@ -63,12 +57,6 @@ public class TestdataController {
 
     @Autowired
     private OpprettPersoner opprettPersonerFraIdenter;
-
-    @Autowired
-    private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
-
-    @Autowired
-    private TestdataIdenterFetcher testdataIdenterFetcher;
 
     @Autowired
     private SavePersonListService savePersonListService;
@@ -104,46 +92,33 @@ public class TestdataController {
     private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
 
     @Autowired
-    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
-
-    @Autowired
-    private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
-
-    @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
 
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
-//    @LogExceptions
-//    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
-//    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-//    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
-//        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
-//
-//        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-//        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
-//
-//        if (personKriterierListe.isWithAdresse()) {
-//            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
-//        }
-//        setNameOnPersonsService.execute(personerSomSkalPersisteres);
-//        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
-//    }
+    //    @LogExceptions
+    //    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
+    //    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
+    //    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
+    //        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
+    //
+    //        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
+    //        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
+    //
+    //        if (personKriterierListe.isWithAdresse()) {
+    //            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
+    //        }
+    //        setNameOnPersonsService.execute(personerSomSkalPersisteres);
+    //        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
+    //    }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
-    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMal rsPersonMal){//, int antallPersoner) {
-
-        System.out.println(gruppeId);
-        System.out.println(rsPersonMal.toString());
-        //System.out.println(antallPersoner);
-
-
-        //createTestdataPerson.execute(gruppeId, rsPersonMal, antallPersoner);
+    @RequestMapping(value = "/personer/{gruppeId}", params = { "antallIdenter" }, method = RequestMethod.POST)
+    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestParam("antallIdenter") int antallIdenter, @RequestBody RsPersonMal rsPersonMal) {
+        createTestdataPerson.execute(gruppeId, rsPersonMal, antallIdenter);
     }
-
 
     @Transactional
     @LogExceptions

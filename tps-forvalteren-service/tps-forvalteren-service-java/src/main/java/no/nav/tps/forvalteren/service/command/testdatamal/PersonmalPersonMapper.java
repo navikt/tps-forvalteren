@@ -1,71 +1,47 @@
 package no.nav.tps.forvalteren.service.command.testdatamal;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
-import ma.glasnost.orika.BoundMapperFacade;
-import ma.glasnost.orika.CustomMapper;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.GetRandomFieldValues;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDefinedFieldValues;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomFieldValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Getter
 @Component
-public class PersonmalPersonMapper{
+public class PersonmalPersonMapper {
 
     List<String> listOfRandomFields;
 
-    private GetRandomFieldValues getRandomFieldValues;
-
-    private BoundMapperFacade<RsPersonMal, Person> mapper;
+    @Autowired
+    private SetRandomFieldValues setRandomFieldValues;
 
     @Autowired
-    public PersonmalPersonMapper(GetRandomFieldValues getRandomFieldValues) {
-        this.getRandomFieldValues = getRandomFieldValues;
-    }
+    private SetDefinedFieldValues setDefinedFieldValues;
 
-    public PersonmalPersonMapper() {
-        listOfRandomFields = new ArrayList<>();
-    }
+    public Person execute(RsPersonMal inputPerson, Person person) {
+        for (Field field : inputPerson.getClass().getDeclaredFields()) {
+            try {
 
+                Object fieldValue = checkFieldValue(inputPerson, field);
 
-    public void register() {
-        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-            mapperFactory.classMap(RsPersonMal.class, Person.class)
-                .customize(new CustomMapper<RsPersonMal, Person>() {
-                    @Override
-                    public void mapAtoB(RsPersonMal rsPersonMal, Person person, MappingContext mappingContext) {
+                if (fieldValue != null) {
 
-                        for (Field field : rsPersonMal.getClass().getDeclaredFields()) {
-                            try {
-
-                                Object fieldValue = checkFieldValue(rsPersonMal, field);
-
-                                if (fieldValue == "*") {
-
-                                    getRandomFieldValues.execute(checkFieldName(field), person);
-
-                                }
-
-                            } catch (IllegalAccessException ex) {
-
-                                System.out.println("failed");
-                            }
-
-                        }
+                    if (fieldValue.equals("*")) {
+                        setRandomFieldValues.execute(checkFieldName(field), person);
                     }
-                })
-                .byDefault()
-                .register();
+                }
 
+            } catch (IllegalAccessException ex) {
+
+                System.out.println("failed");
+            }
+        }
+        return person;
     }
 
     private Object checkFieldValue(Object thisObj, Field field) throws IllegalAccessException {

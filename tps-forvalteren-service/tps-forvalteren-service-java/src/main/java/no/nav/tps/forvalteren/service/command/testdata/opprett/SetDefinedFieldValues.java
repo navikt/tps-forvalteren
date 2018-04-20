@@ -1,4 +1,11 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-public class SetFieldValues {
+import org.springframework.stereotype.Service;
+
+@Service
+public class SetDefinedFieldValues {
+
+    public void execute() {
+
+    }
 }

@@ -8,6 +8,7 @@ import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonB
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetValuesFromMalOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,27 +32,19 @@ public class CreateTestdataPerson {
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
 
-    public void execute(Long gruppeId, RsPersonMal rsPersonMal, int antallPersoner) {
+    @Autowired
+    private SetValuesFromMalOnPersonsService setValuesFromMalOnPersonsService;
 
-//        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
-//
-//        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-//        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
-//
-//        if (personKriterierListe.isWithAdresse()) {
-//            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
-//        }
-//        setNameOnPersonsService.execute(personerSomSkalPersisteres);
-//        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
+    public void execute(Long gruppeId, RsPersonMal rsPersonMal, int antallIdenter) {
 
-        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonMal, antallPersoner);
+        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonMal, antallIdenter);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersoner.execute(identer);
 
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
+        setValuesFromMalOnPersonsService.execute(personerSomSkalPersisteres, rsPersonMal);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
-
 
     }
 }
