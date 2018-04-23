@@ -5,10 +5,19 @@
         <!--Form - Sending a xml message-->
         <form name="xmlMeldingForm" flex="100" class="accent">
             <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column" flex="20">
+                    <md-input-container class="input-container">
+                        <label>Applikasjon</label>
+                        <md-select name="applikasjon" ng-model="valgtApp" ng-required="" ng-change="onChangeApp()">
+                            <md-option ng-value="app" ng-repeat="app in applications">{{ app }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
                 <div class="input-container-div" layout="column" flex="10">
                     <md-input-container class="input-container">
                         <label>Miljø</label>
-                        <md-select name="miljoe" ng-model="valgtMiljoe" ng-required="" ng-change="onChangeMiljoe()">
+                        <md-select name="miljoe" ng-model="valgtMiljoe" ng-required="" ng-change="onChangeMiljoe()" ng-disabled="disableQueueFields">
                             <md-option ng-value="env" ng-repeat="env in displayEnvironments">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
@@ -17,7 +26,7 @@
                 <div class="input-container-div" layout="column" flex="40">
                     <md-input-container class="input-container">
                         <label>Til kø</label>
-                        <md-select name="tilKoe" ng-model="valgtKoe" ng-required="" ng-change="onChangeQueue()">
+                        <md-select name="tilKoe" ng-model="valgtKoe" ng-required="" ng-change="onChangeQueue()" ng-disabled="disableQueueFields">
                             <md-option ng-value="queue" ng-repeat="queue in displayQueues">{{ queue }}</md-option>
                         </md-select>
                     </md-input-container>
