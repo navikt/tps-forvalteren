@@ -7,6 +7,8 @@ import static org.junit.Assert.assertThat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,10 +18,10 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultSetDummyAdresseOnPersonsTest {
+public class SetDummyAdresseOnPersonsTest {
 
     @InjectMocks
-    private DefaultSetDummyAdresseOnPersons defaultSetDummyAdresseOnPersons;
+    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
 
     private List<Person> persons = Arrays.asList(aMalePerson().build());
 
@@ -32,7 +34,7 @@ public class DefaultSetDummyAdresseOnPersonsTest {
 
     @Test
     public void checkAdresse() {
-        defaultSetDummyAdresseOnPersons.execute(persons);
+        setDummyAdresseOnPersons.execute(persons);
         Gateadresse adresse = (Gateadresse) persons.get(0).getBoadresse();
         assertThat(adresse.getHusnummer(), is(HUSNR));
         assertThat(adresse.getGatekode(), is(GATEKODE));

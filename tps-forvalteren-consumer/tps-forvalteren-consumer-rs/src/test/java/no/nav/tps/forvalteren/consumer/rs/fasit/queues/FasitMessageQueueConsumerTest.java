@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultFasitMessageQueueConsumerTest {
+public class FasitMessageQueueConsumerTest {
 
     private final String REQUEST_QUEUE_ALIAS = "requestQueueAlias";
     private final String QUEUE_MANAGER_ALIAS = "queueManager";

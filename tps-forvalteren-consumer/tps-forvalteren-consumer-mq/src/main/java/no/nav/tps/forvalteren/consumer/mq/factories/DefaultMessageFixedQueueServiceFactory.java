@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
 import no.nav.tps.forvalteren.consumer.rs.fasit.queues.FasitMessageQueueConsumer;
@@ -35,7 +35,7 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
      * @throws JMSException
      */
     @Override
-    public DefaultMessageQueueConsumer createMessageQueueConsumerWithFixedQueueName(String environment, String fixedQueueName) throws JMSException {
+    public MessageQueueConsumer createMessageQueueConsumerWithFixedQueueName(String environment, String fixedQueueName) throws JMSException {
 
         environment = environment.toLowerCase();
         if(environment.contains("d")){
@@ -49,7 +49,7 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 
-        return new DefaultMessageQueueConsumer(
+        return new MessageQueueConsumer(
                 fixedQueueName,
                 connectionFactory);
     }
