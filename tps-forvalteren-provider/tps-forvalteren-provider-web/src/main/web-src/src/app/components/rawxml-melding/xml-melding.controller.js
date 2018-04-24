@@ -6,22 +6,10 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             $scope.melding = "<?xml version=\'1.0\' encoding=\'ISO-8859-1\'?>";
             $scope.tpsMessageQueueList = [];
-            $scope.valgtApp = "";
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
-            $scope.disableQueueFields = true;
             $scope.showResponse = false;
             $scope.responseMelding = "";
-
-            $scope.onChangeApp = function () {
-                $scope.applications.forEach(function (app) {
-                    if(app === $scope.valgtApp) {
-                        $scope.valgtApp = app;
-                    }
-                });
-
-                $scope.disableQueueFields = false;
-            };
 
             $scope.onChangeMiljoe = function () {
                 var queueList = [];
@@ -34,6 +22,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                 $scope.valgtKoe = "";
                 $scope.displayQueues = queueList;
             };
+
 
             $scope.onChangeQueue = function () {
                 $scope.tpsMessageQueueList.forEach(function (obj) {
@@ -115,30 +104,23 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                 return sortedEnvironments;
             }
 
-            function getApplications() {
-                //Skal gjøre et kall på en rest-tjeneste for å fetche disse
-                var mock_applications = ["AAREG", "TPS", "NORG", "SAK OG BEHANDLING"];
-                $scope.applications = mock_applications;
-            }
-
             function hentAlleMiljoerOgKoer() {
 
                 xmlmeldingService.hentKoer().then(function (result) {
-                        var environments = [];
-                        $scope.tpsMessageQueueList = result.data;
+                    var environments = [];
+                    $scope.tpsMessageQueueList = result.data;
 
-                        $scope.tpsMessageQueueList.forEach(function (obj) {
-                            $scope.displayQueues.push(obj.koNavn);
-                            environments.push(obj.miljo);
-                        });
+                    $scope.tpsMessageQueueList.forEach(function (obj) {
+                        $scope.displayQueues.push(obj.koNavn);
+                        environments.push(obj.miljo);
+                    });
 
-                        environments = removeDuplicateEnvironments();
+                    environments = removeDuplicateEnvironments();
 
-                        $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
+                    $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
                 });
             }
 
             hentAlleMiljoerOgKoer();
-            getApplications();
 
         }]);
