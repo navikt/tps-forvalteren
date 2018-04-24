@@ -123,5 +123,12 @@ hs_err_pid*
 ### NPM DEBUG
 /npm-debug.log
 
-###
+### Stackdump files
 *.stackdump
+
+### log and lck files
+*.log
+*.lck
+
+## testing
+/testing
