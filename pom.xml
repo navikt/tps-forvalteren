@@ -72,8 +72,8 @@
         <orika.version>1.5.1</orika.version>
         <micrometer.version>1.0.0-rc.9</micrometer.version>
         <mqjms.version>7.1</mqjms.version>
-        <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
-        <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
+        <springfox-swagger2.version>2.9.0</springfox-swagger2.version>
+        <springfox-swagger-ui.version>2.9.0</springfox-swagger-ui.version>
         <spring-security-ldap.version>4.0.4.RELEASE</spring-security-ldap.version>
         <spring-security-test.version>4.1.1.RELEASE</spring-security-test.version>
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
