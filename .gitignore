@@ -122,3 +122,6 @@ hs_err_pid*
 
 ### NPM DEBUG
 /npm-debug.log
+
+###
+*.stackdump
