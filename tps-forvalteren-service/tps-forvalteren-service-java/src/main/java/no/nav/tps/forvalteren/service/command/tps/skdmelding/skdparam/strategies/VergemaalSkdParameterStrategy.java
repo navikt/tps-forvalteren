@@ -81,7 +81,7 @@ public class VergemaalSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setSakstype(vergemaal.getSakstype());
         skdMeldingTrans1.setVedtaksdato(yyyyMMdd);
         skdMeldingTrans1.setInternVergeId(vergemaal.getInternVergeId());
-        skdMeldingTrans1.setVergeFnrDnr(vergemaal.getVergeFnrDnr());
+        //skdMeldingTrans1.setVergeFnrDnr(vergemaal.getVergeFnrDnr());
         skdMeldingTrans1.setVergetype(vergemaal.getVergetype());
         skdMeldingTrans1.setMandattype(vergemaal.getMandattype());
         skdMeldingTrans1.setMandatTekst(vergemaal.getMandatTekst());

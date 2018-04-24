@@ -71,7 +71,7 @@ public class Personmal extends ChangeStamp {
     private int maxAntallBarn;
 
     @Column(name = "GATEADRESSE")
-    private String gateadresse;
+    private String adresse;
 
     @Column(name = "GATE_HUSNUMMER")
     private String gateHusnr;

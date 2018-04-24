@@ -23,6 +23,7 @@ public class PersonmalPersonMapper {
     @Autowired
     private SetDefinedFieldValues setDefinedFieldValues;
 
+
     public Person execute(RsPersonMal inputPerson, Person person) {
         for (Field field : inputPerson.getClass().getDeclaredFields()) {
             try {
@@ -33,6 +34,8 @@ public class PersonmalPersonMapper {
 
                     if (fieldValue.equals("*")) {
                         setRandomFieldValues.execute(checkFieldName(field), person);
+                    } else {
+                        setDefinedFieldValues.execute(checkFieldName(field), fieldValue, person);
                     }
                 }
 

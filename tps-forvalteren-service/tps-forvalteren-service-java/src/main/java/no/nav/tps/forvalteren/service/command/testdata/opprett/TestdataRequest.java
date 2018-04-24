@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 public class TestdataRequest {
 
-    RsPersonMal personMal;
+    RsPersonMal inputPerson;
             ;
 
     Set<String> identerGenerertForKriterie;
@@ -19,7 +19,7 @@ public class TestdataRequest {
     Set<String> identerTilgjengligIMiljoe;
 
     public TestdataRequest(RsPersonMal personMal){
-       personMal = personMal ;
+       inputPerson = personMal ;
     }
 
 }

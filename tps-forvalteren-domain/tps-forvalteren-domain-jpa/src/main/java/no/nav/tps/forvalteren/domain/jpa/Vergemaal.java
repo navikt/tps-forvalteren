@@ -52,7 +52,7 @@ public class Vergemaal {
     private String internVergeId;
 
     @JoinColumn(name = "VERGE_FNR")
-    private String vergeFnrDnr;
+    private String vergeFnr;
 
     @Column(name = "VERGETYPE", length = 3)
     private String vergetype;

@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdatamal;
 import java.util.List;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
@@ -35,15 +35,15 @@ public class CreateTestdataPerson {
     @Autowired
     private SetValuesFromMalOnPersonsService setValuesFromMalOnPersonsService;
 
-    public void execute(Long gruppeId, RsPersonMal rsPersonMal, int antallIdenter) {
+    public void execute(Long gruppeId, RsPersonMalRequest inputPersonRequest) {
 
-        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonMal, antallIdenter);
+        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(inputPersonRequest);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersoner.execute(identer);
 
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
-        setValuesFromMalOnPersonsService.execute(personerSomSkalPersisteres, rsPersonMal);
+        setValuesFromMalOnPersonsService.execute(personerSomSkalPersisteres, inputPersonRequest);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
 
     }

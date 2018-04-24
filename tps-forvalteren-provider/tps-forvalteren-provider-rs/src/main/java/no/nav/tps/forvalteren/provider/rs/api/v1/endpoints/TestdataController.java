@@ -13,7 +13,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
@@ -97,27 +97,11 @@ public class TestdataController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
-    //    @LogExceptions
-    //    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
-    //    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-    //    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
-    //        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
-    //
-    //        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-    //        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
-    //
-    //        if (personKriterierListe.isWithAdresse()) {
-    //            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
-    //        }
-    //        setNameOnPersonsService.execute(personerSomSkalPersisteres);
-    //        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
-    //    }
-
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
-    @RequestMapping(value = "/personer/{gruppeId}", params = { "antallIdenter" }, method = RequestMethod.POST)
-    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestParam("antallIdenter") int antallIdenter, @RequestBody RsPersonMal rsPersonMal) {
-        createTestdataPerson.execute(gruppeId, rsPersonMal, antallIdenter);
+    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
+        createTestdataPerson.execute(gruppeId, inputPersonRequest);
     }
 
     @Transactional

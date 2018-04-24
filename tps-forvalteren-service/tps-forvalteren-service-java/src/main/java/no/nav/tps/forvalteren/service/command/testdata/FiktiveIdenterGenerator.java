@@ -48,15 +48,15 @@ public class FiktiveIdenterGenerator {
 
     private static final SecureRandom randomNumberProvider = new SecureRandom();
 
-    public Set<String> genererFiktiveIdenter(RsPersonMal rsPersonMal, int antallIdenter) {
+    public Set<String> genererFiktiveIdenter(RsPersonMal inputPerson) {
         StringBuilder identitetBuilder;
         HashSet<String> identSet = new HashSet<>();
-        while (identSet.size() != (antallIdenter * MULTIPLY_ANT_IDENTER)) {
+        while (identSet.size() != (inputPerson.getAntallIdenter() * MULTIPLY_ANT_IDENTER)) {
             identitetBuilder = new StringBuilder();
-            LocalDate fodselsdatoDate = genererFodsselsdatoBasertPaaKriterie(rsPersonMal);
-            String fodselsdato = genererFnrDnrBnrStringified(rsPersonMal, fodselsdatoDate);
+            LocalDate fodselsdatoDate = genererFodsselsdatoBasertPaaKriterie(inputPerson);
+            String fodselsdato = genererFnrDnrBnrStringified(inputPerson, fodselsdatoDate);
             List<Integer> rangeList = hentKategoriIntervallForDato(fodselsdatoDate);
-            identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), rsPersonMal.getKjonn().charAt(0)));
+            identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), inputPerson.getKjonn()));
             int forsteKontrollSiffer = hentForsteKontrollSiffer(identitetBuilder.toString());
             if (forsteKontrollSiffer == 10) {
                 // Hvis kontrollsiffer er 10, så må fodselsnummeret forkastes, og man prøver å lage et nytt.
@@ -74,7 +74,7 @@ public class FiktiveIdenterGenerator {
         return identSet;
     }
 
-    private String genererFnrDnrBnrStringified(RsPersonMal rsPersonMal, LocalDate date) {
+    private String genererFnrDnrBnrStringified(RsPersonMal inputPerson, LocalDate date) {
         //        switch (personKriterier.getIdenttype()) {
         //            case "DNR":
         //                return genererNyttDnummer(date);

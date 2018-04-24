@@ -21,7 +21,7 @@ public class PersonmalProvider {
                 .innvandretFraLand("")
                 .minAntallBarn(0)
                 .maxAntallBarn(0)
-                .gateadresse("STORGATA")
+                .adresse("STORGATA")
                 .gateHusnr("2")
                 .gatePostnr("0010")
                 .gateKommunenr("")

@@ -10,11 +10,11 @@ import java.util.List;
 @Service
 public class DefaultTaBortOverfloedigIdenterITestdataRequest implements TaBortOverfloedigIdenterITestdataRequest {
 
-    public void execute(TestdataRequest request, int antallIdenter) {
-        if (request.getIdenterTilgjengligIMiljoe().size() > antallIdenter) {
+    public void execute(TestdataRequest request) {
+        if (request.getIdenterTilgjengligIMiljoe().size() >request.getInputPerson().getAntallIdenter()) {
             List<String> identer = new ArrayList<>(request.getIdenterTilgjengligIMiljoe());
             request.getIdenterTilgjengligIMiljoe().clear();
-            for(int i =0; i<antallIdenter; i++){
+            for(int i =0; i < request.getInputPerson().getAntallIdenter(); i++){
                 request.getIdenterTilgjengligIMiljoe().add(identer.get(i));
             }
         }
