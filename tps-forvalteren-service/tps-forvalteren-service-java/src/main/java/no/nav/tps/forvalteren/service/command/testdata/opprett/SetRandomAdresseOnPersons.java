@@ -5,7 +5,7 @@ import java.util.List;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @FunctionalInterface
-public interface SetDummyAdresseOnPersons {
+public interface SetRandomAdresseOnPersons {
     
     void execute(List<Person> persons);
 }

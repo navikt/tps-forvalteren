@@ -32,7 +32,7 @@ import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
@@ -102,7 +102,7 @@ public class TestdataController {
     private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
 
     @Autowired
-    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
+    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
@@ -119,7 +119,7 @@ public class TestdataController {
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
 
         if (personKriterierListe.isWithAdresse()) {
-            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
+            setRandomAdresseOnPersons.execute(personerSomSkalPersisteres);
         }
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
@@ -137,7 +137,7 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
-    public void updatePersons(@RequestBody List<RsPerson> personListe) {
+    public void updatePersons(@RequestBody List<RsPerson> personListe) { //
         List<Person> personer = mapper.mapAsList(personListe, Person.class);
         savePersonListService.execute(personer);
     }
