@@ -9,6 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineAdresseDataRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
@@ -95,7 +96,7 @@ public class S051FinnGyldigeAdresser implements ServiceRoutineResolver {
                 .and()
                 
                 .transformer()
-                .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
+                .preSend(ServiceRoutineAdresseDataRequestTransform.serviceRoutineXmlWrappingAppender())
                 .postSend(ResponseDataTransformer.extractDataFromXmlElement("adresseDataS051"))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
