@@ -49,7 +49,6 @@ public class HentGyldigeAdresserService {
         tpsServiceRoutineRequest.setServiceRutinenavn(FINN_GYLDIGE_ADRESSER_SERVICERUTINE_NAVN);
         tpsServiceRoutineRequest.setAksjonsKode("A");
         tpsServiceRoutineRequest.setAksjonsKode2("0");
-        
     }
     
     private TpsRequestContext createContext() {

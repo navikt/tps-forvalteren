@@ -29,14 +29,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AdresseData }
-     * 
-     */
-    public AdresseData createAdresseData() {
-        return new AdresseData();
-    }
-
-    /**
      * Create an instance of {@link SvarFraTPS }
      * 
      */
@@ -82,6 +74,14 @@ public class ObjectFactory {
      */
     public StatusFraTPS createStatusFraTPS() {
         return new StatusFraTPS();
+    }
+
+    /**
+     * Create an instance of {@link AdresseData }
+     * 
+     */
+    public AdresseData createAdresseData() {
+        return new AdresseData();
     }
 
     /**
