@@ -35,7 +35,7 @@ public class PersonmalMappingStrategyTest {
         assertThat(rsPersonMal.getKjonn(), is(PERSONMAL_A.getKjonn()));
         assertThat(rsPersonMal.getMinAntallBarn(), is(String.valueOf(PERSONMAL_A.getMinAntallBarn())));
         assertThat(rsPersonMal.getMaxAntallBarn(), is(String.valueOf(PERSONMAL_A.getMinAntallBarn())));
-        assertThat(rsPersonMal.getGateadresse(), is(PERSONMAL_A.getGateadresse()));
+        assertThat(rsPersonMal.getAdresse(), is(PERSONMAL_A.getAdresse()));
         assertThat(rsPersonMal.getGatePostnr(), is(PERSONMAL_A.getGatePostnr()));
         assertThat(rsPersonMal.getFodtEtter(), is(PERSONMAL_A.getFodtEtter()));
         assertThat(rsPersonMal.getFodtFor(), is(PERSONMAL_A.getFodtFor()));
@@ -49,7 +49,7 @@ public class PersonmalMappingStrategyTest {
         assertThat(personmal.getKjonn(), is(rsPersonMal.getKjonn()));
         assertThat(personmal.getMinAntallBarn(), is(Integer.parseInt(rsPersonMal.getMinAntallBarn())));
         assertThat(personmal.getMaxAntallBarn(), is(Integer.parseInt(rsPersonMal.getMaxAntallBarn())));
-        assertThat(personmal.getGateadresse(), is(rsPersonMal.getGateadresse()));
+        assertThat(personmal.getAdresse(), is(rsPersonMal.getAdresse()));
 
     }
 }

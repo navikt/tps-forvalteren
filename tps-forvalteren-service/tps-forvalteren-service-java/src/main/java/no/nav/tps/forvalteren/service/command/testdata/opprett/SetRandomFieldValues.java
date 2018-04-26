@@ -22,7 +22,7 @@ public class SetRandomFieldValues {
     @Autowired
     private GetLocalDateBirthdayFromPerson getBirthday;
 
-    public void execute(String fieldName, Person person) {
+    public Person execute(String fieldName, Person person) {
 
         switch (fieldName) {
         case "doedsdato":
@@ -42,6 +42,7 @@ public class SetRandomFieldValues {
             break;
         }
 
+        return person;
     }
 
     private LocalDateTime getRandomDoedsdato(Person person) {

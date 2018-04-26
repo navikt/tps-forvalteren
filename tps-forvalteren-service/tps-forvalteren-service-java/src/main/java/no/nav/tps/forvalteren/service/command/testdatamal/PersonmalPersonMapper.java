@@ -26,6 +26,7 @@ public class PersonmalPersonMapper {
 
     public Person execute(RsPersonMal inputPerson, Person person) {
         for (Field field : inputPerson.getClass().getDeclaredFields()) {
+            Person p;
             try {
 
                 Object fieldValue = checkFieldValue(inputPerson, field);
@@ -33,9 +34,12 @@ public class PersonmalPersonMapper {
                 if (fieldValue != null) {
 
                     if (fieldValue.equals("*")) {
-                        setRandomFieldValues.execute(checkFieldName(field), person);
+                        p = setRandomFieldValues.execute(checkFieldName(field), person);
                     } else {
-                        setDefinedFieldValues.execute(checkFieldName(field), fieldValue, person);
+                        p = setDefinedFieldValues.execute(checkFieldName(field), fieldValue, person);
+                    }
+                    if(p != null){
+                        person = p;
                     }
                 }
 

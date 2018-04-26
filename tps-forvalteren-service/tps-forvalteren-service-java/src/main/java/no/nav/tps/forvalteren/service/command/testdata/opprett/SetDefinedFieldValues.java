@@ -12,10 +12,14 @@ public class SetDefinedFieldValues {
 
     private boolean adresseErSatt = false;
 
-    public void execute(String fieldName, Object fieldValue, Person person) {
+    public Person execute(String fieldName, Object fieldValue, Person person) {
         switch (fieldName) {
         case "statsborgerskap":
-            person.setStatsborgerskap(fieldValue.toString());
+            if(isTripleCharNumber(fieldValue)){
+                person.setStatsborgerskap(fieldValue.toString());
+            } else {
+                person.setStatsborgerskap(null);
+            }
             break;
 
         case "spesreg":
@@ -63,6 +67,7 @@ public class SetDefinedFieldValues {
             break;
 
         }
+        return person;
     }
 
     private void setGateAdresse() {
@@ -78,6 +83,12 @@ public class SetDefinedFieldValues {
 
     private boolean isSingleCharNumber(Object fieldvalue) {
         Pattern requiredPattern = Pattern.compile("\\d{1}");
+        Matcher matcher = requiredPattern.matcher(fieldvalue.toString());
+        return matcher.matches();
+    }
+
+    private boolean isTripleCharNumber(Object fieldvalue) {
+        Pattern requiredPattern = Pattern.compile("\\d{3}");
         Matcher matcher = requiredPattern.matcher(fieldvalue.toString());
         return matcher.matches();
     }

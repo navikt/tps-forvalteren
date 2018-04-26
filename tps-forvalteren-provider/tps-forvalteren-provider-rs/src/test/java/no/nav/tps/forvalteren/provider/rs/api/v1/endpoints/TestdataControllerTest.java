@@ -11,6 +11,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
@@ -22,12 +23,11 @@ import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -81,33 +81,23 @@ public class TestdataControllerTest {
     @Mock
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
 
+    @Mock
+    private CreateTestdataPerson createTestdataPerson;
+
     @InjectMocks
     private TestdataController testdataController;
 
     private static final Long GRUPPE_ID = 0L;
 
+
     @Test
-    public void createNewPersonsFromKriterier() {
-        //        RsPersonKriteriumRequest rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
-        //
-        //        TestdataRequest testdataRequest = new TestdataRequest(null);
-        //        List<TestdataRequest> testdataRequestsList = new ArrayList<>();
-        //        testdataRequestsList.add(testdataRequest);
-        //
-        //        List<String> identer = new ArrayList<>();
-        //        List<Person> personerSomSkalPersisteres = new ArrayList<>();
-        //
-        //        when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriteriumRequest.class))).thenReturn(testdataRequestsList);
-        //        when(ekstraherIdenterFraTestdataRequests.execute(testdataRequestsList)).thenReturn(identer);
-        //        when(opprettPersonerFraIdenter.execute(identer)).thenReturn(personerSomSkalPersisteres);
-        //
-        //        testdataController.createNewPersonsFromKriterier(GRUPPE_ID, rsPersonKriteriumRequest);
-        //
-        //        verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
-        //        verify(ekstraherIdenterFraTestdataRequests).execute(testdataRequestsList);
-        //        verify(opprettPersonerFraIdenter).execute(identer);
-        //        verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
-        //        verify(setGruppeIdAndSavePersonBulkTx).execute(personerSomSkalPersisteres, GRUPPE_ID);
+    public void createNewPersonsFromMal() {
+
+        RsPersonMalRequest rsPersonMalRequest = new RsPersonMalRequest();
+
+        testdataController.createNewPersonsFromMal(GRUPPE_ID, rsPersonMalRequest);
+
+        verify(createTestdataPerson).execute(GRUPPE_ID, rsPersonMalRequest);
     }
 
     @Test
