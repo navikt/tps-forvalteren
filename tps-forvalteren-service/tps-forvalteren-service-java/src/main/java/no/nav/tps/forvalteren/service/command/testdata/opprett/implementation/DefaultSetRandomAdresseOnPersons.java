@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.AdresseData;
@@ -46,7 +47,7 @@ public class DefaultSetRandomAdresseOnPersons implements SetRandomAdresseOnPerso
             TpsAdresseData tpsAdresseData= unmarshaller.unmarshal(tpsServiceRoutineResponse.getXml());
             return tpsAdresseData;
         } catch (JAXBException e) {
-            throw new RuntimeException(e);
+            throw new TpsfFunctionalException(e);
         }
     }
     

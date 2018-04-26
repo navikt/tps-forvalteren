@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import org.springframework.stereotype.Component;
 
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.TpsAdresseData;
 
 @Component
@@ -16,7 +17,7 @@ public class TpsServiceRutineS051Unmarshaller {
             JAXBContext context = JAXBContext.newInstance(TpsAdresseData.class);
             this.unmarshaller = context.createUnmarshaller();
         } catch (JAXBException e) {
-            throw new RuntimeException("Feil oppstod under konstruksjon av unmarshaller for TpsAdresseData",e);
+            throw new TpsfTechnicalException("Feil oppstod under konstruksjon av unmarshaller for TpsAdresseData",e);
         }
     }
     
