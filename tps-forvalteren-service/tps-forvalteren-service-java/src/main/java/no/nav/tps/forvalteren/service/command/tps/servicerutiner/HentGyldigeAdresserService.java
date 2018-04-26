@@ -5,7 +5,6 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
@@ -16,7 +15,7 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
 public class HentGyldigeAdresserService {
-    
+    public static String environment = "u6";
     @Autowired
     private UserContextHolder userContextHolder;
     
@@ -30,7 +29,7 @@ public class HentGyldigeAdresserService {
                 .kommuneNrsok(kommuneNr)
                 .postNrsok(postNr)
                 .alltidRetur(JaEllerNei.J)
-                .alleSkrivevarianter(JaEllerNei.N)
+                .alleSkrivevarianter(JaEllerNei.J)
                 .visPostnr(JaEllerNei.J)
                 .build();
         setServiceRoutineMeta(tpsServiceRoutineRequest);
@@ -38,8 +37,8 @@ public class HentGyldigeAdresserService {
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
     }
     
-    public TpsServiceRoutineResponse finnGyldigAdresse(
-            @ModelAttribute TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) { //TODO requestparam klasse, tpservice-mapper og tps-servicerequest. Test denne rest-klassen (med typesok T)
+    public TpsServiceRoutineResponse finnGyldigAdresse(@ModelAttribute TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
+        
         setServiceRoutineMeta(tpsServiceRoutineRequest);
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
         
@@ -54,7 +53,8 @@ public class HentGyldigeAdresserService {
     private TpsRequestContext createContext() {
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        context.setEnvironment("u6");
+        
+        context.setEnvironment(environment);
         return context;
     }
 }
