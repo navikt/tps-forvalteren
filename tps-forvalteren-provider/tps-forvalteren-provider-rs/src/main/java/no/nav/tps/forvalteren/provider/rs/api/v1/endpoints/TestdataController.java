@@ -1,9 +1,23 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
+
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -18,8 +32,6 @@ import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdMeldingResponse;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.FindAlleGrupperOrderByIdAsc;
@@ -32,22 +44,13 @@ import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
@@ -109,17 +112,18 @@ public class TestdataController {
     @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
 
+    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
+    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody @Valid RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
 
         if (personKriterierListe.isWithAdresse()) {
-            setRandomAdresseOnPersons.execute(personerSomSkalPersisteres);
+            setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
         }
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
