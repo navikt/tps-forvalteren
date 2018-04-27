@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import static no.nav.tps.forvalteren.domain.rs.AdresseNrInfo.AdresseNr.kommuneNr;
-import static no.nav.tps.forvalteren.domain.rs.AdresseNrInfo.AdresseNr.postNr;
-
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Test;
@@ -25,8 +22,8 @@ public class SetRandomAdresseOnPersonsWithAdresseNrInfoTest extends AbstractSetR
     @Parameterized.Parameters
     public static Collection testparameters() {
         return Arrays.asList(new Object[][] { {null, null, null},
-                {new AdresseNrInfo(kommuneNr,KOMMUNENR), KOMMUNENR,null},
-                {new AdresseNrInfo(postNr,POSTNR), null, POSTNR}
+                {new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR,KOMMUNENR), KOMMUNENR,null},
+                {new AdresseNrInfo(AdresseNrInfo.AdresseNr.POSTNR,POSTNR), null, POSTNR}
         });
     }
     

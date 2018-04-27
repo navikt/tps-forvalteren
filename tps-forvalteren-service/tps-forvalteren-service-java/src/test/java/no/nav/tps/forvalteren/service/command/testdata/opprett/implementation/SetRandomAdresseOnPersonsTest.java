@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import static no.nav.tps.forvalteren.domain.rs.AdresseNrInfo.AdresseNr.kommuneNr;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -14,7 +13,7 @@ public class SetRandomAdresseOnPersonsTest extends AbstractSetRandomAdresseOnPer
     
     @Test
     public void shouldHentTilfeldigAdresse() {
-        setRandomAdresseOnPersons.execute(persons, new AdresseNrInfo(kommuneNr,KOMMUNENR));
+        setRandomAdresseOnPersons.execute(persons, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR,KOMMUNENR));
         Gateadresse adresse = (Gateadresse) persons.get(0).getBoadresse();
         assertTrue("husnummer max", Integer.parseInt(adresse.getHusnummer()) < HUSNR_MAX);
         assertTrue("husnummer min", Integer.parseInt(adresse.getHusnummer()) > HUSNR_MIN);

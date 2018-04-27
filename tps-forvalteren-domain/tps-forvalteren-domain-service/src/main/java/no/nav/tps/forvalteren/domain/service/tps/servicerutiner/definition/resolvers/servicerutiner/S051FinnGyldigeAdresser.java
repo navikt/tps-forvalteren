@@ -10,12 +10,11 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineAdresseDataRequestTransform;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class S051FinnGyldigeAdresser implements ServiceRoutineResolver {
-    public static String FINN_GYLDIGE_ADRESSER_SERVICERUTINE_NAVN = "FS03-ADRSNAVN-ADRSDATA-O";
+    public static final String FINN_GYLDIGE_ADRESSER_SERVICERUTINE_NAVN = "FS03-ADRSNAVN-ADRSDATA-O";
     
     @Override public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()

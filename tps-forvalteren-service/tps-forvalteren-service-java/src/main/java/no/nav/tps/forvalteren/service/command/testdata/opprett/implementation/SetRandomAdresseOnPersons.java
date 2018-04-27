@@ -35,10 +35,10 @@ public class SetRandomAdresseOnPersons {
         String postNr = null;
         if (adresseNrInfo != null) {
             switch (adresseNrInfo.getNummertype()) {
-            case kommuneNr:
+            case KOMMUNENR:
                 kommuneNr = adresseNrInfo.getNummer();
                 break;
-            case postNr:
+            case POSTNR:
                 postNr = adresseNrInfo.getNummer();
             }
         }

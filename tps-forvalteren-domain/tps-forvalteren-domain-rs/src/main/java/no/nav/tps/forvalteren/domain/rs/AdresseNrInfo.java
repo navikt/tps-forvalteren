@@ -18,6 +18,6 @@ public class AdresseNrInfo {
     private String nummer;
     
     public enum AdresseNr {
-        kommuneNr, postNr
+        KOMMUNENR, POSTNR
     }
 }
