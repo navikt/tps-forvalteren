@@ -63,7 +63,7 @@ public class SetRandomAdresseOnPersons {
     
     private Gateadresse createGateAdresse(AdresseData adresseData, Person person) {
         Gateadresse adresse = new Gateadresse();
-        adresse.setHusnummer(tilfeldigTall(adresseData.getHusnrtil(), adresseData.getHusnrfra()));
+        adresse.setHusnummer(tilfeldigTall( adresseData.getHusnrfra(),adresseData.getHusnrtil()));
         adresse.setGatekode(adresseData.getGkode());
         adresse.setAdresse(adresseData.getAdrnavn());
         adresse.setPostnr(adresseData.getPnr());
