@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.Typesok;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
@@ -41,6 +42,7 @@ public class HentGyldigeAdresserServiceTest {
     public void setup() {
         user = new User("name", "username");
         when(userContextHolder.getUser()).thenReturn(user);
+        when(tpsRequestSender.sendTpsRequest(any(), any())).thenReturn(new TpsServiceRoutineResponse("<xml>", new Object()));
     }
     
     @Test
