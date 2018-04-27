@@ -16,7 +16,6 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
 public class HentGyldigeAdresserService {
-    public static String environment = "u6";
     @Autowired
     private UserContextHolder userContextHolder;
     
@@ -45,7 +44,7 @@ public class HentGyldigeAdresserService {
     }
     
     private TpsServiceRoutineResponse sendTpsRequest(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
-        TpsServiceRoutineResponse tpsServiceRoutineResponse=  tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
+        TpsServiceRoutineResponse tpsServiceRoutineResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
         if (tpsServiceRoutineResponse.getXml().isEmpty()) {
             throw new TpsTimeoutException("Time out: Responsmeldingen fra TPS S051 var tom. Søket i TPS tok for lang tid.");
         }
@@ -62,7 +61,7 @@ public class HentGyldigeAdresserService {
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
         
-        context.setEnvironment(environment);
+        context.setEnvironment(System.getProperty("TPS_S051_ENVIRONMENT", "u6"));
         return context;
     }
 }
