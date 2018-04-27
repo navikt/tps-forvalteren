@@ -35,6 +35,12 @@ public class SkdConstants {
     public static final String VIGSELSTYPE = "vigselstype";
     public static final String VIGSELSKOMMUNE = "vigselskomm";
 
+    public static final String FOEDEKOMM_LAND = "foedekommLand";
+    public static final String MORS_FOEDSELSDATO = "morsFodselsdato";
+    public static final String MORS_PERSONNUMMER = "morsPersonnummer";
+    public static final String LEVENDE_DOED = "levendeDoed";
+    public static final String KJOENN = "kjonn";
+
     public static final String EKTEFELLE_PARTNER_PERSONNUMMMER = "ektefellePartnerPnr";
     public static final String EKTEFELLE_PARTNER_FODSELSDATO = "ektefellePartnerFdato";
     public static final String EKTEFELLE_PARTNER_NAVN = "ektefellePartnerNavn";
