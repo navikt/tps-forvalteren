@@ -11,6 +11,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.Tp
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.JaEllerNei;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.Typesok;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsTimeoutException;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
@@ -34,14 +35,21 @@ public class HentGyldigeAdresserService {
                 .build();
         setServiceRoutineMeta(tpsServiceRoutineRequest);
         
-        return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
+        return sendTpsRequest(tpsServiceRoutineRequest);
     }
     
     public TpsServiceRoutineResponse finnGyldigAdresse(@ModelAttribute TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
         
         setServiceRoutineMeta(tpsServiceRoutineRequest);
-        return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
-        
+        return sendTpsRequest(tpsServiceRoutineRequest);
+    }
+    
+    private TpsServiceRoutineResponse sendTpsRequest(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
+        TpsServiceRoutineResponse tpsServiceRoutineResponse=  tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext());
+        if (tpsServiceRoutineResponse.getXml().isEmpty()) {
+            throw new TpsTimeoutException("Time out: Responsmeldingen fra TPS S051 var tom. Søket i TPS tok for lang tid.");
+        }
+        return tpsServiceRoutineResponse;
     }
     
     private void setServiceRoutineMeta(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
