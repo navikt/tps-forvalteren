@@ -1,9 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.utils;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.security.SecureRandom;
 
 public class TilfeldigTall {
     public static String  tilfeldigTall(String min, String max) {
-        return String.format("%03d", ThreadLocalRandom.current().nextInt( Integer.parseInt(min), Integer.parseInt(max)));
+        Integer minimum = Integer.parseInt(min);
+        return String.format("%03d", new SecureRandom().nextInt(Integer.parseInt(max)-minimum + 1) + minimum);
     }
 }
