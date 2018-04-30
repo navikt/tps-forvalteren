@@ -1,36 +1,33 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.request;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.domain.service.tps.Request;
 import no.nav.tps.forvalteren.domain.service.tps.TpsSystemInfo;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.io.IOException;
-
+import no.nav.tps.forvalteren.domain.service.user.User;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import static org.mockito.Matchers.any;
+import org.mockito.Mock;
 import static org.mockito.Mockito.when;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EndringsmeldingRequestTransformStrategyTest {
 
-
-    private static final String XML_PROPERTIES_PREFIX  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><sfePersonData><sfeAjourforing>";
+    private static final String XML_PROPERTIES_PREFIX = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><sfePersonData><sfeAjourforing>";
     private static final String XML_PROPERTIES_POSTFIX = "</sfeAjourforing></sfePersonData>";
 
     private static final String XML = "xml";
     private static final String SYS_INFO = "sysinfo";
-
 
     @Mock
     private XmlMapper xmlMapperMock;
@@ -55,7 +52,6 @@ public class EndringsmeldingRequestTransformStrategyTest {
         context.setUser(new User("name", "username"));
 
         TpsServiceRoutineEndringRequest serviceRoutine = new TpsServiceRoutineEndringRequest();
-        serviceRoutine.setKilde("kilde");
 
         Request request = new Request();
         request.setXml(XML);
