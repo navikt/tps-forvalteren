@@ -7,9 +7,27 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import org.codehaus.plexus.util.FileUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
@@ -17,22 +35,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFeltDefinisjon;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans2;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans2;
-import org.codehaus.plexus.util.FileUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import no.nav.tps.forvalteren.service.command.testdata.utils.MapBetweenRsMeldingstypeAndSkdMelding;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MapToRsMeldingTest {
@@ -41,12 +44,11 @@ public class MapToRsMeldingTest {
 	private static final String T2_MELDING_WITH_TRANSTYPE_2 = "1337991614920991117151855" + T2_TRANSTYPE_2;
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
-	@Mock
-	private ObjectMapper objectMapper;
-	@Mock
-	private SkdFelterContainerTrans2 skdFelterContainerTrans2;
-	@InjectMocks
-	private MapToRsMelding mapToRsMelding;
+	private ObjectMapper objectMapper = mock(ObjectMapper.class);
+	private SkdFelterContainerTrans2 skdFelterContainerTrans2 = mock(SkdFelterContainerTrans2.class);
+	
+	private MapBetweenRsMeldingstypeAndSkdMelding mapBetweenRsMeldingstypeAndSkdMelding = new MapBetweenRsMeldingstypeAndSkdMelding();
+	private MapToRsMelding mapToRsMelding = new MapToRsMelding(objectMapper,mapBetweenRsMeldingstypeAndSkdMelding,skdFelterContainerTrans2);
 	private String skdEndringsmeldingT1WithAllFieldsSupplied;
 	private String skdEndringsmeldingT2WithAllFieldsSupplied;
 	
@@ -75,20 +77,18 @@ public class MapToRsMeldingTest {
 	}
 	
 	@Test
-	public void returnsT1WhenCalledWithSkdEndringsmeldingAllFieldsSupplied() {
+	public void returnsT1WhenCalledWithSkdEndringsmeldingAllFieldsSupplied() throws InvocationTargetException, IllegalAccessException {
 		RsMeldingstype melding = mapToRsMelding.execute(SkdMeldingTrans1.unmarshal(skdEndringsmeldingT1WithAllFieldsSupplied));
 		
 		assertThat(melding, instanceOf(RsMeldingstype1Felter.class));
+		assertNoNullFields(melding);
 	}
 	
-	@Test
-	public void checkThatAllFielsGetInitializedT1() {
-		
-		RsMeldingstype melding = mapToRsMelding.execute(SkdMeldingTrans1.unmarshal(skdEndringsmeldingT1WithAllFieldsSupplied));
-		
-		assertThat(melding, instanceOf(RsMeldingstype1Felter.class));
-		for (Field f : melding.getClass().getDeclaredFields()) {
-			assertThat(f, is(not(nullValue())));
+	private void assertNoNullFields(RsMeldingstype melding) throws InvocationTargetException, IllegalAccessException {
+		for (Method f: melding.getClass().getMethods()) {
+			if (f.getName().length() > 2 && "get".equals(f.getName().substring(0, 3)) && !f.getName().equals("getId")) {
+				Assert.assertNotNull(f.getName(), f.invoke(melding));
+			}
 		}
 	}
 	

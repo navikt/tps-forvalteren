@@ -20,11 +20,17 @@ import java.util.Map;
 @Service
 public class MapToRsMelding {
 	
-	@Autowired
 	private ObjectMapper objectMapper;
+	private MapBetweenRsMeldingstypeAndSkdMelding mapBetweenRsMeldingstypeAndSkdMelding;
+	private SkdFelterContainerTrans2 skdFelterContainerTrans2;
 	
 	@Autowired
-	private SkdFelterContainerTrans2 skdFelterContainerTrans2;
+	public MapToRsMelding(ObjectMapper objectMapper, MapBetweenRsMeldingstypeAndSkdMelding mapBetweenRsMeldingstypeAndSkdMelding,
+			SkdFelterContainerTrans2 skdFelterContainerTrans2) {
+		this.objectMapper = objectMapper;
+		this.mapBetweenRsMeldingstypeAndSkdMelding = mapBetweenRsMeldingstypeAndSkdMelding;
+		this.skdFelterContainerTrans2 = skdFelterContainerTrans2;
+	}
 	
 	public RsMeldingstype execute(SkdMelding melding) {
 		if (melding instanceof SkdMeldingTrans1) {
@@ -35,7 +41,7 @@ public class MapToRsMelding {
 	}
 	
 	private RsMeldingstype createT1(SkdMeldingTrans1 melding) {
-		RsMeldingstype1Felter rsMeldingstype = MapBetweenRsMeldingstypeAndSkdMelding.map(melding);
+		RsMeldingstype1Felter rsMeldingstype = mapBetweenRsMeldingstypeAndSkdMelding.map(melding);
 		rsMeldingstype.setBeskrivelse("IDENT: " + rsMeldingstype.getFodselsdato() + rsMeldingstype.getPersonnummer() + " - AARSAKSKODE: " + rsMeldingstype
 				.getAarsakskode());
  		return rsMeldingstype;
