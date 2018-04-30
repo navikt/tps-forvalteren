@@ -9,5 +9,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TpsServiceRoutineEndringRequest extends TpsServiceRoutineRequest {
 
-    private String kilde;
 }

@@ -1,4 +1,4 @@
-<div class="tps-vk-service-rutine-dashboard tps-content" layout="column" class="md-primary md-hue-3" flex layout-padding ng-cloak>
+<div class="tps-vk-service-rutine-dashboard tps-content" class="md-primary md-hue-3" flex layout-padding ng-cloak>
   <!-- Velkomstsmelding -->
 
     <div ng-show="loadServiceRutineTemplate() || loadEndringsmeldingTemplate()" layout="column" flex>
@@ -14,7 +14,7 @@
             <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <!-- Input fields rows -->
-                <legend class="tpsf-sr-inputform-legend">Select og inputfelt for {{serviceRutineName}}</legend>
+                <legend class="tpsf-sr-inputform-legend">Select ogd inputfelt for {{serviceRutineName}}</legend>
                 <div ng-repeat="field in fields" ng-init="parentIndex = $index" >
                     <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%5)==0"  >
 
@@ -29,7 +29,7 @@
                     <md-input-container flex-gt-xs flex="25" class="tps-vk-input-container" layout="row">
                         <label>Miljø</label>
                         <md-select flex="100" ng-model="formData.environment" required>
-                            <md-option ng-repeat="env in environments.environments" value="{{env}}">{{ env }}</md-option>
+                            <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                         </md-select>
                     </md-input-container>
 
@@ -60,7 +60,7 @@
         <!-- Resulting Response -->
         <md-content flex="95" class="tps-vk-bottom md-whiteframe-z2">
             <!-- Setup Tabs -->
-            <md-tabs md-border-bottom class="tps-vk-scrollable-tabs">
+            <md-tabs md-border-bottom md-dynamic-height="" class="tps-vk-scrollable-tabs">
                 <!-- Tab Readable Result -->
                 <md-tab label="Resultat" style="background-color: rgb(250,250,250)">
                     <!-- Include HTML file "response.html" -->

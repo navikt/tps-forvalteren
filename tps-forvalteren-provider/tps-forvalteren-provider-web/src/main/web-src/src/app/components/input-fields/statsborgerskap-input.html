@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Statsborgerskap</label>
+    <input name="statsborgerskapInput" md-maxlength="4"  ng-model="formData.statsborgerskap"/>
+    <div ng-messages="requestForm.statsborgerskapInput.$error" ng-show="requestForm.statsborgerskapInput.$touched">
+        <div ng-message="md-maxlength">Max lengde er 4</div>
+    </div>
+</md-input-container>
