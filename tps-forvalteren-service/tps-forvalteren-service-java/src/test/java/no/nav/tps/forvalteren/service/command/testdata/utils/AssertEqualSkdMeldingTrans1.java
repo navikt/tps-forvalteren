@@ -24,7 +24,7 @@ public class AssertEqualSkdMeldingTrans1 {
 		assertEquals("slektsnavn",expectedSkdMeldingTrans1.getSlektsnavn(), actualSkdMeldingTrans1.getSlektsnavn());
 		assertEquals("fornavn",expectedSkdMeldingTrans1.getFornavn(), actualSkdMeldingTrans1.getFornavn());
 		assertEquals("mellomnavn",expectedSkdMeldingTrans1.getMellomnavn(), actualSkdMeldingTrans1.getMellomnavn());
-		assertEquals("slekstnavnUgiftT",expectedSkdMeldingTrans1.getSlekstnavnUgiftT(), actualSkdMeldingTrans1.getSlekstnavnUgiftT());
+		assertEquals("slekstnavnUgiftT",expectedSkdMeldingTrans1.getSlekstnavnUgift(), actualSkdMeldingTrans1.getSlekstnavnUgift());
 		assertEquals("forkortetNavn",expectedSkdMeldingTrans1.getForkortetNavn(), actualSkdMeldingTrans1.getForkortetNavn());
 		assertEquals("regDatoNavn",expectedSkdMeldingTrans1.getRegDatoNavn(), actualSkdMeldingTrans1.getRegDatoNavn());
 		assertEquals("foedekommLand",expectedSkdMeldingTrans1.getFoedekommLand(), actualSkdMeldingTrans1.getFoedekommLand());

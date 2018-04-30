@@ -33,7 +33,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 	private String slektsnavn;
 	private String fornavn;
 	private String mellomnavn;
-	private String slekstnavnUgiftT;
+	private String slekstnavnUgift;
 	private String forkortetNavn;
 	private String regDatoNavn;
 	private String foedekommLand;

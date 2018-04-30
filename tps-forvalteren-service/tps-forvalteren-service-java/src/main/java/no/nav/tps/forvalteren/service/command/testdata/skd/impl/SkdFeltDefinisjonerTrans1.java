@@ -30,7 +30,7 @@ public enum SkdFeltDefinisjonerTrans1 {
 	SLEKTSNAVN("slektsnavn", WHITESPACE_50_STK, 10, 50, 46, 95),
 	FORNAVN("fornavn", WHITESPACE_50_STK, 11, 50, 96, 145),
 	MELLOMNAVN("mellomnavn", WHITESPACE_50_STK, 12, 50, 146, 195),
-	SLEKSTNAVN_UGIFT_T("slekstnavnUgiftT", WHITESPACE_50_STK, 13, 50, 196, 245),
+	SLEKSTNAVN_UGIFT_T("slekstnavnUgift", WHITESPACE_50_STK, 13, 50, 196, 245),
 	FORKORTET_NAVN("forkortetNavn", WHITESPACE_25_STK, 14, 25, 246, 270),
 	REGDATO_NAVN("regDatoNavn", "00000000", 15, 8, 271, 278),
 	FOEDEKOMMUNE_LAND("foedekommLand", "    ", 16, 4, 279, 282),
