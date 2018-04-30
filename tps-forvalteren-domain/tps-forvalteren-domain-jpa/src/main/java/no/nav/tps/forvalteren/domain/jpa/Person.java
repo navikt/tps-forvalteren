@@ -72,7 +72,7 @@ public class Person extends ChangeStamp {
 	@Column(name = "DOEDSDATO")
 	private LocalDateTime doedsdato;
 	
-	@Column(name = "UTVANDRET_TIL_LAND", length = 2)
+	@Column(name = "UTVANDRET_TIL_LAND", length = 3)
 	private String utvandretTilLand;
 	
 	@Column(name = "REGISTRERT_UTVANDR_DATO")
