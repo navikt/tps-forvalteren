@@ -84,7 +84,7 @@ public class MapToRsMeldingTest {
 	
 	private void assertNoNullFields(RsMeldingstype melding) throws InvocationTargetException, IllegalAccessException {
 		for (Method f: melding.getClass().getMethods()) {
-			if (f.getName().length() > 2 && "get".equals(f.getName().substring(0, 3)) && !f.getName().equals("getId")) {
+			if (f.getName().length() > 2 && "get".equals(f.getName().substring(0, 3)) && f.getParameterCount()==0 && !f.getName().equals("getId")) {
 				Assert.assertNotNull(f.getName(), f.invoke(melding));
 			}
 		}
