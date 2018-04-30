@@ -60,9 +60,7 @@ public class MapToRsMeldingTest {
 		skdEndringsmeldingT2WithAllFieldsSupplied = FileUtils.fileRead(new File(classLoader.getResource("melding-t2-alle-felter-utfylt.txt")
 				.getFile()));
 		
-		RsMeldingstype1Felter meldingT1 = new RsMeldingstype1Felter();
 		RsMeldingstype2Felter meldingT2 = new RsMeldingstype2Felter();
-		when(objectMapper.convertValue(any(HashMap.class), eq(RsMeldingstype1Felter.class))).thenReturn(meldingT1);
 		when(objectMapper.convertValue(any(HashMap.class), eq(RsMeldingstype2Felter.class))).thenReturn(meldingT2);
 		
 		List<SkdFeltDefinisjon> felter = new ArrayList<>();
@@ -93,15 +91,13 @@ public class MapToRsMeldingTest {
 	}
 	
 	@Test
-	public void checkThatAllFielsGetInitializedT2() {
+	public void checkThatAllFielsGetInitializedT2() throws InvocationTargetException, IllegalAccessException {
 		when(skdFelterContainerTrans2.hentSkdFelter()).thenCallRealMethod();
 		
 		RsMeldingstype melding = mapToRsMelding.execute(new SkdMeldingTrans2(skdEndringsmeldingT2WithAllFieldsSupplied));
 		
 		assertThat(melding, instanceOf(RsMeldingstype2Felter.class));
-		for (Field f : melding.getClass().getDeclaredFields()) {
-			assertThat(f, is(not(nullValue())));
-		}
+//		assertNoNullFields(melding); //TODO introdusér når objectmapper byttes ut med mapperfacade
 	}
 	
 	@Test
