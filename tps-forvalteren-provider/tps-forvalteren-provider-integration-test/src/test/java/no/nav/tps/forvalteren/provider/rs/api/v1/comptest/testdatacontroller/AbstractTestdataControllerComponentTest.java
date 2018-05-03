@@ -17,9 +17,9 @@ import com.google.common.base.Charsets;
 import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-@Transactional
+@Transactional //TODO fjern denne og bytt ut kobling mot Oracle DB med H2 database
 public abstract class AbstractTestdataControllerComponentTest extends AbstractRsProviderIntegrationTest{
-    private static final String BASE_URL = "/api/v1/testdata/";
+    private static final String BASE_URL = "/api/v1/testdata";
     private List<NameValuePair> params = new ArrayList<>();
     @Autowired(required = false)
     protected WebApplicationContext context;

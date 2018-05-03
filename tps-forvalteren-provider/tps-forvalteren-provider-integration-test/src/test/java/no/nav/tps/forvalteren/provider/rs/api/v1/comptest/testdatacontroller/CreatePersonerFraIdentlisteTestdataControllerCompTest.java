@@ -25,7 +25,7 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
         
         @Override
         protected String getServiceUrl() {
-            return "createpersoner/" + gruppeId;
+            return "/createpersoner/" + gruppeId;
         }
         @Before
         public void setupDatabase(){
