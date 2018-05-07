@@ -53,7 +53,7 @@ public class HentKoerController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
     @RequestMapping(value = "/fasitresources", method = RequestMethod.GET)
-    public List<FasitMQInformation> getAllQueues(@RequestParam("appNavn") String appNavn, @RequestParam(value = "env", required = false) String env) {
+    public List<FasitMQInformation> getAllQueues(@RequestParam("appNavn") String appNavn) {
 
         List<FasitApplication> applications = fasitApiConsumer.getApplications(appNavn, true);
         List<FasitUsedResources> usedResource = fasitApiConsumer.getUsedResourcesFromAppByTypes(applications.get(0),
@@ -77,5 +77,4 @@ public class HentKoerController {
 
         return mqInfoMapper.execute(applications, queues, channels);
     }
-
 }
