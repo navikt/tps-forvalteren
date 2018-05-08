@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -29,7 +28,7 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
             return "/createpersoner/" + gruppeId;
         }
         
-        public void setupTestdataInDatabase(){
+        public void setupTestdataInTpsfDatabase(){
             testgruppe= gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
                     gruppeId = testgruppe.getId();
             System.out.println(gruppeId);
@@ -41,7 +40,7 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
         @Test
         @WithUserDetails(TestUserDetails.USERNAME)
         public void shouldCreatePerson() throws Exception {
-            setupTestdataInDatabase();
+            setupTestdataInTpsfDatabase();
             mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content("[\""+IDENT1+"\",\""+IDENT2+"\"]"))
                     .andExpect(status().isOk());

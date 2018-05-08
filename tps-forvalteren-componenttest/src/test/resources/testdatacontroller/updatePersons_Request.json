@@ -1,0 +1,278 @@
+[
+  {
+    "personId": 1,
+    "ident": "04021850026",
+    "identtype": "FNR",
+    "kjonn": "K",
+    "fornavn": "Smart",
+    "mellomnavn": null,
+    "etternavn": "Busk",
+    "statsborgerskap": null,
+    "spesreg": null,
+    "spesregDato": null,
+    "doedsdato": null,
+    "boadresse": {
+      "adressetype": "GATE",
+      "gateadresse": "Sannergata",
+      "husnummer": "2",
+      "gatekode": "16188",
+      "adresseId": 100050855,
+      "personId": 1,
+      "postnr": "0557",
+      "kommunenr": "0301",
+      "flyttedato": "2000-01-01T00:00:00"
+    },
+    "postadresse": [],
+    "regdato": "2018-05-08T11:17:42",
+    "gruppe": {
+      "id": 1,
+      "navn": "regresjonstest gruppe",
+      "beskrivelse": "test av tpsf"
+    },
+    "relasjoner": [
+      {
+        "person": {
+          "personId": 1,
+          "ident": "04021850026",
+          "identtype": "FNR",
+          "kjonn": "K",
+          "fornavn": "Smart",
+          "mellomnavn": null,
+          "etternavn": "Busk",
+          "statsborgerskap": null,
+          "spesreg": null,
+          "spesregDato": null,
+          "doedsdato": null,
+          "boadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "SANNERGATA",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050855,
+            "personId": 1,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "postadresse": [],
+          "regdato": "2018-05-08T11:17:42",
+          "gruppe": {
+            "id": 1,
+            "navn": "regresjonstest gruppe",
+            "beskrivelse": "test av tpsf"
+          },
+          "gateadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "Sannergata",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050855,
+            "personId": 1,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "matrikkeladresse": {
+            "flyttedato": null
+          }
+        },
+        "personRelasjonMed": {
+          "personId": 2,
+          "ident": "22071758072",
+          "identtype": "FNR",
+          "kjonn": "K",
+          "fornavn": "Naturlig",
+          "mellomnavn": null,
+          "etternavn": "Kaffi",
+          "statsborgerskap": null,
+          "spesreg": null,
+          "spesregDato": null,
+          "doedsdato": null,
+          "boadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "SANNERGATA",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050856,
+            "personId": 2,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "postadresse": [],
+          "regdato": "2018-05-08T11:17:42",
+          "gruppe": {
+            "id": 1,
+            "navn": "regresjonstest gruppe",
+            "beskrivelse": "test av tpsf"
+          },
+          "relasjoner": [],
+          "gateadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "Sannergata",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050856,
+            "personId": 2,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "matrikkeladresse": {
+            "flyttedato": null
+          }
+        },
+        "relasjonTypeNavn": "EKTEFELLE"
+      }
+    ],
+    "gateadresse": {
+      "adressetype": "GATE",
+      "gateadresse": "Sannergata",
+      "husnummer": "2",
+      "gatekode": "16188",
+      "adresseId": 100050855,
+      "personId": 1,
+      "postnr": "0557",
+      "kommunenr": "0301",
+      "flyttedato": "2000-01-01T00:00:00"
+    }
+  },
+  {
+    "personId": 2,
+    "ident": "22071758072",
+    "identtype": "FNR",
+    "kjonn": "K",
+    "fornavn": "Naturlig",
+    "mellomnavn": null,
+    "etternavn": "Kaffi",
+    "statsborgerskap": null,
+    "spesreg": null,
+    "spesregDato": null,
+    "doedsdato": null,
+    "boadresse": {
+      "adressetype": "GATE",
+      "gateadresse": "Sannergata",
+      "husnummer": "2",
+      "gatekode": "16188",
+      "adresseId": 100050856,
+      "personId": 2,
+      "postnr": "0557",
+      "kommunenr": "0301",
+      "flyttedato": "2000-01-01T00:00:00"
+    },
+    "postadresse": [],
+    "regdato": "2018-05-08T11:17:42",
+    "gruppe": {
+      "id": 1,
+      "navn": "regresjonstest gruppe",
+      "beskrivelse": "test av tpsf"
+    },
+    "relasjoner": [
+      {
+        "person": {
+          "personId": 2,
+          "ident": "22071758072",
+          "identtype": "FNR",
+          "kjonn": "K",
+          "fornavn": "Naturlig",
+          "mellomnavn": null,
+          "etternavn": "Kaffi",
+          "statsborgerskap": null,
+          "spesreg": null,
+          "spesregDato": null,
+          "doedsdato": null,
+          "boadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "SANNERGATA",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050856,
+            "personId": 2,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "postadresse": [],
+          "regdato": "2018-05-08T11:17:42",
+          "gruppe": {
+            "id": 1,
+            "navn": "regresjonstest gruppe",
+            "beskrivelse": "test av tpsf"
+          },
+          "relasjoner": [],
+          "gateadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "Sannergata",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050856,
+            "personId": 2,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "matrikkeladresse": {
+            "flyttedato": null
+          }
+        },
+        "personRelasjonMed": {
+          "personId": 1,
+          "ident": "04021850026",
+          "identtype": "FNR",
+          "kjonn": "K",
+          "fornavn": "Smart",
+          "mellomnavn": null,
+          "etternavn": "Busk",
+          "statsborgerskap": null,
+          "spesreg": null,
+          "spesregDato": null,
+          "doedsdato": null,
+          "boadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "SANNERGATA",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050855,
+            "personId": 1,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "postadresse": [],
+          "regdato": "2018-05-08T11:17:42",
+          "gruppe": {
+            "id": 1,
+            "navn": "regresjonstest gruppe",
+            "beskrivelse": "test av tpsf"
+          },
+          "gateadresse": {
+            "adressetype": "GATE",
+            "gateadresse": "Sannergata",
+            "husnummer": "2",
+            "gatekode": "16188",
+            "adresseId": 100050855,
+            "personId": 1,
+            "postnr": "0557",
+            "kommunenr": "0301",
+            "flyttedato": "2000-01-01T00:00:00"
+          },
+          "matrikkeladresse": {
+            "flyttedato": null
+          }
+        },
+        "relasjonTypeNavn": "EKTEFELLE"
+      }
+    ],
+    "gateadresse": {
+      "adressetype": "GATE",
+      "gateadresse": "Sannergata",
+      "husnummer": "2",
+      "gatekode": "16188",
+      "adresseId": 100050856,
+      "personId": 2,
+      "postnr": "0557",
+      "kommunenr": "0301",
+      "flyttedato": "2000-01-01T00:00:00"
+    }
+  }
+]

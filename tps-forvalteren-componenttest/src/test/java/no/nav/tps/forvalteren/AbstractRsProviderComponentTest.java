@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren;
 
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import org.junit.Before;
@@ -19,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.config.ComptestConfig;
 
@@ -48,7 +51,14 @@ public abstract class AbstractRsProviderComponentTest {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
     }
-
+    protected String getRequestBody(String path) {
+        URL fileUrl = Resources.getResource(path);
+        try {
+            return Resources.toString(fileUrl, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     protected static String convertObjectToJson(Object object) throws IOException {
         return MAPPER.writeValueAsString(object);
