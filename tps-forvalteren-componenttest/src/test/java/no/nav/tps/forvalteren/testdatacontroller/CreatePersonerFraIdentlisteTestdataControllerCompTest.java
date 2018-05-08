@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.provider.rs.api.v1.comptest.testdatacontroller;
+package no.nav.tps.forvalteren.testdatacontroller;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -10,12 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
+import no.nav.tps.forvalteren.config.TestUserDetails;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
-//TODO Opprett H2. Testen kjører mot live Oracle DB i u6. constraint unique navn gjør at gruppenavnet ikke kan eksistere fra før. Og alle identene må også være unike til enhver tid når man kjører testen.
+@Transactional
 public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends AbstractTestdataControllerComponentTest {
 
         private final int IDENT1 = 03051750127;

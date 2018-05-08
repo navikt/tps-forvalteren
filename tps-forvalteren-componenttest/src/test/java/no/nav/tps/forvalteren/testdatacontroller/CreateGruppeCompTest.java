@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.provider.rs.api.v1.comptest.testdatacontroller;
+package no.nav.tps.forvalteren.testdatacontroller;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,10 +9,9 @@ import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.Commit;
 
+import no.nav.tps.forvalteren.config.TestUserDetails;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
 public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTest {
     private final String GRUPPENAVN = "unikt testgrnavn";
@@ -34,7 +33,7 @@ public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTes
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"navn\":\"" + GRUPPENAVN + "\", \"beskrivelse\":\"" + BESKRIVELSE + "\"}"))
                 .andExpect(status().isOk());
-        
+        System.out.println(gruppeRepository.findAllByOrderByIdAsc());
         assertTrue(gruppeRepository.findAllByOrderByIdAsc().stream().anyMatch(gruppe -> GRUPPENAVN.equals(gruppe.getNavn()) && BESKRIVELSE.equals(gruppe.getBeskrivelse())));
     }
     
@@ -43,7 +42,6 @@ public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTes
      *
      * @throws Exception
      */
-    @Commit
     @Test(expected = DataIntegrityViolationException.class)
     @WithUserDetails(TestUserDetails.USERNAME)
     @Ignore("fixme: selv om expected er oppgitt, så blir den ikke fanget. ")

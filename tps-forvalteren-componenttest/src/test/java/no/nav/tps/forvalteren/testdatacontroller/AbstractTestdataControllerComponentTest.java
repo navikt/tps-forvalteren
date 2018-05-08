@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.provider.rs.api.v1.comptest.testdatacontroller;
+package no.nav.tps.forvalteren.testdatacontroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,14 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import com.google.common.base.Charsets;
 
-import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
+import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-@Transactional //TODO fjern denne og bytt ut kobling mot Oracle DB med H2 database
-public abstract class AbstractTestdataControllerComponentTest extends AbstractRsProviderIntegrationTest{
+
+public abstract class AbstractTestdataControllerComponentTest extends AbstractRsProviderComponentTest {
     private static final String BASE_URL = "/api/v1/testdata";
     private List<NameValuePair> params = new ArrayList<>();
     @Autowired(required = false)
