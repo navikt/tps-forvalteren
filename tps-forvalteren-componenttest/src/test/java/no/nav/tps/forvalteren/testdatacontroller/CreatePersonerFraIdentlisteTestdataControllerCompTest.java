@@ -28,9 +28,8 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
         protected String getServiceUrl() {
             return "/createpersoner/" + gruppeId;
         }
-        @Before
-        public void setupDatabase(){
-            
+        
+        public void setupTestdataInDatabase(){
             testgruppe= gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
                     gruppeId = testgruppe.getId();
             System.out.println(gruppeId);
@@ -42,6 +41,7 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
         @Test
         @WithUserDetails(TestUserDetails.USERNAME)
         public void shouldCreatePerson() throws Exception {
+            setupTestdataInDatabase();
             mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content("[\""+IDENT1+"\",\""+IDENT2+"\"]"))
                     .andExpect(status().isOk());
