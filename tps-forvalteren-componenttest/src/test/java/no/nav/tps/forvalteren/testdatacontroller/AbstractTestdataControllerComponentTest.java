@@ -50,6 +50,9 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
         if (context != null) {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
+        
+        gruppeRepository.deleteAll();
+        personRepository.deleteAll();
     }
     @After
     public void clearParam() {

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Ignore;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -33,7 +33,6 @@ public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTes
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"navn\":\"" + GRUPPENAVN + "\", \"beskrivelse\":\"" + BESKRIVELSE + "\"}"))
                 .andExpect(status().isOk());
-        System.out.println(gruppeRepository.findAllByOrderByIdAsc());
         assertTrue(gruppeRepository.findAllByOrderByIdAsc().stream().anyMatch(gruppe -> GRUPPENAVN.equals(gruppe.getNavn()) && BESKRIVELSE.equals(gruppe.getBeskrivelse())));
     }
     
@@ -42,13 +41,13 @@ public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTes
      *
      * @throws Exception
      */
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test
     @WithUserDetails(TestUserDetails.USERNAME)
-    @Ignore("fixme: selv om expected er oppgitt, så blir den ikke fanget. ")
     public void shouldThrowExceptionAsGroupAlreadyExists() throws Exception {
-            makeSureGroupExistsInDatabase(GRUPPENAVN);
-            mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content("{\"navn\":\"" + GRUPPENAVN + "\", \"beskrivelse\":\"" + BESKRIVELSE + "\"}"));
+        expectedException.expectCause(Matchers.allOf(Matchers.instanceOf(DataIntegrityViolationException.class)));
+        makeSureGroupExistsInDatabase(GRUPPENAVN);
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"navn\":\"" + GRUPPENAVN + "\", \"beskrivelse\":\"" + BESKRIVELSE + "\"}"));
     }
     
     private void makeSureGroupExistsInDatabase(String navn) {

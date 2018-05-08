@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +27,10 @@ import no.nav.tps.forvalteren.config.ComptestConfig;
 @SpringBootTest(classes = { ComptestConfig.class, ApplicationStarter.class })
 @ActiveProfiles("comptest")
 public abstract class AbstractRsProviderComponentTest {
-
+    
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    
     @Autowired(required = false)
     protected WebApplicationContext context;
 
