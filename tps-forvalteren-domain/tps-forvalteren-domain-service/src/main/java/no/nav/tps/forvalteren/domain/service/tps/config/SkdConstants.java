@@ -72,7 +72,7 @@ public class SkdConstants {
     public static final String SEKVENSNUMMER = "sekvensnr";
 
     public static final String DOEDSDATO = "datoDoed";
-
+    
     public static final String STATUSKODE = "statuskode";
 }
 

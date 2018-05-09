@@ -1,12 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
-
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
@@ -19,12 +14,19 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsm
 import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
-    private static final String NAVN_INNVANDRINGSMELDING = "InnvandringCreate";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired
@@ -59,10 +61,10 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             gruppe.setNavn(setNavnWithUniqueId(testdataGruppe.getNavn()));
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
-            List<String> skdMeldinger = new ArrayList<>();
-            List<String> innvandringsMeldinger = skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), false);
-            List<String> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
-            List<String> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
+            List<SkdMelding> skdMeldinger = new ArrayList<>();
+            List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, testdataGruppe.getPersoner(), false);
+            List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
+            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
             skdMeldinger.addAll(innvandringsMeldinger);
             skdMeldinger.addAll(relasjonsMeldinger);
             skdMeldinger.addAll(doedsMeldinger);
