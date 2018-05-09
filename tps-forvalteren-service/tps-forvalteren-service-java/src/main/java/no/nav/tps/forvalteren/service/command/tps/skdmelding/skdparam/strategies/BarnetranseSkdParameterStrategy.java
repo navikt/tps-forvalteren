@@ -25,10 +25,11 @@ public class BarnetranseSkdParameterStrategy {
     }
 
     private void addSkdParametersExtractedFromBarn(Map<String, String> skdParams, List<Person> barn) {
+
         for (int counter = 0; counter < barn.size(); counter++) {
             Person currentBarn = barn.get(counter);
-            skdParams.put("barnFodsdato" + counter, currentBarn.getIdent().substring(0, 6));
-            skdParams.put("barnPersnr" + counter, currentBarn.getIdent().substring(6));
+            skdParams.put("barnFodsdato" + (counter + 1), currentBarn.getIdent().substring(0, 6));
+            skdParams.put("barnPersnr" + (counter + 1), currentBarn.getIdent().substring(6));
         }
     }
 
