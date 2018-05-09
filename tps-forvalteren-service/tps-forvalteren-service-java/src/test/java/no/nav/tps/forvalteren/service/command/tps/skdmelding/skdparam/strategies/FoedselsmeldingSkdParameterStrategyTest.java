@@ -4,16 +4,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FoedselsmeldingSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringUpdateSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import static org.mockito.Matchers.anyLong;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -46,6 +51,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
     private Relasjon relasjoner;
     private Gateadresse gateadresse;
     private Adresse adresse;
+    private SkdMeldingTrans1 result;
 
     private HashMap<String, String> skdParameters;
 
@@ -56,7 +62,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         barn = new Person();
 
         barn.setId(0001L);
-        barn.setFornavn("JON");
+        barn.setFornavn("MARI");
         barn.setIdent("01011845678");
         barn.setRegdato(LocalDateTime.now());
 
@@ -80,22 +86,55 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         resultRelasjonRepository.add(new Relasjon(0003L, new Person(), far, "FAR"));
 
         skdParameters = new HashMap<>();
-        createResultSkdParameter(skdParameters);
+
+        when(relasjonRepository.findByPersonId(anyLong())).thenReturn(resultRelasjonRepository);
+        when(personRepository.findById(0101L)).thenReturn(mor);
+    }
+
+    @Test
+    public void isSupportedTest() {
+        SkdParametersCreator correctOject = mock(FoedselsmeldingSkdParametere.class);
+        SkdParametersCreator incorrectObject = mock(InnvandringUpdateSkdParametere.class);
+
+        assertThat(foedselsmeldingSkdParameterStrategy.isSupported(correctOject), is(true));
+        assertThat(foedselsmeldingSkdParameterStrategy.isSupported(incorrectObject), is(false));
     }
 
     @Test
     public void createCorrectFoedselmeldingParamsFromPerson() {
-
-        Map<String, String> result = new HashMap<String, String>();
-        when(relasjonRepository.findByPersonId(anyLong())).thenReturn(resultRelasjonRepository);
-        when(personRepository.findById(0101L)).thenReturn(mor);
         when(personRepository.findById(0102L)).thenReturn(far);
+
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
-        assertThat(result.get("foreldreansvar"), is("D"));
+        assertThat(result.getFodselsdato(), is("010118"));
+        assertThat(result.getPersonnummer(), is("45678"));
+        assertThat(result.getKjonn(), is("K"));
+        assertThat(result.getFarsFodselsdato(), is("210270"));
+        assertThat(result.getFarsPersonnummer(), is("13579"));
+        assertThat(result.getSlektsnavn(), is("HANSEN"));
+        assertThat(result.getForeldreansvar(), is("D"));
     }
 
-    private void createResultSkdParameter(HashMap<String, String> skdParameters) {
+    @Test
+    public void createFoedselsmeldingParamsWithOnlyOneParent() {
+        result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
+        assertThat(result.getFarsFodselsdato(), is(nullValue()));
+        assertThat(result.getFarsPersonnummer(), is(nullValue()));
+        assertThat(result.getForeldreansvar(), is("M"));
+
+    }
+
+    @Test
+    public void createFoedselsmeldingParamsWithGateadresse() {
+        when(adresseRepository.getAdresseByPersonId(0101L)).thenReturn(gateadresse);
+
+        result = foedselsmeldingSkdParameterStrategy.execute(barn);
+
+        assertThat(result.getAdressenavn(), is("Storgata"));
+        assertThat(result.getHusBruk(), is("2"));
+        assertThat(result.getKommunenummer(), is("0341"));
+        assertThat(result.getGateGaard(), is("12345"));
+        assertThat(result.getAdressetype(), is("O"));
     }
 }

@@ -15,9 +15,9 @@ public class CreateFoedselsmeldinger {
 
     private static final String NAVN_FOEDSELSMELDING = "Foedselsmelding";
 
-    public List<String> execute(List<Person> personer, boolean addHeader) {
+    public List<SkdMeldingTrans1> execute(List<Person> personer, boolean addHeader) {
 
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         if (!personer.isEmpty()) {
             skdMeldinger.addAll(skdMessageCreatorTrans1.execute(NAVN_FOEDSELSMELDING, personer, addHeader));
         }
