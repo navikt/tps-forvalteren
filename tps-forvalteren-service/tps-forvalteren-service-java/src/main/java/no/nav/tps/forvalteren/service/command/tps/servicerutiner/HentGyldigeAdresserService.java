@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S051FinnGyldigeAdresser.FINN_GYLDIGE_ADRESSER_SERVICERUTINE_NAVN;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -16,6 +17,9 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
 public class HentGyldigeAdresserService {
+    @Value("${FASIT_ENVIRONMENT_NAME}")
+    private String env;
+    
     @Autowired
     private UserContextHolder userContextHolder;
     
@@ -60,8 +64,7 @@ public class HentGyldigeAdresserService {
     private TpsRequestContext createContext() {
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        
-        context.setEnvironment(System.getProperty("TPS_S051_ENVIRONMENT", "u6"));
+        context.setEnvironment(env);
         return context;
     }
 }

@@ -27,12 +27,16 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
     static final String POSTNR = "6683";
     static final String GATEKODE = "01037";
     static final String KOMMUNENR = "1571";
+    
     TpsServiceRutineS051Unmarshaller unmarshaller = new TpsServiceRutineS051Unmarshaller();
     URL tpsResponsUrl = Resources.getResource("serviceRutine/response/tilfeldigGyldigAdresse.xml");
-    TpsServiceRoutineResponse tpsServiceRoutineResponse;
-    HentGyldigeAdresserService hentGyldigeAdresserService = mock(HentGyldigeAdresserService.class);
-    SetRandomAdresseOnPersons setRandomAdresseOnPersons = new SetRandomAdresseOnPersons(unmarshaller, hentGyldigeAdresserService);
     List<Person> persons = Arrays.asList(aMalePerson().build());
+    
+    TpsServiceRoutineResponse tpsServiceRoutineResponse;
+    
+    HentGyldigeAdresserService hentGyldigeAdresserService = mock(HentGyldigeAdresserService.class);
+    
+    SetRandomAdresseOnPersons setRandomAdresseOnPersons = new SetRandomAdresseOnPersons(unmarshaller, hentGyldigeAdresserService);
     
     TpsServiceRoutineResponse createServiceRutineTpsResponse() throws IOException {
         TpsServiceRoutineResponse tpsServiceRoutineResponse = new TpsServiceRoutineResponse();

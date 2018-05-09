@@ -141,6 +141,11 @@ public class CommandConfig {
     }
     
     @Bean
+    ServiceRoutineResolver finnGyldigeAdresser() {
+        return new S051FinnGyldigeAdresser();
+    }
+    
+    @Bean
     ServiceRoutineResolver hentVergemaal() {
         return new S137HentVergemaal();
     }
@@ -163,11 +168,6 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver opphosEgenAnsatt() {
         return new OpphørEgenAnsatt();
-    }
-    
-    @Bean
-    ServiceRoutineResolver finnGyldigeAdresser() {
-        return new S051FinnGyldigeAdresser();
     }
     
     @Bean

@@ -51,6 +51,7 @@ public class HentGyldigeAdresserServiceTest {
         
         Mockito.verify(tpsRequestSender).sendTpsRequest(captor.capture(), any());
         TpsFinnGyldigeAdresserRequest actualRequest = captor.getValue();
+        
         assertEquals(new Integer(ANTALL), actualRequest.getMaxRetur());
         assertEquals(KOMMUNE_NR, actualRequest.getKommuneNrsok());
         assertEquals(POST_NR, actualRequest.getPostNrsok());
@@ -69,6 +70,7 @@ public class HentGyldigeAdresserServiceTest {
         
         verify(tpsRequestSender).sendTpsRequest(captor.capture(), any());
         TpsFinnGyldigeAdresserRequest actualRequest = captor.getValue();
+        
         assertEquals(new Integer(ANTALL), actualRequest.getMaxRetur());
         assertEquals(Typesok.F, actualRequest.getTypesok());
         assertEquals(null, actualRequest.getAdresseNavnsok());
