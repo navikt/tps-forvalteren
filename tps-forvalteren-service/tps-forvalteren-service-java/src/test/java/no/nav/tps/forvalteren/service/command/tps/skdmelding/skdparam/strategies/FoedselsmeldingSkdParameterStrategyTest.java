@@ -127,7 +127,10 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Test
     public void createFoedselsmeldingParamsWithGateadresse() {
-        when(adresseRepository.getAdresseByPersonId(0101L)).thenReturn(gateadresse);
+        gateadresse.setPostnr("1234");
+
+        when(adresseRepository.getAdresseByPersonId(anyLong())).thenReturn(gateadresse);
+
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
@@ -136,5 +139,6 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         assertThat(result.getKommunenummer(), is("0341"));
         assertThat(result.getGateGaard(), is("12345"));
         assertThat(result.getAdressetype(), is("O"));
+        assertThat(result.getPostnummer(), is("1234"));
     }
 }

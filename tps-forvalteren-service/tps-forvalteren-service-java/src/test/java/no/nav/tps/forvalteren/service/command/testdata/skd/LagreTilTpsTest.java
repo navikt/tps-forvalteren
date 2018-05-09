@@ -7,6 +7,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 
 import java.util.ArrayList;
@@ -42,9 +43,13 @@ public class LagreTilTpsTest {
 	@Mock
 	private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
 	@Mock
+	private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+	@Mock
 	private CreateRelasjoner createRelasjoner;
 	@Mock
 	private CreateDoedsmeldinger createDoedsmeldinger;
+	@Mock
+	private CreateFoedselsmeldinger createFoedselsmeldinger;
 	@Mock
 	private SkdMeldingResolver innvandring;
 	@Mock
@@ -86,6 +91,7 @@ public class LagreTilTpsTest {
 		when(findPersonsNotInEnvironments.execute(personsInGruppe, environments)).thenReturn(persons);
 		when(skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER)).thenReturn(innvandringsMeldinger);
 		when(createRelasjoner.execute(persons, ADD_HEADER)).thenReturn(relasjonsMeldinger);
+		when(findPersonerSomSkalHaFoedselsmelding.execute(personsInGruppe)).thenReturn(persons);
 		when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
 		when(innvandring.resolve()).thenReturn(skdRequestMeldingDefinition);
 	}
@@ -99,6 +105,7 @@ public class LagreTilTpsTest {
 		verify(createRelasjoner).execute(persons, ADD_HEADER);
 		verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
 		verify(innvandring).resolve();
+		verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);
 		verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
 
 	}

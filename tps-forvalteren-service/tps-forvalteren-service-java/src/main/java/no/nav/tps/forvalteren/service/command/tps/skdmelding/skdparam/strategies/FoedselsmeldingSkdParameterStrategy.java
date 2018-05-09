@@ -43,6 +43,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
         addSkdParametersExtractedFromForeldre(skdMeldingTrans1, person);
         addDefaultParam(skdMeldingTrans1);
+        personRepository.save(person);
 
         return skdMeldingTrans1;
     }
@@ -113,11 +114,12 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             skdMeldingTrans1.setFarsPersonnummer(forelderFar.getIdent().substring(6, 11));
 
         }
-        addAdresseParamsExtractedFromForelder(skdMeldingTrans1, forelderMor);
+        person.setEtternavn(forelderMor.getEtternavn());
+        addAdresseParamsExtractedFromForelder(skdMeldingTrans1, forelderMor, person);
 
     }
 
-    private void addAdresseParamsExtractedFromForelder(SkdMeldingTrans1 skdMeldingTrans1, Person forelder) {
+    private void addAdresseParamsExtractedFromForelder(SkdMeldingTrans1 skdMeldingTrans1, Person forelder, Person person) {
         Gateadresse adresse = adresseRepository.getAdresseByPersonId(forelder.getId());
 
         if (adresse != null) {
@@ -127,6 +129,8 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             skdMeldingTrans1.setPostnummer(adresse.getPostnr());
             skdMeldingTrans1.setHusBruk(adresse.getHusnummer());
             skdMeldingTrans1.setGateGaard(adresse.getGatekode());
+
+            updateAdresse(adresse, person);
 
             skdMeldingTrans1.setAdressetype("O");
         } else {
@@ -140,5 +144,20 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setTranstype("1");
         skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_FOEDSELSMELDING);
         skdMeldingTrans1.setStatuskode("1");
+    }
+
+    private void updateAdresse(Gateadresse adresse, Person person) {
+        Gateadresse gateAdr = adresseRepository.getAdresseByPersonId(person.getId());
+
+        gateAdr.setAdresse(adresse.getAdresse());
+        gateAdr.setHusnummer(adresse.getHusnummer());
+        gateAdr.setGatekode(adresse.getGatekode());
+        gateAdr.setFlyttedato(person.getRegdato());
+        gateAdr.setPostnr(adresse.getPostnr());
+        gateAdr.setKommunenr(adresse.getKommunenr());
+
+        person.setBoadresse(gateAdr);
+
+        adresseRepository.save(gateAdr);
     }
 }
