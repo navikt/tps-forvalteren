@@ -16,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.google.common.base.Charsets;
 
 import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -35,9 +36,9 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     protected PersonRepository personRepository;
     private List<NameValuePair> params = new ArrayList<>();
     
-    protected List<Person> constructTestpersonsInTpsfDatabase() {
-        Person person = personRepository.save(Person.builder().identtype("per").kjonn('m').regdato(LocalDateTime.now()).fornavn("lol").etternavn("sdf").ident(IDENT1).statsborgerskap("nor").build());
-        Person person2 = personRepository.save(Person.builder().identtype("per").kjonn('k').regdato(LocalDateTime.now()).fornavn("fnavn").etternavn("etternavn2").ident(IDENT2).statsborgerskap("nor").build());
+    protected List<Person> constructTestpersonsInTpsfDatabase(Gruppe gruppe) {
+        Person person = personRepository.save(Person.builder().gruppe(gruppe).identtype("per").kjonn('m').regdato(LocalDateTime.now()).fornavn("lol").etternavn("sdf").ident(IDENT1).statsborgerskap("nor").build());
+        Person person2 = personRepository.save(Person.builder().gruppe(gruppe).identtype("per").kjonn('k').regdato(LocalDateTime.now()).fornavn("fnavn").etternavn("etternavn2").ident(IDENT2).statsborgerskap("nor").build());
         return Arrays.asList(person, person2);
     }
     

@@ -51,7 +51,7 @@ public abstract class AbstractRsProviderComponentTest {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
     }
-    protected String getRequestBody(String path) {
+    protected String getResourceFileContent(String path) {
         URL fileUrl = Resources.getResource(path);
         try {
             return Resources.toString(fileUrl, StandardCharsets.UTF_8);

@@ -22,7 +22,7 @@ public class DeletePersonsCompTest extends  AbstractTestdataControllerComponentT
      */
     @Test
     public void shouldDeletePersons() throws Exception {
-        List ids= constructTestpersonsInTpsfDatabase()
+        List ids= constructTestpersonsInTpsfDatabase(null)
                 .stream().map(Person::getId).collect(Collectors.toList());
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8).content("{\"ids\":"+ids.toString()+"}")).andExpect(status().isOk());
     
