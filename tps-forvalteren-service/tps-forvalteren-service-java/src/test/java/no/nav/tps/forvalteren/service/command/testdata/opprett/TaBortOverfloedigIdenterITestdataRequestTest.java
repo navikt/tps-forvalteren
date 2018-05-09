@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTaBortOverfloedigIdenterITestdataRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,7 @@ public class TaBortOverfloedigIdenterITestdataRequestTest {
     private String dummyIdent3 = "dummy3";
 
     @InjectMocks
-    private DefaultTaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;
+    private TaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;
 
     @Before
     public void setup() {

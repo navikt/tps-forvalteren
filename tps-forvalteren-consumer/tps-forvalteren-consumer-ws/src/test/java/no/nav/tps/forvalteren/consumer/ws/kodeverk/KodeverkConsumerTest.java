@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultKodeverkConsumerTest {
+public class KodeverkConsumerTest {
     private static final String NAVN = "navn";
 
     @Mock
@@ -52,7 +52,7 @@ public class DefaultKodeverkConsumerTest {
     private List<no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.finnkodeverkliste.Kodeverk> listeKodeverkMock;
 
     @InjectMocks
-    private DefaultKodeverkConsumer consumer;
+    private KodeverkConsumer consumer;
 
     @Before
     public void before() throws Exception {

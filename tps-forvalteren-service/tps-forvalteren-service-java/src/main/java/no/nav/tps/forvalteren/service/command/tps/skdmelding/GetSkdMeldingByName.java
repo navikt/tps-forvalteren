@@ -1,12 +1,21 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@FunctionalInterface
-public interface GetSkdMeldingByName {
+@Service
+public class GetSkdMeldingByName {
 
-    Optional<TpsSkdRequestMeldingDefinition> execute(String skdMeldingName);
+    @Autowired
+    private GetTpsSkdmeldingService getTpsSkdmeldingService;
 
+    public Optional<TpsSkdRequestMeldingDefinition> execute(String skdMeldingName) {
+        return getTpsSkdmeldingService.execute()
+                .stream()
+                .filter(request -> request.getName().equalsIgnoreCase(skdMeldingName))
+                .findFirst();
+    }
 }
