@@ -86,7 +86,13 @@
             <artifactId>tps-forvalteren-domain-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+        <!-- Tjenestegrensesnitt som konsumeres -->
+		<dependency>
+			<groupId>no.nav.serviceRoutine.tjenestegrensesnitt</groupId>
+			<artifactId>TPS-S051</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>jaxws</classifier>
+		</dependency>
     </dependencies>
     
 </project>
