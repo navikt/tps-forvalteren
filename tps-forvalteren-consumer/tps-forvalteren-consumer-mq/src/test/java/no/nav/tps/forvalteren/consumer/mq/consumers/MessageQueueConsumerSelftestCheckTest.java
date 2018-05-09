@@ -15,7 +15,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultMessageQueueConsumerSelftestCheckTest {
+public class MessageQueueConsumerSelftestCheckTest {
 
     @InjectMocks
     private DefaultMessageQueueConsumerSelftestCheck selftestCheck;

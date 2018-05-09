@@ -27,10 +27,9 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.springframework.test.context.TestPropertySource;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultTpsRequestServiceTest {
+public class TpsRequestServiceTest {
 
     private static final String ENVIRONMENT = "environment";
 
@@ -57,7 +56,7 @@ public class DefaultTpsRequestServiceTest {
     private TransformationService transformationService;
 
     @InjectMocks
-    private DefaultTpsRequestService defaultGetTpsRequestService;
+    private TpsRequestService defaultGetTpsRequestService;
 
     @Before
     public void setUp() throws Exception {

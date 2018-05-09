@@ -2,19 +2,15 @@ package no.nav.tps.forvalteren.consumer.mq.consumers;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.mq.jms.MQQueue;
-import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.Connection;
-import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -23,14 +19,8 @@ import javax.jms.TextMessage;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Quite thorough testing, but there is a lot to keep in mind during the message exchange
@@ -38,7 +28,7 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultMessageQueueConsumerTest {
+public class MessageQueueConsumerTest {
 
     private static final String REQUEST_QUEUE_NAME  = "requestQueueName";
 
@@ -72,7 +62,7 @@ public class DefaultMessageQueueConsumerTest {
     private TextMessage textMessageMock;
 
     @InjectMocks
-    private DefaultMessageQueueConsumer messageQueueService = new DefaultMessageQueueConsumer(REQUEST_QUEUE_NAME, null);
+    private MessageQueueConsumer messageQueueService = new MessageQueueConsumer(REQUEST_QUEUE_NAME, null);
 
     @Test
     public void altErBra(){
