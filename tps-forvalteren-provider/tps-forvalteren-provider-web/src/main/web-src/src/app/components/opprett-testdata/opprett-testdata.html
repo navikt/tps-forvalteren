@@ -117,8 +117,26 @@
                     </div>
                     <div layout="row" flex>
                         <div flex></div>
+                        <md-input-container class="tps-vk-input-container" flex="15">
+                            <md-tooltip>Valgfritt: Velg ingen spesifikasjoner, kommunenummer eller postnummer som kriterium for adressen</md-tooltip>
+                            <label>Adresse-kriterium</label>
+                            <md-select ng-model="adresseNrInfo.nummertype" class="md-no-underline"
+                                       ng-change="endret($index + pager.startIndex)">
+                                <md-option selected value="Uspesifisert">Uspesifisert</md-option>
+                                <md-option value="KOMMUNENR">KOMMUNENR</md-option>
+                                <md-option value="POSTNR">POSTNR</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <postnummer postnummer="adresseNrInfo.nummer" endret-fn="endret" class="autocomplete"
+                                    index="$index + pager.startIndex" paakrevet=false ng-if="adresseNrInfo.nummertype == 'POSTNR'">
+                        </postnummer>
+
+                        <kommunenr kommunenr="adresseNrInfo.nummer" endret-fn="endret" class="autocomplete"
+                                   index="$index + pager.startIndex" paakrevet=false ng-if="adresseNrInfo.nummertype == 'KOMMUNENR'">
+                        </kommunenr>
+
                         <md-input-container class="tps-vk-input-container" style="padding-top: 15px">
-                            <md-tooltip>Med adresse: SANNERGATA 2, 0557, 16188, 0301 </md-tooltip>
+                            <md-tooltip>Med adresse: Tilfeldig adresse valgt fra TPS sitt utvalg</md-tooltip>
                             <md-checkbox ng-model="withAdresse" aria-label="Legg til adresse på alle personer">
                                 Med adresse
                             </md-checkbox>

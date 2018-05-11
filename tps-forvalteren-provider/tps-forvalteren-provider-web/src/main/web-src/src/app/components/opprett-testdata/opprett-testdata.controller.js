@@ -47,7 +47,8 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                 $scope.showSpinner = true;
                 
                 fixDates();
-                testdataService.opprettTestpersoner(gruppeId, $scope.kriterier, $scope.withAdresse).then(
+                adresseinfo = $scope.adresseNrInfo!=null && $scope.adresseNrInfo.nummertype == "Uspesifisert"? null : $scope.adresseNrInfo;
+                testdataService.opprettTestpersoner(gruppeId, $scope.kriterier, $scope.withAdresse, adresseinfo).then(
                     function (result) {
                         $scope.showSpinner = false;
                         opprettComplete();
