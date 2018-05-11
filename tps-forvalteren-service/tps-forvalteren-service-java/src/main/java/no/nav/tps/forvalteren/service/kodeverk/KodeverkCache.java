@@ -19,6 +19,9 @@ public class KodeverkCache {
     private Map<String, Kode> kodeverkPostnummerMap = new HashMap<>();
     private List<Kode> kodeverkPostnummerKoder = new ArrayList<>();
 
+    private Map<String, Kode> kodeverkLandkoderMap = new HashMap<>();
+    private List<Kode> kodeverkLandkoder = new ArrayList<>();
+
     public void clearKommuneCache(){
         kodeverkKommunerMap.clear();
         kodeverkKommunerKoder.clear();
@@ -35,5 +38,14 @@ public class KodeverkCache {
 
     public void setKodeverkPostnummerKoder(List<Kode> postnummerKoder){
         kodeverkPostnummerKoder = postnummerKoder;
+    }
+
+    public void clearLandkoderCache(){
+        kodeverkLandkoderMap.clear();
+        kodeverkLandkoder.clear();
+    }
+    
+    public void setKodeverkLandkoder(List<Kode> kodeverkLandkoder) {
+        this.kodeverkLandkoder = kodeverkLandkoder;
     }
 }

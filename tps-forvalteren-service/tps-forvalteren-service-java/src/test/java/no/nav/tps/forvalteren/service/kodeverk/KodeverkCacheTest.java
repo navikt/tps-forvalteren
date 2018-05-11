@@ -53,5 +53,25 @@ public class KodeverkCacheTest {
         assertNull(kodeverkCache.getKodeverkPostnummerMap().get("test"));
     }
 
+  @Test
+    public void testAtClearLandkoderCacheTommerBaadeMapOgListeOverLandkoder(){
+
+        KodeverkCache kodeverkCache = new KodeverkCache();
+
+        List<Kode> listeKode = new ArrayList<>();
+        listeKode.add(new Kode());
+        kodeverkCache.setKodeverkLandkoder(listeKode);
+
+        kodeverkCache.getKodeverkLandkoderMap().put("test", new Kode());
+
+        assertThat(kodeverkCache.getKodeverkLandkoder(), hasSize(1));
+        assertNotNull(kodeverkCache.getKodeverkLandkoderMap().get("test"));
+
+        kodeverkCache.clearLandkoderCache();
+
+        assertThat(kodeverkCache.getKodeverkLandkoder(), hasSize(0));
+        assertNull(kodeverkCache.getKodeverkLandkoderMap().get("test"));
+    }
+
 
 }

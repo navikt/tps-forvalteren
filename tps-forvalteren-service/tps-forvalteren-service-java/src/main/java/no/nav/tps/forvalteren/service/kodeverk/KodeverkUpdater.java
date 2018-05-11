@@ -18,6 +18,7 @@ public class KodeverkUpdater {
     public void updateTpsfKodeverkCache() {
         updateTpsfKommuneNummerCache();
         updateTpsfPostNummerCache();
+        updateTpsfLandkoderCache();
     }
 
     private void updateTpsfKommuneNummerCache() {
@@ -44,6 +45,20 @@ public class KodeverkUpdater {
 
             for (Kode kode : remoteKodeverkPostnummer.getKoder()) {
                 kodeverkCache.getKodeverkPostnummerMap().put(kode.getNavn(), kode);
+            }
+        }
+    }
+    
+    private void updateTpsfLandkoderCache() {
+        Kodeverk remoteKodeverkLandkoder = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_LANDKODER_NAVN);
+
+        if (remoteKodeverkLandkoder != null) {
+
+            kodeverkCache.clearLandkoderCache();
+            kodeverkCache.setKodeverkLandkoder(remoteKodeverkLandkoder.getKoder());
+
+            for (Kode kode : remoteKodeverkLandkoder.getKoder()) {
+                kodeverkCache.getKodeverkLandkoderMap().put(kode.getNavn(), kode);
             }
         }
     }

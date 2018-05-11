@@ -4,6 +4,7 @@ import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
 import no.nav.tps.forvalteren.service.kodeverk.KodeverkCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,14 +19,19 @@ public class KodeverkController {
     @Autowired
     private KodeverkCache kodeverkCache;
 
-    @RequestMapping(value = "/knr", method = RequestMethod.GET)
+    @GetMapping(value = "/knr")
     public List<Kode> getKodeverkKommuner() {
         return kodeverkCache.getKodeverkKommunerKoder();
     }
 
-    @RequestMapping(value = "/postnummer", method = RequestMethod.GET)
+    @GetMapping(value = "/postnummer")
     public List<Kode> getKodeverkPostnummer() {
         return kodeverkCache.getKodeverkPostnummerKoder();
+    }
+
+    @GetMapping(value = "/landkoder")
+    public List<Kode> getKodeverkLandkoder() {
+        return kodeverkCache.getKodeverkLandkoder();
     }
 
 }
