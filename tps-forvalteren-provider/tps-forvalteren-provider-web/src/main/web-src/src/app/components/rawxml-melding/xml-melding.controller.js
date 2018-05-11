@@ -107,17 +107,17 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             function hentAlleMiljoerOgKoer() {
 
                 xmlmeldingService.hentKoer().then(function (result) {
-                        var environments = [];
-                        $scope.tpsMessageQueueList = result.data;
+                    var environments = [];
+                    $scope.tpsMessageQueueList = result.data;
 
-                        $scope.tpsMessageQueueList.forEach(function (obj) {
-                            $scope.displayQueues.push(obj.koNavn);
-                            environments.push(obj.miljo);
-                        });
+                    $scope.tpsMessageQueueList.forEach(function (obj) {
+                        $scope.displayQueues.push(obj.koNavn);
+                        environments.push(obj.miljo);
+                    });
 
-                        environments = removeDuplicateEnvironments();
+                    environments = removeDuplicateEnvironments();
 
-                        $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
+                    $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
                 });
             }
 

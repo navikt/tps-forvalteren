@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultSetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class SetNameOnPersonsServiceTest {
 
-    private DefaultSetNameOnPersonsService command;
+    private SetNameOnPersonsService command;
 
     @Captor
     private ArgumentCaptor<String> stringCaptor;
@@ -31,7 +31,7 @@ public class SetNameOnPersonsServiceTest {
 
     @Before
     public void before() {
-        command = new DefaultSetNameOnPersonsService();
+        command = new SetNameOnPersonsService();
         personMock1 = mock(Person.class);
         personMock2 = mock(Person.class);
 
