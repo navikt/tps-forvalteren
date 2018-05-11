@@ -280,6 +280,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         buffer.push(prepLagrePerson($scope.personer[i]));
                     }
                 }
+                console.log(buffer)
                 testdataService.oppdaterTestpersoner(buffer).then(
                     function (result) {
                         for (var i = 0; i < $scope.personer.length; i++) {

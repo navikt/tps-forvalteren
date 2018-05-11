@@ -48,17 +48,9 @@
         </div>
     </md-input-container>
 
-    <md-input-container class="tps-vk-input-container" flex="15">
-        <md-tooltip>Statsborgerskap</md-tooltip>
-        <label>Statsborgerskap</label>
-        <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
-               ng-model="person.statsborgerskap" ng-change="endret($index + pager.startIndex)"/>
-        <div ng-messages="requestForm.statsborgerskap.$error"
-             ng-show="requestForm.statsborgerskap.$dirty">
-            <div ng-message="minlength">Verdi har for få tegn</div>
-            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
-        </div>
-    </md-input-container>
+    <landkoder landkoden="person.statsborgerskap" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex">
+    </landkoder>
 
     <md-input-container class="tps-vk-input-container" flex="25">
         <md-tooltip>Spesialregister</md-tooltip>
