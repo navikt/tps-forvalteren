@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
+
 import no.nav.tps.forvalteren.domain.service.tps.Response;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
@@ -25,10 +27,10 @@ public class TpsRequestSender {
     @Autowired
     private TpsRequestService tpsRequestService;
 
-    public TpsServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context){
+    public TpsServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context, long timeout){
         try {
             TpsServiceRoutineDefinitionRequest serviceRoutine = findServiceRoutineByName.execute(request.getServiceRutinenavn()).get();
-            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, context);
+            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, context, timeout);
             return rsTpsResponseMappingUtils.convertToTpsServiceRutineResponse(response);
 
         } catch (HttpForbiddenException ex){
@@ -40,5 +42,9 @@ public class TpsRequestSender {
         }
 
         //TODO kan kaste SOAP Exception ogsaa. Fra EgenAnsattConsumer.
+    }
+    
+    public TpsServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context){
+        return sendTpsRequest(request, context,DEFAULT_TIMEOUT);
     }
 }

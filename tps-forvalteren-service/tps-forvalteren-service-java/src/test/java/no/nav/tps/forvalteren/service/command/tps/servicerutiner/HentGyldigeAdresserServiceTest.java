@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,14 +43,14 @@ public class HentGyldigeAdresserServiceTest {
     public void setup() {
         user = new User("name", "username");
         when(userContextHolder.getUser()).thenReturn(user);
-        when(tpsRequestSender.sendTpsRequest(any(), any())).thenReturn(new TpsServiceRoutineResponse("<xml>", new Object()));
+        when(tpsRequestSender.sendTpsRequest(any(), any(), anyLong())).thenReturn(new TpsServiceRoutineResponse("<xml>", new Object()));
     }
     
     @Test
     public void shouldHentTilfeldigAdresse() {
         hentGyldigeAdresserService.hentTilfeldigAdresse(ANTALL, KOMMUNE_NR, POST_NR);
         
-        Mockito.verify(tpsRequestSender).sendTpsRequest(captor.capture(), any());
+        Mockito.verify(tpsRequestSender).sendTpsRequest(captor.capture(), any(),anyLong());
         TpsFinnGyldigeAdresserRequest actualRequest = captor.getValue();
         
         assertEquals(new Integer(ANTALL), actualRequest.getMaxRetur());
@@ -68,7 +69,7 @@ public class HentGyldigeAdresserServiceTest {
     public void shouldFinnGyldigAdresse() {
         hentGyldigeAdresserService.finnGyldigAdresse(TpsFinnGyldigeAdresserRequest.builder().typesok(Typesok.F).maxRetur(ANTALL).build());
         
-        verify(tpsRequestSender).sendTpsRequest(captor.capture(), any());
+        verify(tpsRequestSender).sendTpsRequest(captor.capture(), any(), anyLong());
         TpsFinnGyldigeAdresserRequest actualRequest = captor.getValue();
         
         assertEquals(new Integer(ANTALL), actualRequest.getMaxRetur());

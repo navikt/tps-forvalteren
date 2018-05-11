@@ -42,7 +42,7 @@ public class TpsRequestSenderTest {
 
     @InjectMocks
     private TpsRequestSender tpsRequestSender;
-
+    private long timeout = 5000;
     @Test
     public void sendTpsRequest() throws Exception {
         Response response = mock(Response.class);
@@ -50,11 +50,11 @@ public class TpsRequestSenderTest {
 
         when(tpsServiceRoutineRequestMock.getServiceRutinenavn()).thenReturn("navn");
         when(findServiceRoutineByNameMock.execute(anyString())).thenReturn(tpsServiceRoutineDefinition);
-        when(tpsRequestServiceMock.executeServiceRutineRequest(tpsServiceRoutineRequestMock, serviceRoutineDefinitionMock, contextMock)).thenReturn(response);
+        when(tpsRequestServiceMock.executeServiceRutineRequest(tpsServiceRoutineRequestMock, serviceRoutineDefinitionMock, contextMock, timeout)).thenReturn(response);
 
         tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequestMock,contextMock);
 
-        verify(tpsRequestServiceMock).executeServiceRutineRequest(tpsServiceRoutineRequestMock, serviceRoutineDefinitionMock, contextMock);
+        verify(tpsRequestServiceMock).executeServiceRutineRequest(tpsServiceRoutineRequestMock, serviceRoutineDefinitionMock, contextMock, timeout);
         verify(utilsMock).convertToTpsServiceRutineResponse(response);
     }
 
