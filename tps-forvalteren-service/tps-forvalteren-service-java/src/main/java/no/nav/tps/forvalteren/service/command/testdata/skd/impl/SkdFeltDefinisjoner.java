@@ -156,7 +156,7 @@ public enum SkdFeltDefinisjoner {
     SAKSTYPE("sakstype", "   ", 141, 3, 1215, 1217),
     VEDTAKSDATO("vedtaksdato", "        ", 142, 8, 1218, 1225),
     INTERN_VERGE_ID("internVergeId", "0000000", 143, 7, 1226, 1232),
-    VERGE_FNR("vergeFnrDnr", "00000000000", 144, 11, 1233, 1243),
+    VERGE_FNR("vergeFnr", "00000000000", 144, 11, 1233, 1243),
     VERGETYPE("vergetype", "   ", 145, 3, 1244, 1246),
     MANDATTYPE("mandattype", "   ", 146, 3, 1247, 1249),
     MANDAT_TEKST("mandatTekst", WHITESPACE_100_STK, 147, 100, 1250, 1349),

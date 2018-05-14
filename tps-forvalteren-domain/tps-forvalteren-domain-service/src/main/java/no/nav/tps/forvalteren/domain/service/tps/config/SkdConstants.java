@@ -61,7 +61,7 @@ public class SkdConstants {
     public static final String SAKSTYPE = "saksType";
     public static final String VEDTAKSDATO = "vedtaksDato";
     public static final String INTERN_VERGE_ID = "internVergeId";
-    public static final String VERGE_FNR = "vergeFnrDnr";
+    public static final String VERGE_FNR = "vergeFnr";
     public static final String VERGETYPE = "vergeType";
     public static final String MANDATTYPE = "mandatType";
     public static final String MANDATTEKST = "mandatTekst";

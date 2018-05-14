@@ -12,9 +12,11 @@ public interface VergemaalRepository extends Repository<Vergemaal, Long> {
 
     List<Vergemaal> findAllByIdent(String ident);
 
-    void deleteByIdIn(Set<Long> ids);
+    Vergemaal findBySaksidAndInternVergeId(String saksId, String InternVergeId);
 
     void save(Vergemaal vergemaal);
+
+    void deleteById(Long id);
 
     void deleteAll();
 }

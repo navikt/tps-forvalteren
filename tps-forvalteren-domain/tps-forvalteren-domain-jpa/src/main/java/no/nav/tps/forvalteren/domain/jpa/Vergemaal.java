@@ -51,8 +51,8 @@ public class Vergemaal {
     @Column(name = "INTERN_VERGE_ID", nullable = false)
     private String internVergeId;
 
-    @JoinColumn(name = "VERGE_FNR")
-    private String vergeFnrDnr;
+    @JoinColumn(name = "VERGE_FNR", referencedColumnName = "IDENT")
+    private String vergeFnr;
 
     @Column(name = "VERGETYPE", length = 3)
     private String vergetype;
@@ -60,7 +60,7 @@ public class Vergemaal {
     @Column(name = "MANDATTYPE", length = 3)
     private String mandattype;
 
-    @Column(name = "MANDATTEKST")
-    private String mandatTekst;
+    @Column(name = "MANDATTEKST", length = 100)
+    private String mandattekst;
 
 }
