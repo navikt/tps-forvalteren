@@ -16,7 +16,9 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.unmarshaller.TpsServiceRutineS051Unmarshaller;
-import no.nav.tps.s051.*;
+import no.nav.tps.s051.AdresseData;
+import no.nav.tps.s051.StatusFraTPS;
+import no.nav.tps.s051.TpsAdresseData;
 
 @Service
 public class SetRandomAdresseOnPersons {

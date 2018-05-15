@@ -5,7 +5,7 @@ angular.module('tps-forvalteren.service')
         var self = this;
 
         self.isArray = function(variable){
-            return Object.prototype.toString.call(variable) == '[object Array]';
+            return Object.prototype.toString.call(variable) === '[object Array]';
         };
 
         self.getCurrentFormattedDate = function() {
@@ -171,7 +171,6 @@ angular.module('tps-forvalteren.service')
                 }
             };
 
-            //var errorMsg = error.data.message;
             var errorObj = errorMessages[error.status];
             $mdDialog.show(
                 $mdDialog.alert()
