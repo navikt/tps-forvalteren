@@ -57,7 +57,7 @@ public class SetRandomAdresseOnPersons {
     
     private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {
         if (!"00".equals(svarStatus.getReturStatus()) && !Arrays.asList("S051002I","S051003I").contains(svarStatus.getReturMelding())) {
-            throw new RuntimeException(svarStatus.getUtfyllendeMelding());
+            throw new TpsfFunctionalException(svarStatus.getUtfyllendeMelding());
         }
     }
     

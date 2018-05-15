@@ -128,6 +128,15 @@ angular.module('tps-forvalteren.service')
             }
         };
 
+        self.showAlertDialog = function (melding, title) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .title(title)
+                    .textContent(melding)
+                    .ariaLabel(melding)
+                    .ok('OK'));
+        };
+
         self.showAlertError = function (error) {
             var errorMessages = {
                 400: {

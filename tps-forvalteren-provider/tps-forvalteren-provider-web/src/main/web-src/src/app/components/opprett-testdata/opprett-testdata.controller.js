@@ -56,7 +56,12 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                     function (error) {
                         $scope.editMode = true;
                         $scope.showSpinner = false;
-                        utilsService.showAlertError(error);
+                        debugger;
+                        if("Ingen adresser funnet"==error.data.message) {
+                            utilsService.showAlertDialog("S051 TPS Info: Ingen adresser funnet", "Finn gyldig adresse");
+                        } else {
+                            utilsService.showAlertError(error);
+                        }
                     }
                 );
             };

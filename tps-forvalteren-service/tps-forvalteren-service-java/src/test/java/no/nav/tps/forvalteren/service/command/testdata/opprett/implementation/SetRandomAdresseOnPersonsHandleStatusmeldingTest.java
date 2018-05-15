@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.s051.StatusFraTPS;
 import no.nav.tps.s051.SvarFraTPS;
@@ -59,7 +60,7 @@ public class SetRandomAdresseOnPersonsHandleStatusmeldingTest extends AbstractSe
      */
     @Test
     public void shouldThrowException() {
-        expectedException.expect(RuntimeException.class);
+        expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(utfyllendeMelding);
         
         setRandomAdresseOnPersons_AllMocks.execute(enPerson, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR, KOMMUNENR));

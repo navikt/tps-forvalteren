@@ -466,7 +466,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 gyldigAdresseService.finnGyldigAdresse(person.gateadresse).then(
                     function (result) {
                         if(result.data.response.status.kode!="00") {
-                            showAlertDialog(result);
+                            utilsService.showAlertDialog(result.data.response.status.utfyllendeMelding, "Finn gyldig adresse");
                         }
                         var responsAdresser = result.data.response.data1.adrData;
                         if(utilsService.isArray(responsAdresser)) {
@@ -479,17 +479,9 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                                 $scope.gyldigeAdresser[i].visningsnavn = createVisningsnavn($scope.gyldigeAdresser[i]);
                             }
 
-                        function showAlertDialog(result) {
-                            $mdDialog.show(
-                                $mdDialog.alert()
-                                    .title("Finn gyldig adresse")
-                                    .textContent(result.data.response.status.utfyllendeMelding)
-                                    .ariaLabel(result.data.response.status.utfyllendeMelding)
-                                    .ok('OK'));
-                        }
                     },
                     function (error) {
-                        utilsService.showAlertError(error);
+                            utilsService.showAlertError(error);
                     }
 
                 );
@@ -501,6 +493,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         + adresse.pnr + " "+adresse.psted + ", "
                         + adresse.knr + " " + adresse.knavn ;
                 }
+
             };
 
             $scope.updateAdresseGyldig = function (selectedGyldigAdresse, person) {
