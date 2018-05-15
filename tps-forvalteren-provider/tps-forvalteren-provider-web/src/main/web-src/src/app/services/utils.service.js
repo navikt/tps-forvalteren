@@ -4,6 +4,10 @@ angular.module('tps-forvalteren.service')
 
         var self = this;
 
+        self.isArray = function(variable){
+            return Object.prototype.toString.call(variable) == '[object Array]';
+        };
+
         self.getCurrentFormattedDate = function() {
             return moment().format('YYYY-MM-DD');
         };

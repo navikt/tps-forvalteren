@@ -3,6 +3,7 @@ angular.module('tps-forvalteren.service', []);
 require('./location.service');
 require('./session.service');
 require('./testdata.service');
+require('./adresse.service');
 require('./utils.service');
 require('./authentication.service');
 require('./header.service');

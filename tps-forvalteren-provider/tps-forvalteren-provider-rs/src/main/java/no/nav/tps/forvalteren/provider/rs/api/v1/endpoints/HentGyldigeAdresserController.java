@@ -42,7 +42,8 @@ public class HentGyldigeAdresserController {
     
     @ApiOperation(value = "Søk etter gyldige adresser i TPS", notes = "De query parametrene som ikke spesifiseres, følger default verdier. \n\r"
             + "Default verdier: typesok(F), visPostnr(J),alleSkrivevarianter(N),maxRetur(5),sortering(N). "
-            + "Gyldige adresser er default sortert på adressenavn(N). Typesøket er Fonetisk(F).")
+            + "Gyldige adresser er default sortert på adressenavn(N). Typesøket er Fonetisk(F).\n\r \n\r"
+            + " Hvis alleSkrivevarianter=J og visPostNr=J, så returneres KUN adresser som har postnr.")
     @GetMapping("/autocomplete")
     public TpsServiceRoutineResponse finnGyldigAdresse(
             @ModelAttribute FinnGyldigeAdresserRequestParam finnGyldigeAdresserRequestParam) {
