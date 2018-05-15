@@ -27,9 +27,12 @@ public class SetRandomAdresseOnPersonsWithAdresseNrInfoTest extends AbstractSetR
         });
     }
     
+    /**
+     * NÅR meldingen kalles med adresseNrInfo, SÅ skal kommunenr eller postnr eller ingen av dem settes som argumenter i servicen hentTilfeldigAdresse.
+     */
     @Test
     public void shouldSetCorrectAdresseNr() {
-        setRandomAdresseOnPersons.execute(persons, adresseNrInfo);
-        Mockito.verify(hentGyldigeAdresserService).hentTilfeldigAdresse(persons.size(), expectedKommunenummer, expectedPostnummer);
+        setRandomAdresseOnPersons.execute(enPerson, adresseNrInfo);
+        Mockito.verify(hentGyldigeAdresserServiceMock).hentTilfeldigAdresse(enPerson.size(), expectedKommunenummer, expectedPostnummer);
     }
 }

@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,20 @@ public class SetRandomAdresseOnPersons {
         }
         
         TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(persons.size(), kommuneNr, postNr);
-        List<AdresseData> adresseDataList = unmarshalTpsAdresseData(tpsServiceRoutineResponse).getTpsSvar().getAdresseDataS051().getAdrData();
+        final TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
+        throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
+      
+        List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
         
         for (int i = 0; i < persons.size(); i++) {
-            Gateadresse adresse = createGateAdresse(adresseDataList.get(i), persons.get(i));
+            Gateadresse adresse = createGateAdresse(adresseDataList.get(i % adresseDataList.size()), persons.get(i));
             persons.get(i).setBoadresse(adresse);
+        }
+    }
+    
+    private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {
+        if (!"00".equals(svarStatus.getReturStatus()) && !Arrays.asList("S051002I","S051003I").contains(svarStatus.getReturMelding())) {
+            throw new RuntimeException(svarStatus.getUtfyllendeMelding());
         }
     }
     

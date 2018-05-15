@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -29,16 +31,19 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
     static final String KOMMUNENR = "1571";
     
     TpsServiceRutineS051Unmarshaller unmarshaller = new TpsServiceRutineS051Unmarshaller();
-    URL tpsResponsUrl = Resources.getResource("serviceRutine/response/tilfeldigGyldigAdresse.xml");
-    List<Person> persons = Arrays.asList(aMalePerson().build());
-    
+    URL tpsResponsUrl = Resources.getResource("serviceRutine/response/tilfeldigGyldigAdresse_statusFlereAdresserFinnes.xml");
+    List<Person> enPerson;
+    List<Person> toPersoner;
     TpsServiceRoutineResponse tpsServiceRoutineResponse;
     
-    HentGyldigeAdresserService hentGyldigeAdresserService = mock(HentGyldigeAdresserService.class);
+    HentGyldigeAdresserService hentGyldigeAdresserServiceMock = mock(HentGyldigeAdresserService.class);
     
-    SetRandomAdresseOnPersons setRandomAdresseOnPersons = new SetRandomAdresseOnPersons(unmarshaller, hentGyldigeAdresserService);
+    SetRandomAdresseOnPersons setRandomAdresseOnPersons = new SetRandomAdresseOnPersons(unmarshaller, hentGyldigeAdresserServiceMock);
     
-    TpsServiceRoutineResponse createServiceRutineTpsResponse() throws IOException {
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    
+    TpsServiceRoutineResponse createServiceRutineTpsResponse(URL tpsResponsUrl) throws IOException {
         TpsServiceRoutineResponse tpsServiceRoutineResponse = new TpsServiceRoutineResponse();
         tpsServiceRoutineResponse.setXml(Resources.toString(tpsResponsUrl, StandardCharsets.UTF_8));
         return tpsServiceRoutineResponse;
@@ -46,8 +51,10 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
     
     @Before
     public void setup() throws IOException {
-        tpsServiceRoutineResponse = createServiceRutineTpsResponse();
-        when(hentGyldigeAdresserService.hentTilfeldigAdresse(eq(1), any(), any())).thenReturn(tpsServiceRoutineResponse);
+        enPerson = Arrays.asList(aMalePerson().build());
+        toPersoner = Arrays.asList(aMalePerson().build(),aMalePerson().build());
+        tpsServiceRoutineResponse = createServiceRutineTpsResponse(tpsResponsUrl);
+        when(hentGyldigeAdresserServiceMock.hentTilfeldigAdresse(eq(1), any(), any())).thenReturn(tpsServiceRoutineResponse);
     }
     
 }
