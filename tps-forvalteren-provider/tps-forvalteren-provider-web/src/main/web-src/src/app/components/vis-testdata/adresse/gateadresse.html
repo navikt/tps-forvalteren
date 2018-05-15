@@ -66,7 +66,7 @@
 </div>
 <div layout="row" layout-align="end" ng-if="person.boadresse.adressetype == 'GATE'">
     <md-input-container>
-        <md-select ng-model="selectedGyldigAdresse" aria-label="Velg en gyldig adresse"  class="vis-testdata-ctrl" ng-change="updateAdresseGyldig(selectedGyldigAdresse,person);">
+        <md-select ng-model="selectedGyldigAdresse" aria-label="Velg en gyldig adresse" placeholder="Velg en gyldig adresse" class="vis-testdata-ctrl" ng-change="updateAdresseGyldig(selectedGyldigAdresse,person);">
             <md-option ng-value="adresse" ng-repeat="adresse in gyldigeAdresser">{{adresse.visningsnavn}}</md-option>
         </md-select>
     </md-input-container>
