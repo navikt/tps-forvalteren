@@ -66,7 +66,7 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon(SLEKTSNAVN, WHITESPACE_50_STK, 10, 50, 46, 95));
         skdFelter.add(new SkdFeltDefinisjon(FORNAVN, WHITESPACE_50_STK, 11, 50, 96, 145));
         skdFelter.add(new SkdFeltDefinisjon(MELLOMNAVN, WHITESPACE_50_STK, 12, 50, 146, 195));
-        skdFelter.add(new SkdFeltDefinisjon("slekstnavnUgiftT", WHITESPACE_50_STK, 13, 50, 196, 245));
+        skdFelter.add(new SkdFeltDefinisjon("slekstnavnUgift", WHITESPACE_50_STK, 13, 50, 196, 245));
         skdFelter.add(new SkdFeltDefinisjon("forkortetNavn", WHITESPACE_25_STK, 14, 25, 246, 270));
         skdFelter.add(new SkdFeltDefinisjon("regDatoNavn", "00000000", 15, 8, 271, 278));
         skdFelter.add(new SkdFeltDefinisjon("foedekommLand", "    ", 16, 4, 279, 282));

@@ -20,18 +20,12 @@ public class OpprettVergemaal {
         Vergemaal vergemaal = mapper.map(rsVergemaal, Vergemaal.class);
         Vergemaal vergemaalIDB = vergemaalRepository.findBySaksidAndInternVergeId(vergemaal.getSaksid(), vergemaal.getInternVergeId());
 
-        if (vergemaalIDB == null) {
-            vergemaalRepository.save(vergemaal);
-        } else {
-            if (!sjekkOmVergemaalSkalSlettes(vergemaal)) {
+        if(vergemaalIDB != null){
+            if(!sjekkOmVergemaalSkalSlettes(vergemaal)){
                 vergemaal.setId(vergemaalIDB.getId());
-                vergemaalRepository.save(vergemaal);
-            } else {
-                vergemaalRepository.deleteById(vergemaalIDB.getId());
             }
-
         }
-
+        vergemaalRepository.save(vergemaal);
     }
 
     private boolean sjekkOmVergemaalSkalSlettes(Vergemaal vergemaal) {
@@ -40,8 +34,6 @@ public class OpprettVergemaal {
         if (vergemaal.getSakstype() != null)
             return false;
         if (vergemaal.getMandattype() != null)
-            return false;
-        if (vergemaal.getVergeFnr() != null)
             return false;
         if (vergemaal.getVergetype() != null)
             return false;

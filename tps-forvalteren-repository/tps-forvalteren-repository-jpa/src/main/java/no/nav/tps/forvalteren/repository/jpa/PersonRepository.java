@@ -19,6 +19,8 @@ public interface PersonRepository extends Repository<Person, Long> {
 
     Person findById(Long id);
 
+    Person findByIdent(String ident);
+
     List<Person> findAll();
     
     void deleteByGruppeId(Long gruppeId);

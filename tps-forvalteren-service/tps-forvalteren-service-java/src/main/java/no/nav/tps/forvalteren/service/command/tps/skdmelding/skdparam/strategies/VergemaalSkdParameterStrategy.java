@@ -1,46 +1,33 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import java.time.LocalDateTime;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.VergemaalSkdParametere;
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class VergemaalSkdParameterStrategy implements SkdParametersStrategy {
+@Service
+public class VergemaalSkdParameterStrategy {
 
     private static final String AARSAKSKODE_FOR_VERGEMAAL = "37";
     private static final String TRANSTYPE_FOR_VERGEMAAL = "1";
     private static final String TILDELINGSKODE_VERGEMAAL = "0";
-    Vergemaal vergemaal = null;
 
     @Autowired
-    private VergemaalRepository vergemaalRepository;
+    private PersonRepository personRepository;
 
-    @Override
-    public String hentTildelingskode() {
-        return TILDELINGSKODE_VERGEMAAL;
-    }
-
-    @Override
-    public boolean isSupported(SkdParametersCreator creator) {
-        return creator instanceof VergemaalSkdParametere;
-    }
-
-    @Override
-    public SkdMeldingTrans1 execute(Person person) {
+    public SkdMeldingTrans1 execute(Vergemaal vergemaal) {
 
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-        skdMeldingTrans1.setTildelingskode(hentTildelingskode());
+        skdMeldingTrans1.setTildelingskode(TILDELINGSKODE_VERGEMAAL);
+        Person person = personRepository.findByIdent(vergemaal.getIdent());
 
         addSkdParameterExtractedFromPerson(skdMeldingTrans1, person);
-
-        Vergemaal vergemaal = vergemaalRepository.findById(person.getId());
         addSkdParameterExtractedFromVergemaal(skdMeldingTrans1, vergemaal);
-
         addDefaultParam(skdMeldingTrans1);
 
         return skdMeldingTrans1;
@@ -56,18 +43,23 @@ public class VergemaalSkdParameterStrategy implements SkdParametersStrategy {
 
         skdMeldingTrans1.setMaskintid(hhMMss);
         skdMeldingTrans1.setMaskindato(yyyyMMdd);
+        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(LocalDateTime.now()));
 
     }
 
     private void addSkdParameterExtractedFromVergemaal(SkdMeldingTrans1 skdMeldingTrans1, Vergemaal vergemaal) {
 
-        String yyyyMMdd = ConvertDateToString.yyyyMMdd(vergemaal.getVedtaksdato());
+        String yyyyMMdd = "";
+
+        if (vergemaal.getVedtaksdato() != null) {
+            yyyyMMdd = ConvertDateToString.yyyyMMdd(vergemaal.getVedtaksdato());
+        }
 
         skdMeldingTrans1.setSaksid(vergemaal.getSaksid());
         skdMeldingTrans1.setEmbete(vergemaal.getEmbete());
         skdMeldingTrans1.setSakstype(vergemaal.getSakstype());
         skdMeldingTrans1.setVedtaksdato(yyyyMMdd);
-        skdMeldingTrans1.setInternVergeId(vergemaal.getInternVergeId());
+        skdMeldingTrans1.setInternVergeid(vergemaal.getInternVergeId());
 
         skdMeldingTrans1.setVergeFnrDnr(vergemaal.getVergeFnr());
         skdMeldingTrans1.setVergetype(vergemaal.getVergetype());

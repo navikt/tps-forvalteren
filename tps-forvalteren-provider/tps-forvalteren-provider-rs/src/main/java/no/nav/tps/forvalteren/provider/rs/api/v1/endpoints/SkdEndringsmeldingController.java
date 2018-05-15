@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import java.util.List;
+import javax.transaction.Transactional;
+
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -13,6 +16,8 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
@@ -24,20 +29,13 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
-
-import javax.transaction.Transactional;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 @Transactional
 @RestController
@@ -83,7 +81,6 @@ public class SkdEndringsmeldingController {
     @Autowired
     private GetLoggForGruppe getLoggForGruppe;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
@@ -92,7 +89,6 @@ public class SkdEndringsmeldingController {
         return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
@@ -101,7 +97,6 @@ public class SkdEndringsmeldingController {
         return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
@@ -110,7 +105,6 @@ public class SkdEndringsmeldingController {
         saveSkdEndringsmeldingGruppe.execute(gruppe);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
@@ -118,7 +112,6 @@ public class SkdEndringsmeldingController {
         deleteSkdEndringsmeldingGruppeById.execute(gruppeId);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMelding") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.POST)
@@ -126,7 +119,6 @@ public class SkdEndringsmeldingController {
         createSkdEndringsmeldingFromType.execute(gruppeId, rsNewSkdEndringsmelding);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMeldingerFromText") })
     @RequestMapping(value = "/gruppe/{gruppeId}/raw", method = RequestMethod.POST)
@@ -134,7 +126,6 @@ public class SkdEndringsmeldingController {
         createAndSaveSkdEndringsmeldingerFromText.execute(gruppeId, meldingerAsText);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteMeldinger") })
     @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
@@ -142,7 +133,6 @@ public class SkdEndringsmeldingController {
         deleteSkdEndringsmeldingByIdIn.execute(rsSkdEdnringsmeldingIdListe.getIds());
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updateMeldinger") })
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
@@ -150,7 +140,6 @@ public class SkdEndringsmeldingController {
         updateSkdEndringsmelding.execute(meldinger);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "convertMelding") })
     @RequestMapping(value = "/convertmelding", method = RequestMethod.POST)
@@ -159,7 +148,6 @@ public class SkdEndringsmeldingController {
         return new RsMeldingAsText(melding);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendToTps") })
     @RequestMapping(value = "/send/{skdMeldingGruppeId}", method = RequestMethod.POST)
@@ -167,7 +155,6 @@ public class SkdEndringsmeldingController {
         sendEndringsmeldingGruppeToTps.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
     @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)

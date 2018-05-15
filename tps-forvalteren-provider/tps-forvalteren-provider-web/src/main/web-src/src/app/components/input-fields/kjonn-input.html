@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Kjønn</label>
+    <md-select ng-model="formData.kjonn" placeholder="Kjønn">
+        <md-option>Blankt</md-option>
+        <md-option ng-repeat="val in selectValues.kjonn" ng-value="val">{{ val}}</md-option>
+    </md-select>
+</md-input-container>

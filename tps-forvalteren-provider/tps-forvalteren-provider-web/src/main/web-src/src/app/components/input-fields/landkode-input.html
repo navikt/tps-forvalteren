@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Landkode</label>
+    <input name="landKodeInput" md-maxlength="3"  ng-model="formData.landKode"/>
+    <div ng-messages="requestForm.landKodeInput.$error" ng-show="requestForm.landKodeInput.$touched">
+        <div ng-message="md-maxlength">Max lengde er 3</div>
+    </div>
+</md-input-container>

@@ -1,9 +1,16 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans2;
+import no.nav.tps.forvalteren.service.command.testdata.utils.UnmarshalSkdMelding;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +32,8 @@ public class CreateAndSaveSkdEndringsmeldingerFromTextTest {
 
     @Mock
     private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
+    @Mock
+    private UnmarshalSkdMelding unmarshalSkdMelding;
 
     @InjectMocks
     private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
@@ -32,8 +41,10 @@ public class CreateAndSaveSkdEndringsmeldingerFromTextTest {
     @Mock
     private RsRawMeldinger rawMeldinger;
     
-    @Mock
-    private List<String> meldinger;
+    SkdMeldingTrans2 melding = new SkdMeldingTrans2("some message");
+    private List<SkdMelding> meldinger = Arrays.asList(melding);
+    
+    private List<String > meldingerString = Arrays.asList(melding.getSkdMelding());
     
     @Mock
     private List<RsMeldingstype> rsMeldingstyper;
@@ -42,8 +53,9 @@ public class CreateAndSaveSkdEndringsmeldingerFromTextTest {
     
     @Before
     public void setup() {
-        when(splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw())).thenReturn(meldinger);
+        when(splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw())).thenReturn(meldingerString);
         when(createMeldingWithMeldingstype.execute(meldinger)).thenReturn(rsMeldingstyper);
+        when(unmarshalSkdMelding.unmarshalMeldingUtenHeader(anyString())).thenReturn(melding);
     }
     
     @Test

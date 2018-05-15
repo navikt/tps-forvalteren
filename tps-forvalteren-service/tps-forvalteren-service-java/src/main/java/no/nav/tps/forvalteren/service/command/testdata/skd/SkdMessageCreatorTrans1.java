@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +24,32 @@ public class SkdMessageCreatorTrans1 {
 		this.generateSkdMelding = generateSkdMelding;
 	}
 	
-	public List<String> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
+	public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
             for (Person person : persons) {
                 SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, person, addHeader);
-                skdMeldinger.add(skdMelding.toString());
+                skdMeldinger.add(skdMelding);
             }
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
         }
         return skdMeldinger;
+    }
+
+    public List<SkdMeldingTrans1> createVergemaalSkdMelding(List<Vergemaal> vergemaalListe, boolean addHeader) {
+	    Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute("Vergemaal");
+	    List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+	    if(skdRequestMeldingDefinitionOptional.isPresent()) {
+	        TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
+	        for(Vergemaal vergemaal : vergemaalListe){
+	            SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, vergemaal, addHeader);
+	            skdMeldinger.add(skdMelding);
+            }
+        }
+	    return skdMeldinger;
     }
 
 }

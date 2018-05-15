@@ -25,7 +25,7 @@ public class SkdConstants {
     public static final String POSTADRESSE_ADR_2 = "adresse2";
     public static final String POSTADRESSE_ADR_3 = "adresse3";
 
-    public static final String POSTADRESSE_LAND = "postadrLand";
+    public static final String POSTADRESSE_LAND  = "postadrLand";
     public static final String SIVILSTAND = "sivilstand";
     public static final String TIDLIGERE_SIVILSTAND = "tidlSivilstand";
     public static final String EKTEFELLE_TIDLIGERE_SIVILSTAND = "ektfTidlSivilstand";
@@ -53,7 +53,7 @@ public class SkdConstants {
     public static final String SEKVENSNUMMER = "sekvensnr";
 
     public static final String DOEDSDATO = "datoDoed";
-
+    
     public static final String STATUSKODE = "statuskode";
 
     public static final String SAKSID = "saksId";

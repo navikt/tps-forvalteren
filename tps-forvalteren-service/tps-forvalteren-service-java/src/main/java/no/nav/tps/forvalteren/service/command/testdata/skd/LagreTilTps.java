@@ -59,7 +59,7 @@ public class LagreTilTps {
 
         Set<String> environmentsSet = new HashSet<>(environments);
 
-        List<Person> personerSomAlleredeEksitererITpsMiljoe = personerIGruppen;
+        List<Person> personerSomAlleredeEksitererITpsMiljoe = new ArrayList<>(personerIGruppen);
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
 
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
@@ -68,7 +68,7 @@ public class LagreTilTps {
         listTpsResponsene.addAll( sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendDoedsmeldinger( gruppeId, environmentsSet));
-        listTpsResponsene.addAll( sendVergemaalsmeldinger( personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll( sendVergemaalsmeldinger( personerIGruppen, environmentsSet));
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene);
     }
@@ -76,7 +76,7 @@ public class LagreTilTps {
     //TODO ALle disse private metodene bør ut egen felles metode som ligger i egen klasse. Få sendDoedsmelding til å ta inn liste av personer i steden for gruppe.
     private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger( Long gruppeId, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<String> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);
+        List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);
         doedsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer("Doedsmelding", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
@@ -86,7 +86,7 @@ public class LagreTilTps {
 
     private List<SendSkdMeldingTilTpsResponse> sendRelasjonsmeldinger(List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<String> relasjonsMeldinger = createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, true);
+        List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, true);
         relasjonsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer("Relasjonsmelding", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
@@ -96,7 +96,7 @@ public class LagreTilTps {
 
     private List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger( List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<String> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, personerSomIkkeEksitererITpsMiljoe, true);
+        List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, personerSomIkkeEksitererITpsMiljoe, true);
         innvandringsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
@@ -106,7 +106,7 @@ public class LagreTilTps {
 
     private List<SendSkdMeldingTilTpsResponse> sendUpdateInnvandringsMeldinger( List<Person> personerSomAlleredeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<String> updateInnvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
+        List<SkdMeldingTrans1> updateInnvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
         updateInnvandringsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
@@ -114,9 +114,9 @@ public class LagreTilTps {
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendVergemaalsmeldinger( List<Person> personerSomIkkeEksistererITpsMiljoe, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendVergemaalsmeldinger( List<Person> personerIGruppen, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<String> vergemaalsMeldinger = createVergemaal.execute(personerSomIkkeEksistererITpsMiljoe, true);
+        List<SkdMeldingTrans1> vergemaalsMeldinger = createVergemaal.execute(personerIGruppen, true);
         vergemaalsMeldinger.forEach(skdMelding ->{
             SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Vergemaal", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
@@ -130,11 +130,11 @@ public class LagreTilTps {
         return responseSkdMeldingerPerEnv;
     }
 
-    private SendSkdMeldingTilTpsResponse sendSkdMeldingTilGitteMiljoer(String skdmeldingstype, String skdMelding, Set<String> environmentsSet) {
-        Map<String, String> responseSkdMeldingerPerEnv = sendSkdMeldingTilGitteMiljoer.execute(skdMelding, skdRequestMeldingDefinition, environmentsSet);
+    private SendSkdMeldingTilTpsResponse sendSkdMeldingTilGitteMiljoer(String skdmeldingstype, SkdMelding skdMelding, Set<String> environmentsSet) {
+        Map<String, String> responseSkdMeldingerPerEnv = sendSkdMeldingTilGitteMiljoer.execute(skdMelding.toString(), skdRequestMeldingDefinition, environmentsSet);
 
         return SendSkdMeldingTilTpsResponse.builder()
-                .personId(skdMelding.substring(0,11))//TODO Dette er rotete og midlertidig, inntil vi får forbedret skdFeltContainer -> skdMelding javaklasse. Her bør det lages enum eller Java-klasse for de ulike feltene i skdmeldingen
+                .personId(skdMelding.getFodselsnummer())
                 .skdmeldingstype(skdmeldingstype)
                 .status(mapStatus(responseSkdMeldingerPerEnv, environmentsSet))
                 .build();

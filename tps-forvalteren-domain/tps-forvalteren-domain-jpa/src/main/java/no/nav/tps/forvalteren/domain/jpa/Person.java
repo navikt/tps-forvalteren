@@ -72,15 +72,6 @@ public class Person extends ChangeStamp {
 	@Column(name = "DOEDSDATO")
 	private LocalDateTime doedsdato;
 	
-	@Column(name = "UTVANDRET_TIL_LAND", length = 2)
-	private String utvandretTilLand;
-	
-	@Column(name = "REGISTRERT_UTVANDR_DATO")
-	private LocalDateTime registertUtvandringsdato;
-	
-	@Column(name = "FLYTTET_TIL_LAND_DATO")
-	private LocalDateTime flyttetTilLandDato;
-	
 	@JoinColumn(name = "ADRESSE_ID")
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
 	private Adresse boadresse;

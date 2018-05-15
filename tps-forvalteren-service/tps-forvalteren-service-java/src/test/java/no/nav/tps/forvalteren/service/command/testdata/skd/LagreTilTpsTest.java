@@ -61,9 +61,9 @@ public class LagreTilTpsTest {
 	private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
 	private Person person = aMalePerson().build();
 	private List<String> environments = new ArrayList<>();
-	private List<String> innvandringsMeldinger = Arrays.asList(melding1);
-	private List<String> relasjonsMeldinger = Arrays.asList(melding2);
-	private List<String> doedsMeldinger = Arrays.asList(melding3);
+	private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
+	private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
+	private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
 	private Map<String, String> expectedStatus = new HashMap<>();
 	private Map<String, String> TPSResponse = new HashMap<>();
 
@@ -99,7 +99,7 @@ public class LagreTilTpsTest {
 		verify(createRelasjoner).execute(persons, ADD_HEADER);
 		verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
 		verify(innvandring).resolve();
-		verify(sendSkdMeldingTilGitteMiljoer).execute(melding1, skdRequestMeldingDefinition, new HashSet<>(environments));
+		verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
 
 	}
 
@@ -121,6 +121,6 @@ public class LagreTilTpsTest {
 				.map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
 				.collect(Collectors.toList()));
 		assertEquals(GRUPPE_ID,actualResponse.getGruppeid());
-		assertEquals(melding1.substring(0,11),actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
+		assertEquals(innvandringsMeldinger.get(0).getFodselsnummer(),actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
 	}
 }
