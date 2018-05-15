@@ -26,10 +26,10 @@ public class HentGyldigeAdresserService {
     @Autowired
     private TpsRequestSender tpsRequestSender;
     
-    public TpsServiceRoutineResponse hentTilfeldigAdresse(Integer antall, String kommuneNr, String postNr) {
+    public TpsServiceRoutineResponse hentTilfeldigAdresse(Integer maxantall, String kommuneNr, String postNr) {
         TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest = TpsFinnGyldigeAdresserRequest.builder()
                 .typesok(Typesok.T)
-                .maxRetur(antall)
+                .maxRetur(maxantall)
                 .kommuneNrsok(kommuneNr)
                 .postNrsok(postNr)
                 .alltidRetur(JaEllerNei.J)

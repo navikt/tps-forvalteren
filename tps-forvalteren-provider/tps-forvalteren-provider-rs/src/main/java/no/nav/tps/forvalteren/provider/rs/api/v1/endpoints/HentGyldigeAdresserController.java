@@ -34,10 +34,10 @@ public class HentGyldigeAdresserController {
             + "     * Man kan også legge ved kriterier/spesifikasjoner i spørringen, på hva adressen må inneholde:\n\r"
             + "     * kommunenummer, gatenavn (minst 3 tegn), postnummer.")
     @GetMapping("/tilfeldig")
-    public TpsServiceRoutineResponse hentTilfeldigAdresse(@RequestParam(required = false, defaultValue = "1") Integer antall,
+    public TpsServiceRoutineResponse hentTilfeldigAdresse(@RequestParam(required = false, defaultValue = "1") Integer maxAntall,
             @RequestParam(required = false) String kommuneNr,
             @RequestParam(required = false) String postNr) {
-        return hentGyldigeAdresserService.hentTilfeldigAdresse(antall, kommuneNr, postNr);
+        return hentGyldigeAdresserService.hentTilfeldigAdresse(maxAntall, kommuneNr, postNr);
     }
     
     @ApiOperation(value = "Søk etter gyldige adresser i TPS", notes = "De query parametrene som ikke spesifiseres, følger default verdier. \n\r"
