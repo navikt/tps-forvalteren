@@ -29,10 +29,10 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultMessageProviderTest {
+public class MessageProviderTest {
 
     @InjectMocks
-    private DefaultMessageProvider messageProvider;
+    private MessageProvider messageProvider;
 
     @Mock
     private MessageSource messageSourceMock;
@@ -89,7 +89,7 @@ public class DefaultMessageProviderTest {
         when(messageSourceMock.getMessage(eq("result.message"), any(Object[].class), any(Locale.class))).thenThrow(thrownException);
         when(messageSourceMock.getMessage(eq(UNKNOWN_MESSAGE_KEY), any(Object[].class), any(Locale.class))).thenReturn("Message not found");
 
-        Appender<ILoggingEvent> mockedAppender = LoggerTestUtils.getMockedAppender(DefaultMessageProvider.class.getCanonicalName());
+        Appender<ILoggingEvent> mockedAppender = LoggerTestUtils.getMockedAppender(MessageProvider.class.getCanonicalName());
 
         messageProvider.get("result.message");
 
@@ -102,7 +102,7 @@ public class DefaultMessageProviderTest {
         when(messageSourceMock.getMessage(eq("result.message"), any(Object[].class), any(Locale.class))).thenThrow(thrownException);
         when(messageSourceMock.getMessage(eq(UNKNOWN_MESSAGE_KEY), any(Object[].class), any(Locale.class))).thenThrow(thrownException);
 
-        Appender<ILoggingEvent> mockedAppender = LoggerTestUtils.getMockedAppender(DefaultMessageProvider.class.getCanonicalName());
+        Appender<ILoggingEvent> mockedAppender = LoggerTestUtils.getMockedAppender(MessageProvider.class.getCanonicalName());
 
         messageProvider.get("result.message");
 

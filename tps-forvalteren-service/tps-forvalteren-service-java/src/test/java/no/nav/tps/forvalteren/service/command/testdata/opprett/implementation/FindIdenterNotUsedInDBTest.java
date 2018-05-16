@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,13 +25,13 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultFindIdenterNotUsedInDBTest {
+public class FindIdenterNotUsedInDBTest {
 
     @Mock
     private FindPersonerByIdIn findPersonerByIdIn;
 
     @InjectMocks
-    private DefaultFindIdenterNotUsedInDB defaultFindIdenterNotUsedInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
     
     private static final String IDENT_AVAILABLE = "42";
     private static final String IDENT_IN_DB = "1337";
@@ -43,7 +45,7 @@ public class DefaultFindIdenterNotUsedInDBTest {
     
     @Test
     public void asd() {
-        Set<String> result = defaultFindIdenterNotUsedInDB.filtrer(identer);
+        Set<String> result = findIdenterNotUsedInDB.filtrer(identer);
         
         verify(findPersonerByIdIn).execute(anyListOf(String.class));
         

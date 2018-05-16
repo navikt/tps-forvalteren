@@ -18,7 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindIdenterNotUsedInDBTest {
@@ -34,7 +33,7 @@ public class FindIdenterNotUsedInDBTest {
     private FindPersonerByIdIn findPersonerByIdIn;
 
     @InjectMocks
-    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     @Before
     public void setup() {

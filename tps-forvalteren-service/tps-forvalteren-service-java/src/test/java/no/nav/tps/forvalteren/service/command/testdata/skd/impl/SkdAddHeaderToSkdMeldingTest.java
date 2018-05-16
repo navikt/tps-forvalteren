@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -8,7 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultSkdAddHeaderToSkdMeldingTest {
+public class SkdAddHeaderToSkdMeldingTest {
 
     private static final int FASIT_LENGTH_HEADER = 46;
 
@@ -31,7 +32,7 @@ public class DefaultSkdAddHeaderToSkdMeldingTest {
     private StringBuilder skdMeldingSB = new StringBuilder(testSkdMld);
 
     @InjectMocks
-    private DefaultSkdAddHeaderToSkdMelding skdAddHeaderToSkdMelding;
+    private SkdAddHeaderToSkdMelding skdAddHeaderToSkdMelding;
 
     @Test
     public void headerIsAdded() {

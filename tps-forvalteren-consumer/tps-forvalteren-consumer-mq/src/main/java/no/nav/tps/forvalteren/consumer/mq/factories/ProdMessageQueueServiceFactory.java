@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
 import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
@@ -43,7 +42,7 @@ public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactor
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
 
-        return new DefaultMessageQueueConsumer(
+        return new MessageQueueConsumer(
                 tpsRequestQueue,
                 connectionFactory
         );

@@ -18,7 +18,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultSkdMeldingRequestTest {
+public class SkdMeldingRequestTest {
 
     private TpsSkdRequestMeldingDefinition skdMeldingDefinition = new TpsSkdRequestMeldingDefinition();
     private TpsRequestConfig config = new TpsRequestConfig();
@@ -34,7 +34,7 @@ public class DefaultSkdMeldingRequestTest {
     private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
     
     @InjectMocks
-    private DefaultSkdMeldingRequest skdMeldingRequest;
+    private SkdMeldingRequest skdMeldingRequest;
 
     @Before
     public void setup() throws Exception {

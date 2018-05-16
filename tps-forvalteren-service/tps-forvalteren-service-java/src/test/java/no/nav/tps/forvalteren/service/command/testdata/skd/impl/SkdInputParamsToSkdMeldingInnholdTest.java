@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFeltDefinisjon;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdInputParamsToSkdMeldingInnhold;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultSkdInputParamsToSkdMeldingInnholdTest {
+public class SkdInputParamsToSkdMeldingInnholdTest {
 
     /* Alle SKD felter er bygd opp ved hjelp av disse reglene
     *  https://confluence.adeo.no/display/FEL/Recordbeskrivelse+i+en+SKD-trans.+Versjon+juni+2015
@@ -35,7 +36,7 @@ public class DefaultSkdInputParamsToSkdMeldingInnholdTest {
     private SkdFelterContainerTrans1 skdFelterContainerTrans1;
 
     @InjectMocks
-    private DefaultSkdInputParamsToSkdMeldingInnhold skdInputParamsToSkdMeldingInnhold;
+    private SkdInputParamsToSkdMeldingInnhold skdInputParamsToSkdMeldingInnhold;
 
     @Before
     public void setup() {
