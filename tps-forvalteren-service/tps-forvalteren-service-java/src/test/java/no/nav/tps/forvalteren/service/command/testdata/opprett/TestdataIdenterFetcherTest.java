@@ -4,8 +4,6 @@ import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdata;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdataIdenterFetcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,10 +48,10 @@ public class TestdataIdenterFetcherTest {
     private MessageProvider messageProviderMock;
 
     @Mock
-    private DefaultTestdata testdataMock;
+    private Testdata testdataMock;
 
     @InjectMocks
-    private DefaultTestdataIdenterFetcher testdataIdenterFetcher;
+    private TestdataIdenterFetcher testdataIdenterFetcher;
 
     @Before
     public void setup() {

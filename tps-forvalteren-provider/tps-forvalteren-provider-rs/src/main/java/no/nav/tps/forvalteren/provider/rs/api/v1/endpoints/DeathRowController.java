@@ -23,7 +23,6 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +61,6 @@ public class DeathRowController {
     @Autowired
     private UserContextHolder userContextHolder;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
@@ -70,7 +68,6 @@ public class DeathRowController {
         return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowCheckIdent.getIdenter(), rsDeathRowCheckIdent.getMiljoe());
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding") })
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
@@ -82,7 +79,6 @@ public class DeathRowController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding") })
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
@@ -90,7 +86,6 @@ public class DeathRowController {
         deathRowRepository.deleteById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentLogg") })
     @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
@@ -99,7 +94,6 @@ public class DeathRowController {
         return mapper.mapAsList(deathRowList, RsDeathRow.class);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @Transactional
     @LogExceptions
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -111,7 +105,6 @@ public class DeathRowController {
         return mapper.map(updatedDeathRow, RsDeathRow.class);
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema") })
@@ -119,7 +112,6 @@ public class DeathRowController {
         sendDodsmeldingTilTps.execute();
     }
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
     @LogExceptions
     @RequestMapping(value = "/clearskjema/{miljoe}", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma") })

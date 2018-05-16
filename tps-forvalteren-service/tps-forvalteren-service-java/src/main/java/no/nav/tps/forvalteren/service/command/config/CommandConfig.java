@@ -3,6 +3,11 @@ package no.nav.tps.forvalteren.service.command.config;
 import com.fasterxml.jackson.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørSikkerhetsTiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersonerTestdata;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S000SjekkTpsTilgjengelig;
@@ -34,8 +39,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
@@ -142,6 +145,26 @@ public class CommandConfig {
     }
 
     @Bean
+    ServiceRoutineResolver endreEgenAnsatt() {
+        return new EndreEgenAnsatt();
+    }
+
+    @Bean
+    ServiceRoutineResolver endreSikkerhetsTiltak() {
+        return new EndreSikkerhetsTiltak();
+    }
+
+    @Bean
+    ServiceRoutineResolver opphorSikkerhetsTiltak() {
+        return new OpphørSikkerhetsTiltak();
+    }
+
+    @Bean
+    ServiceRoutineResolver opphosEgenAnsatt() {
+        return new OpphørEgenAnsatt();
+    }
+
+    @Bean
     SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
     }
@@ -162,6 +185,8 @@ public class CommandConfig {
     }
 
     @Bean
-    SkdMeldingResolver doedsmeldingAnnuller() { return new DoedsmeldingAnnulleringAarsakskode45();}
+    SkdMeldingResolver doedsmeldingAnnuller() {
+        return new DoedsmeldingAnnulleringAarsakskode45();
+    }
 
 }

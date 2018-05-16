@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Husbokstav Til</label>
+    <input name="bokstavTilInput" md-maxlength="1"  ng-model="formData.bokstavTil"/>
+    <div ng-messages="requestForm.bokstavTilInput.$error" ng-show="requestForm.bokstavTilInput.$touched">
+        <div ng-message="md-maxlength">Feltet kan kun inneholde en bokstav</div>
+    </div>
+</md-input-container>
