@@ -11,6 +11,9 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,9 +77,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private static final boolean ADD_HEADER = false;
     private static final String melding1 = "1", melding2 = "2", melding3 = "3";
     private Gruppe testdataGruppe = aGruppe().personer(Collections.emptyList()).build();
-    private List<String> innvandringsMeldinger = Arrays.asList(melding1);
-    private List<String> relasjonsMeldinger = Arrays.asList(melding2);
-    private List<String> doedsMeldinger = Arrays.asList(melding3);
+    private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).build());
+    private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
+    private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
     private SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = aSkdEndringsmeldingGruppe().id(GRUPPE_ID).build();
 
     @Before
@@ -85,7 +88,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(innvandringsMeldinger);
         when(createRelasjoner.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(relasjonsMeldinger);
         when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
-        when(createMeldingWithMeldingstype.execute(anyListOf(String.class))).thenReturn(rsMeldinger);
+        when(createMeldingWithMeldingstype.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
     }
 
@@ -97,9 +100,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(skdMessageCreatorTrans1).execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createRelasjoner).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
-        verify(createMeldingWithMeldingstype).execute(anyListOf(String.class));
+        verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
-        verify(createMeldingWithMeldingstype).execute(anyListOf(String.class));
+        verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
         verify(saveSkdEndringsmeldingerFromText).execute(rsMeldinger, GRUPPE_ID);
 
     }

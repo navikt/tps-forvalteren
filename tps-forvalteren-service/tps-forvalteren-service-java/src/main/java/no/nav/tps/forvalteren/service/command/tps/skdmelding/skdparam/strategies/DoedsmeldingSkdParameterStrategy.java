@@ -2,6 +2,8 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import java.util.HashMap;
 import java.util.Map;
+
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -29,39 +31,37 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
     }
 
     @Override
-    public Map<String, String> execute(Person person) {
-        String tildelingskodeForDodsmelding = hentTildelingskode();
+    public SkdMeldingTrans1 execute(Person person) {
+        SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
+        skdMeldingTrans1.setTildelingskode(hentTildelingskode());
+    
+        addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
 
-        HashMap<String, String> skdParams = new HashMap<>();
-        skdParams.put(SkdConstants.TILDELINGSKODE, tildelingskodeForDodsmelding);
-
-        addSkdParametersExtractedFromPerson(skdParams, person);
-
-        return skdParams;
+        return skdMeldingTrans1;
     }
 
-    private void addSkdParametersExtractedFromPerson(Map<String, String> skdParams, Person person) {
-        skdParams.put(SkdConstants.FODSELSDATO, person.getIdent().substring(0, 6));
-        skdParams.put(SkdConstants.PERSONNUMMER, person.getIdent().substring(6, 11));
-
+    private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
+        skdMeldingTrans1.setFodselsdato(person.getIdent().substring(0, 6));
+        skdMeldingTrans1.setPersonnummer(person.getIdent().substring(6, 11));
+    
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
-
-        skdParams.put(SkdConstants.MASKINTID, hhMMss);
-        skdParams.put(SkdConstants.MASKINDATO, yyyyMMdd);
-
+    
+        skdMeldingTrans1.setMaskintid(hhMMss);
+        skdMeldingTrans1.setMaskindato(yyyyMMdd);
+        
         String doedsdatoStringVersion = ConvertDateToString.yyyyMMdd(person.getDoedsdato());
 
         // The specification for doedsmelding says reg-dato should be doedsdato
-        skdParams.put(SkdConstants.REG_DATO, doedsdatoStringVersion);
-        skdParams.put(SkdConstants.DOEDSDATO, doedsdatoStringVersion);
+        skdMeldingTrans1.setRegDato(doedsdatoStringVersion);
+        skdMeldingTrans1.setDatoDoed( doedsdatoStringVersion);
 
-        addDefaultParam(skdParams);
+        addDefaultParam(skdMeldingTrans1);
     }
 
-    private void addDefaultParam(Map<String, String> skdParams) {
-        skdParams.put(SkdConstants.AARSAKSKODE, AARSAKSKODE_FOR_DOEDSMELDING);
-        skdParams.put(SkdConstants.TRANSTYPE, TRANSTYPE_FOR_DOEDSMELDING);
-        skdParams.put(SkdConstants.STATUSKODE, STATUSKODE_FOR_DOEDSMELDING);
+    private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
+        skdMeldingTrans1.setAarsakskode( AARSAKSKODE_FOR_DOEDSMELDING);
+        skdMeldingTrans1.setTranstype( TRANSTYPE_FOR_DOEDSMELDING);
+        skdMeldingTrans1.setStatuskode(STATUSKODE_FOR_DOEDSMELDING);
     }
 }

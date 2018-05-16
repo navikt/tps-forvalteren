@@ -31,7 +31,7 @@ public class ConvertMeldingFromJsonToText {
     public String execute(RsMeldingstype melding) {
         Map valuesMap = mapper.convertValue(melding, new TypeReference<HashMap<String, String>>() {});
         if (melding instanceof RsMeldingstype1Felter) {
-            return skdInputParamsToSkdMeldingInnhold.execute(valuesMap, skdFelterContainerTrans1).toString();
+            return skdInputParamsToSkdMeldingInnhold.execute(valuesMap, skdFelterContainerTrans1).toString(); //TODO Map from RSMeldingstype to SkdMeldingstype, then toString().
         } else {
             return skdInputParamsToSkdMeldingInnhold.execute(valuesMap, skdFelterContainerTrans2).toString();
         }
