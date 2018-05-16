@@ -65,6 +65,7 @@ public class LagreTilTps {
         listTpsResponsene.addAll( sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendDoedsmeldinger( gruppeId, environmentsSet));
+        listTpsResponsene.addAll( sendUtvandringsmeldinger ( personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene);
     }
@@ -107,6 +108,12 @@ public class LagreTilTps {
             SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
+        return listTpsResponsene;
+    }
+
+    private List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerSomAlleredeEksistererITps, Set<String> environmentsSet){
+        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+
         return listTpsResponsene;
     }
 
