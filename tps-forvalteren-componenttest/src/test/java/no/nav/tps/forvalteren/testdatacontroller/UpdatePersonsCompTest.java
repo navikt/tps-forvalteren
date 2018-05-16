@@ -15,7 +15,9 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
 public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTest {
-    
+    private final String expectedIdent1AfterUpdate = "04021850026";
+    private final String expectedIdent2AfterUpdate = "22071758072";
+    private final String expectedRelasjonTypeNavn = "EKTEFELLE";
     @Override protected String getServiceUrl() {
         return "/updatepersoner";
     }
@@ -33,7 +35,7 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
                 .content(createRequestBody(personList)))
                 .andExpect(status().isOk());
         
-        TestTransaction.start();
+        TestTransaction.start(); //Start transaksjon pga. lazy fetch i kall fra databasen
         assertUpdatedTestdataInDatabase(personList);
         TestTransaction.end();
     }
@@ -48,13 +50,16 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
     public void assertUpdatedTestdataInDatabase(List<Person> originalPersonList) {
         Person updatedPerson1 = personRepository.findById(originalPersonList.get(0).getId());
         Person updatedPerson2 = personRepository.findById(originalPersonList.get(1).getId());
-        assertEquals("04021850026", updatedPerson1.getIdent());
-        assertEquals("22071758072", updatedPerson2.getIdent());
+        assertEquals(expectedIdent1AfterUpdate, updatedPerson1.getIdent());
+        assertEquals(expectedIdent2AfterUpdate, updatedPerson2.getIdent());
         assertNotEquals(IDENT1, updatedPerson1.getIdent());
         assertNotEquals(IDENT2, updatedPerson2.getIdent());
         assertEquals(GRUPPENAVN, updatedPerson1.getGruppe().getNavn());
         assertEquals(GRUPPENAVN, updatedPerson2.getGruppe().getNavn());
-        //TODO assert relasjon
+        assertEquals(expectedIdent2AfterUpdate, updatedPerson1.getRelasjoner().get(0).getPersonRelasjonMed().getIdent());
+        assertEquals(expectedIdent1AfterUpdate, updatedPerson2.getRelasjoner().get(0).getPersonRelasjonMed().getIdent());
+        assertEquals(expectedRelasjonTypeNavn, updatedPerson1.getRelasjoner().get(0).getRelasjonTypeNavn());
+        assertEquals(expectedRelasjonTypeNavn, updatedPerson2.getRelasjoner().get(0).getRelasjonTypeNavn());
     }
     
     private List<Person> setupTestdataInTpsfDatabase() {
