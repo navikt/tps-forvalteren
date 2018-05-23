@@ -458,9 +458,12 @@
                 <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
-                    <version>${flyway-maven-plugin.version}</version>
+                    <version>5.0.7</version>
                     <configuration>
                         <driver>oracle.jdbc.OracleDriver</driver>
+                        <url>jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl023.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TPSFORVALTERENU6)(INSTANCE_NAME=ccuf02)(UR=A)(SERVER=DEDICATED)))</url>
+                        <user>TPSFORVALTEREN_U6</user>
+                        <password>5afWDfd0jLBn</password>
                     </configuration>
                     <dependencies>
                         <dependency>
