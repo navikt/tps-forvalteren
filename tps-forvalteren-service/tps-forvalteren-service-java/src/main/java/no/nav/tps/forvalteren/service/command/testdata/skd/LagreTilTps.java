@@ -37,6 +37,9 @@ public class LagreTilTps {
     private CreateDoedsmeldinger createDoedsmeldinger;
 
     @Autowired
+    private CreateUtvandring createUtvandring;
+
+    @Autowired
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 
     @Autowired
@@ -65,7 +68,7 @@ public class LagreTilTps {
         listTpsResponsene.addAll( sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
         listTpsResponsene.addAll( sendDoedsmeldinger( gruppeId, environmentsSet));
-        listTpsResponsene.addAll( sendUtvandringsmeldinger ( personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll( sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene);
     }
@@ -113,7 +116,11 @@ public class LagreTilTps {
 
     private List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerSomAlleredeEksistererITps, Set<String> environmentsSet){
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-
+        List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerSomAlleredeEksistererITps, true);
+        utvandringsMeldinger.forEach(skdMelding -> {
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Utvandring", skdMelding, environmentsSet);
+            listTpsResponsene.add(tpsResponse);
+        });
         return listTpsResponsene;
     }
 
