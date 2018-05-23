@@ -63,4 +63,7 @@ public class Vergemaal {
     @Column(name = "MANDATTEKST", length = 100)
     private String mandattekst;
 
+    @Column(name = "VERGEMAAL_SENDT", length= 1)
+    private String vergemaalSendt;
+
 }

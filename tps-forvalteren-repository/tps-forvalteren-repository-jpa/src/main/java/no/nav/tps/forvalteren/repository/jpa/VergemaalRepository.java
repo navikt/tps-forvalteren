@@ -12,6 +12,8 @@ public interface VergemaalRepository extends Repository<Vergemaal, Long> {
 
     List<Vergemaal> findAllByIdent(String ident);
 
+    List<Vergemaal> findAllByIdentAndVergemaalSendt(String ident, String vergemaalSendt);
+
     Vergemaal findBySaksidAndInternVergeId(String saksId, String InternVergeId);
 
     void save(Vergemaal vergemaal);

@@ -21,23 +21,8 @@ public class OpprettVergemaal {
         Vergemaal vergemaalIDB = vergemaalRepository.findBySaksidAndInternVergeId(vergemaal.getSaksid(), vergemaal.getInternVergeId());
 
         if(vergemaalIDB != null){
-            if(!sjekkOmVergemaalSkalSlettes(vergemaal)){
-                vergemaal.setId(vergemaalIDB.getId());
-            }
+            vergemaalRepository.deleteById(vergemaalIDB.getId());
         }
         vergemaalRepository.save(vergemaal);
-    }
-
-    private boolean sjekkOmVergemaalSkalSlettes(Vergemaal vergemaal) {
-        if (vergemaal.getEmbete() != null)
-            return false;
-        if (vergemaal.getSakstype() != null)
-            return false;
-        if (vergemaal.getMandattype() != null)
-            return false;
-        if (vergemaal.getVergetype() != null)
-            return false;
-        return true;
-
     }
 }

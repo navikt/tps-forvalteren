@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -19,14 +18,13 @@ public class CreateVergemaal {
     @Autowired
     SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
-
     public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, boolean addHeader) {
 
         List<Vergemaal> vergemaalIGruppen = new ArrayList<>();
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
 
         for (Person person : personerIGruppen) {
-            List<Vergemaal> personerVergemaal = vergemaalRepository.findAllByIdent(person.getIdent());
+            List<Vergemaal> personerVergemaal = vergemaalRepository.findAllByIdentAndVergemaalSendt(person.getIdent(), null);
             if (!personerVergemaal.isEmpty()) {
                 vergemaalIGruppen.addAll(personerVergemaal);
             }
