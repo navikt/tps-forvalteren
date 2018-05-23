@@ -30,6 +30,13 @@ public class VergemaalSkdParameterStrategy {
         skdMeldingTrans1.setTildelingskode(TILDELINGSKODE_VERGEMAAL);
         Person person = personRepository.findByIdent(vergemaal.getIdent());
 
+        //
+        if (vergemaal.getVergeFnr() == null) {
+            skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(getYesterday()));
+        } else {
+            skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(person.getRegdato()));
+        }
+
         addSkdParameterExtractedFromPerson(skdMeldingTrans1, person);
         addSkdParameterExtractedFromVergemaal(skdMeldingTrans1, vergemaal);
         addDefaultParam(skdMeldingTrans1);
@@ -48,7 +55,6 @@ public class VergemaalSkdParameterStrategy {
 
         skdMeldingTrans1.setMaskintid(hhMMss);
         skdMeldingTrans1.setMaskindato(yyyyMMdd);
-        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(LocalDateTime.now()));
 
     }
 
@@ -78,8 +84,15 @@ public class VergemaalSkdParameterStrategy {
         skdMeldingTrans1.setTranstype(TRANSTYPE_FOR_VERGEMAAL);
     }
 
-    private void setVergemaalAsSendt(Vergemaal vergemaal){
+    private void setVergemaalAsSendt(Vergemaal vergemaal) {
         vergemaal.setVergemaalSendt("S");
         vergemaalRepository.save(vergemaal);
+    }
+
+    private LocalDateTime getYesterday() {
+
+        LocalDateTime today = LocalDateTime.now();
+        return today.minusDays(1);
+
     }
 }
