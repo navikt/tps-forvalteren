@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import java.time.LocalDateTime;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.UtvandringSkdParametere;
@@ -41,12 +43,15 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
+        LocalDateTime meldingRegDato = person.getRegistertUtvandringsdato()!= null ? person.getRegistertUtvandringsdato(): person.getRegdato();
+        LocalDateTime flytteRegDato = person.getFlyttetTilLandDato()!= null ? person.getRegistertUtvandringsdato(): person.getRegdato();
 
         skdMeldingTrans1.setMaskintid(hhMMss);
         skdMeldingTrans1.setMaskindato(yyyyMMdd);
+        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(meldingRegDato));
 
-        String registrertUtvandretDato = ConvertDateToString.yyyyMMdd(person.getRegistertUtvandringsdato());
-        String flytteUtvandretDato = ConvertDateToString.yyyyMMdd(person.getFlyttetTilLandDato());
+        String registrertUtvandretDato = ConvertDateToString.yyyyMMdd(meldingRegDato);
+        String flytteUtvandretDato = ConvertDateToString.yyyyMMdd(flytteRegDato);
 
         skdMeldingTrans1.setUtvandretTilLand(person.getUtvandretTilLand());
         skdMeldingTrans1.setTilLandRegdato(registrertUtvandretDato);

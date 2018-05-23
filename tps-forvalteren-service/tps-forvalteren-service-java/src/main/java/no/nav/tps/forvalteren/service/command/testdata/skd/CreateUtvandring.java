@@ -27,8 +27,8 @@ public class CreateUtvandring {
     private List<Person> findPersonSomSkalUtvandre(List<Person> personerSomAlleredeEksistererITps) {
 
         List<Person> personerSomSkalHaUtvandringsMelding = new ArrayList<>();
-        personerSomAlleredeEksistererITps.stream().forEach(person -> {
-            if (!person.getUtvandretTilLand().isEmpty()) {
+        personerSomAlleredeEksistererITps.forEach(person -> {
+            if (person.getUtvandretTilLand()!=null) {
                 personerSomSkalHaUtvandringsMelding.add(person);
             }
         });
