@@ -3,26 +3,26 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SkdMessageCreatorTrans1 {
-	
+
     private GetSkdMeldingByName getSkdMeldingByName;
     private GenerateSkdMelding generateSkdMelding;
-    
-	@Autowired
-	public SkdMessageCreatorTrans1(GetSkdMeldingByName getSkdMeldingByName, GenerateSkdMelding generateSkdMelding) {
-		this.getSkdMeldingByName = getSkdMeldingByName;
-		this.generateSkdMelding = generateSkdMelding;
-	}
-	
-	public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
+
+    @Autowired
+    public SkdMessageCreatorTrans1(GetSkdMeldingByName getSkdMeldingByName, GenerateSkdMelding generateSkdMelding) {
+        this.getSkdMeldingByName = getSkdMeldingByName;
+        this.generateSkdMelding = generateSkdMelding;
+    }
+
+    public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {

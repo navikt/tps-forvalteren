@@ -35,15 +35,15 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
     private AdresseRepository adresseRepository;
 
     @Override
-    public SkdMeldingTrans1 execute(Person person) {
+    public SkdMeldingTrans1 execute(Person barn) {
 
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
         skdMeldingTrans1.setTildelingskode(hentTildelingskode());
 
-        addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
-        addSkdParametersExtractedFromForeldre(skdMeldingTrans1, person);
+        addSkdParametersExtractedFromPerson(skdMeldingTrans1, barn);
+        addSkdParametersExtractedFromForeldre(skdMeldingTrans1, barn);
         addDefaultParam(skdMeldingTrans1);
-        personRepository.save(person);
+        personRepository.save(barn);
 
         return skdMeldingTrans1;
     }
@@ -58,13 +58,13 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         return creator instanceof FoedselsmeldingSkdParametere;
     }
 
-    private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
-        // person er barnet som skal bli født.
-        skdMeldingTrans1.setFodselsdato(person.getIdent().substring(0, 6));
-        skdMeldingTrans1.setPersonnummer(person.getIdent().substring(6, 11));
+    private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person barn) {
 
-        yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
-        hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
+        skdMeldingTrans1.setFodselsdato(barn.getIdent().substring(0, 6));
+        skdMeldingTrans1.setPersonnummer(barn.getIdent().substring(6, 11));
+
+        yyyyMMdd = ConvertDateToString.yyyyMMdd(barn.getRegdato());
+        hhMMss = ConvertDateToString.hhMMss(barn.getRegdato());
 
         skdMeldingTrans1.setMaskintid(hhMMss);
         skdMeldingTrans1.setMaskindato(yyyyMMdd);
@@ -73,21 +73,22 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setFoedekommLand("0301");
         skdMeldingTrans1.setFoedested("Sykehus");
 
-        skdMeldingTrans1.setFornavn(person.getFornavn());
-        skdMeldingTrans1.setKjonn(Integer.parseInt(person.getIdent().substring(8, 9)) % 2 == 0 ? "K" : "M");
+        skdMeldingTrans1.setFornavn(barn.getFornavn());
+        skdMeldingTrans1.setKjonn(Integer.parseInt(barn.getIdent().substring(8, 9)) % 2 == 0 ? "K" : "M");
 
         skdMeldingTrans1.setRegdatoAdr(yyyyMMdd);
         skdMeldingTrans1.setPersonkode("3");
         skdMeldingTrans1.setLevendeDoed("1");
     }
 
-    private void addSkdParametersExtractedFromForeldre(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
+    private void addSkdParametersExtractedFromForeldre(SkdMeldingTrans1 skdMeldingTrans1, Person barn) {
         Person forelderMor = null;
         Person forelderFar = null;
-        List<Relasjon> personRelasjon = relasjonRepository.findByPersonId(person.getId());
+        List<Relasjon> personRelasjon = relasjonRepository.findByPersonId(barn.getId());
         for (Relasjon relasjon : personRelasjon) {
             if (RelasjonType.MOR.getRelasjonTypeNavn().equals(relasjon.getRelasjonTypeNavn())) {
                 forelderMor = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
+                continue;
             }
             if (RelasjonType.FAR.getRelasjonTypeNavn().equals(relasjon.getRelasjonTypeNavn())) {
                 forelderFar = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
@@ -103,7 +104,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setFamilienummer(forelderMor.getIdent());
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
-        if (forelderFar != null && forelderMor != null) {
+        if (forelderFar != null) {
             skdMeldingTrans1.setForeldreansvar("D");
         } else {
             skdMeldingTrans1.setForeldreansvar("M");
@@ -114,12 +115,12 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             skdMeldingTrans1.setFarsPersonnummer(forelderFar.getIdent().substring(6, 11));
 
         }
-        person.setEtternavn(forelderMor.getEtternavn());
-        addAdresseParamsExtractedFromForelder(skdMeldingTrans1, forelderMor, person);
+        barn.setEtternavn(forelderMor.getEtternavn());
+        addAdresseParamsExtractedFromForelder(skdMeldingTrans1, forelderMor, barn);
 
     }
 
-    private void addAdresseParamsExtractedFromForelder(SkdMeldingTrans1 skdMeldingTrans1, Person forelder, Person person) {
+    private void addAdresseParamsExtractedFromForelder(SkdMeldingTrans1 skdMeldingTrans1, Person forelder, Person barn) {
         Gateadresse adresse = adresseRepository.getAdresseByPersonId(forelder.getId());
 
         if (adresse != null) {
@@ -130,7 +131,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             skdMeldingTrans1.setHusBruk(adresse.getHusnummer());
             skdMeldingTrans1.setGateGaard(adresse.getGatekode());
 
-            updateAdresse(adresse, person);
+            updateAdresse(adresse, barn);
 
             skdMeldingTrans1.setAdressetype("O");
         } else {
@@ -146,17 +147,17 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setStatuskode("1");
     }
 
-    private void updateAdresse(Gateadresse adresse, Person person) {
-        Gateadresse gateAdr = adresseRepository.getAdresseByPersonId(person.getId());
+    private void updateAdresse(Gateadresse adresse, Person barn) {
+        Gateadresse gateAdr = adresseRepository.getAdresseByPersonId(barn.getId());
 
         gateAdr.setAdresse(adresse.getAdresse());
         gateAdr.setHusnummer(adresse.getHusnummer());
         gateAdr.setGatekode(adresse.getGatekode());
-        gateAdr.setFlyttedato(person.getRegdato());
+        gateAdr.setFlyttedato(barn.getRegdato());
         gateAdr.setPostnr(adresse.getPostnr());
         gateAdr.setKommunenr(adresse.getKommunenr());
 
-        person.setBoadresse(gateAdr);
+        barn.setBoadresse(gateAdr);
 
         adresseRepository.save(gateAdr);
     }

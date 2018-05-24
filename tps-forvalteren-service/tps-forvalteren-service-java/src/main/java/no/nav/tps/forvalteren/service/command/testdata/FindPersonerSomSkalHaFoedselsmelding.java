@@ -18,12 +18,12 @@ public class FindPersonerSomSkalHaFoedselsmelding {
     public List<Person> execute(List<Person> personerIGruppe) {
         List<Relasjon> relasjonerMedBarn = new ArrayList<>();
         List<Person> barnSomSkalFodes = new ArrayList<>();
-        personerIGruppe.stream().forEach(person -> {
-            relasjonerMedBarn.addAll(relasjonRepository.findByPersonAndRelasjonTypeNavn(person, "FOEDSEL"));
-        });
+        personerIGruppe.stream().forEach(person ->
+                relasjonerMedBarn.addAll(relasjonRepository.findByPersonAndRelasjonTypeNavn(person, "FOEDSEL"))
+        );
         relasjonerMedBarn.stream().forEach(relasjon -> {
             Person person = relasjon.getPersonRelasjonMed();
-            if(!barnSomSkalFodes.contains(person)){
+            if (!barnSomSkalFodes.contains(person)) {
                 barnSomSkalFodes.add(person);
             }
         });
