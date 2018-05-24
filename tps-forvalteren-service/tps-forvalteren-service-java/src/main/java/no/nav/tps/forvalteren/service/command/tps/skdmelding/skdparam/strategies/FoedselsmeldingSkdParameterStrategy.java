@@ -11,6 +11,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.service.command.exceptions.IllegalFoedselsMeldingException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
@@ -95,7 +96,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             }
         }
         if (forelderMor == null) {
-            return;
+            throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " mangler en mor");
         }
 
         skdMeldingTrans1.setMorsFodselsdato(forelderMor.getIdent().substring(0, 6));
