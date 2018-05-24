@@ -17,6 +17,7 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 
 public abstract class AbstractTestdataControllerComponentTest extends AbstractRsProviderComponentTest {
     private static final String BASE_URL = "/api/v1/testdata";
@@ -28,6 +29,9 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     protected GruppeRepository gruppeRepository;
     @Autowired
     protected PersonRepository personRepository;
+    @Autowired
+    protected RelasjonRepository relasjonRepository;
+    
     private List<NameValuePair> params = new ArrayList<>();
     
     protected List<Person> constructTestpersonsInTpsfDatabase(Gruppe gruppe) {
@@ -58,6 +62,7 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
         
         gruppeRepository.deleteAll();
         personRepository.deleteAll();
+        relasjonRepository.deleteAll();
     }
     
     @After

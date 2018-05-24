@@ -26,18 +26,28 @@
 				<EFnr>
 					<fnr>10050552565</fnr>
 					<sp></sp>
-					<kn>BUSK KRIMINELL</kn>
-					<fn>KRIMINELL</fn>
+					<kn></kn>
+					<fn></fn>
 					<mn></mn>
-					<en>BUSK</en>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
 				</EFnr>
 				<EFnr>
 					<fnr>11031250155</fnr>
 					<sp></sp>
-					<kn>BÆREPOSE LUGUBER</kn>
-					<fn>LUGUBER</fn>
+					<kn></kn>
+					<fn></fn>
 					<mn></mn>
-					<en>BÆREPOSE</en>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
 				</EFnr>
 				<EFnr>
 					<fnr>04121656499</fnr>
@@ -55,10 +65,15 @@
 				<EFnr>
 					<fnr>12017500617</fnr>
 					<sp></sp>
-					<kn>KAFFI BLÅ</kn>
-					<fn>BLÅ</fn>
+					<kn></kn>
+					<fn></fn>
 					<mn></mn>
-					<en>KAFFI</en>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
 				</EFnr>
 				<EFnr>
 					<fnr>02020403694</fnr>

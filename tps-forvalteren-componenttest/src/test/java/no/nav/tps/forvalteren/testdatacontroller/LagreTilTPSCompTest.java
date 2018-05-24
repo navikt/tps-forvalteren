@@ -29,13 +29,20 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
     private List<String> environments = Arrays.asList("t1", "t2", "u5");
-    List<String> expectedSkdRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_SFE_ENDRINGSMELDING_fnr04121656499.txt");
-    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/finn_en_ledig_ident_request.xml";
+    
+    List<String> expectedSkdInnvandringCreateRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_SFE_ENDRINGSMELDING_fnr04121656499.txt",
+            "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
+            "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt");
+    List<String> expectedSkdRelasjonsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
+            "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");
+    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/finn_tre_ledige_identer_request.xml";
     List<String> expectedTpsXmlRequestsUrl = Arrays.asList(xmlFindNonexistingIdenterInTpsUrl);
     List<String> expectedRequests = constructExpectedRequests();
+    
     private Long gruppeId;
     private Gruppe testgruppe;
     
@@ -57,13 +64,12 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldSendSuccesfulSkdMessagesToTPS() throws Exception {
         MvcResult mvcResult = mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content("[\"t1\", \"t2\", \"u5\"]"))
-//                .content("[\""+String.join( "\",\"" , environments)+"\"]"))
+                .content("[\""+String.join( "\",\"" , environments)+"\"]"))
                 .andExpect(status().isOk()).andReturn();
     
     
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(messageQueueConsumer, times(6)).sendMessage(captor.capture());
+        verify(messageQueueConsumer, times(expectedRequests.size())).sendMessage(captor.capture());
         List<String> actualRequests = captor.getAllValues().stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());;
         
         assertEquals(expectedRequests.toString(),actualRequests.toString());
@@ -87,12 +93,12 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         gruppeId = testgruppe.getId();
         opprettPersonerSomTriggerInnvandringsMelding();
         opprettPersonerSomTriggerUpdateInnvandringsMelding();
-        opprettPersonerSomTriggerRelasjonsmelding();
+        opprettPersonerSomTriggerRelasjonsmeldingVigsel();
         opprettPersonerSomTriggerDoedsmeldinger();
     }
     
     private void opprettPersonerSomTriggerInnvandringsMelding() {
-        Person person1 = Person.builder().gruppe(testgruppe).ident("10050552565").build();
+        
         Person person2 = Person.builder().gruppe(testgruppe).ident("11031250155").build();
         
         Adresse adressenTilPerson3 = Gateadresse.builder().husnummer("9354").gatekode("01415").adresse("KJØLVEGEN").build();
@@ -105,13 +111,9 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10))
                 .boadresse(adressenTilPerson3).build();
         adressenTilPerson3.setPerson(person3);
-        Person person4 = Person.builder().gruppe(testgruppe).ident("12017500617").build();
+        
         Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").build();
-        //        personRepository.save(person1);
-        //        personRepository.save(person2);
         personRepository.save(person3);
-        //        personRepository.save(person4);
-        //        personRepository.save(person5);
         
     }
     
@@ -119,8 +121,33 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     }
     
-    private void opprettPersonerSomTriggerRelasjonsmelding() {
+    private void opprettPersonerSomTriggerRelasjonsmeldingVigsel() {
+        Adresse adressenTilEktemann = Gateadresse.builder().husnummer("2").gatekode("16188").adresse("SANNERGATA").build();
+        adressenTilEktemann.setKommunenr("0301");
+        adressenTilEktemann.setPostnr("0557");
+        adressenTilEktemann.setFlyttedato(LocalDateTime.of(2018, 04, 05, 11, 30, 28));
+        Person ektemann = Person.builder().gruppe(testgruppe).ident("10050552565").identtype("FNR")
+                .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap("000")
+                .kjonn('K')
+                .regdato(LocalDateTime.of(2018, 04, 05, 11, 30, 28))
+                .boadresse(adressenTilEktemann).build();
+        adressenTilEktemann.setPerson(ektemann);
+        final Person lagretEktemann = personRepository.save(ektemann);
     
+        Adresse adressenTilKone = Gateadresse.builder().husnummer("8400").gatekode("21485").adresse("SMELTEDIGELEN").build();
+        adressenTilKone.setKommunenr("0301");
+        adressenTilKone.setPostnr("0195");
+        adressenTilKone.setFlyttedato(LocalDateTime.of(2018, 05, 15, 14, 10, 44));
+        Person kone = Person.builder().gruppe(testgruppe).ident("12017500617").identtype("FNR")
+                .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap("000")
+                .kjonn('M')
+                .regdato(LocalDateTime.of(2018, 04, 05, 11, 30, 28))
+                .boadresse(adressenTilKone).build();
+        adressenTilKone.setPerson(kone);
+        final Person lagretKone = personRepository.save(kone);
+    
+        relasjonRepository.save(Relasjon.builder().person(lagretEktemann).personRelasjonMed(lagretKone).relasjonTypeNavn("EKTEFELLE").build());
+        relasjonRepository.save(Relasjon.builder().person(lagretKone).personRelasjonMed(lagretEktemann).relasjonTypeNavn("EKTEFELLE").build());
     }
     
     private void opprettPersonerSomTriggerDoedsmeldinger() {
@@ -140,12 +167,11 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     private List<String> constructExpectedRequests() {
         List<String> expectedRequests = new ArrayList<>();
-        environments.forEach( env ->
-            expectedRequests.addAll(expectedTpsXmlRequestsUrl.stream().map(expectedUrl -> getResourceFileContent(expectedUrl)).collect(Collectors.toList()))
-        );
-        environments.forEach( env ->
-            expectedRequests.addAll(expectedSkdRequestsUrl.stream().map(expectedUrl -> getResourceFileContent(expectedUrl).replace("ENDOFFILE", "")).collect(Collectors.toList())) //ENDOFFILE må være med i filen, fordi IntelliJ trimmer filen av en eller annen grunn.
-        );
+        
+        expectedTpsXmlRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url))));
+        expectedSkdInnvandringCreateRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
+        expectedSkdRelasjonsmeldingerRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
+        
         return expectedRequests.stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
     }
     
