@@ -10,9 +10,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import com.google.common.base.Charsets;
 
 import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
@@ -27,9 +24,6 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     protected final String IDENT2 = "22222222222";
     protected final String GRUPPENAVN = "regresjonstest gruppe";
     
-    @Autowired(required = false)
-    protected WebApplicationContext context;
-    protected MockMvc mvc;
     @Autowired
     protected GruppeRepository gruppeRepository;
     @Autowired
@@ -60,10 +54,7 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     }
     
     @Before
-    public void setup() {
-        if (context != null) {
-            mvc = MockMvcBuilders.webAppContextSetup(context).build();
-        }
+    public void clearAllRepositories() {
         
         gruppeRepository.deleteAll();
         personRepository.deleteAll();

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import javax.jms.JMSException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -37,7 +38,7 @@ public abstract class AbstractRsProviderComponentTest {
     @Autowired(required = false)
     protected WebApplicationContext context;
 
-    protected MockMvc mvc;
+    public MockMvc mvc;
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -46,11 +47,12 @@ public abstract class AbstractRsProviderComponentTest {
     }
 
     @Before
-    public void setup() {
+    public void setupmockmvc() throws JMSException {
         if (context != null) {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
     }
+    
     protected String getResourceFileContent(String path) {
         URL fileUrl = Resources.getResource(path);
         try {

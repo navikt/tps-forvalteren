@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tpsPersonData>
+	<tpsServiceRutine>
+		<serviceRutinenavn>FS03-FDLISTER-DISKNAVN-M</serviceRutinenavn>
+		<aksjonsDato/>
+		<aksjonsKode>A</aksjonsKode>
+		<aksjonsKode2>0</aksjonsKode2>
+		<antallFnr>5</antallFnr>
+		<nFnr>
+			<fnr>10050552565</fnr>
+			<fnr>11031250155</fnr>
+			<fnr>04121656499</fnr>
+			<fnr>12017500617</fnr>
+			<fnr>02020403694</fnr>
+		</nFnr>
+	</tpsServiceRutine>
+</tpsPersonData>

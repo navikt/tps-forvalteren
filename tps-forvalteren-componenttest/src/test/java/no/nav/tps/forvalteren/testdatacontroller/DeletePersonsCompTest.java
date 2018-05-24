@@ -13,7 +13,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 
 public class DeletePersonsCompTest extends  AbstractTestdataControllerComponentTest {
     
-    @Override protected String getServiceUrl() {
+    @Override
+    protected String getServiceUrl() {
         return "/deletepersoner";
     }
     

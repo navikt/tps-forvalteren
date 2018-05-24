@@ -31,7 +31,6 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
         public void setupTestdataInTpsfDatabase(){
             testgruppe= gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
                     gruppeId = testgruppe.getId();
-            System.out.println(gruppeId);
         }
         
         /**
