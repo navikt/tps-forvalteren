@@ -95,7 +95,7 @@ public class LagreTilTps {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, true);
         relasjonsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(FAMILIEENDRING_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer("Relasjonsmelding", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
