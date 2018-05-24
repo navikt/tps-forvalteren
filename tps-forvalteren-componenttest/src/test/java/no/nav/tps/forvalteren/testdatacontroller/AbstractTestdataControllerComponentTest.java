@@ -59,10 +59,10 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     
     @Before
     public void clearAllRepositories() {
-        
+    
+        relasjonRepository.deleteAll();
         gruppeRepository.deleteAll();
         personRepository.deleteAll();
-        relasjonRepository.deleteAll();
     }
     
     @After

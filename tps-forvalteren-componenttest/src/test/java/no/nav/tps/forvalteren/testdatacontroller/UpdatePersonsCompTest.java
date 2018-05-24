@@ -63,7 +63,7 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
     }
     
     private List<Person> setupTestdataInTpsfDatabase() {
-        gruppeRepository.deleteAll();
+        clearAllRepositories();
         Gruppe gruppe= gruppeRepository.save(Gruppe.builder().navn(GRUPPENAVN).build());
         List<Person> personList = constructTestpersonsInTpsfDatabase(gruppe);
         return personList;
