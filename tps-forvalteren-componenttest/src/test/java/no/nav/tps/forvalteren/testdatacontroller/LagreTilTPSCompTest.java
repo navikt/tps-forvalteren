@@ -37,11 +37,12 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_innvandringCreate_fnr_11031250155.txt");
+    List<String> expectedSkdUpdateInnvandringRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_updateInnvandring_fnr_02020403694.txt");
     List<String> expectedSkdRelasjonsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");
     List<String> expectedSkdDoedsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
     
-    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/finn_fire_ledige_identer_request.xml";
+    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_request.xml";
     List<String> expectedTpsXmlRequestsUrl = Arrays.asList(xmlFindNonexistingIdenterInTpsUrl);
     List<String> expectedRequests = constructExpectedRequests();
     
@@ -108,13 +109,17 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .boadresse(adressenTilPerson3).build();
         adressenTilPerson3.setPerson(person3);
         
-        Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").etternavn("Kake").fornavn("Snill").build();
         personRepository.save(person3);
         
     }
     
     private void opprettPersonerSomTriggerUpdateInnvandringsMelding() {
-    
+        Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").identtype("FNR")
+                .etternavn("Kake").fornavn("Snill")
+                .kjonn('M')
+                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10))
+                .build();
+        personRepository.save(person5);
     }
     
     private void opprettPersonerSomTriggerRelasjonsmeldingVigsel() {
@@ -173,6 +178,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         
         expectedTpsXmlRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url))));
         expectedSkdInnvandringCreateRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
+        expectedSkdUpdateInnvandringRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
         expectedSkdRelasjonsmeldingerRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
         expectedSkdDoedsmeldingerRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
         
