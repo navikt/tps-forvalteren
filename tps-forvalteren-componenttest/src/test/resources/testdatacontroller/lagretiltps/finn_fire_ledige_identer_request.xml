@@ -5,11 +5,12 @@
 		<aksjonsDato/>
 		<aksjonsKode>A</aksjonsKode>
 		<aksjonsKode2>0</aksjonsKode2>
-		<antallFnr>3</antallFnr>
+		<antallFnr>4</antallFnr>
 		<nFnr>
 			<fnr>04121656499</fnr>
 			<fnr>10050552565</fnr>
 			<fnr>12017500617</fnr>
+			<fnr>11031250155</fnr>
 		</nFnr>
 	</tpsServiceRutine>
 </tpsPersonData>

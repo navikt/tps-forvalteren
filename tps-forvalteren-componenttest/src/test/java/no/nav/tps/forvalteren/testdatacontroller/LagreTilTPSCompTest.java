@@ -30,16 +30,18 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
     private List<String> environments = Arrays.asList("t1", "t2", "u5");
     
-    List<String> expectedSkdInnvandringCreateRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_SFE_ENDRINGSMELDING_fnr04121656499.txt",
+    List<String> expectedSkdInnvandringCreateRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
-            "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt");
+            "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt",
+            "testdatacontroller/lagretiltps/skdmelding_request_innvandringCreate_fnr_11031250155.txt");
     List<String> expectedSkdRelasjonsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");
-    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/finn_tre_ledige_identer_request.xml";
+    List<String> expectedSkdDoedsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
+    
+    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/finn_fire_ledige_identer_request.xml";
     List<String> expectedTpsXmlRequestsUrl = Arrays.asList(xmlFindNonexistingIdenterInTpsUrl);
     List<String> expectedRequests = constructExpectedRequests();
     
@@ -66,7 +68,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         MvcResult mvcResult = mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("[\""+String.join( "\",\"" , environments)+"\"]"))
                 .andExpect(status().isOk()).andReturn();
-    
+        
     
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(messageQueueConsumer, times(expectedRequests.size())).sendMessage(captor.capture());
@@ -80,12 +82,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private void mockTps() throws JMSException {
         //mock findPersonsNotInEnvironments:
         when(messageQueueConsumer.sendMessage( removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl))))
-                .thenReturn(getResourceFileContent("testdatacontroller/lagretiltps/Finn_ledige_identer_FS03-FDLISTER-DISKNAVN-M_response_from_TPS.xml"));
+                .thenReturn(getResourceFileContent("testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_response.xml"));
         
-        //    TODO mock    sendDoedsmeldinger
-        //    TODO mock    sendRelasjonsmeldinger
-        //    TODO mock    sendInnvandringsMeldinger
-        //    TODO mock    sendUpdateInnvandringsMeldinger
     }
     
     private void setupTestdataInTpsfDatabase() {
@@ -99,8 +97,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     private void opprettPersonerSomTriggerInnvandringsMelding() {
         
-        Person person2 = Person.builder().gruppe(testgruppe).ident("11031250155").build();
-        
         Adresse adressenTilPerson3 = Gateadresse.builder().husnummer("9354").gatekode("01415").adresse("KJØLVEGEN").build();
         adressenTilPerson3.setKommunenr("1112");
         adressenTilPerson3.setPostnr("1001");
@@ -112,7 +108,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .boadresse(adressenTilPerson3).build();
         adressenTilPerson3.setPerson(person3);
         
-        Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").build();
+        Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").etternavn("Kake").fornavn("Snill").build();
         personRepository.save(person3);
         
     }
@@ -151,7 +147,13 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
     
     private void opprettPersonerSomTriggerDoedsmeldinger() {
-    
+        Person doedPerson = Person.builder().gruppe(testgruppe).ident("11031250155").identtype("DNR")
+                .doedsdato(LocalDateTime.of(2018, 05, 15, 14, 10, 44))
+                .kjonn('M')
+                .fornavn("Døende").etternavn("Person")
+                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10))
+                .build();
+        personRepository.save(doedPerson);
     }
     
     private String removeNewLineAndTab(String text) {
@@ -163,6 +165,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         final List<String> actualEnvironmentsToRecieveXml = actualConnectedToEnvironments.stream().filter(pair -> "TPS_FORESPORSEL_XML_O".equals(pair.getValue())).map(pair -> pair.getKey()).collect(Collectors.toList());
         assertTrue("Sjekk at skdmeldinger blir sendt til alle miljøene",environments.stream().allMatch(env -> actualEnvironmentsToRecieveSkdMelding.contains(env)));
         assertTrue("Sjekk at xml-er blir sendt til alle miljøene",environments.stream().allMatch(env -> actualEnvironmentsToRecieveXml.contains(env)));
+        actualConnectedToEnvironments.clear();
     }
     
     private List<String> constructExpectedRequests() {
@@ -171,6 +174,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         expectedTpsXmlRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url))));
         expectedSkdInnvandringCreateRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
         expectedSkdRelasjonsmeldingerRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
+        expectedSkdDoedsmeldingerRequestsUrl.forEach(url ->  environments.forEach( env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE",""))));
         
         return expectedRequests.stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
     }
