@@ -53,6 +53,8 @@ public class LagreTilTpsTest {
 	private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
 	@Mock
 	private FindGruppeById findGruppeByIdMock;
+	@Mock
+	private SendNavEndringsmelding sendNavEndringsmelding;
 
 	@InjectMocks
 	private LagreTilTps lagreTilTps;
@@ -100,6 +102,7 @@ public class LagreTilTpsTest {
 		verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
 		verify(innvandring).resolve();
 		verify(sendSkdMeldingTilGitteMiljoer).execute(melding1, skdRequestMeldingDefinition, new HashSet<>(environments));
+		verify(sendNavEndringsmelding).execute(personsInGruppe, new HashSet<>(environments));
 
 	}
 
