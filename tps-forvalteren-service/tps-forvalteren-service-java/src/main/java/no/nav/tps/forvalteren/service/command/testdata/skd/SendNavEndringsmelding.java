@@ -51,7 +51,7 @@ public class SendNavEndringsmelding {
             tpsRequestContext.setEnvironment(serviceRoutineRequest.getMiljo());
             TpsServiceRoutineResponse svar = tpsRequestSender.sendTpsRequest(serviceRoutineRequest.getMelding(), tpsRequestContext);
 
-            sjekkNavEndringsmeldingStatus(svar);
+            //sjekkNavEndringsmeldingStatus(svar);
         });
 
     }
