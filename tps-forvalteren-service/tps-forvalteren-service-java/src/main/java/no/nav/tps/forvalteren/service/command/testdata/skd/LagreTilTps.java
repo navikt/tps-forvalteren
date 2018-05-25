@@ -56,7 +56,7 @@ public class LagreTilTps {
 
         Set<String> environmentsSet = new HashSet<>(environments);
 
-        List<Person> personerSomAlleredeEksitererITpsMiljoe = personerIGruppen;
+        List<Person> personerSomAlleredeEksitererITpsMiljoe = new ArrayList<>(personerIGruppen);
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
 
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
