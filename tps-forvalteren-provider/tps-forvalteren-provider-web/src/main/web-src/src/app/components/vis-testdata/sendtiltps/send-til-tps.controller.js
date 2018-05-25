@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
-    .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', '$stateParams', 'serviceRutineFactory', 'testdataService', 'utilsService',
-        function ($scope, $mdDialog, $stateParams, serviceRutineFactory, testdataService, utilsService) {
+    .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', '$stateParams','$rootScope', 'serviceRutineFactory', 'testdataService', 'utilsService',
+        function ($scope, $mdDialog, $stateParams, $rootScope, serviceRutineFactory, testdataService, utilsService) {
 
             var gruppeId = $stateParams.gruppeId;
 
@@ -28,7 +28,7 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                             .ariaLabel('Bekreftelse på at testpersoner har blitt sendt til TPS')
                             .ok('OK');
                         $mdDialog.show(alert);
-                        $scope.reloadPage();
+                        $rootScope.$broadcast('tps-sent');
                     },
                     function (error) {
                         $mdDialog.hide();
