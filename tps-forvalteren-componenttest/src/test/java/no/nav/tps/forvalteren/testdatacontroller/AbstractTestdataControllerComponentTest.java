@@ -15,6 +15,7 @@ import com.google.common.base.Charsets;
 import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
@@ -31,6 +32,8 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     protected PersonRepository personRepository;
     @Autowired
     protected RelasjonRepository relasjonRepository;
+    @Autowired
+    protected DoedsmeldingRepository doedsmeldingRepository;
     
     private List<NameValuePair> params = new ArrayList<>();
     
@@ -59,7 +62,7 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     
     @Before
     public void clearAllRepositories() {
-    
+        doedsmeldingRepository.deleteAll();
         relasjonRepository.deleteAll();
         gruppeRepository.deleteAll();
         personRepository.deleteAll();
