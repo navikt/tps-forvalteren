@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -56,11 +57,16 @@ public class OpprettSikkerhetstiltakMeldingTest {
         ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
         when(mappingUtils.convertToTpsServiceRoutineRequest(anyString(), anyMap())).thenReturn(tpsServiceRoutineRequest);
 
-        //verify(mappingUtils).convertToTpsServiceRoutineRequest(anyString(), captor.capture());
 
         List<TpsNavEndringsMelding> result = opprettSikkerhetstiltakMelding.execute(person, new HashSet(Arrays.asList("u5")));
+        verify(mappingUtils).convertToTpsServiceRoutineRequest(anyString(), captor.capture());
+
         assertThat(result, is(instanceOf(List.class)));
-        //assertThat(captor.getValue().get("fom"), is(equals(stringLocalDateTimeFom)));
+        assertThat(captor.getValue().get("fom"), is(stringLocalDateTimeFom));
+        assertThat(captor.getValue().get("tom"), is(stringLocalDateTimeTom));
+        assertThat(captor.getValue().get("offentligIdent"), is("11111100000"));
+        assertThat(captor.getValue().get("typeSikkerhetsTiltak"), is("ABCD"));
+        assertThat(captor.getValue().get("serviceRutinenavn"), is("endre_sikkerhetstiltak"));
 
     }
 }
