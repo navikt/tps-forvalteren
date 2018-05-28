@@ -13,6 +13,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequ
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -39,14 +40,20 @@ public class OpprettSikkerhetstiltakMeldingTest {
     @Mock
     private Person person;
 
-    @Test
-    public void execute() {
+    private String stringLocalDateTimeFom;
+    private String stringLocalDateTimeTom;
+    private ArgumentCaptor<Map> captor;
+
+    @Before
+    public void setup() {
 
         person = new Person();
+
         LocalDateTime localDateTimeFom = LocalDateTime.of(2018, 06, 01, 12, 00);
         LocalDateTime localDateTimeTom = LocalDateTime.of(2020, 01, 01, 12, 00);
-        String stringLocalDateTimeFom = "2018-06-01";
-        String stringLocalDateTimeTom = "2020-01-01";
+
+        stringLocalDateTimeFom = "2018-06-01";
+        stringLocalDateTimeTom = "2020-01-01";
 
         person.setIdent("11111100000");
         person.setSikkerhetsTiltakDatoFom(localDateTimeFom);
@@ -54,9 +61,14 @@ public class OpprettSikkerhetstiltakMeldingTest {
         person.setTypeSikkerhetsTiltak("ABCD");
         person.setBeskrSikkerhetsTiltak("en beskrivelse");
 
-        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+        captor = ArgumentCaptor.forClass(Map.class);
+
         when(mappingUtils.convertToTpsServiceRoutineRequest(anyString(), anyMap())).thenReturn(tpsServiceRoutineRequest);
 
+    }
+
+    @Test
+    public void opprettSikkerhetsTiltaksMeldingTest() {
 
         List<TpsNavEndringsMelding> result = opprettSikkerhetstiltakMelding.execute(person, new HashSet(Arrays.asList("u5")));
         verify(mappingUtils).convertToTpsServiceRoutineRequest(anyString(), captor.capture());
@@ -68,5 +80,16 @@ public class OpprettSikkerhetstiltakMeldingTest {
         assertThat(captor.getValue().get("typeSikkerhetsTiltak"), is("ABCD"));
         assertThat(captor.getValue().get("serviceRutinenavn"), is("endre_sikkerhetstiltak"));
 
+    }
+
+    @Test
+    public void opprettSikkerhetsTiltaksMeldingIFlereMiljoTest() {
+
+        List<TpsNavEndringsMelding> result = opprettSikkerhetstiltakMelding.execute(person, new HashSet(Arrays.asList("u5", "t9", "q8", "t2")));
+
+        assertThat(result.size(), is(4));
+        assertThat(result.get(0).getMiljo(), is("u5"));
+        assertThat(result.get(1).getMiljo(), is("t9"));
+        assertThat(result.get(3).getMiljo(), is("t2"));
     }
 }

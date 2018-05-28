@@ -13,6 +13,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequ
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -39,21 +40,25 @@ public class OpprettEgenAnsattMeldingTest {
     @Mock
     private Person person;
 
-    @Test
-    public void execute() {
+    private String stringLocalDateTimeFom;
+    private ArgumentCaptor<Map> captor;
 
+    @Before
+    public void setup() {
         person = new Person();
         LocalDateTime localDateTimeFom = LocalDateTime.of(2018, 06, 01, 12, 00);
-        LocalDateTime localDateTimeTom = LocalDateTime.of(2020, 01, 01, 12, 00);
-        String stringLocalDateTimeFom = "2018-06-01";
-        String stringLocalDateTimeTom = "2020-01-01";
+        stringLocalDateTimeFom = "2018-06-01";
 
         person.setIdent("11111100000");
         person.setEgenAnsattDatoFom(localDateTimeFom);
-        person.setEgenAnsattDatoTom(localDateTimeTom);
 
-        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+        captor = ArgumentCaptor.forClass(Map.class);
+
         when(mappingUtils.convertToTpsServiceRoutineRequest(anyString(), anyMap())).thenReturn(tpsServiceRoutineRequest);
+    }
+
+    @Test
+    public void opprettEgenAnsattMeldingTest() {
 
         List<TpsNavEndringsMelding> result = opprettEgenAnsattMelding.execute(person, new HashSet(Arrays.asList("u5")));
         verify(mappingUtils).convertToTpsServiceRoutineRequest(anyString(), captor.capture());
@@ -62,6 +67,15 @@ public class OpprettEgenAnsattMeldingTest {
         assertThat(captor.getValue().get("fom"), is(stringLocalDateTimeFom));
         assertThat(captor.getValue().get("serviceRutinenavn"), is("endre_egen_ansatt"));
         assertThat(captor.getValue().get("offentligIdent"), is("11111100000"));
+    }
 
+    @Test
+    public void opprettEgenAnsattMeldingTilFlereMiljoTest() {
+
+        List<TpsNavEndringsMelding> result = opprettEgenAnsattMelding.execute(person, new HashSet(Arrays.asList("u5", "u6", "t1")));
+
+        assertThat(result.size(), is(3));
+        assertThat(result.get(0).getMiljo(), is("u5"));
+        assertThat(result.get(2).getMiljo(), is("t1"));
     }
 }
