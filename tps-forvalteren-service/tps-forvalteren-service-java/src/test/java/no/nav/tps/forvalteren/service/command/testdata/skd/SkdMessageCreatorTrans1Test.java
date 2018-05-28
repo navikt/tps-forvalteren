@@ -70,7 +70,6 @@ public class SkdMessageCreatorTrans1Test {
     }
 
     @Test
-    @Ignore("Skal kastes. Erstattes med ny test som gir mer verdi enn verify.")
     public void checkThatGenerateSkdMeldingGetsCalledMultipleTimes() {
         persons.add(person);
         persons.add(person2);

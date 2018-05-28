@@ -3,15 +3,23 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring.FAMILIEENDRING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +39,16 @@ public class LagreTilTps {
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
 
     @Autowired
+    private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+
+    @Autowired
     private CreateRelasjoner createRelasjoner;
 
     @Autowired
     private CreateDoedsmeldinger createDoedsmeldinger;
+
+    @Autowired
+    private CreateFoedselsmeldinger createFoedselsmeldinger;
 
     @Autowired
     private CreateUtvandring createUtvandring;
@@ -56,29 +70,33 @@ public class LagreTilTps {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
         List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, environments);
-
+        List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
+        List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
         Set<String> environmentsSet = new HashSet<>(environments);
 
-        List<Person> personerSomAlleredeEksitererITpsMiljoe = personerIGruppen;
-        personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
+        personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+        personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
+        personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
 
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
-        listTpsResponsene.addAll( sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
-        listTpsResponsene.addAll( sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe,environmentsSet));
-        listTpsResponsene.addAll( sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
-        listTpsResponsene.addAll( sendDoedsmeldinger( gruppeId, environmentsSet));
-        listTpsResponsene.addAll( sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendFoedselsMeldinger(personerSomSkalFoedes, environmentsSet));
+        listTpsResponsene.addAll(sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendDoedsmeldinger(gruppeId, environmentsSet));
+        listTpsResponsene.addAll(sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene);
     }
 
     //TODO ALle disse private metodene bør ut egen felles metode som ligger i egen klasse. Få sendDoedsmelding til å ta inn liste av personer i steden for gruppe.
-    private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger( Long gruppeId, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(Long gruppeId, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);
         doedsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer("Doedsmelding", skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
@@ -124,6 +142,18 @@ public class LagreTilTps {
         return listTpsResponsene;
     }
 
+    private List<SendSkdMeldingTilTpsResponse> sendFoedselsMeldinger(List<Person> personerSomSkalFoedes, Set<String> environmentsSet) {
+        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+
+        List<SkdMeldingTrans1> foedselsmeldinger = createFoedselsmeldinger.execute(personerSomSkalFoedes, true);
+        foedselsmeldinger.forEach(skdMelding -> {
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(FOEDSEL_MLD_NAVN, skdMelding, environmentsSet);
+            listTpsResponsene.add(tpsResponse);
+        });
+
+        return listTpsResponsene;
+    }
+
     private Map<String, String> mapStatus(Map<String, String> responseSkdMeldingerPerEnv, Set<String> environmentsSet) {
         responseSkdMeldingerPerEnv.replaceAll((env,status)->"00".equals(status) ? "OK" : status);
         environmentsSet.forEach(env -> responseSkdMeldingerPerEnv.putIfAbsent(env, "Environment is not deployed"));
@@ -138,5 +168,13 @@ public class LagreTilTps {
                 .skdmeldingstype(skdmeldingstype)
                 .status(mapStatus(responseSkdMeldingerPerEnv, environmentsSet))
                 .build();
+    }
+
+    private List<Person> createListPersonerSomAlleredeEksiterer(List<Person> personerIGruppe, List<Person> personerSomIkkeEksisterer) {
+        List<Person> personerSomAlleredeEksisterer = new ArrayList<>();
+        personerSomAlleredeEksisterer.addAll(personerIGruppe);
+        personerSomAlleredeEksisterer.removeAll(personerSomIkkeEksisterer);
+
+        return personerSomAlleredeEksisterer;
     }
 }

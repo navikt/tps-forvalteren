@@ -1,8 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltrerPaaIdenterSomIkkeFinnesIDB;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +29,10 @@ public class FiltrerPaaIdenterSomIkkeFinnesIDBTest {
     private String dummyIdent3 = "dummy3";
 
     @Mock
-    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     @InjectMocks
-    private DefaultFiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
+    private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
 
     @Before
     public void setup(){
