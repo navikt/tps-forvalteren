@@ -22,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.config.ComptestConfig;
@@ -44,6 +45,7 @@ public abstract class AbstractRsProviderComponentTest {
 
     static {
         MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        MAPPER.registerModule(new JavaTimeModule());
     }
 
     @Before

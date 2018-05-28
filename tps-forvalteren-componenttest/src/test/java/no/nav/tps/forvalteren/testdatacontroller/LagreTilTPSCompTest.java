@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.testdatacontroller;
 import static no.nav.tps.forvalteren.config.ComptestConfig.actualConnectedToEnvironments;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,6 +58,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     @Before
     public void setup() throws JMSException {
+        reset(messageQueueConsumer);
         setupTestdataInTpsfDatabase();
         mockTps();
     }
@@ -71,7 +73,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(messageQueueConsumer, times(expectedRequests.size())).sendMessage(captor.capture());
         List<String> actualRequests = captor.getAllValues().stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
-        ;
         
         assertEquals(expectedRequests.toString(), actualRequests.toString());
         assertCalledEnvironments();
