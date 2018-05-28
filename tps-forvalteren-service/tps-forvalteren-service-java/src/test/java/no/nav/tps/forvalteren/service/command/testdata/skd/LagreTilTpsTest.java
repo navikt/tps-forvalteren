@@ -127,7 +127,7 @@ public class LagreTilTpsTest {
 		when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
 		RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
         assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
-		assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding"),
+		assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Utvandring"),
 				actualResponse.getSendSkdMeldingTilTpsResponsene()
 				.stream()
 				.map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
