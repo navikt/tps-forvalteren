@@ -8,6 +8,7 @@ import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +19,29 @@ import javafx.util.Pair;
 import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
 import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
+import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 @Configuration
 public class ComptestConfig {
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
     public static List<Pair<String, String >> actualConnectedToEnvironments = new ArrayList<>();
+    
+    @Bean
+    @Primary
+    public FetchEnvironmentsManager fetchEnvironmentsManager() {
+        return Mockito.spy(new FetchEnvironmentsManager());
+    }
+    
+    @Bean
+    @Primary
+    public FiktiveIdenterGenerator fiktiveIdenterGenerator() {
+        return mock(FiktiveIdenterGenerator.class);
+    }
+    
     @Bean
     @Primary
     public FasitClient fasitClient() {

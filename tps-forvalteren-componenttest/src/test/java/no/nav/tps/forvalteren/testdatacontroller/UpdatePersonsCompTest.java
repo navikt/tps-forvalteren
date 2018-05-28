@@ -69,9 +69,4 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
         return personList;
     }
     
-    private void endTransactionIfActive() {
-        if (TestTransaction.isActive()) {
-            TestTransaction.end();
-        }
-    }
 }

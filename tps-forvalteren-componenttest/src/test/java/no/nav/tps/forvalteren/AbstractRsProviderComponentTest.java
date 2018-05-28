@@ -47,7 +47,7 @@ public abstract class AbstractRsProviderComponentTest {
     }
 
     @Before
-    public void setupmockmvc() throws JMSException {
+    public void setupmockmvc() {
         if (context != null) {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
@@ -61,7 +61,9 @@ public abstract class AbstractRsProviderComponentTest {
             throw new RuntimeException(e);
         }
     }
-
+    protected String removeNewLineAndTab(String text) {
+        return text.replace("\n", "").replace("\r", "").replace("\t","");
+    }
     protected static String convertObjectToJson(Object object) throws IOException {
         return MAPPER.writeValueAsString(object);
     }

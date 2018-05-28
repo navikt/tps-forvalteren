@@ -10,6 +10,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.transaction.TestTransaction;
 import com.google.common.base.Charsets;
 
 import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
@@ -71,5 +72,11 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     @After
     public void clearParam() {
         params.clear();
+    }
+    
+    protected void endTransactionIfActive() {
+        if (TestTransaction.isActive()) {
+            TestTransaction.end();
+        }
     }
 }
