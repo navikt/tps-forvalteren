@@ -46,6 +46,8 @@ public class LagreTilTpsTest {
 	@Mock
 	private CreateDoedsmeldinger createDoedsmeldinger;
 	@Mock
+	private CreateUtvandring createUtvandring;
+	@Mock
 	private SkdMeldingResolver innvandring;
 	@Mock
 	private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
@@ -64,6 +66,7 @@ public class LagreTilTpsTest {
 	private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
 	private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
 	private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
+	private List<SkdMeldingTrans1> utvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("121200").personnummer("98765").build());
 	private Map<String, String> expectedStatus = new HashMap<>();
 	private Map<String, String> TPSResponse = new HashMap<>();
 
@@ -87,6 +90,7 @@ public class LagreTilTpsTest {
 		when(skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER)).thenReturn(innvandringsMeldinger);
 		when(createRelasjoner.execute(persons, ADD_HEADER)).thenReturn(relasjonsMeldinger);
 		when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
+		when(createUtvandring.execute(persons, ADD_HEADER)).thenReturn(utvandringsMeldinger);
 		when(innvandring.resolve()).thenReturn(skdRequestMeldingDefinition);
 	}
 
@@ -98,6 +102,7 @@ public class LagreTilTpsTest {
 		verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
 		verify(createRelasjoner).execute(persons, ADD_HEADER);
 		verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
+		verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
 		verify(innvandring).resolve();
 		verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
 

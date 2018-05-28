@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.verify;
@@ -58,6 +59,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private CreateDoedsmeldinger createDoedsmeldinger;
 
     @Mock
+    private CreateUtvandring createUtvandring;
+
+    @Mock
     private GruppeRepository gruppeRepository;
 
     @Mock
@@ -81,6 +85,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
     private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
     private SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = aSkdEndringsmeldingGruppe().id(GRUPPE_ID).build();
+    private List<SkdMeldingTrans1> utvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).build());
 
     @Before
     public void setup() {
@@ -90,6 +95,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
         when(createMeldingWithMeldingstype.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
+        when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
     }
 
     @Test
@@ -104,6 +110,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
         verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
         verify(saveSkdEndringsmeldingerFromText).execute(rsMeldinger, GRUPPE_ID);
+        verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
 
     }
     
