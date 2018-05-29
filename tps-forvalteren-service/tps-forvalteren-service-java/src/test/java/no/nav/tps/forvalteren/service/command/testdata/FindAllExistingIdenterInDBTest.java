@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindAllExistingIdenterInDBTest {
@@ -27,7 +27,7 @@ public class FindAllExistingIdenterInDBTest {
     private FindPersonerByIdIn findPersonerByIdIn;
 
     @InjectMocks
-    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     private List<Person> existingIdenterInDB;
     private List<String> newIdenter;

@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.config;
 
 import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
@@ -87,7 +86,7 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     @Primary
     public MessageQueueConsumer defaultMessageQueueConsumer() {
-        return Mockito.spy(new DefaultMessageQueueConsumer(TPS_TEST_REQUEST_QUEUE, connectionFactory()));
+        return Mockito.spy(new MessageQueueConsumer(TPS_TEST_REQUEST_QUEUE, connectionFactory()));
     }
 
     @Bean

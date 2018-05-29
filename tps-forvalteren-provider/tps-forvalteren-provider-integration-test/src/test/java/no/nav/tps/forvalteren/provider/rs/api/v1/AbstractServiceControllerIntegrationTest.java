@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
 import com.google.common.base.Charsets;
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.RequestQueueListener;
 import org.apache.activemq.ActiveMQSession;
@@ -14,7 +14,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
 import javax.jms.JMSException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public abstract class AbstractServiceControllerIntegrationTest extends AbstractR
     protected RequestQueueListener requestQueueListener;
 
     @Autowired
-    private DefaultMessageQueueConsumer defaultMessageQueueConsumer;
+    private MessageQueueConsumer messageQueueConsumer;
 
     private static final String BASE_URL = "/api/v1/service/";
 
@@ -55,7 +54,7 @@ public abstract class AbstractServiceControllerIntegrationTest extends AbstractR
     @Before
     public void before() {
         try {
-            Mockito.doReturn(requestQueueListener.getResponseQueue()).when(defaultMessageQueueConsumer).createTemporaryQueueFor(any(ActiveMQSession.class));
+            Mockito.doReturn(requestQueueListener.getResponseQueue()).when(messageQueueConsumer).createTemporaryQueueFor(any(ActiveMQSession.class));
         } catch (JMSException e) {
             e.printStackTrace();
         }

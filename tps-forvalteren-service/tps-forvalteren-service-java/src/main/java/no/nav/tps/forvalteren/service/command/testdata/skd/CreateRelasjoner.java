@@ -22,9 +22,9 @@ public class CreateRelasjoner {
     @Autowired
     private PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
-    public List<String> execute(List<Person> personerSomIkkeEksitererITpsMiljoe, boolean addHeader) {
+    public List<SkdMelding> execute(List<Person> personerSomIkkeEksitererITpsMiljoe, boolean addHeader) {
         List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITpsMiljoe);
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMelding> skdMeldinger = new ArrayList<>();
         for (Person person : personerMedRelasjoner) {
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
             boolean hasBarn = false;

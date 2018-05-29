@@ -11,6 +11,8 @@
                         <md-radio-button ng-repeat="relasjon in relasjoner"
                                          ng-value="relasjon.opt"
                                          aria-label="{{relasjon.opt | titlecase}}">
+
+                                         <span ng-if="relasjon.opt == 'FOEDSEL'">Barn via</span>
                             {{relasjon.opt | titlecase}}
                         </md-radio-button>
                     </md-radio-group>
