@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tpsPersonData>
+	<tpsServiceRutine>
+		<serviceRutinenavn>FS03-FDLISTER-DISKNAVN-M</serviceRutinenavn>
+		<aksjonsDato/>
+		<aksjonsKode>A</aksjonsKode>
+		<aksjonsKode2>0</aksjonsKode2>
+		<antallFnr>3</antallFnr>
+		<nFnr>
+			<fnr>04121656499</fnr>
+			<fnr>03051750127</fnr>
+			<fnr>12017500617</fnr>
+		</nFnr>
+	</tpsServiceRutine>
+	<tpsSvar>
+		<svarStatus>
+			<returStatus>08</returStatus>
+			<returMelding>S201005F</returMelding>
+			<utfyllendeMelding>Person ikke funnet</utfyllendeMelding>
+		</svarStatus>
+		<personDataM201>
+			<antallFM201>3</antallFM201>
+			<AFnr>
+				<EFnr>
+					<fnr>03051750127</fnr>
+					<sp></sp>
+					<kn></kn>
+					<fn></fn>
+					<mn></mn>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
+				</EFnr>
+				<EFnr>
+					<fnr>04121656499</fnr>
+					<sp></sp>
+					<kn></kn>
+					<fn></fn>
+					<mn></mn>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
+				</EFnr>
+				<EFnr>
+					<fnr>12017500617</fnr>
+					<sp></sp>
+					<kn>Kake Snill</kn>
+					<fn>Snill</fn>
+					<mn></mn>
+					<en>Kake</en>
+				</EFnr>
+			</AFnr>
+		</personDataM201>
+	</tpsSvar>
+</tpsPersonData>
