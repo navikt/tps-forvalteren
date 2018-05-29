@@ -7,6 +7,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 
 import java.util.ArrayList;
@@ -42,9 +43,13 @@ public class LagreTilTpsTest {
 	@Mock
 	private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
 	@Mock
+	private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+	@Mock
 	private CreateRelasjoner createRelasjoner;
 	@Mock
 	private CreateDoedsmeldinger createDoedsmeldinger;
+	@Mock
+	private CreateFoedselsmeldinger createFoedselsmeldinger;
 	@Mock
 	private SkdMeldingResolver innvandring;
 	@Mock
@@ -53,8 +58,6 @@ public class LagreTilTpsTest {
 	private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
 	@Mock
 	private FindGruppeById findGruppeByIdMock;
-	@Mock
-	private SendNavEndringsmelding sendNavEndringsmelding;
 
 	@InjectMocks
 	private LagreTilTps lagreTilTps;
@@ -63,9 +66,9 @@ public class LagreTilTpsTest {
 	private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
 	private Person person = aMalePerson().build();
 	private List<String> environments = new ArrayList<>();
-	private List<String> innvandringsMeldinger = Arrays.asList(melding1);
-	private List<String> relasjonsMeldinger = Arrays.asList(melding2);
-	private List<String> doedsMeldinger = Arrays.asList(melding3);
+	private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
+	private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
+	private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
 	private Map<String, String> expectedStatus = new HashMap<>();
 	private Map<String, String> TPSResponse = new HashMap<>();
 
@@ -88,6 +91,7 @@ public class LagreTilTpsTest {
 		when(findPersonsNotInEnvironments.execute(personsInGruppe, environments)).thenReturn(persons);
 		when(skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER)).thenReturn(innvandringsMeldinger);
 		when(createRelasjoner.execute(persons, ADD_HEADER)).thenReturn(relasjonsMeldinger);
+		when(findPersonerSomSkalHaFoedselsmelding.execute(personsInGruppe)).thenReturn(persons);
 		when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
 		when(innvandring.resolve()).thenReturn(skdRequestMeldingDefinition);
 	}
@@ -101,8 +105,8 @@ public class LagreTilTpsTest {
 		verify(createRelasjoner).execute(persons, ADD_HEADER);
 		verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
 		verify(innvandring).resolve();
-		verify(sendSkdMeldingTilGitteMiljoer).execute(melding1, skdRequestMeldingDefinition, new HashSet<>(environments));
-		verify(sendNavEndringsmelding).execute(personsInGruppe, new HashSet<>(environments));
+		verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);
+		verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
 
 	}
 
@@ -124,6 +128,6 @@ public class LagreTilTpsTest {
 				.map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
 				.collect(Collectors.toList()));
 		assertEquals(GRUPPE_ID,actualResponse.getGruppeid());
-		assertEquals(melding1.substring(0,11),actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
+		assertEquals(innvandringsMeldinger.get(0).getFodselsnummer(),actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
 	}
 }

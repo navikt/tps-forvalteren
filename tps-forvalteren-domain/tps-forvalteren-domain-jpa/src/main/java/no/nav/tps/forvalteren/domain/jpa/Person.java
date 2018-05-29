@@ -2,10 +2,13 @@ package no.nav.tps.forvalteren.domain.jpa;
 
 import static javax.persistence.CascadeType.ALL;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,13 +21,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -89,25 +88,4 @@ public class Person extends ChangeStamp {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner = new ArrayList<>();
-
-    @Column(name = "EGEN_ANSATT_DATO_FOM")
-    private LocalDateTime egenAnsattDatoFom;
-
-    @Column(name = "EGEN_ANSATT_DATO_TOM")
-    private LocalDateTime egenAnsattDatoTom;
-
-    @Column(name = "TYPE_SIKKERHETSTILTAK", length = 4)
-    private String typeSikkerhetsTiltak;
-
-    @Column(name = "SIKKERHETSTILTAK_DATO_FOM")
-    private LocalDateTime sikkerhetsTiltakDatoFom;
-
-    @Column(name = "SIKKERHETSTILTAK_DATO_TOM")
-    private LocalDateTime sikkerhetsTiltakDatoTom;
-
-    @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
-    private String beskrSikkerhetsTiltak;
-
-
-
 }
