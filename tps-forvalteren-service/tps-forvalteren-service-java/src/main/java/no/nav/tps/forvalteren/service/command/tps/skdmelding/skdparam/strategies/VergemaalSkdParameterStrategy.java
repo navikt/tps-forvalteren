@@ -40,7 +40,6 @@ public class VergemaalSkdParameterStrategy {
         addSkdParameterExtractedFromPerson(skdMeldingTrans1, person);
         addSkdParameterExtractedFromVergemaal(skdMeldingTrans1, vergemaal);
         addDefaultParam(skdMeldingTrans1);
-        setVergemaalAsSendt(vergemaal);
 
         return skdMeldingTrans1;
 

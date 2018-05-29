@@ -36,7 +36,7 @@ public class LagreTilTpsTest {
 
 	private static final boolean ADD_HEADER = true;
 	private static final Long GRUPPE_ID = 1337L;
-	private static final String melding1 = "11111111111111", melding2 = "222222222222", melding3 = "33333333333";
+	private static final String melding1 = "11111111111111", melding2 = "222222222222", melding3 = "33333333333", melding4 = "44444444444";
 
 	@Mock
 	private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
@@ -50,6 +50,8 @@ public class LagreTilTpsTest {
 	private CreateDoedsmeldinger createDoedsmeldinger;
 	@Mock
 	private CreateFoedselsmeldinger createFoedselsmeldinger;
+	@Mock
+	private CreateVergemaal createVergemaal;
 	@Mock
 	private SkdMeldingResolver innvandring;
 	@Mock
@@ -69,6 +71,8 @@ public class LagreTilTpsTest {
 	private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
 	private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
 	private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
+	private List<SkdMeldingTrans1> vergemaalsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding4).build());
+
 	private Map<String, String> expectedStatus = new HashMap<>();
 	private Map<String, String> TPSResponse = new HashMap<>();
 
@@ -94,6 +98,7 @@ public class LagreTilTpsTest {
 		when(findPersonerSomSkalHaFoedselsmelding.execute(personsInGruppe)).thenReturn(persons);
 		when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
 		when(innvandring.resolve()).thenReturn(skdRequestMeldingDefinition);
+		when(createVergemaal.execute(personsInGruppe, ADD_HEADER)).thenReturn(vergemaalsMeldinger);
 	}
 
 	@Test
@@ -107,6 +112,7 @@ public class LagreTilTpsTest {
 		verify(innvandring).resolve();
 		verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);
 		verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
+		verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
 
 	}
 
@@ -122,7 +128,7 @@ public class LagreTilTpsTest {
 		when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
 		RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
         assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
-		assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding"),
+		assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal"),
 				actualResponse.getSendSkdMeldingTilTpsResponsene()
 				.stream()
 				.map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)

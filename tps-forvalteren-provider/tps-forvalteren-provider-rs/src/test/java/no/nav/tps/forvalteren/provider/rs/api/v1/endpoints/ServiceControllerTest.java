@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.FindServiceRoutineByName;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
@@ -42,6 +43,9 @@ public class ServiceControllerTest {
 
     @Mock
     private TpsServiceRoutineRequest serviceRoutineRequestMock;
+
+    @Mock
+    private GetTpsServiceRoutineResponse getTpsServiceRoutineResponse;
 
     @Mock
     private RsTpsRequestMappingUtils mappingUtilsMock;
