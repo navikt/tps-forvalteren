@@ -5,6 +5,7 @@ public enum RelasjonType {
     MOR("MOR"),
     FAR("FAR"),
     BARN("BARN"),
+    FOEDSEL("FOEDSEL"),
     EKTEFELLE("EKTEFELLE");
 
     private final String navn;

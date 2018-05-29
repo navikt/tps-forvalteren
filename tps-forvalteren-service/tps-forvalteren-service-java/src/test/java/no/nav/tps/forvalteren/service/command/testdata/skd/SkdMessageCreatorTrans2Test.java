@@ -63,14 +63,14 @@ public class SkdMessageCreatorTrans2Test {
 
     @Test
     public void tester() {
-        List<String> result = skdMessageCreatorTrans2.execute(skdMeldingNavn, forelder, barn, addHeader);
+        List<SkdMeldingTrans2> result = skdMessageCreatorTrans2.execute(skdMeldingNavn, forelder, barn, addHeader);
         
         verify(getSkdMeldingByName).execute(skdMeldingNavn);
         verify(barnetranseSkdParameterStrategy).execute(forelder, barn);
         verify(skdOpprettSkdMeldingMedHeaderOgInnhold).execute(skdParametere, skdFelterContainer, addHeader);
         
         assertThat(result, hasSize(1));
-        assertThat(result.get(0), is(skdMelding));
+        assertThat(result.get(0).toString(), is(skdMelding));
         
     }
 

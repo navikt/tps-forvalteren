@@ -21,9 +21,9 @@ public class PersistBarnTransRecordsToTps {
     private static final int MAX_BARN_PER_RECORD = 13;
     private static final String SKD_MELDING_NAVN = "Familieendring";
 
-    public List<String> execute(Person forelder, boolean addHeader) {
+    public List<SkdMeldingTrans2> execute(Person forelder, boolean addHeader) {
         List<Person> barn = finnBarnTilForelder.execute(forelder);
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans2> skdMeldinger = new ArrayList<>();
         if (barn.size() > MAX_BARN) {
             throw new IllegalArgumentException("Personen har for mange barn.");
         } else if (barn.size() <= MAX_BARN_PER_RECORD) {

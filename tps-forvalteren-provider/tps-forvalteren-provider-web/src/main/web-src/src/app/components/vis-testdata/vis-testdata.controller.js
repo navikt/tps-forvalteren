@@ -461,6 +461,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.aapneAlleFaner = toggleservice.toggleAlleFaner($scope.aapneAlleFaner, $scope.control, $scope.pager);
             };
 
+            $scope.$on('tps-sent', function(event, args){
+                hentTestpersoner();
+            });
+
             $scope.hentgyldigeAdresser = function (person) {
 
                 gyldigAdresseService.finnGyldigAdresse(person.gateadresse).then(

@@ -32,11 +32,11 @@ public class CreateDoedsmeldinger {
     @Autowired
     private SaveDoedsmeldingToDB saveDoedsmeldingToDB;
 
-    public List<String> execute(Long gruppeId, boolean addHeader) {
+    public List<SkdMeldingTrans1>  execute(Long gruppeId, boolean addHeader) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(personerIGruppen);
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1>  skdMeldinger = new ArrayList<>();
         if (!doedePersonerWithoutDoedsmelding.isEmpty()) { 
             skdMeldinger.addAll(skdMessageCreatorTrans1.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, addHeader));
             saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
