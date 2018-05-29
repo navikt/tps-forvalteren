@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -51,6 +52,7 @@ public class createNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     
     @Before
     public void setup() throws JMSException {
+        reset(messageQueueConsumer);
         identer.addAll(Arrays.asList("10050552665",
                 "04121656499",
                 "12017500617",
