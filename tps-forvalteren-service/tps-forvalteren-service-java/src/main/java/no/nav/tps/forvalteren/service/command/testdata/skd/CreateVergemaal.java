@@ -25,7 +25,7 @@ public class CreateVergemaal {
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
 
         for (Person person : personerIGruppen) {
-            List<Vergemaal> personerVergemaal = vergemaalRepository.findAllByIdentAndVergemaalSendt(person.getIdent(), null);
+            List<Vergemaal> personerVergemaal = vergemaalRepository.findAllByIdent(person.getIdent());
             if (!personerVergemaal.isEmpty()) {
                 vergemaalIGruppen.addAll(personerVergemaal);
             }

@@ -21,9 +21,6 @@ public class VergemaalSkdParameterStrategy {
     @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
-    private VergemaalRepository vergemaalRepository;
-
     public SkdMeldingTrans1 execute(Vergemaal vergemaal) {
 
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
@@ -81,11 +78,6 @@ public class VergemaalSkdParameterStrategy {
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
         skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_VERGEMAAL);
         skdMeldingTrans1.setTranstype(TRANSTYPE_FOR_VERGEMAAL);
-    }
-
-    private void setVergemaalAsSendt(Vergemaal vergemaal) {
-        vergemaal.setVergemaalSendt("S");
-        vergemaalRepository.save(vergemaal);
     }
 
     private LocalDateTime getYesterday() {
