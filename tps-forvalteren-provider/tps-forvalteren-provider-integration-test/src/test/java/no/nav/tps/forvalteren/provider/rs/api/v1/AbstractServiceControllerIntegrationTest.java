@@ -21,9 +21,6 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 
 public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-    
     @Autowired
     protected RequestQueueListener requestQueueListener;
 

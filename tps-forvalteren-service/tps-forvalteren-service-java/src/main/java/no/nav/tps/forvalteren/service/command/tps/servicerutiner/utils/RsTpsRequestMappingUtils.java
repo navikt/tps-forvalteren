@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,7 +41,7 @@ public class RsTpsRequestMappingUtils {
             List<String> requiredParameterNameList = tpsServiceRoutineDefinitionRequest.getRequiredParameterNameList();
             requiredParameterNameList.removeAll(map.keySet());
             if (!requiredParameterNameList.isEmpty()) {
-                throw new RuntimeException("Følgende påkrevde felter mangler:" + requiredParameterNameList.toString());
+                throw new TpsfFunctionalException("Følgende påkrevde felter mangler:" + requiredParameterNameList.toString());
             }
         }
         
