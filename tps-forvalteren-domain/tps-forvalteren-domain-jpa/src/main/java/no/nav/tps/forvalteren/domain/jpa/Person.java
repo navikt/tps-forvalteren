@@ -88,4 +88,25 @@ public class Person extends ChangeStamp {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner = new ArrayList<>();
+
+    @Column(name = "EGEN_ANSATT_DATO_FOM")
+    private LocalDateTime egenAnsattDatoFom;
+
+    @Column(name = "EGEN_ANSATT_DATO_TOM")
+    private LocalDateTime egenAnsattDatoTom;
+
+    @Column(name = "TYPE_SIKKERHETSTILTAK", length = 4)
+    private String typeSikkerhetsTiltak;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_FOM")
+    private LocalDateTime sikkerhetsTiltakDatoFom;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_TOM")
+    private LocalDateTime sikkerhetsTiltakDatoTom;
+
+    @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
+    private String beskrSikkerhetsTiltak;
+
+
+
 }
