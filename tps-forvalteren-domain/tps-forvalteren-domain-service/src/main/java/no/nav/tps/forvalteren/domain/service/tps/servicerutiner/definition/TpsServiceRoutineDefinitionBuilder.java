@@ -15,6 +15,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Tra
 
 
 public class TpsServiceRoutineDefinitionBuilder {
+    public static final String REQUIRED = "required";
     private String name;
     private String internalName;
     private Class<?> javaClass;
@@ -101,7 +102,7 @@ public class TpsServiceRoutineDefinitionBuilder {
         }
 
         public TpsServiceRoutineParameterBuilder required() {
-            this.use = "required";
+            this.use = REQUIRED;
             return this;
         }
 

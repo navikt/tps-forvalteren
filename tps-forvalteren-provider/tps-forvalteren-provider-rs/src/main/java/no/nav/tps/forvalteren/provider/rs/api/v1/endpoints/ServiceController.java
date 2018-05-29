@@ -61,7 +61,7 @@ public class ServiceController extends BaseProvider {
         context.setUser(userContextHolder.getUser());
         context.setEnvironment(tpsRequestParameters.get(ENVIRONMENT_PARAM_NAME).toString());
 
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(serviceRutinenavn, tpsRequestParameters);
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(serviceRutinenavn, tpsRequestParameters, true);
 
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }

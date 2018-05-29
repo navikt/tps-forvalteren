@@ -56,7 +56,6 @@ public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
 
                 .transformer()
                 .preSend(EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender())
-                //.postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
