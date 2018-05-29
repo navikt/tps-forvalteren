@@ -1,17 +1,40 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface Testdata {
+@Service
+public class Testdata {
 
-    void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests);
+    @Autowired
+    private TaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;
 
-    void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests);
+    @Autowired
+    private GenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
 
-    List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest);
+    @Autowired
+    private FiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtIdenterSomAlleredeFinnesIMiljoe;
 
-    void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request);
+    @Autowired
+    private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
 
+
+    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests){
+        filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
+    }
+
+    public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests){
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.execute(testdataRequests);
+    }
+
+    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){
+        return genererIdenterForTestdataRequests.execute(personKriterierRequest);
+    }
+
+    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request){
+        taBortOverfloedigIdenterITestdataRequest.execute(request);
+    }
 }

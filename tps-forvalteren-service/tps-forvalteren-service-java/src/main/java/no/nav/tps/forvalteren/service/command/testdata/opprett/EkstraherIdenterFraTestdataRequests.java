@@ -1,10 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@FunctionalInterface
-public interface EkstraherIdenterFraTestdataRequests {
+@Service
+public class EkstraherIdenterFraTestdataRequests {
 
-    List<String> execute(List<TestdataRequest> testdataRequests);
-
+    public List<String> execute(List<TestdataRequest> testdataRequests){
+        List<String> identer = new ArrayList<>();
+        for(TestdataRequest request : testdataRequests){
+            identer.addAll(request.getIdenterTilgjengligIMiljoe());
+        }
+        return identer;
+    }
 }

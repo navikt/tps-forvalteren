@@ -20,7 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultGetTpsServiceRutinerServiceTest {
+public class GetTpsServiceRutinerServiceTest {
 
     @Mock
     private TpsServiceRoutineDefinitionRequest routineMock;
@@ -32,7 +32,7 @@ public class DefaultGetTpsServiceRutinerServiceTest {
     private List<ServiceRoutineResolver> resolvers = new ArrayList<>();
 
     @InjectMocks
-    private DefaultGetTpsServiceRutinerService command;
+    private GetTpsServiceRutinerService command;
 
     @Before
     public void before() {

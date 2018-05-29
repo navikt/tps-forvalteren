@@ -1,39 +1,31 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger;
 
-import org.springframework.stereotype.Service;
-
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FamilieendringSkdParamtere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FoedselsmeldingSkdParametere;
 
-@Service
-public class Familieendring implements SkdMeldingResolver {
+public class FoedselsmeldingAarsakskode01 implements SkdMeldingResolver {
 
-    public static final String FAMILIEENDRING_MLD_NAVN = "Familieendring";
+    public static final String FOEDSEL_MLD_NAVN = "Foedselsmelding" ;
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name(FAMILIEENDRING_MLD_NAVN)
-
+                .name(FOEDSEL_MLD_NAVN)
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
-
                 .skdParameters()
-                .addSkdParametersCreator(FamilieendringSkdParamtere.familieendringSkdParamterCreator())
+                .addSkdParametersCreator(FoedselsmeldingSkdParametere.foedselsmeldingParameterCreator())
                 .addParameterCreator()
-
                 .and()
-
                 .securityBuilder()
                 .addRequiredSearchAuthorisationStrategy(WriteServiceRutineAuthorisation.writeAuthorisation())
                 .addRequiredSearchAuthorisationStrategy(ReadServiceRutineAuthorisation.readAuthorisation())
                 .addSecurity()
-
                 .build();
     }
 }

@@ -1,17 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.AARSAKSKODE;
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.DATO_FORELDREANSVAR;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.DOEDSDATO;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.EKTEFELLE_PARTNER_FODSELSDATO;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.EKTEFELLE_PARTNER_PERSONNUMMMER;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FLYTTEDATO_ADR;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FODSELSDATO;
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FORELDREANSVAR;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FORNAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FRA_LAND_FLYTTEDATO;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.FRA_LAND_REGDATO;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.MASKINDATO;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.MASKINTID;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.MELLOMNAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.PERSONKODE;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.PERSONNUMMER;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.REGDATO_SIVILSTAND;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.REG_DATO;
@@ -23,9 +29,6 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.STAT
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.STATUSKODE;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILDELINGSKODE;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE;
-
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -75,7 +78,7 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("regdatoStatsb", "00000000", 19, 8, 306, 313));
         skdFelter.add(new SkdFeltDefinisjon("familienummer", "00000000000", 20, 11, 314, 324));
         skdFelter.add(new SkdFeltDefinisjon(REG_DATO_FAM_NR, "00000000", 21, 8, 325, 332));
-        skdFelter.add(new SkdFeltDefinisjon("personkode", "0", 22, 1, 333, 333));
+        skdFelter.add(new SkdFeltDefinisjon(PERSONKODE, "0", 22, 1, 333, 333));
         skdFelter.add(new SkdFeltDefinisjon("spesRegType", "0", 23, 1, 334, 334));
         skdFelter.add(new SkdFeltDefinisjon("datoSpesRegType", "00000000", 24, 8, 335, 342));
         skdFelter.add(new SkdFeltDefinisjon(SIVILSTAND, "0", 25, 1, 343, 343));
@@ -118,8 +121,8 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("datoSamemanntall", "00000000", 60, 8, 663, 670));
         skdFelter.add(new SkdFeltDefinisjon("umyndiggjort", " ", 61, 1, 671, 671));
         skdFelter.add(new SkdFeltDefinisjon("datoUmyndiggjort", "00000000", 62, 8, 672, 679));
-        skdFelter.add(new SkdFeltDefinisjon("foreldreansvar", " ", 63, 1, 680, 680));
-        skdFelter.add(new SkdFeltDefinisjon("datoForeldreansvar", "00000000", 64, 8, 681, 688));
+        skdFelter.add(new SkdFeltDefinisjon(FORELDREANSVAR, " ", 63, 1, 680, 680));
+        skdFelter.add(new SkdFeltDefinisjon(DATO_FORELDREANSVAR, "00000000", 64, 8, 681, 688));
         skdFelter.add(new SkdFeltDefinisjon("arbeidstillatelse", " ", 65, 1, 689, 689));
         skdFelter.add(new SkdFeltDefinisjon("datoArbeidstillatelse", "00000000", 66, 8, 690, 697));
         skdFelter.add(new SkdFeltDefinisjon("fremkonnummer", "00000000", 67, 8, 698, 705));

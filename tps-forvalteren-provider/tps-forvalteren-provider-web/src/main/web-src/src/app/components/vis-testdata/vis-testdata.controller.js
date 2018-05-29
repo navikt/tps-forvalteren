@@ -460,5 +460,9 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 $scope.aapneAlleFaner = toggleservice.toggleAlleFaner($scope.aapneAlleFaner, $scope.control, $scope.pager);
             };
 
+            $scope.$on('tps-sent', function(event, args){
+                hentTestpersoner();
+            });
+
             hentTestpersoner();
         }]);
