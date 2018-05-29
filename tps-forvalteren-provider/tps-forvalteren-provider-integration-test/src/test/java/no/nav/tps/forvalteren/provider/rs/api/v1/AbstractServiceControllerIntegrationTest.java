@@ -9,6 +9,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +22,9 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 
 public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
-
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    
     @Autowired
     protected RequestQueueListener requestQueueListener;
 
