@@ -141,7 +141,7 @@ public class TestdataController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
-    public void updatePersons(@RequestBody List<RsPerson> personListe) { //
+    public void updatePersons(@RequestBody List<RsPerson> personListe) {
         List<Person> personer = mapper.mapAsList(personListe, Person.class);
         savePersonListService.execute(personer);
     }
