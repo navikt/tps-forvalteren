@@ -8,7 +8,6 @@ import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javafx.util.Pair;
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
@@ -77,7 +75,7 @@ public class ComptestConfig {
     @Bean
     @Primary
     public MessageQueueConsumer defaultMessageQueueConsumer() {
-        return Mockito.mock(DefaultMessageQueueConsumer.class);
+        return Mockito.mock(MessageQueueConsumer.class);
     }
     
     @Bean
