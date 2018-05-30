@@ -162,12 +162,12 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     private void assertCalledEnvironments() {
         final List<String> actualEnvironmentsToRecieveSkdMelding = actualConnectedToEnvironments.stream()
-                .filter(pair -> "SFE_ENDRINGSMELDING".equals(pair.getValue()))
-                .map(pair -> pair.getKey())
+                .filter(pair -> "SFE_ENDRINGSMELDING".equals(pair.getSecond()))
+                .map(pair -> pair.getFirst())
                 .collect(Collectors.toList());
         final List<String> actualEnvironmentsToRecieveXml = actualConnectedToEnvironments.stream()
-                .filter(pair -> "TPS_FORESPORSEL_XML_O".equals(pair.getValue()))
-                .map(pair -> pair.getKey())
+                .filter(pair -> "TPS_FORESPORSEL_XML_O".equals(pair.getSecond()))
+                .map(pair -> pair.getFirst())
                 .collect(Collectors.toList());
         assertTrue("Sjekk at skdmeldinger blir sendt til alle miljøene", environments.stream().allMatch(env -> actualEnvironmentsToRecieveSkdMelding.contains(env)));
         assertTrue("Sjekk at xml-er blir sendt til alle miljøene", environments.stream().allMatch(env -> actualEnvironmentsToRecieveXml.contains(env)));

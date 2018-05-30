@@ -12,9 +12,10 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.util.Pair;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import javafx.util.Pair;
+
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
@@ -67,7 +68,7 @@ public class ComptestConfig {
     @Primary
     public MessageQueueServiceFactory defaultMessageQueueServiceFactory() {
         return (environment, requestQueueAlias) -> {
-            actualConnectedToEnvironments.add(new Pair<>(environment,requestQueueAlias));
+            actualConnectedToEnvironments.add(Pair.of(environment,requestQueueAlias));
             return defaultMessageQueueConsumer();
         };
     }
