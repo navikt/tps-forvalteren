@@ -1,24 +1,21 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.servicerutiner;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceControllerIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
 public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrationTest{
-    @Autowired
-    private MessageQueueConsumer messageQueueConsumerSpy;
-
+    
     private static final String serviceRutineNavn = "endre_sikkerhetstiltak";
 
     @Override
@@ -47,7 +44,7 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrat
                 .andExpect(status().isOk())
                 .andReturn();
     
-        Mockito.verify(messageQueueConsumerSpy).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")));
+        Mockito.verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")));
         
         TpsServiceRoutineResponse response = convertMvcResultToObject(result, TpsServiceRoutineResponse.class);
         String expectedResponse = removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_response.xml"));
@@ -74,7 +71,7 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrat
     
         assertEquals("Følgende påkrevde felter mangler:[typeSikkerhetsTiltak]", result.getResolvedException().getMessage());
         
-        Mockito.verify(messageQueueConsumerSpy, Mockito.never());
+        Mockito.verify(messageQueueConsumer, Mockito.never()).sendMessage(any());
     
     }
 }

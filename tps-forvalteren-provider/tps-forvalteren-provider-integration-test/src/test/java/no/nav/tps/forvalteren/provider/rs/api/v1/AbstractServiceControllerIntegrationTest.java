@@ -19,13 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.reset;
 
 public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
     @Autowired
     protected RequestQueueListener requestQueueListener;
 
     @Autowired
-    private MessageQueueConsumer messageQueueConsumer;
+    protected MessageQueueConsumer messageQueueConsumer;
 
     private static final String BASE_URL = "/api/v1/service/";
 
@@ -50,6 +51,8 @@ public abstract class AbstractServiceControllerIntegrationTest extends AbstractR
 
     @Before
     public void before() {
+        reset(messageQueueConsumer);
+    
         try {
             Mockito.doReturn(requestQueueListener.getResponseQueue()).when(messageQueueConsumer).createTemporaryQueueFor(any(ActiveMQSession.class));
         } catch (JMSException e) {
