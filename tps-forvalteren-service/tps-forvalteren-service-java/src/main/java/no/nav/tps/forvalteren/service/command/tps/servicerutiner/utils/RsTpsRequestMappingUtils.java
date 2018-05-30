@@ -38,13 +38,17 @@ public class RsTpsRequestMappingUtils {
                 .getJavaClass();
     
         if (validateRequestParameters) {
-            List<String> requiredParameterNameList = tpsServiceRoutineDefinitionRequest.getRequiredParameterNameList();
-            requiredParameterNameList.removeAll(map.keySet());
-            if (!requiredParameterNameList.isEmpty()) {
-                throw new TpsfFunctionalException("Følgende påkrevde felter mangler:" + requiredParameterNameList.toString());
-            }
+            validateTpsRequestParameters(tpsServiceRoutineDefinitionRequest, map);
         }
         
         return (TpsServiceRoutineRequest)objectMapper.convertValue(map, requestClass);
+    }
+    
+    public void validateTpsRequestParameters(TpsServiceRoutineDefinitionRequest tpsServiceRoutineDefinitionRequest, Map<String, Object> map) {
+        List<String> requiredParameterNameList = tpsServiceRoutineDefinitionRequest.getRequiredParameterNameList();
+        requiredParameterNameList.removeAll(map.keySet());
+        if (!requiredParameterNameList.isEmpty()) {
+            throw new TpsfFunctionalException("Følgende påkrevde felter mangler:" + requiredParameterNameList.toString());
+        }
     }
 }
