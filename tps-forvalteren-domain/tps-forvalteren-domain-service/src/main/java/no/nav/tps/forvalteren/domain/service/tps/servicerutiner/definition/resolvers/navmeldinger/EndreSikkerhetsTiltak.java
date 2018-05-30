@@ -44,7 +44,7 @@ public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
 
                 .parameter()
                 .name("tom")
-                .required()
+                .optional()
                 .type(TpsParameterType.DATE)
                 .and()
 
