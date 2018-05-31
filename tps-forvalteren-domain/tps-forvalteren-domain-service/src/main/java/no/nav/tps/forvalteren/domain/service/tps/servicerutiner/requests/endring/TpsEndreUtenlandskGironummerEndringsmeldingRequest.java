@@ -14,7 +14,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "endreGironrUtl")
 public class TpsEndreUtenlandskGironummerEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String giroNrUtland;
     private String datoGiroNr;
     private String kodeSwift;

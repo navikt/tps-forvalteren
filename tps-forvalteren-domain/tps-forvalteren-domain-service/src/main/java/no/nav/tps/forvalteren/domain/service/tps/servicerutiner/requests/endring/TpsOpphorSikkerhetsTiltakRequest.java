@@ -14,5 +14,4 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "opphorSikkerhetsTiltak")
 public class TpsOpphorSikkerhetsTiltakRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
 }

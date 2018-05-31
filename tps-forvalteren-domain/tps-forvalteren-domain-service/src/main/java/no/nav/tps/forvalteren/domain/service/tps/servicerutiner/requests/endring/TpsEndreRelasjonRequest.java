@@ -12,7 +12,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "endreRelasjon")
 public class TpsEndreRelasjonRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String typeRelasjon;
     private String relasjonsFnr1;
     private String relasjonsFnr2;

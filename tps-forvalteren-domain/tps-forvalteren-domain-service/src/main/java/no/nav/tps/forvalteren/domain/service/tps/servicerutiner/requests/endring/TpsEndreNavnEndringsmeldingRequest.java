@@ -12,7 +12,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "endreNavn")
 public class TpsEndreNavnEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String fornavn;
     private String mellomnavn;
     private String etternavn;

@@ -13,7 +13,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "endreGironrNorsk")
 public class TpsEndreNorskGironummerEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String giroNrNorsk;
     private String datogiroNrNorsk;
 

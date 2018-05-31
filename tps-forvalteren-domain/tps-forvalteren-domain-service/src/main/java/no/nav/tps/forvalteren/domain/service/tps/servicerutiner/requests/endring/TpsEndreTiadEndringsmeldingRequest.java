@@ -12,7 +12,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "nyAdresseNavNorge")
 public class TpsEndreTiadEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String datoTom;
     private String typeAdresseNavNorge;
     private String typeTilleggslinje;
