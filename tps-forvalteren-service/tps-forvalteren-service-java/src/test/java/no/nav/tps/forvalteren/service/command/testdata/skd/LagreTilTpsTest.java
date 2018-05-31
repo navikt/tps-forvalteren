@@ -2,8 +2,8 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
@@ -53,7 +53,7 @@ public class LagreTilTpsTest {
 	@Mock
 	private SkdMeldingResolver innvandring;
 	@Mock
-	private SendNavEndringsmelding sendNavEndringsmelding;
+	private SendNavEndringsmeldinger sendNavEndringsmeldinger;
 	@Mock
 	private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 	@Mock

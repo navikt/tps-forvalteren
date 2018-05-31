@@ -2,12 +2,16 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreEgenansattRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreSikkerhetstiltakRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.service.command.testdata.FinnPersonerForNavEndringsmelding;
@@ -19,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+
+import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils.STATUS_KEY;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import org.mockito.Mock;
@@ -28,7 +34,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendNavEndringsmeldingTest {
+public class SendNavEndringsmeldingerTest {
 
     @Mock
     private OpprettEgenAnsattMelding opprettEgenAnsattMelding;
@@ -58,7 +64,7 @@ public class SendNavEndringsmeldingTest {
     private TpsServiceRoutineResponse tpsServiceRoutineResponse;
 
     @InjectMocks
-    private SendNavEndringsmelding sendNavEndringsmelding;
+    private SendNavEndringsmeldinger sendNavEndringsmeldinger;
 
     private Person testPerson1;
     private Person testPerson2;
@@ -75,25 +81,32 @@ public class SendNavEndringsmeldingTest {
 
         environments = new HashSet<String>();
         environments.add("u5");
-
+    
+        setupMocks(testPersonerListe);
+    }
+    
+    private void setupMocks(List<Person> testPersonerListe) {
         when(finnPersonerForNavEndringsmelding.execute(anyListOf(Person.class))).thenReturn(testPersonerListe);
         when(userContextHolder.getUser()).thenReturn(new User("Z111111", "Z111111"));
-
+    
+        LinkedHashMap xmlAsMap = new LinkedHashMap();
+        xmlAsMap.put(STATUS_KEY, new ResponseStatus("00","melding","utfyllende melding"));
+        when(tpsRequestSender.sendTpsRequest(any(), any())).thenReturn(new TpsServiceRoutineResponse("xml", xmlAsMap));
     }
-
+    
     @Test
     public void execute() {
         List<TpsNavEndringsMelding> opprettEgenAnsattResultat = new ArrayList<>();
         List<TpsNavEndringsMelding> opprettSikTiltakResultat = new ArrayList<>();
 
-        opprettEgenAnsattResultat.add(new TpsNavEndringsMelding());
-        opprettSikTiltakResultat.add(new TpsNavEndringsMelding());
+        opprettEgenAnsattResultat.add(new TpsNavEndringsMelding(new TpsEndreEgenansattRequest(),"u5"));
+        opprettSikTiltakResultat.add(new TpsNavEndringsMelding( new TpsEndreSikkerhetstiltakRequest(), "u5"));
 
         when(opprettEgenAnsattMelding.execute(testPerson1, environments)).thenReturn(opprettEgenAnsattResultat);
         when(opprettSikkerhetstiltakMelding.execute(testPerson1, environments)).thenReturn(opprettSikTiltakResultat);
         when(tpsNavEndringsMelding.getMelding()).thenReturn(tpsServiceRoutineRequest);
 
-        sendNavEndringsmelding.execute(new ArrayList<Person>(), environments);
+        sendNavEndringsmeldinger.execute(new ArrayList<Person>(), environments);
 
         verify(tpsRequestSender, times(4)).sendTpsRequest(any(), any());
     }
