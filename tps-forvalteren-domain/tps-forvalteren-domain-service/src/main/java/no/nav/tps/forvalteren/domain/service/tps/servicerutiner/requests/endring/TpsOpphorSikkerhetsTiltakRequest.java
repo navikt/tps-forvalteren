@@ -10,7 +10,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @JacksonXmlRootElement(localName = "opphorSikkerhetsTiltak")
 public class TpsOpphorSikkerhetsTiltakRequest extends TpsServiceRoutineEndringRequest {
 
