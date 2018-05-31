@@ -77,7 +77,7 @@
         <spring-security-ldap.version>4.0.4.RELEASE</spring-security-ldap.version>
         <spring-security-test.version>4.1.1.RELEASE</spring-security-test.version>
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
-
+        <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
 
         <!--Plugin versions-->
         <aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>
@@ -458,7 +458,7 @@
                 <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
-                    <version>5.0.7</version>
+                    <version>${flyway-maven-plugin.version}</version>
                     <configuration>
                         <driver>oracle.jdbc.OracleDriver</driver>
                         <url>jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl023.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TPSFORVALTERENU6)(INSTANCE_NAME=ccuf02)(UR=A)(SERVER=DEDICATED)))</url>
