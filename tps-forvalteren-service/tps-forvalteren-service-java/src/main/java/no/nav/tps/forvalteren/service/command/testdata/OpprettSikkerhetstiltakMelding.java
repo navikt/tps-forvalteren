@@ -51,10 +51,6 @@ public class OpprettSikkerhetstiltakMelding {
     }
 
     private boolean sjekkForSikkerhetstiltak(Person person){
-        if(person.getTypeSikkerhetsTiltak()!= null){
-            return true;
-        } else {
-            return false;
-        }
+        return person.getTypeSikkerhetsTiltak()!= null;
     }
 }

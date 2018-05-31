@@ -47,10 +47,6 @@ public class OpprettEgenAnsattMelding {
     }
 
     private boolean sjekkForEgenAnsatt(Person person) {
-        if (person.getEgenAnsattDatoFom() != null)
-            return true;
-        else {
-            return false;
-        }
+        return person.getEgenAnsattDatoFom() != null;
     }
 }

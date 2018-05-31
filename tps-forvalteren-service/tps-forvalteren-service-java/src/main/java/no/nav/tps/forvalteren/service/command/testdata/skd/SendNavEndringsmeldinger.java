@@ -13,7 +13,6 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.FinnPersonerForNavEndringsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
@@ -22,9 +21,6 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
 public class SendNavEndringsmeldinger {
-    
-    @Autowired
-    private FinnPersonerForNavEndringsmelding finnPersonerForNavEndringsmelding;
     
     @Autowired
     private OpprettEgenAnsattMelding opprettEgenAnsattMelding;
@@ -39,13 +35,12 @@ public class SendNavEndringsmeldinger {
     private UserContextHolder userContextHolder;
     
     public List<ServiceRoutineResponseStatus> execute(List<Person> listeMedPersoner, Set<String> environmentsSet) {
-        List<Person> personerSomSkalHaNavEndring = finnPersonerForNavEndringsmelding.execute(listeMedPersoner);
         List<TpsNavEndringsMelding> navEndringsMeldinger = new ArrayList<>();
         
         TpsRequestContext tpsRequestContext = new TpsRequestContext();
         tpsRequestContext.setUser(userContextHolder.getUser());
-        
-        personerSomSkalHaNavEndring.forEach(person -> {
+    
+        listeMedPersoner.forEach(person -> {
             navEndringsMeldinger.addAll(opprettEgenAnsattMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
         });
