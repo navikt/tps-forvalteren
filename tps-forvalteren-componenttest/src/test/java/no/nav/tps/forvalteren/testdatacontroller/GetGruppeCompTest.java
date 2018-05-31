@@ -65,6 +65,7 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
     }
     
     private void setupTestdataInTpsfDatabase() {
+        clearAllRepositories();
         List tags= new ArrayList<Tag>();
         final Tag tag = new Tag();
         tag.setNavn("tagnavn");
