@@ -47,5 +47,5 @@ public class TpsEndreTiadEndringsmeldingRequest extends TpsServiceRoutineEndring
         this.eiendomsnav = eiendomsnav;
         this.postboksnr = postboksnr;
         this.postboksAnlegg = postboksAnlegg;
-    }
+    }//NOSONAR
 }

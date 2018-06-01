@@ -30,5 +30,5 @@ public class TpsEndreNavnEndringsmeldingRequest extends TpsServiceRoutineEndring
         this.tidligerenavn = tidligerenavn;
         this.kortnavn = kortnavn;
         this.datoNyttNavn = datoNyttNavn;
-    }
+    }//NOSONAR
 }
