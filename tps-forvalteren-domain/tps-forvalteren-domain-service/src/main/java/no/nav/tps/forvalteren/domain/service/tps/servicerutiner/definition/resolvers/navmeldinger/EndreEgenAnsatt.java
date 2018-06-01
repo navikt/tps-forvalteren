@@ -14,6 +14,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.res
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class EndreEgenAnsatt implements ServiceRoutineResolver {
+    public static final String EGEN_ANSATT_MLD_NAVN = "endre_egen_ansatt";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
@@ -45,7 +46,6 @@ public class EndreEgenAnsatt implements ServiceRoutineResolver {
 
                 .transformer()
                 .preSend(EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender())
-                //.postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
