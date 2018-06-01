@@ -28,8 +28,8 @@ public class TpsEndreUtenlandskGironummerEndringsmeldingRequest extends TpsServi
     private String bankAdresse3;
     
     @Builder
-    public TpsEndreUtenlandskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrUtland, String datoGiroNr, String kodeSwift, String kodeLand, String bankNavn,
-            String bankKode, String valuta, String bankAdresse1, String bankAdresse2, String bankAdresse3) {
+    public TpsEndreUtenlandskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrUtland, String datoGiroNr, String kodeSwift, String kodeLand, String bankNavn, //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
+            String bankKode, String valuta, String bankAdresse1, String bankAdresse2, String bankAdresse3) { //NOSONAR
         super(serviceRutinenavn, offentligIdent);
         this.giroNrUtland = giroNrUtland;
         this.datoGiroNr = datoGiroNr;

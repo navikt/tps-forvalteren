@@ -22,7 +22,7 @@ public class TpsEndreNavnEndringsmeldingRequest extends TpsServiceRoutineEndring
     private String datoNyttNavn;
     
     @Builder
-    public TpsEndreNavnEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String fornavn, String mellomnavn, String etternavn, String tidligerenavn, String kortnavn, String datoNyttNavn) {
+    public TpsEndreNavnEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String fornavn, String mellomnavn, String etternavn, String tidligerenavn, String kortnavn, String datoNyttNavn) { //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
         super(serviceRutinenavn, offentligIdent);
         this.fornavn = fornavn;
         this.mellomnavn = mellomnavn;
