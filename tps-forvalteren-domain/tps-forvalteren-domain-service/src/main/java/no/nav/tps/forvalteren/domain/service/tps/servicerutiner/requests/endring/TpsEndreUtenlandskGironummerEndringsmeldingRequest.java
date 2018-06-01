@@ -41,5 +41,5 @@ public class TpsEndreUtenlandskGironummerEndringsmeldingRequest extends TpsServi
         this.bankAdresse1 = bankAdresse1;
         this.bankAdresse2 = bankAdresse2;
         this.bankAdresse3 = bankAdresse3;
-    }//NOSONAR
+    }
 }
