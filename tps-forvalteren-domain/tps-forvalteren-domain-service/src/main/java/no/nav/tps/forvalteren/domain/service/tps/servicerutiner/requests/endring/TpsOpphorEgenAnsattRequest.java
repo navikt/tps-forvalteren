@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endrin
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,5 +13,9 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "opphorEgenAnsatt")
 public class TpsOpphorEgenAnsattRequest extends TpsServiceRoutineEndringRequest {
-
+    
+    @Builder
+    public TpsOpphorEgenAnsattRequest(String serviceRutinenavn, String offentligIdent) {
+        super(serviceRutinenavn, offentligIdent);
+    }
 }

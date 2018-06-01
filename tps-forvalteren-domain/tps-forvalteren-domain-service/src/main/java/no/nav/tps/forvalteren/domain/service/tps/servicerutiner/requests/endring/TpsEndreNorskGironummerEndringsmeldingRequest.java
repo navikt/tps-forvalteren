@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,5 +17,11 @@ public class TpsEndreNorskGironummerEndringsmeldingRequest extends TpsServiceRou
 
     private String giroNrNorsk;
     private String datogiroNrNorsk;
-
+    
+    @Builder
+    public TpsEndreNorskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrNorsk, String datogiroNrNorsk) {
+        super(serviceRutinenavn, offentligIdent);
+        this.giroNrNorsk = giroNrNorsk;
+        this.datogiroNrNorsk = datogiroNrNorsk;
+    }
 }
