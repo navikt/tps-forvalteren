@@ -39,16 +39,15 @@ public class SkdMessageCreatorTrans1 {
     }
 
     public List<SkdMeldingTrans1> createVergemaalSkdMelding(List<Vergemaal> vergemaalListe, boolean addHeader) {
-	    Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute("Vergemaal");
-	    List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
-	    if(skdRequestMeldingDefinitionOptional.isPresent()) {
-	        TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
-	        for(Vergemaal vergemaal : vergemaalListe){
-	            SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, vergemaal, addHeader);
-	            skdMeldinger.add(skdMelding);
+        Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute("Vergemaal");
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+        if (skdRequestMeldingDefinitionOptional.isPresent()) {
+            for (Vergemaal vergemaal : vergemaalListe) {
+                SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(vergemaal, addHeader);
+                skdMeldinger.add(skdMelding);
             }
         }
-	    return skdMeldinger;
+        return skdMeldinger;
     }
 
 }

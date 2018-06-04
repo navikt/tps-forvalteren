@@ -31,7 +31,7 @@ public class GenerateSkdMelding {
         }
         return skdMelding;
     }
-    public SkdMeldingTrans1 execute(TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Vergemaal vergemaal, boolean addHeader){
+    public SkdMeldingTrans1 execute(Vergemaal vergemaal, boolean addHeader){
         SkdMeldingTrans1 skdMelding = vergemaalSkdParameterStrategy.execute(vergemaal);
         if (addHeader){
             skdMelding.setHeader(skdGetHeaderForSkdMelding.execute(skdMelding));

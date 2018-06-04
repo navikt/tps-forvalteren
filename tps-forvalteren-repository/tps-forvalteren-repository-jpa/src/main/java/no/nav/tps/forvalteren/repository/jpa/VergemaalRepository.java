@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.List;
-import java.util.Set;
 
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import org.springframework.data.repository.Repository;
@@ -12,7 +11,7 @@ public interface VergemaalRepository extends Repository<Vergemaal, Long> {
 
     List<Vergemaal> findAllByIdent(String ident);
 
-    Vergemaal findBySaksidAndInternVergeId(String saksId, String InternVergeId);
+    Vergemaal findBySaksidAndInternVergeId(String saksId, String internVergeId);
 
     void save(Vergemaal vergemaal);
 

@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;

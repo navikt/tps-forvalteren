@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
 
-    private static final String NAVN_INNVANDRINGSMELDING = "Innvandring";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired

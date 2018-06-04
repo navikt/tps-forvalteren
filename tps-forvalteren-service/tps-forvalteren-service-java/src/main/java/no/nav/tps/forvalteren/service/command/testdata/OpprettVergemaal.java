@@ -21,7 +21,8 @@ public class OpprettVergemaal {
         Vergemaal vergemaalIDB = vergemaalRepository.findBySaksidAndInternVergeId(vergemaal.getSaksid(), vergemaal.getInternVergeId());
 
         if(vergemaalIDB != null){
-            vergemaalRepository.deleteById(vergemaalIDB.getId());
+            vergemaal.setId(vergemaalIDB.getId());
+            vergemaalRepository.save(vergemaal);
         }
         vergemaalRepository.save(vergemaal);
     }

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import org.springframework.beans.factory.annotation.Autowired;

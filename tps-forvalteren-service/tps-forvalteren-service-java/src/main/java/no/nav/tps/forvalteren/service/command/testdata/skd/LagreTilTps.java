@@ -12,7 +12,6 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring.FAMILIEENDRING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
@@ -22,11 +21,6 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoed
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
-
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
 
 @Service
 public class LagreTilTps {
@@ -82,22 +76,22 @@ public class LagreTilTps {
 
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
-        listTpsResponsene.addAll( sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
-        listTpsResponsene.addAll( sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe,environmentsSet));
-        listTpsResponsene.addAll( sendFoedselsMeldinger(personerSomSkalFoedes, environmentsSet));
-        listTpsResponsene.addAll( sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe,environmentsSet));
-        listTpsResponsene.addAll( sendDoedsmeldinger( gruppeId, environmentsSet));
-        listTpsResponsene.addAll( sendVergemaalsmeldinger( personerIGruppen, environmentsSet));
+        listTpsResponsene.addAll(sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendFoedselsMeldinger(personerSomSkalFoedes, environmentsSet));
+        listTpsResponsene.addAll(sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendDoedsmeldinger(gruppeId, environmentsSet));
+        listTpsResponsene.addAll(sendVergemaalsmeldinger(personerIGruppen, environmentsSet));
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene);
     }
 
     //TODO ALle disse private metodene bør ut egen felles metode som ligger i egen klasse. Få sendDoedsmelding til å ta inn liste av personer i steden for gruppe.
-    private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger( Long gruppeId, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(Long gruppeId, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);
         doedsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
@@ -107,36 +101,36 @@ public class LagreTilTps {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, true);
         relasjonsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer("Relasjonsmelding", skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Relasjonsmelding", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger( List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger(List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, personerSomIkkeEksitererITpsMiljoe, true);
         innvandringsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendUpdateInnvandringsMeldinger( List<Person> personerSomAlleredeEksitererITpsMiljoe, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendUpdateInnvandringsMeldinger(List<Person> personerSomAlleredeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> updateInnvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
         updateInnvandringsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendVergemaalsmeldinger( List<Person> personerIGruppen, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendVergemaalsmeldinger(List<Person> personerIGruppen, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> vergemaalsMeldinger = createVergemaal.execute(personerIGruppen, true);
-        vergemaalsMeldinger.forEach(skdMelding ->{
+        vergemaalsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Vergemaal", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
@@ -156,7 +150,7 @@ public class LagreTilTps {
     }
 
     private Map<String, String> mapStatus(Map<String, String> responseSkdMeldingerPerEnv, Set<String> environmentsSet) {
-        responseSkdMeldingerPerEnv.replaceAll((env,status)->"00".equals(status) ? "OK" : status);
+        responseSkdMeldingerPerEnv.replaceAll((env, status) -> "00".equals(status) ? "OK" : status);
         environmentsSet.forEach(env -> responseSkdMeldingerPerEnv.putIfAbsent(env, "Environment is not deployed"));
         return responseSkdMeldingerPerEnv;
     }
