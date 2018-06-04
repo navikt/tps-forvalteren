@@ -30,7 +30,7 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
     @Override
     public SkdMeldingTrans1 execute(Person person) {
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-
+        skdMeldingTrans1.setTildelingskode(hentTildelingskode());
         addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
         addDefaultParams(skdMeldingTrans1);
         return skdMeldingTrans1;
