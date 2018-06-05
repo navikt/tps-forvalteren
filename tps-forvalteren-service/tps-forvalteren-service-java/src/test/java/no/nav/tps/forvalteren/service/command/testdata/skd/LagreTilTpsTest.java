@@ -53,6 +53,8 @@ public class LagreTilTpsTest {
 	@Mock
 	private SkdMeldingResolver innvandring;
 	@Mock
+	private SendNavEndringsmelding sendNavEndringsmelding;
+	@Mock
 	private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
 	@Mock
 	private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
