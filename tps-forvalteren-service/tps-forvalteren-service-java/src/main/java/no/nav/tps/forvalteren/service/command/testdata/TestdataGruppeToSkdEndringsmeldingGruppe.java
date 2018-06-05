@@ -16,6 +16,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWit
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
+import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
@@ -55,6 +56,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
     private GruppeRepository gruppeRepository;
 
     @Autowired
+    private CreateFoedselsmeldinger createFoedselsmeldinger;
+
+    @Autowired
     private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
 
     @Autowired
@@ -69,11 +73,13 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
             List<SkdMelding> skdMeldinger = new ArrayList<>();
+            List<SkdMeldingTrans1> foedselsMeldinger = createFoedselsmeldinger.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, testdataGruppe.getPersoner(), false);
             List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, false);
             List<SkdMeldingTrans1> vergemaalMeldinger = createVergemaal.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(testdataGruppe.getPersoner(), false);
+            skdMeldinger.addAll(foedselsMeldinger);
             skdMeldinger.addAll(innvandringsMeldinger);
             skdMeldinger.addAll(relasjonsMeldinger);
             skdMeldinger.addAll(doedsMeldinger);

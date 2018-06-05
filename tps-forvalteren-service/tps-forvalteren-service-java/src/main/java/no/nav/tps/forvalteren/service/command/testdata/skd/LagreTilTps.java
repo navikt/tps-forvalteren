@@ -76,17 +76,15 @@ public class LagreTilTps {
         Set<String> environmentsSet = new HashSet<>(environments);
 
         personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
-
-        personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
-
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
 
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
         listTpsResponsene.addAll(sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
         listTpsResponsene.addAll(sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
-        listTpsResponsene.addAll(sendFoedselsMeldinger(personerSomSkalFoedes, environmentsSet));
+        listTpsResponsene.addAll(sendFoedselsMeldinger(personerIGruppen, environmentsSet));
         listTpsResponsene.addAll(sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
         listTpsResponsene.addAll(sendDoedsmeldinger(gruppeId, environmentsSet));
         listTpsResponsene.addAll(sendVergemaalsmeldinger(personerIGruppen, environmentsSet));

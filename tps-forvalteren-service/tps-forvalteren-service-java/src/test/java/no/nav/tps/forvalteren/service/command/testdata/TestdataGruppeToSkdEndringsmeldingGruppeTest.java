@@ -17,6 +17,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWit
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
+import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
@@ -61,6 +62,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private CreateVergemaal createVergemaal;
 
     @Mock
+    private CreateFoedselsmeldinger createFoedselsmeldinger;
+
+    @Mock
     private CreateUtvandring createUtvandring;
 
     @Mock
@@ -89,6 +93,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
     private SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = aSkdEndringsmeldingGruppe().id(GRUPPE_ID).build();
     private List<SkdMeldingTrans1> utvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).build());
+    private List<SkdMeldingTrans1> foedselsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding4).build());
 
     @Before
     public void setup() {
@@ -100,6 +105,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
         when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
+        when(createFoedselsmeldinger.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(foedselsMeldinger);
     }
 
     @Test
@@ -116,6 +122,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(saveSkdEndringsmeldingerFromText).execute(rsMeldinger, GRUPPE_ID);
         verify(createVergemaal).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
+        verify(createFoedselsmeldinger).execute(testdataGruppe.getPersoner(), ADD_HEADER);
 
     }
 
