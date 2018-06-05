@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -12,6 +15,7 @@ import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalFoedselsMeldingException;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
@@ -34,6 +38,9 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
     @Autowired
     private AdresseRepository adresseRepository;
+
+    @Autowired
+    private SavePersonListService savePersonListService;
 
     @Override
     public SkdMeldingTrans1 execute(Person barn) {
@@ -148,18 +155,10 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setStatuskode("1");
     }
 
+
     private void updateAdresse(Gateadresse adresse, Person barn) {
-        Gateadresse gateAdr = adresseRepository.getAdresseByPersonId(barn.getId());
+        barn.setBoadresse(adresse);
 
-        gateAdr.setAdresse(adresse.getAdresse());
-        gateAdr.setHusnummer(adresse.getHusnummer());
-        gateAdr.setGatekode(adresse.getGatekode());
-        gateAdr.setFlyttedato(barn.getRegdato());
-        gateAdr.setPostnr(adresse.getPostnr());
-        gateAdr.setKommunenr(adresse.getKommunenr());
-
-        barn.setBoadresse(gateAdr);
-
-        adresseRepository.save(gateAdr);
+        savePersonListService.execute(Arrays.asList(barn));
     }
 }
