@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-service</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>4.12.0-SNAPSHOT</version>
+        <version>4.13.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
