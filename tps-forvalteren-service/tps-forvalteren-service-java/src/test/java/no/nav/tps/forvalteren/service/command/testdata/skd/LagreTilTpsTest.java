@@ -1,15 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.domain.rs.skd.SendSkdMeldingTilTpsResponse;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
-import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,18 +7,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import static org.mockito.Matchers.any;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -59,7 +56,7 @@ public class LagreTilTpsTest {
     @Mock
     private SkdMeldingResolver innvandring;
     @Mock
-    private SendNavEndringsmelding sendNavEndringsmelding;
+    private SendNavEndringsmeldinger sendNavEndringsmeldinger;
     @Mock
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
     @Mock
@@ -109,9 +106,9 @@ public class LagreTilTpsTest {
         when(createVergemaal.execute(personsInGruppe, ADD_HEADER)).thenReturn(vergemaalsMeldinger);
     }
 
-	@Test
-	public void checkThatServicesGetsCalled() {
-		lagreTilTps.execute(GRUPPE_ID, environments);
+    @Test
+    public void checkThatServicesGetsCalled() {
+        lagreTilTps.execute(GRUPPE_ID, environments);
 
         verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
         verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
@@ -123,7 +120,7 @@ public class LagreTilTpsTest {
         verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
         verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
 
-	}
+    }
 
     /**
      * Testbetingelser:
@@ -137,7 +134,7 @@ public class LagreTilTpsTest {
         when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
         RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
         assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
-        assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Utvandring", "Vergemaal"),
+        assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal", "Utvandring"),
                 actualResponse.getSendSkdMeldingTilTpsResponsene()
                         .stream()
                         .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
