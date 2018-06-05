@@ -19,11 +19,7 @@ public interface VergemaalRepository extends Repository<Vergemaal, Long> {
 
     void deleteById(Long id);
 
-    void deleteByIdentIn(List<Long> id);
-
     void deleteByIdIn(List<Long> ids);
-
-    void deleteByVergeFnrIn(List<String> id);
 
     void deleteAll();
 }
