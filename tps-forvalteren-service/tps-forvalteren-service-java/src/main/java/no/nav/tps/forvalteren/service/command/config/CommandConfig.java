@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11;
 import no.nav.tps.forvalteren.service.command.Command;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -192,5 +193,8 @@ public class CommandConfig {
     SkdMeldingResolver doedsmeldingAnnuller() {
         return new DoedsmeldingAnnulleringAarsakskode45();
     }
+
+    @Bean
+    SkdMeldingResolver utvandringsmelding() { return new UtvandringAarsakskode32(); }
 
 }
