@@ -33,61 +33,53 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "T_PERSON")
 public class Person extends ChangeStamp {
+	
+	private static final String SEQ = "T_PERSON_SEQ";
+	
+	@Id
+	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
+	@Column(name = "PERSON_ID", nullable = false, updatable = false)
+	private Long id;
+	
+	@Column(name = "IDENT", nullable = false, unique = true, length = 11)
+	private String ident;
+	
+	@Column(name = "IDENTTYPE", nullable = false, length = 3)
+	private String identtype;
+	
+	@Column(name = "KJONN", nullable = false)
+	private Character kjonn;
+	
+	@Column(name = "FORNAVN", nullable = false, length = 50)
+	private String fornavn;
+	
+	@Column(name = "MELLOMNAVN", length = 50)
+	private String mellomnavn;
+	
+	@Column(name = "ETTERNAVN", nullable = false, length = 50)
+	private String etternavn;
+	
+	@Column(name = "STATSBORGERSKAP", length = 3)
+	private String statsborgerskap;
+	
+	@Column(name = "SPESREG", length = 1)
+	private String spesreg;
+	
+	@Column(name = "SPESREG_DATO")
+	private LocalDateTime spesregDato;
+	
+	@Column(name = "DOEDSDATO")
+	private LocalDateTime doedsdato;
 
-    private static final String SEQ = "T_PERSON_SEQ";
+    @Column(name = "UTVANDRET_TIL_LAND", length = 3)
+    private String utvandretTilLand;
 
-    @Id
-    @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
-    @Column(name = "PERSON_ID", nullable = false, updatable = false)
-    private Long id;
+    @Column(name = "REGISTRERT_UTVANDR_DATO")
+    private LocalDateTime registertUtvandringsdato;
 
-    @Column(name = "IDENT", nullable = false, unique = true, length = 11)
-    private String ident;
-
-    @Column(name = "IDENTTYPE", nullable = false, length = 3)
-    private String identtype;
-
-    @Column(name = "KJONN", nullable = false)
-    private Character kjonn;
-
-    @Column(name = "FORNAVN", nullable = false, length = 50)
-    private String fornavn;
-
-    @Column(name = "MELLOMNAVN", length = 50)
-    private String mellomnavn;
-
-    @Column(name = "ETTERNAVN", nullable = false, length = 50)
-    private String etternavn;
-
-    @Column(name = "STATSBORGERSKAP", length = 3)
-    private String statsborgerskap;
-
-    @Column(name = "SPESREG", length = 1)
-    private String spesreg;
-
-    @Column(name = "SPESREG_DATO")
-    private LocalDateTime spesregDato;
-
-    @Column(name = "DOEDSDATO")
-    private LocalDateTime doedsdato;
-
-    @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private Adresse boadresse;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<Postadresse> postadresse = new ArrayList<>();
-
-    @Column(name = "REGDATO", nullable = false)
-    private LocalDateTime regdato;
-
-    @JoinColumn(name = "GRUPPE_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Gruppe gruppe;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<Relasjon> relasjoner = new ArrayList<>();
+    @Column(name = "FLYTTET_TIL_LAND_DATO")
+    private LocalDateTime flyttetTilLandDato;
 
     @Column(name = "EGEN_ANSATT_DATO_FOM")
     private LocalDateTime egenAnsattDatoFom;
@@ -107,6 +99,20 @@ public class Person extends ChangeStamp {
     @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
     private String beskrSikkerhetsTiltak;
 
-
-
+    @JoinColumn(name = "ADRESSE_ID")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+	private Adresse boadresse;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+	private List<Postadresse> postadresse = new ArrayList<>();
+	
+	@Column(name = "REGDATO", nullable = false)
+	private LocalDateTime regdato;
+	
+	@JoinColumn(name = "GRUPPE_ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Gruppe gruppe;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+	private List<Relasjon> relasjoner = new ArrayList<>();
 }

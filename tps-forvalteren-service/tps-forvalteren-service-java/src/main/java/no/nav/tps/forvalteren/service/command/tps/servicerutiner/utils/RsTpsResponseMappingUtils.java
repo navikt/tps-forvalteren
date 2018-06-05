@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class RsTpsResponseMappingUtils {
-
+    public static final String STATUS_KEY = "status";
     public TpsServiceRoutineResponse convertToTpsServiceRutineResponse(Response response) throws IOException {
         TpsServiceRoutineResponse tpsServiceRutineResponse = new TpsServiceRoutineResponse();
 
@@ -40,7 +40,7 @@ public class RsTpsResponseMappingUtils {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         Map data = objectMapper.readValue(jsonObject.toString(), Map.class);
-        data.put("status", response.getStatus());
+        data.put(STATUS_KEY, response.getStatus());
         data.put("antallTotalt", response.getTotalHits());
         tpsServiceRutineResponse.setResponse(data);
 
