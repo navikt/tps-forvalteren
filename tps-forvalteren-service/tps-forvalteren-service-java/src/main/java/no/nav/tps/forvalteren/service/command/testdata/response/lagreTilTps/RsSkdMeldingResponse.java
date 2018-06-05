@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.rs.skd;
+package no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,5 +15,6 @@ public class RsSkdMeldingResponse {
 	private Long gruppeid;
 	
 	List<SendSkdMeldingTilTpsResponse> sendSkdMeldingTilTpsResponsene;
+	List<ServiceRoutineResponseStatus> serviceRoutineStatusResponsene;
 	
 }
