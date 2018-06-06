@@ -7,9 +7,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 @Getter
 @Setter
 @AllArgsConstructor

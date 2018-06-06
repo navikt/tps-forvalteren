@@ -21,4 +21,9 @@ public class ConvertDateToString {
         return localDateTime.format(timeFormat);
     }
 
+    public static String yyyy_MM_dd(LocalDateTime localDateTime){
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return localDateTime.format(timeFormat);
+    }
+
 }

@@ -93,7 +93,7 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
 			TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
 			
 			if (kunneIkkeLeggeMeldingPaaKoe(tpsResponse)) {
-				continue;       //TODO Gjoer hva hvis man ikke faar lagt paa koe??? Bare hopper over for naa.
+				continue;       //TODO Gjoer hva hvis man ikke faar lagt paa koe??? Bare hopper over for naa. Returnere status?
 			}
 			
 			Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterFraResponse(tpsResponse);
