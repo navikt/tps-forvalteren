@@ -99,7 +99,7 @@ public class Person extends ChangeStamp {
     @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
     private String beskrSikkerhetsTiltak;
 
-	@JoinColumn(name = "ADRESSE_ID")
+    @JoinColumn(name = "ADRESSE_ID")
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
 	private Adresse boadresse;
 	

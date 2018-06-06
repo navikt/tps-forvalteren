@@ -196,13 +196,13 @@ public class CommandConfig {
     }
 
     @Bean
-    SkdMeldingResolver vergemaal() {
-        return new VergemaalAarsakskode37();
+    SkdMeldingResolver utvandringsmelding() {
+        return new UtvandringAarsakskode32();
     }
 
     @Bean
-    SkdMeldingResolver utvandringsmelding() {
-        return new UtvandringAarsakskode32();
+    SkdMeldingResolver vergemaal() {
+        return new VergemaalAarsakskode37();
     }
 
 }
