@@ -155,15 +155,6 @@ public class LagreTilTps {
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerSomAlleredeEksistererITps, Set<String> environmentsSet) {
-        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerSomAlleredeEksistererITps, true);
-        utvandringsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Utvandring", skdMelding, environmentsSet);
-            listTpsResponsene.add(tpsResponse);
-        });
-        return listTpsResponsene;
-    }
 
     private List<SendSkdMeldingTilTpsResponse> sendFoedselsMeldinger(List<Person> personerSomSkalFoedes, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
