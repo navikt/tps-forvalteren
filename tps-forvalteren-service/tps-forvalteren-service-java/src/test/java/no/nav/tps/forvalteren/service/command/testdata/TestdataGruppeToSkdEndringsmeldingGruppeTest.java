@@ -4,6 +4,7 @@ import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
+import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.verify;
@@ -62,6 +63,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private CreateUtvandring createUtvandring;
 
     @Mock
+    private CreateVergemaal createVergemaal;
+
+    @Mock
     private GruppeRepository gruppeRepository;
 
     @Mock
@@ -79,10 +83,11 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private static final String NAVN_INNVANDRINGSMELDING = "InnvandringCreate";
     private static final Long GRUPPE_ID = 1337L;
     private static final boolean ADD_HEADER = false;
-    private static final String melding1 = "1", melding2 = "2", melding3 = "3";
+    private static final String melding1 = "1", melding2 = "2", melding3 = "3", melding4 = "4";
     private Gruppe testdataGruppe = aGruppe().personer(Collections.emptyList()).build();
     private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).build());
     private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
+    private List<SkdMeldingTrans1> vergemaalsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding4).build());
     private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
     private SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = aSkdEndringsmeldingGruppe().id(GRUPPE_ID).build();
     private List<SkdMeldingTrans1> utvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).build());
@@ -95,6 +100,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
         when(createMeldingWithMeldingstype.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
+        when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
         when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
     }
 
@@ -110,6 +116,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
         verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
         verify(saveSkdEndringsmeldingerFromText).execute(rsMeldinger, GRUPPE_ID);
+        verify(createVergemaal).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
 
     }

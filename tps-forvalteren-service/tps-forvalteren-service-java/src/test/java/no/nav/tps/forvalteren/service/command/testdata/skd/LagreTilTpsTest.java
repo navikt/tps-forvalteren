@@ -33,9 +33,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class LagreTilTpsTest {
 
-    private static final boolean ADD_HEADER = true;
-    private static final Long GRUPPE_ID = 1337L;
-    private static final String melding1 = "11111111111111", melding2 = "222222222222", melding3 = "33333333333";
+	private static final boolean ADD_HEADER = true;
+	private static final Long GRUPPE_ID = 1337L;
+	private static final String melding1 = "11111111111111", melding2 = "222222222222", melding3 = "33333333333", melding4 = "44444444444";
 
     @Mock
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
@@ -61,35 +61,38 @@ public class LagreTilTpsTest {
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
     @Mock
     private FindGruppeById findGruppeByIdMock;
+	@Mock
+	private CreateVergemaal createVergemaal;
 
-    @InjectMocks
-    private LagreTilTps lagreTilTps;
-    private List<Person> persons = new ArrayList<>();
-    private List<Person> personsInGruppe = new ArrayList<>();
-    private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
-    private Person person = aMalePerson().build();
-    private List<String> environments = new ArrayList<>();
-    private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
-    private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
-    private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
+	@InjectMocks
+	private LagreTilTps lagreTilTps;
+	private List<Person> persons = new ArrayList<>();
+	private List<Person> personsInGruppe = new ArrayList<>();
+	private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
+	private Person person = aMalePerson().build();
+	private List<String> environments = new ArrayList<>();
+	private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
+	private List<SkdMelding> relasjonsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding2).build());
+	private List<SkdMeldingTrans1> doedsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding3).build());
+	private List<SkdMeldingTrans1> vergemaalsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding4).build());
     private List<SkdMeldingTrans1> utvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("121200").personnummer("98765").build());
-    private Map<String, String> expectedStatus = new HashMap<>();
-    private Map<String, String> TPSResponse = new HashMap<>();
+	private Map<String, String> expectedStatus = new HashMap<>();
+	private Map<String, String> TPSResponse = new HashMap<>();
 
-    {
-        persons.add(person);
-        environments.add("u2");
-        environments.add("env");
-        environments.add("env2");
-        expectedStatus.put("env", "OK");
-        expectedStatus.put("env2", "persistering feilet");
-        expectedStatus.put("u2", "Environment is not deployed");
-        TPSResponse.put("env", "00");
-        TPSResponse.put("env2", "persistering feilet");
-    }
+	{
+		persons.add(person);
+		environments.add("u2");
+		environments.add("env");
+		environments.add("env2");
+		expectedStatus.put("env", "OK");
+		expectedStatus.put("env2", "persistering feilet");
+		expectedStatus.put("u2", "Environment is not deployed");
+		TPSResponse.put("env", "00");
+		TPSResponse.put("env2", "persistering feilet");
+	}
 
-    @Before
-    public void setup() {
+	@Before
+	public void setup() {
 
         when(findGruppeByIdMock.execute(GRUPPE_ID)).thenReturn(gruppe);
         when(findPersonsNotInEnvironments.execute(personsInGruppe, environments)).thenReturn(persons);
@@ -99,41 +102,42 @@ public class LagreTilTpsTest {
         when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
         when(createUtvandring.execute(persons, ADD_HEADER)).thenReturn(utvandringsMeldinger);
         when(innvandring.resolve()).thenReturn(skdRequestMeldingDefinition);
+        when(createVergemaal.execute(personsInGruppe, ADD_HEADER)).thenReturn(vergemaalsMeldinger);
     }
 
-    @Test
-    public void checkThatServicesGetsCalled() {
-        lagreTilTps.execute(GRUPPE_ID, environments);
+	@Test
+	public void checkThatServicesGetsCalled() {
+		lagreTilTps.execute(GRUPPE_ID, environments);
 
-        verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
-        verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
-        verify(createRelasjoner).execute(persons, ADD_HEADER);
-        verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
+		verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
+		verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
+		verify(createRelasjoner).execute(persons, ADD_HEADER);
+		verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
+		verify(innvandring).resolve();
+		verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);
+		verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
+		verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
         verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
-        verify(innvandring).resolve();
-        verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);
-        verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
 
-    }
+	}
 
-    /**
-     * Testbetingelser:
-     * - HVIS miljøet ikke er deployet, skal status være "Environment is not deployed".
-     * - HVIS persistering til TPS i et gitt miljø går ok, skal status være "OK".
-     * - HVIS persistering til TPS feiler, så skal responsen fra TPS returneres.
-     * - Responsen skal inneholde skdMeldingstypene som ble sendt, gruppeId og personId-ene for å identifisere skdMeldingene.
-     */
-    @Test
-    public void shouldReturnResponsesWithStatus() {
-        when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
-        RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
+	/**
+	 * Testbetingelser:
+	 * - HVIS miljøet ikke er deployet, skal status være "Environment is not deployed".
+	 * - HVIS persistering til TPS i et gitt miljø går ok, skal status være "OK".
+	 * - HVIS persistering til TPS feiler, så skal responsen fra TPS returneres.
+	 * - Responsen skal inneholde skdMeldingstypene som ble sendt, gruppeId og personId-ene for å identifisere skdMeldingene.
+	 */
+	@Test
+	public void shouldReturnResponsesWithStatus() {
+		when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
+		RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
         assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
-        assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Utvandring"),
-                actualResponse.getSendSkdMeldingTilTpsResponsene()
-                        .stream()
-                        .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
-                        .collect(Collectors.toList()));
-        assertEquals(GRUPPE_ID, actualResponse.getGruppeid());
-        assertEquals(innvandringsMeldinger.get(0).getFodselsnummer(), actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
-    }
+		assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal", "Utvandring"
+				.stream()
+				.map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
+				.collect(Collectors.toList()));
+		assertEquals(GRUPPE_ID,actualResponse.getGruppeid());
+		assertEquals(innvandringsMeldinger.get(0).getFodselsnummer(),actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
+	}
 }

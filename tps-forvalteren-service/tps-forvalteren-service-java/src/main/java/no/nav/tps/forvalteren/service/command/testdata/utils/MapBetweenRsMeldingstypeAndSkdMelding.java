@@ -1,11 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.utils;
 
+import org.springframework.stereotype.Component;
+
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
-import org.springframework.stereotype.Component;
 
 @Component
 public class MapBetweenRsMeldingstypeAndSkdMelding {

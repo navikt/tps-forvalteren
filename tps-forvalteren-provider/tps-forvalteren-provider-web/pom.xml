@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-provider</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>4.13.0-SNAPSHOT</version>
+        <version>4.12.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -85,7 +85,7 @@
                                         <!--OK-->
                                         <argument>run</argument>
                                         <argument>build</argument>
-                                        <argument>--registry=https://repo.adeo.no/repostiory/npm-public</argument>
+                                        <argument>--registry=https://repo.adeo.no/repository/npm-public</argument>
                                         <!--OK end-->
                                     </arguments>
                                     <workingDirectory>${basedir}/src/main/web-src</workingDirectory>
