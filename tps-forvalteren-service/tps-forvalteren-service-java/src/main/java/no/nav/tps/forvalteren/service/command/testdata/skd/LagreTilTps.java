@@ -1,29 +1,15 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
-
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring.FAMILIEENDRING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
@@ -31,6 +17,11 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LagreTilTps {
@@ -93,7 +84,6 @@ public class LagreTilTps {
         listTpsResponsene.addAll(sendDoedsmeldinger(gruppeId, environmentsSet));
         listTpsResponsene.addAll(sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
 
-
         List<ServiceRoutineResponseStatus> serviceRoutineResponseList = sendNavEndringsmeldinger.execute(personerSomIkkeEksitererITpsMiljoe, environmentsSet);
 
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene, serviceRoutineResponseList);
@@ -104,7 +94,7 @@ public class LagreTilTps {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);
         doedsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
@@ -114,33 +104,33 @@ public class LagreTilTps {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, true);
         relasjonsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer("Relasjonsmelding", skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Relasjonsmelding", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger( List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger(List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, personerSomIkkeEksitererITpsMiljoe, true);
         innvandringsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendUpdateInnvandringsMeldinger( List<Person> personerSomAlleredeEksitererITpsMiljoe, Set<String> environmentsSet) {
+    private List<SendSkdMeldingTilTpsResponse> sendUpdateInnvandringsMeldinger(List<Person> personerSomAlleredeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> updateInnvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
         updateInnvandringsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse= sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
     }
 
-    private List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerSomAlleredeEksistererITps, Set<String> environmentsSet){
+    private List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerSomAlleredeEksistererITps, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerSomAlleredeEksistererITps, true);
         utvandringsMeldinger.forEach(skdMelding -> {
