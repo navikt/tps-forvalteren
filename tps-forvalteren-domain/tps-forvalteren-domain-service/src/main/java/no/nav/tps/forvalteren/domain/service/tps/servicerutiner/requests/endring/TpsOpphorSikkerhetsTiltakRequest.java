@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "opphorSikkerhetsTiltak")
 public class TpsOpphorSikkerhetsTiltakRequest extends TpsServiceRoutineEndringRequest {
-    
+
     @Builder
     public TpsOpphorSikkerhetsTiltakRequest(String serviceRutinenavn, String offentligIdent) {
         super(serviceRutinenavn, offentligIdent);

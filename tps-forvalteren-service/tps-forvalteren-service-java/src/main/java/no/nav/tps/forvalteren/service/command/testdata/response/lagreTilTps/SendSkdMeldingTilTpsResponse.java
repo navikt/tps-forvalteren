@@ -20,9 +20,9 @@ public class SendSkdMeldingTilTpsResponse {
     private String personId;
     private String skdmeldingstype;
     private Map<String, String> status; //Map<Environment, TPS respons statusmelding >
-    
+
     public String getStatus(String environment) {
         return status.get(environment);
     }
-    
+
 }
