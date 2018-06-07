@@ -52,6 +52,11 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
         <!-- MODIG -->
         <dependency>
             <groupId>no.nav.modig</groupId>
