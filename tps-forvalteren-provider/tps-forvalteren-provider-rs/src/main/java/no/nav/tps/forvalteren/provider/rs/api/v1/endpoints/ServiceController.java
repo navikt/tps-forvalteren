@@ -43,14 +43,7 @@ public class ServiceController extends BaseProvider {
         loggSporing(serviceRutinenavn, tpsRequestParameters);
         putFnrIntoRequestParameters(tpsRequestParameters);
 
-        TpsRequestContext context = new TpsRequestContext();
-        context.setUser(userContextHolder.getUser());
-        context.setEnvironment(tpsRequestParameters.get(ENVIRONMENT_PARAM_NAME).toString());
-
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(serviceRutinenavn, tpsRequestParameters, true);
-
-        return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
-        return getTpsServiceRoutineResponse.execute(serviceRutinenavn, tpsRequestParameters);
+        return getTpsServiceRoutineResponse.execute(serviceRutinenavn, tpsRequestParameters, true);
     }
 
     @LogExceptions

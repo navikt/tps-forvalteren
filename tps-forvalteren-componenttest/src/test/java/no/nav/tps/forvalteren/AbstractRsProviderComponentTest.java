@@ -5,7 +5,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import javax.jms.JMSException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -29,7 +28,7 @@ import no.nav.tps.forvalteren.config.ComptestConfig;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = { ComptestConfig.class, ApplicationStarter.class })
+@SpringBootTest(classes = { ComptestConfig.class,  ApplicationStarter.class })
 @ActiveProfiles("comptest")
 public abstract class AbstractRsProviderComponentTest {
     
