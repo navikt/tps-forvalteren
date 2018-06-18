@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
+import no.nav.tps.forvalteren.service.command.testdata.utils.FindVergemaalIdsFromPersonIds;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.times;
@@ -30,6 +32,12 @@ public class DeletePersonerByIdInTest {
     @Mock
     private DoedsmeldingRepository doedsmeldingRepository;
 
+    @Mock
+    private VergemaalRepository vergemaalRepository;
+
+    @Mock
+    private FindVergemaalIdsFromPersonIds findVergemaalIdsFromPersonIds;
+
     @InjectMocks
     private DeletePersonerByIdIn deletePersonerByIdIn;
 
@@ -38,6 +46,7 @@ public class DeletePersonerByIdInTest {
 
     @Before
     public void setup() {
+        when(findVergemaalIdsFromPersonIds.execute(anyListOf(Long.class))).thenReturn(personIds);
         when(personIds.size()).thenReturn(ORACLE_MAX_IN_SET_ELEMENTS);
     }
 
@@ -47,6 +56,7 @@ public class DeletePersonerByIdInTest {
 
         verify(doedsmeldingRepository).deleteByPersonIdIn(personIds);
         verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(personIds);
+        verify(vergemaalRepository).deleteByIdIn(personIds);
         verify(personRepository).deleteByIdIn(personIds);
     }
 
@@ -58,6 +68,7 @@ public class DeletePersonerByIdInTest {
 
         verify(doedsmeldingRepository, times(10)).deleteByPersonIdIn(anyListOf(Long.class));
         verify(relasjonRepository, times(10)).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
+        verify(vergemaalRepository, times(10)).deleteByIdIn(anyListOf(Long.class));
         verify(personRepository, times(10)).deleteByIdIn(anyListOf(Long.class));
     }
 }

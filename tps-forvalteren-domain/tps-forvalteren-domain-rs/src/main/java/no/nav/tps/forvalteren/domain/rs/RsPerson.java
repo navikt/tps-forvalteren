@@ -63,4 +63,18 @@ public class RsPerson {
 
     private List<RsSimpleRelasjon> relasjoner;
 
+    private LocalDateTime egenAnsattDatoFom;
+
+    private LocalDateTime egenAnsattDatoTom;
+
+    @Size(min = 4, max = 4)
+    private String typeSikkerhetsTiltak;
+
+    private LocalDateTime sikkerhetsTiltakDatoFom;
+
+    private LocalDateTime sikkerhetsTiltakDatoTom;
+
+    @Size(min = 1, max = 50)
+    private String beskrSikkerhetsTiltak;
+
 }

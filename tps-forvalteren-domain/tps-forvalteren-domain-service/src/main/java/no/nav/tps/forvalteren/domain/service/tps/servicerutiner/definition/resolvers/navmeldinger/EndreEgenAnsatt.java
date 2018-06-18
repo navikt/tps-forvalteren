@@ -10,10 +10,10 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreEgenansattRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class EndreEgenAnsatt implements ServiceRoutineResolver {
+    public static final String EGEN_ANSATT_MLD_NAVN = "endre_egen_ansatt";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,18 @@ public class SkdMessageCreatorTrans1 {
             }
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
+        }
+        return skdMeldinger;
+    }
+
+    public List<SkdMeldingTrans1> createVergemaalSkdMelding(List<Vergemaal> vergemaalListe, boolean addHeader) {
+        Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute("Vergemaal");
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+        if (skdRequestMeldingDefinitionOptional.isPresent()) {
+            for (Vergemaal vergemaal : vergemaalListe) {
+                SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(vergemaal, addHeader);
+                skdMeldinger.add(skdMelding);
+            }
         }
         return skdMeldinger;
     }

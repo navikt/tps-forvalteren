@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +14,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "nyAdresseNavNorge")
 public class TpsEndreTiadEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String datoTom;
     private String typeAdresseNavNorge;
     private String typeTilleggslinje;
@@ -28,4 +29,23 @@ public class TpsEndreTiadEndringsmeldingRequest extends TpsServiceRoutineEndring
     private String postboksnr;
     private String postboksAnlegg;
 
+    @Builder
+    public TpsEndreTiadEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String datoTom, String typeAdresseNavNorge, String typeTilleggslinje, String tilleggslinje, String kommunenrTiad, //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
+            String gatekode, String gatenavn, String husnr, String postNr, String husbokstav, String bolignr, String eiendomsnav, String postboksnr, String postboksAnlegg) {//NOSONAR
+        super(serviceRutinenavn, offentligIdent);
+        this.datoTom = datoTom;
+        this.typeAdresseNavNorge = typeAdresseNavNorge;
+        this.typeTilleggslinje = typeTilleggslinje;
+        this.tilleggslinje = tilleggslinje;
+        this.kommunenrTiad = kommunenrTiad;
+        this.gatekode = gatekode;
+        this.gatenavn = gatenavn;
+        this.husnr = husnr;
+        this.postNr = postNr;
+        this.husbokstav = husbokstav;
+        this.bolignr = bolignr;
+        this.eiendomsnav = eiendomsnav;
+        this.postboksnr = postboksnr;
+        this.postboksAnlegg = postboksAnlegg;
+    }//NOSONAR
 }

@@ -13,11 +13,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.req
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
+    public static final String SIKKERHETSTILTAK_MLD_NAVN = "endre_sikkerhetstiltak";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("endre_sikkerhetstiltak")
+                .name(SIKKERHETSTILTAK_MLD_NAVN)
                 .internalName("Endre SikkerhetsTiltak")
                 .javaClass(TpsEndreSikkerhetstiltakRequest.class)
                 .config()
