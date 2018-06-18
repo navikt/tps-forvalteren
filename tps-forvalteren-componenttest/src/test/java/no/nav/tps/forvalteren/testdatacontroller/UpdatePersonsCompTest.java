@@ -30,7 +30,7 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
     @Transactional
     public void shouldUpdatePersons() throws Exception {
         endTransactionIfActive();
-        List<Person> personList = setupTestdataInTpsfDatabase();
+        List<Person> personList = setupTestdataPersonerInTpsfDatabase();
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(createRequestBody(personList)))
                 .andExpect(status().isOk());
@@ -60,13 +60,6 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
         assertEquals(expectedIdent1AfterUpdate, updatedPerson2.getRelasjoner().get(0).getPersonRelasjonMed().getIdent());
         assertEquals(expectedRelasjonTypeNavn, updatedPerson1.getRelasjoner().get(0).getRelasjonTypeNavn());
         assertEquals(expectedRelasjonTypeNavn, updatedPerson2.getRelasjoner().get(0).getRelasjonTypeNavn());
-    }
-    
-    private List<Person> setupTestdataInTpsfDatabase() {
-        clearAllRepositories();
-        Gruppe gruppe= gruppeRepository.save(Gruppe.builder().navn(GRUPPENAVN).build());
-        List<Person> personList = constructTestpersonsInTpsfDatabase(gruppe);
-        return personList;
     }
     
 }

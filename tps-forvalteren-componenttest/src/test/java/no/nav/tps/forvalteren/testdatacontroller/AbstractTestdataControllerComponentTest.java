@@ -44,6 +44,13 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
         return Arrays.asList(person, person2);
     }
     
+    protected List<Person> setupTestdataPersonerInTpsfDatabase() {
+        clearAllRepositories();
+        Gruppe gruppe= gruppeRepository.save(Gruppe.builder().navn(GRUPPENAVN).build());
+        List<Person> personList = constructTestpersonsInTpsfDatabase(gruppe);
+        return personList;
+    }
+    
     protected void addRequestParam(String key, Object val) {
         params.add(new BasicNameValuePair(key, val.toString()));
     }
