@@ -116,7 +116,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").identtype("FNR")
                 .etternavn("Kake").fornavn("Snill")
                 .kjonn('M')
-                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10))
+                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10)) //FIXME testen feiler ved at time i regdato ikke settes i skdmeldingens streng-versjon. Dette gjelder for samtlige skdmeldinger
                 .build();
         personRepository.save(person5);
     }
