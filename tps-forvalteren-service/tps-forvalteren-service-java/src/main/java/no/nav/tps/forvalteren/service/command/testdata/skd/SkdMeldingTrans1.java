@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 @AllArgsConstructor
 @Builder
 public class SkdMeldingTrans1 implements SkdMelding {
-	private static int meldingslengdeUtenHeader = 1500;
+	private static final int meldingslengdeUtenHeader = 1500;
 
 	private String header;
 	private String fodselsdato;
