@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.welcome',[])
-    .controller('WelcomeCtrl', ['$scope', 'locationService',
-        function ($scope, locationService) {
+    .controller('WelcomeCtrl', ['$scope', 'locationService', 'authenticationService',
+        function ($scope, locationService, authenticationService) {
 
             $scope.openServiceRutine = function () {
                 locationService.redirectToServiceRutineState();

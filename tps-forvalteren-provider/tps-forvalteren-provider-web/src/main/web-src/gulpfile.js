@@ -24,7 +24,8 @@ var autoprefix = new lessAutoprefix({
 });
 
 
-var proxyServer = 'localhost:8080';
+// var proxyServer = 'localhost:8080';
+var proxyServer = 'localhost:8050';
 
 var folders = {
    distRoot : './../resources/public',
@@ -65,7 +66,8 @@ gulp.task('serve.dev', function(){
 
 gulp.task('start-server', function() {
     browserSync.init({
-        port: 3000,
+        // port: 3000,
+        port: 3030,
         proxy: proxyServer,
         injectChanges: true
     })

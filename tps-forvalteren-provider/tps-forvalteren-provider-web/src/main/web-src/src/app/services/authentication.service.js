@@ -10,7 +10,8 @@ angular.module('tps-forvalteren.service')
             var setupSession = function (res) {
                 sessionService.setIsAuthenticated(true);
                 sessionService.setIsSignedIn(true);
-                sessionService.setCurrentUser(res.data);
+                // sessionService.setCurrentUser(res.data);
+                sessionService.setCurrentUser({"name": "bruker", "username": "user"});
             };
 
             self.authenticate = function (credentials, callback) {
@@ -37,17 +38,30 @@ angular.module('tps-forvalteren.service')
                 return {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)};
             };
 
+            self.setSession = function () {
+                //TODO gjør dette på bedre måte.
+                console.log("HEre");
+                setupSession({"name":"Test","username":"Bruker"});
+            };
+
             self.loadUser = function () {
                 var defer = $q.defer();
 
+
                 if (!sessionService.getIsAuthenticated()) {
+
+
                     $http.get(loginRoute, {
                         headers: {}
                     })
                         .then(function (res) {
-                            setupSession(res);
+                            // setupSession(res);
+                            setupSession({
+                                "data": {"name":"Test","username":"Bruker"}
+                            });
                             defer.resolve();
                         }, function (res) {
+                            console.log(res);
                             locationService.redirectToLoginState();
                             defer.reject();
                         });
