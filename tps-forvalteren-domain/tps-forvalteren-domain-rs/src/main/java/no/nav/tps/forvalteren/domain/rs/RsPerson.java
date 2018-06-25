@@ -48,7 +48,13 @@ public class RsPerson {
     private String spesreg;
 
     private LocalDateTime spesregDato;
-
+    
+    private String utvandretTilLand;
+    
+    private LocalDateTime registertUtvandringsdato;
+    
+    private LocalDateTime flyttetTilLandDato;
+    
     private LocalDateTime doedsdato;
 
     private RsAdresse boadresse;
