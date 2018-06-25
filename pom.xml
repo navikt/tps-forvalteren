@@ -25,6 +25,7 @@
         <module>tps-forvalteren-provider</module>
         <module>tps-forvalteren-service</module>
         <module>tps-forvalteren-repository</module>
+        <module>tps-forvalteren-componenttest</module>
     </modules>
 
     <prerequisites>
@@ -179,13 +180,6 @@
                 <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-provider-rs</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.forvalteren</groupId>
-                <artifactId>tps-forvalteren-provider-web</artifactId>
-                <version>${project.version}</version>
-                <type>war</type>
-                <!--<classifier>classes</classifier>-->
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>

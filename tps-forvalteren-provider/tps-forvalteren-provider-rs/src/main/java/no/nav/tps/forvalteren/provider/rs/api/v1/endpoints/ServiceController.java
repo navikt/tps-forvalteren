@@ -43,7 +43,7 @@ public class ServiceController extends BaseProvider {
         loggSporing(serviceRutinenavn, tpsRequestParameters);
         putFnrIntoRequestParameters(tpsRequestParameters);
 
-        return getTpsServiceRoutineResponse.execute(serviceRutinenavn, tpsRequestParameters);
+        return getTpsServiceRoutineResponse.execute(serviceRutinenavn, tpsRequestParameters, true);
     }
 
     @LogExceptions
