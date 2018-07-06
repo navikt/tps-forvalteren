@@ -12,6 +12,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,13 +30,18 @@ public class TpsRequestService {
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
+    @Value("${tps.forvalteren.production-mode}")
+    private boolean currentEnvironmentIsProd;
+
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws Exception {
 
-        forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
+        if(currentEnvironmentIsProd){
+            forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
+        }
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
-        if(tpsRequest instanceof TpsServiceRoutineHentByFnrRequest){
+        if(currentEnvironmentIsProd && (tpsRequest instanceof TpsServiceRoutineHentByFnrRequest) ){
             forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 

@@ -40,7 +40,7 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
         assertResponse(actualTestgruppe);
         TestTransaction.end();
     }
-    
+
     private void assertResponse(RsGruppe actualTestgruppe) {
         Gruppe expectedTestgruppe = gruppeRepository.findById(gruppeId);
         assertEquals(expectedTestgruppe.getNavn(), actualTestgruppe.getNavn());

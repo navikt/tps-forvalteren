@@ -1,21 +1,25 @@
-package no.nav.tps.forvalteren.domain.rs;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
+package no.nav.tps.forvalteren.domain.rs.dolly;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.RsAdresse;
+import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjon;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsPerson {
+public class RsDollyPerson {
 
     private Long personId;
 
@@ -57,9 +61,6 @@ public class RsPerson {
 
     @NotNull
     private LocalDateTime regdato;
-
-    @NotNull
-    private RsSimpleGruppe gruppe;
 
     private List<RsSimpleRelasjon> relasjoner;
 

@@ -3,32 +3,38 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsDollyPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
-import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.ExtractOpprettKritereFromDollyKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
@@ -79,13 +85,26 @@ public class TestdataControllerForDolly {
 
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
+
     @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
 
+    @Autowired
+    private SavePersonBulk savePersonBulk;
+
+    @Autowired
+    private ExtractOpprettKritereFromDollyKriterier extractOpprettKritereFromDollyKriterier;
+
+    @Autowired
+    private ListExtractorKommaSeperated listExtractorKommaSeperated;
+
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
-    @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/personer", method = RequestMethod.POST)
+    public List<String> createNewPersonsFromDollyKriterier(@RequestBody RsDollyPersonKriteriumRequest personKriteriumRequest) {
+        RsPersonKriteriumRequest personKriterierListe = extractOpprettKritereFromDollyKriterier.execute(personKriteriumRequest);
+
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
@@ -94,34 +113,40 @@ public class TestdataControllerForDolly {
         if (personKriterierListe.isWithAdresse()) {
             setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
         }
+
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
-        setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId); //TODO gjør uavhengig av gruppe
+
+        List<Person> tpsfPersoner = extractOpprettKritereFromDollyKriterier.addDollyKriterumValuesToPersonAndSave(personKriteriumRequest, personerSomSkalPersisteres);
+        List<Person> personer = savePersonBulk.execute(tpsfPersoner);
+
+        return personer.stream().map(person -> person.getIdent()).collect(Collectors.toList());
     }
-    
-    @Transactional
+
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
-    @RequestMapping(value = "/getpersoner", method = RequestMethod.POST)
-    public RsPerson getPersons(@RequestBody PersonIdentListe personIdentListe) {
-        List<Person> personList = personRepository.findByIdentIn(personIdentListe.getIdenter());
-        return mapper.map(personList, RsPerson.class);
-    }
-    
-    @Transactional
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
-    @RequestMapping(value = "/deletepersoner", method = RequestMethod.DELETE)
-    public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
-        deletePersonerByIdIn.execute(personIdListe.getIds());
+    @RequestMapping(value = "/tilTps", method = RequestMethod.POST)
+    public RsSkdMeldingResponse sendPersonTilTps(@RequestParam("ident") Long ident, @RequestParam("environments") String environments) {
+        Person person = personRepository.findById(ident);
+        List<String> envs = listExtractorKommaSeperated.extractEnvironments(environments);
+        return lagreTilTps.execute(Arrays.asList(person), envs);
     }
 
     @Transactional
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
-    @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
-    public void updatePersons(@RequestBody List<RsPerson> personListe) {
-        List<Person> personer = mapper.mapAsList(personListe, Person.class);
-        savePersonListService.execute(personer);
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
+    @RequestMapping(value = "/personerdata", method = RequestMethod.GET)
+    public List<RsPerson> getPersons(@RequestParam("identer") String personer) {
+        List<String> identer = listExtractorKommaSeperated.extractIdenter(personer);
+        List<Person> personList = personRepository.findByIdentIn(identer);
+        return mapper.mapAsList(personList, RsPerson.class);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
+    @RequestMapping(value = "/getpersoner", method = RequestMethod.POST)
+    public RsPerson fetchPersondata(@RequestBody PersonIdentListe personIdentListe) {
+        List<Person> personList = personRepository.findByIdentIn(personIdentListe.getIdenter());
+        return mapper.map(personList, RsPerson.class);
     }
 
     @LogExceptions
@@ -137,7 +162,8 @@ public class TestdataControllerForDolly {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
-    public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) { //TODO: uavh av gruppeId
+    public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
+        //TODO: uavh av gruppeId
         return lagreTilTps.execute(gruppeId, environments);
     }
 

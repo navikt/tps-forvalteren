@@ -79,6 +79,11 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     @After
     public void clearParam() {
         params.clear();
+
+        doedsmeldingRepository.deleteAll();
+        relasjonRepository.deleteAll();
+        gruppeRepository.deleteAll();
+        personRepository.deleteAll();
     }
     
     protected void endTransactionIfActive() {

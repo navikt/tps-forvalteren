@@ -55,6 +55,7 @@ angular.module('tps-forvalteren.opprett-testdata', ['ngMessages'])
                     function (error) {
                         $scope.editMode = true;
                         $scope.showSpinner = false;
+                        console.log("Error");
                         utilsService.showAlertError(error);
                     }
                 );

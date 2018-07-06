@@ -35,7 +35,7 @@ public class ServiceController extends BaseProvider {
     @Autowired(required = false)
     private TpsXmlSender tpsXmlSender;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
+//    @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService") })
     @RequestMapping(value = "/service/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)

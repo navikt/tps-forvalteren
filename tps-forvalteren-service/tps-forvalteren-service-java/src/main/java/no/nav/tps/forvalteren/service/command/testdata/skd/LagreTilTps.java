@@ -94,6 +94,35 @@ public class LagreTilTps {
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene, serviceRoutineResponseList);
     }
 
+    public RsSkdMeldingResponse execute(List<Person> personerIGruppen, List<String> environments) {
+        skdRequestMeldingDefinition = innvandring.resolve();
+
+        List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, environments);
+        List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
+        List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
+        Set<String> environmentsSet = new HashSet<>(environments);
+
+        personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+        personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+
+        personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
+
+        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+
+        listTpsResponsene.addAll(sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendFoedselsMeldinger(personerIGruppen, environmentsSet));
+        listTpsResponsene.addAll(sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+//        listTpsResponsene.addAll(sendDoedsmeldinger(gruppeId, environmentsSet));
+        listTpsResponsene.addAll(sendVergemaalsmeldinger(personerIGruppen, environmentsSet));
+        listTpsResponsene.addAll(sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
+
+        List<ServiceRoutineResponseStatus> serviceRoutineResponseList = sendNavEndringsmeldinger.execute(personerSomIkkeEksitererITpsMiljoe, environmentsSet);
+
+        return new RsSkdMeldingResponse(null, listTpsResponsene, serviceRoutineResponseList);
+
+    }
+
     //TODO ALle disse private metodene bør ut egen felles metode som ligger i egen klasse. Få sendDoedsmelding til å ta inn liste av personer i steden for gruppe.
     private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(Long gruppeId, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();

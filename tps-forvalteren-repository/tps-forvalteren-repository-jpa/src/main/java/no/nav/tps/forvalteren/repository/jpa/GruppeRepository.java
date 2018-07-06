@@ -11,6 +11,8 @@ public interface GruppeRepository extends Repository<Gruppe, Long> {
 
     Gruppe findById(Long id);
 
+    Gruppe findByNavn(String navn);
+
     Gruppe save(Gruppe gruppe);
 
     void deleteById(Long id);

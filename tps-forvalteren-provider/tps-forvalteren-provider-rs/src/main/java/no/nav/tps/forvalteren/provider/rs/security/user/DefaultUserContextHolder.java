@@ -21,12 +21,14 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public String getDisplayName() {
-        return getUserDetails().getDn();
+        return "displayName";
+//        return getUserDetails().getDn();
     }
 
     @Override
     public String getUsername() {
-        return getUserDetails().getUsername();
+        return "username";
+//        return getUserDetails().getUsername();
     }
 
     @Override
@@ -37,6 +39,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public User getUser() {
+//        return new User(getDisplayName(), getUsername());
         return new User(getDisplayName(), getUsername());
     }
 
