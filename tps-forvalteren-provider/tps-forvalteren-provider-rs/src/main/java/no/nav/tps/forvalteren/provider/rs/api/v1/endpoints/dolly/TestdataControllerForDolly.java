@@ -29,6 +29,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.FetchPersonByIdent;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
@@ -98,6 +99,9 @@ public class TestdataControllerForDolly {
     @Autowired
     private ListExtractorKommaSeperated listExtractorKommaSeperated;
 
+    @Autowired
+    private FetchPersonByIdent fetchPersonByIdent;
+
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @ResponseStatus(HttpStatus.CREATED)
@@ -125,8 +129,8 @@ public class TestdataControllerForDolly {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
     @RequestMapping(value = "/tilTps", method = RequestMethod.POST)
-    public RsSkdMeldingResponse sendPersonTilTps(@RequestParam("ident") Long ident, @RequestParam("environments") String environments) {
-        Person person = personRepository.findById(ident);
+    public RsSkdMeldingResponse sendPersonTilTps(@RequestParam("environments") String environments, @RequestBody IdentBody ident) {
+        Person person = fetchPersonByIdent.execute(ident.getIdent());
         List<String> envs = listExtractorKommaSeperated.extractEnvironments(environments);
         return lagreTilTps.execute(Arrays.asList(person), envs);
     }
