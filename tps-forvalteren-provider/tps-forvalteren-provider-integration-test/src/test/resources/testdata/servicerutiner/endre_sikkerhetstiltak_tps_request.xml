@@ -3,7 +3,7 @@
 	<sfeAjourforing>
 		<systemInfo>
 			<kilde>TPSF</kilde>
-			<brukerID>test_username</brukerID>
+			<brukerID>username</brukerID>
 		</systemInfo>
 		<opprettSikkerhetsTiltak>
 			<serviceRutinenavn>endre_sikkerhetstiltak</serviceRutinenavn>

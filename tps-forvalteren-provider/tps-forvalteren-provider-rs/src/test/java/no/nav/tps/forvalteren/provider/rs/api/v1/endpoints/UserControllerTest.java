@@ -67,8 +67,10 @@ public class UserControllerTest {
 
         User result = controller.getUser(httpSessionMock);
 
-        assertThat(result, is(sameInstance(user)));
-        verify(user).setToken(SESSION_ID);
+//        assertThat(result, is(sameInstance(user)));
+//        verify(user).setToken(SESSION_ID);    //TESTER nå med fiktiv bruker, for bruker er ikke nødvendig.
+        assertThat(result.getUsername(), is("Bruker"));
+        verify(user, never()).setToken(SESSION_ID);
     }
 
     @Test

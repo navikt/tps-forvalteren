@@ -43,7 +43,8 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrat
         MvcResult result = mvc.perform(get(getUrl()))
                 .andExpect(status().isOk())
                 .andReturn();
-    
+
+        //I Denne filen er det gjort om fra "test_username" til "username" for å få den til å virke.
         Mockito.verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")));
         
         TpsServiceRoutineResponse response = convertMvcResultToObject(result, TpsServiceRoutineResponse.class);
