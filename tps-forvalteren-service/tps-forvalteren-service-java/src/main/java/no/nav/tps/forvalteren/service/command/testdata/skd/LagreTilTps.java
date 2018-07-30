@@ -84,7 +84,7 @@ public class LagreTilTps {
         listTpsResponsene.addAll(sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
         listTpsResponsene.addAll(sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
         listTpsResponsene.addAll(sendFoedselsMeldinger(personerIGruppen, environmentsSet));
-        listTpsResponsene.addAll(sendRelasjonsmeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
+        listTpsResponsene.addAll(sendRelasjonsmeldinger(personerIGruppen, environmentsSet));
         listTpsResponsene.addAll(sendDoedsmeldinger(gruppeId, environmentsSet));
         listTpsResponsene.addAll(sendVergemaalsmeldinger(personerIGruppen, environmentsSet));
         listTpsResponsene.addAll(sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
