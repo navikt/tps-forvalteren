@@ -13,12 +13,12 @@ public class ListExtractorKommaSeperated {
 
     public List<String> extractIdenter(String kommaSepString){
         String regex = "[0-9]{11}";
-        return filter(kommaSepString, regex, "En av identene i stringen fyller ikke opp kravene til å være en ident");
+        return filter(kommaSepString, regex, "ExtractIdent error: En av identene i stringen fyller ikke opp kravene til å være en ident");
     }
 
     public List<String> extractEnvironments(String kommaSepString){
         String regex = "\\w{1}\\d{1,2}";
-        return filter(kommaSepString, regex, "En av miljøene er i ugyldig format");
+        return filter(kommaSepString, regex, "Extract Env error: En av miljøene er i ugyldig format");
     }
 
     private List<String> filter(String input, String regex, String feilmelding){

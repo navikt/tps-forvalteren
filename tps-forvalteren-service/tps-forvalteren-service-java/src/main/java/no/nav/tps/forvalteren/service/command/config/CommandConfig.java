@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørSikkerhetsTiltak;
@@ -22,6 +23,8 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S103HentAdresser;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S137HentVergemaal;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S300HentKortPersonopplysningInklGT;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S301HentGDPR;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S600HentKontaktinformasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
@@ -146,6 +149,17 @@ public class CommandConfig {
     }
 
     @Bean
+    ServiceRoutineResolver hentGDPRdata() {
+        return new S301HentGDPR();
+    }
+
+
+    @Bean
+    ServiceRoutineResolver hentPersonInfoKortGT() {
+        return new S300HentKortPersonopplysningInklGT();
+    }
+
+    @Bean
     ServiceRoutineResolver endreEgenAnsatt() {
         return new EndreEgenAnsatt();
     }
@@ -153,6 +167,11 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver endreSikkerhetsTiltak() {
         return new EndreSikkerhetsTiltak();
+    }
+
+    @Bean
+    ServiceRoutineResolver endreRelasjon() {
+        return new EndreRelasjon();
     }
 
     @Bean

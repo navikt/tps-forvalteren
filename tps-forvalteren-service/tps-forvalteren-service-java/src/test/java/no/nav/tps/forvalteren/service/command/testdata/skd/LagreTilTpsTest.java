@@ -100,7 +100,7 @@ public class LagreTilTpsTest {
         when(skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER)).thenReturn(innvandringsMeldinger);
         when(createRelasjoner.execute(persons, ADD_HEADER)).thenReturn(relasjonsMeldinger);
         when(findPersonerSomSkalHaFoedselsmelding.execute(personsInGruppe)).thenReturn(persons);
-        when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
+        when(createDoedsmeldinger.execute(personsInGruppe, ADD_HEADER)).thenReturn(doedsMeldinger);
         when(createUtvandring.execute(persons, ADD_HEADER)).thenReturn(utvandringsMeldinger);
         when(innvandring.resolve()).thenReturn(skdRequestMeldingDefinition);
         when(createVergemaal.execute(personsInGruppe, ADD_HEADER)).thenReturn(vergemaalsMeldinger);
@@ -113,7 +113,7 @@ public class LagreTilTpsTest {
         verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
         verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
         verify(createRelasjoner).execute(persons, ADD_HEADER);
-        verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
+        verify(createDoedsmeldinger).execute(personsInGruppe, ADD_HEADER);
         verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
         verify(innvandring).resolve();
         verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);

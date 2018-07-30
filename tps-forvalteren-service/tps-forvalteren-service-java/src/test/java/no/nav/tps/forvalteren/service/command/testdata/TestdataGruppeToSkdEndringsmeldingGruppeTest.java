@@ -110,7 +110,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(gruppeRepository.findById(GRUPPE_ID)).thenReturn(testdataGruppe);
         when(skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(innvandringsMeldinger);
         when(createRelasjoner.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(relasjonsMeldinger);
-        when(createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER)).thenReturn(doedsMeldinger);
+        when(createDoedsmeldinger.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(doedsMeldinger);
         when(createMeldingWithMeldingstype.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
@@ -125,7 +125,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(gruppeRepository).findById(GRUPPE_ID);
         verify(skdMessageCreatorTrans1).execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createRelasjoner).execute(testdataGruppe.getPersoner(), ADD_HEADER);
-        verify(createDoedsmeldinger).execute(GRUPPE_ID, ADD_HEADER);
+        verify(createDoedsmeldinger).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
         verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));

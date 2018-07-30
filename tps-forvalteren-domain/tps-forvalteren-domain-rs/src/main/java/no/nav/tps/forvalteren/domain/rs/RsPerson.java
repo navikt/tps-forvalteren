@@ -58,7 +58,6 @@ public class RsPerson {
     @NotNull
     private LocalDateTime regdato;
 
-    @NotNull
     private RsSimpleGruppe gruppe;
 
     private List<RsSimpleRelasjon> relasjoner;

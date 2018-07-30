@@ -23,8 +23,6 @@ var autoprefix = new lessAutoprefix({
    browsers: ['last 2 versions']
 });
 
-
-// var proxyServer = 'localhost:8080';
 var proxyServer = 'localhost:8050';
 
 var folders = {
@@ -66,8 +64,7 @@ gulp.task('serve.dev', function(){
 
 gulp.task('start-server', function() {
     browserSync.init({
-        // port: 3000,
-        port: 3030,
+        port: 3000,
         proxy: proxyServer,
         injectChanges: true
     })

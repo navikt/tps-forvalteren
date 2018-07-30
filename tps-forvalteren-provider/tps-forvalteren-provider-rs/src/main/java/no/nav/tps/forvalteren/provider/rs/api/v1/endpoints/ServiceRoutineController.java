@@ -9,7 +9,9 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSe
 import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,9 @@ public class ServiceRoutineController {
     @Autowired
     private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
+    @Value("${tps.forvalteren.production-mode}")
+    private boolean currentEnvironmentIsProd;
+
     @Autowired
     private ForbiddenCallHandlerService authorisationService;
 
@@ -30,9 +35,14 @@ public class ServiceRoutineController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getTpsServiceRutiner") })
     @RequestMapping(value = "/serviceroutine", method = RequestMethod.GET)
     public List<TpsServiceRoutineDefinitionRequest> getTpsServiceRutiner() {
-        return getTpsServiceRutinerService.execute().stream()
-                .filter(authorisationService::isAuthorisedToUseServiceRutine)
-                .collect(Collectors.toList());
+        if (currentEnvironmentIsProd) {
+            return getTpsServiceRutinerService.execute().stream()
+                    .filter(authorisationService::isAuthorisedToUseServiceRutine)
+                    .collect(Collectors.toList());
+        }
+
+        return getTpsServiceRutinerService.execute();
+
     }
 
 }
