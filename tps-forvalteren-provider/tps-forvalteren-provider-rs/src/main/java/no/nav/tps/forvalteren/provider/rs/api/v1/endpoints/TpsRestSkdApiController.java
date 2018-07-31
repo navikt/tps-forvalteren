@@ -40,7 +40,7 @@ public class TpsRestSkdApiController {
         List<Person> person = Arrays.asList(mapperFacade.map(req.getPerson(), Person.class));
         List<SendSkdMeldingTilTpsResponse> response = skdMeldingSender.sendInnvandringsMeldinger(person ,req.getEnvironments());
 
-        if(response != null && response.size() >0){
+        if(response != null && !response.isEmpty()){
             return response.get(0);
         }
 
@@ -52,7 +52,7 @@ public class TpsRestSkdApiController {
         List<Person> person = Arrays.asList(mapperFacade.map(req.getPerson(), Person.class));
         List<SendSkdMeldingTilTpsResponse> response = skdMeldingSender.sendUpdateInnvandringsMeldinger(person , req.getEnvironments());
 
-        if(response != null && response.size() >0){
+        if(response != null && !response.isEmpty()){
             return response.get(0);
         }
 
