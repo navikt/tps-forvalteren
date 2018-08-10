@@ -14,5 +14,5 @@ import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepositor
 @EntityScan(basePackageClasses = Avspillergruppe.class)
 @EnableJpaRepositories(basePackageClasses = AvspillergruppeRepository.class)
 @EnableJpaAuditing
-public class RepositoryConfig {
+public class AvspillerRepositoryConfig {
 }
