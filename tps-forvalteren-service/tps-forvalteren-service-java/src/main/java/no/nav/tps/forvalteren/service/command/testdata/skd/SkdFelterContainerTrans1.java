@@ -32,7 +32,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRAN
 import org.springframework.stereotype.Component;
 
 @Component
-public class SkdFelterContainerTrans1 implements SkdFelterContainer {
+public class SkdFelterContainerTrans1 implements SkdFelterContainer { //TODO Fjerne denne og ta ibruk SkdFeltDefinisjonerTrans1 overalt
 
     private static final String WHITESPACE_5_STK = "     ";
     private static final String WHITESPACE_10_STK = WHITESPACE_5_STK + WHITESPACE_5_STK;
