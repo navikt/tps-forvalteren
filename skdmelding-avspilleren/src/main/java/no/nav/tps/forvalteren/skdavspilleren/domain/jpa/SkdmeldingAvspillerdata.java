@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.jpa.avspilleren;
+package no.nav.tps.forvalteren.skdavspilleren.domain.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

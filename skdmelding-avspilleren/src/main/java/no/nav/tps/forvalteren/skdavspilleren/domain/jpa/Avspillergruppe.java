@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.jpa.avspilleren;
+package no.nav.tps.forvalteren.skdavspilleren.domain.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
