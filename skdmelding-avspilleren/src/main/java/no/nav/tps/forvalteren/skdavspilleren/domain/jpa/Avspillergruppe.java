@@ -30,7 +30,7 @@ import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.embedded.ChangeStamp;
 @Table(name = "T_AVSPILLERGRUPPE")
 public class Avspillergruppe extends ChangeStamp {
     
-    private static final String SEQ = "T_GRUPPE_SEQ";
+    private static final String SEQ = "T_AVSPILLERGRUPPE_SEQ";
     
     @Id
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
