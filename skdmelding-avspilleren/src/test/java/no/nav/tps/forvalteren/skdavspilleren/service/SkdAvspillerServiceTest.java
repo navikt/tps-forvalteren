@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
+import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
@@ -25,6 +26,9 @@ import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingReq
 
 @RunWith(MockitoJUnitRunner.class)
 public class SkdAvspillerServiceTest {
+    
+    final long gruppeId = 1L;
+    final String miljoe = "u1";
     
     @Mock
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
@@ -47,8 +51,29 @@ public class SkdAvspillerServiceTest {
     
     @Test
     public void shouldSendSkdMessagesFromGroup() {
+        List<SkdmeldingAvspillerdata> skdmeldinger = createSkdmeldingAvspillerdataList();
+        when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(skdmeldinger);
         
-        long gruppeId = 1L;
+        when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(new HashMap<>());
+        
+        skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
+    
+    
+        HashSet environment = new HashSet<>();
+        environment.add(miljoe);
+        InOrder inOrder = Mockito.inOrder(sendSkdMeldingTilGitteMiljoer);
+        inOrder.verify(sendSkdMeldingTilGitteMiljoer).execute("skdmelding1", tpsSkdRequestMeldingDefinition, environment);
+        inOrder.verify(sendSkdMeldingTilGitteMiljoer).execute("skdmelding2", tpsSkdRequestMeldingDefinition, environment);
+    }
+    
+    @Test(expected = AvspillerDataNotFoundException.class)
+    public void shouldThrowNoContentExceptionWhenGruppeIdIsNotFound() {
+        when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(null);
+    
+        skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
+    }
+    
+    private List<SkdmeldingAvspillerdata> createSkdmeldingAvspillerdataList() {
         Avspillergruppe avspillergruppe = Avspillergruppe.builder()
                 .id(gruppeId).beskrivelse("noe")
                 .navn("testgruppe").build();
@@ -56,19 +81,6 @@ public class SkdAvspillerServiceTest {
         SkdmeldingAvspillerdata skdmeldingData2 = SkdmeldingAvspillerdata.builder().sekvensnummer(2L).skdmelding("skdmelding2").avspillergruppe(avspillergruppe).build();
         List<SkdmeldingAvspillerdata> skdmeldinger = Arrays.asList(skdmeldingData1, skdmeldingData2);
         avspillergruppe.setSkdmeldinger(skdmeldinger);
-        when(skdmeldingAvspillerdataRepository.findByAvspillergruppeAndOrderBySekvensnummerAsc(gruppeId)).thenReturn(skdmeldinger);
-        
-        when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(new HashMap<>());
-        
-        String miljoe = "u1";
-        skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
-        
-        InOrder inOrder = Mockito.inOrder(sendSkdMeldingTilGitteMiljoer);
-        
-        HashSet environment = new HashSet<>();
-        environment.add(miljoe);
-        inOrder.verify(sendSkdMeldingTilGitteMiljoer).execute("skdmelding1", tpsSkdRequestMeldingDefinition, environment);
-        inOrder.verify(sendSkdMeldingTilGitteMiljoer).execute("skdmelding2", tpsSkdRequestMeldingDefinition, environment);
-        
+        return skdmeldinger;
     }
 }

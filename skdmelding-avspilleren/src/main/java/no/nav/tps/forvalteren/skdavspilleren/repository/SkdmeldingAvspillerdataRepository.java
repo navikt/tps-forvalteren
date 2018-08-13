@@ -7,5 +7,5 @@ import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
 
 public interface SkdmeldingAvspillerdataRepository extends Repository<SkdmeldingAvspillerdata, Long> {
 
-    List<SkdmeldingAvspillerdata> findByAvspillergruppeAndOrderBySekvensnummerAsc(Long gruppeId);
+    List<SkdmeldingAvspillerdata> findAllByAvspillergruppeIdOrderBySekvensnummerAsc(Long Id);
 }

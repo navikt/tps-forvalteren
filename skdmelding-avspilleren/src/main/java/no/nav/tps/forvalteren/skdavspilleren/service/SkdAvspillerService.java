@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
+import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
@@ -33,11 +34,11 @@ public class SkdAvspillerService {
         environmentsSet.add(startAvspillingRequest.getMiljoe());
         
         //TODO hent gyldige miljøer. sjekk om miljøet i request er gyldig
-        List<SkdmeldingAvspillerdata> avspillerdataList = skdmeldingAvspillerdataRepository.findByAvspillergruppeAndOrderBySekvensnummerAsc(startAvspillingRequest.getGruppeId());
-        if (avspillerdataList != null && !avspillerdataList.isEmpty()) {
-            avspillerdataList.forEach(avspillerdata -> sendSkdMeldingTilGitteMiljoer.execute(avspillerdata.getSkdmelding(), skdRequestMeldingDefinition, environmentsSet));
-        } else {
-            throw new RuntimeException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
+        List<SkdmeldingAvspillerdata> avspillerdataList = skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(startAvspillingRequest.getGruppeId());
+        if (avspillerdataList == null || avspillerdataList.isEmpty()) {
+            throw new AvspillerDataNotFoundException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
         }
+        
+        avspillerdataList.forEach(avspillerdata -> sendSkdMeldingTilGitteMiljoer.execute(avspillerdata.getSkdmelding(), skdRequestMeldingDefinition, environmentsSet));
     }
 }
