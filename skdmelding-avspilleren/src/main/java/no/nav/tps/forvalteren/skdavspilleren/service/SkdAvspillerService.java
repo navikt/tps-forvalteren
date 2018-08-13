@@ -51,4 +51,8 @@ public class SkdAvspillerService {
     public Iterable<Avspillergruppe> getAllAvspillergrupper() {
         return avspillergruppeRepository.findAll();
     }
+    
+    public void opprettGruppe(Avspillergruppe avspillergruppe) {
+        avspillergruppeRepository.save(avspillergruppe);
+    }
 }
