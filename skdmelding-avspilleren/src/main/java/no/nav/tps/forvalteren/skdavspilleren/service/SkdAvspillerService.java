@@ -10,7 +10,9 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
+import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
+import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
 
@@ -18,13 +20,17 @@ import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingReq
 public class SkdAvspillerService {
     
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
+    private AvspillergruppeRepository avspillergruppeRepository;
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition ;
 
     @Autowired
-    public SkdAvspillerService(SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository, SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer,
+    public SkdAvspillerService(SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository,
+            AvspillergruppeRepository avspillergruppeRepository,
+            SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer,
             SkdMeldingResolver innvandring) {
         this.skdmeldingAvspillerdataRepository = skdmeldingAvspillerdataRepository;
+        this.avspillergruppeRepository = avspillergruppeRepository;
         this.sendSkdMeldingTilGitteMiljoer = sendSkdMeldingTilGitteMiljoer;
         this.skdRequestMeldingDefinition = innvandring.resolve();
     }
@@ -40,5 +46,9 @@ public class SkdAvspillerService {
         }
         
         avspillerdataList.forEach(avspillerdata -> sendSkdMeldingTilGitteMiljoer.execute(avspillerdata.getSkdmelding(), skdRequestMeldingDefinition, environmentsSet));
+    }
+    
+    public Iterable<Avspillergruppe> getAllAvspillergrupper() {
+        return avspillergruppeRepository.findAll();
     }
 }
