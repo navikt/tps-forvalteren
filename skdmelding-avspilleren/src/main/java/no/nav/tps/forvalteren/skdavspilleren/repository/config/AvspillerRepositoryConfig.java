@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
-import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
+import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 
 @Configuration
 @EnableTransactionManagement
 @EntityScan(basePackageClasses = Avspillergruppe.class)
-@EnableJpaRepositories(basePackageClasses = AvspillergruppeRepository.class)
+@EnableJpaRepositories(basePackageClasses = SkdmeldingAvspillerdataRepository.class)
 @EnableJpaAuditing
 public class AvspillerRepositoryConfig {
 }

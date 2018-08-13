@@ -35,7 +35,7 @@ public class SkdmeldingAvspillerdata {
     private Long id;
     
     @Column(name = "SKD_MELDING", nullable = false, length = 1600)
-    private String Skdmelding;
+    private String skdmelding;
     
     @Column(name = "TESTPERSON_ID")
     private int testpersonAvspillerId;

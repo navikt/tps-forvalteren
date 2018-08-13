@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StartAvspillingRequest {
     
-    private long gruppeId;
+    private Long gruppeId;
     private String miljoe;
 }
