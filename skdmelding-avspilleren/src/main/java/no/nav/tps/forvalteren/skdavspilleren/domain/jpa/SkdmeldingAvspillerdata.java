@@ -38,7 +38,7 @@ public class SkdmeldingAvspillerdata {
     private String skdmelding;
     
     @Column(name = "TESTPERSON_ID")
-    private int testpersonAvspillerId;
+    private Integer testpersonAvspillerId;
     
     @JoinColumn(name = "GRUPPE_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
