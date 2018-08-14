@@ -39,11 +39,6 @@ public class SkdAvspillerController {
     @PostMapping("gruppe")
     public void opprettGruppe(@RequestBody OpprettAvspillergruppeRequest request) {
         Avspillergruppe avspillergruppe = Avspillergruppe.builder().navn(request.getNavn()).beskrivelse(request.getBeskrivelse()).build();
-        avspillergruppe.setOpprettetAv(request.getOpprettetAv());
-        avspillergruppe.setEndretAv(request.getOpprettetAv());
-        avspillergruppe.setEndretDato(LocalDateTime.now());
-        avspillergruppe.setOpprettetDato(LocalDateTime.now());
-        
         avspillerService.opprettGruppe(avspillergruppe);
     }
 }

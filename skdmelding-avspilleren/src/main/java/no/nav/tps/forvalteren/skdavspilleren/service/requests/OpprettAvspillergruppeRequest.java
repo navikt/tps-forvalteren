@@ -13,5 +13,4 @@ public class OpprettAvspillergruppeRequest {
     
     private String navn;
     private String beskrivelse;
-    private String opprettetAv;
 }
