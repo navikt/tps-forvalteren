@@ -4,8 +4,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
@@ -38,7 +36,7 @@ public class SkdAvspillerServiceTest {
     private AvspillergruppeRepository avspillergruppeRepository;
     
     @Mock
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
+    private SendEnSkdMelding SendEnSkdMelding;
     
     @Mock
     private SkdMeldingResolver innvandring;
@@ -50,7 +48,7 @@ public class SkdAvspillerServiceTest {
     public void before() {
         tpsSkdRequestMeldingDefinition = new TpsSkdRequestMeldingDefinition();
         when(innvandring.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
-        skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository, avspillergruppeRepository, sendSkdMeldingTilGitteMiljoer, innvandring);
+        skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository, avspillergruppeRepository, SendEnSkdMelding, innvandring);
     }
     
     @Test
@@ -58,22 +56,19 @@ public class SkdAvspillerServiceTest {
         List<SkdmeldingAvspillerdata> skdmeldinger = createSkdmeldingAvspillerdataList();
         when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(skdmeldinger);
         
-        when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(new HashMap<>());
+        when(SendEnSkdMelding.sendSkdMelding(any(), any(), any())).thenReturn(new String());
         
         skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
-    
-    
-        HashSet environment = new HashSet<>();
-        environment.add(miljoe);
-        InOrder inOrder = Mockito.inOrder(sendSkdMeldingTilGitteMiljoer);
-        inOrder.verify(sendSkdMeldingTilGitteMiljoer).execute("skdmelding1", tpsSkdRequestMeldingDefinition, environment);
-        inOrder.verify(sendSkdMeldingTilGitteMiljoer).execute("skdmelding2", tpsSkdRequestMeldingDefinition, environment);
+        
+        InOrder inOrder = Mockito.inOrder(SendEnSkdMelding);
+        inOrder.verify(SendEnSkdMelding).sendSkdMelding("skdmelding1", tpsSkdRequestMeldingDefinition, miljoe);
+        inOrder.verify(SendEnSkdMelding).sendSkdMelding("skdmelding2", tpsSkdRequestMeldingDefinition, miljoe);
     }
     
     @Test(expected = AvspillerDataNotFoundException.class)
     public void shouldThrowNoContentExceptionWhenGruppeIdIsNotFound() {
         when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(null);
-    
+        
         skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
     }
     
@@ -86,5 +81,15 @@ public class SkdAvspillerServiceTest {
         List<SkdmeldingAvspillerdata> skdmeldinger = Arrays.asList(skdmeldingData1, skdmeldingData2);
         avspillergruppe.setSkdmeldinger(skdmeldinger);
         return skdmeldinger;
+    }
+    
+    @Test
+    public void shouldReportFailedSkdMessages() {
+    
+    }
+    
+    @Test
+    public void shouldThrowExceptionWhenMiljoeIsOfWrongFormat() {
+    
     }
 }

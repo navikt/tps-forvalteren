@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.skdavspilleren.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,30 +9,31 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
 import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
+import no.nav.tps.forvalteren.skdavspilleren.service.response.AvspiltSkdMeldingTilTpsRespons;
 
 @Service
 public class SkdAvspillerService {
     
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
     private AvspillergruppeRepository avspillergruppeRepository;
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
+    private SendEnSkdMelding sendEnSkdMelding;
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition ;
 
     @Autowired
     public SkdAvspillerService(SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository,
             AvspillergruppeRepository avspillergruppeRepository,
-            SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer,
+            SendEnSkdMelding sendEnSkdMelding,
             SkdMeldingResolver innvandring) {
         this.skdmeldingAvspillerdataRepository = skdmeldingAvspillerdataRepository;
         this.avspillergruppeRepository = avspillergruppeRepository;
-        this.sendSkdMeldingTilGitteMiljoer = sendSkdMeldingTilGitteMiljoer;
+        this.sendEnSkdMelding = sendEnSkdMelding;
         this.skdRequestMeldingDefinition = innvandring.resolve();
     }
     
@@ -45,7 +47,19 @@ public class SkdAvspillerService {
             throw new AvspillerDataNotFoundException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
         }
         
-        avspillerdataList.forEach(avspillerdata -> sendSkdMeldingTilGitteMiljoer.execute(avspillerdata.getSkdmelding(), skdRequestMeldingDefinition, environmentsSet));
+        List<AvspiltSkdMeldingTilTpsRespons> tpsResponse = new ArrayList();
+        avspillerdataList.forEach(avspillerdata ->
+                sendSkdMeldingAndAddResponseToList(tpsResponse, avspillerdata, skdRequestMeldingDefinition, startAvspillingRequest.getMiljoe()));
+        //TODO rapportere avspillingen: Multi Exceptions og antall suksessfulle
+    }
+    
+    private void sendSkdMeldingAndAddResponseToList(List<AvspiltSkdMeldingTilTpsRespons> tpsResponse, SkdmeldingAvspillerdata avspillerdata, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
+        String status = sendEnSkdMelding.sendSkdMelding(avspillerdata.getSkdmelding(), skdRequestMeldingDefinition, env);
+        AvspiltSkdMeldingTilTpsRespons respons = AvspiltSkdMeldingTilTpsRespons.builder()
+                .sekvensnummer(avspillerdata.getSekvensnummer())
+                .status(status)
+                .build();
+        tpsResponse.add(respons);
     }
     
     public Iterable<Avspillergruppe> getAllAvspillergrupper() {
