@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.skdavspilleren.provider.rs;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,7 @@ import no.nav.tps.forvalteren.skdavspilleren.service.requests.OpprettAvspillergr
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
 
 @RestController
-@RequestMapping("avspilleren/skd")
+@RequestMapping("api/v1/avspilleren/skd")
 public class SkdAvspillerController {
     
     @Autowired
