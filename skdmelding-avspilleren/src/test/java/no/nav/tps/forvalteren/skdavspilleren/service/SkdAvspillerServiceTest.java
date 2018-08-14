@@ -22,7 +22,6 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
-import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
 import no.nav.tps.forvalteren.skdavspilleren.service.response.StartAvspillingResponse;
@@ -35,8 +34,6 @@ public class SkdAvspillerServiceTest {
     
     @Mock
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
-    @Mock
-    private AvspillergruppeRepository avspillergruppeRepository;
     @Mock
     private SendEnSkdMelding SendEnSkdMelding;
     @Mock
@@ -58,7 +55,7 @@ public class SkdAvspillerServiceTest {
         filteredEnv.add(miljoe);
         when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(filteredEnv);
         
-        skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository, avspillergruppeRepository,
+        skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository,
                 SendEnSkdMelding, filterEnvironmentsOnDeployedEnvironment, innvandring);
         
         createSkdmeldingAvspillerdataList();

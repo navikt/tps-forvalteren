@@ -11,31 +11,26 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
-import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
-import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
-import no.nav.tps.forvalteren.skdavspilleren.service.response.StatusPaaAvspiltSkdMelding;
 import no.nav.tps.forvalteren.skdavspilleren.service.response.StartAvspillingResponse;
+import no.nav.tps.forvalteren.skdavspilleren.service.response.StatusPaaAvspiltSkdMelding;
 
 @Service
 public class SkdAvspillerService {
     
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
-    private AvspillergruppeRepository avspillergruppeRepository;
     private SendEnSkdMelding sendEnSkdMelding;
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
     
     @Autowired
     public SkdAvspillerService(SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository,
-            AvspillergruppeRepository avspillergruppeRepository,
             SendEnSkdMelding sendEnSkdMelding,
             FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment,
             SkdMeldingResolver innvandring) {
         this.skdmeldingAvspillerdataRepository = skdmeldingAvspillerdataRepository;
-        this.avspillergruppeRepository = avspillergruppeRepository;
         this.filterEnvironmentsOnDeployedEnvironment = filterEnvironmentsOnDeployedEnvironment;
         this.sendEnSkdMelding = sendEnSkdMelding;
         this.skdRequestMeldingDefinition = innvandring.resolve();
@@ -47,7 +42,7 @@ public class SkdAvspillerService {
         if (avspillerdataList == null || avspillerdataList.isEmpty()) {
             throw new AvspillerDataNotFoundException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
         }
-    
+        
         StartAvspillingResponse avspillingResponse = new StartAvspillingResponse();
         avspillerdataList.forEach(avspillerdata ->
                 sendSkdMeldingAndAddResponseToList(avspillingResponse, avspillerdata, skdRequestMeldingDefinition, startAvspillingRequest.getMiljoe()));
@@ -59,7 +54,7 @@ public class SkdAvspillerService {
         environmentsSet.add(startAvspillingRequest.getMiljoe());
         Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environmentsSet);
         if (envToCheck.isEmpty()) {
-            throw new RuntimeException("The environment "+environmentsSet+" is not available");
+            throw new RuntimeException("The environment " + environmentsSet + " is not available");
         }
     }
     
@@ -78,13 +73,5 @@ public class SkdAvspillerService {
                 .build();
         avspillingResponse.addStatusFraFeilendeMeldinger(respons);
         avspillingResponse.incrementAntallFeilet();
-    }
-    
-    public Iterable<Avspillergruppe> getAllAvspillergrupper() {
-        return avspillergruppeRepository.findAll();
-    }
-    
-    public void opprettGruppe(Avspillergruppe avspillergruppe) {
-        avspillergruppeRepository.save(avspillergruppe);
     }
 }
