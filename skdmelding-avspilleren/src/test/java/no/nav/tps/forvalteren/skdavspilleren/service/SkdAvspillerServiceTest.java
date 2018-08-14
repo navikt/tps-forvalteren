@@ -4,6 +4,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
@@ -27,17 +29,16 @@ import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingReq
 public class SkdAvspillerServiceTest {
     
     final long gruppeId = 1L;
-    final String miljoe = "u1";
+    final String miljoe = "u5";
     
     @Mock
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
-    
     @Mock
     private AvspillergruppeRepository avspillergruppeRepository;
-    
     @Mock
     private SendEnSkdMelding SendEnSkdMelding;
-    
+    @Mock
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
     @Mock
     private SkdMeldingResolver innvandring;
     
@@ -48,7 +49,12 @@ public class SkdAvspillerServiceTest {
     public void before() {
         tpsSkdRequestMeldingDefinition = new TpsSkdRequestMeldingDefinition();
         when(innvandring.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
-        skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository, avspillergruppeRepository, SendEnSkdMelding, innvandring);
+        HashSet<String> filteredEnv = new HashSet<>();
+        filteredEnv.add(miljoe);
+        when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(filteredEnv);
+    
+        skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository, avspillergruppeRepository,
+                SendEnSkdMelding,filterEnvironmentsOnDeployedEnvironment, innvandring);
     }
     
     @Test
@@ -88,8 +94,9 @@ public class SkdAvspillerServiceTest {
     
     }
     
-    @Test
-    public void shouldThrowExceptionWhenMiljoeIsOfWrongFormat() {
-    
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowExceptionWhenMiljoeIsNotAvailable() {
+        when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(new HashSet<>());
+        skdAvspillerService.start(new StartAvspillingRequest(gruppeId, "L0"));
     }
 }

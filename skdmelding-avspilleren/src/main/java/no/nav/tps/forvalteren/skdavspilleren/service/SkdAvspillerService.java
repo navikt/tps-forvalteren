@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 import no.nav.tps.forvalteren.skdavspilleren.common.exceptions.AvspillerDataNotFoundException;
 import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.Avspillergruppe;
@@ -24,24 +25,24 @@ public class SkdAvspillerService {
     private SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository;
     private AvspillergruppeRepository avspillergruppeRepository;
     private SendEnSkdMelding sendEnSkdMelding;
-    private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition ;
-
+    private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+    
     @Autowired
     public SkdAvspillerService(SkdmeldingAvspillerdataRepository skdmeldingAvspillerdataRepository,
             AvspillergruppeRepository avspillergruppeRepository,
             SendEnSkdMelding sendEnSkdMelding,
+            FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment,
             SkdMeldingResolver innvandring) {
         this.skdmeldingAvspillerdataRepository = skdmeldingAvspillerdataRepository;
         this.avspillergruppeRepository = avspillergruppeRepository;
+        this.filterEnvironmentsOnDeployedEnvironment = filterEnvironmentsOnDeployedEnvironment;
         this.sendEnSkdMelding = sendEnSkdMelding;
         this.skdRequestMeldingDefinition = innvandring.resolve();
     }
     
     public void start(StartAvspillingRequest startAvspillingRequest) {
-        Set<String> environmentsSet = new HashSet<>();
-        environmentsSet.add(startAvspillingRequest.getMiljoe());
-        
-        //TODO hent gyldige miljøer. sjekk om miljøet i request er gyldig
+        verifiserMiljo(startAvspillingRequest);
         List<SkdmeldingAvspillerdata> avspillerdataList = skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(startAvspillingRequest.getGruppeId());
         if (avspillerdataList == null || avspillerdataList.isEmpty()) {
             throw new AvspillerDataNotFoundException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
@@ -51,6 +52,15 @@ public class SkdAvspillerService {
         avspillerdataList.forEach(avspillerdata ->
                 sendSkdMeldingAndAddResponseToList(tpsResponse, avspillerdata, skdRequestMeldingDefinition, startAvspillingRequest.getMiljoe()));
         //TODO rapportere avspillingen: Multi Exceptions og antall suksessfulle
+    }
+    
+    private void verifiserMiljo(StartAvspillingRequest startAvspillingRequest) {
+        Set<String> environmentsSet = new HashSet<>();
+        environmentsSet.add(startAvspillingRequest.getMiljoe());
+        Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environmentsSet);
+        if (envToCheck.isEmpty()) {
+            throw new RuntimeException("The environment "+environmentsSet+" is not available");
+        }
     }
     
     private void sendSkdMeldingAndAddResponseToList(List<AvspiltSkdMeldingTilTpsRespons> tpsResponse, SkdmeldingAvspillerdata avspillerdata, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
