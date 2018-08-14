@@ -14,6 +14,7 @@ import no.nav.tps.forvalteren.skdavspilleren.provider.response.AvspillergruppeRe
 import no.nav.tps.forvalteren.skdavspilleren.service.SkdAvspillerService;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.OpprettAvspillergruppeRequest;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
+import no.nav.tps.forvalteren.skdavspilleren.service.response.StartAvspillingResponse;
 
 @RestController
 @RequestMapping("api/v1/avspilleren/skd")
@@ -26,8 +27,8 @@ public class SkdAvspillerController {
     private MapperFacade mapper;
     
     @PostMapping("start")
-    public void startAvspillingAvSkdmeldingTilMiljoe(@RequestBody StartAvspillingRequest startAvspillingRequest) {
-        avspillerService.start(startAvspillingRequest);
+    public StartAvspillingResponse startAvspillingAvSkdmeldingTilMiljoe(@RequestBody StartAvspillingRequest startAvspillingRequest) {
+        return avspillerService.start(startAvspillingRequest);
     }
     
     @GetMapping("grupper")

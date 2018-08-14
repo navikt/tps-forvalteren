@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.skdavspilleren.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +16,8 @@ import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
 import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
-import no.nav.tps.forvalteren.skdavspilleren.service.response.AvspiltSkdMeldingTilTpsRespons;
+import no.nav.tps.forvalteren.skdavspilleren.service.response.StatusPaaAvspiltSkdMelding;
+import no.nav.tps.forvalteren.skdavspilleren.service.response.StartAvspillingResponse;
 
 @Service
 public class SkdAvspillerService {
@@ -41,17 +41,17 @@ public class SkdAvspillerService {
         this.skdRequestMeldingDefinition = innvandring.resolve();
     }
     
-    public void start(StartAvspillingRequest startAvspillingRequest) {
+    public StartAvspillingResponse start(StartAvspillingRequest startAvspillingRequest) {
         verifiserMiljo(startAvspillingRequest);
         List<SkdmeldingAvspillerdata> avspillerdataList = skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(startAvspillingRequest.getGruppeId());
         if (avspillerdataList == null || avspillerdataList.isEmpty()) {
             throw new AvspillerDataNotFoundException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
         }
-        
-        List<AvspiltSkdMeldingTilTpsRespons> tpsResponse = new ArrayList();
+    
+        StartAvspillingResponse avspillingResponse = new StartAvspillingResponse();
         avspillerdataList.forEach(avspillerdata ->
-                sendSkdMeldingAndAddResponseToList(tpsResponse, avspillerdata, skdRequestMeldingDefinition, startAvspillingRequest.getMiljoe()));
-        //TODO rapportere avspillingen: Multi Exceptions og antall suksessfulle
+                sendSkdMeldingAndAddResponseToList(avspillingResponse, avspillerdata, skdRequestMeldingDefinition, startAvspillingRequest.getMiljoe()));
+        return avspillingResponse;
     }
     
     private void verifiserMiljo(StartAvspillingRequest startAvspillingRequest) {
@@ -63,13 +63,21 @@ public class SkdAvspillerService {
         }
     }
     
-    private void sendSkdMeldingAndAddResponseToList(List<AvspiltSkdMeldingTilTpsRespons> tpsResponse, SkdmeldingAvspillerdata avspillerdata, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
+    private void sendSkdMeldingAndAddResponseToList(StartAvspillingResponse avspillingResponse, SkdmeldingAvspillerdata avspillerdata, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
         String status = sendEnSkdMelding.sendSkdMelding(avspillerdata.getSkdmelding(), skdRequestMeldingDefinition, env);
-        AvspiltSkdMeldingTilTpsRespons respons = AvspiltSkdMeldingTilTpsRespons.builder()
+        avspillingResponse.incrementAntallSendte();
+        if (!"00".equals(status)) {
+            rapporterFeiletMelding(avspillerdata, status, avspillingResponse);
+        }
+    }
+    
+    private void rapporterFeiletMelding(SkdmeldingAvspillerdata avspillerdata, String status, StartAvspillingResponse avspillingResponse) {
+        StatusPaaAvspiltSkdMelding respons = StatusPaaAvspiltSkdMelding.builder()
                 .sekvensnummer(avspillerdata.getSekvensnummer())
                 .status(status)
                 .build();
-        tpsResponse.add(respons);
+        avspillingResponse.addStatusFraFeilendeMeldinger(respons);
+        avspillingResponse.incrementAntallFeilet();
     }
     
     public Iterable<Avspillergruppe> getAllAvspillergrupper() {

@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.skdavspilleren.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +25,7 @@ import no.nav.tps.forvalteren.skdavspilleren.domain.jpa.SkdmeldingAvspillerdata;
 import no.nav.tps.forvalteren.skdavspilleren.repository.AvspillergruppeRepository;
 import no.nav.tps.forvalteren.skdavspilleren.repository.SkdmeldingAvspillerdataRepository;
 import no.nav.tps.forvalteren.skdavspilleren.service.requests.StartAvspillingRequest;
+import no.nav.tps.forvalteren.skdavspilleren.service.response.StartAvspillingResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SkdAvspillerServiceTest {
@@ -44,6 +46,9 @@ public class SkdAvspillerServiceTest {
     
     private TpsSkdRequestMeldingDefinition tpsSkdRequestMeldingDefinition;
     private SkdAvspillerService skdAvspillerService;
+    private SkdmeldingAvspillerdata skdmeldingData1;
+    private SkdmeldingAvspillerdata skdmeldingData2;
+    private List<SkdmeldingAvspillerdata> skdmeldinger;
     
     @Before
     public void before() {
@@ -52,17 +57,28 @@ public class SkdAvspillerServiceTest {
         HashSet<String> filteredEnv = new HashSet<>();
         filteredEnv.add(miljoe);
         when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(filteredEnv);
-    
+        
         skdAvspillerService = new SkdAvspillerService(skdmeldingAvspillerdataRepository, avspillergruppeRepository,
-                SendEnSkdMelding,filterEnvironmentsOnDeployedEnvironment, innvandring);
+                SendEnSkdMelding, filterEnvironmentsOnDeployedEnvironment, innvandring);
+        
+        createSkdmeldingAvspillerdataList();
+    }
+    
+    private void createSkdmeldingAvspillerdataList() {
+        Avspillergruppe avspillergruppe = Avspillergruppe.builder()
+                .id(gruppeId).beskrivelse("noe")
+                .navn("testgruppe").build();
+        skdmeldingData1 = SkdmeldingAvspillerdata.builder().sekvensnummer(1L).skdmelding("skdmelding1").avspillergruppe(avspillergruppe).build();
+        skdmeldingData2 = SkdmeldingAvspillerdata.builder().sekvensnummer(2L).skdmelding("skdmelding2").avspillergruppe(avspillergruppe).build();
+        skdmeldinger = Arrays.asList(skdmeldingData1, skdmeldingData2);
+        avspillergruppe.setSkdmeldinger(skdmeldinger);
     }
     
     @Test
     public void shouldSendSkdMessagesFromGroup() {
-        List<SkdmeldingAvspillerdata> skdmeldinger = createSkdmeldingAvspillerdataList();
         when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(skdmeldinger);
         
-        when(SendEnSkdMelding.sendSkdMelding(any(), any(), any())).thenReturn(new String());
+        when(SendEnSkdMelding.sendSkdMelding(any(), any(), any())).thenReturn("00");
         
         skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
         
@@ -71,27 +87,25 @@ public class SkdAvspillerServiceTest {
         inOrder.verify(SendEnSkdMelding).sendSkdMelding("skdmelding2", tpsSkdRequestMeldingDefinition, miljoe);
     }
     
+    @Test
+    public void shouldReportFailedSkdMessages() {
+        String feilmelding = "Feilmelding: skdmeldingen feilet";
+        when(SendEnSkdMelding.sendSkdMelding(any(), any(), any())).thenReturn("00");
+        when(SendEnSkdMelding.sendSkdMelding(skdmeldingData2.getSkdmelding(), tpsSkdRequestMeldingDefinition, miljoe)).thenReturn(feilmelding);
+        when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(skdmeldinger);
+        
+        StartAvspillingResponse response = skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
+        assertEquals(2, response.getAntallSendte());
+        assertEquals(1, response.getAntallFeilet());
+        assertEquals(feilmelding, response.getStatusFraFeilendeMeldinger().get(0).getStatus());
+        assertEquals(2L, response.getStatusFraFeilendeMeldinger().get(0).getSekvensnummer().longValue());
+    }
+    
     @Test(expected = AvspillerDataNotFoundException.class)
     public void shouldThrowNoContentExceptionWhenGruppeIdIsNotFound() {
         when(skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(gruppeId)).thenReturn(null);
         
         skdAvspillerService.start(new StartAvspillingRequest(gruppeId, miljoe));
-    }
-    
-    private List<SkdmeldingAvspillerdata> createSkdmeldingAvspillerdataList() {
-        Avspillergruppe avspillergruppe = Avspillergruppe.builder()
-                .id(gruppeId).beskrivelse("noe")
-                .navn("testgruppe").build();
-        SkdmeldingAvspillerdata skdmeldingData1 = SkdmeldingAvspillerdata.builder().sekvensnummer(1L).skdmelding("skdmelding1").avspillergruppe(avspillergruppe).build();
-        SkdmeldingAvspillerdata skdmeldingData2 = SkdmeldingAvspillerdata.builder().sekvensnummer(2L).skdmelding("skdmelding2").avspillergruppe(avspillergruppe).build();
-        List<SkdmeldingAvspillerdata> skdmeldinger = Arrays.asList(skdmeldingData1, skdmeldingData2);
-        avspillergruppe.setSkdmeldinger(skdmeldinger);
-        return skdmeldinger;
-    }
-    
-    @Test
-    public void shouldReportFailedSkdMessages() {
-    
     }
     
     @Test(expected = RuntimeException.class)

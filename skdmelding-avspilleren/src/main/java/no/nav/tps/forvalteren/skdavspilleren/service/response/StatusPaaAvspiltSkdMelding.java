@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AvspiltSkdMeldingTilTpsRespons {
+public class StatusPaaAvspiltSkdMelding {
     private Long sekvensnummer;
     private String status;
 }
