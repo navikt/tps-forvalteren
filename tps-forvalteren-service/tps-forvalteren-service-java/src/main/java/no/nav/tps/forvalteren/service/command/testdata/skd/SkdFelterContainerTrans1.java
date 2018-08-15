@@ -31,6 +31,10 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILD
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE;
 import org.springframework.stereotype.Component;
 
+/**
+ * @deprecated (Mai 2018, Refaktoreringsarbeid: Forbedret service-laget med en java-representasjon av skdmeldinger ved interface Skdmelding., Ta ibruk SkdFeltDefinisjonerTrans1 i stedet for denne klassen. )
+ */
+@Deprecated
 @Component
 public class SkdFelterContainerTrans1 implements SkdFelterContainer {
 
