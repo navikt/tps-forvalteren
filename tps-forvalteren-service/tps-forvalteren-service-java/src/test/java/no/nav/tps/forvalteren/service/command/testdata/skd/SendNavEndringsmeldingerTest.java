@@ -92,7 +92,7 @@ public class SendNavEndringsmeldingerTest {
     }
     
     /**
-     * HVIS sendNavEndringsmelding.execute blir kalt, SÅ skal opprettEgenAnsatt og opprettSikTiltak kalles og meldingene fra dem skal sendes til TPS.
+     * HVIS sendNavEndringsmelding.sendMessage blir kalt, SÅ skal opprettEgenAnsatt og opprettSikTiltak kalles og meldingene fra dem skal sendes til TPS.
      */
     @Test
     public void shouldSendeNavEndringsmeldingerTilTps() {

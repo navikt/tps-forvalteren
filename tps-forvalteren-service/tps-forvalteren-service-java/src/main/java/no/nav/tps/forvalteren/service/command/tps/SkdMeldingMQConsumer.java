@@ -10,7 +10,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 
 @Service
-public class SkdMeldingRequest {
+public class SkdMeldingMQConsumer {
 
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
@@ -18,7 +18,7 @@ public class SkdMeldingRequest {
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
     
-    public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
+    public String sendMessage(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
         forbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());

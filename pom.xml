@@ -25,7 +25,8 @@
         <module>tps-forvalteren-provider</module>
         <module>tps-forvalteren-service</module>
         <module>tps-forvalteren-repository</module>
-    </modules>
+		<module>skdmelding-avspilleren</module>
+	</modules>
 
     <prerequisites>
         <maven>3.3.1</maven>
