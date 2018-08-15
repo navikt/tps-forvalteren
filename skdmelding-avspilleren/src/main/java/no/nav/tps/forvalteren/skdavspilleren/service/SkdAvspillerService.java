@@ -30,6 +30,7 @@ public class SkdAvspillerService {
             SendEnSkdMelding sendEnSkdMelding,
             FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment,
             SkdMeldingResolver innvandring) {
+        
         this.skdmeldingAvspillerdataRepository = skdmeldingAvspillerdataRepository;
         this.filterEnvironmentsOnDeployedEnvironment = filterEnvironmentsOnDeployedEnvironment;
         this.sendEnSkdMelding = sendEnSkdMelding;

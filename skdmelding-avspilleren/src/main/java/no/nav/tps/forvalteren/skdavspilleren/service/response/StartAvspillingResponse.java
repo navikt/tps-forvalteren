@@ -8,16 +8,16 @@ import lombok.Getter;
 @Getter
 public class StartAvspillingResponse {
     
-    private int antallSendte=0;
-    private int antallFeilet=0;
+    private int antallSendte = 0;
+    private int antallFeilet = 0;
     private List<StatusPaaAvspiltSkdMelding> statusFraFeilendeMeldinger = new ArrayList();
     
     public void incrementAntallSendte() {
-        this.antallSendte ++;
+        this.antallSendte++;
     }
     
     public void incrementAntallFeilet() {
-        this.antallFeilet ++;
+        this.antallFeilet++;
     }
     
     public void addStatusFraFeilendeMeldinger(StatusPaaAvspiltSkdMelding statusFraFeilendeMeldinger) {

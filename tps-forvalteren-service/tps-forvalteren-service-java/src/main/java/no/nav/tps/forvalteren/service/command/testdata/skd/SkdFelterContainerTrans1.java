@@ -31,8 +31,9 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILD
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE;
 import org.springframework.stereotype.Component;
 
+@Deprecated//Ta ibruk SkdFeltDefinisjonerTrans1 istedet
 @Component
-public class SkdFelterContainerTrans1 implements SkdFelterContainer { //TODO Fjerne denne og ta ibruk SkdFeltDefinisjonerTrans1 overalt
+public class SkdFelterContainerTrans1 implements SkdFelterContainer {
 
     private static final String WHITESPACE_5_STK = "     ";
     private static final String WHITESPACE_10_STK = WHITESPACE_5_STK + WHITESPACE_5_STK;
