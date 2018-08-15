@@ -31,7 +31,16 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
+/**
+ * Komptesten utfører følgende fra REST-grensesnitt til mock-versjon av messageQueueConsumer:
+ * REST-tjenesten for "Lagre til TPS" blir kalt med gruppe og miljøer satt i request. Basert på testpersonene lagret på denne gruppen i databasen, blir innvandringsmelding osv. sendt til TPS.
+ * messageQueueConsumerMock er mocket ut.
+ * Komponenttesten tester at riktige meldinger blir sendt, og i riktig rekkefølge, når tjenesten blir kalt og personene ligger lagret på gruppen i databasen.
+ * <p>
+ * Merk: I flyway-skriptet er regdato DATE. Derfor blir klokkeslettet satt til 00:00:00
+ */
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
+    
     List<String> expectedSkdInnvandringCreateRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt",
@@ -49,7 +58,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private Gruppe testgruppe;
     
     @Autowired
-    private MessageQueueConsumer messageQueueConsumer;
+    private MessageQueueConsumer messageQueueConsumerMock;
     
     @Override
     protected String getServiceUrl() {
@@ -58,7 +67,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     @Before
     public void setup() throws JMSException {
-        reset(messageQueueConsumer);
+        reset(messageQueueConsumerMock);
         setupTestdataInTpsfDatabase();
         mockTps();
     }
@@ -70,20 +79,18 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .content("[\"" + String.join("\",\"", environments) + "\"]"))
                 .andExpect(status().isOk());
         
+        assertCalledEnvironments();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(messageQueueConsumer, times(expectedRequests.size())).sendMessage(captor.capture());
+        verify(messageQueueConsumerMock, times(expectedRequests.size())).sendMessage(captor.capture());
         List<String> actualRequests = captor.getAllValues().stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
         
         assertEquals(expectedRequests.toString(), actualRequests.toString());
-        assertCalledEnvironments();
-        
     }
     
     private void mockTps() throws JMSException {
         //mock findPersonsNotInEnvironments:
-        when(messageQueueConsumer.sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl))))
+        when(messageQueueConsumerMock.sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl))))
                 .thenReturn(getResourceFileContent("testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_response.xml"));
-        
     }
     
     private void setupTestdataInTpsfDatabase() {
@@ -96,7 +103,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
     
     private void opprettPersonerSomTriggerInnvandringsMelding() {
-        
         Adresse adressenTilPerson3 = Gateadresse.builder().husnummer("9354").gatekode("01415").adresse("KJØLVEGEN").build();
         adressenTilPerson3.setKommunenr("1112");
         adressenTilPerson3.setPostnr("1001");
@@ -104,7 +110,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person person3 = Person.builder().gruppe(testgruppe).ident("04121656499").identtype("FNR")
                 .fornavn("GLITRENDE").etternavn("NORDMANN").statsborgerskap("349")
                 .kjonn('M')
-                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10))
+                .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .boadresse(adressenTilPerson3).build();
         adressenTilPerson3.setPerson(person3);
         
@@ -116,7 +122,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").identtype("FNR")
                 .etternavn("Kake").fornavn("Snill")
                 .kjonn('M')
-                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10)) //FIXME testen feiler ved at time i regdato ikke settes i skdmeldingens streng-versjon. Dette gjelder for samtlige skdmeldinger
+                .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .build();
         personRepository.save(person5);
     }
@@ -129,7 +135,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person ektemann = Person.builder().gruppe(testgruppe).ident("10050552565").identtype("FNR")
                 .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap("000")
                 .kjonn('K')
-                .regdato(LocalDateTime.of(2018, 04, 05, 11, 30, 28))
+                .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .boadresse(adressenTilEktemann).build();
         adressenTilEktemann.setPerson(ektemann);
         final Person lagretEktemann = personRepository.save(ektemann);
@@ -141,7 +147,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person kone = Person.builder().gruppe(testgruppe).ident("12017500617").identtype("FNR")
                 .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap("000")
                 .kjonn('M')
-                .regdato(LocalDateTime.of(2018, 04, 05, 11, 30, 28))
+                .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .boadresse(adressenTilKone).build();
         adressenTilKone.setPerson(kone);
         final Person lagretKone = personRepository.save(kone);
@@ -155,7 +161,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .doedsdato(LocalDateTime.of(2018, 05, 15, 14, 10, 44))
                 .kjonn('M')
                 .fornavn("Døende").etternavn("Person")
-                .regdato(LocalDateTime.of(2018, 04, 26, 12, 11, 10))
+                .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .build();
         personRepository.save(doedPerson);
     }
