@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.unmarshaller;
+package no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.s051.unmarshaller;
 
 import java.io.StringReader;
 import javax.xml.bind.JAXBContext;

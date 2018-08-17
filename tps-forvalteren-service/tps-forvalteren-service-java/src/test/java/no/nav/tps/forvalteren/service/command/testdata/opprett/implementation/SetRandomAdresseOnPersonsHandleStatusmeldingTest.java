@@ -14,7 +14,7 @@ import org.junit.runners.Parameterized;
 
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.unmarshaller.TpsServiceRutineS051Unmarshaller;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.s051.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.s051.StatusFraTPS;
 import no.nav.tps.s051.SvarFraTPS;
 import no.nav.tps.s051.TpsAdresseData;

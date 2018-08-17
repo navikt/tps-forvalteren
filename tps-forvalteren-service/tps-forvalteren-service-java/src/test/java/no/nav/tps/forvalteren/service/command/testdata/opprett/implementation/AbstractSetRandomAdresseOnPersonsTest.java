@@ -19,7 +19,7 @@ import com.google.common.io.Resources;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.S051.unmarshaller.TpsServiceRutineS051Unmarshaller;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.s051.unmarshaller.TpsServiceRutineS051Unmarshaller;
 
 public abstract class AbstractSetRandomAdresseOnPersonsTest {
     
