@@ -14,7 +14,7 @@ spring:
     properties:
       hibernate:
         ddl-auto: none
-        default_schema: TEST
+        default_schema: TPSFORVALTEREN_U6
   messages:
     basename: messages/messages
   profiles:

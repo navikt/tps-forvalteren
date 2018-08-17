@@ -41,7 +41,7 @@ public class SkdAvspillerService {
         verifiserMiljo(startAvspillingRequest);
         List<SkdmeldingAvspillerdata> avspillerdataList = skdmeldingAvspillerdataRepository.findAllByAvspillergruppeIdOrderBySekvensnummerAsc(startAvspillingRequest.getGruppeId());
         if (avspillerdataList == null || avspillerdataList.isEmpty()) {
-            throw new AvspillerDataNotFoundException("Ingen avspillergruppe funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
+            throw new AvspillerDataNotFoundException("Ingen avspillerdata funnet med gruppeId=" + startAvspillingRequest.getGruppeId());
         }
         
         StartAvspillingResponse avspillingResponse = new StartAvspillingResponse();
