@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.servicerutiner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,10 +15,10 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceControllerIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
-public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrationTest{
+public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrationTest {
     
     private static final String serviceRutineNavn = "endre_sikkerhetstiltak";
-
+    
     @Override
     protected String getServiceName() {
         return serviceRutineNavn;
@@ -25,26 +26,27 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrat
     
     /**
      * HVIS alle påkrevde verdier i request resolveren er fylt inn (i queryParam) SÅ skal xml opprettes og legges på kø til TPS.
+     *
      * @throws Exception
      */
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldsendeServiceRutineMeldingTilTps() throws Exception {
-
+        
         setResponseQueueMessage(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_response.xml"));
-
+        
         addRequestParam("offentligIdent", "1234538826");
         addRequestParam("typeSikkerhetsTiltak", "USKK");
         addRequestParam("fom", "2014-10-29");
         addRequestParam("tom", "2014-10-30");
         addRequestParam("beskrSikkerhetsTiltak", "Usedvanlig sterk kvinne");
         addRequestParam("environment", "t9");
-
+        
         MvcResult result = mvc.perform(get(getUrl()))
                 .andExpect(status().isOk())
                 .andReturn();
-    
-        Mockito.verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")));
+        
+        verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")));
         
         TpsServiceRoutineResponse response = convertMvcResultToObject(result, TpsServiceRoutineResponse.class);
         String expectedResponse = removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_response.xml"));
@@ -64,14 +66,13 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrat
         addRequestParam("tom", "2014-10-30");
         addRequestParam("beskrSikkerhetsTiltak", "Usedvanlig sterk kvinne");
         addRequestParam("environment", "t9");
-    
+        
         MvcResult result = mvc.perform(get(getUrl()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
-    
+        
         assertEquals("Følgende påkrevde felter mangler:[typeSikkerhetsTiltak]", result.getResolvedException().getMessage());
         
-        Mockito.verify(messageQueueConsumer, Mockito.never()).sendMessage(any());
-    
+        verify(messageQueueConsumer, Mockito.never()).sendMessage(any());
     }
 }
