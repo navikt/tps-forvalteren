@@ -32,7 +32,8 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
-public class createNewPersonsFromKriterierCompTest extends AbstractTestdataControllerComponentTest {
+public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataControllerComponentTest {
+    
     final Set<String> identer = new HashSet<>();
     final HashSet<String> fasitRegistrerteEnvMedTps = new HashSet<>();
     private Long gruppeId;

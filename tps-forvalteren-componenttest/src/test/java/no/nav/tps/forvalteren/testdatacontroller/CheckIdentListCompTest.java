@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
 public class CheckIdentListCompTest extends AbstractTestdataControllerComponentTest {
+    
     final HashSet<String> fasitRegistrerteEnvMedTps = new HashSet<>();
     private Gruppe testgruppe;
     String gyldigIdentEksistererITpsf = "04121656499";
@@ -61,7 +62,6 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldReturnStatusOnAllIdents() throws Exception {
-        
         setupTestdataInTpsfDatabase();
         List<IdentMedStatus> expectedResponse = Arrays.asList(
                 new IdentMedStatus("12017500617", "IL"),
@@ -103,7 +103,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     
     public String setupTestdataInTpsfDatabase() {
         testgruppe = gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
-        Person person = personRepository.save(Person.builder()
+        Person personToSave = Person.builder()
                 .ident(gyldigIdentEksistererITpsf)
                 .identtype("FNR")
                 .gruppe(testgruppe)
@@ -113,7 +113,8 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .fornavn("lol")
                 .etternavn("sdf")
                 .statsborgerskap("nor")
-                .build());
+                .build();
+        Person person = personRepository.save(personToSave);
         return person.getIdent();
     }
 }
