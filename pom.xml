@@ -80,6 +80,7 @@
 		<spring-security-test.version>4.1.1.RELEASE</spring-security-test.version>
 		<spring-jms.version>4.3.2.RELEASE</spring-jms.version>
 		<flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
+		<h2.database.version>1.4.197</h2.database.version>
 
 		<!--Plugin versions-->
 		<aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>
@@ -405,7 +406,7 @@
 			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
-				<version>1.4.197</version>
+				<version>${h2.database.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- Flyway -->
