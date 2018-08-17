@@ -33,9 +33,8 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 public class CheckIdentListCompTest extends AbstractTestdataControllerComponentTest {
     
     final HashSet<String> fasitRegistrerteEnvMedTps = new HashSet<>();
-    private Gruppe testgruppe;
     String gyldigIdentEksistererITpsf = "04121656499";
-    
+    private Gruppe testgruppe;
     @Autowired
     private FetchEnvironmentsManager fetchEnvironmentsManagerSpy; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
     @Autowired

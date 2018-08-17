@@ -11,13 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
 public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTest {
     private final String expectedIdent1AfterUpdate = "04021850026";
     private final String expectedIdent2AfterUpdate = "22071758072";
     private final String expectedRelasjonTypeNavn = "EKTEFELLE";
+    
     @Override protected String getServiceUrl() {
         return "/updatepersoner";
     }

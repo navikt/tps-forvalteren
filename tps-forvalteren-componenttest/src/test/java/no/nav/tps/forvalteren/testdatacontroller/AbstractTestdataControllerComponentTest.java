@@ -40,13 +40,14 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     
     protected List<Person> constructTestpersonsInTpsfDatabase(Gruppe gruppe) {
         Person person = personRepository.save(Person.builder().gruppe(gruppe).identtype("per").kjonn('m').regdato(LocalDateTime.now()).fornavn("lol").etternavn("sdf").ident(IDENT1).statsborgerskap("nor").build());
-        Person person2 = personRepository.save(Person.builder().gruppe(gruppe).identtype("per").kjonn('k').regdato(LocalDateTime.now()).fornavn("fnavn").etternavn("etternavn2").ident(IDENT2).statsborgerskap("nor").build());
+        Person person2 = personRepository.save(
+                Person.builder().gruppe(gruppe).identtype("per").kjonn('k').regdato(LocalDateTime.now()).fornavn("fnavn").etternavn("etternavn2").ident(IDENT2).statsborgerskap("nor").build());
         return Arrays.asList(person, person2);
     }
     
     protected List<Person> setupTestdataPersonerInTpsfDatabase() {
         clearAllRepositories();
-        Gruppe gruppe= gruppeRepository.save(Gruppe.builder().navn(GRUPPENAVN).build());
+        Gruppe gruppe = gruppeRepository.save(Gruppe.builder().navn(GRUPPENAVN).build());
         List<Person> personList = constructTestpersonsInTpsfDatabase(gruppe);
         return personList;
     }

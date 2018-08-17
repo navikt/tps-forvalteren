@@ -23,7 +23,7 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
     
     @Override
     protected String getServiceUrl() {
-        return "/gruppe/"+ gruppeId;
+        return "/gruppe/" + gruppeId;
     }
     
     @Test
@@ -35,7 +35,7 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
         MvcResult result = mvc.perform(get(getUrl()))
                 .andExpect(status().isOk()).andReturn();
         final RsGruppe actualTestgruppe = convertMvcResultToObject(result, RsGruppe.class);
-    
+        
         TestTransaction.start(); //Start transaksjon pga. lazy fetch i kall fra databasen
         assertResponse(actualTestgruppe);
         TestTransaction.end();
@@ -51,22 +51,22 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
         assertEquals(expectedTestgruppe.getOpprettetAv(), actualTestgruppe.getOpprettetAv());
         assertEquals(expectedTestgruppe.getOpprettetDato(), actualTestgruppe.getOpprettetDato());
         assertEquals(expectedTestgruppe.getTags().get(0).getNavn(), actualTestgruppe.getTags().get(0).getNavn());
-        assertEquals(expectedTestgruppe.getPersoner().size(),actualTestgruppe.getPersoner().size());
+        assertEquals(expectedTestgruppe.getPersoner().size(), actualTestgruppe.getPersoner().size());
         for (int i = 0; i < expectedTestgruppe.getPersoner().size(); i++) {
             assertPersoner(expectedTestgruppe.getPersoner().get(i), actualTestgruppe.getPersoner().get(i));
         }
     }
     
     private void assertPersoner(Person person, RsPerson rsPerson) {
-        assertEquals(person.getIdent(),rsPerson.getIdent());
-        assertEquals(person.getFornavn(),rsPerson.getFornavn());
-        assertEquals(person.getEtternavn(),rsPerson.getEtternavn());
-        assertEquals(person.getStatsborgerskap(),rsPerson.getStatsborgerskap());
+        assertEquals(person.getIdent(), rsPerson.getIdent());
+        assertEquals(person.getFornavn(), rsPerson.getFornavn());
+        assertEquals(person.getEtternavn(), rsPerson.getEtternavn());
+        assertEquals(person.getStatsborgerskap(), rsPerson.getStatsborgerskap());
     }
     
     private void setupTestdataInTpsfDatabase() {
         clearAllRepositories();
-        List tags= new ArrayList<Tag>();
+        List tags = new ArrayList<Tag>();
         final Tag tag = new Tag();
         tag.setNavn("tagnavn");
         tags.add(tag);
@@ -74,7 +74,7 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
         final Gruppe gruppe = Gruppe.builder().navn(GRUPPENAVN).tags(tags).build();
         tag.setGrupper(Arrays.asList(gruppe));
         Gruppe lagretGruppe = gruppeRepository.save(gruppe);
-    
+        
         constructTestpersonsInTpsfDatabase(lagretGruppe);
         
         gruppeId = lagretGruppe.getId();

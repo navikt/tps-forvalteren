@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
-public class DeletePersonsCompTest extends  AbstractTestdataControllerComponentTest {
+public class DeletePersonsCompTest extends AbstractTestdataControllerComponentTest {
     
     @Override
     protected String getServiceUrl() {
@@ -23,15 +23,16 @@ public class DeletePersonsCompTest extends  AbstractTestdataControllerComponentT
      */
     @Test
     public void shouldDeletePersons() throws Exception {
-        List ids= setupTestdataPersonerInTpsfDatabase()
+        List ids = setupTestdataPersonerInTpsfDatabase()
                 .stream().map(Person::getId).collect(Collectors.toList());
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8).content("{\"ids\":"+ids.toString()+"}")).andExpect(status().isOk());
-    
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8).content("{\"ids\":" + ids.toString() + "}")).andExpect(status().isOk());
+        
         assertTrue(personRepository.findAllByOrderByIdAsc().isEmpty());
     }
     
     /**
      * HVIS id-ene ikke eksisterer i TPSF DB, SÅ skal ingenting skje når man prøver å slette dem via REST-tjenesten deletepersoner.
+     *
      * @throws Exception
      */
     @Test

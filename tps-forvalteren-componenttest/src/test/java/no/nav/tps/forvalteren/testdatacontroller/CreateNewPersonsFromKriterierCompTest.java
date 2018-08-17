@@ -87,7 +87,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     }
     
     private void setupTestdataInTpsfDatabase() {
-        testgruppe = gruppeRepository.save(Gruppe.builder().navn(GRUPPENAVN).build());
+        testgruppe = gruppeRepository.save(Gruppe.builder().navn("Create New Persons From Criteria Gr.navn").build());
         gruppeId = testgruppe.getId();
     }
     
