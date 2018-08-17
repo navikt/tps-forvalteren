@@ -15,6 +15,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -31,6 +32,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FoedselsmeldingSkdParameterStrategyTest {
+
+    @Mock
+    private SavePersonListService savePersonListService;
 
     @Mock
     private RelasjonRepository relasjonRepository;

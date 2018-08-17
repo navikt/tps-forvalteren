@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +15,13 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "endreGironrNorsk")
 public class TpsEndreNorskGironummerEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String giroNrNorsk;
     private String datogiroNrNorsk;
-
+    
+    @Builder
+    public TpsEndreNorskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrNorsk, String datogiroNrNorsk) {
+        super(serviceRutinenavn, offentligIdent);
+        this.giroNrNorsk = giroNrNorsk;
+        this.datogiroNrNorsk = datogiroNrNorsk;
+    }
 }

@@ -11,7 +11,5 @@ public interface AdresseRepository extends Repository<Adresse, Long> {
 
     Gateadresse getAdresseByPersonId(Long id);
 
-    void save(Adresse adresse);
-
     void deleteAll();
 }

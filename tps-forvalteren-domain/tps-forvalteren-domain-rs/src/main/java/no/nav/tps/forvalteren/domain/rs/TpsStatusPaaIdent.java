@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 @Getter
 @Setter
 @AllArgsConstructor

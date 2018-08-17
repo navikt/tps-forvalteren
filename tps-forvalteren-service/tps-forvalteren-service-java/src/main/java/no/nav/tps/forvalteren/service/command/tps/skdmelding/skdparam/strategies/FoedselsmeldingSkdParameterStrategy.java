@@ -123,6 +123,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
     private void addAdresseParamsExtractedFromForelder(SkdMeldingTrans1 skdMeldingTrans1, Person forelder, Person barn) {
         Gateadresse adresse = adresseRepository.getAdresseByPersonId(forelder.getId());
+        Gateadresse adresseBarn = adresseRepository.getAdresseByPersonId(barn.getId());
 
         if (adresse != null) {
 
@@ -132,7 +133,15 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             skdMeldingTrans1.setHusBruk(adresse.getHusnummer());
             skdMeldingTrans1.setGateGaard(adresse.getGatekode());
 
-            updateAdresse(adresse, barn);
+            adresseBarn.setPerson(barn);
+            adresseBarn.setGatekode(adresse.getGatekode());
+            adresseBarn.setHusnummer(adresse.getHusnummer());
+            adresseBarn.setAdresse(adresse.getAdresse());
+            adresseBarn.setKommunenr(adresse.getKommunenr());
+            adresseBarn.setPostnr(adresse.getPostnr());
+            adresseBarn.setFlyttedato(barn.getRegdato());
+
+            updateAdresse(adresseBarn, barn);
 
             skdMeldingTrans1.setAdressetype("O");
         } else {
@@ -149,17 +158,9 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
     }
 
     private void updateAdresse(Gateadresse adresse, Person barn) {
-        Gateadresse gateAdr = adresseRepository.getAdresseByPersonId(barn.getId());
 
-        gateAdr.setAdresse(adresse.getAdresse());
-        gateAdr.setHusnummer(adresse.getHusnummer());
-        gateAdr.setGatekode(adresse.getGatekode());
-        gateAdr.setFlyttedato(barn.getRegdato());
-        gateAdr.setPostnr(adresse.getPostnr());
-        gateAdr.setKommunenr(adresse.getKommunenr());
+        barn.setBoadresse(adresse);
 
-        barn.setBoadresse(gateAdr);
-
-        adresseRepository.save(gateAdr);
+        personRepository.save(barn);
     }
 }

@@ -31,6 +31,10 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TILD
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE;
 import org.springframework.stereotype.Component;
 
+/**
+ * @deprecated (Mai 2018, Refaktoreringsarbeid: Forbedret service-laget med en java-representasjon av skdmeldinger ved interface Skdmelding., Ta ibruk SkdFeltDefinisjonerTrans1 i stedet for denne klassen. )
+ */
+@Deprecated
 @Component
 public class SkdFelterContainerTrans1 implements SkdFelterContainer {
 
@@ -210,7 +214,7 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("sakstype", "   ", 141, 3, 1215, 1217));
         skdFelter.add(new SkdFeltDefinisjon("vedtaksdato", "        ", 142, 8, 1218, 1225));
         skdFelter.add(new SkdFeltDefinisjon("internVergeid", "0000000", 143, 7, 1226, 1232));
-        skdFelter.add(new SkdFeltDefinisjon("vergeFnrDnr", "00000000000", 144, 11, 1233, 1243));
+        skdFelter.add(new SkdFeltDefinisjon("vergeFnr", "00000000000", 144, 11, 1233, 1243));
         skdFelter.add(new SkdFeltDefinisjon("vergetype", "   ", 145, 3, 1244, 1246));
         skdFelter.add(new SkdFeltDefinisjon("mandattype", "   ", 146, 3, 1247, 1249));
         skdFelter.add(new SkdFeltDefinisjon("mandatTekst", WHITESPACE_100_STK, 147, 100, 1250, 1349));

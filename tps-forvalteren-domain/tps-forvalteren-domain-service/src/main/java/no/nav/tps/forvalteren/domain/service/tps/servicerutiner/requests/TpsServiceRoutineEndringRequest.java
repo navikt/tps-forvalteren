@@ -8,5 +8,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TpsServiceRoutineEndringRequest extends TpsServiceRoutineRequest {
-
+    private String offentligIdent;
+    
+    public TpsServiceRoutineEndringRequest(String serviceRutinenavn, String offentligIdent) {
+        super(serviceRutinenavn);
+        this.offentligIdent = offentligIdent;
+    }
 }

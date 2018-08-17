@@ -6,16 +6,12 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.RsPureXmlMessageResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,16 +28,9 @@ public class ServiceController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "service";
     private static final String TPS_SERVICE_ROUTINE_PARAM_NAME = "serviceRutinenavn";
-    private static final String ENVIRONMENT_PARAM_NAME = "environment";
 
     @Autowired
-    private UserContextHolder userContextHolder;
-
-    @Autowired
-    private RsTpsRequestMappingUtils mappingUtils;
-
-    @Autowired
-    private TpsRequestSender tpsRequestSender;
+    private GetTpsServiceRoutineResponse getTpsServiceRoutineResponse;
 
     @Autowired(required = false)
     private TpsXmlSender tpsXmlSender;
@@ -52,18 +41,9 @@ public class ServiceController extends BaseProvider {
     @RequestMapping(value = "/service/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getService(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
         loggSporing(serviceRutinenavn, tpsRequestParameters);
-
-        tpsRequestParameters.put(TPS_SERVICE_ROUTINE_PARAM_NAME, serviceRutinenavn);
-
         putFnrIntoRequestParameters(tpsRequestParameters);
 
-        TpsRequestContext context = new TpsRequestContext();
-        context.setUser(userContextHolder.getUser());
-        context.setEnvironment(tpsRequestParameters.get(ENVIRONMENT_PARAM_NAME).toString());
-
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(serviceRutinenavn, tpsRequestParameters);
-
-        return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+        return getTpsServiceRoutineResponse.execute(serviceRutinenavn, tpsRequestParameters);
     }
 
     @LogExceptions
