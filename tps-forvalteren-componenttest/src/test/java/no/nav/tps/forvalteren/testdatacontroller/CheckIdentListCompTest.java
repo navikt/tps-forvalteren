@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.jms.JMSException;
 import org.junit.Before;
@@ -32,11 +33,13 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
 public class CheckIdentListCompTest extends AbstractTestdataControllerComponentTest {
     
-    final HashSet<String> fasitRegistrerteEnvMedTps = new HashSet<>();
-    String gyldigIdentEksistererITpsf = "04121656499";
+    private static final String GYLDIG_IDENT_EKSISTERER_I_TPSF = "04121656499";
+    private Set<String> fasitRegistrerteEnvMedTps = new HashSet<>();
     private Gruppe testgruppe;
+    
     @Autowired
     private FetchEnvironmentsManager fetchEnvironmentsManagerSpy; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
+    
     @Autowired
     private MessageQueueConsumer messageQueueConsumer;
     
@@ -67,7 +70,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 new IdentMedStatus("32156489777", "IG"),
                 new IdentMedStatus("03051750127", "LOG"),
                 new IdentMedStatus("12345612345", "IG"),
-                new IdentMedStatus(gyldigIdentEksistererITpsf, "IL")
+                new IdentMedStatus(GYLDIG_IDENT_EKSISTERER_I_TPSF, "IL")
         );
         
         MvcResult mvcResult = mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -103,7 +106,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     public String setupTestdataInTpsfDatabase() {
         testgruppe = gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
         Person personToSave = Person.builder()
-                .ident(gyldigIdentEksistererITpsf)
+                .ident(GYLDIG_IDENT_EKSISTERER_I_TPSF)
                 .identtype("FNR")
                 .gruppe(testgruppe)
                 .identtype("per")

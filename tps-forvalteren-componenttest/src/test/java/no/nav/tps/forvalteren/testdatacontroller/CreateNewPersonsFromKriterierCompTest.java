@@ -34,8 +34,8 @@ import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataControllerComponentTest {
     
-    final Set<String> identer = new HashSet<>();
-    final HashSet<String> fasitRegistrerteEnvMedTps = new HashSet<>();
+    private static final Set<String> identer = new HashSet<>();
+    private static final Set<String> fasitRegistrerteEnvMedTps = new HashSet<>();
     private Long gruppeId;
     private Gruppe testgruppe;
     

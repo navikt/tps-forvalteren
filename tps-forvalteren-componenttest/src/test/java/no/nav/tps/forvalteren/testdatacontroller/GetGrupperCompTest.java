@@ -25,7 +25,7 @@ public class GetGrupperCompTest extends AbstractTestdataControllerComponentTest 
         
         MvcResult result = mvc.perform(get(getUrl()))
                 .andExpect(status().isOk()).andReturn();
-        final List<RsSimpleGruppe> actualGruppeliste = convertMvcResultToList(result, RsSimpleGruppe.class);
+        List<RsSimpleGruppe> actualGruppeliste = convertMvcResultToList(result, RsSimpleGruppe.class);
         
         for (int i = 0; i < testgrupper.size(); i++) {
             assertGruppe(testgrupper.get(i), actualGruppeliste.get(i));

@@ -18,8 +18,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 @Transactional
 public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends AbstractTestdataControllerComponentTest {
     
-    private final int IDENT1 = 03051750127;
-    private final int IDENT2 = 02304040404;
+    private static final int IDENT1 = 03051750127;
+    private static final int IDENT2 = 02304040404;
     private Long gruppeId;
     private Gruppe testgruppe;
     

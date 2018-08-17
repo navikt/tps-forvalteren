@@ -19,6 +19,7 @@ import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 
 public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
+    
     private Long gruppeId;
     
     @Override

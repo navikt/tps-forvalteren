@@ -25,6 +25,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 @Configuration
 public class ComptestConfig {
+    
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
     public static List<Pair<String, String >> actualConnectedToEnvironments = new ArrayList<>();

@@ -14,8 +14,9 @@ import no.nav.tps.forvalteren.config.TestUserDetails;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 
 public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTest {
-    private final String GRUPPENAVN = "unikt testgrnavn";
-    private final String BESKRIVELSE = "beskrivelse her, takk";
+    
+    private static final String GRUPPENAVN = "unikt testgrnavn";
+    private static final String BESKRIVELSE = "beskrivelse her, takk";
     
     @Override
     protected String getServiceUrl() {
