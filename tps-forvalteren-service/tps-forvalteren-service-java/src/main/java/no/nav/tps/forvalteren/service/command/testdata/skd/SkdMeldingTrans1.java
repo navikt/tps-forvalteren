@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 @AllArgsConstructor
 @Builder
 public class SkdMeldingTrans1 implements SkdMelding {
-	private static int meldingslengdeUtenHeader = 1500;
+	private static final int MELDINGSLENGDE_UTEN_HEADER = 1500;
 
 	private String header;
 	private String fodselsdato;
@@ -173,8 +173,8 @@ public class SkdMeldingTrans1 implements SkdMelding {
 	 */
 	public static SkdMeldingTrans1 unmarshal(String skdMeldingInStringFormat) { //constructFromString()
 		SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-		if (skdMeldingInStringFormat.length() > meldingslengdeUtenHeader) {
-			int headerlength = skdMeldingInStringFormat.length() - meldingslengdeUtenHeader;
+		if (skdMeldingInStringFormat.length() > MELDINGSLENGDE_UTEN_HEADER) {
+			int headerlength = skdMeldingInStringFormat.length() - MELDINGSLENGDE_UTEN_HEADER;
 			skdMeldingTrans1.setHeader(skdMeldingInStringFormat.substring(0, headerlength));
 			skdMeldingInStringFormat = skdMeldingInStringFormat.substring(headerlength);
 		}

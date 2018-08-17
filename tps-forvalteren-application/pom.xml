@@ -123,6 +123,7 @@
                         <configuration>
                             <mainClass>no.nav.tps.forvalteren.ApplicationStarter</mainClass>
                             <finalName>tps-forvalteren</finalName>
+                            <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>

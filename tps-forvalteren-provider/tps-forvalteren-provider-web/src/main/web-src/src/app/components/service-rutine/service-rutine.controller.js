@@ -168,6 +168,11 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
 
             function showAlertTPSError(error) {
                 var errorMessages = {
+                    400: {
+                        title: 'Bad Request',
+                        text: 'Feil i meldingen: '+error.data.message,
+                        ariaLabel: 'Feil i meldingen: '+error.data.message
+                    },
                     401: {
                         title: 'Ikke autorisert',
                         text: 'Din bruker har ikke tillatelse til denne spørringen.',
@@ -180,7 +185,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     }
                 };
 
-                var errorObj = error.status === 401 ? errorMessages[401] : errorMessages[500];
+                var errorObj = errorMessages[error.status];
                 $mdDialog.show(
                     $mdDialog.alert()
                         .title(errorObj.title)

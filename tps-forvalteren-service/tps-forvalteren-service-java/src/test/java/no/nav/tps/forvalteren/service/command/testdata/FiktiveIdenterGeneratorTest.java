@@ -6,12 +6,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.format.datetime.DateFormatter;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,7 +40,7 @@ public class FiktiveIdenterGeneratorTest {
     }
 
     @Test
-    public void personerFodtIPerioden1854til1899skalHaNummerIIntervall500til749() {
+    public void personerFodtIPerioden1854til1899skalHaNummerIIntervall500til749OgDatoInnenforRiktigIntervall() {
         testpersonKriterie.setIdenttype(FNR);
         testpersonKriterie.setKjonn('M');
         LocalDate date = LocalDate.of(1854, Month.MAY, 15);
@@ -47,6 +51,8 @@ public class FiktiveIdenterGeneratorTest {
         for (String fnr : fnrList) {
             int individNummer = Integer.parseInt(fnr.substring(6, 9));
             assertTrue(individNummer >= 500 && individNummer <= 749);
+            assertThat(fnr.substring(0,6),is(lessThan(date.format(DateTimeFormatter.ofPattern("uuMMdd")))));
+            assertThat(fnr.substring(0,6),is(greaterThan(dateFoer.format(DateTimeFormatter.ofPattern("uuMMdd")))));
         }
     }
 

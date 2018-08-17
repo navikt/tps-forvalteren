@@ -26,14 +26,14 @@ public class GetTpsServiceRoutineResponse {
     @Autowired
     private TpsRequestSender tpsRequestSender;
 
-    public TpsServiceRoutineResponse execute(String serviceRoutinenavn, Map<String, Object> tpsRequestParameters){
+    public TpsServiceRoutineResponse execute(String serviceRoutinenavn, Map<String, Object> tpsRequestParameters, boolean validateRequestParameters){
         tpsRequestParameters.put(TPS_SERVICE_ROUTINE_PARAM_NAME, serviceRoutinenavn);
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
         context.setEnvironment(tpsRequestParameters.get(ENVIRONMENT_PARAM_NAME).toString());
 
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(serviceRoutinenavn, tpsRequestParameters);
+        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(serviceRoutinenavn, tpsRequestParameters, validateRequestParameters);
 
         return tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
     }
