@@ -11,13 +11,15 @@ import no.nav.tps.s051.TpsAdresseData;
 
 @Component
 public class TpsServiceRutineS051Unmarshaller {
+    
     Unmarshaller unmarshaller;
+    
     public TpsServiceRutineS051Unmarshaller() {
         try {
             JAXBContext context = JAXBContext.newInstance(TpsAdresseData.class);
             this.unmarshaller = context.createUnmarshaller();
         } catch (JAXBException e) {
-            throw new TpsfTechnicalException("Feil oppstod under konstruksjon av unmarshaller for TpsAdresseData",e);
+            throw new TpsfTechnicalException("Feil oppstod under konstruksjon av unmarshaller for TpsAdresseData", e);
         }
     }
     

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<tpsAdresseData xmlns="http://www.rtv.no/NamespaceTPS">
+	<tpsServiceRutine>
+		<serviceRutinenavn>FS03-ADRSNAVN-ADRSDATA-O</serviceRutinenavn>
+		<aksjonsDato/>
+		<aksjonsKode>A</aksjonsKode>
+		<aksjonsKode2>0</aksjonsKode2>
+		<adresseNavnsok/>
+		<typesok>T</typesok>
+		<husNrsok/>
+		<kommuneNrsok/>
+		<postNrsok/>
+		<maxRetur>2</maxRetur>
+		<alltidRetur>J</alltidRetur>
+		<alleSkrivevarianter>J</alleSkrivevarianter>
+		<visPostnr>J</visPostnr>
+		<sortering/>
+	</tpsServiceRutine>
+</tpsAdresseData>

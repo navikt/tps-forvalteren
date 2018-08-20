@@ -1,10 +1,14 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
 import static java.lang.Integer.parseInt;
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -79,7 +83,9 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                 .andExpect(status().isOk());
         
         verify(messageQueueConsumer, times(fasitRegistrerteEnvMedTps.size())).sendMessage(
-                removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")));
+                removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
+        verify(messageQueueConsumer).sendMessage(eq(
+                removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());
         
         TestTransaction.start(); //Start transaksjon pga. lazy fetch i kall fra databasen
         assertCreatedTestdataInDatabase();
@@ -92,9 +98,10 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     }
     
     private void mockTps() throws JMSException {
-        
-        when(messageQueueConsumer.sendMessage(any()))
+        when(messageQueueConsumer.sendMessage(eq(removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml"))),anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_response.xml"));
+        when(messageQueueConsumer.sendMessage(eq(removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))),anyLong()))
+                .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_response.xml"));
     }
     
     private void assertCreatedTestdataInDatabase() {
@@ -106,6 +113,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
             assertEquals(((Character) 'K'), person.getKjonn());
             assertTrue(identer.contains(person.getIdent()));
             assertNotNull(person.getBoadresse());
+            assertEquals("0901", person.getBoadresse().getKommunenr());
         });
     }
     
