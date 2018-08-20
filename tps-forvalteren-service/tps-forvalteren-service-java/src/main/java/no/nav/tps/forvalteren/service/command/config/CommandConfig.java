@@ -166,7 +166,7 @@ public class CommandConfig {
     }
 
     @Bean
-    SkdMeldingResolver innvandring() {
+    public SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
     }
 

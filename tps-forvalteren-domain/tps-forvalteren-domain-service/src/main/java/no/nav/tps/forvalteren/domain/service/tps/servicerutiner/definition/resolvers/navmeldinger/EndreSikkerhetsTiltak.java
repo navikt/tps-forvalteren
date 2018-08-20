@@ -45,7 +45,7 @@ public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
 
                 .parameter()
                 .name("tom")
-                .required()
+                .optional()
                 .type(TpsParameterType.DATE)
                 .and()
 
@@ -57,7 +57,6 @@ public class EndreSikkerhetsTiltak implements ServiceRoutineResolver {
 
                 .transformer()
                 .preSend(EndringsmeldingRequestTransform.endringsmeldingXmlWrappingAppender())
-                //.postSend(ResponseDataTransformer.extractDataFromXmlElement(""))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 

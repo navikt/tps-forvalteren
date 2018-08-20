@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<sfePersonData>
+	<sfeAjourforing>
+		<systemInfo>
+			<kilde>TPSF</kilde>
+			<brukerID>test_username</brukerID>
+		</systemInfo>
+		<opprettSikkerhetsTiltak>
+			<serviceRutinenavn>endre_sikkerhetstiltak</serviceRutinenavn>
+			<offentligIdent>1234538826</offentligIdent>
+			<typeSikkerhetsTiltak>USKK</typeSikkerhetsTiltak>
+			<fom>2014-10-29</fom>
+			<tom>2014-10-30</tom>
+			<beskrSikkerhetsTiltak>Usedvanlig+sterk+kvinne</beskrSikkerhetsTiltak>
+		</opprettSikkerhetsTiltak>
+	</sfeAjourforing>
+</sfePersonData>

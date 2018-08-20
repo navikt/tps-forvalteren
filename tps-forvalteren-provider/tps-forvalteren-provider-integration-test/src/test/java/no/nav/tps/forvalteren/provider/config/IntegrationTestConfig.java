@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableAutoConfiguration
 @EntityScan("no.nav.tps.forvalteren.domain")
-@EnableJpaRepositories("no.nav.tps.forvalteren.provider")
+@EnableJpaRepositories("no.nav.tps.forvalteren.repository.jpa")
 @Import({
         ServiceConfig.class,
         CommonConfig.class,
