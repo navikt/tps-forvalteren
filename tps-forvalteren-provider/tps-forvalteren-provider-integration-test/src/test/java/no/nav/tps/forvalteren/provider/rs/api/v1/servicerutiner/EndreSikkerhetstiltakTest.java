@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.servicerutiner;
 
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -46,7 +47,7 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrat
                 .andExpect(status().isOk())
                 .andReturn();
         
-        verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")));
+        verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")), DEFAULT_TIMEOUT);
         
         TpsServiceRoutineResponse response = convertMvcResultToObject(result, TpsServiceRoutineResponse.class);
         String expectedResponse = removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_response.xml"));
