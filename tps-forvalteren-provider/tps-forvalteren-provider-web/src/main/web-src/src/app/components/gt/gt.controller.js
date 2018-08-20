@@ -19,7 +19,6 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                 var adressePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-ADRHISTO-O", params);
 
                 $scope.formData.aksjonsKode = "A0";
-                $scope.formData.adresseType = "ALLE";
                 $scope.formData.adresseTypeS015 = "ALLE";
                 params = utilsService.createParametersFromFormData($scope.formData);
                 var adresseLinjePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-ADLIHIST-O", params);
