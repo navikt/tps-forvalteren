@@ -8,11 +8,11 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.UtvandringSkdParametere;
 
 public class UtvandringAarsakskode32 implements SkdMeldingResolver{
-
+    public static final String UTVANDRING_MLD_NAVN = "Utvandring";
     @Override
     public TpsSkdRequestMeldingDefinition resolve(){
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name("Utvandring")
+                .name(UTVANDRING_MLD_NAVN)
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
