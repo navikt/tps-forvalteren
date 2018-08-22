@@ -87,12 +87,10 @@
             <scope>test</scope>
         </dependency>
         <!-- Tjenestegrensesnitt som konsumeres -->
-		<dependency>
-			<groupId>no.nav.serviceRoutine.tjenestegrensesnitt</groupId>
-			<artifactId>TPS-S051</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<classifier>jaxws</classifier>
-		</dependency>
+        <dependency>
+            <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+            <artifactId>nav-repository-fellesregister-jaxb2-tps-s051-domain</artifactId>
+        </dependency>
     </dependencies>
     
 </project>

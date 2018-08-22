@@ -7,7 +7,7 @@ import javax.xml.bind.Unmarshaller;
 import org.springframework.stereotype.Component;
 
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
-import no.nav.tps.s051.TpsAdresseData;
+import no.nav.tps.xjc.ctg.domain.s051.TpsAdresseData;
 
 @Component
 public class TpsServiceRutineS051Unmarshaller {
