@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 public class TpsRequestParameterCreator {
     
     public static Map<String, Object> opprettParametereForM201TpsRequest(Collection<String> identer, String aksjonskode) {

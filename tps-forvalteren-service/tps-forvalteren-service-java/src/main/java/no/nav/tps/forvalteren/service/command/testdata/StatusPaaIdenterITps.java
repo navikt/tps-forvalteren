@@ -25,7 +25,6 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 /**
  * Denne tjenesten returnerer hvilke miljøer som de ulike fødselsnumrene eksisterer i.
  *
- * @author Jarl Øystein Samseth, Visma Consulting
  */
 @Service
 public class StatusPaaIdenterITps {

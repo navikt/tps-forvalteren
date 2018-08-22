@@ -5,20 +5,23 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TpsStatusPaaIdent {
+    
     private String ident;
     private List<String> env;
     
-    public TpsStatusPaaIdent() {
-        env = new ArrayList<>();
+    public void add(String environment) {
+        getEnv().add(environment);
     }
     
-    public void add(String environment) {
-        env.add(environment);
+    public List<String> getEnv() {
+        return env== null ? new ArrayList<>() : env;
     }
 }

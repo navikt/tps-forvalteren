@@ -6,9 +6,6 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 @Getter
 @AllArgsConstructor
 public class RsTpsStatusPaaIdenterResponse {

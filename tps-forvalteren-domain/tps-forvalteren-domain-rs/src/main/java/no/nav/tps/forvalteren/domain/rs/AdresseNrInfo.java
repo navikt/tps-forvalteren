@@ -12,8 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdresseNrInfo {
+    
     @NotNull
     private AdresseNr nummertype;
+    
     @NotNull
     private String nummer;
     

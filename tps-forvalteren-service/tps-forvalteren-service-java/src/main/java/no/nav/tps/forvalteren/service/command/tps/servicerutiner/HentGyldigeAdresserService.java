@@ -48,7 +48,7 @@ public class HentGyldigeAdresserService {
     }
     
     private TpsServiceRoutineResponse sendTpsRequest(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
-        TpsServiceRoutineResponse tpsServiceRoutineResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext(),40000);
+        TpsServiceRoutineResponse tpsServiceRoutineResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext(),40_000);
         if (tpsServiceRoutineResponse.getXml().isEmpty()) {
             throw new TpsTimeoutException("Time out: Responsmeldingen fra TPS S051 var tom. Søket i TPS tok for lang tid.");
         }
