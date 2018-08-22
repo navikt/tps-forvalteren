@@ -23,15 +23,20 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HentGyldigeAdresserServiceTest {
-    private final String KOMMUNE_NR = "knret";
-    private final int ANTALL = 4;
-    private final String POST_NR = "0123";
-    ArgumentCaptor<TpsFinnGyldigeAdresserRequest> captor = ArgumentCaptor.forClass(TpsFinnGyldigeAdresserRequest.class);
+    
+    private static final String KOMMUNE_NR = "knret";
+    private static final int ANTALL = 4;
+    private static final String POST_NR = "0123";
+    
+    private ArgumentCaptor<TpsFinnGyldigeAdresserRequest> captor = ArgumentCaptor.forClass(TpsFinnGyldigeAdresserRequest.class);
     private User user;
+    
     @Mock
     private UserContextHolder userContextHolder;
+    
     @Mock
     private TpsRequestSender tpsRequestSender;
+    
     @InjectMocks
     private HentGyldigeAdresserService hentGyldigeAdresserService;
     
@@ -50,7 +55,7 @@ public class HentGyldigeAdresserServiceTest {
     public void shouldHentTilfeldigAdresse() {
         hentGyldigeAdresserService.hentTilfeldigAdresse(ANTALL, KOMMUNE_NR, POST_NR);
         
-        Mockito.verify(tpsRequestSender).sendTpsRequest(captor.capture(), any(),anyLong());
+        Mockito.verify(tpsRequestSender).sendTpsRequest(captor.capture(), any(), anyLong());
         TpsFinnGyldigeAdresserRequest actualRequest = captor.getValue();
         
         assertEquals(new Integer(ANTALL), actualRequest.getMaxRetur());

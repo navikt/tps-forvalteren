@@ -23,25 +23,23 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.s051.u
 
 public abstract class AbstractSetRandomAdresseOnPersonsTest {
     
-    static final String GATEADRESSE = "HAUGASKARSVEGEN";
-    static final Integer HUSNR_MIN = 0001;
-    static final Integer HUSNR_MAX = 9999;
-    static final String POSTNR = "6683";
-    static final String GATEKODE = "01037";
-    static final String KOMMUNENR = "1571";
+    protected static final String GATEADRESSE = "HAUGASKARSVEGEN";
+    protected static final Integer HUSNR_MIN = 0001;
+    protected static final Integer HUSNR_MAX = 9999;
+    protected static final String POSTNR = "6683";
+    protected static final String GATEKODE = "01037";
+    protected static final String KOMMUNENR = "1571";
+    
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     
     TpsServiceRutineS051Unmarshaller unmarshaller = new TpsServiceRutineS051Unmarshaller();
     URL tpsResponsUrl = Resources.getResource("serviceRutine/response/tilfeldigGyldigAdresse_statusFlereAdresserFinnes.xml");
     List<Person> enPerson;
     List<Person> toPersoner;
     TpsServiceRoutineResponse tpsServiceRoutineResponse;
-    
     HentGyldigeAdresserService hentGyldigeAdresserServiceMock = mock(HentGyldigeAdresserService.class);
-    
     SetRandomAdresseOnPersons setRandomAdresseOnPersons = new SetRandomAdresseOnPersons(unmarshaller, hentGyldigeAdresserServiceMock);
-    
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
     
     TpsServiceRoutineResponse createServiceRutineTpsResponse(URL tpsResponsUrl) throws IOException {
         TpsServiceRoutineResponse tpsServiceRoutineResponse = new TpsServiceRoutineResponse();
@@ -52,7 +50,7 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
     @Before
     public void setup() throws IOException {
         enPerson = Arrays.asList(aMalePerson().build());
-        toPersoner = Arrays.asList(aMalePerson().build(),aMalePerson().build());
+        toPersoner = Arrays.asList(aMalePerson().build(), aMalePerson().build());
         tpsServiceRoutineResponse = createServiceRutineTpsResponse(tpsResponsUrl);
         when(hentGyldigeAdresserServiceMock.hentTilfeldigAdresse(eq(1), any(), any())).thenReturn(tpsServiceRoutineResponse);
     }
