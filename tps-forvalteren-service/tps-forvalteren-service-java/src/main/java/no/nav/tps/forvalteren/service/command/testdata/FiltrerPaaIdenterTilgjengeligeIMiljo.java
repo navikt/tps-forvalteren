@@ -13,15 +13,18 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
+@Slf4j
 @Service
 public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     
@@ -92,9 +95,7 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
                     .get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
             
-            if (kunneIkkeLeggeMeldingPaaKoe(tpsResponse)) {
-                continue;       //TODO Gjoer hva hvis man ikke faar lagt paa koe??? Bare hopper over for naa.
-            }
+            checkForTpsSystemfeil(tpsResponse);
             
             Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterFraResponse(tpsResponse);
             
@@ -102,14 +103,13 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
         }
     }
     
-    private boolean kunneIkkeLeggeMeldingPaaKoe(TpsServiceRoutineResponse response) {
-        if (response.getXml().isEmpty()) {
-            return true;
-        }
+    private void checkForTpsSystemfeil(TpsServiceRoutineResponse response) {
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
         
-        return TPS_SYSTEM_ERROR_CODE.equals(status.getKode());
+        if (TPS_SYSTEM_ERROR_CODE.equals(status.getKode())) {
+            log.error("TPS returnerte SYSTEM ERROR");
+            throw new TpsfTechnicalException("TPS returnerte SYSTEM ERROR");
+        }
     }
-    
 }
