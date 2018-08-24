@@ -509,7 +509,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
                 person.gateadresse.gatekode = ""+selectedGyldigAdresse.gkode;
                 if(typeof selectedGyldigAdresse.pnr !=='undefined'){
-                    person.gateadresse.postnummer = selectedGyldigAdresse.pnr;
+                    person.gateadresse.postnr = selectedGyldigAdresse.pnr;
                 }
                 person.gateadresse.kommunenr= selectedGyldigAdresse.knr;
             };
