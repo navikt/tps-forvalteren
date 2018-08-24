@@ -71,7 +71,7 @@
         </md-select>
     </md-input-container>
     <md-input-container class="tps-vk-input-container">
-        <md-tooltip>Søk etter gyldige adresser</md-tooltip>
+        <md-tooltip>Søk etter gyldige adresser. Gatenavn må være minst 3 tegn og kommunenummeret må være satt.</md-tooltip>
         <md-button class="md-raised md-accent" ng-disabled="person.gateadresse.gateadresse.length<3 && person.gateadresse.kommunenr.length<4"
                    aria-label="Finn gyldig adresse" ng-click="hentgyldigeAdresser(person)">Finn gyldig adresse
         </md-button>
