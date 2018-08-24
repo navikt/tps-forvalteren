@@ -12,3 +12,4 @@ require('./endringsmelding.service');
 require('./toggleservice.service');
 require('./doedsmelding.service');
 require('./xml-melding.service');
+require('./gt.service');

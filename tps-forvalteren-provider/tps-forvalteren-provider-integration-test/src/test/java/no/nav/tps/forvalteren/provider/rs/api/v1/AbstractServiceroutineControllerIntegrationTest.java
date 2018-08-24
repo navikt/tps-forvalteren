@@ -21,7 +21,7 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 
-public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
+public abstract class AbstractServiceroutineControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
     @Autowired
     protected RequestQueueListener requestQueueListener;
 

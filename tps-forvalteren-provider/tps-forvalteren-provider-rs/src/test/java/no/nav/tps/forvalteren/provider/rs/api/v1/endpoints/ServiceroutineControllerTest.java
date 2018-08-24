@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.FindServiceRoutineByName;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
@@ -24,7 +24,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceControllerTest {
+public class ServiceroutineControllerTest {
     private static final String FNR = "12345678910";
     private static final String SERVICE_RUTINE_NAME = "serviceRutineName";
     private static final String ENVIRONMENT_U = "u1";
@@ -45,7 +45,7 @@ public class ServiceControllerTest {
     private TpsServiceRoutineRequest serviceRoutineRequestMock;
 
     @Mock
-    private GetTpsServiceRoutineResponse getTpsServiceRoutineResponse;
+    private TpsServiceRoutineService getTpsServiceRoutineResponse;
 
     @Mock
     private RsTpsRequestMappingUtils mappingUtilsMock;
@@ -54,7 +54,7 @@ public class ServiceControllerTest {
     private TpsRequestSender tpsRequestSenderMock;
 
     @InjectMocks
-    private ServiceController controller;
+    private ServiceroutineController controller;
 
     @Before
     @SuppressWarnings("unchecked")
