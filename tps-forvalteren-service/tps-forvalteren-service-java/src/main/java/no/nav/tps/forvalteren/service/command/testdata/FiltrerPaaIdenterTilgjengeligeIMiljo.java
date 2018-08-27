@@ -104,6 +104,9 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     }
     
     private void checkForTpsSystemfeil(TpsServiceRoutineResponse response) {
+        if (response.getXml().isEmpty()) {
+            throw new TpsfTechnicalException("TPS returnerte tom streng");
+        }
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
         
