@@ -17,11 +17,14 @@ public class TpsStatusPaaIdent {
     private String ident;
     private List<String> env;
     
-    public void add(String environment) {
+    public void addEnv(String environment) {
         getEnv().add(environment);
     }
     
     public List<String> getEnv() {
-        return env== null ? new ArrayList<>() : env;
+        if (env == null) {
+            env=new ArrayList<>();
+        }
+        return  env;
     }
 }

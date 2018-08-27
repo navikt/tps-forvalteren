@@ -65,12 +65,11 @@ public class StatusPaaIdenterITpsTest {
 	
 	@Before
 	public void setup() {
-		stubTestedServiceDependencies();
-		stubTpsRequestSender();
-		
+		mockTestedServiceDependencies();
+		mockTpsRequestSender();
 	}
 	
-	private void stubTpsRequestSender() {
+	private void mockTpsRequestSender() {
 		
 		when(tpsRequestSender.sendTpsRequest(any(), any())).thenAnswer(invocation -> createResponseFromTPS(invocation.getArgumentAt(1, TpsRequestContext.class)));
 	}
@@ -112,7 +111,7 @@ public class StatusPaaIdenterITpsTest {
 		return response1;
 	}
 	
-	private void stubTestedServiceDependencies() {
+	private void mockTestedServiceDependencies() {
 		when(getEnvironments.getEnvironmentsFromFasit(any())).thenReturn(ALLE_MILJOER);
 		when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(ALLE_MILJOER);
 		when(userContextHolder.getUser()).thenReturn(user);
@@ -131,7 +130,6 @@ public class StatusPaaIdenterITpsTest {
 	 */
 	@Test
 	public void shouldHentStatusPaaIdenterIAlleMiljoer() {
-		
 		RsTpsStatusPaaIdenterResponse actualStatus = statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(IDENTER);
 		assertEquals(IDENTER.size(), actualStatus.getStatusPaaIdenter().size());
 		EXPECTED_TPS_STATUS.forEach(expectedStatusPaaIdent -> {

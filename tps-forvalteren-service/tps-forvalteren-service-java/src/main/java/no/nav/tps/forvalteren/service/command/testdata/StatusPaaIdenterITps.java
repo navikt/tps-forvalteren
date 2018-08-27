@@ -70,8 +70,8 @@ public class StatusPaaIdenterITps {
     private List<String> finnIdenteneIMiljoet(String env, Map<String, Object> tpsRequestParameters) {
         TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
                 .get("serviceRutinenavn")), tpsRequestParameters);
-        TpsServiceRoutineResponse tpsResponse = tpsRequestSender
-                .sendTpsRequest(tpsServiceRoutineRequest, new TpsRequestContext(userContextHolder.getUser(), env));
+        TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest,
+                new TpsRequestContext(userContextHolder.getUser(), env));
         List<String> identeneSomEksistererIMiljoet = new ArrayList<>(trekkUtIdenterFraResponse(tpsResponse));
         return identeneSomEksistererIMiljoet;
     }

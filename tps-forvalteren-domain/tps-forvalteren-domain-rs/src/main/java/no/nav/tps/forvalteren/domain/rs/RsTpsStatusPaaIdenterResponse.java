@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RsTpsStatusPaaIdenterResponse {
-    List<TpsStatusPaaIdent> statusPaaIdenter;
+    private List<TpsStatusPaaIdent> statusPaaIdenter;
     
     public void addEnvToTheseIdents(String env, List<String> idents) {
         List<TpsStatusPaaIdent> tpsStatusPaaIdentList = findTpsStatusPaaIdentObject(idents);
-        tpsStatusPaaIdentList.forEach(tpsStatusPaaIdent -> tpsStatusPaaIdent.add(env));
+        tpsStatusPaaIdentList.forEach(tpsStatusPaaIdent -> tpsStatusPaaIdent.addEnv(env));
     }
     
     public List<TpsStatusPaaIdent> findTpsStatusPaaIdentObject(List<String> identer) {
