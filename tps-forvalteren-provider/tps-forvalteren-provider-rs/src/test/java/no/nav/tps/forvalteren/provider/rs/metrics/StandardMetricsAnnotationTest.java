@@ -1,28 +1,30 @@
 package no.nav.tps.forvalteren.provider.rs.metrics;
 
-import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.ServiceController;
-import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
-import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.EnvironmentController;
-import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.ServiceRoutineController;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
+import no.nav.freg.metrics.annotations.Metrics;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.EnvironmentController;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.GeografiskTilhoerighetController;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.ServiceroutineController;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.TpsServicesController;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StandardMetricsAnnotationTest {
 
     private static final Class<?>[] PROVIDERS = new Class[] {
             EnvironmentController.class,
-            ServiceController.class,
+            ServiceroutineController.class,
             UserController.class,
-            ServiceRoutineController.class
+            TpsServicesController.class,
+            GeografiskTilhoerighetController.class
     };
 
     @Test
