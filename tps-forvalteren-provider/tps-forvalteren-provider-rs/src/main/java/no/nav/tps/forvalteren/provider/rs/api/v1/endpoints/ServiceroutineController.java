@@ -40,7 +40,7 @@ public class ServiceroutineController extends BaseProvider {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService") })
     @RequestMapping(value = "/" + REST_SERVICE_NAME + "/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
-    public TpsServiceRoutineResponse getService(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
+    public TpsServiceRoutineResponse executeServiceRoutine(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
         loggSporing(serviceRutinenavn, tpsRequestParameters);
         putFnrIntoRequestParameters(tpsRequestParameters);
 
