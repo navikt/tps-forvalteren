@@ -12,20 +12,20 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding
 
 @Service
 public class SendSkdMeldingTilGitteMiljoer {
-	
-	@Autowired
-	private SendEnSkdMelding sendEnSkdMelding;
-	
-	@Autowired
-	private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
-	
-	public Map<String, String> execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments) {
-		Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
-		Map<String, String> responseSkdMeldinger = new HashMap<>();
-		for (String env : envToCheck) {
-			String responsMelding = sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env);
-			responseSkdMeldinger.put(env, responsMelding);
-		}
-		return responseSkdMeldinger;
-	}
+    
+    @Autowired
+    private SendEnSkdMelding sendEnSkdMelding;
+    
+    @Autowired
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+    
+    public Map<String, String> execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments) {
+        Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
+        Map<String, String> responseSkdMeldinger = new HashMap<>();
+        for (String env : envToCheck) {
+            String responsMelding = sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env);
+            responseSkdMeldinger.put(env, responsMelding);
+        }
+        return responseSkdMeldinger;
+    }
 }
