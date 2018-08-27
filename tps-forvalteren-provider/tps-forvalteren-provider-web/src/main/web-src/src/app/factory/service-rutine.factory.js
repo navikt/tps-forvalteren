@@ -3,8 +3,8 @@ angular.module('tps-forvalteren.factory')
 
         var serviceRutineFactory = {};
 
-        var urlBase = 'api/v1/service';
-        var urlRoutinesBase = 'api/v1/serviceroutine';
+        var urlBase = 'api/v1/serviceroutine';
+        var urlRoutinesBase = 'api/v1/tpsservices';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
         var urlGetEnvironments = 'api/v1/environments';
         var urlConfig = 'assets/config/';

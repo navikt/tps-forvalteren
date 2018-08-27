@@ -1,34 +1,32 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
-import com.google.common.base.Charsets;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
-import no.nav.tps.forvalteren.provider.rs.api.v1.config.RequestQueueListener;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.reset;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.jms.JMSException;
 import org.apache.activemq.ActiveMQSession;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.google.common.base.Charsets;
 
-import javax.jms.JMSException;
-import java.util.ArrayList;
-import java.util.List;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.config.RequestQueueListener;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.reset;
-
-public abstract class AbstractServiceControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
+public abstract class AbstractServiceroutineControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
     @Autowired
     protected RequestQueueListener requestQueueListener;
 
     @Autowired
     protected MessageQueueConsumer messageQueueConsumer;
 
-    private static final String BASE_URL = "/api/v1/service/";
+    private static final String BASE_URL = "/api/v1/serviceroutine/";
 
     private List<NameValuePair> params = new ArrayList<>();
 

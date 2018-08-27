@@ -13,10 +13,10 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceControllerIntegrationTest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceroutineControllerIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
-public class EndreSikkerhetstiltakTest extends AbstractServiceControllerIntegrationTest {
+public class EndreSikkerhetstiltakTest extends AbstractServiceroutineControllerIntegrationTest {
     
     private static final String serviceRutineNavn = "endre_sikkerhetstiltak";
     

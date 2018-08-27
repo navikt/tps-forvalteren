@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GetTpsServiceRoutineResponse {
+public class TpsServiceRoutineService {
 
     private static final String TPS_SERVICE_ROUTINE_PARAM_NAME = "serviceRutinenavn";
     private static final String ENVIRONMENT_PARAM_NAME = "environment";
