@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RsTpsStatusPaaIdenterResponse {
+    
     private List<TpsStatusPaaIdent> statusPaaIdenter;
     
     public void addEnvToTheseIdents(String env, List<String> idents) {

@@ -48,7 +48,7 @@ public class SetRandomAdresseOnPersons {
         TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(persons.size(), kommuneNr, postNr);
         final TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
         throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
-      
+        
         List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
         
         for (int i = 0; i < persons.size(); i++) {
@@ -58,7 +58,7 @@ public class SetRandomAdresseOnPersons {
     }
     
     private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {
-        if (!"00".equals(svarStatus.getReturStatus()) && !Arrays.asList("S051002I","S051003I").contains(svarStatus.getReturMelding())) {
+        if (!"00".equals(svarStatus.getReturStatus()) && !Arrays.asList("S051002I", "S051003I").contains(svarStatus.getReturMelding())) {
             throw new TpsfFunctionalException(svarStatus.getUtfyllendeMelding());
         }
     }
@@ -74,7 +74,7 @@ public class SetRandomAdresseOnPersons {
     
     private Gateadresse createGateAdresse(AdresseData adresseData, Person person) {
         Gateadresse adresse = new Gateadresse();
-        adresse.setHusnummer(tilfeldigTall( adresseData.getHusnrfra(),adresseData.getHusnrtil()));
+        adresse.setHusnummer(tilfeldigTall(adresseData.getHusnrfra(), adresseData.getHusnrtil()));
         adresse.setGatekode(adresseData.getGkode());
         adresse.setAdresse(adresseData.getAdrnavn());
         adresse.setPostnr(adresseData.getPnr());

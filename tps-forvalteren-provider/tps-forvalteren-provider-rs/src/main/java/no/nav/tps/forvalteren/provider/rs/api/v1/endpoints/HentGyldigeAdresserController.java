@@ -19,13 +19,15 @@ import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.request.param.FinnGyl
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 
 /**
- * Dette apiet tilbyr gyldige adresser som er hentet fra TPS MQ-tjenesten S051.
+ * Dette api-et tilbyr gyldige adresser som er hentet fra TPS MQ-tjenesten S051.
  */
 @RestController
 @RequestMapping(value = "api/v1/gyldigadresse")
 public class HentGyldigeAdresserController {
+    
     @Autowired
     private HentGyldigeAdresserService hentGyldigeAdresserService;
+    
     @Autowired
     private MapFinnGyldigeAdresserToTpsServiceRutine finnGyldigeAdresserMapper;
     
@@ -52,5 +54,4 @@ public class HentGyldigeAdresserController {
         
         return hentGyldigeAdresserService.finnGyldigAdresse(tpsServiceRoutineRequest);
     }
-    
 }

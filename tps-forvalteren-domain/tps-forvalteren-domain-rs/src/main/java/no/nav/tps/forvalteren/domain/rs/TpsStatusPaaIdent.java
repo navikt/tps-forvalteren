@@ -23,8 +23,8 @@ public class TpsStatusPaaIdent {
     
     public List<String> getEnv() {
         if (env == null) {
-            env=new ArrayList<>();
+            env = new ArrayList<>();
         }
-        return  env;
+        return env;
     }
 }
