@@ -1,12 +1,13 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.FindServiceRoutineByName;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,14 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.FindServiceRoutineByName;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceroutineControllerTest {
@@ -33,9 +31,6 @@ public class ServiceroutineControllerTest {
     private Map<String, Object> parameters;
 
     @Mock
-    private UserContextHolder userContextHolderMock;
-
-    @Mock
     private FindServiceRoutineByName findServiceRoutineByName;
 
     @Mock
@@ -45,20 +40,16 @@ public class ServiceroutineControllerTest {
     private TpsServiceRoutineRequest serviceRoutineRequestMock;
 
     @Mock
-    private TpsServiceRoutineService getTpsServiceRoutineResponse;
+    private TpsServiceRoutineService getTpsServiceRoutineService;
 
     @Mock
     private RsTpsRequestMappingUtils mappingUtilsMock;
 
-    @Mock
-    private TpsRequestSender tpsRequestSenderMock;
-
     @InjectMocks
-    private ServiceroutineController controller;
+    private ServiceroutineController serviceroutineController;
 
     @Before
-    @SuppressWarnings("unchecked")
-    public void before() {
+    public void setup() {
         parameters = new HashMap<>();
         parameters.put("environment", ENVIRONMENT_U);
         parameters.put("serviceRutinenavn", SERVICE_RUTINE_NAME);
@@ -74,7 +65,7 @@ public class ServiceroutineControllerTest {
         parameters.put("environment", ENVIRONMENT_U);
         parameters.put("fnr", FNR);
 
-        controller.getService(parameters, SERVICE_RUTINE_NAME);
+        serviceroutineController.executeServiceRoutine(parameters, SERVICE_RUTINE_NAME);
 
         assertThat(parameters.get("serviceRutinenavn"), is(SERVICE_RUTINE_NAME));
     }
@@ -83,6 +74,6 @@ public class ServiceroutineControllerTest {
     public void getServiceInProdTryingToCallProdEnvironmentDoNotThrowIllegalEnvironmentException() {
         parameters.put("environment", ENVIRONMENT_PROD);
 
-        controller.getService(parameters, SERVICE_RUTINE_NAME);
+        serviceroutineController.executeServiceRoutine(parameters, SERVICE_RUTINE_NAME);
     }
 }
