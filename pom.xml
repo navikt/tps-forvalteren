@@ -50,7 +50,7 @@
 		<modig-testcertificates.version>1.2.2</modig-testcertificates.version>
 		<diskresjonskode-v1.version>1.2.3</diskresjonskode-v1.version>
 		<pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
-		<tps.s051.domain>1.54.0-SNAPSHOT</tps.s051.domain>
+		<tps.s051.domain>1.55.0</tps.s051.domain>
 		<freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
 		<freg-metrics.version>1.0.0</freg-metrics.version>
 		<freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
