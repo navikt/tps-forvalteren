@@ -1,5 +1,12 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_LES;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SERVICERUTINER;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SKDMELDING;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SKRIV;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +22,6 @@ import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
-
 
 @RestController
 @RequestMapping(value = "api/v1")
@@ -49,10 +55,15 @@ public class EnvironmentController {
         Environment environment = new Environment();
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
         environment.setProductionMode(currentEnvironmentIsProd);
+
+        Map<String, Boolean> roller = new HashMap<>();
         Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
-        environment.setRoles(roles);
+        roller.put("hasGT", roles.contains(ROLE_TPSF_LES.toString()));
+        roller.put("hasTST", roles.contains(ROLE_TPSF_SKRIV.toString()));
+        roller.put("hasMLD", roles.contains(ROLE_TPSF_SKDMELDING.toString()));
+        roller.put("hasSRV", roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+        environment.setRoles(roller);
 
         return environment;
     }
-
 }

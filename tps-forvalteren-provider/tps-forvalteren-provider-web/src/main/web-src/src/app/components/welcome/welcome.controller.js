@@ -22,8 +22,12 @@ angular.module('tps-forvalteren.welcome',[])
                 locationService.redirectToSendDoedsmeldinger();
             };
 
-            $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
-            $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
-            $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles.indexOf("ROLE_TPSF_SERVICERUTINER") >= 0;
-            $scope.visSendDoedsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visGTKnapp = $scope.$resolve.environmentsPromise.roles["hasGT"] ||
+                $scope.$resolve.environmentsPromise.roles["hasTST"];
+            $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode &&
+                $scope.$resolve.environmentsPromise.roles["hasTST"];
+            $scope.visSendDoedsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode &&
+                $scope.$resolve.environmentsPromise.roles["hasTST"];
+            $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles["hasMLD"];
+            $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles["hasSRV"];
     }]);

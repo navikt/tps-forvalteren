@@ -63,6 +63,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 text: "Velg servicerutine",
                 click: function (ev) {
                     var confirm = $mdDialog.confirm({
+                        scope: $scope,
                         controller: 'VelgServiceRutineCtrl',
                         templateUrl: 'app/components/service-rutine/velg-service-rutine/velg-service-rutine.html',
                         parent: angular.element(document.body),
