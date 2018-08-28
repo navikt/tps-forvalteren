@@ -5,8 +5,9 @@
 		<aksjonsDato/>
 		<aksjonsKode>A</aksjonsKode>
 		<aksjonsKode2>0</aksjonsKode2>
-		<antallFnr>1</antallFnr>
+		<antallFnr>2</antallFnr>
 		<nFnr>
+			<fnr>11111111111</fnr>
 			<fnr>22222222222</fnr>
 		</nFnr>
 	</tpsServiceRutine>
@@ -20,7 +21,7 @@
 			<antallFM201>1</antallFM201>
 			<AFnr>
 				<EFnr>
-					<fnr>22222222222</fnr>
+					<fnr>11111111111</fnr>
 					<sp></sp>
 					<kn></kn>
 					<fn></fn>
@@ -31,6 +32,14 @@
 						<returMelding>S201005F</returMelding>
 						<utfyllendeMelding></utfyllendeMelding>
 					</svarStatus>
+				</EFnr>
+				<EFnr>
+					<fnr>22222222222</fnr>
+					<sp></sp>
+					<kn>AAAA AAAAAAAAAAAA</kn>
+					<fn>FORNAVN</fn>
+					<mn></mn>
+					<en>bbbbbbbbb</en>
 				</EFnr>
 			</AFnr>
 		</personDataM201>

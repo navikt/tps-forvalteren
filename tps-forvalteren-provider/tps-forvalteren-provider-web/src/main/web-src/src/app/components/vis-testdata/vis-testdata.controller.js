@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
+    .controller('VisTestdataCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'testdataService','gyldigAdresseService', 'utilsService', 'locationService',
         'headerService', 'toggleservice',
-        function ($scope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService, toggleservice) {
+        function ($scope, $stateParams, $filter, $mdDialog, testdataService, gyldigAdresseService, utilsService, locationService, headerService, toggleservice) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -280,6 +280,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         buffer.push(prepLagrePerson($scope.personer[i]));
                     }
                 }
+                console.log(buffer)
                 testdataService.oppdaterTestpersoner(buffer).then(
                     function (result) {
                         for (var i = 0; i < $scope.personer.length; i++) {
@@ -463,6 +464,55 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             $scope.$on('tps-sent', function(event, args){
                 hentTestpersoner();
             });
+
+            $scope.hentgyldigeAdresser = function (person) {
+
+                gyldigAdresseService.finnGyldigAdresse(person.gateadresse).then(
+                    function (result) {
+                        if(result.data.response.status.kode!="00") {
+                            utilsService.showAlertDialog(result.data.response.status.utfyllendeMelding, "Finn gyldig adresse");
+                        }
+                        var responsAdresser = result.data.response.data1.adrData;
+                        if(utilsService.isArray(responsAdresser)) {
+                            $scope.gyldigeAdresser = responsAdresser;
+                        }else {
+                            $scope.gyldigeAdresser = [responsAdresser];
+                        }
+
+                        for(var i = 0; i<$scope.gyldigeAdresser.length; i++) {
+                                $scope.gyldigeAdresser[i].visningsnavn = createVisningsnavn($scope.gyldigeAdresser[i]);
+                            }
+
+                    },
+                    function (error) {
+                            utilsService.showAlertError(error);
+                    }
+
+                );
+
+                function createVisningsnavn(adresse) {
+                    return adresse.adrnavn +", husnr "+
+                        adresse.husnrfra +"-"+ adresse.husnrtil+", "+
+                        adresse.gkode + ","
+                        + adresse.pnr + " "+adresse.psted + ", "
+                        + adresse.knr + " " + adresse.knavn ;
+                }
+
+            };
+
+            $scope.updateAdresseGyldig = function (selectedGyldigAdresse, person) {
+                person.gateadresse.gateadresse = selectedGyldigAdresse.adrnavn;
+                var husnrFra = parseInt(selectedGyldigAdresse.husnrfra);
+                var husnrTil = parseInt(selectedGyldigAdresse.husnrtil);
+                if(typeof person.gateadresse.husnummer==='undefined' || husnrFra>person.gateadresse.husnummer || husnrTil<person.gateadresse.husnummer){
+                person.gateadresse.husnummer=""+Math.floor( Math.random()*(husnrTil-husnrFra +1)+ husnrFra );
+                }
+                person.gateadresse.gatekode = ""+selectedGyldigAdresse.gkode;
+                if(typeof selectedGyldigAdresse.pnr !=='undefined'){
+                    person.gateadresse.postnr = selectedGyldigAdresse.pnr;
+                }
+                person.gateadresse.kommunenr= selectedGyldigAdresse.knr;
+            };
 
             hentTestpersoner();
         }]);

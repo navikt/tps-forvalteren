@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.xml.XmlMapper;
+
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.Request;
@@ -11,8 +14,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class TpsRequestService {
@@ -28,8 +29,8 @@ public class TpsRequestService {
 
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
-
-    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context) throws Exception {
+    
+    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context, long timeout) throws Exception {
 
         forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
 
@@ -45,7 +46,7 @@ public class TpsRequestService {
         Request request = new Request(xml, tpsRequest, context);
         transformationService.transform(request, serviceRoutine);
 
-        String responseXml = messageQueueConsumer.sendMessage(request.getXml());
+        String responseXml = messageQueueConsumer.sendMessage(request.getXml(), timeout);
 
         Response response = new Response(responseXml, context, serviceRoutine);
         transformationService.transform(response, serviceRoutine);

@@ -4,4 +4,5 @@ public class KodeverkConstants {
 
     public static final String KODEVERK_KOMMUNER_NAVN = "Kommuner";
     public static final String KODEVERK_POSTNUMMER_NAVN = "Postnummer";
+    public static final String KODEVERK_LANDKODER_NAVN = "Landkoder";
 }

@@ -4,6 +4,10 @@ angular.module('tps-forvalteren.service')
 
         var self = this;
 
+        self.isArray = function(variable){
+            return Object.prototype.toString.call(variable) === '[object Array]';
+        };
+
         self.getCurrentFormattedDate = function() {
             return moment().format('YYYY-MM-DD');
         };
@@ -124,6 +128,15 @@ angular.module('tps-forvalteren.service')
             }
         };
 
+        self.showAlertDialog = function (melding, title) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .title(title)
+                    .textContent(melding)
+                    .ariaLabel(melding)
+                    .ok('OK'));
+        };
+
         self.showAlertError = function (error) {
             var errorMessages = {
                 400: {
@@ -158,7 +171,6 @@ angular.module('tps-forvalteren.service')
                 }
             };
 
-            //var errorMsg = error.data.message;
             var errorObj = errorMessages[error.status];
             $mdDialog.show(
                 $mdDialog.alert()
