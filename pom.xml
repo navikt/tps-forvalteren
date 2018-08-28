@@ -26,7 +26,6 @@
 		<module>tps-forvalteren-service</module>
 		<module>tps-forvalteren-repository</module>
 		<module>tps-forvalteren-componenttest</module>
-		<module>skdmelding-avspilleren</module>
 	</modules>
 
 	<prerequisites>
