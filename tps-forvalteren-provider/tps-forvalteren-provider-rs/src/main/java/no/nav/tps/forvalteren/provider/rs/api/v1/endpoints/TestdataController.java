@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -45,11 +46,11 @@ import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
@@ -114,24 +115,25 @@ public class TestdataController {
     private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
 
     @Autowired
-    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
+    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
     @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
 
+    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
-    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonKriteriumRequest personKriterierListe) {
+    public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody @Valid RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
 
         if (personKriterierListe.isWithAdresse()) {
-            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
+            setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
         }
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);

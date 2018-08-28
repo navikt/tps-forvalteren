@@ -13,8 +13,8 @@ angular.module('tps-forvalteren.service')
             return gruppeCache;
         };
 
-        self.opprettTestpersoner = function(gruppeId, kriterier, withAdresse){
-            return $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier, withAdresse: withAdresse});
+        self.opprettTestpersoner = function(gruppeId, kriterier, withAdresse, adresseNrInfo){
+            return $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier, withAdresse: withAdresse, adresseNrInfo: adresseNrInfo});
         };
 
         self.sletteTestpersoner = function(identer){

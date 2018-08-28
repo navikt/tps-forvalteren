@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
 import static no.nav.tps.forvalteren.config.ComptestConfig.actualConnectedToEnvironments;
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.reset;
@@ -50,9 +51,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
             "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");
     List<String> expectedSkdDoedsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
     String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_request.xml";
-    List<String> expectedTpsXmlRequestsUrl = Arrays.asList(xmlFindNonexistingIdenterInTpsUrl);
     private List<String> environments = Arrays.asList("t1", "t2", "u5");
-    List<String> expectedRequests = constructExpectedRequests();
+    List<String> expectedSkdRequests = constructExpectedRequests();
     
     private Long gruppeId;
     private Gruppe testgruppe;
@@ -78,18 +78,20 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("[\"" + String.join("\",\"", environments) + "\"]"))
                 .andExpect(status().isOk());
+    
+        verify(messageQueueConsumerMock, times(3)).sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl)), DEFAULT_TIMEOUT);
         
         assertCalledEnvironments();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(messageQueueConsumerMock, times(expectedRequests.size())).sendMessage(captor.capture());
+        verify(messageQueueConsumerMock, times(expectedSkdRequests.size())).sendMessage(captor.capture());
         List<String> actualRequests = captor.getAllValues().stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
-        
-        assertEquals(expectedRequests.toString(), actualRequests.toString());
+    
+        assertEquals(expectedSkdRequests.toString(), actualRequests.toString());
     }
     
     private void mockTps() throws JMSException {
         //mock findPersonsNotInEnvironments:
-        when(messageQueueConsumerMock.sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl))))
+        when(messageQueueConsumerMock.sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl)), DEFAULT_TIMEOUT))
                 .thenReturn(getResourceFileContent("testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_response.xml"));
     }
     
@@ -183,7 +185,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private List<String> constructExpectedRequests() {
         List<String> expectedRequests = new ArrayList<>();
         
-        expectedTpsXmlRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url))));
         expectedSkdInnvandringCreateRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
         expectedSkdUpdateInnvandringRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
         expectedSkdRelasjonsmeldingerRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));

@@ -7,7 +7,7 @@
 		<aksjonsKode2>0</aksjonsKode2>
 		<antallFnr>2</antallFnr>
 		<nFnr>
-			<fnr>1111111111</fnr>
+			<fnr>11111111111</fnr>
 			<fnr>22222222222</fnr>
 		</nFnr>
 	</tpsServiceRutine>
@@ -21,7 +21,7 @@
 			<antallFM201>2</antallFM201>
 			<AFnr>
 				<EFnr>
-					<fnr>1111111111</fnr>
+					<fnr>11111111111</fnr>
 					<sp></sp>
 					<kn></kn>
 					<fn></fn>

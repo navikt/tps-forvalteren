@@ -86,7 +86,11 @@
             <artifactId>tps-forvalteren-domain-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+        <!-- Tjenestegrensesnitt som konsumeres -->
+        <dependency>
+            <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+            <artifactId>nav-repository-fellesregister-jaxb2-tps-s051-domain</artifactId>
+        </dependency>
     </dependencies>
     
 </project>
