@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterFraResponse;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusIkkeFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
 
 import java.util.ArrayList;
@@ -43,37 +43,43 @@ public class StatusPaaIdenterITps {
     private RsTpsRequestMappingUtils mappingUtils;
     
     public RsTpsStatusPaaIdenterResponse hentStatusPaaIdenterIAlleMiljoer(List<String> identer) {
-        List<TpsStatusPaaIdent> tpsStatusPaaIdentList = new ArrayList<>();
-        Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
-        for (String ident : identer) {
-            TpsStatusPaaIdent statusPaaIdent = new TpsStatusPaaIdent();
-            statusPaaIdent.setIdent(ident);
-            tpsStatusPaaIdentList.add(statusPaaIdent);
-        }
-        RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse = new RsTpsStatusPaaIdenterResponse(tpsStatusPaaIdentList);
-        settMiljoerDerIdenteneEksisterer(tpsStatusPaaIdenterResponse, tpsRequestParameters);
+        RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse = opprettResponse(identer);
+        settMiljoerDerIdenteneEksisterer(tpsStatusPaaIdenterResponse, identer);
         tpsStatusPaaIdenterResponse.getStatusPaaIdenter()
                 .forEach(tpsStatusPaaIdent -> Collections.sort(tpsStatusPaaIdent.getEnv()));
         return tpsStatusPaaIdenterResponse;
     }
     
-    private void settMiljoerDerIdenteneEksisterer(RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse, Map<String, Object> tpsRequestParameters) {
+    private RsTpsStatusPaaIdenterResponse opprettResponse(List<String> identer) {
+        List<TpsStatusPaaIdent> tpsStatusPaaIdentList = new ArrayList<>();
+        for (String ident : identer) {
+            TpsStatusPaaIdent statusPaaIdent = new TpsStatusPaaIdent();
+            statusPaaIdent.setIdent(ident);
+            tpsStatusPaaIdentList.add(statusPaaIdent);
+        }
+        return new RsTpsStatusPaaIdenterResponse(tpsStatusPaaIdentList);
+    }
+    
+    private void settMiljoerDerIdenteneEksisterer(RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse, List<String> identer) {
         Set<String> environmentsToCheck =
                 filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
+        Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
         
         for (String env : environmentsToCheck) {
-            List<String> identerIMiljoet = finnIdenteneIMiljoet(env, tpsRequestParameters);
+            List<String> identerIkkeIMiljoet = finnesIdenteneIMiljoet(env, tpsRequestParameters);
+            ArrayList<String> identerIMiljoet = new ArrayList<>(identer);
+            identerIMiljoet.removeAll(identerIkkeIMiljoet);
             tpsStatusPaaIdenterResponse.addEnvToTheseIdents(env, identerIMiljoet);
         }
     }
     
-    private List<String> finnIdenteneIMiljoet(String env, Map<String, Object> tpsRequestParameters) {
+    private List<String> finnesIdenteneIMiljoet(String env, Map<String, Object> tpsRequestParameters) {
         TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
                 .get("serviceRutinenavn")), tpsRequestParameters);
         TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest,
                 new TpsRequestContext(userContextHolder.getUser(), env));
-        List<String> identeneSomEksistererIMiljoet = new ArrayList<>(trekkUtIdenterFraResponse(tpsResponse));
-        return identeneSomEksistererIMiljoet;
+        List<String> identeneSomIkkeEksistererIMiljoet = new ArrayList<>(trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse));
+        return identeneSomIkkeEksistererIMiljoet;
     }
     
 }

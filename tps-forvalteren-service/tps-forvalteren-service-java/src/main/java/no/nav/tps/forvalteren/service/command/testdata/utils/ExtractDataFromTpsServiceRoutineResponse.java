@@ -7,7 +7,7 @@ import java.util.Set;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 
 public class ExtractDataFromTpsServiceRoutineResponse {
-    public static Set<String> trekkUtIdenterFraResponse(TpsServiceRoutineResponse tpsResponse) {
+    public static Set<String> trekkUtIdenterMedStatusIkkeFunnetFraResponse(TpsServiceRoutineResponse tpsResponse) {
         LinkedHashMap responseMap = (LinkedHashMap) tpsResponse.getResponse();
         Set<String> identer = new HashSet<>();
         
