@@ -1,16 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.security.mapping;
 
-import no.nav.tps.forvalteren.service.user.UserRole;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,11 +8,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import no.nav.tps.forvalteren.service.user.UserRole;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestAuthoritiesMapperTest {
     private static final SimpleGrantedAuthority CURRENT_TPSF_LES_ROLE = new SimpleGrantedAuthority("0000-GA-TPSF-LES");
-    private static final SimpleGrantedAuthority CURRENT_TPSF_SKRIV_ROLE = new SimpleGrantedAuthority("0000-GA-TPSF-SKRIV");
     private static final SimpleGrantedAuthority CURRENT_DISK_6_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_KODE6");
     private static final SimpleGrantedAuthority CURRENT_DISK_7_ROLE = new SimpleGrantedAuthority("0000-GA-GOSYS_KODE7");
     private static final SimpleGrantedAuthority CURRENT_EGEN_ANSATT_ROLE = new SimpleGrantedAuthority("0000-GA-PIP_EGENANSATT");
@@ -60,13 +59,6 @@ public class RestAuthoritiesMapperTest {
         Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_TPSF_LES_ROLE));
 
         assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_TPSF_LES));
-    }
-
-    @Test
-    public void returnsRoleAccessOgRoleSkrivNArManHarTpsfSkriv() {
-        Collection<UserRole> result = mapper.mapAuthorities(singletonList(CURRENT_TPSF_SKRIV_ROLE));
-
-        assertThat(result, containsInAnyOrder(UserRole.ROLE_ACCESS, UserRole.ROLE_TPSF_SKRIV));
     }
 
     @Test
