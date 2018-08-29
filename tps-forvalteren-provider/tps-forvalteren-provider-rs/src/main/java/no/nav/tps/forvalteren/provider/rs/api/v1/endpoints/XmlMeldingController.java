@@ -21,6 +21,7 @@ import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 @RestController
 @RequestMapping(value = "api/v1")
 @PreAuthorize("hasRole({'ROLE_TPSF_SERVICERUTINER','ROLE_TPSF_SKDMELDING'})")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
 public class XmlMeldingController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "xmlMelding";
@@ -31,7 +32,6 @@ public class XmlMeldingController extends BaseProvider {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
-    @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
     public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
 
         RsPureXmlMessageResponse response = new RsPureXmlMessageResponse();
