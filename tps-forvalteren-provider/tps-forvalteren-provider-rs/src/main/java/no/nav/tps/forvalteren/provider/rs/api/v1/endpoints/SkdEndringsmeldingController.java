@@ -6,7 +6,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +41,6 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndring
 @Transactional
 @RestController
 @RequestMapping(value = "api/v1/endringsmelding/skd")
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
 @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
 public class SkdEndringsmeldingController {
 

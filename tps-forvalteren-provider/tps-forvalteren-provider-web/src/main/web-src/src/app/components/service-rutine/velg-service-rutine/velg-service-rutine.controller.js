@@ -16,6 +16,5 @@ angular.module('tps-forvalteren.service-rutine.velg-service-rutine', ['ngMateria
                 locationService.redirectToRawXmlMelding();
             };
 
-            $scope.enableXmlMld = !$scope.$resolve.environmentsPromise.productionMode &&
-                $scope.$resolve.environmentsPromise.roles["hasMLD"];
+            $scope.enableXmlMld = !$scope.$resolve.environmentsPromise.productionMode;
         }]);

@@ -34,14 +34,11 @@ angular.module('tps-forvalteren')
 
             $scope.isRoot = locationService.isRoot();
 
-            $scope.visGTKnapp = $scope.$resolve.environmentsPromise.roles["hasGT"] ||
-                $scope.$resolve.environmentsPromise.roles["hasTST"];
-            $scope.visServiceRutineKnapp = $scope.$resolve.environmentsPromise.roles["hasSRV"];
-            $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode &&
-                $scope.$resolve.environmentsPromise.roles["hasTST"];
-            $scope.visSendDoedsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode &&
-                $scope.$resolve.environmentsPromise.roles["hasTST"];
-            $scope.visSkdEndringsmeldingKnapp = $scope.$resolve.environmentsPromise.roles["hasMLD"];
+            $scope.visGTKnapp = !$scope.$resolve.environmentsPromise.productionMode || $scope.$resolve.environmentsPromise.roles["hasGT"];
+            $scope.visServiceRutineKnapp = !$scope.$resolve.environmentsPromise.productionMode || $scope.$resolve.environmentsPromise.roles["hasSRV"];
+            $scope.visTestdataKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSendDoedsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode;
+            $scope.visSkdEndringsmeldingKnapp = !$scope.$resolve.environmentsPromise.productionMode || $scope.$resolve.environmentsPromise.roles["hasMLD"];
 
             $scope.$on('updateEvent', function () {
                 if ($scope.header && $scope.header.buttons) {

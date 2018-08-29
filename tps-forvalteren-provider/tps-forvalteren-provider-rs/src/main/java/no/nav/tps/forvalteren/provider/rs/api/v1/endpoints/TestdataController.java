@@ -58,7 +58,6 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 @RestController
 @RequestMapping(value = "api/v1/testdata")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
-//@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";

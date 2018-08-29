@@ -5,7 +5,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +19,6 @@ import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 
 @RestController
 @RequestMapping(value = "api/v1")
-@PreAuthorize("hasRole({'ROLE_TPSF_SERVICERUTINER','ROLE_TPSF_SKDMELDING'})")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
 public class XmlMeldingController extends BaseProvider {
 

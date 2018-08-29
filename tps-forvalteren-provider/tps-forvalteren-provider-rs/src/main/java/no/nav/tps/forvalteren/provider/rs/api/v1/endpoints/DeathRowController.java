@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +34,6 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 @RestController
 @RequestMapping(value = "api/v1/doedsmelding")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
-@PreAuthorize("hasRole('ROLE_TPSF_SKRIV')")
 public class DeathRowController {
 
     private static final String REST_SERVICE_NAME = "testdata";

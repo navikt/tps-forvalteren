@@ -19,7 +19,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRouti
 
 @RestController
 @RequestMapping(value = "api/v1/gt")
-@PreAuthorize("hasAnyRole('ROLE_TPSF_LES','ROLE_TPSF_SKRIV')")
+@PreAuthorize("hasAnyRole('ROLE_TPSF_LES')")
 public class GeografiskTilhoerighetController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "gt";
