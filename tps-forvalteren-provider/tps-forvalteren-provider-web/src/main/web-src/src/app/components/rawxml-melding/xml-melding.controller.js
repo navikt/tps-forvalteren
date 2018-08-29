@@ -45,7 +45,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         $scope.responseMelding = response.data.xml;
                     }
                 }, function (error) {
-                    $scope.responseMelding = "Error";
+                    utilsService.showAlertError(error);
                 });
             };
 

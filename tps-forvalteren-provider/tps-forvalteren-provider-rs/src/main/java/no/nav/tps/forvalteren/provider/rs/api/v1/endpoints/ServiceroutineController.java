@@ -20,6 +20,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRouti
 
 @RestController
 @RequestMapping(value = "api/v1")
+@PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
 public class ServiceroutineController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "serviceroutine";
@@ -28,7 +29,6 @@ public class ServiceroutineController extends BaseProvider {
     @Autowired
     private TpsServiceRoutineService getTpsServiceRoutineResponse;
 
-    @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService") })
     @RequestMapping(value = "/" + REST_SERVICE_NAME + "/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)

@@ -9,7 +9,7 @@ angular.module('tps-forvalteren.service')
         };
 
         self.send = function (melding) {
-            return $http.post(url + "/endringsmelding/skd/xmlmelding", melding);
+            return $http.post(url + "/xmlmelding", melding);
         }
 
     }]);

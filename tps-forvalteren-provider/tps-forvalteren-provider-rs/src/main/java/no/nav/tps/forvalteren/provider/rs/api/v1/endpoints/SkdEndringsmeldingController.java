@@ -19,8 +19,6 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
-import no.nav.tps.forvalteren.domain.rs.RsPureXmlMessageResponse;
-import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingAsText;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsNewSkdEndringsmelding;
@@ -40,7 +38,6 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
-import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 
 @Transactional
 @RestController
@@ -86,9 +83,6 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private GetLoggForGruppe getLoggForGruppe;
-
-    @Autowired
-    private TpsXmlSender tpsXmlSender;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -170,16 +164,5 @@ public class SkdEndringsmeldingController {
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
         List<SkdEndringsmeldingLogg> log = getLoggForGruppe.execute(gruppeId);
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
-    }
-
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
-    @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
-    @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
-    public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
-
-        RsPureXmlMessageResponse response = new RsPureXmlMessageResponse();
-        response.setXml(tpsXmlSender.sendTpsMelding(rsTpsMelding));
-        return response;
     }
 }

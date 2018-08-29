@@ -6,6 +6,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;

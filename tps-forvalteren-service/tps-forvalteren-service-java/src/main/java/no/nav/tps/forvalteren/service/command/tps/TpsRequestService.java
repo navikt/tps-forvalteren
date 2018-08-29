@@ -36,9 +36,9 @@ public class TpsRequestService {
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
-//        if(tpsRequest instanceof TpsServiceRoutineHentByFnrRequest){
-//            forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
-//        }
+        if(tpsRequest instanceof TpsServiceRoutineHentByFnrRequest){
+            forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
+        }
 
         tpsRequest.setServiceRutinenavn(removeTestdataFromServicerutinenavn(tpsRequest.getServiceRutinenavn()));
         String xml = xmlMapper.writeValueAsString(tpsRequest);
