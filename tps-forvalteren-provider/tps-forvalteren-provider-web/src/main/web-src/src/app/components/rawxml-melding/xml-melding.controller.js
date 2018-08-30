@@ -4,7 +4,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             headerService.setHeader('Send XML-melding');
 
-            $scope.melding = "<?xml version=\'1.0\' encoding=\'ISO-8859-1\'?>";
+            $scope.melding = "";
             $scope.tpsMessageQueueList = [];
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
@@ -19,10 +19,9 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         queueList.push(obj.koNavn);
                     }
                 });
-                $scope.valgtKoe = "";
+                $scope.valgtKoe = queueList[0];
                 $scope.displayQueues = queueList;
             };
-
 
             $scope.onChangeQueue = function () {
                 $scope.tpsMessageQueueList.forEach(function (obj) {
@@ -46,7 +45,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         $scope.responseMelding = response.data.xml;
                     }
                 }, function (error) {
-                    $scope.responseMelding = "Error";
+                    utilsService.showAlertError(error);
                 });
             };
 

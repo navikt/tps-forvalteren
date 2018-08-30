@@ -1,5 +1,5 @@
 angular.module('tps-forvalteren.factory')
-    .factory('serviceRutineFactory', ['$http', function ($http) {
+    .factory('serviceRutineFactory', ['$http', 'utilsService', function ($http, utilsService) {
 
         var serviceRutineFactory = {};
 
@@ -44,6 +44,7 @@ angular.module('tps-forvalteren.factory')
                     return null;
                 }
             }, function (error) {
+                utilsService.showAlertError(error, '0000-GA-TPSF-SERVICERUTINER');
                 return null;
             });
         };

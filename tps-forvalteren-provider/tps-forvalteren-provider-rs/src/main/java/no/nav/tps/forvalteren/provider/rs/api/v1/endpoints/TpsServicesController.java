@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRu
 
 @RestController
 @RequestMapping(value = "api/v1/")
+@PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
 public class TpsServicesController {
 
     private static final String REST_SERVICE_NAME = "tpsservices";

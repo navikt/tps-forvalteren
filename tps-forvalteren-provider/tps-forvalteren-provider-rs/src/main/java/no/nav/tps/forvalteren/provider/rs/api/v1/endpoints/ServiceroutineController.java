@@ -5,10 +5,8 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,15 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.domain.rs.RsPureXmlMessageResponse;
-import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
-import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 
 @RestController
 @RequestMapping(value = "api/v1")
+@PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
 public class ServiceroutineController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "serviceroutine";
@@ -33,10 +29,6 @@ public class ServiceroutineController extends BaseProvider {
     @Autowired
     private TpsServiceRoutineService getTpsServiceRoutineResponse;
 
-    @Autowired(required = false)
-    private TpsXmlSender tpsXmlSender;
-
-    @PreAuthorize("hasRole('ROLE_TPSF_SERVICERUTINER')")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService") })
     @RequestMapping(value = "/" + REST_SERVICE_NAME + "/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
@@ -45,17 +37,6 @@ public class ServiceroutineController extends BaseProvider {
         putFnrIntoRequestParameters(tpsRequestParameters);
 
         return getTpsServiceRoutineResponse.execute(serviceRutinenavn, tpsRequestParameters, true);
-    }
-
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
-    @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
-    @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
-    public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
-
-        RsPureXmlMessageResponse response = new RsPureXmlMessageResponse();
-        response.setXml(tpsXmlSender.sendTpsMelding(rsTpsMelding));
-        return response;
     }
 
     private void putFnrIntoRequestParameters(Map<String, Object> tpsRequestParameters) {
@@ -68,5 +49,4 @@ public class ServiceroutineController extends BaseProvider {
             }
         }
     }
-
 }

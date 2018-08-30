@@ -5,6 +5,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRouti
 
 @RestController
 @RequestMapping(value = "api/v1/gt")
+@PreAuthorize("hasAnyRole('ROLE_TPSF_LES')")
 public class GeografiskTilhoerighetController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "gt";
@@ -47,7 +49,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @RequestMapping(value = "/adrhist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getAdrhist(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put("aksjonsKode", "B0");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_ADRHIST) , tpsRequestParameters);
+        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_ADRHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(ADRESSEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
@@ -57,7 +59,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     public TpsServiceRoutineResponse getAdrlinjhist(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put("aksjonsKode", "A0");
         tpsRequestParameters.put("adresseTypeS015", "ALLE");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_ADRLINJHIST) , tpsRequestParameters);
+        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_ADRLINJHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(ADRESSELINJEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
@@ -68,7 +70,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
         tpsRequestParameters.put("aksjonsKode", "A0");
         tpsRequestParameters.put("infoType", "ALLE");
         tpsRequestParameters.put("buffNr", "1");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_SOAIHIST) , tpsRequestParameters);
+        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_SOAIHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(SOAIHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 }

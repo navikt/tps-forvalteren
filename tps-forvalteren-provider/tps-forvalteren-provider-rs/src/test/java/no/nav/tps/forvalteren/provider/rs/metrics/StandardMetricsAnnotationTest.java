@@ -15,6 +15,7 @@ import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.GeografiskTilhoerighe
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.ServiceroutineController;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.TpsServicesController;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.XmlMeldingController;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StandardMetricsAnnotationTest {
@@ -24,7 +25,8 @@ public class StandardMetricsAnnotationTest {
             ServiceroutineController.class,
             UserController.class,
             TpsServicesController.class,
-            GeografiskTilhoerighetController.class
+            GeografiskTilhoerighetController.class,
+            XmlMeldingController.class
     };
 
     @Test
