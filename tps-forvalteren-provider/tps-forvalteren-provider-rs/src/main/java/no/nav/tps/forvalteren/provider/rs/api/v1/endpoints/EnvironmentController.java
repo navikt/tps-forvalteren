@@ -27,6 +27,10 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 @RequestMapping(value = "api/v1")
 public class EnvironmentController {
 
+    private static final String HAS_GT = "hasGT";
+    private static final String HAS_TST = "hasTST";
+    private static final String HAS_MLD = "hasMLD";
+    private static final String HAS_SRV = "hasSRV";
     private static final String REST_SERVICE_NAME = "environments";
 
     @Autowired
@@ -58,10 +62,10 @@ public class EnvironmentController {
 
         Map<String, Boolean> roller = new HashMap<>();
         Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
-        roller.put("hasGT", roles.contains(ROLE_TPSF_LES.toString()));
-        roller.put("hasTST", roles.contains(ROLE_TPSF_SKRIV.toString()));
-        roller.put("hasMLD", roles.contains(ROLE_TPSF_SKDMELDING.toString()));
-        roller.put("hasSRV", roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+        roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
+        roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
+        roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
+        roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
         environment.setRoles(roller);
 
         return environment;
