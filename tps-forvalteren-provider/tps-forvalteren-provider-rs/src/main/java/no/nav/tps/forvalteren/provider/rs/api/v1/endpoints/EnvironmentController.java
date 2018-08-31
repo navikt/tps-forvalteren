@@ -42,7 +42,7 @@ public class EnvironmentController {
     @Autowired
     private UserContextHolder userContextHolder;
 
-    @Value("${tps.forvalteren.production-mode}")
+    @Value("${tps.forvalteren.production.mode:true}")
     private boolean currentEnvironmentIsProd;
 
     /**
