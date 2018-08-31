@@ -1,9 +1,5 @@
 package no.nav.tps.forvalteren.consumer.mq.consumers;
 
-import com.ibm.mq.jms.MQQueue;
-import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
-import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -12,6 +8,10 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import com.ibm.mq.jms.MQQueue;
+import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
+
+import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
 
 public class MessageQueueConsumer {
 
@@ -59,11 +59,14 @@ public class MessageQueueConsumer {
 
         /* Prepare request message */
         TextMessage requestMessage = session.createTextMessage(requestMessageContent);
-        MessageProducer producer = session.createProducer(requestDestination);
+        try {
+            MessageProducer producer = session.createProducer(requestDestination);
+            requestMessage.setJMSReplyTo(responseDestination);
 
-        requestMessage.setJMSReplyTo(responseDestination);
-
-        producer.send(requestMessage);
+            producer.send(requestMessage);
+        } catch (JMSException e) {
+            return e.getMessage();
+        }
 
         TextMessage responseMessage = null;
         if (timeout > 0) {

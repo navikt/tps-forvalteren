@@ -4,12 +4,15 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             headerService.setHeader('Send XML-melding');
 
-            $scope.melding = "";
+            const OWN_QUEUE = '--- Egendefinert kø ---';
+
+            $scope.melding = '';
             $scope.tpsMessageQueueList = [];
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
             $scope.showResponse = false;
             $scope.responseMelding = "";
+            $scope.timeout = 5;
 
             $scope.onChangeMiljoe = function () {
                 var queueList = [];
@@ -19,8 +22,10 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         queueList.push(obj.koNavn);
                     }
                 });
+                queueList.push(OWN_QUEUE);
                 $scope.valgtKoe = queueList[0];
                 $scope.displayQueues = queueList;
+                $scope.showOwnQueue = false;
             };
 
             $scope.onChangeQueue = function () {
@@ -29,14 +34,23 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         $scope.valgtMiljoe = obj.miljo;
                     }
                 });
+                $scope.showOwnQueue = $scope.valgtKoe === OWN_QUEUE;
             };
 
             $scope.sendTilTps = function () {
+                var queue = $scope.valgtKoe;
+                if ($scope.valgtKoe === OWN_QUEUE) {
+                    queue = $scope.egenkoe;
+                }
                 var objectToTps = {
+                    miljoe: $scope.valgtMiljoe,
                     melding: $scope.melding,
-                    ko: $scope.valgtKoe
+                    ko: queue,
+                    timeout: $scope.timeout
                 };
 
+                $scope.responseMelding = "";
+                $scope.showResponse = false;
                 xmlmeldingService.send(objectToTps).then(function(response){
                     $scope.showResponse = true;
                     if (response.config.data.melding.indexOf("<?xml version") !== -1) {
