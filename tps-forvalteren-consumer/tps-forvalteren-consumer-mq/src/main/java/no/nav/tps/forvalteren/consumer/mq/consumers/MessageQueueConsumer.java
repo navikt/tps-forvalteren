@@ -1,9 +1,5 @@
 package no.nav.tps.forvalteren.consumer.mq.consumers;
 
-import com.ibm.mq.jms.MQQueue;
-import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
-import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -12,12 +8,19 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.ibm.mq.jms.MQQueue;
+import com.ibm.msg.client.wmq.v6.jms.internal.JMSC;
+
+import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
 
 public class MessageQueueConsumer {
 
     public static final long DEFAULT_TIMEOUT = 5000;
-    private static final long ZERO_TIMEOUT = 0;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageQueueConsumer.class);
+    private static final String FEIL_KOENAVN = "Feil i koenavn eller miljoe";
     private static final String PING_MESSAGE = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><tpsPersonData xmlns=\"http://www.rtv.no/NamespaceTPS\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.rtv.no/NamespaceTPS H:\\SYSTEM~1\\SYSTEM~4\\FS03TP~1\\TPSDAT~1.XSD\"><tpsServiceRutine><serviceRutinenavn>FS03-OTILGANG-TILSRTPS-O</serviceRutinenavn></tpsServiceRutine></tpsPersonData>";
 
     private String requestQueueName;
@@ -26,10 +29,6 @@ public class MessageQueueConsumer {
     public MessageQueueConsumer(String requestQueueName, ConnectionFactory connectionFactory) {
         this.requestQueueName = requestQueueName;
         this.connectionFactory = connectionFactory;
-    }
-
-    public void sendMessageAsync(String requestMessageContent) throws JMSException {
-        sendMessage(requestMessageContent, ZERO_TIMEOUT);
     }
 
     public String sendMessage(String requestMessageContent) throws JMSException {
@@ -59,11 +58,15 @@ public class MessageQueueConsumer {
 
         /* Prepare request message */
         TextMessage requestMessage = session.createTextMessage(requestMessageContent);
-        MessageProducer producer = session.createProducer(requestDestination);
+        try {
+            MessageProducer producer = session.createProducer(requestDestination);
+            requestMessage.setJMSReplyTo(responseDestination);
 
-        requestMessage.setJMSReplyTo(responseDestination);
-
-        producer.send(requestMessage);
+            producer.send(requestMessage);
+        } catch (JMSException e) {
+            LOGGER.warn(String.format("%s: %s", FEIL_KOENAVN, e.getMessage()), e);
+            return e.getMessage();
+        }
 
         TextMessage responseMessage = null;
         if (timeout > 0) {
