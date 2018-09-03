@@ -14,9 +14,14 @@ import lombok.Setter;
 public class RsTpsMelding {
 
     @NotNull
+    private String miljoe;
+
+    @NotNull
     private String melding;
 
     @NotNull
     private String ko;
+
+    private Long timeout;
 
 }
