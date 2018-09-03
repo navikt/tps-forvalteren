@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +15,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
@@ -25,6 +24,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 
 @Service
 public class SendEndringsmeldingGruppeToTps {
@@ -56,17 +56,19 @@ public class SendEndringsmeldingGruppeToTps {
     @Autowired
     private SkdAddHeaderToSkdMelding skdAddHeaderToSkdMelding;
 
+    @Autowired
+    private TpsPacemaker tpsPacemaker;
 
     public void execute(Long skdMeldingsGruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(skdMeldingsGruppeId);
-        if(gruppe != null) {
+        if (gruppe != null) {
             List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
             String environment = skdEndringsmeldingIdListToTps.getEnvironment();
             List<Long> idList = skdEndringsmeldingIdListToTps.getIds();
 
-            for(Long id : idList) {
+            for (Long id : idList) {
                 SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
-                if(skdEndringsmelding != null){
+                if (skdEndringsmelding != null) {
                     skdEndringsmeldinger.add(skdEndringsmelding);
                 }
             }
@@ -76,12 +78,16 @@ public class SendEndringsmeldingGruppeToTps {
                     .collect(Collectors.toList());
 
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = innvandring.resolve();
-            for (RsMeldingstype melding : rsMeldingstyper) {
+            for (int i = 0; i < rsMeldingstyper.size(); i++) {
+                RsMeldingstype melding = rsMeldingstyper.get(i);
+
                 String skdMelding = convertMeldingFromJsonToText.execute(melding);
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
                 sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
                 saveLogg(skdMelding, melding, skdMeldingsGruppeId, environment);
-             }
+
+                tpsPacemaker.iteration(i);
+            }
 
         } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, skdMeldingsGruppeId));

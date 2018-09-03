@@ -5,8 +5,6 @@ import static no.nav.tps.forvalteren.service.command.testdata.utils.BehandleTpsR
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +16,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
+import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
 public class SendNavEndringsmeldinger {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SendNavEndringsmeldinger.class);
-    private static final String DELAY_TIMEOUT_ERROR = "Pacemaker delay error";
-    private static final long MAX_SIZE_WITHOUT_DELAY = 1000L;
-    private static final long DEFAULT_DELAY = 100L;
 
     @Autowired
     private OpprettEgenAnsattMelding opprettEgenAnsattMelding;
@@ -40,6 +34,9 @@ public class SendNavEndringsmeldinger {
 
     @Autowired
     private UserContextHolder userContextHolder;
+
+    @Autowired
+    private TpsPacemaker tpsPacemaker;
 
     public List<ServiceRoutineResponseStatus> execute(List<Person> listeMedPersoner, Set<String> environmentsSet) {
 
@@ -63,14 +60,8 @@ public class SendNavEndringsmeldinger {
             if ("00" != status.getKode()) {
                 responseStatuses.add(byggRespons(serviceRoutineRequest, status));
             }
-            if (i > MAX_SIZE_WITHOUT_DELAY) {
-                try {
-                    Thread.sleep(DEFAULT_DELAY);
-                } catch (InterruptedException e) {
-                    LOGGER.error(String.format("%s: %s", DELAY_TIMEOUT_ERROR, e.getMessage()), e);
-                    Thread.currentThread().interrupt();
-                }
-            }
+
+            tpsPacemaker.iteration(i);
         }
 
         if (responseStatuses.isEmpty()) {
