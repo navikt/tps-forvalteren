@@ -57,6 +57,6 @@ public class TpsXmlSenderTest {
     public void tpsXmlSenderTest() throws Exception {
         tpsXmlSender.sendTpsMelding(rsTpsMelding);
 
-        verify(messageQueueConsumer).sendMessage(rsTpsMelding.getMelding());
+        verify(messageQueueConsumer).sendMessage(rsTpsMelding.getMelding(), rsTpsMelding.getTimeout() * 1000L);
     }
 }
