@@ -1,12 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
-import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
-import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
-
-import org.junit.Test;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
-
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -15,7 +8,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ReflectionUtils;
+
+import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.EnvironmentController;
+
 public class EnvironmentControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
+
+    @Autowired
+    private EnvironmentController environmentController;
 
     @Test
     public void test() {
@@ -26,6 +33,7 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
     @WithUserDetails(TestUserDetails.USERNAME)
     public void getsEnvironments() throws Exception {
 
+        ReflectionTestUtils.setField(environmentController,"currentEnvironmentIsProd", false);
         mvc.perform(get("/api/v1/environments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))

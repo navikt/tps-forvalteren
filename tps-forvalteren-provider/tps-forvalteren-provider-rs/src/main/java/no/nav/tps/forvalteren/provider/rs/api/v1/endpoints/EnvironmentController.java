@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Sets;
+
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.service.environment.Environment;
@@ -57,7 +59,7 @@ public class EnvironmentController {
         Set<String> env = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
 
         Environment environment = new Environment();
-        environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
+        environment.setEnvironments( currentEnvironmentIsProd ? Sets.newHashSet("p") : filterEnvironmentsOnDeployedEnvironment.execute(env));
         environment.setProductionMode(currentEnvironmentIsProd);
 
         Map<String, Boolean> roller = new HashMap<>();
