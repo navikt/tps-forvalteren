@@ -12,7 +12,7 @@ import no.nav.tps.forvalteren.service.kodeverk.KodeverkCache;
 
 @RestController
 @RequestMapping(value = "api/v1/kodeverk")
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class KodeverkController {
 
     @Autowired
