@@ -33,7 +33,7 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 @Transactional
 @RestController
 @RequestMapping(value = "api/v1/doedsmelding")
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class DeathRowController {
 
     private static final String REST_SERVICE_NAME = "testdata";

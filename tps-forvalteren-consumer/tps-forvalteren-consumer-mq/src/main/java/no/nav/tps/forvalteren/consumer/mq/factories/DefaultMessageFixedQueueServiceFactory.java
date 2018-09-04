@@ -18,7 +18,7 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
  * Consumes information from Fasit and produces MessageQueueServices
  */
 @Component
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false", matchIfMissing = true)
 public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueueServiceFactory {
 
     @Autowired

@@ -12,7 +12,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMeld
 import no.nav.tps.forvalteren.service.command.testdata.utils.ContainsXmlElements;
 
 @Service
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class TpsXmlSender {
 
     private static final Long ONE_MILLI_SECS = 1000L;

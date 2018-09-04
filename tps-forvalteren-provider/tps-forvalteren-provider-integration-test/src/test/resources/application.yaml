@@ -39,7 +39,7 @@ flyway:
   locations: classpath:db/migration
   enabled: true
 
-tps.forvalteren.production-mode: false
+tps.forvalteren.production.mode: false
 
 environment.name: u6
 environment.class: u
