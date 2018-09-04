@@ -54,7 +54,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     public void setup() throws JMSException {
         reset(messageQueueConsumer);
         
-        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("u5", "t4", "t5", "t9", "t8"));
+        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("q0"));
         when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
         
         mockTps();

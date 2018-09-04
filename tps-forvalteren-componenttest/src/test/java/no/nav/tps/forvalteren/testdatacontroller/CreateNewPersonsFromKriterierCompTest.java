@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.reset;
@@ -64,7 +63,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                 "11031250855"));
         when(fiktiveIdenterGeneratormock.genererFiktiveIdenter(any())).thenReturn(identer);
         
-        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("u5", "t4", "t5", "t9", "t8"));
+        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("q0"));
         when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
         
         mockTps();
