@@ -57,7 +57,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class TestdataController {
 
     private static final String REST_SERVICE_NAME = "testdata";

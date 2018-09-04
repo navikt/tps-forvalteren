@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
+import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
 
 @RestController
 @RequestMapping(value = "api/v1")
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class XmlMeldingController extends BaseProvider {
 
     private static final String REST_SERVICE_NAME = "xmlMelding";
@@ -30,7 +31,7 @@ public class XmlMeldingController extends BaseProvider {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
-    public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws Exception {
+    public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws JMSException {
 
         RsPureXmlMessageResponse response = new RsPureXmlMessageResponse();
         response.setXml(tpsXmlSender.sendTpsMelding(rsTpsMelding));
