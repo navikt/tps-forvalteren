@@ -176,7 +176,7 @@ angular.module('tps-forvalteren.service')
 
             var errorObj = errorMessages[error.status];
             if (error.status == 403 && !!role) {
-                errorObj.text = 'Du mangler rolle "' + role + '" for denne spørring!';
+                errorObj.text = 'Du mangler rolle "' + role + '" for å få tilgang.';
             }
             $mdDialog.show(
                 $mdDialog.alert()
