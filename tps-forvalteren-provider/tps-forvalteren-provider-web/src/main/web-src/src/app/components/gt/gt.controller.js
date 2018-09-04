@@ -77,36 +77,26 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                 var filteredEnvironments = {};
                 var sortedEnvironments = [];
 
+                var addEnvironment = function (environment) {
+                    if (filteredEnvironments[environment]) {
+                        angular.forEach(filteredEnvironments[environment], function (env) {
+                            sortedEnvironments.push(env);
+                        });
+                    }
+                };
+
                 environments = utilsService.sortEnvironments(environments);
 
                 angular.forEach(environments, function (env) {
                     var substrMiljoe = env.charAt(0);
-
-                    if (filteredEnvironments[substrMiljoe]) {
-                        filteredEnvironments[substrMiljoe].push(env);
-                    } else {
-                        filteredEnvironments[substrMiljoe] = [];
-                        filteredEnvironments[substrMiljoe].push(env);
-                    }
+                    filteredEnvironments[substrMiljoe] = filteredEnvironments[substrMiljoe] ? filteredEnvironments[substrMiljoe] : [];
+                    filteredEnvironments[substrMiljoe].push(env);
                 });
 
-                if (filteredEnvironments['u']) {
-                    angular.forEach(filteredEnvironments['u'], function (env) {
-                        sortedEnvironments.push(env);
-                    });
-                }
-
-                if (filteredEnvironments['t']) {
-                    angular.forEach(filteredEnvironments['t'], function (env) {
-                        sortedEnvironments.push(env);
-                    });
-                }
-
-                if (filteredEnvironments['q']) {
-                    angular.forEach(filteredEnvironments['q'], function (env) {
-                        sortedEnvironments.push(env);
-                    });
-                }
+                addEnvironment('u');
+                addEnvironment('t');
+                addEnvironment('q');
+                addEnvironment('p');
 
                 return sortedEnvironments;
             }
