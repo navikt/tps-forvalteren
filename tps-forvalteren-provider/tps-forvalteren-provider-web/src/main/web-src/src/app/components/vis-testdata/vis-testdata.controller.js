@@ -197,6 +197,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
             function fixDatoForDatepicker(person) {
                 person.regdato = person.regdato || null;
+                person.statsborgerskapRegdato = person.statsborgerskapRegdato || null;
                 person.spesregDato = person.spesregDato || null;
                 person.doedsdato = person.doedsdato || null;
                 person.gateadresse = person.gateadresse || {};
@@ -204,8 +205,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.matrikkeladresse = person.matrikkeladresse || {};
                 person.matrikkeladresse.flyttedato = person.matrikkeladresse.flyttedato || null;
             }
-
-            var oppdaterFane = undefined;
 
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
@@ -223,7 +222,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             $scope.oppdaterValgt = function () {
-                oppdaterFane = true;
 
                 var endret = 0;
                 for (var i = 0; i < $scope.personer.length; i++) {
@@ -233,19 +231,19 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
 
                 var valgt = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
+                for (var j = 0; j < $scope.personer.length; j++) {
+                    if (!$scope.control[j]) {
+                        $scope.control[j] = {};
                     }
                     if (endret > 0) {
-                        $scope.control[i].disabled = !$scope.control[i].endret;
-                        if (!$scope.control[i].endret) {
-                            $scope.control[i].velg = false;
+                        $scope.control[j].disabled = !$scope.control[j].endret;
+                        if (!$scope.control[j].endret) {
+                            $scope.control[j].velg = false;
                         }
                     } else {
-                        $scope.control[i].disabled = false;
+                        $scope.control[j].disabled = false;
                     }
-                    if ($scope.control[i].velg) {
+                    if ($scope.control[j].velg) {
                         valgt++;
                     }
                 }
@@ -315,6 +313,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.boadresse.adressetype = adressetype;
                 fixTimezone(person.boadresse.flyttedato);
                 fixTimezone(person.regdato);
+                fixTimezone(person.statsborgerskapRegdato);
                 fixTimezone(person.spesregDato);
                 fixTimezone(person.doedsdato);
                 return person;

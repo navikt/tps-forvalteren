@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import static javax.persistence.CascadeType.ALL;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import static javax.persistence.CascadeType.ALL;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +62,9 @@ public class Person extends ChangeStamp {
 
     @Column(name = "STATSBORGERSKAP", length = 3)
     private String statsborgerskap;
+
+    @Column(name = "STATSBORGERSKAP_REGDATO")
+    private LocalDateTime statsborgerskapRegdato;
 
     @Column(name = "SPESREG", length = 1)
     private String spesreg;
