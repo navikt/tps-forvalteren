@@ -48,7 +48,7 @@ public class RsDollyPersonKriteriumRequest {
 
     private RsAdresse boadresse;
 
-//    private List<RsPostadresse> postadresse;
+    private List<RsPostadresse> postadresse;
 
     private LocalDateTime regdato;
 
