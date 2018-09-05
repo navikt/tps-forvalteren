@@ -114,10 +114,6 @@ public class TestdataControllerForDolly {
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
 
-//        if (personKriterierListe.isWithAdresse()) {
-//            setDummyAdresseOnPersons.execute(personerSomSkalPersisteres);
-//        }
-
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
 
         List<Person> tpsfPersoner = extractOpprettKritereFromDollyKriterier.addDollyKriterumValuesToPersonAndSave(personKriteriumRequest, personerSomSkalPersisteres);

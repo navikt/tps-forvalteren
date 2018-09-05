@@ -53,10 +53,12 @@ public class ExtractOpprettKritereFromDollyKriterier {
 
                     if(req.getBoadresse() != null){
                         person.setBoadresse(mapperFacade.map(req.getBoadresse(), Adresse.class));
+                        person.getBoadresse().setPerson(person);
                     }
 
                     if(req.getPostadresse() != null && !req.getPostadresse().isEmpty()){
                         person.setPostadresse(mapperFacade.mapAsList(req.getPostadresse(), Postadresse.class));
+                        person.getPostadresse().forEach(adr -> adr.setPerson(person));
                     }
                 }
         );
