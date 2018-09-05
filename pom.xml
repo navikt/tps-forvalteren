@@ -11,7 +11,7 @@
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>forUtviklingsmiljo-21</version>
+    <version>forUtviklingsmiljo-23</version>
 
 
     <packaging>pom</packaging>
