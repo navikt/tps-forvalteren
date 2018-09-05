@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tps-forvalteren-domain</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>forUtviklingsmiljo-14</version>
+        <version>forUtviklingsmiljo-17</version>
     </parent>
 
 
