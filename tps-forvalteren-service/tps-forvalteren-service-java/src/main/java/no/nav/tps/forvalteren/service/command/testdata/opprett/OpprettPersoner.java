@@ -33,6 +33,7 @@ public class OpprettPersoner {
                 newPerson.setStatsborgerskap("NOR");
                 newPerson.setStatsborgerskapRegdato(hentDatoFraIdent.extract(ident));
             }
+            newPerson.setRegistertUtvandringsdato(hentDatoFraIdent.extract(ident));
             personer.add(newPerson);
         }
         return personer;

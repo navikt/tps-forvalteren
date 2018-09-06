@@ -2,25 +2,25 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
 
+import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.StatsborgerskapEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
 
 public abstract class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
+
+    private static final String AARSAK_KO_DE_FOR_INNVANDRING = "02";
 
     @Autowired
     private StatsborgerskapEncoder statsborgerskapEncoder;
 
     @Autowired
     private SetAdresse setAdresse;
-
-    private static final String AARSAKSKODE_FOR_INNVANDRING = "02";
 
     @Override
     public SkdMeldingTrans1 execute(Person person) {
@@ -40,6 +40,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setMellomnavn(person.getMellomnavn());
         skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
         skdMeldingTrans1.setStatsborgerskap(statsborgerskapEncoder.encode(person.getStatsborgerskap()));
+        skdMeldingTrans1.setStatsborgerskapRegdato(ConvertDateToString.yyyyMMdd(person.getStatsborgerskapRegdato()));
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
@@ -50,7 +51,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setRegdatoAdr( yyyyMMdd);
         skdMeldingTrans1.setFlyttedatoAdr( yyyyMMdd);
         skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
-        skdMeldingTrans1.setFraLandFlyttedato(yyyyMMdd);
+        skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(person.getRegistertUtvandringsdato()));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
         setAdresse.execute(skdMeldingTrans1, person);
@@ -68,7 +69,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     }
 
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
-        skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_INNVANDRING);
+        skdMeldingTrans1.setAarsakskode(AARSAK_KO_DE_FOR_INNVANDRING);
         skdMeldingTrans1.setInnvandretFraLand( "001");
         skdMeldingTrans1.setFamilienummer("08096740140");
         skdMeldingTrans1.setPersonkode("1");

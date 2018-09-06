@@ -37,7 +37,7 @@ public enum SkdFeltDefinisjonerTrans1 {
     FOEDEKOMMUNE_LAND("foedekommLand", "    ", 16, 4, 279, 282),
     FOEDESTED("foedested", "                    ", 17, 20, 283, 302),
     STATSBORGERSKAP("statsborgerskap", "000", 18, 3, 303, 305),
-    REGDATO_STATSBORGERSKAP("regdatoStatsb", DUMMY_DATO, 19, 8, 306, 313),
+    STATSBORGERSKAP_REGDATO("statsborgerskapRegdato", DUMMY_DATO, 19, 8, 306, 313),
     FAMILIENUMMER("familienummer", DUMMY_IDENT, 20, 11, 314, 324),
     REG_DATO_FAM_NR("regdatoFamnr", DUMMY_DATO, 21, 8, 325, 332),
     PERSONKODE("personkode", "0", 22, 1, 333, 333),

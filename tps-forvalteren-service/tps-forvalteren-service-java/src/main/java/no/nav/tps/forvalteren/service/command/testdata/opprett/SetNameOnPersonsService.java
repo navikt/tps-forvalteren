@@ -10,7 +10,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 public class SetNameOnPersonsService {
 
     private static final String[] fornavn = { "Blå", "Gul", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell", "Luguber", "Smekker", "Glitrende", "Raus", "Naturlig", "Smart", "Kreativ", "God", "Vakker", "Snill",
-            "Lunken", "Absurd", "Robust", "Blåøyd", "Tykkmaget", "Sedat", "Korrupt", "Godslig", "Nobel" };
+            "Lunken", "Absurd", "Robust", "Blåøyd", "Tykkmaget", "Sedat", "Korrupt", "Godslig", "Nobel", "Slapp", "Talentfull", "Frodig", "Treig" };
     private static final String[] etternavn = { "Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake", "Potet", "Konsoll", "Bærepose", "Sjokk", "Blyant", "Penn", "Bolle", "Saks", "Kopp", "Skilpadde", "Busk", "Nordmann",
             "Veggpryd", "Lapp" };
 
@@ -30,5 +30,4 @@ public class SetNameOnPersonsService {
     private String randomEtternavn() {
         return etternavn[randGenerator.nextInt(etternavn.length)];
     }
-
 }
