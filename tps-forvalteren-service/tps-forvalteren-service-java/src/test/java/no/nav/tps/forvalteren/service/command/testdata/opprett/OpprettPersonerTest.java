@@ -1,7 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,14 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpprettPersonerTest {
@@ -29,6 +30,9 @@ public class OpprettPersonerTest {
 
     @Mock
     private HentKjoennFraIdent hentKjoennFraIdentMock;
+
+    @Mock
+    private HentDatoFraIdent hentDatoFraIdent;
 
     @InjectMocks
     private OpprettPersoner opprettPersoner;

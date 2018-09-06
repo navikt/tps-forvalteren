@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.Setter;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
@@ -27,6 +28,7 @@ public class SetRandomAdresseOnPersons {
     private HentGyldigeAdresserService hentGyldigeAdresserService;
 
     @Autowired
+    @Setter
     private HentDatoFraIdent hentDatoFraIdent;
 
     @Autowired
