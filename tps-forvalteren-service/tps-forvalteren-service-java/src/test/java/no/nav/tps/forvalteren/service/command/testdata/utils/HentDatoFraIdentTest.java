@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DateFromIdentTest {
+public class HentDatoFraIdentTest {
 
     @InjectMocks
     private HentDatoFraIdent hentDatoFraIdent;
@@ -39,10 +39,10 @@ public class DateFromIdentTest {
     @Test
     public void extractDateFromDnr1900Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("61050596234");
+        LocalDateTime target = hentDatoFraIdent.extract("61039596234");
 
-        assertThat(target.getYear(), is(equalTo(1905)));
-        assertThat(target.getMonthValue(), is(equalTo(5)));
+        assertThat(target.getYear(), is(equalTo(1995)));
+        assertThat(target.getMonthValue(), is(equalTo(3)));
         assertThat(target.getDayOfMonth(), is(equalTo(21)));
     }
 
