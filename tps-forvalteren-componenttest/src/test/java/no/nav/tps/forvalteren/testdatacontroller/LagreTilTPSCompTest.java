@@ -86,11 +86,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         verify(messageQueueConsumerMock, times(expectedSkdRequests.size())).sendMessage(captor.capture());
         List<String> actualRequests = captor.getAllValues().stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
 
-        for (int i = 0; i < expectedSkdRequests.toString().length(); i++) {
-            if (expectedSkdRequests.toString().toCharArray()[i] != actualRequests.toString().toCharArray()[i]) {
-                System.out.println(i);
-            }
-        }
         assertEquals(expectedSkdRequests.toString(), actualRequests.toString());
     }
     
