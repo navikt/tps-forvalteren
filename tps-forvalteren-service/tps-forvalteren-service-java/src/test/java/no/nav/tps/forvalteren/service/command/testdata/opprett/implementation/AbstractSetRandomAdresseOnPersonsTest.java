@@ -18,6 +18,7 @@ import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.s051.unmarshaller.TpsServiceRutineS051Unmarshaller;
 
@@ -29,7 +30,7 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
     protected static final String POSTNR = "6683";
     protected static final String GATEKODE = "01037";
     protected static final String KOMMUNENR = "1571";
-    
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     
@@ -53,6 +54,7 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
         toPersoner = Arrays.asList(aMalePerson().build(), aMalePerson().build());
         tpsServiceRoutineResponse = createServiceRutineTpsResponse(tpsResponsUrl);
         when(hentGyldigeAdresserServiceMock.hentTilfeldigAdresse(eq(1), any(), any())).thenReturn(tpsServiceRoutineResponse);
+        setRandomAdresseOnPersons.setHentDatoFraIdent(mock(HentDatoFraIdent.class));
     }
     
 }

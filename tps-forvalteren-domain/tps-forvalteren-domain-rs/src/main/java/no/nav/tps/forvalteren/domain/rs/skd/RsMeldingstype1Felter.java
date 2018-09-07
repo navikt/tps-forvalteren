@@ -123,7 +123,7 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
 	private String utvandringstype;
 	private String grunnkrets;
 	private String statsborgerskap;
-	private String regdatoStatsb;
+	private String statsborgerskapRegdato;
 	private String statsborgerskap2;
 	private String regdatoStatsb2;
 	private String statsborgerskap3;

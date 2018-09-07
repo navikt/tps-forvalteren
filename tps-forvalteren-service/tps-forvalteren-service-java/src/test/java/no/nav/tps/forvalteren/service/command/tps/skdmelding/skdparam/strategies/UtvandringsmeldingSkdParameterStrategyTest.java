@@ -1,20 +1,21 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import java.time.LocalDateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.UtvandringSkdParametere;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import static org.mockito.Mockito.mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UtvandringsmeldingSkdParameterStrategyTest {
@@ -38,8 +39,8 @@ public class UtvandringsmeldingSkdParameterStrategyTest {
         person.setIdent(FNR);
         person.setRegdato(LocalDateTime.now());
         person.setUtvandretTilLand(UTVANDRET_TIL_LAND);
-        person.setRegistertUtvandringsdato(UTVANDRET_DATO);
-        person.setFlyttetTilLandDato(FLYTTE_DATO);
+        person.setUtvandretTilLandRegdato(UTVANDRET_DATO);
+        person.setUtvandretTilLandFlyttedato(FLYTTE_DATO);
 
     }
 

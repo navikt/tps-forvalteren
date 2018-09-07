@@ -1,7 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,17 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OpprettPersonerTest {
+public class OpprettPersonerServiceTest {
 
     private List<String> identerInput = new ArrayList<>();
 
@@ -30,8 +31,11 @@ public class OpprettPersonerTest {
     @Mock
     private HentKjoennFraIdent hentKjoennFraIdentMock;
 
+    @Mock
+    private HentDatoFraIdent hentDatoFraIdent;
+
     @InjectMocks
-    private OpprettPersoner opprettPersoner;
+    private OpprettPersonerService opprettPersonerService;
 
     @Before
     public void setup() {
@@ -41,7 +45,7 @@ public class OpprettPersonerTest {
     @Test
     public void opprettPersonerOppretterRiktigAntall(){
         identerInput.addAll(Arrays.asList(identDummy1,identDummyDNR,identDummyBNR));
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
 
         assertThat(personer.size() == 3, is(true));
     }
@@ -49,14 +53,14 @@ public class OpprettPersonerTest {
     @Test
     public void identInputErSammeIdentSomPersonFaar() {
         identerInput.add(identDummy1);
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdent(), is(identDummy1));
     }
 
     @Test
     public void hvisKjonnErMannSaErPersonMann() {
         identerInput.add(identDummy1);
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getKjonn(), is('M'));
     }
 
@@ -64,28 +68,28 @@ public class OpprettPersonerTest {
     public void hvisKjonnErKvinneSaErPersonKvinne() {
         when(hentKjoennFraIdentMock.execute(anyString())).thenReturn('K');
         identerInput.add(identDummy1);
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getKjonn(), is('K'));
     }
 
     @Test
     public void hvisIdentErDNRSaaHarPersonDNR(){
         identerInput.add(identDummyDNR);
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdenttype(), is("DNR"));
     }
 
     @Test
     public void hvisIdentErBNRSaaHarPersonBNR(){
         identerInput.add(identDummyBNR);
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdenttype(), is("BNR"));
     }
 
     @Test
     public void hvisIdentErFNRSaaHarPersonFNR(){
         identerInput.add(identDummy1);
-        List<Person> personer = opprettPersoner.execute(identerInput);
+        List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdenttype(), is("FNR"));
     }
 }

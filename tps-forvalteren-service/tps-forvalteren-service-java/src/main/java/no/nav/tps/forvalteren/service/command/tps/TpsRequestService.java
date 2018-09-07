@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
+import java.io.IOException;
+import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.xml.XmlMapper;
@@ -30,7 +32,8 @@ public class TpsRequestService {
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
     
-    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context, long timeout) throws Exception {
+    public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context, long timeout)
+            throws JMSException, IOException {
 
         forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
 

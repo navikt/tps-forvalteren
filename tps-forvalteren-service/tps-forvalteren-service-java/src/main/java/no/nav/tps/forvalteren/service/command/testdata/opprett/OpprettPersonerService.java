@@ -1,20 +1,24 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
 
 @Service
-public class OpprettPersoner {
+public class OpprettPersonerService {
 
     @Autowired
     private HentKjoennFraIdent hentKjoennFraIdent;
+
+    @Autowired
+    private HentDatoFraIdent hentDatoFraIdent;
 
 
     public List<Person> execute(Collection<String> tilgjengeligIdenter) {
@@ -25,6 +29,11 @@ public class OpprettPersoner {
             newPerson.setIdent(ident);
             newPerson.setKjonn(hentKjoennFraIdent.execute(ident));
             newPerson.setRegdato(LocalDateTime.now());
+            if ("FNR".equals(newPerson.getIdenttype())) {
+                newPerson.setStatsborgerskap("NOR");
+                newPerson.setStatsborgerskapRegdato(hentDatoFraIdent.extract(ident));
+            }
+            newPerson.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(ident));
             personer.add(newPerson);
         }
         return personer;

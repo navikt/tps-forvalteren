@@ -14,14 +14,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
 import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
+
 @RunWith(Parameterized.class)
 public class SetRandomAdresseOnPersonsTest extends AbstractSetRandomAdresseOnPersonsTest{
-    
+
     @Parameterized.Parameter
     public String resource;
     @Parameterized.Parameters
