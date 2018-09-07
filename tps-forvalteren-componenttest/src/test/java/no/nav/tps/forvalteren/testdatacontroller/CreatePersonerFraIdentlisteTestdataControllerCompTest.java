@@ -18,8 +18,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 @Transactional
 public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends AbstractTestdataControllerComponentTest {
     
-    private static final int IDENT1 = 03051750127;
-    private static final int IDENT2 = 02304040404;
+    private static final String IDENT1 = "03051750127";
+    private static final String IDENT2 = "02304040404";
     private Long gruppeId;
     private Gruppe testgruppe;
     
@@ -28,7 +28,7 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
         return "/createpersoner/" + gruppeId;
     }
     
-    public void setupTestdataInTpsfDatabase() {
+    private void setupTestdataInTpsfDatabase() {
         testgruppe = gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
         gruppeId = testgruppe.getId();
     }
@@ -40,7 +40,8 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldCreatePerson() throws Exception {
         setupTestdataInTpsfDatabase();
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(getUrl())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("[\"" + IDENT1 + "\",\"" + IDENT2 + "\"]"))
                 .andExpect(status().isOk());
         //sjekk db
