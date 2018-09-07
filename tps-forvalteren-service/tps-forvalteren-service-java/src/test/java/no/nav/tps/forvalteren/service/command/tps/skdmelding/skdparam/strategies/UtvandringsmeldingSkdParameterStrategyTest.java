@@ -38,8 +38,8 @@ public class UtvandringsmeldingSkdParameterStrategyTest {
         person.setIdent(FNR);
         person.setRegdato(LocalDateTime.now());
         person.setUtvandretTilLand(UTVANDRET_TIL_LAND);
-        person.setRegistertUtvandringsdato(UTVANDRET_DATO);
-        person.setFlyttetTilLandDato(FLYTTE_DATO);
+        person.setUtvandretTilLandFlyttedato(UTVANDRET_DATO);
+        person.setUtvandretTilLandRegdato(FLYTTE_DATO);
 
     }
 

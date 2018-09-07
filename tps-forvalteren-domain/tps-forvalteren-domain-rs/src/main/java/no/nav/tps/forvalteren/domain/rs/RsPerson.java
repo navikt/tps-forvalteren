@@ -44,12 +44,26 @@ public class RsPerson {
 
     private String statsborgerskap;
 
+    private LocalDateTime statsborgerskapRegdato;
+
     @Size(min = 1, max = 1)
     private String spesreg;
 
     private LocalDateTime spesregDato;
 
     private LocalDateTime doedsdato;
+
+    private String innvandretFraLand;
+
+    private LocalDateTime innvandretFraLandFlyttedato;
+
+    private LocalDateTime innvandretFraLandRegdato;
+
+    private String utvandretTilLand;
+
+    private LocalDateTime utvandretTilLandFlyttedato;
+
+    private LocalDateTime utvandretTilLandRegdato;
 
     private RsAdresse boadresse;
 

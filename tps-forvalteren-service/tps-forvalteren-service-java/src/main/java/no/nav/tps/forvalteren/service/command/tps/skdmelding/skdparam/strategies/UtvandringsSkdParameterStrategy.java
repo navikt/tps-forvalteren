@@ -42,8 +42,8 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
-        LocalDateTime meldingRegDato = person.getRegistertUtvandringsdato() != null ? person.getRegistertUtvandringsdato() : person.getRegdato();
-        LocalDateTime flytteRegDato = person.getFlyttetTilLandDato() != null ? person.getFlyttetTilLandDato() : person.getRegdato();
+        LocalDateTime meldingRegDato = person.getUtvandretTilLandFlyttedato() != null ? person.getUtvandretTilLandFlyttedato() : person.getRegdato();
+        LocalDateTime flytteRegDato = person.getUtvandretTilLandRegdato() != null ? person.getUtvandretTilLandRegdato() : person.getRegdato();
 
         skdMeldingTrans1.setMaskintid(hhMMss);
         skdMeldingTrans1.setMaskindato(yyyyMMdd);

@@ -62,6 +62,9 @@ public class Person extends ChangeStamp {
     @Column(name = "STATSBORGERSKAP", length = 3)
     private String statsborgerskap;
 
+    @Column(name = "STATSBORGERSKAP_REGDATO")
+    private LocalDateTime statsborgerskapRegdato;
+
     @Column(name = "SPESREG", length = 1)
     private String spesreg;
 
@@ -70,15 +73,23 @@ public class Person extends ChangeStamp {
 
     @Column(name = "DOEDSDATO")
     private LocalDateTime doedsdato;
+    @Column(name = "INNVANDRET_FRA_LAND", length = 3)
+    private String innvandretFraLand;
+
+    @Column(name = "INNVANDRET_FRA_LAND_FLYTTEDATO")
+    private LocalDateTime innvandretFraLandFlyttedato;
+
+    @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
+    private LocalDateTime innvandretFraLandRegdato;
 
     @Column(name = "UTVANDRET_TIL_LAND", length = 3)
     private String utvandretTilLand;
 
-    @Column(name = "REGISTRERT_UTVANDR_DATO")
-    private LocalDateTime registertUtvandringsdato;
+    @Column(name = "UTVANDRET_TIL_LAND_FLYTTEDATO")
+    private LocalDateTime utvandretTilLandFlyttedato;
 
-    @Column(name = "FLYTTET_TIL_LAND_DATO")
-    private LocalDateTime flyttetTilLandDato;
+    @Column(name = "UTVANDRET_TIL_LAND_REGDATO")
+    private LocalDateTime utvandretTilLandRegdato;
 
     @Column(name = "EGEN_ANSATT_DATO_FOM")
     private LocalDateTime egenAnsattDatoFom;
