@@ -12,7 +12,7 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
 
 @Service
-public class OpprettPersoner {
+public class OpprettPersonerService {
 
     @Autowired
     private HentKjoennFraIdent hentKjoennFraIdent;
@@ -33,7 +33,7 @@ public class OpprettPersoner {
                 newPerson.setStatsborgerskap("NOR");
                 newPerson.setStatsborgerskapRegdato(hentDatoFraIdent.extract(ident));
             }
-            newPerson.setRegistertUtvandringsdato(hentDatoFraIdent.extract(ident));
+            newPerson.setUtvandretTilLandFlyttedato(hentDatoFraIdent.extract(ident));
             personer.add(newPerson);
         }
         return personer;

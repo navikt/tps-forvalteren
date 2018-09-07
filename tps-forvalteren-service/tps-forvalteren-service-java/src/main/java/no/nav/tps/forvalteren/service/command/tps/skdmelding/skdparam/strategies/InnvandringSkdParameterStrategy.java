@@ -46,36 +46,35 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
         skdMeldingTrans1.setMaskintid(hhMMss);
-        skdMeldingTrans1.setMaskindato( yyyyMMdd);
-        skdMeldingTrans1.setRegDato( yyyyMMdd);
-        skdMeldingTrans1.setRegdatoAdr( yyyyMMdd);
-        skdMeldingTrans1.setFlyttedatoAdr( yyyyMMdd);
+        skdMeldingTrans1.setMaskindato(yyyyMMdd);
+        skdMeldingTrans1.setRegDato(yyyyMMdd);
+        skdMeldingTrans1.setRegdatoAdr(yyyyMMdd);
         skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
-        skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(person.getRegistertUtvandringsdato()));
+        skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(person.getUtvandretTilLandFlyttedato()));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
         setAdresse.execute(skdMeldingTrans1, person);
         addSpesreg(skdMeldingTrans1, person);
     }
 
-    private void addSpesreg( SkdMeldingTrans1 skdMeldingTrans1, Person person) {
+    private void addSpesreg(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
         if (person.getSpesreg() != null) {
-            skdMeldingTrans1.setSpesRegType( person.getSpesreg());
+            skdMeldingTrans1.setSpesRegType(person.getSpesreg());
         }
         LocalDateTime spesregDato = person.getSpesregDato();
         if (spesregDato != null) {
-            skdMeldingTrans1.setDatoSpesRegType( String.format("%04d%02d%02d", spesregDato.getYear(), spesregDato.getMonthValue(), spesregDato.getDayOfMonth()));
+            skdMeldingTrans1.setDatoSpesRegType(String.format("%04d%02d%02d", spesregDato.getYear(), spesregDato.getMonthValue(), spesregDato.getDayOfMonth()));
         }
     }
 
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
         skdMeldingTrans1.setAarsakskode(AARSAK_KO_DE_FOR_INNVANDRING);
-        skdMeldingTrans1.setInnvandretFraLand( "001");
+        skdMeldingTrans1.setInnvandretFraLand("001");
         skdMeldingTrans1.setFamilienummer("08096740140");
         skdMeldingTrans1.setPersonkode("1");
         skdMeldingTrans1.setSivilstand("1");
         skdMeldingTrans1.setTranstype(TRANSTYPE_1);
-        skdMeldingTrans1.setStatuskode( "1");
+        skdMeldingTrans1.setStatuskode("1");
     }
-    
+
 }

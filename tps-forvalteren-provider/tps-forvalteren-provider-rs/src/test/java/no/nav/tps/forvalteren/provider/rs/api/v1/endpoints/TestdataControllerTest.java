@@ -33,9 +33,9 @@ import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonB
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
@@ -47,10 +47,10 @@ public class TestdataControllerTest {
     private MapperFacade mapper;
 
     @Mock
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private PersonNameService personNameService;
 
     @Mock
-    private OpprettPersoner opprettPersonerFraIdenter;
+    private OpprettPersonerService opprettPersonerServiceFraIdenter;
 
     @Mock
     private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
@@ -109,14 +109,14 @@ public class TestdataControllerTest {
 
         when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriteriumRequest.class))).thenReturn(testdataRequestsList);
         when(ekstraherIdenterFraTestdataRequests.execute(testdataRequestsList)).thenReturn(identer);
-        when(opprettPersonerFraIdenter.execute(identer)).thenReturn(personerSomSkalPersisteres);
+        when(opprettPersonerServiceFraIdenter.execute(identer)).thenReturn(personerSomSkalPersisteres);
 
         testdataController.createNewPersonsFromKriterier(GRUPPE_ID, rsPersonKriteriumRequest);
 
         verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
         verify(ekstraherIdenterFraTestdataRequests).execute(testdataRequestsList);
-        verify(opprettPersonerFraIdenter).execute(identer);
-        verify(setNameOnPersonsService).execute(personerSomSkalPersisteres);
+        verify(opprettPersonerServiceFraIdenter).execute(identer);
+        verify(personNameService).execute(personerSomSkalPersisteres);
         verify(setGruppeIdAndSavePersonBulkTx).execute(personerSomSkalPersisteres, GRUPPE_ID);
     }
 
@@ -157,12 +157,12 @@ public class TestdataControllerTest {
         List<String> personIdentListe = new ArrayList<>();
         List<Person> personer = new ArrayList<>();
 
-        when(opprettPersonerFraIdenter.execute(personIdentListe)).thenReturn(personer);
+        when(opprettPersonerServiceFraIdenter.execute(personIdentListe)).thenReturn(personer);
 
         testdataController.createPersonerFraIdentliste(GRUPPE_ID, personIdentListe);
 
-        verify(opprettPersonerFraIdenter).execute(personIdentListe);
-        verify(setNameOnPersonsService).execute(personer);
+        verify(opprettPersonerServiceFraIdenter).execute(personIdentListe);
+        verify(personNameService).execute(personer);
         verify(setGruppeIdOnPersons).setGruppeId(personer, GRUPPE_ID);
         verify(savePersonListService).execute(personer);
     }

@@ -45,9 +45,9 @@ import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
@@ -63,13 +63,13 @@ public class TestdataController {
     private static final String REST_SERVICE_NAME = "testdata";
 
     @Autowired
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private PersonNameService personNameService;
 
     @Autowired
     private VergemaalRepository vergemaalRepository;
 
     @Autowired
-    private OpprettPersoner opprettPersonerFraIdenter;
+    private OpprettPersonerService opprettPersonerServiceFraIdenter;
 
     @Autowired
     private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
@@ -129,12 +129,12 @@ public class TestdataController {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
+        List<Person> personerSomSkalPersisteres = opprettPersonerServiceFraIdenter.execute(identer);
 
         if (personKriterierListe.isWithAdresse()) {
             setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
         }
-        setNameOnPersonsService.execute(personerSomSkalPersisteres);
+        personNameService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
     }
 
@@ -167,8 +167,8 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
     @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
     public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
-        List<Person> personer = opprettPersonerFraIdenter.execute(personIdentListe);
-        setNameOnPersonsService.execute(personer);
+        List<Person> personer = opprettPersonerServiceFraIdenter.execute(personIdentListe);
+        personNameService.execute(personer);
         setGruppeIdOnPersons.setGruppeId(personer, gruppeId);
         savePersonListService.execute(personer);
     }
