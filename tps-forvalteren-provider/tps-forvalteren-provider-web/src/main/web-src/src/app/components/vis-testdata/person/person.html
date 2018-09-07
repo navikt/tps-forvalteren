@@ -111,4 +111,18 @@
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Fra land flyttedato</md-tooltip>
+        <label>Fra land flyttedato</label>
+        <md-datepicker name="innvandretFraLandFlyttedato"
+                       md-current-view="year"
+                       ng-model="person.innvandretFraLandFlyttedato"
+                       ng-change="endret($index + pager.startIndex)">
+        </md-datepicker>
+        <div ng-messages="requestForm.innvandretFraLandFlyttedato.$error"
+             ng-show="requestForm.innvandretFraLandFlyttedato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+        </div>
+    </md-input-container>
 </div>

@@ -50,7 +50,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setRegDato(yyyyMMdd);
         skdMeldingTrans1.setRegdatoAdr(yyyyMMdd);
         skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
-        skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(person.getUtvandretTilLandFlyttedato()));
+        skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(person.getInnvandretFraLandFlyttedato()));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
         setAdresse.execute(skdMeldingTrans1, person);

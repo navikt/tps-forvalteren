@@ -198,6 +198,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             function fixDatoForDatepicker(person) {
                 person.regdato = person.regdato || null;
                 person.statsborgerskapRegdato = person.statsborgerskapRegdato || null;
+                person.innvandretFraLandFlyttedato = person.innvandretFraLandFlyttedato || null;
                 person.spesregDato = person.spesregDato || null;
                 person.doedsdato = person.doedsdato || null;
                 person.gateadresse = person.gateadresse || {};
@@ -316,6 +317,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 fixTimezone(person.statsborgerskapRegdato);
                 fixTimezone(person.spesregDato);
                 fixTimezone(person.doedsdato);
+                fixTimezone(person.innvandretFraLandFlyttedato);
                 return person;
             }
 
