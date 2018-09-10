@@ -40,7 +40,7 @@ fasitResources:
       resourceType: datasource
     - alias: "tps-forvalterenProperties"
       resourceType: applicationproperties
-    - alias: "tps.foresporsel.xml.o"
+    - alias: "TPS_FORESPORSEL_XML_O"
       resourceType: queue
     - alias: "virksomhet:Diskresjonskode_v1"
       resourceType: webserviceendpoint
