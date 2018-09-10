@@ -46,7 +46,7 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                     $scope.utvandringStatus = utvandringResult.status;
 
                 }, function (error) {
-                    utilsService.showAlertError(error, '0000-GA-TPSF-LES');
+                    utilsService.showAlertError(error);
                     $scope.loading = false;
                 });
             }
