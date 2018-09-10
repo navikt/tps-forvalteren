@@ -23,7 +23,6 @@ spring:
     banner-mode: 'off'
 
 enable.caching: false
-node.hostname: localhost
 
 ### JDBC SEssions Spring ###
 spring.session:

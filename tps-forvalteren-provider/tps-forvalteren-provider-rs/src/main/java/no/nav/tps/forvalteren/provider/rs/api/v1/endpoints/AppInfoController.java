@@ -14,9 +14,6 @@ public class AppInfoController {
     @Value("${fasit.environment.name}")
     private String environmentName;
 
-    @Value("${node.hostname}")
-    private String hostname;
-
     @Value("${application.version}")
     private String appVersion;
 
@@ -24,7 +21,6 @@ public class AppInfoController {
     public ApplicationInfo getInfo() {
         ApplicationInfo applicationInfo = new ApplicationInfo();
         applicationInfo.setApplicationVersion(appVersion);
-        applicationInfo.setHostName(hostname);
         applicationInfo.setEnvironment(environmentName);
 
         return applicationInfo;
