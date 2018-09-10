@@ -1,11 +1,15 @@
 package no.nav.tps.forvalteren.consumer.ws.sts;
 
-import javax.annotation.PostConstruct;
-import javax.xml.namespace.QName;
+import static org.apache.cxf.message.Message.ENDPOINT_ADDRESS;
+
 import java.util.HashMap;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
+import javax.xml.namespace.QName;
+import org.apache.cxf.BusException;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.EndpointException;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.apache.cxf.ws.policy.EndpointPolicy;
@@ -20,20 +24,18 @@ import org.apache.cxf.ws.security.trust.STSClient;
 import org.apache.neethi.Policy;
 import org.springframework.beans.factory.annotation.Value;
 
-import static org.apache.cxf.message.Message.ENDPOINT_ADDRESS;
-
 public class TpsfStsClient extends STSClient {
 
     private TokenStore stsTokenStore;
     private Client clientTpsf;
 
-    @Value("${SRVTPS_FORVALTEREN_USERNAME}")
+    @Value("${srvtps.forvalteren.username}")
     private String srvtpsBrukernavn;
 
-    @Value("${SRVTPS_FORVALTEREN_PASSWORD}")
+    @Value("${srvtps.forvalteren.password}")
     private String srvtpsPassord;
 
-    @Value("${SECURITYTOKENSERVICE_URL}")
+    @Value("${securitytokenservice.url}")
     private String securityTokenUrl;
 
     public TpsfStsClient(Client client) {
@@ -42,7 +44,7 @@ public class TpsfStsClient extends STSClient {
     }
 
     @PostConstruct
-    public void configure() throws Exception {
+    public void configure() throws EndpointException, BusException {
         configureStsForSystemUser();
         configureStsPolicy();
         disableCNCheckIfConfigured();

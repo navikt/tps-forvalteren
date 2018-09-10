@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
 public class HentGyldigeAdresserService {
-    @Value("${FASIT_ENVIRONMENT_NAME}")
+    @Value("${fasit.environment.name}")
     private String env;
     
     @Autowired

@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.config;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
+import javax.jms.JMSException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,18 +49,18 @@ import no.nav.tps.forvalteren.service.command.Command;
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
 public class CommandConfig {
-    
+
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
-    
-    @Value("${FASIT_ENVIRONMENT_NAME}")
+
+    @Value("${fasit.environment.name}")
     private String deployedEnvironment;
-    
+
     @Bean
-    MessageQueueConsumer defaultMessageQueueService() throws Exception {
+    MessageQueueConsumer defaultMessageQueueService() throws JMSException {
         return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
-    
+
     @Bean
     XmlMapper xmlMapper() {
         XmlMapper xmlMapper = new XmlMapper();
@@ -72,117 +73,117 @@ public class CommandConfig {
     ServiceRoutineResolver sjekkTps() {
         return new S000SjekkTpsTilgjengelig();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentGT() {
         return new S610HentGT();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentTknr() {
         return new S002HentTknr();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentAdresser() {
         return new S103HentAdresser();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentAdresseLinjehistorikk() {
         return new S015HentAdresselinjehistorikk();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentAdressehistorikk() {
         return new S010Adressehistorikk();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentUtvandring() {
         return new S016Utvandring();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnrTestdata() {
         return new M201HentFnrNavnDiskresjonPaFlerePersonerTestdata();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentHistorieForFlereFnr() {
         return new M201HentFnrNavnDiskresjonPaFlerePersoner();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentKontaktinformasjon() {
         return new S600HentKontaktinformasjon();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentPersonSok() {
         return new S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentFnrHistorikk() {
         return new S011HentFnrDnrHistorikk();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentTknrHistorikk() {
         return new S013HentTknrHistorikk();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentRelasjoner() {
         return new S005Relasjoner();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentPersonopplysninger() {
         return new S004HentPersonopplysninger();
     }
-    
+
     @Bean
     ServiceRoutineResolver finnGyldigeAdresser() {
         return new S051FinnGyldigeAdresser();
     }
-    
+
     @Bean
     ServiceRoutineResolver hentVergemaal() {
         return new S137HentVergemaal();
     }
-    
+
     @Bean
     ServiceRoutineResolver endreEgenAnsatt() {
         return new EndreEgenAnsatt();
     }
-    
+
     @Bean
     ServiceRoutineResolver endreSikkerhetsTiltak() {
         return new EndreSikkerhetsTiltak();
     }
-    
+
     @Bean
     ServiceRoutineResolver opphorSikkerhetsTiltak() {
         return new OpphørSikkerhetsTiltak();
     }
-    
+
     @Bean
     ServiceRoutineResolver opphosEgenAnsatt() {
         return new OpphørEgenAnsatt();
     }
-    
+
     @Bean
     public SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
     }
-    
+
     @Bean
     SkdMeldingResolver innvandringUpdate() {
         return new InnvandringAarsakskode02Tildelingskode2Update();
     }
-    
+
     @Bean
     SkdMeldingResolver vigsel() {
         return new VigselAarsakskode11();
@@ -197,12 +198,12 @@ public class CommandConfig {
     SkdMeldingResolver doedsmelding() {
         return new DoedsmeldingAarsakskode43();
     }
-    
+
     @Bean
     SkdMeldingResolver doedsmeldingAnnuller() {
         return new DoedsmeldingAnnulleringAarsakskode45();
     }
-    
+
     @Bean
     SkdMeldingResolver utvandringsmelding() {
         return new UtvandringAarsakskode32();
