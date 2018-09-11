@@ -75,4 +75,13 @@ public class HentDatoFraIdentTest {
         assertThat(target.getMonthValue(), is(equalTo(5)));
         assertThat(target.getDayOfMonth(), is(equalTo(21)));
     }
+
+    @Test
+    public void extractDateFromFnr1800Century() throws Exception {
+        LocalDateTime target = hentDatoFraIdent.extract("21256556234");
+
+        assertThat(target.getYear(), is(equalTo(1865)));
+        assertThat(target.getMonthValue(), is(equalTo(5)));
+        assertThat(target.getDayOfMonth(), is(equalTo(21)));
+    }
 }

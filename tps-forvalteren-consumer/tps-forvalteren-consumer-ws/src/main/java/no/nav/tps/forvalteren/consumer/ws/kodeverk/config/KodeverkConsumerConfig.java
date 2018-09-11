@@ -27,7 +27,7 @@ public class KodeverkConsumerConfig {
     KodeverkPortType kodeverkWs() {
 
         if (logger.isInfoEnabled()) {
-            logger.info("Tjeneste etablert med endepunkt: " + kodeverkEndpointUrl);
+            logger.info("Tjeneste etablert med endepunkt: {}", kodeverkEndpointUrl);
         }
         return ConsumerConfigUtil.createWsProxy(KodeverkPortType.class, WSDL_URL, SERVICE, SERVICE, kodeverkEndpointUrl);
     }

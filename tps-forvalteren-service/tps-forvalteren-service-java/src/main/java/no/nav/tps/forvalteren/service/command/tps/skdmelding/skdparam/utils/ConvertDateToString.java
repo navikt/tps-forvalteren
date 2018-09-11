@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ConvertDateToString {
+public final class ConvertDateToString {
 
     private ConvertDateToString() {
     }
@@ -22,7 +22,7 @@ public class ConvertDateToString {
         return localDateTime != null ? localDateTime.format(TIME_FORMAT) : null;
     }
 
-    public static String yyyy_MM_dd(LocalDateTime localDateTime) {
+    public static String yyyysMMsdd(LocalDateTime localDateTime) {
 
         return localDateTime != null ? localDateTime.format(DATE2_FORMAT) : null;
     }

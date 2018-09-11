@@ -15,12 +15,6 @@ import org.springframework.stereotype.Component;
 public class HentDatoFraIdent {
 
     public LocalDateTime extract(String ident) {
-        // Fix D-number
-        int day = ident.charAt(0) >= '4' ? parseInt(ident.substring(0, 2)) - 40 :
-                parseInt(ident.substring(0, 2));
-        // Fix B-number
-        int month = ident.charAt(2) >= '2' ? parseInt(ident.substring(2, 4)) - 20 :
-                parseInt(ident.substring(2, 4));
 
         int year = parseInt(ident.substring(4, 6));
         int individ = parseInt(ident.substring(6, 9));
@@ -37,6 +31,18 @@ public class HentDatoFraIdent {
             century = 2000;
         }
 
-        return LocalDateTime.of(century + year, month, day, 0, 0);
+        return LocalDateTime.of(century + year, getMonth(ident), getDay(ident), 0, 0);
+    }
+
+    private int getDay(String ident) {
+        // Fix D-number
+        return ident.charAt(0) >= '4' ? parseInt(ident.substring(0, 2)) - 40 :
+                parseInt(ident.substring(0, 2));
+    }
+
+    private int getMonth(String ident) {
+        // Fix B-number
+        return ident.charAt(2) >= '2' ? parseInt(ident.substring(2, 4)) - 20 :
+                parseInt(ident.substring(2, 4));
     }
 }

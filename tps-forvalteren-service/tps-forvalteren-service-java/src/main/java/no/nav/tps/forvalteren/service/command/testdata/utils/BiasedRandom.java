@@ -4,6 +4,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BiasedRandom {
 
+    private BiasedRandom() {
+
+    }
+
     public static int lagBiasedRandom(int low, int high, float bias){
         float biasedRandom = ThreadLocalRandom.current().nextFloat();
         double biasedRandomD = Math.pow(biasedRandom, bias);

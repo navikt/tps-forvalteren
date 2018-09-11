@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
-public class WhitespaceConstants {
+public final class WhitespaceConstants {
 
     private WhitespaceConstants() {
     }

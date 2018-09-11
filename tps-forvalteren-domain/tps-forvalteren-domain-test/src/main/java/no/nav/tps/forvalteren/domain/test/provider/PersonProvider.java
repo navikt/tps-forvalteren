@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
-public class PersonProvider {
+public final class PersonProvider {
 
     private PersonProvider() {}
 

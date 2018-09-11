@@ -26,7 +26,7 @@ public class DiskresjonskodeConfig {
     @Bean
     DiskresjonskodePortType diskresjonskodePortType() {
         if (logger.isInfoEnabled()) {
-            logger.info("Tjeneste etablert med endepunkt: " + diskresjonskodeAddress);
+            logger.info("Tjeneste etablert med endepunkt: {}", diskresjonskodeAddress);
         }
         return ConsumerConfigUtil.createWsProxy(DiskresjonskodePortType.class, DISKRESJON_WSDL_URL, DISKRESJON_QNAME, DISKRESJON_QNAME, diskresjonskodeAddress);
     }

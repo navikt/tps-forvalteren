@@ -57,8 +57,9 @@ public class TpsfStsClient extends STSClient {
         stsProperties.put("security.password", srvtpsPassord);
         getClient().getRequestContext().put(ENDPOINT_ADDRESS, securityTokenUrl);
         setProperties(stsProperties);
+
         if (logger.isInfoEnabled()) {
-            logger.info("Tjeneste etablert med endepunkt: " + securityTokenUrl);
+            logger.info("Tjeneste etablert med endepunkt: {}", securityTokenUrl);
         }
     }
 
