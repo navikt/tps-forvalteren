@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import com.sun.istack.internal.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 
