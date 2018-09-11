@@ -22,9 +22,13 @@ import org.apache.cxf.ws.security.tokenstore.TokenStore;
 import org.apache.cxf.ws.security.tokenstore.TokenStoreFactory;
 import org.apache.cxf.ws.security.trust.STSClient;
 import org.apache.neethi.Policy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 public class TpsfStsClient extends STSClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(TpsfStsClient.class);
 
     private TokenStore stsTokenStore;
     private Client clientTpsf;
@@ -53,6 +57,9 @@ public class TpsfStsClient extends STSClient {
         stsProperties.put("security.password", srvtpsPassord);
         getClient().getRequestContext().put(ENDPOINT_ADDRESS, securityTokenUrl);
         setProperties(stsProperties);
+        if (logger.isInfoEnabled()) {
+            logger.info("Tjeneste etablert med endepunkt: " + securityTokenUrl);
+        }
     }
 
     @Override

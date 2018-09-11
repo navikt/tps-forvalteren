@@ -26,7 +26,7 @@ public class EgenAnsattConfig {
     @Bean
     EgenAnsattV1 egenAnsatt() {
         if (logger.isInfoEnabled()) {
-            logger.info("Tjeneste etablert på endepunkt: " + egenAnsattAddress);
+            logger.info("Tjeneste etablert med endepunkt: " + egenAnsattAddress);
         }
         return ConsumerConfigUtil.createWsProxy(EgenAnsattV1.class, PIP_EGENANSATT_WSDL_URL, PIP_EGENANSATT_SERVICE_NAME, PIP_EGENANSATT_SERVICE_NAME, egenAnsattAddress);
     }
