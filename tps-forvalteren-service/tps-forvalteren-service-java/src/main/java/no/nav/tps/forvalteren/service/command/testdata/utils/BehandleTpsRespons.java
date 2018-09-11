@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 
-public class BehandleTpsRespons {
+public final class BehandleTpsRespons {
 
     private BehandleTpsRespons() {
     }

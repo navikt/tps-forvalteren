@@ -29,7 +29,7 @@ public class OpprettEgenAnsattMelding {
     
     public TpsEndreEgenansattRequest buildRequest(Person person) {
         TpsEndreEgenansattRequest request = TpsEndreEgenansattRequest.builder()
-                .serviceRutinenavn( EGEN_ANSATT_MLD_NAVN)
+                .serviceRutinenavn(EGEN_ANSATT_MLD_NAVN)
                 .offentligIdent( person.getIdent())
                 .fom( ConvertDateToString.yyyysMMsdd(person.getEgenAnsattDatoFom()))
                 .build();

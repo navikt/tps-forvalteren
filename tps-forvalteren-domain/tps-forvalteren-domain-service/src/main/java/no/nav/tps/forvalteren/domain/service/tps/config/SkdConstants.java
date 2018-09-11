@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.config;
 
-public class SkdConstants {
+public final class SkdConstants {
 
     private SkdConstants() {
     }

@@ -2,10 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata.utils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BiasedRandom {
+public final class BiasedRandom {
 
     private BiasedRandom() {
-
     }
 
     public static int lagBiasedRandom(int low, int high, float bias){
