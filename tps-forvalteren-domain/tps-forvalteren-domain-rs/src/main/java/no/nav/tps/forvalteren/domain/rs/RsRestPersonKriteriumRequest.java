@@ -32,7 +32,6 @@ public class RsRestPersonKriteriumRequest {
     @Max(99)
     private int antall;
 
-    @Nullable
     private RsSimpleRelasjoner relasjoner;
 
     private boolean withAdresse;
