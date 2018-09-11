@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import com.sun.istack.internal.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
-public class RsDollyPersonKriteriumRequest {
+public class RsRestPersonKriteriumRequest {
 
     private List<String> environments;
 
@@ -30,6 +31,9 @@ public class RsDollyPersonKriteriumRequest {
     @Min(1)
     @Max(99)
     private int antall;
+
+    @Nullable
+    private RsSimpleRelasjoner relasjoner;
 
     private boolean withAdresse;
 
@@ -51,8 +55,6 @@ public class RsDollyPersonKriteriumRequest {
     private List<RsPostadresse> postadresse;
 
     private LocalDateTime regdato;
-
-    private List<RsSimpleRelasjon> relasjoner;
 
     private LocalDateTime egenAnsattDatoFom;
 

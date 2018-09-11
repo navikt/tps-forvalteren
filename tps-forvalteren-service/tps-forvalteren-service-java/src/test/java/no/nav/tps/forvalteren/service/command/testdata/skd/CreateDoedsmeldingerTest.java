@@ -80,38 +80,38 @@ public class CreateDoedsmeldingerTest {
 //        alivePersoner = Arrays.asList(anAlivePerson);
 //        doedePersonerWithoutDoedsmelding = Arrays.asList(aDeadPersonWithoutDoedsmelding);
 //
-//        when(findGruppeByIdMock.execute(GRUPPE_ID)).thenReturn(gruppeMock);
+//        when(findGruppeByIdMock.executeFromPersons(GRUPPE_ID)).thenReturn(gruppeMock);
 //        when(gruppeMock.getPersoner()).thenReturn(personer);
-//        when(findDoedePersonerMock.execute(personer)).thenReturn(doedePersoner);
-//        when(findPersonerWithoutDoedsmeldingMock.execute(doedePersoner)).thenReturn(doedePersonerWithoutDoedsmelding);
+//        when(findDoedePersonerMock.executeFromPersons(personer)).thenReturn(doedePersoner);
+//        when(findPersonerWithoutDoedsmeldingMock.executeFromPersons(doedePersoner)).thenReturn(doedePersonerWithoutDoedsmelding);
 //
-//        when(findGruppeByIdMock.execute(GRUPPE_ID_NO_DEAD_PERSONS)).thenReturn(gruppeNoDeadMock);
+//        when(findGruppeByIdMock.executeFromPersons(GRUPPE_ID_NO_DEAD_PERSONS)).thenReturn(gruppeNoDeadMock);
 //        when(gruppeNoDeadMock.getPersoner()).thenReturn(alivePersoner);
-//        when(findDoedePersonerMock.execute(alivePersoner)).thenReturn(Collections.emptyList());
-//        when(findPersonerWithoutDoedsmeldingMock.execute(Collections.emptyList())).thenReturn(Collections.emptyList());
+//        when(findDoedePersonerMock.executeFromPersons(alivePersoner)).thenReturn(Collections.emptyList());
+//        when(findPersonerWithoutDoedsmeldingMock.executeFromPersons(Collections.emptyList())).thenReturn(Collections.emptyList());
     }
 
     @Test
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
-//        createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER);
+//        createDoedsmeldinger.executeFromPersons(GRUPPE_ID, ADD_HEADER);
 //
-//        verify(skdMessageCreatorTrans1Mock).execute(anyString(), personCaptor.capture(), eq(ADD_HEADER));
+//        verify(skdMessageCreatorTrans1Mock).executeFromPersons(anyString(), personCaptor.capture(), eq(ADD_HEADER));
 //        assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
     }
 
 //    @Test
 //    public void saveDoedsmeldingToDBCalledWithDoedePersonerWithoutDoedsmelding() {
-//        createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER);
+//        createDoedsmeldinger.executeFromPersons(GRUPPE_ID, ADD_HEADER);
 //
-//        verify(saveDoedsmeldingToDBMock).execute(personCaptor.capture());
+//        verify(saveDoedsmeldingToDBMock).executeFromPersons(personCaptor.capture());
 //        assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
 //    }
 //
 //    @Test
 //    public void noFurtherCallsWhenNoDoedePersoner() {
-//        createDoedsmeldinger.execute(GRUPPE_ID_NO_DEAD_PERSONS, ADD_HEADER);
+//        createDoedsmeldinger.executeFromPersons(GRUPPE_ID_NO_DEAD_PERSONS, ADD_HEADER);
 //
-//        verify(skdMessageCreatorTrans1Mock, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
-//        verify(saveDoedsmeldingToDBMock, never()).execute(anyListOf(Person.class));
+//        verify(skdMessageCreatorTrans1Mock, never()).executeFromPersons(anyString(), anyListOf(Person.class), anyBoolean());
+//        verify(saveDoedsmeldingToDBMock, never()).executeFromPersons(anyListOf(Person.class));
 //    }
 }

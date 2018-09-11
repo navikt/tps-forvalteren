@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.restTPS.RsSkdFodseslmelding;
 import no.nav.tps.forvalteren.domain.rs.restTPS.RsInnvandringReq;
 import no.nav.tps.forvalteren.domain.rs.restTPS.RsVigselPartner;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsServiceRutineException;
@@ -10,6 +11,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController()
+@RestController
 @RequestMapping(value = "/api/tps/skd")
 public class TpsRestSkdApiController {
 
@@ -72,5 +74,14 @@ public class TpsRestSkdApiController {
 //        });
 
         return mapper;
+    }
+
+    @PostMapping("/fodsel")
+    public SendSkdMeldingTilTpsResponse sendFodselsmelding(@RequestBody RsSkdFodseslmelding fodselRequest){
+        // Send en fodselsmelding
+        Map responseMother = tpsRestApiController.fetchPersonopplysningerS004(fodselRequest.getMorFodselsnumemr(), "A0", "2018-09-09", fodselRequest.getEnvironment());
+        Person mother =null;
+//        skdMeldingSender.sendFoedselsMeldinger( , new HashSet<>(Arrays.asList(fodselRequest.getEnvironment())));
+        return null;
     }
 }

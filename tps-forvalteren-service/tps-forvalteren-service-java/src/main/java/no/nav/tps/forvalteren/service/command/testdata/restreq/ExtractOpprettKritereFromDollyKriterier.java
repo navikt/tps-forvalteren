@@ -1,12 +1,15 @@
-package no.nav.tps.forvalteren.service.command.testdata.opprett;
+package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
-import no.nav.tps.forvalteren.domain.rs.RsDollyPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsRestPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +25,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public RsPersonKriteriumRequest execute(RsDollyPersonKriteriumRequest req){
+    public RsPersonKriteriumRequest execute(RsRestPersonKriteriumRequest req){
         RsPersonKriterier rsPerson = new RsPersonKriterier();
         rsPerson.setAntall(req.getAntall());
         rsPerson.setIdenttype(req.getIdenttype());
@@ -33,12 +36,54 @@ public class ExtractOpprettKritereFromDollyKriterier {
         RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest();
         kriteriumRequest.setPersonKriterierListe(Arrays.asList(rsPerson));
 
-//        kriteriumRequest.setWithAdresse(req.isWithAdresse());
-
         return kriteriumRequest;
     }
 
-    public List<Person> addDollyKriterumValuesToPersonAndSave(RsDollyPersonKriteriumRequest req, List<Person> personer){
+    public RsPersonKriteriumRequest extractPartner(RsSimpleRelasjoner rel){
+        RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
+        if(rel != null && rel.getPartner() != null){
+            RsPersonKriterier partnerReq = new RsPersonKriterier();
+            partnerReq.setAntall(1);
+
+            if(partnerReq.getIdenttype() != null){
+                partnerReq.setIdenttype(rel.getPartner().getIdenttype()); // BAre for teste
+            } else {
+                partnerReq.setIdenttype("FNR");
+            }
+
+            partnerReq.setKjonn(rel.getPartner().getKjonn());
+            partnerReq.setFoedtFoer(rel.getPartner().getFoedtFoer());
+            partnerReq.setFoedtEtter(rel.getPartner().getFoedtEtter());
+            personRequestListe.setPersonKriterierListe(Arrays.asList(partnerReq));
+        }
+
+        return personRequestListe;
+    }
+
+    public RsPersonKriteriumRequest extractBarn(RsSimpleRelasjoner rel){
+        RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
+        if(rel != null && rel != null){
+            for(RsSimpleDollyRequest req : rel.getBarn()){
+                RsPersonKriterier partnerReq = new RsPersonKriterier();
+                partnerReq.setAntall(1);
+
+                if(partnerReq.getIdenttype() != null){
+                    partnerReq.setIdenttype(req.getIdenttype()); // BAre for teste
+                } else {
+                    partnerReq.setIdenttype("FNR");
+                }
+
+                partnerReq.setKjonn(req.getKjonn());
+                partnerReq.setFoedtFoer(req.getFoedtFoer());
+                partnerReq.setFoedtEtter(req.getFoedtEtter());
+                personRequestListe.setPersonKriterierListe(Arrays.asList(partnerReq));
+            }
+        }
+
+        return personRequestListe;
+    }
+
+    public List<Person> addDollyKriterumValuesToPersonAndSave(RsRestPersonKriteriumRequest req, List<Person> personer){
         personer.forEach(person -> {
                     person.setRegdato(req.getRegdato());
                     person.setDoedsdato(req.getDoedsdato());
@@ -70,7 +115,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personer;
     }
 
-    private boolean hasGateAdresse(RsDollyPersonKriteriumRequest req){
+    private boolean hasGateAdresse(RsRestPersonKriteriumRequest req){
         return req.getBoadresse() != null;
     }
 }

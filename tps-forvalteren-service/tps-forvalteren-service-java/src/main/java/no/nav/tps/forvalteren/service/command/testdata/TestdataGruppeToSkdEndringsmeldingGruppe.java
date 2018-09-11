@@ -73,7 +73,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
 
             List<SkdMelding> skdMeldinger = new ArrayList<>();
-            List<SkdMeldingTrans1> foedselsMeldinger = createFoedselsmeldinger.execute(testdataGruppe.getPersoner(), false);
+            List<SkdMeldingTrans1> foedselsMeldinger = createFoedselsmeldinger.executeFromPersons(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, testdataGruppe.getPersoner(), false);
             List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(testdataGruppe.getPersoner(), false);

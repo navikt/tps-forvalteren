@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon.ENDRE_RELASJON;
 
-@RestController()
+@RestController
 @RequestMapping(value = "/api/tps")
 public class TpsRestApiController {
 

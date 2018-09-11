@@ -14,13 +14,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
-import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
-import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWithMeldingstype;
@@ -29,8 +26,6 @@ import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
-import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
@@ -41,10 +36,10 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
+
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -115,7 +110,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
         when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
-        when(createFoedselsmeldinger.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(foedselsMeldinger);
+        when(createFoedselsmeldinger.executeFromPersons(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(foedselsMeldinger);
     }
 
     @Test
@@ -132,7 +127,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(saveSkdEndringsmeldingerFromText).execute(rsMeldinger, GRUPPE_ID);
         verify(createVergemaal).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
-        verify(createFoedselsmeldinger).execute(testdataGruppe.getPersoner(), ADD_HEADER);
+        verify(createFoedselsmeldinger).executeFromPersons(testdataGruppe.getPersoner(), ADD_HEADER);
 
     }
     

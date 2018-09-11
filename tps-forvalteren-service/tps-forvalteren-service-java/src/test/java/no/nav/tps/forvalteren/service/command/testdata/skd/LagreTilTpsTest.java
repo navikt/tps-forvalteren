@@ -110,17 +110,17 @@ public class LagreTilTpsTest {
     public void checkThatServicesGetsCalled() {
         //TODO Lag nye tester når refaktor er ferdig
 
-//        lagreTilTps.execute(GRUPPE_ID, environments);
+//        lagreTilTps.executeFromPersons(GRUPPE_ID, environments);
 //
-//        verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
-//        verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
-//        verify(createRelasjoner).execute(persons, ADD_HEADER);
-//        verify(createDoedsmeldinger).execute(personsInGruppe, ADD_HEADER);
-//        verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
+//        verify(findPersonsNotInEnvironments).executeFromPersons(personsInGruppe, environments);
+//        verify(skdMessageCreatorTrans1).executeFromPersons(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
+//        verify(createRelasjoner).executeFromPersons(persons, ADD_HEADER);
+//        verify(createDoedsmeldinger).executeFromPersons(personsInGruppe, ADD_HEADER);
+//        verify(createUtvandring).executeFromPersons(personsInGruppe, ADD_HEADER);
 //        verify(innvandring).resolve();
-//        verify(createFoedselsmeldinger).execute(persons, ADD_HEADER);
-//        verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
-//        verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
+//        verify(createFoedselsmeldinger).executeFromPersons(persons, ADD_HEADER);
+//        verify(sendSkdMeldingTilGitteMiljoer).executeFromPersons(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
+//        verify(createVergemaal).executeFromPersons(personsInGruppe, ADD_HEADER);
 
     }
 
@@ -134,8 +134,8 @@ public class LagreTilTpsTest {
     @Test
     public void shouldReturnResponsesWithStatus() {
         //TODO Lag nye tester når refaktor er ferdig
-//        when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
-//        RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
+//        when(sendSkdMeldingTilGitteMiljoer.executeFromPersons(any(), any(), any())).thenReturn(TPSResponse);
+//        RsSkdMeldingResponse actualResponse = lagreTilTps.executeFromPersons(GRUPPE_ID, environments);
 //        assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
 //        assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal", "Utvandring"),
 //                actualResponse.getSendSkdMeldingTilTpsResponsene()

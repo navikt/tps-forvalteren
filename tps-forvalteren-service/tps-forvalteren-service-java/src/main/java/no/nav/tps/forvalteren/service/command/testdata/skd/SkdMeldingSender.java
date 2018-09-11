@@ -108,7 +108,7 @@ public class SkdMeldingSender {
     public List<SendSkdMeldingTilTpsResponse> sendFoedselsMeldinger(List<Person> personerSomSkalFoedes, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
-        List<SkdMeldingTrans1> foedselsmeldinger = createFoedselsmeldinger.execute(personerSomSkalFoedes, true);
+        List<SkdMeldingTrans1> foedselsmeldinger = createFoedselsmeldinger.executeFromPersons(personerSomSkalFoedes, true);
         foedselsmeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(FOEDSEL_MLD_NAVN, skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);
