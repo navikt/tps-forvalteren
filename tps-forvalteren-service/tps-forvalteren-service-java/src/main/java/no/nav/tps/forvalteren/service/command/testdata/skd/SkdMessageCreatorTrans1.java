@@ -3,13 +3,13 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SkdMessageCreatorTrans1 {
@@ -23,17 +23,22 @@ public class SkdMessageCreatorTrans1 {
         this.generateSkdMelding = generateSkdMelding;
     }
 
-    public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
+    public SkdMeldingTrans1 execute(String skdMeldingNavn, Person person, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
-        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition = skdRequestMeldingDefinitionOptional.get();
-            for (Person person : persons) {
-                SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(skdRequestMeldingDefinition, person, addHeader);
-                skdMeldinger.add(skdMelding);
-            }
+            return generateSkdMelding.execute(skdRequestMeldingDefinition, person, addHeader);
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
+        }
+    }
+
+    public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
+
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+        for (Person person : persons) {
+            skdMeldinger.add(execute(skdMeldingNavn, person, addHeader));
         }
         return skdMeldinger;
     }
