@@ -1,22 +1,27 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.AdresseService;
 
 @Service
 public class SendDodsmeldingTilTps {
+
+    private enum Action {C, U, D}
 
     @Autowired
     private DeathRowRepository deathRowRepository;
@@ -31,7 +36,7 @@ public class SendDodsmeldingTilTps {
     private SkdMeldingResolver innvandring;
 
     @Autowired
-    private UpdateDeathRow updateDeathRow;
+    private AdresseService adresseService;
 
     public void execute() {
 
@@ -45,29 +50,27 @@ public class SendDodsmeldingTilTps {
             person.setIdent(deathRow.getIdent());
             person.setRegdato(LocalDateTime.now());
 
-            if ("U".equals(deathRow.getHandling()) || "D".equals(deathRow.getHandling())) {
-                    /* Setter en dummy adresse*/
-                Gateadresse adr = new Gateadresse();
-                adr.setAdresse("SANNERGATA");
-                adr.setHusnummer("2");
-                adr.setGatekode("12345");
-                adr.setId(person.getId());
-                adr.setPerson(person);
-                adr.setFlyttedato(LocalDateTime.now());
-                adr.setPostnr("1069");
-                adr.setKommunenr("1111");
-                person.setBoadresse(adr);
+            if (Action.U.name().equals(deathRow.getHandling()) || Action.D.name().equals(deathRow.getHandling())) {
+
+                Adresse adresse = adresseService.hentAdresseFoerDoed(deathRow.getIdent(), deathRow.getMiljoe());
+                if (adresse != null) {
+                    adresse.setId(person.getId());
+                    adresse.setPerson(person);
+                    person.setBoadresse(adresse);
+                } else {
+                    person.setSpesreg(Integer.toString(UFB.ordinal()));
+                }
 
                 sendSkdMeldingTilMiljoe.execute(createDoedsmeldingerAnnullering(person), skdRequestMeldingDefinition, Sets.newHashSet(deathRow.getMiljoe()));
             }
-            if ("U".equals(deathRow.getHandling()) || "C".equals(deathRow.getHandling())) {
+            if (Action.U.name().equals(deathRow.getHandling()) || Action.C.name().equals(deathRow.getHandling())) {
                 person.setDoedsdato(deathRow.getDoedsdato());
 
                 sendSkdMeldingTilMiljoe.execute(createDoedsmeldinger(person), skdRequestMeldingDefinition, Sets.newHashSet(deathRow.getMiljoe()));
             }
 
             deathRow.setStatus("Sendt");
-            updateDeathRow.execute(deathRow);
+            deathRowRepository.save(deathRow);
         }
     }
 
@@ -81,4 +84,3 @@ public class SendDodsmeldingTilTps {
         return skdCreator.execute("DoedsmeldingAnnullering", person, true).toString();
     }
 }
-

@@ -16,7 +16,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.s051.unmarshaller.TpsServiceRutineS051Unmarshaller;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.xjc.ctg.domain.s051.AdresseData;
 import no.nav.tps.xjc.ctg.domain.s051.StatusFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.TpsAdresseData;
@@ -41,11 +41,9 @@ public class SetRandomAdresseOnPersons {
         String kommuneNr = null;
         String postNr = null;
         if (adresseNrInfo != null) {
-            switch (adresseNrInfo.getNummertype()) {
-            case KOMMUNENR:
+            if (AdresseNrInfo.AdresseNr.KOMMUNENR == adresseNrInfo.getNummertype()) {
                 kommuneNr = adresseNrInfo.getNummer();
-                break;
-            case POSTNR:
+            } else if (AdresseNrInfo.AdresseNr.POSTNR == adresseNrInfo.getNummertype()) {
                 postNr = adresseNrInfo.getNummer();
             }
         }

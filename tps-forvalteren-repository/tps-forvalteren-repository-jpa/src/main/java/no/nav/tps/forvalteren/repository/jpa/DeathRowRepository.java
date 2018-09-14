@@ -9,8 +9,6 @@ public interface DeathRowRepository extends Repository<DeathRow, Long> {
 
     DeathRow findById(Long id);
 
-    DeathRow findByIdent(String ident);
-
     DeathRow save(DeathRow deathRow);
 
     void deleteById(Long id);
