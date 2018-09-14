@@ -26,6 +26,6 @@ public class TpsServicesControllerIntegrationTest extends AbstractRsProviderInte
 
         mvc.perform(get(URL))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(21)));
+                .andExpect(jsonPath("$", hasSize(22)));
     }
 }
