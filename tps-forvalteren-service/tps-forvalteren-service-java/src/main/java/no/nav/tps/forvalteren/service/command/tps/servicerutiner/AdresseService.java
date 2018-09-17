@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import java.time.LocalDateTime;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,36 +18,48 @@ public class AdresseService {
     @Autowired
     private PersonhistorikkService personhistorikkService;
 
-    public Adresse hentAdresseForDato(String ident, LocalDateTime aksjonsdato, String env) {
+    public Adresse hentBoadresseForDato(String ident, LocalDateTime bodato, String miljoe) {
 
-        S018PersonType s018PersonType = personhistorikkService.hentPersonhistorikk(ident, aksjonsdato, env);
+        S018PersonType s018PersonType = personhistorikkService.hentPersonhistorikk(ident, bodato, miljoe);
         if (s018PersonType.getBostedsAdresse().isEmpty()) {
             return null;
         }
 
-        BoAdresseType boAdresse = s018PersonType.getBostedsAdresse().get(0);
-        Adresse adresse;
+        Adresse adresse = null;
+        for (BoAdresseType boadresse : s018PersonType.getBostedsAdresse()) {
 
-        if ("OFFA".equals(boAdresse.getAdresseType())) {
-            adresse = Gateadresse.builder()
-                    .adresse(boAdresse.getOffAdresse().getGateNavn())
-                    .husnummer(boAdresse.getOffAdresse().getBokstav())
-                    .gatekode(boAdresse.getOffAdresse().getGatekode())
-                    .build();
+            if (isAddressDate(boadresse, bodato)) {
 
-        } else { //MATR
-            adresse = Matrikkeladresse.builder()
-                    .mellomnavn(boAdresse.getMatrAdresse().getMellomAdresse())
-                    .bruksnr(boAdresse.getMatrAdresse().getBruksnr())
-                    .gardsnr(boAdresse.getMatrAdresse().getGardsnr())
-                    .festenr(boAdresse.getMatrAdresse().getFestenr())
-                    .undernr(boAdresse.getMatrAdresse().getUndernr())
-                    .build();
+                if ("OFFA".equals(boadresse.getAdresseType())) {
+                    adresse = Gateadresse.builder()
+                            .adresse(boadresse.getOffAdresse().getGateNavn())
+                            .husnummer(boadresse.getOffAdresse().getBokstav())
+                            .gatekode(boadresse.getOffAdresse().getGatekode())
+                            .build();
+
+                } else { //MATR
+                    adresse = Matrikkeladresse.builder()
+                            .mellomnavn(boadresse.getMatrAdresse().getMellomAdresse())
+                            .bruksnr(boadresse.getMatrAdresse().getBruksnr())
+                            .gardsnr(boadresse.getMatrAdresse().getGardsnr())
+                            .festenr(boadresse.getMatrAdresse().getFestenr())
+                            .undernr(boadresse.getMatrAdresse().getUndernr())
+                            .build();
+                }
+                adresse.setKommunenr(boadresse.getKommunenr());
+                adresse.setPostnr(boadresse.getPostnr());
+                adresse.setFlyttedato(ConvertStringToDate.yyyysMMsdd(boadresse.getDatoFom()));
+
+                break;
+            }
         }
-        adresse.setKommunenr(boAdresse.getKommunenr());
-        adresse.setPostnr(boAdresse.getPostnr());
-        adresse.setFlyttedato(ConvertStringToDate.yyyysMMsdd(boAdresse.getDatoFom()));
-
         return adresse;
+    }
+
+    private boolean isAddressDate(BoAdresseType boadresse, LocalDateTime bodato) {
+
+        return bodato.compareTo(ConvertStringToDate.yyyysMMsdd(boadresse.getDatoFom())) >= 0 &&
+                (StringUtils.isBlank(boadresse.getDatoTom()) ||
+                        bodato.compareTo(ConvertStringToDate.yyyysMMsdd(boadresse.getDatoTom())) <= 0);
     }
 }

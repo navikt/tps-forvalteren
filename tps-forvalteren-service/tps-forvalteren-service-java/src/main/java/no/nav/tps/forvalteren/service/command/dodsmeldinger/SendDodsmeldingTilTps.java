@@ -1,7 +1,5 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import org.codehaus.plexus.util.StringUtils;
@@ -94,15 +92,13 @@ public class SendDodsmeldingTilTps {
     }
 
     private void findLastAddress(Person person, String doedsdato, String miljoe) {
-        Adresse adresse = adresseService.hentAdresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
+        Adresse adresse = adresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
 
         if (adresse != null) {
             adresse.setId(person.getId());
             adresse.setPerson(person);
             person.setBoadresse(adresse);
 
-        } else {
-            person.setSpesreg(Integer.toString(UFB.ordinal()));
         }
     }
 }
