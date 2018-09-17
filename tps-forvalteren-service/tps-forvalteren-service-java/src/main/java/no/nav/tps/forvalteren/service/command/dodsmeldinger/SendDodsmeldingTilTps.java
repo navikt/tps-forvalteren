@@ -70,7 +70,7 @@ public class SendDodsmeldingTilTps {
                     throw new TpsfFunctionalException(String.format(PERSON_IKKE_DOED, person.getIdent(), deathRow.getMiljoe()));
                 }
                 
-                findSecondLastAddress(person, persondataFraTpsS004.getDatoDo(), deathRow.getMiljoe());
+                findLastAddress(person, persondataFraTpsS004.getDatoDo(), deathRow.getMiljoe());
 
                 String melding = skdCreator.execute("DoedsmeldingAnnullering", person, true).toString();
                 sendSkdMeldingTilMiljoe.execute(melding, doedsmeldingAnnuller.resolve(), Sets.newHashSet(deathRow.getMiljoe()));
@@ -93,7 +93,7 @@ public class SendDodsmeldingTilTps {
         }
     }
 
-    private void findSecondLastAddress(Person person, String doedsdato, String miljoe) {
+    private void findLastAddress(Person person, String doedsdato, String miljoe) {
         Adresse adresse = adresseService.hentAdresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
 
         if (adresse != null) {

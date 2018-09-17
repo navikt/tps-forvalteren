@@ -22,7 +22,8 @@ angular.module('tps-forvalteren.doedsmeldinger.endremelding', ['ngMaterial'])
             };
 
             $scope.oppdater = function () {
-              //  $scope.oppdatering.doedsdato = $scope.oppdatering.doedsdato instanceof Date ? new Date($scope.oppdatering.doedsdato.getTime() + (12 * 3600 * 1000)) : null;
+                $scope.oppdatering.doedsdato = $scope.oppdatering.doedsdato instanceof Date ?
+                    new Date($scope.oppdatering.doedsdato.getTime() + (12 * 3600 * 1000)) : $scope.oppdatering.doedsdato;
                 doedsmeldingService.endre($scope.oppdatering).then(
                     function () {
                         $scope.melding.handling = $scope.oppdatering.handling;

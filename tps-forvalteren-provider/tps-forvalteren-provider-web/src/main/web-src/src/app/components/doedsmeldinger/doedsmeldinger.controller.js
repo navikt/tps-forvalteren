@@ -194,7 +194,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 doedsmeldingService.sendSkjema(meldinger).then(function () {
                     var alert = $mdDialog.alert()
                         .title('Meldinger sendt')
-                        .textContent('Sending av dødsmeldinger til TPS er utført!')
+                        .textContent('Sending av dødsmelding(er) til TPS er utført!')
                         .ariaLabel('Dødsmeldinger er sendt til TPS.')
                         .ok('OK');
                     $mdDialog.show(alert);
@@ -203,6 +203,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 }, function (error) {
                     utilsService.showAlertError(error);
                     $scope.showProgress = false;
+                    getMeldinger();
                 })
             };
 

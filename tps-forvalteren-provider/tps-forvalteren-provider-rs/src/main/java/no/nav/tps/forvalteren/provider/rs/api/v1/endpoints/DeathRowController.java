@@ -26,6 +26,7 @@ import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.FindAllDeathRows;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.SendDodsmeldingTilTps;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.UpdateDeathRow;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterForDodsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
@@ -106,6 +107,7 @@ public class DeathRowController {
         return mapper.map(updatedDeathRow, RsDeathRow.class);
     }
 
+    @Transactional(dontRollbackOn = TpsfFunctionalException.class)
     @LogExceptions
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema") })
