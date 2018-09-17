@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 import javax.jms.JMSException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -73,7 +72,6 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     @Transactional
-    @Ignore
     public void shouldOppretteNyeTestpersonerBasertPaaKriteriene() throws Exception {
         endTransactionIfActive();
         setupTestdataInTpsfDatabase();
