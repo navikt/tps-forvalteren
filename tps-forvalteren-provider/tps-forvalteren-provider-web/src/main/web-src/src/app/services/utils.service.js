@@ -178,8 +178,7 @@ angular.module('tps-forvalteren.service')
             if (error.status == 403 && !!role) {
                 errorObj.text = 'Du mangler rolle "' + role + '" for å få tilgang.';
             }
-            if (error.status == 500 && error.data && error.data.message) {
-                errorObj.title = 'Feil med forespørsel';
+            if ((error.status == 400 || error.status == 500) && error.data && error.data.message) {
                 errorObj.text = error.data.message;
             }
             $mdDialog.show(

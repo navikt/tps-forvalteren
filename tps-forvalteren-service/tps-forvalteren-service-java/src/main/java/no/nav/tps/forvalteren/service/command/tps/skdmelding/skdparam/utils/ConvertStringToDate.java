@@ -6,12 +6,12 @@ import java.time.format.DateTimeFormatter;
 
 public final class ConvertStringToDate {
 
-    private ConvertStringToDate() {
-    }
-
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HHmmss");
     private static final DateTimeFormatter DATE2_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private ConvertStringToDate() {
+    }
 
     public static LocalDateTime yyyyMMdd(String date) {
 
