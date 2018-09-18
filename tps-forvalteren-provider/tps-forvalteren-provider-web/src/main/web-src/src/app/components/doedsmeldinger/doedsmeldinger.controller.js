@@ -19,13 +19,24 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                         $scope.meldinger = result.data;
                         clearRequestForm();
                         $scope.showProgress = false;
+                        updateSendButtonStatus();
                     },
                     function (error) {
                         utilsService.showAlertError(error);
                         clearRequestForm();
                         $scope.showProgress = false;
+                        updateSendButtonStatus();
                     }
                 );
+            }
+
+            function updateSendButtonStatus() {
+                $scope.isSent = true;
+                $scope.meldinger.forEach(function (element) {
+                    if (element.status === 'Ikke sendt') {
+                        $scope.isSent = false;
+                    }
+                });
             }
 
             $scope.sjekkgyldig = function () {
@@ -134,6 +145,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
             $scope.delete = function (index) {
                 doedsmeldingService.slett($scope.meldinger[index].id).then(function () {
                         $scope.meldinger.splice(index, 1);
+                        updateSendButtonStatus();
                     }, function (error) {
                         utilsService.showAlertError(error);
                     }
@@ -194,7 +206,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 doedsmeldingService.sendSkjema(meldinger).then(function () {
                     var alert = $mdDialog.alert()
                         .title('Meldinger sendt')
-                        .textContent('Sending av dødsmeldinger til TPS er utført!')
+                        .textContent('Sending av dødsmelding(er) til TPS er utført!')
                         .ariaLabel('Dødsmeldinger er sendt til TPS.')
                         .ok('OK');
                     $mdDialog.show(alert);
@@ -203,6 +215,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 }, function (error) {
                     utilsService.showAlertError(error);
                     $scope.showProgress = false;
+                    getMeldinger();
                 })
             };
 
@@ -215,7 +228,7 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 angular.forEach(environments, function (env) {
                     var substrMiljoe = env.charAt(0);
 
-                    if(filteredEnvironments[substrMiljoe]) {
+                    if (filteredEnvironments[substrMiljoe]) {
                         filteredEnvironments[substrMiljoe].push(env);
                     } else {
                         filteredEnvironments[substrMiljoe] = [];
@@ -248,6 +261,11 @@ angular.module('tps-forvalteren.doedsmeldinger', ['ngMaterial'])
                 var environments = $scope.$resolve.environmentsPromise;
                 $scope.environments = sortEnvironmentsForDisplay(environments.environments);
             }
+
+
+            $scope.$on('Ikke sendt', function (event, args) {
+                $scope.isSent = false;
+            });
 
             getEnvironments();
             getMeldinger();
