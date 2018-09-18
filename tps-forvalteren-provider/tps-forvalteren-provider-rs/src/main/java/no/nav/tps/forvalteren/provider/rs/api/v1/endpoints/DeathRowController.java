@@ -24,7 +24,7 @@ import no.nav.tps.forvalteren.domain.rs.RsDeathRowCheckIdent;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.CreateDodsmelding;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.FindAllDeathRows;
-import no.nav.tps.forvalteren.service.command.dodsmeldinger.SendDodsmeldingTilTps;
+import no.nav.tps.forvalteren.service.command.dodsmeldinger.SendDodsmeldingTilTpsService;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.UpdateDeathRow;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterForDodsmelding;
@@ -58,7 +58,7 @@ public class DeathRowController {
     private UpdateDeathRow updateDeathRow;
 
     @Autowired
-    private SendDodsmeldingTilTps sendDodsmeldingTilTps;
+    private SendDodsmeldingTilTpsService sendDodsmeldingTilTpsService;
 
     @Autowired
     private UserContextHolder userContextHolder;
@@ -111,7 +111,7 @@ public class DeathRowController {
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema") })
     public void sendToTps() {
-        sendDodsmeldingTilTps.execute();
+        sendDodsmeldingTilTpsService.execute();
     }
 
     @LogExceptions

@@ -21,12 +21,12 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Conv
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
 
 @Service
-public class SendDodsmeldingTilTps {
+public class SendDodsmeldingTilTpsService {
 
-    private static final String PERSON_ER_DOED = "Personen med ident %s er allerede død i miljoe %s.";
-    private static final String PERSON_IKKE_DOED = "Personen med ident %s er ikke død i miljoe %s.";
+    private static final String PERSON_ER_DOED = "Personen med ident %s er allerede død i miljø %s.";
+    private static final String PERSON_IKKE_DOED = "Personen med ident %s er ikke død i miljø %s.";
 
-    private enum Action {C, U, D;}
+    private enum Action {C, U, D}
 
     @Autowired
     private DeathRowRepository deathRowRepository;
