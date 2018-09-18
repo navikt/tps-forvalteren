@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
+import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum.AKSJONSKODE;
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     private static final String ADRESSEHISTORIKK_SERVICE_ROUTINE = "FS03-FDNUMMER-ADRHISTO-O";
     private static final String ADRESSELINJEHISTORIKK_SERVICE_ROUTINE = "FS03-FDNUMMER-ADLIHIST-O";
     private static final String SOAIHISTORIKK_SERVICE_ROUTINE = "FS03-FDNUMMER-SOAIHIST-O";
+    private static final String LOG_SPORING = "%s.%s";
 
     @Autowired
     private TpsServiceRoutineService tpsServiceRoutineService;
@@ -39,8 +41,8 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = METHOD_KERNINFO) })
     @RequestMapping(value = "/kerninfo", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getKerninfo(@RequestParam Map<String, Object> tpsRequestParameters) {
-        tpsRequestParameters.put("aksjonsKode", "B0");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_KERNINFO), tpsRequestParameters);
+        tpsRequestParameters.put(AKSJONSKODE.getName(), "B0");
+        loggSporing(String.format(LOG_SPORING, REST_SERVICE_NAME, METHOD_KERNINFO), tpsRequestParameters);
         return tpsServiceRoutineService.execute(KJERNEINFO_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
@@ -48,8 +50,8 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = METHOD_ADRHIST) })
     @RequestMapping(value = "/adrhist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getAdrhist(@RequestParam Map<String, Object> tpsRequestParameters) {
-        tpsRequestParameters.put("aksjonsKode", "B0");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_ADRHIST), tpsRequestParameters);
+        tpsRequestParameters.put(AKSJONSKODE.getName(), "B0");
+        loggSporing(String.format(LOG_SPORING, REST_SERVICE_NAME, METHOD_ADRHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(ADRESSEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
@@ -57,9 +59,9 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = METHOD_ADRLINJHIST) })
     @RequestMapping(value = "/adrlinjhist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getAdrlinjhist(@RequestParam Map<String, Object> tpsRequestParameters) {
-        tpsRequestParameters.put("aksjonsKode", "A0");
+        tpsRequestParameters.put(AKSJONSKODE.getName(), "A0");
         tpsRequestParameters.put("adresseTypeS015", "ALLE");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_ADRLINJHIST), tpsRequestParameters);
+        loggSporing(String.format(LOG_SPORING, REST_SERVICE_NAME, METHOD_ADRLINJHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(ADRESSELINJEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
@@ -67,10 +69,10 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = METHOD_SOAIHIST) })
     @RequestMapping(value = "/soaihist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getSoaihist(@RequestParam Map<String, Object> tpsRequestParameters) {
-        tpsRequestParameters.put("aksjonsKode", "A0");
+        tpsRequestParameters.put(AKSJONSKODE.getName(), "A0");
         tpsRequestParameters.put("infoType", "ALLE");
         tpsRequestParameters.put("buffNr", "1");
-        loggSporing(String.format("%s.%s", REST_SERVICE_NAME, METHOD_SOAIHIST), tpsRequestParameters);
+        loggSporing(String.format(LOG_SPORING, REST_SERVICE_NAME, METHOD_SOAIHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(SOAIHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 }

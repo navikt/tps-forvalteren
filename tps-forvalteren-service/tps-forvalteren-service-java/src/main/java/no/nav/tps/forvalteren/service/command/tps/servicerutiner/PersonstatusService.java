@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S004HentPersonopplysninger.PERSON_OPPLYSNINGER_SERVICE_ROUTINE;
+import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum.AKSJONSKODE;
+import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum.ENVIRONMENT;
+import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum.FNR;
 
 import java.io.StringReader;
 import java.util.HashMap;
@@ -27,9 +30,9 @@ public class PersonstatusService {
     public PersondataFraTpsS004 hentPersonstatus(String ident, String env) {
 
         Map<String, Object> requestParams = new HashMap<>();
-        requestParams.put("fnr", ident);
-        requestParams.put("environment", env);
-        requestParams.put("aksjonsKode", "F0");
+        requestParams.put(FNR.getName(), ident);
+        requestParams.put(ENVIRONMENT.getName(), env);
+        requestParams.put(AKSJONSKODE.getName(), "F0");
 
         TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_OPPLYSNINGER_SERVICE_ROUTINE, requestParams, true);
         try {
