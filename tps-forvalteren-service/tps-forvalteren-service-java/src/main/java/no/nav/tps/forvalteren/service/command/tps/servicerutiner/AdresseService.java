@@ -33,7 +33,9 @@ public class AdresseService {
                 if ("OFFA".equals(boadresse.getAdresseType())) {
                     adresse = Gateadresse.builder()
                             .adresse(boadresse.getOffAdresse().getGateNavn())
-                            .husnummer(boadresse.getOffAdresse().getBokstav())
+                            .husnummer(boadresse.getOffAdresse().getHusnr() +
+                                    (StringUtils.isNotBlank(boadresse.getOffAdresse().getBokstav()) ?
+                                            boadresse.getOffAdresse().getBokstav() : ""))
                             .gatekode(boadresse.getOffAdresse().getGatekode())
                             .build();
 

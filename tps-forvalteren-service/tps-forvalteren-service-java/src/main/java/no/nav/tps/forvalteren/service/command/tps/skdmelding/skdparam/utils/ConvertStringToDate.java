@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public final class ConvertStringToDate {
@@ -18,9 +19,9 @@ public final class ConvertStringToDate {
         return date != null ? LocalDate.parse(date, DATE_FORMAT).atStartOfDay() : null;
     }
 
-    public static LocalDateTime hhMMss(String date) {
+    public static LocalTime hhMMss(String date) {
 
-        return date != null ? LocalDate.parse(date, TIME_FORMAT).atStartOfDay() : null;
+        return date != null ? LocalTime.parse(date, TIME_FORMAT) : null;
     }
 
     public static LocalDateTime yyyysMMsdd(String date) {
