@@ -65,14 +65,6 @@ public class RestPersonerService {
         return savePersonBulk.execute(tpsfPersoner);
     }
 
-    private boolean harPartner(RsRestPersonKriteriumRequest request){
-        return request.getRelasjoner() != null && request.getRelasjoner().getPartner() != null;
-    }
-
-    private boolean harBarn(RsRestPersonKriteriumRequest request){
-        return request.getRelasjoner() != null && request.getRelasjoner().getBarn() != null && !request.getRelasjoner().getBarn().isEmpty();
-    }
-
     public List<Person> convertRequestTilPersoner(RsPersonKriteriumRequest personKriterierListe){
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
 
@@ -85,7 +77,7 @@ public class RestPersonerService {
     }
 
     public void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnerListe, List<Person> barn){
-        int antallbarn = barn.isEmpty() ? 0 : barn.size() / personer.size();
+        int antallbarn = (barn == null || barn.isEmpty()) ? 0 : barn.size() / personer.size();
 
         for(int i = 0; i < personer.size(); i++){
             Person person = personer.get(i);
@@ -96,90 +88,77 @@ public class RestPersonerService {
                 partner = partnerListe.get(i);
                 partner.setRelasjoner(new ArrayList<>());
 
-                Relasjon partnerRelasjon = lagPartnerRelasjon(person, partner);
-                Relasjon personRelasjon = lagPartnerRelasjon(partner, person);
-
-                person.getRelasjoner().add(partnerRelasjon);
-                partner.getRelasjoner().add(personRelasjon);
+                lagPartnerRelasjon(person, partner);
+                lagPartnerRelasjon(partner, person);
             }
 
             for(int j = 0; j < antallbarn; j++){
                 int startIndexBarn = i*antallbarn;
                 Person barnet = barn.get(startIndexBarn +j);
-                Relasjon barnRelasjon = new Relasjon();
-                Relasjon morRelasjon = new Relasjon();
 
-                Person mor = getMother(person, partner);
-
-                if(mor == null){
-                    throw new IllegalArgumentException("Kan ikke lage fødselsmelding uten en mor");
-                }
-
-                barnRelasjon.setPerson(barnet);
-                barnRelasjon.setPersonRelasjonMed(mor);
-                barnRelasjon.setRelasjonTypeNavn(RelasjonType.FOEDSEL.getRelasjonTypeNavn());
-                barnet.getRelasjoner().add(barnRelasjon);
-
-                morRelasjon.setPerson(mor);
-                morRelasjon.setPersonRelasjonMed(barnet);
-                morRelasjon.setRelasjonTypeNavn(RelasjonType.MOR.getRelasjonTypeNavn());
-                mor.getRelasjoner().add(morRelasjon);
-
-                Person far;
-                if(person == mor){
-                    far = partner;
-                } else {
-                    far = person;
-                }
-
-                if(far != null){
-                    Relasjon farRelasjon = new Relasjon();
-                    farRelasjon.setPerson(far);
-                    farRelasjon.setPersonRelasjonMed(barnet);
-
-                    if(far.getKjonn() == 'M'){
-                        farRelasjon.setRelasjonTypeNavn(RelasjonType.FAR.getRelasjonTypeNavn());
-                    } else {
-                        farRelasjon.setRelasjonTypeNavn(RelasjonType.MOR.getRelasjonTypeNavn());
-                    }
-
-                    far.getRelasjoner().add(farRelasjon);
-                }
+                setBarnRelasjon(person, barnet);
+                setBarnRelasjon(partner, barnet);
             }
         }
     }
 
-    private Relasjon lagPartnerRelasjon(Person person, Person partner){
+    private void setBarnRelasjon(Person forelder, Person barn){
+        if(forelder == null) {
+            return;
+        }
+
+        if(forelder.getKjonn() == 'M'){
+            setFarBarnRelasjonMedInnvadring(forelder, barn);
+        }
+
+        if(forelder.getKjonn() == 'K'){
+            setMorBarnRelasjonMedFodsel(forelder, barn);
+        }
+    }
+
+    private void setFarBarnRelasjonMedInnvadring(Person far, Person barn){
+        Relasjon barnRelasjon = new Relasjon();
+        Relasjon farRelasjon = new Relasjon();
+
+        barnRelasjon.setPersonRelasjonMed(far);
+        barnRelasjon.setRelasjonTypeNavn(RelasjonType.BARN.getRelasjonTypeNavn());
+        barnRelasjon.setPerson(barn);
+        barn.getRelasjoner().add(barnRelasjon);
+
+        farRelasjon.setPerson(far);
+        farRelasjon.setPersonRelasjonMed(barn);
+        farRelasjon.setRelasjonTypeNavn(RelasjonType.FAR.getRelasjonTypeNavn());
+        far.getRelasjoner().add(farRelasjon);
+    }
+
+    private void setMorBarnRelasjonMedFodsel(Person mor, Person barn){
+        Relasjon barnRelasjon = new Relasjon();
+        Relasjon morRelasjon = new Relasjon();
+
+        barnRelasjon.setPersonRelasjonMed(mor);
+        barnRelasjon.setRelasjonTypeNavn(RelasjonType.FOEDSEL.getRelasjonTypeNavn());
+        barnRelasjon.setPerson(barn);
+        barn.getRelasjoner().add(barnRelasjon);
+
+        morRelasjon.setPerson(mor);
+        morRelasjon.setPersonRelasjonMed(barn);
+        morRelasjon.setRelasjonTypeNavn(RelasjonType.MOR.getRelasjonTypeNavn());
+        mor.getRelasjoner().add(morRelasjon);
+    }
+
+    private boolean harPartner(RsRestPersonKriteriumRequest request){
+        return request.getRelasjoner() != null && request.getRelasjoner().getPartner() != null;
+    }
+
+    private boolean harBarn(RsRestPersonKriteriumRequest request){
+        return request.getRelasjoner() != null && request.getRelasjoner().getBarn() != null && !request.getRelasjoner().getBarn().isEmpty();
+    }
+
+    private void lagPartnerRelasjon(Person person, Person partner){
         Relasjon partnerRelasjon = new Relasjon();
         partnerRelasjon.setPerson(person);
         partnerRelasjon.setPersonRelasjonMed(partner);
         partnerRelasjon.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
-
-        return partnerRelasjon;
-    }
-
-
-    private Person getMother(Person p1, Person p2){
-        if(p1 != null && p1.getKjonn() == 'K'){
-            return p1;
-        }
-
-        if(p2 != null && p2.getKjonn() == 'K'){
-            return p2;
-        }
-
-        return null;
-    }
-
-    private Person getFar(Person p1, Person p2){
-        if(p1 != null && p1.getKjonn() == 'K'){
-            return p1;
-        }
-
-        if(p2 != null && p2.getKjonn() == 'K'){
-            return p2;
-        }
-
-        return null;
+        person.getRelasjoner().add(partnerRelasjon);
     }
 }
