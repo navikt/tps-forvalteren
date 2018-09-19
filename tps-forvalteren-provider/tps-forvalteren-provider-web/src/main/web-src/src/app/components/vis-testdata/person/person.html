@@ -48,9 +48,9 @@
         </div>
     </md-input-container>
 
-    <landkoder landkoden="person.statsborgerskap" endret-fn="endret" class="autocomplete"
-               index="$index + pager.startIndex" flex="30">
-    </landkoder>
+    <statsborgerskap landkoden="person.statsborgerskap" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" flex="20">
+    </statsborgerskap>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Statsborgerskap regdato</md-tooltip>
@@ -64,6 +64,23 @@
              ng-show="requestForm.statsborgerskapRegdato.$pristine">
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Sivilstand</md-tooltip>
+        <label>Sivilstand</label>
+        <md-select ng-model="person.sivilstand" class="md-no-underline"
+                   ng-change="endret($index + pager.startIndex)">
+            <md-option value="0">Ikke oppgitt</md-option>
+            <md-option value="1">Ugift</md-option>
+            <md-option value="2">Gift</md-option>
+            <md-option value="3">Enke/Enkemann</md-option>
+            <md-option value="4">Skilt</md-option>
+            <md-option value="5">Separert</md-option>
+            <md-option value="6">Reg. partner</md-option>
+            <md-option value="7">Separert partner</md-option>
+            <md-option value="8">Skilt partner</md-option>
+        </md-select>
     </md-input-container>
 
     <md-input-container class="tps-vk-input-container" flex="20">
@@ -111,6 +128,10 @@
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>
+
+    <landkoder landkoden="person.innvandretFraLand" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" flex="20">
+    </landkoder>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Fra land flyttedato</md-tooltip>

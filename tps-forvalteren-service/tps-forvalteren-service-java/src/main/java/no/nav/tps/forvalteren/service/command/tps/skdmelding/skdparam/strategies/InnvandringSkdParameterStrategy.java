@@ -41,6 +41,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
         skdMeldingTrans1.setStatsborgerskap(statsborgerskapEncoder.encode(person.getStatsborgerskap()));
         skdMeldingTrans1.setStatsborgerskapRegdato(ConvertDateToString.yyyyMMdd(person.getStatsborgerskapRegdato()));
+        skdMeldingTrans1.setFamilienummer(person.getIdent());
 
         skdMeldingTrans1.setSivilstand(person.getSivilstand() != null ? person.getSivilstand() : "1");
         skdMeldingTrans1.setInnvandretFraLand(person.getInnvandretFraLand() != null ? person.getInnvandretFraLand() : "001");
@@ -72,11 +73,11 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     }
 
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
-        skdMeldingTrans1.setAarsakskode(AARSAK_KO_DE_FOR_INNVANDRING);
 
-        skdMeldingTrans1.setFamilienummer("08096740140");
-        skdMeldingTrans1.setPersonkode("1");
+        skdMeldingTrans1.setAarsakskode(AARSAK_KO_DE_FOR_INNVANDRING);
         skdMeldingTrans1.setTranstype(TRANSTYPE_1);
+
+        skdMeldingTrans1.setPersonkode("1");
         skdMeldingTrans1.setStatuskode("1");
     }
 }
