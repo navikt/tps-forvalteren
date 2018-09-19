@@ -10,21 +10,20 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding
 
 @Service
 public class SendSkdMeldingerOgLeggTilResponsliste {
-    
+
     @Autowired
     private SendEnSkdMelding sendEnSkdMelding;
-    
+
     public void sendSkdMeldingAndAddResponseToList(AvspillingResponse avspillingResponse, String skdmelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
         String status = sendEnSkdMelding.sendSkdMelding(skdmelding, skdRequestMeldingDefinition, env);
         avspillingResponse.incrementAntallSendte();
         if (!"00".equals(status)) {
-            rapporterFeiletMelding(skdmelding, status, avspillingResponse);
+            rapporterFeiletMelding(status, avspillingResponse);
         }
     }
-    
-    private void rapporterFeiletMelding(String skdmelding, String status, AvspillingResponse avspillingResponse) {
+
+    private void rapporterFeiletMelding(String status, AvspillingResponse avspillingResponse) {
         StatusPaaAvspiltSkdMelding respons = StatusPaaAvspiltSkdMelding.builder()
-                //                .sekvensnummer(skdmelding.getSekvensnr()) //TODO ta ibruk denne når man går over til å bruke TO   no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1
                 .status(status)
                 .build();
         avspillingResponse.addStatusFraFeilendeMeldinger(respons);

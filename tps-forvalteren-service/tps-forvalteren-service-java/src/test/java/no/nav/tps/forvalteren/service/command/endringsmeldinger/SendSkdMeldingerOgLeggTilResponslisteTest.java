@@ -39,6 +39,5 @@ public class SendSkdMeldingerOgLeggTilResponslisteTest {
         assertEquals(2, response.getAntallSendte());
         assertEquals(1, response.getAntallFeilet());
         assertEquals(feilmelding, response.getStatusFraFeilendeMeldinger().get(0).getStatus());
-        //        assertEquals(2L, response.getStatusFraFeilendeMeldinger().get(0).getSekvensnr().longValue()); //TODO fikses når Skdmelding innføres
     }
 }

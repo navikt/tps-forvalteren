@@ -54,8 +54,9 @@ public class SendEndringsmeldingGruppeToTps {
     @Autowired
     private SkdAddHeaderToSkdMelding skdAddHeaderToSkdMelding;
 
-@Autowired
+    @Autowired
     private TpsPacemaker tpsPacemaker;
+
     public AvspillingResponse execute(Long skdMeldingsGruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(skdMeldingsGruppeId);
         AvspillingResponse avspillingResponse = new AvspillingResponse();
@@ -84,7 +85,7 @@ public class SendEndringsmeldingGruppeToTps {
                 sendSkdMeldinger.sendSkdMeldingAndAddResponseToList(avspillingResponse, skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, environment);
                 saveLogg(skdMelding, melding, skdMeldingsGruppeId, environment);
 
-tpsPacemaker.iteration(i);
+                tpsPacemaker.iteration(i);
             }
         } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, skdMeldingsGruppeId));
