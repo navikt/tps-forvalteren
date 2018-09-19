@@ -33,6 +33,7 @@ public class CreateDoedsmeldinger {
     private SaveDoedsmeldingToDB saveDoedsmeldingToDB;
 
     public List<SkdMeldingTrans1>  execute(Long gruppeId, boolean addHeader) {
+
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(personerIGruppen);
@@ -45,8 +46,8 @@ public class CreateDoedsmeldinger {
     }
 
     private List<Person> findDoedePersonerWithoutDoedsmelding(List<Person> personer) {
+
         List<Person> doedePersoner = findDoedePersoner.execute(personer);
-        List<Person> doedePersonerWithoutDoedsmelding = findPersonerWithoutDoedsmelding.execute(doedePersoner);
-        return doedePersonerWithoutDoedsmelding;
+        return findPersonerWithoutDoedsmelding.execute(doedePersoner);
     }
 }

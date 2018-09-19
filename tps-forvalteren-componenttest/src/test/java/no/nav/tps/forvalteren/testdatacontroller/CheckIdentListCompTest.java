@@ -1,7 +1,9 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,7 +54,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     public void setup() throws JMSException {
         reset(messageQueueConsumer);
         
-        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("u5", "t4", "t5", "t9", "t8"));
+        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("q0"));
         when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
         
         mockTps();
@@ -78,7 +80,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .andExpect(status().isOk()).andReturn();
         
         verify(messageQueueConsumer, times(fasitRegistrerteEnvMedTps.size())).sendMessage(
-                removeNewLineAndTab(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_request.xml")));
+                removeNewLineAndTab(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
         
         assertResponse(expectedResponse, mvcResult);
     }
@@ -99,7 +101,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     }
     
     private void mockTps() throws JMSException {
-        when(messageQueueConsumer.sendMessage(any()))
+        when(messageQueueConsumer.sendMessage(any(),anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_response.xml"));
     }
     

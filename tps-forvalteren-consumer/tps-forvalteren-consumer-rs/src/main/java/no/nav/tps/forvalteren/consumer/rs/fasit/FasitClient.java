@@ -1,7 +1,15 @@
 package no.nav.tps.forvalteren.consumer.rs.fasit;
 
+import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
+import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.TPSF_FASIT_APP_NAME;
+
+import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+
 import no.nav.aura.envconfig.client.DomainDO;
 import no.nav.aura.envconfig.client.FasitRestClient;
 import no.nav.aura.envconfig.client.ResourceTypeDO;
@@ -9,14 +17,6 @@ import no.nav.aura.envconfig.client.rest.ResourceElement;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
-
-import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-
-import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
-import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.TPSF_FASIT_APP_NAME;
 
 public class FasitClient {
 
@@ -37,16 +37,16 @@ public class FasitClient {
 
     private Cache<String, ResourceElement> cache;
 
-    @Value("${FASIT_ENVIRONMENT_NAME}")
+    @Value("${fasit.environment.name}")
     private String deployedEnvironment;
 
-    @Value("${MQGATEWAY_HOSTNAME}")
+    @Value("${mqgateway.hostname}")
     private String mqHostname;
 
-    @Value("${MQGATEWAY_PORT}")
+    @Value("${mqgateway.port}")
     private String mqPort;
 
-    @Value("${MQGATEWAY_NAME}")
+    @Value("${mqgateway.name}")
     private String mqManagerName;
 
     public FasitClient(String baseUrl, String username, String password) {

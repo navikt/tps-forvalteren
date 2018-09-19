@@ -54,7 +54,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
                 }, function (error) {
                     $scope.loading = false;
-                    showAlertTPSError(error);
+                    utilsService.showAlertError(error, '0000-GA-TPSF-SERVICERUTINER');
                 });
             };
 
@@ -63,6 +63,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 text: "Velg servicerutine",
                 click: function (ev) {
                     var confirm = $mdDialog.confirm({
+                        scope: $scope,
                         controller: 'VelgServiceRutineCtrl',
                         templateUrl: 'app/components/service-rutine/velg-service-rutine/velg-service-rutine.html',
                         parent: angular.element(document.body),
@@ -164,35 +165,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     }
                 }
                 return personsData;
-            }
-
-            function showAlertTPSError(error) {
-                var errorMessages = {
-                    400: {
-                        title: 'Bad Request',
-                        text: 'Feil i meldingen: '+error.data.message,
-                        ariaLabel: 'Feil i meldingen: '+error.data.message
-                    },
-                    401: {
-                        title: 'Ikke autorisert',
-                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
-                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
-                    },
-                    500: {
-                        title: 'Serverfeil',
-                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
-                        ariaLabel: 'Feil ved henting av data fra TPS'
-                    }
-                };
-
-                var errorObj = errorMessages[error.status];
-                $mdDialog.show(
-                    $mdDialog.alert()
-                        .title(errorObj.title)
-                        .textContent(errorObj.text)
-                        .ariaLabel(errorObj.ariaLabel)
-                        .ok('OK')
-                );
             }
 
             function showAlertApiError() {

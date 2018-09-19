@@ -5,6 +5,7 @@
         <!--Form - Sending a xml message-->
         <form name="xmlMeldingForm" flex="100" class="accent">
             <div layout="row" class="xmlMelding-content-row">
+
                 <div class="input-container-div" layout="column" flex="10">
                     <md-input-container class="input-container">
                         <label>Miljø</label>
@@ -26,9 +27,25 @@
                 <div layout="column">
                     <md-input-container aria-label="Send xml til tps">
                         <md-button type="submit" class="md-button md-raised md-accent" ng-click="sendTilTps()"
-                                   ng-disabled="xmlMeldingForm.$invalid || !valgtKoe || !valgtMiljoe">
+                                   ng-disabled="xmlMeldingForm.$invalid || !valgtKoe || !valgtMiljoe || (!egenkoe && showOwnQueue)">
                             Send til TPS
                         </md-button>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column" flex="15">
+                    <md-input-container class="input-container">
+                        <label>Timeout</label>
+                        <input name="timeout" ng-model="timeout" pattern="[0-9]+" maxlength="3" required
+                               placeholder="Timeout i sekunder">
+                    </md-input-container>
+                </div>
+                <div class="input-container-div" layout="column" flex="35" ng-show="showOwnQueue">
+                    <md-input-container class="input-container">
+                        <label>Egendefinert kø</label>
+                        <input name="egenkoe" ng-model="egenkoe"
+                               placeholder="QA.{{valgtMiljoe | uppercase}}_xxx.beskrivelse egendefinert kø">
                     </md-input-container>
                 </div>
             </div>
@@ -36,7 +53,6 @@
             <div layout="row" class="xmlMelding-content-row">
                 <div class="input-container-div" layout="column">
                     <md-input-container class="tps-vk-input-container">
-                        <md-tooltip>Skriv inn eller lim inn XML meding</md-tooltip>
                         <label>XML melding</label>
                         <textarea cols="120" name="xmlMelding" ng-model="melding" required class="textarea-xmlMelding"
                                   placeholder="Skriv eller lim inn melding i XML format" minlength="1">

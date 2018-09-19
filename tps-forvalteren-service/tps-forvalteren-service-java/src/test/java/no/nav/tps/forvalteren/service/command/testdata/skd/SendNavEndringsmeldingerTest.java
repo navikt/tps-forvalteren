@@ -29,6 +29,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
+import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
@@ -58,6 +59,9 @@ public class SendNavEndringsmeldingerTest {
 
     @Mock
     private TpsServiceRoutineResponse tpsServiceRoutineResponse;
+
+    @Mock
+    private TpsPacemaker tpsPacemaker;
 
     @InjectMocks
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;

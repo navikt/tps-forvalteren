@@ -20,28 +20,25 @@
 
                 <!-- Navigation Buttons -->
                 <div class="tps-vk-header-default-container" layout="row" layout-align="start center" flex="50">
-                    <div layout-align="center">
+                    <div layout-align="center" ng-if="visGTKnapp">
                         <u class="tps-vk-header-route-text" ng-click="openGT()">Geografisk Tilknytning</u>
-                    </div>
-
-                    <div layout-align="center" ng-if="visTestdataKnapp">
-                        <u class="tps-vk-header-route-text" ng-click="openVisTestdata()">Testdata</u>
-                    </div>
-
-                    <div layout-align="center" ng-if="visSkdEndringsmeldingKnapp">
-                        <u class="tps-vk-header-route-text" ng-click="openVisSkdEndringsmelding()">SKD Endringsmeldinger</u>
                     </div>
 
                     <div layout-align="center" ng-if="visServiceRutineKnapp">
                         <u class="tps-vk-header-route-text" ng-click="openServiceRutine()">Servicerutiner</u>
                     </div>
 
+                    <div layout-align="center" ng-if="visTestdataKnapp">
+                        <u class="tps-vk-header-route-text" ng-click="openVisTestdata()">Testdata</u>
+                    </div>
+
                     <div layout-align="center" ng-if="visSendDoedsmeldingKnapp">
                         <u class="tps-vk-header-route-text" ng-click="openVisSendDoedsmelding()">Dødsmelding</u>
                     </div>
 
-                    <div layout-align="center" ng-if="visRawXmlmeldingKnapp">
-                        <u class="tps-vk-header-route-text" ng-click="openVisXmlMelding()">Xml-melding</u>
+
+                    <div layout-align="center" ng-if="visSkdEndringsmeldingKnapp">
+                        <u class="tps-vk-header-route-text" ng-click="openVisSkdEndringsmelding()">SKD Endringsmeldinger</u>
                     </div>
                 </div>
 

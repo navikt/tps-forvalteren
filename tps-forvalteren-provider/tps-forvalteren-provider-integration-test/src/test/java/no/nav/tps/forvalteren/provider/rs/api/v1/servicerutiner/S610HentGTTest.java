@@ -1,20 +1,20 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.servicerutiner;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceControllerIntegrationTest;
-import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
 import org.junit.Test;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceroutineControllerIntegrationTest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
-public class S610HentGTTest extends AbstractServiceControllerIntegrationTest{
+public class S610HentGTTest extends AbstractServiceroutineControllerIntegrationTest {
 
     @Test
     public void test() {

@@ -1,15 +1,13 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.List;
+import org.springframework.data.repository.Repository;
 
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
-import org.springframework.data.repository.Repository;
 
 public interface DeathRowRepository extends Repository<DeathRow, Long> {
 
     DeathRow findById(Long id);
-
-    DeathRow findByIdent(String ident);
 
     DeathRow save(DeathRow deathRow);
 
@@ -21,7 +19,7 @@ public interface DeathRowRepository extends Repository<DeathRow, Long> {
 
     List<DeathRow> findAll();
 
-    List<DeathRow> findAllByHandling(String handling);
+    List<DeathRow> findAllByStatus(String status);
 
     DeathRow findByIdentAndMiljoe(String ident, String miljoe);
 }

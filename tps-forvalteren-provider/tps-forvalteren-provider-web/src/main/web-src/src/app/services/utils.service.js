@@ -1,14 +1,17 @@
-
 angular.module('tps-forvalteren.service')
-    .service('utilsService', ['moment', '$mdDialog','locationService','authenticationService', function(moment, $mdDialog, locationService, authenticationService){
+    .service('utilsService', ['moment', '$mdDialog', 'locationService', 'authenticationService', function (moment, $mdDialog, locationService, authenticationService) {
 
         var self = this;
 
-        self.getCurrentFormattedDate = function() {
+        self.isArray = function (variable) {
+            return Object.prototype.toString.call(variable) === '[object Array]';
+        };
+
+        self.getCurrentFormattedDate = function () {
             return moment().format('YYYY-MM-DD');
         };
 
-        self.createParametersFromFormData = function(formData){
+        self.createParametersFromFormData = function (formData) {
             var params = {};
             for (var key in formData) {
                 if (formData.hasOwnProperty(key) && formData[key]) {
@@ -18,9 +21,11 @@ angular.module('tps-forvalteren.service')
             return params;
         };
 
-        self.sortEnvironments = function(env) {
-            if (env.length < 2) { return env; }
-            return env.sort(function(a, b) {
+        self.sortEnvironments = function (env) {
+            if (env.length < 2) {
+                return env;
+            }
+            return env.sort(function (a, b) {
                 if (a.charAt(0) !== b.charAt(0)) {
                     return a.localeCompare(b);
                 }
@@ -35,34 +40,36 @@ angular.module('tps-forvalteren.service')
             });
         };
 
-        self.flattenObject = function(jsonObject){
+        self.flattenObject = function (jsonObject) {
             var result = {};
-            function recurse(jObject, properties){
-                if(Object(jObject) !== jObject){
+
+            function recurse(jObject, properties) {
+                if (Object(jObject) !== jObject) {
                     result[properties] = jObject;
-                } else if(Array.isArray(jObject)){
-                    for(var i=0, l=jObject.length; i<jObject.length; i++){
+                } else if (Array.isArray(jObject)) {
+                    for (var i = 0, l = jObject.length; i < jObject.length; i++) {
                         recurse(jObject[i], properties + "[" + i + "]");
                     }
-                    if(l === 0){
+                    if (l === 0) {
                         result[properties] = [];
                     }
                 } else {
                     var isEmpty = true;
-                    for(var p in jObject){
+                    for (var p in jObject) {
                         isEmpty = false;
                         recurse(jObject[p], properties ? properties + "." + p : p);
                     }
-                    if(isEmpty && properties){
+                    if (isEmpty && properties) {
                         result[properties] = {};
                     }
                 }
             }
+
             recurse(jsonObject, "");
             return result;
         };
 
-        self.isNumber = function(n){
+        self.isNumber = function (n) {
             return !isNaN(parseFloat(n)) && isFinite(n);
         };
 
@@ -119,12 +126,21 @@ angular.module('tps-forvalteren.service')
                 }
 
                 return formatted;
-            }else {
+            } else {
                 return "Not xml";
             }
         };
 
-        self.showAlertError = function (error) {
+        self.showAlertDialog = function (melding, title) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .title(title)
+                    .textContent(melding)
+                    .ariaLabel(melding)
+                    .ok('OK'));
+        };
+
+        self.showAlertError = function (error, role) {
             var errorMessages = {
                 400: {
                     title: 'Ugyldig forespørsel',
@@ -132,13 +148,13 @@ angular.module('tps-forvalteren.service')
                     ariaLabel: 'Ugyldig forespørsel fra din bruker.'
                 },
                 401: {
-                    title: 'Ikke autorisert',
+                    title: 'Ikke autentisert',
                     text: 'Bruker er ikke autentisert. Prøv å logge inn på nytt',
                     ariaLabel: 'Bruker er ikke autentisert. Prøv å logge inn på nytt'
                 },
                 403: {
-                    title: 'Forbudt',
-                    text: 'Din bruker har ikke tillatelse til denne spørringen.',
+                    title: 'Ikke autorisert',
+                    text: 'Din bruker har ikke tilgang til denne spørringen.',
                     ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
                 },
                 404: {
@@ -158,8 +174,13 @@ angular.module('tps-forvalteren.service')
                 }
             };
 
-            //var errorMsg = error.data.message;
             var errorObj = errorMessages[error.status];
+            if (error.status == 403 && !!role) {
+                errorObj.text = 'Du mangler rolle "' + role + '" for å få tilgang.';
+            }
+            if ((error.status == 400 || error.status == 500) && error.data && error.data.message) {
+                errorObj.text = error.data.message;
+            }
             $mdDialog.show(
                 $mdDialog.alert()
                     .title(errorObj.title)
@@ -169,9 +190,9 @@ angular.module('tps-forvalteren.service')
             ).then(function () {
 
             }, function () {
-                
+
             }).finally(function () {
-                if(error.status === 401){
+                if (error.status === 401) {
                     authenticationService.invalidateSession(function () {
                         locationService.redirectToLoginState();
                     });

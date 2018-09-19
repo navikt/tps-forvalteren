@@ -1,0 +1,17 @@
+<form name="autocompleteForm">
+    <md-autocomplete md-input-name="landkoden" md-no-cache="false"
+                     md-selected-item="landkode"
+                     md-item-text="landkode.visningsnavn"
+                     md-selected-item-change="endring()"
+                     md-items="landkode in getLandkodeMatches(landkodeSoek)"
+                     md-search-text="landkodeSoek"
+                     md-select-on-match="true" md-require-match="true"
+                     md-delay="300" md-floating-label="Statsborgerskap" flex>
+        <md-item-template>
+            <span md-highlight-text="landkodeSoek" md-highlight-flags="i">{{ landkode.visningsnavn }}</span>
+        </md-item-template>
+        <md-not-found>
+            Ingen treff funnet
+        </md-not-found>
+    </md-autocomplete>
+</form>

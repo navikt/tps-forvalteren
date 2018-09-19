@@ -2,35 +2,13 @@
 
     <div layout-align="center center" layout="row">
 
-        <div class="lenkeboks" ng-click="openGT()">
+        <div class="lenkeboks" ng-click="openGT()" ng-if="visGTKnapp">
             <a>
                 <h2 class="hode hode-undertittel hode-dekorert hode-suksess">
                     GT
                 </h2>
                 <p class="typo-normal">
                     Her kan du søke på geografisk tilknytning.
-                </p>
-            </a>
-        </div>
-
-        <div class="lenkeboks" ng-click="openVisTestdata()" ng-if="visTestdataKnapp">
-            <a>
-                <h2 class="hode hode-undertittel hode-dekorert hode-suksess">
-                     Testdata
-                </h2>
-                <p class="typo-normal">
-                    Her har du mulighet til å finne og opprette testdata
-                </p>
-            </a>
-        </div>
-
-        <div class="lenkeboks" ng-click="openVisSkdEndringsmelding()" ng-if="visSkdEndringsmeldingKnapp">
-            <a>
-                <h2 class="hode hode-undertittel hode-dekorert hode-suksess breaktext">
-                    SKD Endringsmeldinger
-                </h2>
-                <p class="typo-normal breaktext">
-                    Her finner du og oppretter SKD-endringsmeldinger
                 </p>
             </a>
         </div>
@@ -45,17 +23,38 @@
                 </p>
             </a>
         </div>
+
+        <div class="lenkeboks" ng-click="openVisTestdata()" ng-if="visTestdataKnapp">
+            <a>
+                <h2 class="hode hode-undertittel hode-dekorert hode-suksess">
+                     Testdata
+                </h2>
+                <p class="typo-normal">
+                    Her kan du opprette og lagre person-testdata, og sende data til TPS i ønsket miljø.
+                </p>
+            </a>
+        </div>
+
         <div class="lenkeboks" ng-click="openVisSendDoedsmeldinger()" ng-if="visSendDoedsmeldingKnapp">
             <a>
                 <h2 class="hode hode-undertittel hode-dekorert hode-suksess">
                     Send Dødsmelding
                 </h2>
                 <p class="typo-normal">
-                    Her kan du sende dødsmeldinger
+                    Her kan du lagre og sende dødsmeldinger
                 </p>
             </a>
         </div>
 
+        <div class="lenkeboks" ng-click="openVisSkdEndringsmelding()" ng-if="visSkdEndringsmeldingKnapp">
+            <a>
+                <h2 class="hode hode-undertittel hode-dekorert hode-suksess breaktext">
+                    SKD Endringsmeldinger
+                </h2>
+                <p class="typo-normal breaktext">
+                    Her kan du opprette<br>og lagre testdata som SKD-meldinger, og<br>sende meldingene til TPS i ønsket miljø.
+                </p>
+            </a>
+        </div>
     </div>
-
 </div>
