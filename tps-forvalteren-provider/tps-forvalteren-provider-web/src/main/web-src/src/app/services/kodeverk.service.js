@@ -29,4 +29,17 @@ angular.module('tps-forvalteren.service')
             );
             return defer.promise;
         };
+
+        self.hentLandkoder = function () {
+            var defer = $q.defer();
+            $http({cache: true, url: url + 'landkoder', method: 'GET'}).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (error) {
+                    defer.reject(error);
+                }
+            );
+            return defer.promise;
+        };
     }]);

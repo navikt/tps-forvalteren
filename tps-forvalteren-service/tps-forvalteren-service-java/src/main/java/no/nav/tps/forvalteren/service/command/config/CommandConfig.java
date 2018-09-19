@@ -1,9 +1,18 @@
 package no.nav.tps.forvalteren.service.command.config;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
+import javax.jms.JMSException;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.xml.XmlMapper;
+
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak;
@@ -20,7 +29,9 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S013HentTknrHistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S015HentAdresselinjehistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S016Utvandring;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S018PersonHistorikk;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S051FinnGyldigeAdresser;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S103HentAdresser;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S137HentVergemaal;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S300HentKortPersonopplysningInklGT;
@@ -38,12 +49,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VergemaalAarsakskode37;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11;
 import no.nav.tps.forvalteren.service.command.Command;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackageClasses = Command.class)
@@ -52,11 +57,11 @@ public class CommandConfig {
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
-    @Value("${FASIT_ENVIRONMENT_NAME}")
+    @Value("${fasit.environment.name}")
     private String deployedEnvironment;
 
     @Bean
-    MessageQueueConsumer defaultMessageQueueService() throws Exception {
+    MessageQueueConsumer defaultMessageQueueService() throws JMSException {
         return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
     }
 
@@ -144,8 +149,18 @@ public class CommandConfig {
     }
 
     @Bean
+    ServiceRoutineResolver finnGyldigeAdresser() {
+        return new S051FinnGyldigeAdresser();
+    }
+
+    @Bean
     ServiceRoutineResolver hentVergemaal() {
         return new S137HentVergemaal();
+    }
+
+    @Bean
+    ServiceRoutineResolver personhistorikk() {
+        return new S018PersonHistorikk();
     }
 
     @Bean
@@ -185,7 +200,7 @@ public class CommandConfig {
     }
 
     @Bean
-    SkdMeldingResolver innvandring() {
+    public SkdMeldingResolver innvandring() {
         return new InnvandringAarsakskode02();
     }
 
@@ -223,5 +238,4 @@ public class CommandConfig {
     SkdMeldingResolver vergemaal() {
         return new VergemaalAarsakskode37();
     }
-
 }

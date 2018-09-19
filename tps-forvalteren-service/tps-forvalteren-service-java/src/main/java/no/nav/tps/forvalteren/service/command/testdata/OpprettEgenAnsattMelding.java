@@ -29,12 +29,12 @@ public class OpprettEgenAnsattMelding {
     
     public TpsEndreEgenansattRequest buildRequest(Person person) {
         TpsEndreEgenansattRequest request = TpsEndreEgenansattRequest.builder()
-                .serviceRutinenavn( EGEN_ANSATT_MLD_NAVN)
+                .serviceRutinenavn(EGEN_ANSATT_MLD_NAVN)
                 .offentligIdent( person.getIdent())
-                .fom( ConvertDateToString.yyyy_MM_dd(person.getEgenAnsattDatoFom()))
+                .fom( ConvertDateToString.yyyysMMsdd(person.getEgenAnsattDatoFom()))
                 .build();
         if (person.getEgenAnsattDatoTom() != null) {
-            request.setTom( ConvertDateToString.yyyy_MM_dd(person.getEgenAnsattDatoTom()));
+            request.setTom( ConvertDateToString.yyyysMMsdd(person.getEgenAnsattDatoTom()));
         }
         return request;
     }

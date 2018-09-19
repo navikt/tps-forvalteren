@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <sfePersonData>
 	<sfeAjourforing>
-		<systemInfo>
+		<systemInfo xmlns="">
 			<kilde>TPSF</kilde>
 			<brukerID>username</brukerID>
 		</systemInfo>
-		<opprettSikkerhetsTiltak>
+		<opprettSikkerhetsTiltak xmlns="">
 			<serviceRutinenavn>endre_sikkerhetstiltak</serviceRutinenavn>
 			<offentligIdent>1234538826</offentligIdent>
 			<typeSikkerhetsTiltak>USKK</typeSikkerhetsTiltak>

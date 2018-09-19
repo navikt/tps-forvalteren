@@ -53,12 +53,14 @@ public class RsPerson {
 
     private LocalDateTime doedsdato;
 
+    @Size(min = 0, max = 3)
     private String innvandretFraLand;
 
     private LocalDateTime innvandretFraLandFlyttedato;
 
     private LocalDateTime innvandretFraLandRegdato;
 
+    @Size(min = 0, max = 3)
     private String utvandretTilLand;
 
     private LocalDateTime utvandretTilLandFlyttedato;

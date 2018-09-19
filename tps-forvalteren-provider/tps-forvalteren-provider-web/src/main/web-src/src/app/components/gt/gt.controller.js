@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
-    .controller('GTCtrl', ['$scope', '$q', 'utilsService', 'environmentsPromise', 'serviceRutineFactory', 'headerService',
-        function ($scope, $q, utilsService, environmentsPromise, serviceRutineFactory, headerService) {
+    .controller('GTCtrl', ['$scope', '$q', 'utilsService', 'environmentsPromise', 'gtService', 'headerService',
+        function ($scope, $q, utilsService, environmentsPromise, gtService, headerService) {
 
             headerService.setHeader('Geografisk Tilknytning');
 
@@ -13,22 +13,14 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
             function executeServiceRutiner() {
                 $scope.loading = true;
                 nullstillOutputFields();
-                $scope.formData.aksjonsKode = "B0";
                 var params = utilsService.createParametersFromFormData($scope.formData);
-                var kjernePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-KERNINFO-O", params);
-                var adressePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-ADRHISTO-O", params);
 
-                $scope.formData.aksjonsKode = "A0";
-                $scope.formData.adresseType = "ALLE";
-                $scope.formData.buffNr = "1";
-                params = utilsService.createParametersFromFormData($scope.formData);
-                var adresseLinjePromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-ADLIHIST-O", params);
-
-                $scope.formData.infoType = "ALLE";
-                params = utilsService.createParametersFromFormData($scope.formData);
-                var utvandringPromise = serviceRutineFactory.getServiceRutineResponse("FS03-FDNUMMER-SOAIHIST-O", params);
-
-                $q.all([kjernePromise, adressePromise, adresseLinjePromise, utvandringPromise]).then(function (res) {
+                $q.all([
+                    gtService.getKjerneinfo(params),
+                    gtService.getAdressehistorikk(params),
+                    gtService.getAdresselinjehistorikk(params),
+                    gtService.getSoaihistorikk(params)]
+                ).then(function (res) {
 
                     $scope.loading = false;
 
@@ -53,7 +45,7 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                     $scope.xmlFormUtvandring = utilsService.formatXml(res[3].data.xml);
                     $scope.utvandringStatus = utvandringResult.status;
 
-                },function (error) {
+                }, function (error) {
                     utilsService.showAlertError(error);
                     $scope.loading = false;
                 });
@@ -65,7 +57,7 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                 $scope.treff = response.data ? response.data.length : 0;
             };
 
-            var nullstillOutputFields = function() {
+            var nullstillOutputFields = function () {
                 $scope.gt = undefined;
                 $scope.xmlForm = undefined;
                 $scope.status = undefined;
@@ -80,56 +72,40 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                 $scope.xmlFormUtvandring = undefined;
                 $scope.utvandringStatus = undefined;
             };
-            
+
             function sortEnvironmentsForDisplay(environments) {
                 var filteredEnvironments = {};
                 var sortedEnvironments = [];
+
+                var addEnvironment = function (environment) {
+                    if (filteredEnvironments[environment]) {
+                        angular.forEach(filteredEnvironments[environment], function (env) {
+                            sortedEnvironments.push(env);
+                        });
+                    }
+                };
 
                 environments = utilsService.sortEnvironments(environments);
 
                 angular.forEach(environments, function (env) {
                     var substrMiljoe = env.charAt(0);
-
-                    if(filteredEnvironments[substrMiljoe]) {
-                        filteredEnvironments[substrMiljoe].push(env);
-                    } else {
-                        filteredEnvironments[substrMiljoe] = [];
-                        filteredEnvironments[substrMiljoe].push(env);
-                    }
+                    filteredEnvironments[substrMiljoe] = filteredEnvironments[substrMiljoe] ? filteredEnvironments[substrMiljoe] : [];
+                    filteredEnvironments[substrMiljoe].push(env);
                 });
 
-                if (filteredEnvironments['u']) {
-                    angular.forEach(filteredEnvironments['u'], function (env) {
-                        sortedEnvironments.push(env);
-                    });
-                }
-
-                if (filteredEnvironments['t']) {
-                    angular.forEach(filteredEnvironments['t'], function (env) {
-                        sortedEnvironments.push(env);
-                    });
-                }
-
-                if (filteredEnvironments['q']) {
-                    angular.forEach(filteredEnvironments['q'], function (env) {
-                        sortedEnvironments.push(env);
-                    });
-                }
+                addEnvironment('u');
+                addEnvironment('t');
+                addEnvironment('q');
+                addEnvironment('p');
 
                 return sortedEnvironments;
             }
 
-            var init = function() {
-                var environments = $scope.$resolve.environmentsPromise;
-                if(environments.status !== undefined){
-                    utilsService.showAlertError(environments);
-                } else {
-                    $scope.environments = sortEnvironmentsForDisplay(environments.environments);
-                    // $scope.environments = utilsService.sortEnvironments(environments.environments);
-                }
-            };
+            var environments = $scope.$resolve.environmentsPromise;
+            if (environments.status !== undefined) {
+                utilsService.showAlertError(environments);
+            } else {
+                $scope.environments = sortEnvironmentsForDisplay(environments.environments);
+            }
 
-
-            init();
         }]);
-

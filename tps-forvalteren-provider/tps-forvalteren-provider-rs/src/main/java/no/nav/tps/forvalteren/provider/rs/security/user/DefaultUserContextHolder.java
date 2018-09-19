@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.security.user;
 
 import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.service.user.UserRole;
 import org.springframework.security.core.Authentication;
@@ -55,7 +56,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
         Boolean isUserDetails = userDetails instanceof LdapUserDetails;
 
         if ( !isUserDetails ) {
-            throw new RuntimeException("User details is an incorrect type: " + userDetails.getClass());
+            throw new TpsfFunctionalException("User details is an incorrect type: " + userDetails.getClass());
         }
 
         return (LdapUserDetails) userDetails;

@@ -1,14 +1,16 @@
 package no.nav.tps.forvalteren.domain.test.provider;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-
 import java.time.LocalDateTime;
 
-public class PersonProvider {
+import no.nav.tps.forvalteren.domain.jpa.Person;
+
+public final class PersonProvider {
+
+    private PersonProvider() {}
 
     public static Person.PersonBuilder aMalePerson() {
         return Person.builder()
-                .ident("12345678910")
+                .ident("12125678910")
                 .identtype("FNR")
                 .kjonn('M')
                 .fornavn("Ola")
@@ -20,7 +22,7 @@ public class PersonProvider {
 
     public static Person.PersonBuilder aFemalePerson() {
         return Person.builder()
-                .ident("22245678910")
+                .ident("22045678910")
                 .identtype("FNR")
                 .kjonn('K')
                 .fornavn("Kari")

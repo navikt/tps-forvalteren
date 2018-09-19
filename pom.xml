@@ -13,7 +13,6 @@
     <name>TPS Forvalteren</name>
     <version>forUtviklingsmiljo-34</version>
 
-
     <packaging>pom</packaging>
 
     <modules>
@@ -48,6 +47,7 @@
         <modig-testcertificates.version>1.2.2</modig-testcertificates.version>
         <diskresjonskode-v1.version>1.2.3</diskresjonskode-v1.version>
         <pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
+        <tps.interface.library.version>1.57.0</tps.interface.library.version>
         <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
         <freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
@@ -78,6 +78,7 @@
         <spring-security-test.version>4.1.1.RELEASE</spring-security-test.version>
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
         <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
+        <h2.database.version>1.4.197</h2.database.version>
 
         <!--Plugin versions-->
         <aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>
@@ -179,6 +180,12 @@
                 <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-provider-rs</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tps.forvalteren</groupId>
+                <artifactId>tps-forvalteren-provider-web</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
@@ -294,7 +301,7 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-log-jaxws</artifactId>
                 <version>${modig-log-jaxws.version}</version>
-              </dependency>
+            </dependency>
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-testcertificates</artifactId>
@@ -321,7 +328,6 @@
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${micrometer.version}</version>
             </dependency>
-
             <!-- Apache Commons IO -->
             <dependency>
                 <groupId>org.apache.directory.studio</groupId>
@@ -393,7 +399,13 @@
                 <artifactId>mqjms</artifactId>
                 <version>${mqjms.version}</version>
             </dependency>
-
+            <!-- Database -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.database.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- Flyway -->
             <dependency>
                 <groupId>org.flywaydb</groupId>
@@ -428,17 +440,28 @@
             </dependency>
 
             <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-jaxb-tps-s004-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-castor-tps-s018-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-jaxb-tps-s051-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>4.11</version>
             </dependency>
-
-            <!-- STS for å skaffe SAML til ws for tpsws-->
-            <!--<dependency>-->
-                <!--<groupId>no.nav.freg</groupId>-->
-                <!--<artifactId>freg-security-sts</artifactId>-->
-                <!--<version>1.0.0-SNAPSHOT</version>-->
-            <!--</dependency>-->
 
         </dependencies>
     </dependencyManagement>

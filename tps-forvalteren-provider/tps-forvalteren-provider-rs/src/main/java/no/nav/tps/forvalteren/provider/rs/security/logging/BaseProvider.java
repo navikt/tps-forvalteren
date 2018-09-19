@@ -10,10 +10,13 @@ public abstract class BaseProvider {
     private static final Logger SPORINGSLOGGER = LoggerFactory.getLogger("no.nav.tps.forvalteren.provider.rs.Sporingslogger");
 
     protected void loggSporing(String serviceRutine,  Map<String, Object> requestParameters) {
-        SPORINGSLOGGER.info("ServiceRutine: {}, Request: {}",
-                serviceRutine,
-                requestParameters.toString()
-                );
+
+        if (SPORINGSLOGGER.isInfoEnabled()) {
+            SPORINGSLOGGER.info("ServiceRutine: {}, Request: {}",
+                    serviceRutine,
+                    requestParameters.toString()
+            );
+        }
     }
 }
 

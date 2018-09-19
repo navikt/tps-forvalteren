@@ -8,11 +8,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.VergemaalSkdParametere;
 
 public class VergemaalAarsakskode37 implements SkdMeldingResolver {
+    public static final String VERGEMAAL_MLD_NAVN = "Vergemaal";
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name("Vergemaal")
+                .name(VERGEMAAL_MLD_NAVN)
 
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)

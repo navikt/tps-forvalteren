@@ -32,12 +32,12 @@ public class OpprettSikkerhetstiltakMelding {
                 .serviceRutinenavn(SIKKERHETSTILTAK_MLD_NAVN)
                 .offentligIdent(person.getIdent())
                 .typeSikkerhetsTiltak(person.getTypeSikkerhetsTiltak())
-                .fom(ConvertDateToString.yyyy_MM_dd(person.getSikkerhetsTiltakDatoFom()))
+                .fom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoFom()))
                 .beskrSikkerhetsTiltak(person.getBeskrSikkerhetsTiltak())
                 .build();
     
         if (person.getSikkerhetsTiltakDatoTom() != null) {
-            request.setTom( ConvertDateToString.yyyy_MM_dd(person.getSikkerhetsTiltakDatoTom()));
+            request.setTom( ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoTom()));
         }
         return request;
     }

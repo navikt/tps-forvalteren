@@ -42,7 +42,7 @@ public class MapToRsMelding {
 	
 	private RsMeldingstype createT1(SkdMeldingTrans1 melding) {
 		RsMeldingstype1Felter rsMeldingstype = mapBetweenRsMeldingstypeAndSkdMelding.map(melding);
-		rsMeldingstype.setBeskrivelse("IDENT: " + rsMeldingstype.getFodselsdato() + rsMeldingstype.getPersonnummer() + " - AARSAKSKODE: " + rsMeldingstype
+		rsMeldingstype.setBeskrivelse("IDENT: " + rsMeldingstype.getFodselsdato() + rsMeldingstype.getPersonnummer() + " - AARSAK_KO_DE: " + rsMeldingstype
 				.getAarsakskode());
  		return rsMeldingstype;
 	}
@@ -52,7 +52,7 @@ public class MapToRsMelding {
 		Map<String, String> meldingFelter = new HashMap<>();
 		populateMapWithFelter(melding, meldingFelter, felter);
 		meldingFelter.put("meldingstype", "t2");
-		String beskrivelse = "IDENT: " + meldingFelter.get("fodselsnr") + " - AARSAKSKODE: " + meldingFelter.get("aarsakskode");
+		String beskrivelse = "IDENT: " + meldingFelter.get("fodselsnr") + " - AARSAK_KO_DE: " + meldingFelter.get("aarsakskode");
 		meldingFelter.put("beskrivelse", beskrivelse);
 		return objectMapper.convertValue(meldingFelter, RsMeldingstype2Felter.class);
 	}

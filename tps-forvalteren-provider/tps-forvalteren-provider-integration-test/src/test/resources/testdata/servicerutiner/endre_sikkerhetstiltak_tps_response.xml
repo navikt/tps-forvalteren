@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-		[- <sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rtv.no/NamespaceTPS X:\FAGOMR~1\SYSTEM~1\00226D73\FS03TP~1\DOKUME~1\XML-SK~1\SFEDAT~2.XSD">
+<sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rtv.no/NamespaceTPS X:\FAGOMR~1\SYSTEM~1\00226D73\FS03TP~1\DOKUME~1\XML-SK~1\SFEDAT~2.XSD">
 	<sfeAjourforing>
 		<systemInfo>
 			<kilde>FS22</kilde>

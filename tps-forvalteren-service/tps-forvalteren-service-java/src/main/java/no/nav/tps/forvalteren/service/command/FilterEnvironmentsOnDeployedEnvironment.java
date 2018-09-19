@@ -1,14 +1,13 @@
 package no.nav.tps.forvalteren.service.command;
 
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 public class FilterEnvironmentsOnDeployedEnvironment {
 
-    @Value("${FASIT_ENVIRONMENT_NAME}")
+    @Value("${fasit.environment.name}")
     private String deployedEnvironment;
 
     public Set<String> execute(Set<String> environments) {
@@ -20,11 +19,6 @@ public class FilterEnvironmentsOnDeployedEnvironment {
                     .include("t*")
                     .filter(environments);
         case 't':
-            return EnvironmentsFilter.create()
-                    .include("u*")
-                    .include("t*")
-                    .include("q*")
-                    .filter(environments);
         case 'q':
             return EnvironmentsFilter.create()
                     .include("u*")

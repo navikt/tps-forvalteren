@@ -1,20 +1,21 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
 import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
+
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
+import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
+import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 @Component
-@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "true")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "true")
 public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
     @Value("${TPS_FORESPORSEL_XML_O_QUEUENAME}")

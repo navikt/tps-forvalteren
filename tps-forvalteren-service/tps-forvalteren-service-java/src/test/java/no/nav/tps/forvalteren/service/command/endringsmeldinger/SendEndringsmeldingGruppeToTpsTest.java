@@ -11,8 +11,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,6 +25,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
+import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
@@ -35,6 +34,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SendEndringsmeldingGruppeToTpsTest {
@@ -49,8 +49,8 @@ public class SendEndringsmeldingGruppeToTpsTest {
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
 
     @Mock
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
-
+    private SendSkdMeldingerOgLeggTilResponsliste sendSkdMeldinger;
+    
     @Mock
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
@@ -86,6 +86,9 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
     @Mock
     private List<SkdEndringsmelding> skdEndringsmeldinger;
+
+    @Mock
+    private TpsPacemaker tpsPacemaker;
 
     @Before
     public void setup() {
@@ -123,7 +126,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
         verify(convertMeldingFromJsonToText, times(3)).execute(rsMeldingstype1Felter);
         verify(skdAddHeaderToSkdMelding, times(3)).execute(any(StringBuilder.class));
-        verify(sendSkdMeldingTilGitteMiljoer, times(3)).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
+        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(),anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString());
 
         verify(skdEndringsmeldingLoggRepository, times(3)).save(any(SkdEndringsmeldingLogg.class));
     }

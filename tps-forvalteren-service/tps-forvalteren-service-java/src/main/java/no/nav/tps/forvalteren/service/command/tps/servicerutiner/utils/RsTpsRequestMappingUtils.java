@@ -48,7 +48,7 @@ public class RsTpsRequestMappingUtils {
         List<String> requiredParameterNameList = tpsServiceRoutineDefinitionRequest.getRequiredParameterNameList();
         requiredParameterNameList.removeAll(map.keySet());
         if (!requiredParameterNameList.isEmpty()) {
-            throw new TpsfFunctionalException("Følgende påkrevde felter mangler:" + requiredParameterNameList.toString());
+            throw new TpsfFunctionalException("Følgende påkrevde felter mangler:" + requiredParameterNameList);
         }
     }
 }

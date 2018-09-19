@@ -48,18 +48,39 @@
         </div>
     </md-input-container>
 
-    <md-input-container class="tps-vk-input-container" flex="15">
-        <md-tooltip>Statsborgerskap</md-tooltip>
-        <label>Statsborgerskap</label>
-        <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
-               ng-model="person.statsborgerskap" ng-change="endret($index + pager.startIndex)"/>
-        <div ng-messages="requestForm.statsborgerskap.$error"
-             ng-show="requestForm.statsborgerskap.$dirty">
-            <div ng-message="minlength">Verdi har for få tegn</div>
-            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+    <landkoder landkoden="person.statsborgerskap" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" flex="30">
+    </landkoder>
+
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Statsborgerskap regdato</md-tooltip>
+        <label>Statsborg. dato</label>
+        <md-datepicker name="statsborgerskapRegdato"
+                       md-current-view="year"
+                       ng-model="person.statsborgerskapRegdato"
+                       ng-change="endret($index + pager.startIndex)">
+        </md-datepicker>
+        <div ng-messages="requestForm.statsborgerskapRegdato.$error"
+             ng-show="requestForm.statsborgerskapRegdato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>
 
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Dødsdato</md-tooltip>
+        <label>Dødsdato</label>
+        <md-datepicker name="doedsdato"
+                       md-current-view="year"
+                       ng-model="person.doedsdato"
+                       ng-change="endret($index + pager.startIndex)">
+        </md-datepicker>
+        <div ng-messages="requestForm.doedsdato.$error"
+             ng-show="requestForm.doedsdato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
     <md-input-container class="tps-vk-input-container" flex="25">
         <md-tooltip>Spesialregister</md-tooltip>
         <label>Spesialregister</label>
@@ -92,15 +113,15 @@
     </md-input-container>
 
     <md-input-container class="tps-vk-input-container" flex="20">
-        <md-tooltip>Dødsdato</md-tooltip>
-        <label>Dødsdato</label>
-        <md-datepicker name="doedsdato"
+        <md-tooltip>Fra land flyttedato</md-tooltip>
+        <label>Fra land flyttedato</label>
+        <md-datepicker name="innvandretFraLandFlyttedato"
                        md-current-view="year"
-                       ng-model="person.doedsdato"
+                       ng-model="person.innvandretFraLandFlyttedato"
                        ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
-        <div ng-messages="requestForm.doedsdato.$error"
-             ng-show="requestForm.doedsdato.$pristine">
+        <div ng-messages="requestForm.innvandretFraLandFlyttedato.$error"
+             ng-show="requestForm.innvandretFraLandFlyttedato.$pristine">
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>

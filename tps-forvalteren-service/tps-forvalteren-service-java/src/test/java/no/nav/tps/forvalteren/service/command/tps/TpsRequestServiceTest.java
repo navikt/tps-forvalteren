@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TpsRequestServiceTest {
+    private long timeout = 5000;
 
     private static final String ENVIRONMENT = "environment";
 
@@ -73,7 +74,7 @@ public class TpsRequestServiceTest {
         TpsRequestContext context = createDefaultContext();
 
         when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
-        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
+        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context,timeout);
 
         verify(ForbiddenCallHandlerServiceMock, never()).authoriseRestCall(serviceRoutine);
     }
@@ -91,11 +92,11 @@ public class TpsRequestServiceTest {
         when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
-        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
+        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
 
 
         inOrder.verify(transformationService).transform(any(Request.class), eq(serviceRoutine));
-        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML);
+        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML, timeout);
     }
 
     @Test
@@ -109,11 +110,11 @@ public class TpsRequestServiceTest {
         when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
-        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
+        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
 
         when(messageQueueConsumerMock.sendMessage(REQUEST_XML)).thenReturn(RESPONSE_XML);
 
-        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML);
+        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML, timeout);
         inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));
 
 
@@ -130,11 +131,11 @@ public class TpsRequestServiceTest {
         when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine-TESTDATA");
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
-        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context);
+        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
 
         when(messageQueueConsumerMock.sendMessage(REQUEST_XML)).thenReturn(RESPONSE_XML);
 
-        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML);
+        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML,timeout);
         inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));
 
     }

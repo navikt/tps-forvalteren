@@ -32,6 +32,13 @@
                         <a href="" ng-click="send('FS03-OTILGANG-TILSRTPS-O')">S000 - Sjekk om TPS er tilgjengelig</a>
                         <a href="" ng-click="send('FS03-FDNUMMER-KONTINFO-O')">S600 - Hent kontaktinformasjon</a>
                         <a href="" ng-click="send('FS03-FDNUMMER-VERGMAAL-O')">S137 - Hent vergemål</a>
+                        <br>
+                        <br>
+                        <br>
+                        <div ng-if="enableXmlMld">
+                            <h3>Avansert:</h3>
+                            <a href="" ng-click="openVisXmlMelding()">TPS - Generell XML-melding</a>
+                        </div>
                     </div>
                 </div>
 

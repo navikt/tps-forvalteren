@@ -2,6 +2,13 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_LES;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SERVICERUTINER;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SKDMELDING;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SKRIV;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +25,14 @@ import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnviro
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
-
 @RestController
 @RequestMapping(value = "api/v1")
 public class EnvironmentController {
 
+    private static final String HAS_GT = "hasGT";
+    private static final String HAS_TST = "hasTST";
+    private static final String HAS_MLD = "hasMLD";
+    private static final String HAS_SRV = "hasSRV";
     private static final String REST_SERVICE_NAME = "environments";
 
     @Autowired
@@ -34,7 +44,7 @@ public class EnvironmentController {
     @Autowired
     private UserContextHolder userContextHolder;
 
-    @Value("${tps.forvalteren.production-mode}")
+    @Value("${tps.forvalteren.production.mode:true}")
     private boolean currentEnvironmentIsProd;
 
     /**
@@ -52,15 +62,22 @@ public class EnvironmentController {
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
         environment.setProductionMode(currentEnvironmentIsProd);
 
-        if(!currentEnvironmentIsProd){
-            Set<String> rolesA = new HashSet<>(Arrays.asList("ROLE_TPSF_SKRIV", "ROLE_TPSF_SERVICERUTINER", "ROLE_TPSF_SKDMELDING", "ROLE_ACCESS", "ROLE_TPSF_LES", "ROLE_TPSF_UTVIKLER"));
-            environment.setRoles(rolesA);
-        } else {
+        Map<String, Boolean> roller = new HashMap<>();
+        if(currentEnvironmentIsProd) {
             Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
-            environment.setRoles(roles);
+            roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
+            roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
+            roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
+            roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+        } else {
+            roller.put(HAS_GT, true);
+            roller.put(HAS_TST, true);
+            roller.put(HAS_MLD, true);
+            roller.put(HAS_SRV, true);
         }
+
+        environment.setRoles(roller);
 
         return environment;
     }
-
 }

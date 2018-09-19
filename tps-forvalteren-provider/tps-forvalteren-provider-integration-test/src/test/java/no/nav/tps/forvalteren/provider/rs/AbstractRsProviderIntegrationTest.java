@@ -32,7 +32,6 @@ import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeC
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.RsProviderIntegrationTestConfig;
 
-//TODO Bare legg til disse her, så vil man få feil grunnet kluss i dependencies.
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RsProviderIntegrationTestConfig.class)

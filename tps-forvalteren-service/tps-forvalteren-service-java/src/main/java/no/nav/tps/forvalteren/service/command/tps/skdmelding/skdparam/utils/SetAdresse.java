@@ -1,8 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
-import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
@@ -10,8 +11,6 @@ import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SetAdresse {
@@ -45,10 +44,7 @@ public class SetAdresse {
             skdMeldingTrans1.setKommunenummer(boadresse.getKommunenr());
             skdMeldingTrans1.setPostnummer(boadresse.getPostnr());
 
-            LocalDateTime flytteDato = boadresse.getFlyttedato();
-            if (flytteDato != null) {
-                skdMeldingTrans1.setFlyttedatoAdr(String.format("%04d%02d%02d", flytteDato.getYear(), flytteDato.getMonthValue(), flytteDato.getDayOfMonth()));
-            }
+            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(boadresse.getFlyttedato()));
             skdMeldingTrans1.setAdressetype("O");
         }
 

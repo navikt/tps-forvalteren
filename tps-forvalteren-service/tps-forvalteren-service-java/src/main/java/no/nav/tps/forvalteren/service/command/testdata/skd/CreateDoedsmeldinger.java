@@ -43,8 +43,8 @@ public class CreateDoedsmeldinger {
     }
 
     private List<Person> findDoedePersonerWithoutDoedsmelding(List<Person> personer) {
+
         List<Person> doedePersoner = findDoedePersoner.execute(personer);
-        List<Person> doedePersonerWithoutDoedsmelding = findPersonerWithoutDoedsmelding.execute(doedePersoner);
-        return doedePersonerWithoutDoedsmelding;
+        return findPersonerWithoutDoedsmelding.execute(doedePersoner);
     }
 }

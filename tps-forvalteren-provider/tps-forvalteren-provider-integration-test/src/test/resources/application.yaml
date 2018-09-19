@@ -23,7 +23,6 @@ spring:
     banner-mode: 'off'
 
 enable.caching: false
-node.hostname: localhost
 
 ### JDBC SEssions Spring ###
 spring.session:
@@ -39,27 +38,27 @@ flyway:
   locations: classpath:db/migration
   enabled: true
 
-tps.forvalteren.production-mode: false
+tps.forvalteren.production.mode: false
 
 environment.name: u6
 environment.class: u
 
-FASIT_ENVIRONMENT_NAME: u6
+fasit.environment.name: u6
 
-MQGATEWAY_HOSTNAME: e26apvl121.test.local
-MQGATEWAY_PORT: 1411
-MQGATEWAY_NAME: MUXLSC01
-TPS_FORESPORSEL_XML_O_QUEUENAME: QA.D8_411.TPS_FORESPORSEL_XML_O
+mqgateway.hostname: e26apvl121.test.local
+mqgateway.port: 1411
+mqgateway.name: MUXLSC01
+tps.foresporsel.xml.o.queuename: QA.D8_411.TPS_FORESPORSEL_XML_O
 
-kodeverkserver.url: https://modapp-t5.adeo.no/kodeverk/ws/Kodeverk/v2
+virksomhet.kodeverk.v2.endpointurl: https://modapp-t5.adeo.no/kodeverk/ws/Kodeverk/v2
 
-validering.virksomhet.diskresjonskodev1.url: https://wasapp-t5.adeo.no/tpsws/Diskresjonskode
-validering.virksomhet.egenansattv1.url: https://wasapp-t9.adeo.no/tpsws/EgenAnsatt_v1
+virksomhet.diskresjonskode.v1.endpointurl: https://wasapp-t5.adeo.no/tpsws/Diskresjonskode
+virksomhet.egenansatt.v1.endpointurl: https://wasapp-t9.adeo.no/tpsws/EgenAnsatt_v1
 
-SRVTPS_FORVALTEREN_USERNAME: srvdrek_u
-SRVTPS_FORVALTEREN_PASSWORD: NCeyl5Tz83aO5hq
+srvtps.forvalteren.username: srvdrek_u
+srvtps.forvalteren.password: NCeyl5Tz83aO5hq
 
-SECURITYTOKENSERVICE_URL: https://sts-t6.test.local/SecurityTokenServiceProvider/
+securitytokenservice.url: https://sts-t6.test.local/SecurityTokenServiceProvider/
 
 ldap.url: ldap\://ldapgw.test.local
 ldap.basedn: dc\=test,dc\=local
