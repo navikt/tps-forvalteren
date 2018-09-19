@@ -49,8 +49,8 @@ public class SendEndringsmeldingGruppeToTpsTest {
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
 
     @Mock
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
-
+    private SendSkdMeldingerOgLeggTilResponsliste sendSkdMeldinger;
+    
     @Mock
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
@@ -126,7 +126,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
         verify(convertMeldingFromJsonToText, times(3)).execute(rsMeldingstype1Felter);
         verify(skdAddHeaderToSkdMelding, times(3)).execute(any(StringBuilder.class));
-        verify(sendSkdMeldingTilGitteMiljoer, times(3)).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
+        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(),anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString());
 
         verify(skdEndringsmeldingLoggRepository, times(3)).save(any(SkdEndringsmeldingLogg.class));
     }

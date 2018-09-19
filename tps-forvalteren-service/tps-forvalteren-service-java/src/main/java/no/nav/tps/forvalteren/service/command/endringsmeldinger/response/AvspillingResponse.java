@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.skdavspilleren.service.response;
+package no.nav.tps.forvalteren.service.command.endringsmeldinger.response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class StartAvspillingResponse {
+public class AvspillingResponse {
     
     private int antallSendte = 0;
     private int antallFeilet = 0;

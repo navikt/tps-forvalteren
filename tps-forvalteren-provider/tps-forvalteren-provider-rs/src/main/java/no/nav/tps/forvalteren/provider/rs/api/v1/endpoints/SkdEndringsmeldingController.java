@@ -37,6 +37,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
 
 @Transactional
 @RestController
@@ -152,8 +153,8 @@ public class SkdEndringsmeldingController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendToTps") })
     @RequestMapping(value = "/send/{skdMeldingGruppeId}", method = RequestMethod.POST)
-    public void sendToTps(@PathVariable Long skdMeldingGruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
-        sendEndringsmeldingGruppeToTps.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
+    public AvspillingResponse sendToTps(@PathVariable Long skdMeldingGruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
+        return sendEndringsmeldingGruppeToTps.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
     }
 
     @LogExceptions

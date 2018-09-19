@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.skdavspilleren.service.response;
+package no.nav.tps.forvalteren.service.command.endringsmeldinger.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class StatusPaaAvspiltSkdMelding {
+    private String foedselsnummer;
     private Long sekvensnummer;
     private String status;
 }

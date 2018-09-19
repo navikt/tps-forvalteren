@@ -15,18 +15,17 @@
 
     <packaging>pom</packaging>
 
-    <modules>
-        <module>tps-forvalteren-application</module>
-        <module>tps-forvalteren-common</module>
-        <module>tps-forvalteren-config</module>
-        <module>tps-forvalteren-consumer</module>
-        <module>tps-forvalteren-domain</module>
-        <module>tps-forvalteren-provider</module>
-        <module>tps-forvalteren-service</module>
-        <module>tps-forvalteren-repository</module>
-        <module>tps-forvalteren-componenttest</module>
-        <module>skdmelding-avspilleren</module>
-    </modules>
+	<modules>
+		<module>tps-forvalteren-application</module>
+		<module>tps-forvalteren-common</module>
+		<module>tps-forvalteren-config</module>
+		<module>tps-forvalteren-consumer</module>
+		<module>tps-forvalteren-domain</module>
+		<module>tps-forvalteren-provider</module>
+		<module>tps-forvalteren-service</module>
+		<module>tps-forvalteren-repository</module>
+		<module>tps-forvalteren-componenttest</module>
+	</modules>
 
     <prerequisites>
         <maven>3.3.1</maven>

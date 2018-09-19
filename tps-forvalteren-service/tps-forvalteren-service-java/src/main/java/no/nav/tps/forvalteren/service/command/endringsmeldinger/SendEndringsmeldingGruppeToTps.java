@@ -3,8 +3,6 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,8 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingLoggRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 
@@ -45,7 +43,7 @@ public class SendEndringsmeldingGruppeToTps {
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
 
     @Autowired
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
+    private SendSkdMeldingerOgLeggTilResponsliste sendSkdMeldinger;
 
     @Autowired
     private ConvertJsonToRsMeldingstype convertJsonToRsMeldingstype;
@@ -59,8 +57,9 @@ public class SendEndringsmeldingGruppeToTps {
     @Autowired
     private TpsPacemaker tpsPacemaker;
 
-    public void execute(Long skdMeldingsGruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
+    public AvspillingResponse execute(Long skdMeldingsGruppeId, RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(skdMeldingsGruppeId);
+        AvspillingResponse avspillingResponse = new AvspillingResponse();
         if (gruppe != null) {
             List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
             String environment = skdEndringsmeldingIdListToTps.getEnvironment();
@@ -83,15 +82,15 @@ public class SendEndringsmeldingGruppeToTps {
 
                 String skdMelding = convertMeldingFromJsonToText.execute(melding);
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
-                sendSkdMeldingTilGitteMiljoer.execute(skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, new HashSet<>(Arrays.asList(environment)));
+                sendSkdMeldinger.sendSkdMeldingAndAddResponseToList(avspillingResponse, skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, environment);
                 saveLogg(skdMelding, melding, skdMeldingsGruppeId, environment);
 
                 tpsPacemaker.iteration(i);
             }
-
         } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, skdMeldingsGruppeId));
         }
+        return avspillingResponse;
     }
 
     private void saveLogg(String skdMelding, RsMeldingstype melding, Long skdMeldingsGruppeId, String environment) {
