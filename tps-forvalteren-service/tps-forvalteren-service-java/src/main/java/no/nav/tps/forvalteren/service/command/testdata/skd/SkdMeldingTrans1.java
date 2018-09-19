@@ -1,14 +1,15 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import java.lang.reflect.InvocationTargetException;
+import org.codehaus.plexus.util.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjonerTrans1;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Java-representasjon av skdmeldingen. Objektet bærer verdiene til de utfylte elementene i skd-meldingen.
@@ -19,7 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 @AllArgsConstructor
 @Builder
 public class SkdMeldingTrans1 implements SkdMelding {
-	private static int meldingslengdeUtenHeader = 1500;
+	private static final int MELDINGSLENGDE_UTEN_HEADER = 1500;
+
 	private String header;
 	private String fodselsdato;
 	private String personnummer;
@@ -39,7 +41,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 	private String foedekommLand;
 	private String foedested;
 	private String statsborgerskap;
-	private String regdatoStatsb;
+	private String statsborgerskapRegdato;
 	private String familienummer;
 	private String regdatoFamnr;
 	private String personkode;
@@ -171,8 +173,8 @@ public class SkdMeldingTrans1 implements SkdMelding {
 	 */
 	public static SkdMeldingTrans1 unmarshal(String skdMeldingInStringFormat) { //constructFromString()
 		SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-		if (skdMeldingInStringFormat.length() > meldingslengdeUtenHeader) {
-			int headerlength = skdMeldingInStringFormat.length() - meldingslengdeUtenHeader;
+		if (skdMeldingInStringFormat.length() > MELDINGSLENGDE_UTEN_HEADER) {
+			int headerlength = skdMeldingInStringFormat.length() - MELDINGSLENGDE_UTEN_HEADER;
 			skdMeldingTrans1.setHeader(skdMeldingInStringFormat.substring(0, headerlength));
 			skdMeldingInStringFormat = skdMeldingInStringFormat.substring(headerlength);
 		}
@@ -218,7 +220,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 			return ((String) getClass().getMethod("get" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()))
 					.invoke(this));
 		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e.getMessage(), e);
+			throw new TpsfTechnicalException(e.getMessage(), e);
 		}
 	}
 	
@@ -227,7 +229,7 @@ public class SkdMeldingTrans1 implements SkdMelding {
 			getClass().getMethod("set" + StringUtils.capitalise(skdFeltDefinisjon.getVariabelNavn()), String.class)
 					.invoke(this, feltverdi);
 		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e.getMessage(), e);
+			throw new TpsfTechnicalException(e.getMessage(), e);
 		}
 	}
 	

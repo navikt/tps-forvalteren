@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring.FAMILIEENDRING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11.VIGSEL_MLD_NAVN;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +33,9 @@ public class CreateRelasjoner {
             boolean hasBarn = false;
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
-                if ("Vigsel".equals(skdMeldingNavn)) {
+                if (VIGSEL_MLD_NAVN.equals(skdMeldingNavn)) {
                     skdMeldinger.addAll(skdMessageCreatorTrans1.execute(skdMeldingNavn, Arrays.asList(person), addHeader));
-                } else if ("Familieendring".equals(skdMeldingNavn)) {
+                } else if (FAMILIEENDRING_MLD_NAVN.equals(skdMeldingNavn)) {
                     hasBarn = true;
                 }
             }
@@ -46,9 +49,9 @@ public class CreateRelasjoner {
     private String getSkdMeldingNavn(Relasjon relasjon) {
         switch (relasjon.getRelasjonTypeNavn()) {
         case "EKTEFELLE":
-            return "Vigsel";
+            return VIGSEL_MLD_NAVN;
         case "BARN":
-            return "Familieendring";
+            return FAMILIEENDRING_MLD_NAVN;
         default:
             return "";
         }

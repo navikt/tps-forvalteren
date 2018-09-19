@@ -1,7 +1,7 @@
 angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
-    .controller('VisTestdataCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'testdataService', 'utilsService', 'locationService',
+    .controller('VisTestdataCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'testdataService','gyldigAdresseService', 'utilsService', 'locationService',
         'headerService', 'toggleservice',
-        function ($scope, $stateParams, $filter, $mdDialog, testdataService, utilsService, locationService, headerService, toggleservice) {
+        function ($scope, $stateParams, $filter, $mdDialog, testdataService, gyldigAdresseService, utilsService, locationService, headerService, toggleservice) {
 
             $scope.persondetalj = "app/components/vis-testdata/person/person.html";
             $scope.gateadresse = "app/components/vis-testdata/adresse/gateadresse.html";
@@ -197,6 +197,8 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             // Denne fikser bug i Material datepicker, ved at feltet finnes i modell vil klikk i feltet være uten sideeffekt
             function fixDatoForDatepicker(person) {
                 person.regdato = person.regdato || null;
+                person.statsborgerskapRegdato = person.statsborgerskapRegdato || null;
+                person.innvandretFraLandFlyttedato = person.innvandretFraLandFlyttedato || null;
                 person.spesregDato = person.spesregDato || null;
                 person.doedsdato = person.doedsdato || null;
                 person.gateadresse = person.gateadresse || {};
@@ -204,8 +206,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.matrikkeladresse = person.matrikkeladresse || {};
                 person.matrikkeladresse.flyttedato = person.matrikkeladresse.flyttedato || null;
             }
-
-            var oppdaterFane = undefined;
 
             $scope.sletteDialog = function (index) {
                 var confirm = $mdDialog.confirm()
@@ -223,7 +223,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             $scope.oppdaterValgt = function () {
-                oppdaterFane = true;
 
                 var endret = 0;
                 for (var i = 0; i < $scope.personer.length; i++) {
@@ -233,19 +232,19 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 }
 
                 var valgt = 0;
-                for (var i = 0; i < $scope.personer.length; i++) {
-                    if (!$scope.control[i]) {
-                        $scope.control[i] = {};
+                for (var j = 0; j < $scope.personer.length; j++) {
+                    if (!$scope.control[j]) {
+                        $scope.control[j] = {};
                     }
                     if (endret > 0) {
-                        $scope.control[i].disabled = !$scope.control[i].endret;
-                        if (!$scope.control[i].endret) {
-                            $scope.control[i].velg = false;
+                        $scope.control[j].disabled = !$scope.control[j].endret;
+                        if (!$scope.control[j].endret) {
+                            $scope.control[j].velg = false;
                         }
                     } else {
-                        $scope.control[i].disabled = false;
+                        $scope.control[j].disabled = false;
                     }
-                    if ($scope.control[i].velg) {
+                    if ($scope.control[j].velg) {
                         valgt++;
                     }
                 }
@@ -280,6 +279,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                         buffer.push(prepLagrePerson($scope.personer[i]));
                     }
                 }
+                console.log(buffer)
                 testdataService.oppdaterTestpersoner(buffer).then(
                     function (result) {
                         for (var i = 0; i < $scope.personer.length; i++) {
@@ -314,8 +314,10 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                 person.boadresse.adressetype = adressetype;
                 fixTimezone(person.boadresse.flyttedato);
                 fixTimezone(person.regdato);
+                fixTimezone(person.statsborgerskapRegdato);
                 fixTimezone(person.spesregDato);
                 fixTimezone(person.doedsdato);
+                fixTimezone(person.innvandretFraLandFlyttedato);
                 return person;
             }
 
@@ -458,6 +460,59 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
 
             $scope.toggleAlleFaner = function () {
                 $scope.aapneAlleFaner = toggleservice.toggleAlleFaner($scope.aapneAlleFaner, $scope.control, $scope.pager);
+            };
+
+            $scope.$on('tps-sent', function(event, args){
+                hentTestpersoner();
+            });
+
+            $scope.hentgyldigeAdresser = function (person) {
+
+                gyldigAdresseService.finnGyldigAdresse(person.gateadresse).then(
+                    function (result) {
+                        if(result.data.response.status.kode!="00") {
+                            utilsService.showAlertDialog(result.data.response.status.utfyllendeMelding, "Finn gyldig adresse");
+                        }
+                        var responsAdresser = result.data.response.data1.adrData;
+                        if(utilsService.isArray(responsAdresser)) {
+                            $scope.gyldigeAdresser = responsAdresser;
+                        }else {
+                            $scope.gyldigeAdresser = [responsAdresser];
+                        }
+
+                        for(var i = 0; i<$scope.gyldigeAdresser.length; i++) {
+                                $scope.gyldigeAdresser[i].visningsnavn = createVisningsnavn($scope.gyldigeAdresser[i]);
+                            }
+
+                    },
+                    function (error) {
+                            utilsService.showAlertError(error);
+                    }
+
+                );
+
+                function createVisningsnavn(adresse) {
+                    return adresse.adrnavn +", husnr "+
+                        adresse.husnrfra +"-"+ adresse.husnrtil+", "+
+                        adresse.gkode + ","
+                        + adresse.pnr + " "+adresse.psted + ", "
+                        + adresse.knr + " " + adresse.knavn ;
+                }
+
+            };
+
+            $scope.updateAdresseGyldig = function (selectedGyldigAdresse, person) {
+                person.gateadresse.gateadresse = selectedGyldigAdresse.adrnavn;
+                var husnrFra = parseInt(selectedGyldigAdresse.husnrfra);
+                var husnrTil = parseInt(selectedGyldigAdresse.husnrtil);
+                if(typeof person.gateadresse.husnummer==='undefined' || husnrFra>person.gateadresse.husnummer || husnrTil<person.gateadresse.husnummer){
+                person.gateadresse.husnummer=""+Math.floor( Math.random()*(husnrTil-husnrFra +1)+ husnrFra );
+                }
+                person.gateadresse.gatekode = ""+selectedGyldigAdresse.gkode;
+                if(typeof selectedGyldigAdresse.pnr !=='undefined'){
+                    person.gateadresse.postnr = selectedGyldigAdresse.pnr;
+                }
+                person.gateadresse.kommunenr= selectedGyldigAdresse.knr;
             };
 
             hentTestpersoner();

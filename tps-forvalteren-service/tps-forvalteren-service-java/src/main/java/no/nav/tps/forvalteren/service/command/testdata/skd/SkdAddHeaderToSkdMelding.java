@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,15 +42,14 @@ public class SkdAddHeaderToSkdMelding { //TODO bytt ut helt med DefaultSkdGetHea
     }
 
     private String extractAArsakskode(String skdMelding) {
-        return skdMelding.substring(INDEX_START_AARSAKSKODE, INDEX_SLUTT_AARSAKSKODE);
+        return skdMelding.length() > INDEX_SLUTT_AARSAKSKODE ? skdMelding.substring(INDEX_START_AARSAKSKODE, INDEX_SLUTT_AARSAKSKODE) : "  ";
     }
 
     private String extractTranstype(String skdMelding) {
-        return skdMelding.substring(INDEX_START_TRANSTYPE, INDEX_SLUTT_TRANSTYPE);
+        return skdMelding.length() > INDEX_SLUTT_TRANSTYPE ? skdMelding.substring(INDEX_START_TRANSTYPE, INDEX_SLUTT_TRANSTYPE) : " ";
     }
 
     private String extractTildelingskode(String skdMelding) {
-        String tildelingskode = skdMelding.substring(INDEX_START_TILDELINGSKODE, INDEX_SLUTT_TILDELINGSKODE);
-        return !StringUtils.isBlank(tildelingskode) ? tildelingskode : "0";
+        return skdMelding.length() > INDEX_SLUTT_TILDELINGSKODE ? skdMelding.substring(INDEX_START_TILDELINGSKODE, INDEX_SLUTT_TILDELINGSKODE) : "0";
     }
 }

@@ -62,4 +62,18 @@
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>
+
+</div>
+<div layout="row" layout-align="end" ng-if="person.boadresse.adressetype == 'GATE'">
+    <md-input-container>
+        <md-select ng-model="selectedGyldigAdresse" aria-label="Velg en gyldig adresse" placeholder="Velg en gyldig adresse" class="vis-testdata-ctrl" ng-change="updateAdresseGyldig(selectedGyldigAdresse,person);">
+            <md-option ng-value="adresse" ng-repeat="adresse in gyldigeAdresser">{{adresse.visningsnavn}}</md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container">
+        <md-tooltip>Søk etter gyldige adresser. Gatenavn må være minst 3 tegn og kommunenummeret må være satt.</md-tooltip>
+        <md-button class="md-raised md-accent" ng-disabled="person.gateadresse.gateadresse.length<3 && person.gateadresse.kommunenr.length<4"
+                   aria-label="Finn gyldig adresse" ng-click="hentgyldigeAdresser(person)">Finn gyldig adresse
+        </md-button>
+    </md-input-container>
 </div>

@@ -34,7 +34,7 @@ angular.module('tps-forvalteren.skd-meldingsgruppe', [])
                         $scope.meldingsgrupper = result.data;
                     },
                     function (error) {
-                        utilsService.showAlertError(error);
+                        utilsService.showAlertError(error, '0000-GA-TPSF-SKDMELDING');
                     }
                 );
             };

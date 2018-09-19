@@ -6,12 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,6 +26,15 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParamet
 @RunWith(MockitoJUnitRunner.class)
 public class SkdMessageCreatorTrans1Test {
 
+    private final static boolean ADD_HEADER = true;
+    private final static String VIGSEL = "Vigsel";
+    private final static String INNVANDRING = "Innvandring";
+
+    private Person person = PersonProvider.aMalePerson().build();
+    private Person person2 = PersonProvider.aMalePerson().build();
+    private Person person3 = PersonProvider.aMalePerson().build();
+    private List<Person> persons = new ArrayList<>();
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -40,55 +45,37 @@ public class SkdMessageCreatorTrans1Test {
     private SkdParametersCreatorService skdParametersCreatorService;
 
     @Mock
-    private SkdOpprettSkdMeldingMedHeaderOgInnhold skdOpprettSkdMeldingMedHeaderOgInnhold;
-
-    @Mock
-    private SkdFelterContainerTrans1 skdFelterContainer;
-
-    @Mock
     private GetSkdMeldingByName getSkdMeldingByName;
 
     @Mock
     private GenerateSkdMelding generateSkdMelding;
 
-    private static final boolean ADD_HEADER = true;
-    private final String VIGSEL = "Vigsel";
-    private final String INNVANDRING = "Innvandring";
-    private final String SKDMELDING = "SKDMELDING";
-
-    private Person person = PersonProvider.aMalePerson().build();
-    private Person person2 = PersonProvider.aMalePerson().build();
-    private Person person3 = PersonProvider.aMalePerson().build();
-    private List<Person> persons = new ArrayList<>();
 
     @Test
     public void illegalSkdMeldingByNameThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         when(getSkdMeldingByName.execute(anyString())).thenReturn(Optional.empty());
-        
+        persons.add(person);
+
         skdMessageCreatorTrans1.execute(VIGSEL, persons, ADD_HEADER);
     }
 
     @Test
-    @Ignore("Skal kastes. Erstattes med ny test som gir mer verdi enn verify.")
     public void checkThatGenerateSkdMeldingGetsCalledMultipleTimes() {
         persons.add(person);
         persons.add(person2);
         persons.add(person3);
-        Map<String, String> skdParametere = new HashMap<>();
 
         TpsSkdRequestMeldingDefinition tpsSkdRequestMeldingDefinition = new InnvandringAarsakskode02().resolve();
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = Optional.of(tpsSkdRequestMeldingDefinition);
-        
+
         when(getSkdMeldingByName.execute(INNVANDRING)).thenReturn(skdRequestMeldingDefinitionOptional);
         when(skdParametersCreatorService.execute(any(TpsSkdRequestMeldingDefinition.class), any(Person.class))).thenReturn(new SkdMeldingTrans1());
-//        when(skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, ADD_HEADER)).thenReturn(SKDMELDING);
 
         skdMessageCreatorTrans1.execute(INNVANDRING, persons, ADD_HEADER);
 
-        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
-        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
-        verify(generateSkdMelding).execute( skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
+        verify(generateSkdMelding).execute(skdRequestMeldingDefinitionOptional.get(), person, ADD_HEADER);
+        verify(generateSkdMelding).execute(skdRequestMeldingDefinitionOptional.get(), person2, ADD_HEADER);
+        verify(generateSkdMelding).execute(skdRequestMeldingDefinitionOptional.get(), person3, ADD_HEADER);
     }
-
 }

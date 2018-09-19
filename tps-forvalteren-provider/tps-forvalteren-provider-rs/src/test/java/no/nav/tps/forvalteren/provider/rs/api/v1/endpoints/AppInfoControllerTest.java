@@ -1,13 +1,15 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.forvalteren.domain.service.appinfo.ApplicationInfo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.*;
+import no.nav.tps.forvalteren.domain.service.appinfo.ApplicationInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppInfoControllerTest {
@@ -18,14 +20,11 @@ public class AppInfoControllerTest {
     @Test
     public void happyPath(){
         ReflectionTestUtils.setField(appInfoController, "environmentName", "testEnv");
-        ReflectionTestUtils.setField(appInfoController, "hostname", "testHost");
         ReflectionTestUtils.setField(appInfoController, "appVersion", "testAppV");
 
         ApplicationInfo applicationInfo = appInfoController.getInfo();
 
-        assertEquals(applicationInfo.getEnvironment(), "testEnv");
-        assertEquals(applicationInfo.getHostName(), "testHost");
-        assertEquals(applicationInfo.getApplicationVersion(), "testAppV");
+        assertThat(applicationInfo.getEnvironment(), is("testEnv"));
+        assertThat(applicationInfo.getApplicationVersion(), is("testAppV"));
     }
-
 }

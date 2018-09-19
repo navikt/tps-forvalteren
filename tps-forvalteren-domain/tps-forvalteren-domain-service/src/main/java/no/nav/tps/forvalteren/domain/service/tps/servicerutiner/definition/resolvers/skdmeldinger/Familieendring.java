@@ -12,10 +12,12 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Familieen
 @Service
 public class Familieendring implements SkdMeldingResolver {
 
+    public static final String FAMILIEENDRING_MLD_NAVN = "Familieendring";
+
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name("Familieendring")
+                .name(FAMILIEENDRING_MLD_NAVN)
 
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)

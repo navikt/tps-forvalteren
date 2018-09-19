@@ -1,29 +1,32 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageFixedQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.ContainsXmlElements;
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.TpsXmlSender;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TpsXmlSenderTest {
-
+    private String miljoe = "D8";
     private String melding = "test_melding";
     private String ko = "QA.D8_411.TPS_FORESPORSEL_XML_O";
+    private Long timeout = 5L;
     private StringBuilder rsTpsMeldingMedHeader = new StringBuilder("header " + melding);
-    private RsTpsMelding rsTpsMelding = new RsTpsMelding(melding, ko);
+    private RsTpsMelding rsTpsMelding = new RsTpsMelding(miljoe, melding, ko, timeout);
 
     @Mock
     private MessageFixedQueueServiceFactory messageFixedQueueServiceFactory;
@@ -54,6 +57,6 @@ public class TpsXmlSenderTest {
     public void tpsXmlSenderTest() throws Exception {
         tpsXmlSender.sendTpsMelding(rsTpsMelding);
 
-        verify(messageQueueConsumer).sendMessage(rsTpsMelding.getMelding());
+        verify(messageQueueConsumer).sendMessage(rsTpsMelding.getMelding(), rsTpsMelding.getTimeout() * 1000L);
     }
 }

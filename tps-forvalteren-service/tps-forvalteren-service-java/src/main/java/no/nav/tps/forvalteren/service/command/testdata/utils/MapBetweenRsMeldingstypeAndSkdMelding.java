@@ -10,28 +10,31 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 
 @Component
 public class MapBetweenRsMeldingstypeAndSkdMelding {
-	private BoundMapperFacade<SkdMeldingTrans1, RsMeldingstype1Felter> mapper = constructMapper();
-	/** Metoden mapper alle felter som eksisterer i skdMeldingTrans1. SkdMeldingTrans1 inneholder ikke RsMeldingstype sin "id" og "beskrivelse" */
-	public RsMeldingstype1Felter map(SkdMeldingTrans1 skdMeldingTrans1) {
-		return mapper.map(skdMeldingTrans1);
-	}
-	
-	private BoundMapperFacade constructMapper() {
-		MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-		mapperFactory.classMap(SkdMeldingTrans1.class, RsMeldingstype1Felter.class)
-				.field("ektefellePartnerFoedselsdato","ektefellePartnerFdato")
-				.field("ektefellePartnerPersonnr","ektefellePartnerPnr")
-				.field("postadresse1","adresse1")
-				.field("postadresse2","adresse2")
-				.field("postadresse3","adresse3")
-				.field("postadresseLand","postadrLand")
-				.field("ekteskapPartnerskapNr","ekteskPartnskNr")
-				.field("ektefelleEkteskapPartnerskapNr","ektfEkteskPartnskNr")
-				.field("tidligereSivilstand","tidlSivilstand")
-				.field("ektefelleTidligereSivilstand","ektfTidlSivilstand")
-				.field("vigselskommune","vigselskomm")
+    private BoundMapperFacade<SkdMeldingTrans1, RsMeldingstype1Felter> mapper = constructMapper();
 
-				.byDefault().register();
-		return mapperFactory.getMapperFacade(SkdMeldingTrans1.class, RsMeldingstype1Felter.class);
-	}
+    /**
+     * Metoden mapper alle felter som eksisterer i skdMeldingTrans1. SkdMeldingTrans1 inneholder ikke RsMeldingstype sin "id" og "beskrivelse"
+     */
+    public RsMeldingstype1Felter map(SkdMeldingTrans1 skdMeldingTrans1) {
+        return mapper.map(skdMeldingTrans1);
+    }
+
+    private BoundMapperFacade constructMapper() {
+        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+        mapperFactory.classMap(SkdMeldingTrans1.class, RsMeldingstype1Felter.class)
+                .field("ektefellePartnerFoedselsdato", "ektefellePartnerFdato")
+                .field("ektefellePartnerPersonnr", "ektefellePartnerPnr")
+                .field("postadresse1", "adresse1")
+                .field("postadresse2", "adresse2")
+                .field("postadresse3", "adresse3")
+                .field("postadresseLand", "postadrLand")
+                .field("ekteskapPartnerskapNr", "ekteskPartnskNr")
+                .field("ektefelleEkteskapPartnerskapNr", "ektfEkteskPartnskNr")
+                .field("tidligereSivilstand", "tidlSivilstand")
+                .field("ektefelleTidligereSivilstand", "ektfTidlSivilstand")
+                .field("vigselskommune", "vigselskomm")
+
+                .byDefault().register();
+        return mapperFactory.getMapperFacade(SkdMeldingTrans1.class, RsMeldingstype1Felter.class);
+    }
 }

@@ -108,14 +108,11 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljoTest {
     }
 
     @Test
-    public void hvisIdenterForSjekkErStorreEnnMaxAntallForRequestSaaKjoresRequestFlereGanger() throws Exception {
+    public void hvisIdenterForSjekkErStorreEnnMaxAntallForRequestSaaKjoresRequestFlereGanger() {
         tpsServiceRoutineRequestTom = new TpsServiceRoutineRequest();
 
-        tpsResponse2Identer.setXml("");
-
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
-
-        tpsResponse2Identer.setResponse(responseMapT1);
+        tpsResponse2Identer.setXml("ikke tom");
+        tpsResponse2Identer.setResponse(createTpsResponseMap2Identer());
 
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer);
@@ -125,15 +122,11 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljoTest {
     }
 
     @Test
-    public void edgeCasesTestHvisIdenterForSjekkErStorreEnnMaxAntallForRequestSaaKjoresRequestFlereGanger() throws Exception {
+    public void edgeCasesTestHvisIdenterForSjekkErStorreEnnMaxAntallForRequestSaaKjoresRequestFlereGanger() {
         tpsServiceRoutineRequestTom = new TpsServiceRoutineRequest();
 
-        tpsResponse2Identer.setXml("");
-
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
-        responseMapT1.put("status", responseStatusDummy);
-
-        tpsResponse2Identer.setResponse(responseMapT1);
+        tpsResponse2Identer.setXml("ikke tom");
+        tpsResponse2Identer.setResponse(createTpsResponseMap2Identer());
 
         when(tpsRequestSenderMock.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer);
@@ -150,7 +143,16 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljoTest {
         filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(lagIdenterListe(161),env);
         verify(tpsRequestSenderMock, times(ANTALL_LOOP_I_EN_KJOERING*5 + ANTALL_LOOP_I_EN_KJOERING*3)).sendTpsRequest(any(),any());
     }
-
+    
+    private LinkedHashMap createTpsResponseMap2Identer() {
+        LinkedHashMap responseMapT1 = new LinkedHashMap();
+        responseMapT1.put("status", responseStatusDummy);
+        responseMapT1.put("antallTotalt", 2);
+        responseMapT1.put("data1", data1);
+        responseMapT1.put("data2", data2);
+        return responseMapT1;
+    }
+    
     @Test
     public void returnererKunIdenterSomErDelAvAlleTpsResponsene() throws Exception {
         env.add("q2");

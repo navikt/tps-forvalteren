@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 public class AssertEqualSkdMeldingTrans1 {
 	
 	public static void assertSdkmelding(SkdMeldingTrans1 expectedSkdMeldingTrans1, SkdMeldingTrans1 actualSkdMeldingTrans1) {
@@ -30,7 +27,7 @@ public class AssertEqualSkdMeldingTrans1 {
 		assertEquals("foedekommLand",expectedSkdMeldingTrans1.getFoedekommLand(), actualSkdMeldingTrans1.getFoedekommLand());
 		assertEquals("foedested",expectedSkdMeldingTrans1.getFoedested(), actualSkdMeldingTrans1.getFoedested());
 		assertEquals("statsborgerskap",expectedSkdMeldingTrans1.getStatsborgerskap(), actualSkdMeldingTrans1.getStatsborgerskap());
-		assertEquals("regdatoStatsb",expectedSkdMeldingTrans1.getRegdatoStatsb(), actualSkdMeldingTrans1.getRegdatoStatsb());
+		assertEquals("statsborgerskapRegdato",expectedSkdMeldingTrans1.getStatsborgerskapRegdato(), actualSkdMeldingTrans1.getStatsborgerskapRegdato());
 		assertEquals("familienummer",expectedSkdMeldingTrans1.getFamilienummer(), actualSkdMeldingTrans1.getFamilienummer());
 		assertEquals("regdatoFamnr",expectedSkdMeldingTrans1.getRegdatoFamnr(), actualSkdMeldingTrans1.getRegdatoFamnr());
 		assertEquals("personkode",expectedSkdMeldingTrans1.getPersonkode(), actualSkdMeldingTrans1.getPersonkode());
@@ -156,6 +153,5 @@ public class AssertEqualSkdMeldingTrans1 {
 		assertEquals("mandattype",expectedSkdMeldingTrans1.getMandattype(), actualSkdMeldingTrans1.getMandattype());
 		assertEquals("mandatTekst",expectedSkdMeldingTrans1.getMandatTekst(), actualSkdMeldingTrans1.getMandatTekst());
 		assertEquals("reserverFramtidigBruk",expectedSkdMeldingTrans1.getReserverFramtidigBruk(), actualSkdMeldingTrans1.getReserverFramtidigBruk());
-		
 	}
 }

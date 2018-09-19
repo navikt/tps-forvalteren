@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-provider</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>4.10.0-SNAPSHOT</version>
+        <version>4.15.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -85,9 +85,7 @@
                                         <!--OK-->
                                         <argument>run</argument>
                                         <argument>build</argument>
-                                        <argument>--registry=http://registry.npmjs.org/</argument>
-                                        <argument>--https-proxy=http://155.55.60.117:8088</argument>
-                                        <argument>--proxy=http://155.55.60.117:8088</argument>
+                                        <argument>--registry=https://repo.adeo.no/repository/npm-public</argument>
                                         <!--OK end-->
                                     </arguments>
                                     <workingDirectory>${basedir}/src/main/web-src</workingDirectory>

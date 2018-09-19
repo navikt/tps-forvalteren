@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SkdMeldingTrans1UnmarshallAllFieldsTest {
+    
     private String skdEndringsmeldingT1WithAllFieldsSupplied_NoHeader;
     private String skdEndringsmeldingT1WithAllFieldsSupplied_WithHeader;
     
@@ -20,12 +21,12 @@ public class SkdMeldingTrans1UnmarshallAllFieldsTest {
                 .getFile()));
         skdEndringsmeldingT1WithAllFieldsSupplied_WithHeader = FileUtils.fileRead(new File(classLoader.getResource("melding-t1-alle-felter-utfylt-inkludert-header.txt")
                 .getFile()));
-    
+        
     }
     
     @Test
     public void shouldUnmarshalWithNoNulls() throws InvocationTargetException, IllegalAccessException {
-        SkdMeldingTrans1 skdMeldingTrans1= SkdMeldingTrans1.unmarshal(skdEndringsmeldingT1WithAllFieldsSupplied_NoHeader);
+        SkdMeldingTrans1 skdMeldingTrans1 = SkdMeldingTrans1.unmarshal(skdEndringsmeldingT1WithAllFieldsSupplied_NoHeader);
         Assert.assertNull(skdMeldingTrans1.getHeader());
         skdMeldingTrans1.setHeader("header not null");
         assertNoNullFields(skdMeldingTrans1);
@@ -37,8 +38,8 @@ public class SkdMeldingTrans1UnmarshallAllFieldsTest {
     }
     
     private void assertNoNullFields(SkdMeldingTrans1 melding) throws InvocationTargetException, IllegalAccessException {
-        for (Method f: melding.getClass().getMethods()) {
-            if (f.getName().length() > 2 && "get".equals(f.getName().substring(0, 3)) && f.getParameterCount()==0) {
+        for (Method f : melding.getClass().getMethods()) {
+            if (f.getName().length() > 2 && "get".equals(f.getName().substring(0, 3)) && f.getParameterCount() == 0) {
                 Assert.assertNotNull(f.getName(), f.invoke(melding));
             }
         }

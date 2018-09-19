@@ -5,13 +5,17 @@ import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
 import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -47,9 +51,14 @@ public class KodeverkUpdaterTest {
         when(kodeverkConsumerMock.hentKodeverk(anyString())).thenReturn(kodeverkMock);
 
         kodeverkUpdater.updateTpsfKodeverkCache();
-
-        verify(kodeverkCacheMock).clearKommuneCache();
-        verify(kodeverkCacheMock).setKodeverkKommuneKoder(koder);
+        
+        InOrder inOrder = Mockito.inOrder(kodeverkCacheMock);
+        inOrder.verify(kodeverkCacheMock).clearKommuneCache();
+        inOrder.verify(kodeverkCacheMock).setKodeverkKommuneKoder(koder);
+        inOrder.verify(kodeverkCacheMock).clearPostnummerCache();
+        inOrder.verify(kodeverkCacheMock).setKodeverkPostnummerKoder(koder);
+        inOrder.verify(kodeverkCacheMock).clearLandkoderCache();
+        inOrder.verify(kodeverkCacheMock).setKodeverkLandkoder(koder);
     }
 
     @Test
@@ -60,9 +69,11 @@ public class KodeverkUpdaterTest {
         when(kodeverkConsumerMock.hentKodeverk(anyString())).thenReturn(null);
 
         kodeverkUpdater.updateTpsfKodeverkCache();
-
+        
         verify(kodeverkCacheMock, never()).clearKommuneCache();
         verify(kodeverkCacheMock, never()).setKodeverkKommuneKoder(any());
+        verify(kodeverkCacheMock, never()).clearPostnummerCache();
+        verify(kodeverkCacheMock, never()).setKodeverkPostnummerKoder(any());
     }
 
 
