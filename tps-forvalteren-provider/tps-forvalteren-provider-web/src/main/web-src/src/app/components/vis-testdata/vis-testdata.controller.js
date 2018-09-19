@@ -297,7 +297,6 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
                             $scope.aapneAlleFaner, $scope.control, $scope.pager, $scope.personer.length);
                     },
                     function (error) {
-                        console.log("here");
                         utilsService.showAlertError(error);
                     }
                 );

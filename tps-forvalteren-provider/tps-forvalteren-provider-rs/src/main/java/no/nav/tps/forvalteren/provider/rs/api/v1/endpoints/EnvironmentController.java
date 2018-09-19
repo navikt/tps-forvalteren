@@ -52,15 +52,13 @@ public class EnvironmentController {
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
         environment.setProductionMode(currentEnvironmentIsProd);
 
-        //TODO testing. Dette bør ikke gis i prod! må gjøre om.
         if(!currentEnvironmentIsProd){
-            Set<String> rolesA =new HashSet<>();
-            rolesA.addAll(Arrays.asList("ROLE_TPSF_SKRIV","ROLE_TPSF_SERVICERUTINER","ROLE_TPSF_SKDMELDING","ROLE_ACCESS","ROLE_TPSF_LES", "ROLE_TPSF_UTVIKLER"));
+            Set<String> rolesA = new HashSet<>(Arrays.asList("ROLE_TPSF_SKRIV", "ROLE_TPSF_SERVICERUTINER", "ROLE_TPSF_SKDMELDING", "ROLE_ACCESS", "ROLE_TPSF_LES", "ROLE_TPSF_UTVIKLER"));
             environment.setRoles(rolesA);
+        } else {
+            Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
+            environment.setRoles(roles);
         }
-//        Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
-
-//        environment.setRoles(roles);
 
         return environment;
     }

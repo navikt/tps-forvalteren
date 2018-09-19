@@ -10,8 +10,8 @@ angular.module('tps-forvalteren.service')
             var setupSession = function (res) {
                 sessionService.setIsAuthenticated(true);
                 sessionService.setIsSignedIn(true);
-                // sessionService.setCurrentUser(res.data);
-                sessionService.setCurrentUser({"name": "bruker", "username": "user"});
+                sessionService.setCurrentUser(res.data);
+                // sessionService.setCurrentUser({"name": "bruker", "username": "user"});
             };
 
             self.authenticate = function (credentials, callback) {
@@ -38,12 +38,6 @@ angular.module('tps-forvalteren.service')
                 return {'Authorization': 'Basic ' + btoa(credentials.username + ":" + credentials.password)};
             };
 
-            self.setSession = function () {
-                //TODO gjør dette på bedre måte.
-                console.log("HEre");
-                setupSession({"name":"Test","username":"Bruker"});
-            };
-
             self.loadUser = function () {
                 var defer = $q.defer();
 
@@ -55,10 +49,7 @@ angular.module('tps-forvalteren.service')
                         headers: {}
                     })
                         .then(function (res) {
-                            // setupSession(res);
-                            setupSession({
-                                "data": {"name":"Test","username":"Bruker"}
-                            });
+                            setupSession(res);
                             defer.resolve();
                         }, function (res) {
                             console.log(res);

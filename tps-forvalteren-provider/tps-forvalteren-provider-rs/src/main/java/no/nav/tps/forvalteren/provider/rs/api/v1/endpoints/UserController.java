@@ -28,10 +28,9 @@ public class UserController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getUser") })
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public User getUser(@ApiIgnore HttpSession session) {
-        return new User("Test", "Bruker");
-//        User user = userContextHolder.getUser();
-//        user.setToken(session.getId());
-//        return user;
+        User user = userContextHolder.getUser();
+        user.setToken(session.getId());
+        return user;
     }
 
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "logout") })

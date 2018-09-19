@@ -54,7 +54,6 @@ angular.module('tps-forvalteren.gt', ['ngMessages', 'hljs'])
                     $scope.utvandringStatus = utvandringResult.status;
 
                 },function (error) {
-                    console.log(error);
                     utilsService.showAlertError(error);
                     $scope.loading = false;
                 });
