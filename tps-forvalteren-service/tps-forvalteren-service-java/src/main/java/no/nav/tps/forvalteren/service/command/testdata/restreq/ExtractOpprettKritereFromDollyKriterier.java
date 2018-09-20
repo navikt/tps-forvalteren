@@ -11,6 +11,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,12 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return kriteriumRequest;
     }
 
-    public RsPersonKriteriumRequest extractPartner(RsSimpleRelasjoner rel){
+    public RsPersonKriteriumRequest extractPartner(RsRestPersonKriteriumRequest request){
+        RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         if(rel != null && rel.getPartner() != null){
             RsPersonKriterier partnerReq = new RsPersonKriterier();
-            partnerReq.setAntall(1);
+            partnerReq.setAntall(request.getAntall());
 
             if(partnerReq.getIdenttype() != null){
                 partnerReq.setIdenttype(rel.getPartner().getIdenttype()); // BAre for teste
@@ -60,24 +62,31 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personRequestListe;
     }
 
-    public RsPersonKriteriumRequest extractBarn(RsSimpleRelasjoner rel){
+    public RsPersonKriteriumRequest extractBarn(RsRestPersonKriteriumRequest request){
+        RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
-        if(rel != null && rel != null){
-            for(RsSimpleDollyRequest req : rel.getBarn()){
-                RsPersonKriterier partnerReq = new RsPersonKriterier();
-                partnerReq.setAntall(1);
+        personRequestListe.setPersonKriterierListe(new ArrayList<>());
+        if(rel != null && !rel.getBarn().isEmpty()){
 
-                if(partnerReq.getIdenttype() != null){
-                    partnerReq.setIdenttype(req.getIdenttype()); // BAre for teste
-                } else {
-                    partnerReq.setIdenttype("FNR");
+            for(int i=0; i < request.getAntall(); i++){
+                for(RsSimpleDollyRequest req : rel.getBarn()){
+                    RsPersonKriterier barnKriterie = new RsPersonKriterier();
+                    barnKriterie.setAntall(1);
+
+                    if(barnKriterie.getIdenttype() != null){
+                        barnKriterie.setIdenttype(req.getIdenttype());
+                    } else {
+                        barnKriterie.setIdenttype("FNR");
+                    }
+
+                    barnKriterie.setKjonn(req.getKjonn());
+                    barnKriterie.setFoedtFoer(req.getFoedtFoer());
+                    barnKriterie.setFoedtEtter(req.getFoedtEtter());
+
+                    personRequestListe.getPersonKriterierListe().add(barnKriterie);
                 }
-
-                partnerReq.setKjonn(req.getKjonn());
-                partnerReq.setFoedtFoer(req.getFoedtFoer());
-                partnerReq.setFoedtEtter(req.getFoedtEtter());
-                personRequestListe.setPersonKriterierListe(Arrays.asList(partnerReq));
             }
+
         }
 
         return personRequestListe;

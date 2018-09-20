@@ -2,9 +2,12 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +32,16 @@ public class FindPersonerSomSkalHaFoedselsmelding {
         });
 
         return barnSomSkalFodes;
+
+//        return personerIGruppe.stream().filter(p -> containsFodsel(p.getRelasjoner())).collect(Collectors.toList());
+    }
+
+    private boolean containsFodsel(List<Relasjon> relasjoner) {
+        for(Relasjon r : relasjoner){
+            if(r.getRelasjonTypeNavn().equals(RelasjonType.FOEDSEL.getRelasjonTypeNavn())){
+                return true;
+            }
+        }
+        return false;
     }
 }

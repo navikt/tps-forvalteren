@@ -52,7 +52,6 @@ angular.module('tps-forvalteren.service')
                             setupSession(res);
                             defer.resolve();
                         }, function (res) {
-                            console.log(res);
                             locationService.redirectToLoginState();
                             defer.reject();
                         });

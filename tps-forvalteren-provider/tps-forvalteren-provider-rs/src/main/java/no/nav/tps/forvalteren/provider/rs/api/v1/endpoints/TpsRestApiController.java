@@ -26,7 +26,7 @@ public class TpsRestApiController {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private ServiceController serviceController;
+    private ServiceroutineController serviceroutineController;
 
     @Autowired
     private TpsResponseToJsonHandler tpsResponseToJsonHandler;
@@ -38,7 +38,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, "", environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-KERNINFO-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-KERNINFO-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -49,7 +49,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, "", environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-KONTINFO-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-KONTINFO-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -65,7 +65,7 @@ public class TpsRestApiController {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
         collectionOfQueryParams.put("buffNr", buffNr);
         collectionOfQueryParams.put("infoType", infoType);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-SOAIHIST-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-SOAIHIST-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -76,7 +76,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, "", environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-PIPEDATA-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-PIPEDATA-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -87,7 +87,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, "", environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-GDPRDATA-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-GDPRDATA-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -101,7 +101,7 @@ public class TpsRestApiController {
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
         collectionOfQueryParams.put("adresseType", adresseType);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-ADLIHIST-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-ADLIHIST-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -113,7 +113,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-ADRHISTO-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-ADRHISTO-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -125,7 +125,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-PERSDATA-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-PERSDATA-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -137,7 +137,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-FNRHISTO-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-FNRHISTO-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -148,7 +148,7 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, "", environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-VERGMAAL-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-VERGMAAL-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -172,7 +172,7 @@ public class TpsRestApiController {
         collectionOfQueryParams.put("fornavn", fornavn);
         collectionOfQueryParams.put("buffNr", buffNr);
         collectionOfQueryParams.put("sortering", sortering);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-NAADRSOK-PERSDATA-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-NAADRSOK-PERSDATA-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
@@ -184,13 +184,13 @@ public class TpsRestApiController {
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
-        TpsServiceRoutineResponse res = serviceController.getService(collectionOfQueryParams, "FS03-FDNUMMER-PERSRELA-O");
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-PERSRELA-O");
         return tpsResponseToJsonHandler.execute(res);
     }
 
     @PutMapping("/relasjon")
     public Map endreRelasjon(@RequestBody RsEndreRelasjon req) {
-        TpsServiceRoutineResponse res = serviceController.getService(objectMapper.convertValue(req, Map.class), ENDRE_RELASJON);
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(objectMapper.convertValue(req, Map.class), ENDRE_RELASJON);
         return tpsResponseToJsonHandler.execute(res);
     }
 

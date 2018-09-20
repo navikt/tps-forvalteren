@@ -73,7 +73,6 @@ angular.module('tps-forvalteren.factory')
             } else {
                 return $http({method: 'GET', url: urlGetEnvironments}).then(function (res) {
                     environments = res.data;
-                    console.log(environments);
                     isSetEnvironments = true;
                     return environments;
                 }, function (error) {

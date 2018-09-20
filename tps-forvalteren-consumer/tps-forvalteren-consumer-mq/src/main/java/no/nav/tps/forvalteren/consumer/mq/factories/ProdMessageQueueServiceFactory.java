@@ -18,16 +18,16 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "true")
 public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
-    @Value("${TPS_FORESPORSEL_XML_O_QUEUENAME}")
+    @Value("${tps.foresporsel.xml.o.queuename}")
     private String tpsRequestQueue;
 
-    @Value("${MQGATEWAY_NAME}")
+    @Value("${mqgateway.name}")
     private String queueManagerAlias;
 
-    @Value("${MQGATEWAY_HOSTNAME}")
+    @Value("${mqgateway.hostname}")
     private String hostname;
 
-    @Value("${MQGATEWAY_PORT}")
+    @Value("${mqgateway.port}")
     private String port;
 
 

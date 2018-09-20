@@ -83,15 +83,6 @@ public class Person extends ChangeStamp {
     @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
     private LocalDateTime innvandretFraLandRegdato;
 
-    @Column(name = "INNVANDRET_FRA_LAND", length = 3)
-    private String innvandretFraLand;
-
-    @Column(name = "INNVANDRET_FRA_LAND_FLYTTEDATO")
-    private LocalDateTime innvandretFraLandFlyttedato;
-
-    @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
-    private LocalDateTime innvandretFraLandRegdato;
-
     @Column(name = "UTVANDRET_TIL_LAND", length = 3)
     private String utvandretTilLand;
 

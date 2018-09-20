@@ -4,6 +4,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,25 +35,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestAuthenticationEntryPoint authentificationEntryPoint;
 
+    @Value("${tps.forvalteren.production.mode}")
+    private boolean currentEnvironmentIsProd;
+
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
         builder.authenticationProvider(authenticationProvider);
     }
 
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        http.authorizeRequests()
-//                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-//                .antMatchers("/api/**").hasAnyRole("ACCESS")
-                //.and().httpBasic()
-//                .and()
-//                .csrf()
-//                .csrfTokenRepository(tokenRepository)
-//                .and()
-//                .addFilterAfter(new CsrfHeaderFilter(cookiePath), CsrfFilter.class);
+        if(true){
+            http.authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS, "/api/v1/user/**").permitAll()
+                    .antMatchers("/api/v1/user/**").hasAnyRole("ACCESS")
+                    .antMatchers("/api/v1/appinfo/**").permitAll()
+                    .and()
+                    .httpBasic();
+        } else {
+            http.authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                    .antMatchers("/api/**").hasAnyRole("ACCESS")
+                    .and()
+                    .httpBasic();
+            //                .and()
+            //                .csrf()
+            //                .csrfTokenRepository(tokenRepository);
+            //                .and()
+            //                .addFilterAfter(new CsrfHeaderFilter(cookiePath), CsrfFilter.class);
+        }
+
 
         http.exceptionHandling().authenticationEntryPoint(authentificationEntryPoint);
 
@@ -65,7 +78,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        if(!currentEnvironmentIsProd){
+//            web.ignoring().antMatchers("/api/**");
+//            web.ignoring().antMatchers(HttpMethod.GET);
+//            web.ignoring().antMatchers(HttpMethod.POST);
+//            web.ignoring().antMatchers(HttpMethod.PUT);
+//            web.ignoring().antMatchers(HttpMethod.DELETE);
+        }
+
         web.ignoring().antMatchers("/webjars/**", "/css/**", "/internal/**");
+
     }
 
     @Bean

@@ -20,7 +20,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
-    @Value("${tps.forvalteren.production-mode}")
+    @Value("${tps.forvalteren.production.mode}")
     private boolean currentEnvironmentIsProd;
 
     @Override

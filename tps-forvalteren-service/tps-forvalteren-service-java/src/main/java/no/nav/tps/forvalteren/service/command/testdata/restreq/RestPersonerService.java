@@ -7,8 +7,8 @@ import no.nav.tps.forvalteren.domain.rs.RsRestPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 
@@ -27,10 +27,10 @@ public class RestPersonerService {
     private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
 
     @Autowired
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private PersonNameService setNameOnPersonsService;
 
     @Autowired
-    private OpprettPersoner opprettPersonerFraIdenter;
+    private OpprettPersonerService opprettPersonerFraIdenter;
 
     @Autowired
     private SavePersonBulk savePersonBulk;
@@ -40,8 +40,8 @@ public class RestPersonerService {
 
     public List<Person> createTpsfPersonFromRestRequest(RsRestPersonKriteriumRequest personKriteriumRequest){
         RsPersonKriteriumRequest personKriterier = extractOpprettKritereFromDollyKriterier.execute(personKriteriumRequest);
-        RsPersonKriteriumRequest kriteriePartner = extractOpprettKritereFromDollyKriterier.extractPartner(personKriteriumRequest.getRelasjoner());
-        RsPersonKriteriumRequest kriterieBarn = extractOpprettKritereFromDollyKriterier.extractBarn(personKriteriumRequest.getRelasjoner());
+        RsPersonKriteriumRequest kriteriePartner = extractOpprettKritereFromDollyKriterier.extractPartner(personKriteriumRequest);
+        RsPersonKriteriumRequest kriterieBarn = extractOpprettKritereFromDollyKriterier.extractBarn(personKriteriumRequest);
 
         List<Person> deresPartnere = new ArrayList<>();
         List<Person> deresBarn = new ArrayList<>();
