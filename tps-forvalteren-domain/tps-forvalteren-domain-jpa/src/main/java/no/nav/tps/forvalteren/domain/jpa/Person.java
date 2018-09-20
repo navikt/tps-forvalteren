@@ -75,6 +75,9 @@ public class Person extends ChangeStamp {
     @Column(name = "DOEDSDATO")
     private LocalDateTime doedsdato;
 
+    @Column(name = "SIVILSTAND", length = 1)
+    private String sivilstand;
+
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
     private String innvandretFraLand;
 

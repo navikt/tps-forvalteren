@@ -171,14 +171,23 @@ angular.module('tps-forvalteren.service')
                     title: 'Serverfeil',
                     text: 'Fikk ikke hentet informasjon fra server.',
                     ariaLabel: 'Feil ved henting av data fra server'
+                },
+                504: {
+                    title: 'Server timeout',
+                    text: 'Fikk ikke hentet informasjon fra server.',
+                    ariaLabel: 'Feil ved henting av data fra server'
                 }
             };
 
-            var errorObj = errorMessages[error.status];
+            var errorObj = errorMessages[error.status] || {
+                title: 'Annen feil',
+                text: 'Feil ved kommunikasjon mot server.',
+                ariaLabel: 'En feil har skjedd.'
+            };
             if (error.status == 403 && !!role) {
                 errorObj.text = 'Du mangler rolle "' + role + '" for å få tilgang.';
             }
-            if ((error.status == 400 || error.status == 500) && error.data && error.data.message) {
+            if (error.data && error.data.message) {
                 errorObj.text = error.data.message;
             }
             $mdDialog.show(

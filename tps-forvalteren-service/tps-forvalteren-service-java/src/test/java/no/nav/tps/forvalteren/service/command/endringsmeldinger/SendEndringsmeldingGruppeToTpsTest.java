@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,7 +31,6 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingLoggRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 
@@ -50,7 +48,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
     @Mock
     private SendSkdMeldingerOgLeggTilResponsliste sendSkdMeldinger;
-    
+
     @Mock
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
 
@@ -126,7 +124,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
 
         verify(convertMeldingFromJsonToText, times(3)).execute(rsMeldingstype1Felter);
         verify(skdAddHeaderToSkdMelding, times(3)).execute(any(StringBuilder.class));
-        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(),anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString());
+        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(), anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString());
 
         verify(skdEndringsmeldingLoggRepository, times(3)).save(any(SkdEndringsmeldingLogg.class));
     }

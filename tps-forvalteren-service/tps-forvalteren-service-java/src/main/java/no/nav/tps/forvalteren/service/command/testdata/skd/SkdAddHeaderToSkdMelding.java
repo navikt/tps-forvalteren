@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SkdAddHeaderToSkdMelding {
+public class SkdAddHeaderToSkdMelding { //TODO bytt ut helt med DefaultSkdGetHeaderForSkdMelding
 
     private static final String WHITESPACE_20_STK = "                    ";
 

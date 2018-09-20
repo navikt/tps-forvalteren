@@ -2,9 +2,6 @@ package no.nav.tps.forvalteren.domain.service.tps.config;
 
 public final class SkdConstants {
 
-    private SkdConstants() {
-    }
-
     public static final String TRANSTYPE_1 = "1";
 
     public static final String TILDELING_KO_DE = "tildelingskode";
@@ -24,6 +21,7 @@ public final class SkdConstants {
     public static final String FRA_LAND_REGDATO = "fraLandRegdato";
     public static final String FRA_LAND_FLYTTEDATO = "fraLandFlyttedato";
     public static final String REG_DATO_FAM_NR = "regdatoFamnr";
+    public static final String INNVANDRET_FRA_LAND = "innvandretFraLand";
 
     public static final String POSTADRESSE_ADR_1 = "adresse1";
     public static final String POSTADRESSE_ADR_2 = "adresse2";
@@ -88,5 +86,8 @@ public final class SkdConstants {
     public static final String VERGETYPE = "vergeType";
     public static final String MANDATTYPE = "mandatType";
     public static final String MANDATTEKST = "mandatTekst";
+
+    private SkdConstants() {
+    }
 }
 

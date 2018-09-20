@@ -53,6 +53,8 @@ public class RsPerson {
 
     private LocalDateTime doedsdato;
 
+    private String sivilstand;
+
     @Size(min = 0, max = 3)
     private String innvandretFraLand;
 
