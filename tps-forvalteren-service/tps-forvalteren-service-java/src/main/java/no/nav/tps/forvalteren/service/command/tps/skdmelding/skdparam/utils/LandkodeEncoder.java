@@ -14,7 +14,7 @@ public class LandkodeEncoder {
 
     private static final Map<String, String> landkoderMap = new HashMap<>();
     private static Object[] landTlaArr = null;
-    private static Random random;
+    private static Random random = new Random();
 
     static {
         landkoderMap.put("???", "990");
@@ -291,5 +291,4 @@ public class LandkodeEncoder {
     public String encode(String statsborgerskap) {
         return landkoderMap.getOrDefault(statsborgerskap, "000");
     }
-
 }
