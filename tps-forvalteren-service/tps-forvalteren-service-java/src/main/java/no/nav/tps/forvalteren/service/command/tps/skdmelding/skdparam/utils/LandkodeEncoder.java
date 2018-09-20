@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 public class LandkodeEncoder {
 
     private static final Map<String, String> landkoderMap = new HashMap<>();
-    private static Object[] landTlaArr = null;
-    private static Random random = new Random();
+    private Random random = new SecureRandom();
 
     static {
         landkoderMap.put("???", "990");
@@ -281,11 +281,8 @@ public class LandkodeEncoder {
         landkoderMap.put("SXM", "658");
     }
 
-    public static String getRandomLandTla() {
-        if (landTlaArr == null) {
-            landTlaArr = landkoderMap.keySet().toArray();
-        }
-        return (String) landTlaArr[ random.nextInt(landTlaArr.length - 1)];
+    public String getRandomLandTla() {
+        return (String) landkoderMap.keySet().toArray()[random.nextInt(landkoderMap.size() - 1)];
     }
 
     public String encode(String statsborgerskap) {
