@@ -10,14 +10,14 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.StatsborgerskapEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 public abstract class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAK_KO_DE_FOR_INNVANDRING = "02";
 
     @Autowired
-    private StatsborgerskapEncoder statsborgerskapEncoder;
+    private LandkodeEncoder landkodeEncoder;
 
     @Autowired
     private SetAdresse setAdresse;
@@ -39,12 +39,12 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setFornavn(person.getFornavn());
         skdMeldingTrans1.setMellomnavn(person.getMellomnavn());
         skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
-        skdMeldingTrans1.setStatsborgerskap(statsborgerskapEncoder.encode(person.getStatsborgerskap()));
+        skdMeldingTrans1.setStatsborgerskap(landkodeEncoder.encode(person.getStatsborgerskap()));
         skdMeldingTrans1.setStatsborgerskapRegdato(ConvertDateToString.yyyyMMdd(person.getStatsborgerskapRegdato()));
         skdMeldingTrans1.setFamilienummer(person.getIdent());
 
-        skdMeldingTrans1.setSivilstand(person.getSivilstand() != null ? person.getSivilstand() : "1");
-        skdMeldingTrans1.setInnvandretFraLand(person.getInnvandretFraLand() != null ? person.getInnvandretFraLand() : "001");
+        skdMeldingTrans1.setSivilstand(person.getSivilstand() != null ? person.getSivilstand() : "0");
+        skdMeldingTrans1.setInnvandretFraLand(landkodeEncoder.encode(person.getInnvandretFraLand() != null ? person.getInnvandretFraLand() : "???"));
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
