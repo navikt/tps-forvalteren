@@ -61,7 +61,8 @@ public class TpsServicesControllerTest {
 
         List<TpsServiceRoutineDefinitionRequest> rutiner = tpsServicesController.getTpsServicesMenu();
 
-        assertSame(rutiner.size() , 3);
-        assertThat(rutiner, containsInAnyOrder(serviceRoutineMock1, serviceRoutineMock2, serviceRoutineMock3));
+        assertSame(rutiner.size() , 2);
+//        assertThat(rutiner, containsInAnyOrder(serviceRoutineMock1, serviceRoutineMock2, serviceRoutineMock3));
+        assertThat(rutiner, containsInAnyOrder(serviceRoutineMock2, serviceRoutineMock3));
     }
 }
