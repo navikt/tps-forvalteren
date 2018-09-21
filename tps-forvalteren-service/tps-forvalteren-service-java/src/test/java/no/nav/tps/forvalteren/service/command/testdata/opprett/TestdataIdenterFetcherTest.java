@@ -21,18 +21,18 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataIdenterFetcherTest {
 
-    private RsPersonMalRequest inputPersonMalRequest;
-    private RsPersonMal dummyInputFraPersonMal1 = new RsPersonMal();
-    private RsPersonMal dummyInputFraPersonMal2 = new RsPersonMal();
-    private RsPersonMal dummyInputFraPersonMal3 = new RsPersonMal();
-    private RsPersonMal dummyInputFraPersonMal4 = new RsPersonMal();
+    private RsPersonKriteriumRequest rsPersonKriteriumRequest;
+    private RsPersonKriterier personKriterier1 = new RsPersonKriterier();
+    private RsPersonKriterier personKriterier2 = new RsPersonKriterier();
+    private RsPersonKriterier personKriterier3 = new RsPersonKriterier();
+    private RsPersonKriterier personKriterier4 = new RsPersonKriterier();
 
     private TestdataRequest testdataRequest1, testdataRequest2, testdataRequest3, testdataRequest4;
 
@@ -55,13 +55,13 @@ public class TestdataIdenterFetcherTest {
 
     @Before
     public void setup() {
-        inputPersonMalRequest = new RsPersonMalRequest();
-        inputPersonMalRequest.setInputPersonMalRequest(Arrays.asList(dummyInputFraPersonMal1, dummyInputFraPersonMal2));
+        rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
+        rsPersonKriteriumRequest.setPersonKriterierListe(Arrays.asList(personKriterier1, personKriterier2));
 
-        testdataRequest1 = new TestdataRequest(dummyInputFraPersonMal1);
-        testdataRequest2 = new TestdataRequest(dummyInputFraPersonMal2);
-        testdataRequest3 = new TestdataRequest(dummyInputFraPersonMal3);
-        testdataRequest4 = new TestdataRequest(dummyInputFraPersonMal4);
+        testdataRequest1 = new TestdataRequest(personKriterier1);
+        testdataRequest2 = new TestdataRequest(personKriterier2);
+        testdataRequest3 = new TestdataRequest(personKriterier3);
+        testdataRequest4 = new TestdataRequest(personKriterier4);
 
         testdataRequest1.setIdenterTilgjengligIMiljoe(new HashSet<>());
         testdataRequest2.setIdenterTilgjengligIMiljoe(new HashSet<>());
@@ -76,40 +76,36 @@ public class TestdataIdenterFetcherTest {
 
     @Test
     public void hvisAlleKriterierErOppfyltSaaKAllesIkkeMetodeForAaOppdatereForManglendeIdenterForKriterier() {
-        dummyInputFraPersonMal1.setAntallIdenter(1);
-        dummyInputFraPersonMal2.setAntallIdenter(1);
+        personKriterier1.setAntall(1);
+        personKriterier2.setAntall(1);
 
-        testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
-        testdataRequest2.getIdenterTilgjengligIMiljoe().add(dummyIdent2);
+        testdataRequest1.getIdenterTilgjengligIMiljoe().addAll(Arrays.asList(dummyIdent1, dummyIdent2));
 
-        when(testdataMock.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1, testdataRequest2));
+        when(testdataMock.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1, testdataRequest2));
 
-        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(inputPersonMalRequest);
+        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdataMock, times(1)).genererIdenterForTestdataRequests(any());
+        verify(testdataMock, times(1)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
     }
 
     @Test
     public void hvisIkkeAlleKriterierErOppfyltVedForsteForskSaaOppdatererManRequestForMangelendeIdenter() {
 
-        dummyInputFraPersonMal1.setAntallIdenter(1);
-        dummyInputFraPersonMal2.setAntallIdenter(3);
+        personKriterier1.setAntall(1);
+        personKriterier2.setAntall(3);
 
-        testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
-        testdataRequest2.getIdenterTilgjengligIMiljoe().add(dummyIdent2);
-        testdataRequest3.getIdenterTilgjengligIMiljoe().add(dummyIdent3);
-        testdataRequest4.getIdenterTilgjengligIMiljoe().add(dummyIdent4);
+        testdataRequest1.getIdenterTilgjengligIMiljoe().addAll(Arrays.asList(dummyIdent1, dummyIdent2, dummyIdent3, dummyIdent4));
 
-        when(testdataMock.genererIdenterForTestdataRequests(any()))
+        when(testdataMock.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class)))
                 .thenReturn(
                         Arrays.asList(testdataRequest1, testdataRequest2),
                         Arrays.asList(testdataRequest3),
                         Arrays.asList(testdataRequest4)
                 );
 
-        List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(inputPersonMalRequest);
+        List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdataMock, times(3)).genererIdenterForTestdataRequests(any());
+        verify(testdataMock, times(3)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
 
         assertThat(requests.get(1).getIdenterTilgjengligIMiljoe()
                 .containsAll(Arrays.asList(dummyIdent2, dummyIdent3, dummyIdent4)), is(true));
@@ -118,15 +114,15 @@ public class TestdataIdenterFetcherTest {
 
     @Test
     public void hvisManIkkeFinnerIdenterSomOppfyllerKriterierEtterMaxAntallForsoekSaaKastException() throws Exception {
-        dummyInputFraPersonMal1.setAntallIdenter(2);
+        personKriterier1.setAntall(2);
 
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
 
-        when(testdataMock.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1));
+        when(testdataMock.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1));
         when(messageProviderMock.get(anyString())).thenReturn("msg");
 
         expectedException.expect(HttpCantSatisfyRequestException.class);
 
-        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(inputPersonMalRequest);
+        testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
     }
 }

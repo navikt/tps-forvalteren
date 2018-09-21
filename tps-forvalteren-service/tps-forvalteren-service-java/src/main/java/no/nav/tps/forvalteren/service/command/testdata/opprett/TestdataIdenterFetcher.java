@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 
 @Service
@@ -32,12 +33,29 @@ public class TestdataIdenterFetcher {
 
         taBortOverflodigeIdenterFraTestRequests(testdataRequests);
 
-        if (!erAlleKriterieOppfylt(testdataRequests)) {
+        if (!erAlleKriteriaOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
         }
 
         return testdataRequests;
     }
+
+    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonMalRequest inputPersonRequest) {
+        List<TestdataRequest> testdataRequests = testdata.genererIdenterForTestdataRequests(inputPersonRequest);
+
+            testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
+
+            testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
+
+            taBortOverflodigeIdenterFraTestRequests(testdataRequests);
+
+            if (!erAlleKriteriaOppfylt(testdataRequests)) {
+                oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
+            }
+
+            return testdataRequests;
+        }
+
 
     private void oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(List<TestdataRequest> testdataRequests) {
         for (TestdataRequest request : testdataRequests) {
@@ -81,7 +99,7 @@ public class TestdataIdenterFetcher {
         }
     }
 
-    private boolean erAlleKriterieOppfylt(List<TestdataRequest> testdataRequests) {
+    private boolean erAlleKriteriaOppfylt(List<TestdataRequest> testdataRequests) {
         for (TestdataRequest request : testdataRequests) {
             if (!harNokIdenterForKritereIRequest(request)) {
                 return false;

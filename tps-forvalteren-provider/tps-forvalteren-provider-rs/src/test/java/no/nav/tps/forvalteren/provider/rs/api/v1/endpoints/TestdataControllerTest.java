@@ -1,8 +1,17 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
@@ -11,6 +20,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
@@ -26,21 +36,12 @@ import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataControllerTest {
@@ -106,7 +107,7 @@ public class TestdataControllerTest {
     public void createNewPersonsFromKriterier() {
         RsPersonKriteriumRequest rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
 
-        TestdataRequest testdataRequest = new TestdataRequest(null);
+        TestdataRequest testdataRequest = new TestdataRequest((RsPersonKriterier) null);
         List<TestdataRequest> testdataRequestsList = new ArrayList<>();
         testdataRequestsList.add(testdataRequest);
 

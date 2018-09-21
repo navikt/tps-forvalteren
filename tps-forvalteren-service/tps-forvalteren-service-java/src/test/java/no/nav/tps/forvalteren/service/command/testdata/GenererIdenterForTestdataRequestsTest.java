@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.GenererIdenterForTestdataRequests;
@@ -53,7 +54,7 @@ public class GenererIdenterForTestdataRequestsTest {
         Set<String> dummyIdenter2 = new HashSet<>();
         dummyIdenter2.add(dummyIdent2);
 
-        when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any()))
+        when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any(RsPersonKriterier.class)))
                 .thenReturn(dummyIdenter1, dummyIdenter2);
 
         List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(inputPersonListe);
@@ -72,7 +73,7 @@ public class GenererIdenterForTestdataRequestsTest {
         dummyIdenter2.add(dummyIdent2);
         dummyIdenter2.add(dummyIdent3);
 
-        when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any()))
+        when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any(RsPersonKriterier.class)))
                 .thenReturn(dummyIdenter1, dummyIdenter2);
 
         List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(inputPersonListe);

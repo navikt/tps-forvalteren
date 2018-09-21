@@ -33,6 +33,7 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataControllerComponentTest {
@@ -61,7 +62,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                 "04121656499",
                 "12017500617",
                 "11031250855"));
-        when(fiktiveIdenterGeneratormock.genererFiktiveIdenter(any())).thenReturn(identer);
+        when(fiktiveIdenterGeneratormock.genererFiktiveIdenter(any(RsPersonKriterier.class))).thenReturn(identer);
         
         fasitRegistrerteEnvMedTps.addAll(Arrays.asList("q0"));
         when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);

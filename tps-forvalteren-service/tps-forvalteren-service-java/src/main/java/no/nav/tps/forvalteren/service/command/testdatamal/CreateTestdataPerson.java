@@ -45,6 +45,5 @@ public class CreateTestdataPerson {
         setNameOnPersonsService.execute(personerSomSkalPersisteres);
         setValuesFromMalOnPersonsService.execute(personerSomSkalPersisteres, inputPersonRequest);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
-
     }
 }

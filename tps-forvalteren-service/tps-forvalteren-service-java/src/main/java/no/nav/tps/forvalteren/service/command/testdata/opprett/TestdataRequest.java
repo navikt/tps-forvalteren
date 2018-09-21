@@ -18,8 +18,11 @@ public class TestdataRequest {
 
     Set<String> identerTilgjengligIMiljoe;
 
-    public TestdataRequest(RsPersonMal personMal){
-       inputPerson = personMal ;
+    public TestdataRequest(RsPersonKriterier personKriterier){
+        kriterium = personKriterier  ;
     }
 
+    public TestdataRequest(RsPersonMal personMal){
+        inputPerson = personMal ;
+    }
 }
