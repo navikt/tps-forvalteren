@@ -1,24 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltrerPaaIdenterSomIkkeFinnesIDB;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import static org.mockito.Matchers.any;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FiltrerPaaIdenterSomIkkeFinnesIDBTest {
@@ -30,10 +29,10 @@ public class FiltrerPaaIdenterSomIkkeFinnesIDBTest {
     private String dummyIdent3 = "dummy3";
 
     @Mock
-    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     @InjectMocks
-    private DefaultFiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
+    private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
 
     @Before
     public void setup() {
@@ -106,5 +105,4 @@ public class FiltrerPaaIdenterSomIkkeFinnesIDBTest {
 
         assertThat(identerSet.containsAll(Arrays.asList(dummyIdent1, dummyIdent3)), is(true));
     }
-
 }

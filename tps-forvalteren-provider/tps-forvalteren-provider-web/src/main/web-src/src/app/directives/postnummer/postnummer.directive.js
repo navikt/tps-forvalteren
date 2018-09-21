@@ -42,7 +42,7 @@ angular.module('tps-forvalteren.directives')
                     return result;
                 };
 
-                $scope.endring = function() {
+                $scope.endring = function () {
                     $scope.postnummer = $scope.poststed ? $scope.poststed.nummer : undefined;
                     $timeout(function () {
                         $scope.endretFn($scope.index);

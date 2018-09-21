@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>4.10.0-SNAPSHOT</version>
+        <version>4.16.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -52,6 +52,11 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
         <!-- MODIG -->
         <dependency>
             <groupId>no.nav.modig</groupId>
@@ -73,18 +78,13 @@
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-aop</artifactId>-->
-        <!--</dependency>-->
-
         <!--SERVICES-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-    </dependencies>
+	</dependencies>
 
     <!-- MAVEN PROFILE -->
     <profiles>
@@ -113,6 +113,7 @@
                         <configuration>
                             <mainClass>no.nav.tps.forvalteren.ApplicationStarter</mainClass>
                             <finalName>tps-forvalteren</finalName>
+                            <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>

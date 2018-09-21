@@ -20,9 +20,9 @@ angular.module('tps-forvalteren.directives')
                         },
                         controller: ['$scope', '$mdDialog', '$timeout', 'locals',
                             function ($scope, $mdDialog, $timeout, locals) {
-                                var MOR = 'MOR', FAR = 'FAR', BARN = 'BARN', EKTEFELLE = 'EKTEFELLE';
+                                var MOR = 'MOR', FAR = 'FAR', BARN = 'BARN', FOEDSEL = 'FOEDSEL', EKTEFELLE = 'EKTEFELLE';
 
-                                $scope.relasjoner = [{opt: MOR}, {opt: FAR}, {opt: BARN}, {opt: EKTEFELLE}];
+                                $scope.relasjoner = [{opt: MOR}, {opt: FAR}, {opt: BARN}, {opt: FOEDSEL}, {opt: EKTEFELLE}];
 
                                 $scope.endretFn = locals.endretFn;
                                 $scope.index = locals.index;
@@ -47,6 +47,8 @@ angular.module('tps-forvalteren.directives')
                                         case MOR:
                                             return BARN;
                                         case BARN:
+                                            return kjonn === 'K' ? MOR : FAR;
+                                        case FOEDSEL:
                                             return kjonn === 'K' ? MOR : FAR;
                                     }
                                 }

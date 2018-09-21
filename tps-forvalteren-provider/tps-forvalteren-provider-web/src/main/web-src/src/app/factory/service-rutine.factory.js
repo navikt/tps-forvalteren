@@ -1,10 +1,10 @@
 angular.module('tps-forvalteren.factory')
-    .factory('serviceRutineFactory', ['$http', function ($http) {
+    .factory('serviceRutineFactory', ['$http', 'utilsService', function ($http, utilsService) {
 
         var serviceRutineFactory = {};
 
-        var urlBase = 'api/v1/service';
-        var urlRoutinesBase = 'api/v1/serviceroutine';
+        var urlBase = 'api/v1/serviceroutine';
+        var urlRoutinesBase = 'api/v1/tpsservices';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
         var urlGetEnvironments = 'api/v1/environments';
         var urlConfig = 'assets/config/';
@@ -44,6 +44,7 @@ angular.module('tps-forvalteren.factory')
                     return null;
                 }
             }, function (error) {
+                utilsService.showAlertError(error, '0000-GA-TPSF-SERVICERUTINER');
                 return null;
             });
         };

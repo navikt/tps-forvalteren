@@ -1,16 +1,17 @@
 package no.nav.tps.forvalteren.domain.service.tps.config;
 
-public class SkdConstants {
+public final class SkdConstants {
 
     public static final String TRANSTYPE_1 = "1";
 
-    public static final String TILDELINGSKODE = "tildelingskode";
+    public static final String TILDELING_KO_DE = "tildelingskode";
     public static final String FODSELSDATO = "fodselsdato";
     public static final String PERSONNUMMER = "personnummer";
     public static final String FORNAVN = "fornavn";
     public static final String MELLOMNAVN = "mellomnavn";
     public static final String SLEKTSNAVN = "slektsnavn";
     public static final String STATSBORGERSKAP = "statsborgerskap";
+    public static final String STATSBORGERSKAP_REGDATO = "statsborgerskapRegdato";
 
     public static final String MASKINDATO = "maskindato";
     public static final String MASKINTID = "maskintid";
@@ -20,10 +21,13 @@ public class SkdConstants {
     public static final String FRA_LAND_REGDATO = "fraLandRegdato";
     public static final String FRA_LAND_FLYTTEDATO = "fraLandFlyttedato";
     public static final String REG_DATO_FAM_NR = "regdatoFamnr";
+    public static final String INNVANDRET_FRA_LAND = "innvandretFraLand";
 
     public static final String POSTADRESSE_ADR_1 = "adresse1";
     public static final String POSTADRESSE_ADR_2 = "adresse2";
     public static final String POSTADRESSE_ADR_3 = "adresse3";
+    public static final String GATEGAARD = "gateGaard";
+    public static final String HUSBRUK = "husBruk";
 
     public static final String POSTADRESSE_LAND = "postadrLand";
     public static final String SIVILSTAND = "sivilstand";
@@ -35,6 +39,23 @@ public class SkdConstants {
     public static final String VIGSELSTYPE = "vigselstype";
     public static final String VIGSELSKOMMUNE = "vigselskomm";
 
+    public static final String FOEDESTED = "foedested";
+    public static final String FOEDEKOMM_LAND = "foedekommLand";
+    public static final String KOMMUNENUMMER = "kommunenummer";
+    public static final String ADRESSENAVN = "adressenavn";
+    public static final String FORELDREANSVAR = "foreldreansvar";
+    public static final String DATO_FORELDREANSVAR = "datoForeldreansvar";
+    public static final String PERSON_KO_DE = "personKode";
+    public static final String MORS_FOEDSELSDATO = "morsFodselsdato";
+    public static final String MORS_PERSONNUMMER = "morsPersonnummer";
+    public static final String FARS_FOEDSELSDATO = "farsFodselsdato";
+    public static final String FARS_PERSONNUMMER = "farsPersonnummer";
+
+    public static final String LEVENDE_DOED = "levendeDoed";
+    public static final String KJOENN = "kjonn";
+    public static final String ADRESSETYPE = "adressetype";
+    public static final String POSTNUMMER = "postnummer";
+
     public static final String EKTEFELLE_PARTNER_PERSONNUMMMER = "ektefellePartnerPnr";
     public static final String EKTEFELLE_PARTNER_FODSELSDATO = "ektefellePartnerFdato";
     public static final String EKTEFELLE_PARTNER_NAVN = "ektefellePartnerNavn";
@@ -44,7 +65,7 @@ public class SkdConstants {
 
     public static final String FAMILIENUMMER = "familienummer";
 
-    public static final String AARSAKSKODE = "aarsakskode";
+    public static final String AARSAK_KO_DE = "aarsakskode";
 
     public static final String BRUKERIDENT = "brukerident";
 
@@ -54,16 +75,19 @@ public class SkdConstants {
 
     public static final String DOEDSDATO = "datoDoed";
 
-    public static final String STATUSKODE = "statuskode";
+    public static final String STATUS_KO_DE = "statuskode";
 
     public static final String SAKSID = "saksId";
     public static final String EMBETE = "embete";
     public static final String SAKSTYPE = "saksType";
     public static final String VEDTAKSDATO = "vedtaksDato";
     public static final String INTERN_VERGE_ID = "internVergeId";
-    public static final String VERGE_FNR = "vergeFnrDnr";
+    public static final String VERGE_FNR = "vergeFnr";
     public static final String VERGETYPE = "vergeType";
     public static final String MANDATTYPE = "mandatType";
     public static final String MANDATTEKST = "mandatTekst";
+
+    private SkdConstants() {
+    }
 }
 

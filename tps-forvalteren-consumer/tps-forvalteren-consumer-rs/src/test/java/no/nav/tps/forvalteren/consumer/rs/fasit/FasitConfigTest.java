@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.consumer.rs.fasit;
 
-import no.nav.tps.forvalteren.consumer.rs.fasit.queues.DefaultFasitMessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 
-import static org.mockito.Mockito.isA;
 import static org.mockito.Mockito.verify;
 
 

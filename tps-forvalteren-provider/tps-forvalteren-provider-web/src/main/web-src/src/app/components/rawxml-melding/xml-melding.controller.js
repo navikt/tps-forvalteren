@@ -4,12 +4,15 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             headerService.setHeader('Send XML-melding');
 
-            $scope.melding = "<?xml version=\'1.0\' encoding=\'ISO-8859-1\'?>";
+            const OWN_QUEUE = '--- Egendefinert kø ---';
+
+            $scope.melding = '';
             $scope.tpsMessageQueueList = [];
             $scope.displayQueues = [];
             $scope.displayEnvironments = [];
             $scope.showResponse = false;
             $scope.responseMelding = "";
+            $scope.timeout = 5;
 
             $scope.onChangeMiljoe = function () {
                 var queueList = [];
@@ -19,10 +22,11 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         queueList.push(obj.koNavn);
                     }
                 });
-                $scope.valgtKoe = "";
+                queueList.push(OWN_QUEUE);
+                $scope.valgtKoe = queueList[0];
                 $scope.displayQueues = queueList;
+                $scope.showOwnQueue = false;
             };
-
 
             $scope.onChangeQueue = function () {
                 $scope.tpsMessageQueueList.forEach(function (obj) {
@@ -30,14 +34,23 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         $scope.valgtMiljoe = obj.miljo;
                     }
                 });
+                $scope.showOwnQueue = $scope.valgtKoe === OWN_QUEUE;
             };
 
             $scope.sendTilTps = function () {
+                var queue = $scope.valgtKoe;
+                if ($scope.valgtKoe === OWN_QUEUE) {
+                    queue = $scope.egenkoe;
+                }
                 var objectToTps = {
+                    miljoe: $scope.valgtMiljoe,
                     melding: $scope.melding,
-                    ko: $scope.valgtKoe
+                    ko: queue,
+                    timeout: $scope.timeout
                 };
 
+                $scope.responseMelding = "";
+                $scope.showResponse = false;
                 xmlmeldingService.send(objectToTps).then(function(response){
                     $scope.showResponse = true;
                     if (response.config.data.melding.indexOf("<?xml version") !== -1) {
@@ -46,7 +59,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
                         $scope.responseMelding = response.data.xml;
                     }
                 }, function (error) {
-                    $scope.responseMelding = "Error";
+                    utilsService.showAlertError(error);
                 });
             };
 
@@ -107,17 +120,17 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             function hentAlleMiljoerOgKoer() {
 
                 xmlmeldingService.hentKoer().then(function (result) {
-                        var environments = [];
-                        $scope.tpsMessageQueueList = result.data;
+                    var environments = [];
+                    $scope.tpsMessageQueueList = result.data;
 
-                        $scope.tpsMessageQueueList.forEach(function (obj) {
-                            $scope.displayQueues.push(obj.koNavn);
-                            environments.push(obj.miljo);
-                        });
+                    $scope.tpsMessageQueueList.forEach(function (obj) {
+                        $scope.displayQueues.push(obj.koNavn);
+                        environments.push(obj.miljo);
+                    });
 
-                        environments = removeDuplicateEnvironments();
+                    environments = removeDuplicateEnvironments();
 
-                        $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
+                    $scope.displayEnvironments = sortEnvironmentsForDisplay(environments);
                 });
             }
 

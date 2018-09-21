@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import static javax.persistence.CascadeType.ALL;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import static javax.persistence.CascadeType.ALL;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,6 +63,9 @@ public class Person extends ChangeStamp {
     @Column(name = "STATSBORGERSKAP", length = 3)
     private String statsborgerskap;
 
+    @Column(name = "STATSBORGERSKAP_REGDATO")
+    private LocalDateTime statsborgerskapRegdato;
+
     @Column(name = "SPESREG", length = 1)
     private String spesreg;
 
@@ -77,14 +81,38 @@ public class Person extends ChangeStamp {
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
     private String innvandretFraLand;
 
+    @Column(name = "INNVANDRET_FRA_LAND_FLYTTEDATO")
+    private LocalDateTime innvandretFraLandFlyttedato;
+
+    @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
+    private LocalDateTime innvandretFraLandRegdato;
+
     @Column(name = "UTVANDRET_TIL_LAND", length = 3)
     private String utvandretTilLand;
 
-    @Column(name = "REGISTRERT_UTVANDR_DATO")
-    private LocalDateTime registertUtvandringsdato;
+    @Column(name = "UTVANDRET_TIL_LAND_FLYTTEDATO")
+    private LocalDateTime utvandretTilLandFlyttedato;
 
-    @Column(name = "FLYTTET_TIL_LAND_DATO")
-    private LocalDateTime flyttetTilLandDato;
+    @Column(name = "UTVANDRET_TIL_LAND_REGDATO")
+    private LocalDateTime utvandretTilLandRegdato;
+
+    @Column(name = "EGEN_ANSATT_DATO_FOM")
+    private LocalDateTime egenAnsattDatoFom;
+
+    @Column(name = "EGEN_ANSATT_DATO_TOM")
+    private LocalDateTime egenAnsattDatoTom;
+
+    @Column(name = "TYPE_SIKKERHETSTILTAK", length = 4)
+    private String typeSikkerhetsTiltak;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_FOM")
+    private LocalDateTime sikkerhetsTiltakDatoFom;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_TOM")
+    private LocalDateTime sikkerhetsTiltakDatoTom;
+
+    @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
+    private String beskrSikkerhetsTiltak;
 
     @JoinColumn(name = "ADRESSE_ID")
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)

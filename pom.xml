@@ -11,21 +11,21 @@
     <groupId>no.nav.tps.forvalteren</groupId>
     <artifactId>tps-forvalteren</artifactId>
     <name>TPS Forvalteren</name>
-    <version>4.10.0-SNAPSHOT</version>
-
+    <version>4.16.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <modules>
-        <module>tps-forvalteren-application</module>
-        <module>tps-forvalteren-common</module>
-        <module>tps-forvalteren-config</module>
-        <module>tps-forvalteren-consumer</module>
-        <module>tps-forvalteren-domain</module>
-        <module>tps-forvalteren-provider</module>
-        <module>tps-forvalteren-service</module>
-        <module>tps-forvalteren-repository</module>
-    </modules>
+	<modules>
+		<module>tps-forvalteren-application</module>
+		<module>tps-forvalteren-common</module>
+		<module>tps-forvalteren-config</module>
+		<module>tps-forvalteren-consumer</module>
+		<module>tps-forvalteren-domain</module>
+		<module>tps-forvalteren-provider</module>
+		<module>tps-forvalteren-service</module>
+		<module>tps-forvalteren-repository</module>
+		<module>tps-forvalteren-componenttest</module>
+	</modules>
 
     <prerequisites>
         <maven>3.3.1</maven>
@@ -48,6 +48,7 @@
         <modig-testcertificates.version>1.2.2</modig-testcertificates.version>
         <diskresjonskode-v1.version>1.2.3</diskresjonskode-v1.version>
         <pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
+        <tps.interface.library.version>1.57.0</tps.interface.library.version>
         <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
         <freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
@@ -77,7 +78,8 @@
         <spring-security-ldap.version>4.0.4.RELEASE</spring-security-ldap.version>
         <spring-security-test.version>4.1.1.RELEASE</spring-security-test.version>
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
-
+        <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
+        <h2.database.version>1.4.197</h2.database.version>
 
         <!--Plugin versions-->
         <aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>
@@ -185,7 +187,6 @@
                 <artifactId>tps-forvalteren-provider-web</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
-                <!--<classifier>classes</classifier>-->
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
@@ -301,7 +302,7 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-log-jaxws</artifactId>
                 <version>${modig-log-jaxws.version}</version>
-              </dependency>
+            </dependency>
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-testcertificates</artifactId>
@@ -328,7 +329,6 @@
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${micrometer.version}</version>
             </dependency>
-
             <!-- Apache Commons IO -->
             <dependency>
                 <groupId>org.apache.directory.studio</groupId>
@@ -400,12 +400,18 @@
                 <artifactId>mqjms</artifactId>
                 <version>${mqjms.version}</version>
             </dependency>
-
+            <!-- Database -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.database.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- Flyway -->
             <dependency>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
-                <version>4.0</version>
+                <version>${flyway-maven-plugin.version}</version>
             </dependency>
 
             <!-- Drivers -->
@@ -435,17 +441,28 @@
             </dependency>
 
             <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-jaxb-tps-s004-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-castor-tps-s018-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-jaxb-tps-s051-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>4.11</version>
             </dependency>
-
-            <!-- STS for å skaffe SAML til ws for tpsws-->
-            <!--<dependency>-->
-                <!--<groupId>no.nav.freg</groupId>-->
-                <!--<artifactId>freg-security-sts</artifactId>-->
-                <!--<version>1.0.0-SNAPSHOT</version>-->
-            <!--</dependency>-->
 
         </dependencies>
     </dependencyManagement>
@@ -454,6 +471,22 @@
     <build>
         <pluginManagement>
             <plugins>
+
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>${flyway-maven-plugin.version}</version>
+                    <configuration>
+                        <driver>oracle.jdbc.OracleDriver</driver>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.oracle</groupId>
+                            <artifactId>ojdbc8</artifactId>
+                            <version>${ojdbc.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
 
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
@@ -480,6 +513,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Sjekker etter dobbel dependency -->
             <!--<plugin>-->
             <!--<artifactId>maven-enforcer-plugin</artifactId>-->
             <!--<version>3.0.0-M1</version>-->
@@ -496,24 +530,6 @@
             <!--</execution>-->
             <!--</executions>-->
             <!--</plugin>-->
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>5.0.7</version>
-                <configuration>
-                    <driver>oracle.jdbc.OracleDriver</driver>
-                    <url>jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl023.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TPSFORVALTERENU6)(INSTANCE_NAME=ccuf02)(UR=A)(SERVER=DEDICATED)))</url>
-                    <user>TPSFORVALTEREN_U6</user>
-                    <password>5afWDfd0jLBn</password>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.oracle</groupId>
-                        <artifactId>ojdbc8</artifactId>
-                        <version>${ojdbc.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
 

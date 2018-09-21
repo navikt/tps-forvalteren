@@ -1,26 +1,26 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe;
-import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
@@ -39,7 +39,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
     private GetEnvironments getEnvironmentsCommand;
 
     @InjectMocks
-    private DefaultFiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
+    private FiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest;
 
     @Before
     public void setup() {
@@ -131,5 +131,4 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         assertThat(testdataRequest2.getIdenterTilgjengligIMiljoe().contains(dummyIdent3), is(false));
 
     }
-
 }

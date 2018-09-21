@@ -48,18 +48,56 @@
         </div>
     </md-input-container>
 
-    <md-input-container class="tps-vk-input-container" flex="15">
-        <md-tooltip>Statsborgerskap</md-tooltip>
-        <label>Statsborgerskap</label>
-        <input name="statsborgerskap" ng-required="false" md-maxlength="3" minlength="3"
-               ng-model="person.statsborgerskap" ng-change="endret($index + pager.startIndex)"/>
-        <div ng-messages="requestForm.statsborgerskap.$error"
-             ng-show="requestForm.statsborgerskap.$dirty">
-            <div ng-message="minlength">Verdi har for få tegn</div>
-            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+    <statsborgerskap landkoden="person.statsborgerskap" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" flex="20">
+    </statsborgerskap>
+
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Statsborgerskap regdato</md-tooltip>
+        <label>Statsborg. dato</label>
+        <md-datepicker name="statsborgerskapRegdato"
+                       md-current-view="year"
+                       ng-model="person.statsborgerskapRegdato"
+                       ng-change="endret($index + pager.startIndex)">
+        </md-datepicker>
+        <div ng-messages="requestForm.statsborgerskapRegdato.$error"
+             ng-show="requestForm.statsborgerskapRegdato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>
 
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Sivilstand</md-tooltip>
+        <label>Sivilstand</label>
+        <md-select ng-model="person.sivilstand" class="md-no-underline"
+                   ng-change="endret($index + pager.startIndex)">
+            <md-option value="0">Ikke oppgitt</md-option>
+            <md-option value="1">Ugift</md-option>
+            <md-option value="2">Gift</md-option>
+            <md-option value="3">Enke/Enkemann</md-option>
+            <md-option value="4">Skilt</md-option>
+            <md-option value="5">Separert</md-option>
+            <md-option value="6">Reg. partner</md-option>
+            <md-option value="7">Separert partner</md-option>
+            <md-option value="8">Skilt partner</md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container class="tps-vk-input-container" flex="20">
+        <md-tooltip>Dødsdato</md-tooltip>
+        <label>Dødsdato</label>
+        <md-datepicker name="doedsdato"
+                       md-current-view="year"
+                       ng-model="person.doedsdato"
+                       ng-change="endret($index + pager.startIndex)">
+        </md-datepicker>
+        <div ng-messages="requestForm.doedsdato.$error"
+             ng-show="requestForm.doedsdato.$pristine">
+            <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
     <md-input-container class="tps-vk-input-container" flex="25">
         <md-tooltip>Spesialregister</md-tooltip>
         <label>Spesialregister</label>
@@ -91,16 +129,20 @@
         </div>
     </md-input-container>
 
+    <landkoder landkoden="person.innvandretFraLand" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" flex="20">
+    </landkoder>
+
     <md-input-container class="tps-vk-input-container" flex="20">
-        <md-tooltip>Dødsdato</md-tooltip>
-        <label>Dødsdato</label>
-        <md-datepicker name="doedsdato"
+        <md-tooltip>Fra land flyttedato</md-tooltip>
+        <label>Fra land flyttedato</label>
+        <md-datepicker name="innvandretFraLandFlyttedato"
                        md-current-view="year"
-                       ng-model="person.doedsdato"
+                       ng-model="person.innvandretFraLandFlyttedato"
                        ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
-        <div ng-messages="requestForm.doedsdato.$error"
-             ng-show="requestForm.doedsdato.$pristine">
+        <div ng-messages="requestForm.innvandretFraLandFlyttedato.$error"
+             ng-show="requestForm.innvandretFraLandFlyttedato.$pristine">
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
     </md-input-container>

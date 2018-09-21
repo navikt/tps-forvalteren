@@ -44,12 +44,30 @@ public class RsPerson {
 
     private String statsborgerskap;
 
+    private LocalDateTime statsborgerskapRegdato;
+
     @Size(min = 1, max = 1)
     private String spesreg;
 
     private LocalDateTime spesregDato;
 
     private LocalDateTime doedsdato;
+
+    private String sivilstand;
+
+    @Size(min = 0, max = 3)
+    private String innvandretFraLand;
+
+    private LocalDateTime innvandretFraLandFlyttedato;
+
+    private LocalDateTime innvandretFraLandRegdato;
+
+    @Size(min = 0, max = 3)
+    private String utvandretTilLand;
+
+    private LocalDateTime utvandretTilLandFlyttedato;
+
+    private LocalDateTime utvandretTilLandRegdato;
 
     private RsAdresse boadresse;
 
@@ -62,5 +80,19 @@ public class RsPerson {
     private RsSimpleGruppe gruppe;
 
     private List<RsSimpleRelasjon> relasjoner;
+
+    private LocalDateTime egenAnsattDatoFom;
+
+    private LocalDateTime egenAnsattDatoTom;
+
+    @Size(min = 4, max = 4)
+    private String typeSikkerhetsTiltak;
+
+    private LocalDateTime sikkerhetsTiltakDatoFom;
+
+    private LocalDateTime sikkerhetsTiltakDatoTom;
+
+    @Size(min = 1, max = 50)
+    private String beskrSikkerhetsTiltak;
 
 }

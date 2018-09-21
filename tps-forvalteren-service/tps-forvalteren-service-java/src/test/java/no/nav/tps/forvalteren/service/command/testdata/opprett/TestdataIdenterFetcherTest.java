@@ -1,30 +1,29 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdata;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTestdataIdenterFetcher;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataIdenterFetcherTest {
@@ -49,10 +48,10 @@ public class TestdataIdenterFetcherTest {
     private MessageProvider messageProviderMock;
 
     @Mock
-    private DefaultTestdata testdataMock;
+    private Testdata testdataMock;
 
     @InjectMocks
-    private DefaultTestdataIdenterFetcher testdataIdenterFetcher;
+    private TestdataIdenterFetcher testdataIdenterFetcher;
 
     @Before
     public void setup() {
@@ -130,5 +129,4 @@ public class TestdataIdenterFetcherTest {
 
         testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(inputPersonMalRequest);
     }
-
 }

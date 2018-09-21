@@ -1,17 +1,17 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultTaBortOverfloedigIdenterITestdataRequest;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaBortOverfloedigIdenterITestdataRequestTest {
@@ -23,7 +23,7 @@ public class TaBortOverfloedigIdenterITestdataRequestTest {
     private String dummyIdent3 = "dummy3";
 
     @InjectMocks
-    private DefaultTaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;
+    private TaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;
 
     @Before
     public void setup() {

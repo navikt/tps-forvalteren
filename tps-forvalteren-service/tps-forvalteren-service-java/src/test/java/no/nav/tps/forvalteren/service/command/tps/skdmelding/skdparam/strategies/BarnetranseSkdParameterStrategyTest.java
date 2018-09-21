@@ -50,10 +50,10 @@ public class BarnetranseSkdParameterStrategyTest {
     @Test
     public void checkThatBarnAreAdded() {
         for (int counter = 0; counter < barn.size(); counter++) {
-            String fodsdatoKey = "barnFodsdato" + counter;
+            String fodsdatoKey = "barnFodsdato" + (counter + 1);
             String fodsdatoValue = barn.get(counter).getIdent().substring(0, 6);
 
-            String persnrKey = "barnPersnr" + counter;
+            String persnrKey = "barnPersnr" + (counter + 1);
             String persnrValue = barn.get(counter).getIdent().substring(6);
 
             assertThat(skdParams, hasEntry(fodsdatoKey, fodsdatoValue));

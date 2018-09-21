@@ -1,31 +1,26 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.domain.rs.RsPerson;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultGenererIdenterForTestdataRequests;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyInt;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.GenererIdenterForTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GenererIdenterForTestdataRequestsTest {
@@ -42,7 +37,7 @@ public class GenererIdenterForTestdataRequestsTest {
     private FiktiveIdenterGenerator fiktiveIdenterGeneratorMock;
 
     @InjectMocks
-    private DefaultGenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
+    private GenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
 
     @Before
     public void setup() {
@@ -59,7 +54,7 @@ public class GenererIdenterForTestdataRequestsTest {
         dummyIdenter2.add(dummyIdent2);
 
         when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any()))
-                .thenReturn(dummyIdenter1,dummyIdenter2);
+                .thenReturn(dummyIdenter1, dummyIdenter2);
 
         List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(inputPersonListe);
 
@@ -78,7 +73,7 @@ public class GenererIdenterForTestdataRequestsTest {
         dummyIdenter2.add(dummyIdent3);
 
         when(fiktiveIdenterGeneratorMock.genererFiktiveIdenter(any()))
-                .thenReturn(dummyIdenter1,dummyIdenter2);
+                .thenReturn(dummyIdenter1, dummyIdenter2);
 
         List<TestdataRequest> requests = genererIdenterForTestdataRequests.execute(inputPersonListe);
 

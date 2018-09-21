@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,7 +39,6 @@ public class SkdEndringsmeldingLogg {
 
     @Column(name = "SKD_ENDRINGSMELDING_GRUPPE_REF", nullable = false, updatable = false)
     private Long meldingsgruppeId;
-
 
     @Column(name = "ENDRINGSMELDING", nullable = false, updatable = false)
     private String endringsmelding;

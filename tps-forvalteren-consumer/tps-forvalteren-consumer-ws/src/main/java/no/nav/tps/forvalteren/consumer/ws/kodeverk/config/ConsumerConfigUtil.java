@@ -1,13 +1,16 @@
 package no.nav.tps.forvalteren.consumer.ws.kodeverk.config;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.mdc.CallIdGenerationMDCInterceptor;
-
-import javax.xml.namespace.QName;
 import java.net.URL;
+import javax.xml.namespace.QName;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
 
+import no.nav.tps.forvalteren.consumer.ws.kodeverk.mdc.CallIdGenerationMDCInterceptor;
+
 public class ConsumerConfigUtil {
+
+    private ConsumerConfigUtil() {
+    }
 
     private static final long DEFAULT_TIMEOUT = 20000;
 

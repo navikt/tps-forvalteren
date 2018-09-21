@@ -1,15 +1,15 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import org.springframework.data.repository.Repository;
-
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import org.springframework.data.repository.Repository;
 
 public interface AdresseRepository extends Repository<Adresse, Long> {
 
     void deleteAllByPerson(Person person);
 
-    void save(Adresse adresse);
+    Gateadresse getAdresseByPersonId(Long id);
 
     void deleteAll();
 }

@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -19,25 +18,19 @@ public class CreateVergemaal {
     @Autowired
     SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
-    public List<String> execute(List<Person> personerSomIkkeEksitererITpsMiljoe, boolean addHeader) {
+    public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, boolean addHeader) {
 
-        List<Person> personerMedVerge = getPersonerMedVerger(personerSomIkkeEksitererITpsMiljoe);
-        List<String> skdMeldinger = new ArrayList<>();
-        for (Person person : personerMedVerge) {
-            skdMeldinger.addAll(skdMessageCreatorTrans1.execute("Vergemaal", Arrays.asList(person), addHeader));
-        }
-        return skdMeldinger;
-    }
+        List<Vergemaal> vergemaalIGruppen = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
 
-    private List<Person> getPersonerMedVerger(List<Person> personerTidligereLagret) {
-
-        List<Person> personer = new ArrayList<>();
-        for (Person person : personerTidligereLagret) {
+        for (Person person : personerIGruppen) {
             List<Vergemaal> personerVergemaal = vergemaalRepository.findAllByIdent(person.getIdent());
             if (!personerVergemaal.isEmpty()) {
-                personer.add(person);
+                vergemaalIGruppen.addAll(personerVergemaal);
             }
         }
-        return personer;
+        skdMeldinger.addAll(skdMessageCreatorTrans1.createVergemaalSkdMelding(vergemaalIGruppen, addHeader));
+
+        return skdMeldinger;
     }
 }

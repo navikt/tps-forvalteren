@@ -1,18 +1,15 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
-import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.GenererIdenterForTestdataRequests;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
+import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.GenererIdenterForTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 
 @Service
 public class DefaultGenererIdenterForTestdataRequests implements GenererIdenterForTestdataRequests {
@@ -29,7 +26,6 @@ public class DefaultGenererIdenterForTestdataRequests implements GenererIdenterF
             taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriterie());
             requests.add(request);
         });
-
 
         return requests;
     }

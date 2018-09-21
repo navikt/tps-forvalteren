@@ -27,13 +27,13 @@ public class SkdMessageCreatorTrans2 {
     @Autowired
     private BarnetranseSkdParameterStrategy barnetranseSkdParameterStrategy;
 
-    public List<String> execute(String skdMeldingNavn, Person forelder, List<Person> barn, boolean addHeader) {
+    public List<SkdMeldingTrans2> execute(String skdMeldingNavn, Person forelder, List<Person> barn, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute(skdMeldingNavn);
-        List<String> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans2> skdMeldinger = new ArrayList<>();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             Map<String, String> skdParametere = barnetranseSkdParameterStrategy.execute(forelder, barn);
             String skdMelding = skdOpprettSkdMeldingMedHeaderOgInnhold.execute(skdParametere, skdFelterContainer, addHeader);
-            skdMeldinger.add(skdMelding);
+            skdMeldinger.add(new SkdMeldingTrans2(skdMelding));
         } else {
             throw new IllegalArgumentException("SkdMeldingNavn: " + skdMeldingNavn + " does not exist.");
         }

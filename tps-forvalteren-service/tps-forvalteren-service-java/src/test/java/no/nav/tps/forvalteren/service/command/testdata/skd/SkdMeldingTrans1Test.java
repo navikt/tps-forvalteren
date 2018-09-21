@@ -3,7 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static org.junit.Assert.assertEquals;
 
 import com.google.common.io.Resources;
-import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjoner;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SkdFeltDefinisjonerTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.AssertEqualSkdMeldingTrans1;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * @author Jarl Øystein Samseth, Visma Consulting
@@ -22,36 +22,46 @@ import java.util.stream.Collectors;
 @RunWith(Parameterized.class)
 public class SkdMeldingTrans1Test {
 	@Parameterized.Parameter
-	public SkdMeldingTrans1 skdMeldingTrans1 = createDoedsmelding();
+	public SkdMeldingTrans1 skdMeldingTrans1;
 	@Parameterized.Parameter(1)
 	public String resourceName;
-	String expectedSkdMessage;
+	String skdMessageString;
 	
 	@Parameterized.Parameters
 	public static Collection testparameters() {
 		return Arrays.asList(new Object[][]{
 				{createDoedsmelding(), "skdmeldinger/doedsmelding.txt"},
 				{createVigselsmelding(), "skdmeldinger/vigselsmelding.txt"},
-				{createInnvandringsmelding(),"skdmeldinger/innvandringsmelding.txt"}});
+				{createInnvandringsmelding(), "skdmeldinger/innvandringsmelding.txt"}});
 	}
 	
 	@Before
-	public void setup() throws IOException {
+	public void setupSkdMeldingStringFormat() throws IOException {
 		URL fileUrl = Resources.getResource(resourceName);
 		String tempexpectedSkdMessage = Resources.toString(fileUrl, StandardCharsets.UTF_8);
-		expectedSkdMessage = tempexpectedSkdMessage.substring(0, tempexpectedSkdMessage.length() - "ENDOFFILE".length()); //IntelliJ trimmer txt-filen. Derfor er det lagt til ekstra tegn på slutten av filen.
+		skdMessageString = tempexpectedSkdMessage.substring(0, tempexpectedSkdMessage.length() - "ENDOFFILE".length()); //IntelliJ trimmer txt-filen. Derfor er det lagt til ekstra tegn på slutten av filen.
 	}
 	
 	@Test
-	public void shouldReturnStringSkdMessage() {
-		assertEquals(expectedSkdMessage, skdMeldingTrans1.toString());
+	public void shouldReturnStringSkdMessageFromToStringMethod() {
+		assertEquals(skdMessageString, skdMeldingTrans1.toString());
 	}
 	
 	@Test
-	public void tryout() {
-		System.out.println(SkdFeltDefinisjoner.getAllFeltDefinisjonerInSortedList()
-				.stream()
-				.collect(Collectors.summingInt(SkdFeltDefinisjoner::getAntallBytesAvsatt)));
+	public void shouldSetMeldingsverdiAngittVedSkdFeltDefinisjoner() {
+		SkdFeltDefinisjonerTrans1 skdFeltDefinisjon_antallBarn = SkdFeltDefinisjonerTrans1.ANTALL_BARN;
+		SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
+		String antallbarn = "12";
+		skdMeldingTrans1.setMeldingsVerdi(skdFeltDefinisjon_antallBarn, antallbarn);
+		
+		assertEquals(antallbarn, skdMeldingTrans1.getAntallBarn());
+	}
+	
+	
+	@Test
+	public void shouldUnmarshalMeldingFromString() {
+		SkdMeldingTrans1 actualSkdMeldingTrans1 = SkdMeldingTrans1.unmarshal(skdMessageString);
+		AssertEqualSkdMeldingTrans1.assertSdkmelding(skdMeldingTrans1, actualSkdMeldingTrans1);
 	}
 	
 	private static SkdMeldingTrans1 createInnvandringsmelding() {
@@ -71,7 +81,6 @@ public class SkdMeldingTrans1Test {
 				.regdatoAdr("20180404")
 				.aarsakskode("02")
 				.regdatoFamnr("20180404")
-				.statsborgerskap("000")
 				.tildelingskode("1")
 				.transtype("1")
 				.personnummer("50136")
@@ -80,7 +89,7 @@ public class SkdMeldingTrans1Test {
 				.maskintid("142656")
 				.sivilstand("1")
 				.flyttedatoAdr("20000101")
-				.husBruk("2")
+				.husBruk("0002")
 				.fodselsdato("250416")
 				.gateGaard("16188")
 				.datoSpesRegType("20180301")
@@ -128,5 +137,4 @@ public class SkdMeldingTrans1Test {
 				.aarsakskode("43")
 				.maskintid("142656").build();
 	}
-	
 }

@@ -200,12 +200,12 @@
         </div>
     </md-input-container>
     <md-input-container class="tps-vk-input-container" flex>
-        <md-tooltip>RegdatoStatsb</md-tooltip>
-        <label>RegdatoStatsb</label>
+        <md-tooltip>StatsborgerskapRegdato</md-tooltip>
+        <label>StatsborgerskapRegdato</label>
         <input name="regdatoStatsb" ng-required="false" pattern="\d{8}" md-maxlength="8"
-               ng-model="melding.regdatoStatsb" ng-change="endret($index + pager.startIndex)"/>
-        <div ng-messages="requestForm.regdatoStatsb.$error"
-             ng-show="requestForm.regdatoStatsb.$dirty">
+               ng-model="melding.statsborgerskapRegdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskapRegdato.$error"
+             ng-show="requestForm.statsborgerskapRegdato.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
             <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
         </div>
@@ -1522,9 +1522,9 @@
         <md-tooltip>VergeFnrDnr</md-tooltip>
         <label>VergeFnrDnr</label>
         <input name="vergeFnrDnr" ng-required="false" pattern="\d{11}" md-maxlength="11"
-               ng-model="melding.vergeFnrDnr" ng-change="endret($index + pager.startIndex)"/>
-        <div ng-messages="requestForm.vergeFnrDnr.$error"
-             ng-show="requestForm.vergeFnrDnr.$dirty">
+               ng-model="melding.vergeFnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vergeFnr.$error"
+             ng-show="requestForm.vergeFnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
             <div ng-message="pattern">Elleve sifre forventet</div>
         </div>

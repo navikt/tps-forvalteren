@@ -42,10 +42,22 @@ angular.module('tps-forvalteren.filter')
                     fnr = fnr.substring(0,2) + (fnr.charAt(2) - 2).toString() + fnr.substring(3);
                 }
 
+                var year = parseInt(fnr.substring(4, 6));
                 var individ = parseInt(fnr.substring(6, 9));
-                var aarhundre = individ < 500 || individ >= 900 ? '19' : '20';
 
-                return (gregorianAge(new Date(aarhundre + fnr.substring(4, 6), fnr.substring(2, 4) - 1, fnr.substring(0, 2)), doedsdato)) + '\u00A0år';
+                // Find century
+                var century;
+                if (individ < 500 || (individ >= 900 && year > 39)) {
+                    century = '19';
+                } else if (individ >= 500 && year < 40) {
+                    century = '20';
+                } else if (individ >= 500 && individ < 750 && year > 54) {
+                    century = '18';
+                } else {
+                    century = '20';
+                }
+
+                return (gregorianAge(new Date(century + fnr.substring(4, 6), fnr.substring(2, 4) - 1, fnr.substring(0, 2)), doedsdato)) + '\u00A0år';
             }
         };
     });

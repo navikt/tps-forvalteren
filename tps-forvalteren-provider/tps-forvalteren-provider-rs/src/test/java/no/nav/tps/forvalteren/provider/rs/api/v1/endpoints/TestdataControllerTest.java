@@ -11,6 +11,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
@@ -23,15 +24,20 @@ import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -43,10 +49,16 @@ public class TestdataControllerTest {
     private MapperFacade mapper;
 
     @Mock
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private PersonNameService personNameService;
 
     @Mock
-    private OpprettPersoner opprettPersonerFraIdenter;
+    private OpprettPersonerService opprettPersonerServiceFraIdenter;
+
+    @Mock
+    private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
+
+    @Mock
+    private TestdataIdenterFetcher testdataIdenterFetcher;
 
     @Mock
     private SavePersonListService savePersonListService;
@@ -89,6 +101,30 @@ public class TestdataControllerTest {
 
     private static final Long GRUPPE_ID = 0L;
 
+
+    @Test
+    public void createNewPersonsFromKriterier() {
+        RsPersonKriteriumRequest rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
+
+        TestdataRequest testdataRequest = new TestdataRequest(null);
+        List<TestdataRequest> testdataRequestsList = new ArrayList<>();
+        testdataRequestsList.add(testdataRequest);
+
+        List<String> identer = new ArrayList<>();
+        List<Person> personerSomSkalPersisteres = new ArrayList<>();
+
+        when(testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(any(RsPersonKriteriumRequest.class))).thenReturn(testdataRequestsList);
+        when(ekstraherIdenterFraTestdataRequests.execute(testdataRequestsList)).thenReturn(identer);
+        when(opprettPersonerServiceFraIdenter.execute(identer)).thenReturn(personerSomSkalPersisteres);
+
+        testdataController.createNewPersonsFromKriterier(GRUPPE_ID, rsPersonKriteriumRequest);
+
+        verify(testdataIdenterFetcher).getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
+        verify(ekstraherIdenterFraTestdataRequests).execute(testdataRequestsList);
+        verify(opprettPersonerServiceFraIdenter).execute(identer);
+        verify(personNameService).execute(personerSomSkalPersisteres);
+        verify(setGruppeIdAndSavePersonBulkTx).execute(personerSomSkalPersisteres, GRUPPE_ID);
+    }
 
     @Test
     public void createNewPersonsFromMal() {
@@ -137,12 +173,12 @@ public class TestdataControllerTest {
         List<String> personIdentListe = new ArrayList<>();
         List<Person> personer = new ArrayList<>();
 
-        when(opprettPersonerFraIdenter.execute(personIdentListe)).thenReturn(personer);
+        when(opprettPersonerServiceFraIdenter.execute(personIdentListe)).thenReturn(personer);
 
         testdataController.createPersonerFraIdentliste(GRUPPE_ID, personIdentListe);
 
-        verify(opprettPersonerFraIdenter).execute(personIdentListe);
-        verify(setNameOnPersonsService).execute(personer);
+        verify(opprettPersonerServiceFraIdenter).execute(personIdentListe);
+        verify(personNameService).execute(personer);
         verify(setGruppeIdOnPersons).setGruppeId(personer, GRUPPE_ID);
         verify(savePersonListService).execute(personer);
     }
