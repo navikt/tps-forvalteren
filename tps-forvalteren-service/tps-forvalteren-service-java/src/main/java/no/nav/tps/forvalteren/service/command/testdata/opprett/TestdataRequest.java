@@ -1,18 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import java.util.Set;
+
 import lombok.Getter;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 
-import java.util.Set;
-
 @Setter
 @Getter
 public class TestdataRequest {
 
+    RsPersonKriterier kriterium;
     RsPersonMal inputPerson;
-            ;
 
     Set<String> identerGenerertForKriterie;
 

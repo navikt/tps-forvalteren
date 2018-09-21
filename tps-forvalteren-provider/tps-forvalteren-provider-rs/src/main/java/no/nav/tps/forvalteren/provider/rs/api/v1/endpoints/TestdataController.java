@@ -124,11 +124,20 @@ public class TestdataController {
     @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
 
-    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
+    @ApiOperation(value = "create new persons from mal", notes = "TBD")
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
+    @RequestMapping(value = "/mal/personer/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
 
+        createTestdataPerson.execute(gruppeId, inputPersonRequest);
+    }
+
+    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
+            + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
@@ -143,11 +152,6 @@ public class TestdataController {
         }
         personNameService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
-    }
-
-    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
-
-        createTestdataPerson.execute(gruppeId, inputPersonRequest);
     }
 
     @Transactional

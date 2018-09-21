@@ -1,18 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdatamal;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetNameOnPersonsService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetValuesFromMalOnPersonsService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CreateTestdataPerson {
@@ -24,10 +24,10 @@ public class CreateTestdataPerson {
     private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
 
     @Autowired
-    private OpprettPersoner opprettPersoner;
+    private OpprettPersonerService opprettPersoner;
 
     @Autowired
-    private SetNameOnPersonsService setNameOnPersonsService;
+    private PersonNameService setNameOnPersonsService;
 
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;

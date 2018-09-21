@@ -46,7 +46,7 @@ public class TestdataIdenterFetcher {
                 while ((counter < MAX_TRIES) && !harNokIdenterForKritereIRequest(request)) {
                     RsPersonKriteriumRequest singelKriterieListe = new RsPersonKriteriumRequest();
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
-                    singelKriterieListe.getPersonKriterierListe().add(request.getKriterie());
+                    singelKriterieListe.getPersonKriterierListe().add(request.getKriterium());
 
                     List<TestdataRequest> testdataRequestSingelList = testdata.genererIdenterForTestdataRequests(singelKriterieListe);
 
@@ -91,7 +91,7 @@ public class TestdataIdenterFetcher {
     }
 
     private boolean harNokIdenterForKritereIRequest(TestdataRequest request) {
-        return request.getIdenterTilgjengligIMiljoe().size() >= request.getKriterie().getAntall();
+        return request.getIdenterTilgjengligIMiljoe().size() >= request.getKriterium().getAntall();
     }
 
 }
