@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.xjc.ctg.domain.s051.AdresseData;
@@ -29,7 +29,7 @@ public class SetRandomAdresseOnPersons {
 
     @Autowired
     @Setter
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Autowired
     public SetRandomAdresseOnPersons(TpsServiceRutineS051Unmarshaller unmarshaller, HentGyldigeAdresserService hentGyldigeAdresserService) {
@@ -81,7 +81,7 @@ public class SetRandomAdresseOnPersons {
         adresse.setAdresse(adresseData.getAdrnavn());
         adresse.setPostnr(adresseData.getPnr());
         adresse.setKommunenr(adresseData.getKnr());
-        adresse.setFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
+        adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
         adresse.setPerson(person);
         return adresse;
     }

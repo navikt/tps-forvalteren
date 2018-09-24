@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.DateGenerator;
-import no.nav.tps.forvalteren.service.command.testdata.utils.GetLocalDateBirthdayFromPerson;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
 public class SetRandomFieldValues {
@@ -20,7 +20,7 @@ public class SetRandomFieldValues {
     private static final Random random = new Random();
 
     @Autowired
-    private GetLocalDateBirthdayFromPerson getBirthday;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     public Person execute(String fieldName, Person person) {
 
@@ -40,13 +40,16 @@ public class SetRandomFieldValues {
         case "sivilstand":
             person.setSivilstand(getRandomSivilstand());
             break;
+        default:
+            break;
         }
 
         return person;
     }
 
     private LocalDateTime getRandomDoedsdato(Person person) {
-        return LocalDateTime.of(DateGenerator.genererRandomDatoInnenforIntervalInclusiveDatoEtterExclusiveDatoFoer(getBirthday.execute(person), LocalDate.now()), LocalTime.now());
+        return LocalDateTime.of(DateGenerator.genererRandomDatoInnenforIntervalInclusiveDatoEtterExclusiveDatoFoer(
+                hentDatoFraIdentService.extract(person.getIdent()).toLocalDate(), LocalDate.now()), LocalTime.now());
     }
 
     private LandKode getRandomLandKode() {
@@ -60,12 +63,12 @@ public class SetRandomFieldValues {
     }
 
     private LocalDateTime getRandomSpesregdato(Person person) {
-        return LocalDateTime.of(DateGenerator.genererRandomDatoInnenforIntervalInclusiveDatoEtterExclusiveDatoFoer(getBirthday.execute(person), LocalDate.now()), LocalTime.now());
+        return LocalDateTime.of(DateGenerator.genererRandomDatoInnenforIntervalInclusiveDatoEtterExclusiveDatoFoer(
+                hentDatoFraIdentService.extract(person.getIdent()).toLocalDate(), LocalDate.now()), LocalTime.now());
     }
 
     private String getRandomSivilstand() {
         int sivilstandnr = random.nextInt(9);
         return String.valueOf(sivilstandnr);
     }
-
 }

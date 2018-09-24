@@ -11,15 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HentDatoFraIdentTest {
+public class HentDatoFraIdentServiceTest {
 
     @InjectMocks
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Test
     public void extractDateFromFnr1900Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("13035830234");
+        LocalDateTime target = hentDatoFraIdentService.extract("13035830234");
 
         assertThat(target.getYear(), is(equalTo(1958)));
         assertThat(target.getMonthValue(), is(equalTo(3)));
@@ -29,7 +29,7 @@ public class HentDatoFraIdentTest {
     @Test
     public void extractDateFromFnr2000Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("21050556234");
+        LocalDateTime target = hentDatoFraIdentService.extract("21050556234");
 
         assertThat(target.getYear(), is(equalTo(2005)));
         assertThat(target.getMonthValue(), is(equalTo(5)));
@@ -39,7 +39,7 @@ public class HentDatoFraIdentTest {
     @Test
     public void extractDateFromDnr1900Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("61039596234");
+        LocalDateTime target = hentDatoFraIdentService.extract("61039596234");
 
         assertThat(target.getYear(), is(equalTo(1995)));
         assertThat(target.getMonthValue(), is(equalTo(3)));
@@ -49,7 +49,7 @@ public class HentDatoFraIdentTest {
     @Test
     public void extractDateFromDnr2000Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("51050586534");
+        LocalDateTime target = hentDatoFraIdentService.extract("51050586534");
 
         assertThat(target.getYear(), is(equalTo(2005)));
         assertThat(target.getMonthValue(), is(equalTo(5)));
@@ -59,7 +59,7 @@ public class HentDatoFraIdentTest {
     @Test
     public void extractDateFromBnr1900Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("21250546234");
+        LocalDateTime target = hentDatoFraIdentService.extract("21250546234");
 
         assertThat(target.getYear(), is(equalTo(1905)));
         assertThat(target.getMonthValue(), is(equalTo(5)));
@@ -69,7 +69,7 @@ public class HentDatoFraIdentTest {
     @Test
     public void extractDateFromBnr2000Century() throws Exception {
 
-        LocalDateTime target = hentDatoFraIdent.extract("21250556234");
+        LocalDateTime target = hentDatoFraIdentService.extract("21250556234");
 
         assertThat(target.getYear(), is(equalTo(2005)));
         assertThat(target.getMonthValue(), is(equalTo(5)));
@@ -78,7 +78,7 @@ public class HentDatoFraIdentTest {
 
     @Test
     public void extractDateFromFnr1800Century() throws Exception {
-        LocalDateTime target = hentDatoFraIdent.extract("21256556234");
+        LocalDateTime target = hentDatoFraIdentService.extract("21256556234");
 
         assertThat(target.getYear(), is(equalTo(1865)));
         assertThat(target.getMonthValue(), is(equalTo(5)));

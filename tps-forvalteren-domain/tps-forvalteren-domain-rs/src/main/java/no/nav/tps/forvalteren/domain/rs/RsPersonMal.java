@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -40,7 +40,7 @@ public class RsPersonMal {
     private String fodtFor;
 
     @Size(max = 1)
-    private char kjonn;
+    private Character kjonn;
 
     @Size(min = 1, max = 3)
     private String statsborgerskap;

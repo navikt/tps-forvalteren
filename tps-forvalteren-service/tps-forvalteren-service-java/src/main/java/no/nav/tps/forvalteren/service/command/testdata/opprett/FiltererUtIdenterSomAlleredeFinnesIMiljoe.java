@@ -22,7 +22,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     public void execute(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = new HashSet<>();
         for (TestdataRequest request : testdataRequests) {
-            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
+            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());
         }
 
         // Environment q0 only verified for existence
@@ -33,7 +33,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
 
     private void taBortOpptatteIdenterRequest(List<TestdataRequest> testdataRequests, Set<String> alleTilgjengligIdenterIMiljoe) {
         for (TestdataRequest request : testdataRequests) {
-            request.setIdenterTilgjengligIMiljoe(new HashSet<>(request.getIdenterGenerertForKriterie()));
+            request.setIdenterTilgjengligIMiljoe(new HashSet<>(request.getIdenterGenerertForKriteria()));
             request.getIdenterTilgjengligIMiljoe().retainAll(alleTilgjengligIdenterIMiljoe);
         }
     }

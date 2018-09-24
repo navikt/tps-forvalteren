@@ -49,8 +49,8 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         testdataRequest1.setIdenterTilgjengligIMiljoe(new HashSet<>());
         testdataRequest2.setIdenterTilgjengligIMiljoe(new HashSet<>());
 
-        testdataRequest1.setIdenterGenerertForKriterie(new HashSet<>());
-        testdataRequest2.setIdenterGenerertForKriterie(new HashSet<>());
+        testdataRequest1.setIdenterGenerertForKriteria(new HashSet<>());
+        testdataRequest2.setIdenterGenerertForKriteria(new HashSet<>());
 
         environments.add("test");
         when(getEnvironmentsCommand.getEnvironmentsFromFasit(anyString())).thenReturn(environments);
@@ -58,9 +58,9 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
     @Test
     public void verifiserAtFilterPaaIdenterFilgjengligIMiljoeBlirKaltMedAlleIdenterFraTestdatarequestsInput() {
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent1);
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent2);
-        testdataRequest2.getIdenterGenerertForKriterie().add(dummyIdent3);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent1);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent2);
+        testdataRequest2.getIdenterGenerertForKriteria().add(dummyIdent3);
 
         ArgumentCaptor<Set> arg = ArgumentCaptor.forClass(Set.class);
 
@@ -77,9 +77,9 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
     @Test
     public void hvisEnIdentIkkeErTilgjengeligIMiljoeSaaBlirDenTattBortFraTestdataRequest() {
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent1);
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent2);
-        testdataRequest2.getIdenterGenerertForKriterie().add(dummyIdent3);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent1);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent2);
+        testdataRequest2.getIdenterGenerertForKriteria().add(dummyIdent3);
 
         Set<String> identerTilgjenglig = new HashSet<>();
         identerTilgjenglig.add(dummyIdent1);
@@ -96,9 +96,9 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
     @Test
     public void hvisAlleIdenterERTilgjengligIMiljoeSaaBlirIngenIdenterTattBort() {
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent1);
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent2);
-        testdataRequest2.getIdenterGenerertForKriterie().add(dummyIdent3);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent1);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent2);
+        testdataRequest2.getIdenterGenerertForKriteria().add(dummyIdent3);
 
         Set<String> identerTilgjenglig = new HashSet<>();
         identerTilgjenglig.add(dummyIdent1);
@@ -116,9 +116,9 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
     @Test
     public void hvisAlleIdenterErTattIMiljoeSaaErAlleIdenterTattBortFraFiktiveIdenter() {
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent1);
-        testdataRequest1.getIdenterGenerertForKriterie().add(dummyIdent2);
-        testdataRequest2.getIdenterGenerertForKriterie().add(dummyIdent3);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent1);
+        testdataRequest1.getIdenterGenerertForKriteria().add(dummyIdent2);
+        testdataRequest2.getIdenterGenerertForKriteria().add(dummyIdent3);
 
         Set<String> identerTilgjenglig = new HashSet<>();
 

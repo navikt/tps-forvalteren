@@ -1,20 +1,21 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import static junit.framework.TestCase.assertTrue;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomFieldValues;
-import no.nav.tps.forvalteren.service.command.testdata.utils.GetLocalDateBirthdayFromPerson;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomFieldValues;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SetRandomFieldValuesTest {
@@ -26,15 +27,15 @@ public class SetRandomFieldValuesTest {
     Person person;
 
     @Mock
-    private GetLocalDateBirthdayFromPerson getLocalDateBirthdayFromPerson;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Test
     public void getRandomDoedsdatoTest() {
         person = new Person();
         person.setIdent("0101200012345");
 
-        LocalDate date = LocalDate.of(1998, 1, 7);
-        when(getLocalDateBirthdayFromPerson.execute(person)).thenReturn(date);
+        LocalDateTime date = LocalDateTime.of(1998, 1, 7, 0, 0);
+        when(hentDatoFraIdentService.extract(person.getIdent())).thenReturn(date);
         setRandomFieldValues.execute("doedsdato", person);
 
         assertThat(person.getDoedsdato(), instanceOf(LocalDateTime.class));
@@ -64,8 +65,8 @@ public class SetRandomFieldValuesTest {
     public void getRandomSpesregDatoTest() {
         person = new Person();
 
-        LocalDate date = LocalDate.of(1998, 1, 7);
-        when(getLocalDateBirthdayFromPerson.execute(person)).thenReturn(date);
+        LocalDateTime date = LocalDateTime.of(1998, 1, 7, 0, 0);
+        when(hentDatoFraIdentService.extract(anyString())).thenReturn(date);
 
         setRandomFieldValues.execute("spesregDato", person);
 

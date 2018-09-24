@@ -21,8 +21,8 @@ public class GenererIdenterForTestdataRequests {
         List<TestdataRequest> requests = new ArrayList<>();
         for (RsPersonKriterier kriterie : personKriterierRequest.getPersonKriterierListe()) {
             TestdataRequest request = new TestdataRequest(kriterie);
-            request.setIdenterGenerertForKriterie(fiktiveIdenterGenerator.genererFiktiveIdenter(kriterie));
-            taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriterie());
+            request.setIdenterGenerertForKriteria(fiktiveIdenterGenerator.genererFiktiveIdenter(kriterie));
+            taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriteria());
             requests.add(request);
         }
         return requests;
@@ -33,8 +33,8 @@ public class GenererIdenterForTestdataRequests {
 
         inputPersonRequest.getInputPersonMalRequest().stream().forEach(rsPersonMal -> {
             TestdataRequest request = new TestdataRequest(rsPersonMal);
-            request.setIdenterGenerertForKriterie(fiktiveIdenterGenerator.genererFiktiveIdenter(rsPersonMal));
-            taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriterie());
+            request.setIdenterGenerertForKriteria(fiktiveIdenterGenerator.genererFiktiveIdenter(rsPersonMal));
+            taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriteria());
             requests.add(request);
         });
 
@@ -44,7 +44,7 @@ public class GenererIdenterForTestdataRequests {
     private void taBortIdenterLagtTilIAndreKriterier(List<TestdataRequest> testdataRequests, Set<String> identerForKritere) {
         for (String ident : new ArrayList<>(identerForKritere)) {
             for (TestdataRequest testdataRequest : testdataRequests) {
-                if (testdataRequest.getIdenterGenerertForKriterie().contains(ident)) {
+                if (testdataRequest.getIdenterGenerertForKriteria().contains(ident)) {
                     identerForKritere.remove(ident);
                 }
             }

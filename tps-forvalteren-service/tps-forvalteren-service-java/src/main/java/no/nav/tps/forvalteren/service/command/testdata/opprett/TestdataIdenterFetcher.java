@@ -43,19 +43,18 @@ public class TestdataIdenterFetcher {
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonMalRequest inputPersonRequest) {
         List<TestdataRequest> testdataRequests = testdata.genererIdenterForTestdataRequests(inputPersonRequest);
 
-            testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
+        testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
 
-            testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
+        testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
 
-            taBortOverflodigeIdenterFraTestRequests(testdataRequests);
+        taBortOverflodigeIdenterFraTestRequests(testdataRequests);
 
-            if (!erAlleKriteriaOppfylt(testdataRequests)) {
-                oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
-            }
-
-            return testdataRequests;
+        if (!erAlleKriteriaOppfylt(testdataRequests)) {
+            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
         }
 
+        return testdataRequests;
+    }
 
     private void oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(List<TestdataRequest> testdataRequests) {
         for (TestdataRequest request : testdataRequests) {
