@@ -59,7 +59,7 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
         Person person = personRepository.save(Person.builder()
                 .gruppe(gruppe)
                 .identtype("per")
-                .kjonn('m')
+                .kjonn("m")
                 .regdato(LocalDateTime.now())
                 .fornavn("lol").etternavn("sdf")
                 .ident(IDENT1)
@@ -68,7 +68,7 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
         Person person2 = personRepository.save(
                 Person.builder().gruppe(gruppe)
                         .identtype("per")
-                        .kjonn('k')
+                        .kjonn("k")
                         .regdato(LocalDateTime.now())
                         .fornavn("fnavn")
                         .etternavn("etternavn2")

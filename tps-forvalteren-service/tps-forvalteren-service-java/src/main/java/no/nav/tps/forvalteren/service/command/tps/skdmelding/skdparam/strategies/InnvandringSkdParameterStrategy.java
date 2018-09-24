@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 public abstract class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
@@ -20,7 +20,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     private LandkodeEncoder landkodeEncoder;
 
     @Autowired
-    private SetAdresse setAdresse;
+    private SetAdresseService setAdresse;
 
     @Override
     public SkdMeldingTrans1 execute(Person person) {
