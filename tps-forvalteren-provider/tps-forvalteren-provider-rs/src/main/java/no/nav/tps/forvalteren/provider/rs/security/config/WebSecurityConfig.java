@@ -46,9 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        if(true){
+        if(!currentEnvironmentIsProd){
             http.authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/api/v1/user/**").permitAll()
+//                    .antMatchers(HttpMethod.OPTIONS, "/api/v1/user/**").permitAll()
                     .antMatchers("/api/v1/user/**").hasAnyRole("ACCESS")
                     .antMatchers("/api/v1/appinfo/**").permitAll()
                     .and()
@@ -87,7 +87,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         web.ignoring().antMatchers("/webjars/**", "/css/**", "/internal/**");
-
     }
 
     @Bean
