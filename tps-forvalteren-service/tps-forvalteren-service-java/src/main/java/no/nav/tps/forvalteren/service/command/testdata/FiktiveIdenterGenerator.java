@@ -58,13 +58,13 @@ public class FiktiveIdenterGenerator {
             List<Integer> rangeList = hentKategoriIntervallForDato(fodselsdatoDate);
             identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), kriteria.getKjonn()));
             int forsteKontrollSiffer = hentForsteKontrollSiffer(identitetBuilder.toString());
+            identitetBuilder.append(forsteKontrollSiffer);
             int andreKontrollSiffer = getAndreKontrollSiffer(identitetBuilder.toString());
+            identitetBuilder.append(andreKontrollSiffer);
             if (forsteKontrollSiffer == 10 || andreKontrollSiffer == 10) {
                 // Hvis kontrollsiffer er 10, så må fodselsnummeret forkastes, og man prøver å lage et nytt.
                 continue;
             }
-            identitetBuilder.append(forsteKontrollSiffer);
-            identitetBuilder.append(andreKontrollSiffer);
             String fnr = identitetBuilder.toString();
             identSet.add(fnr);
         }
