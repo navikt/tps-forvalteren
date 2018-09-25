@@ -34,8 +34,8 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
         skdMeldingTrans1.setTildelingskode(hentTildelingskode());
 
-        addSkdParametersExtractedFromPerson(skdMeldingTrans1, barn, ConvertDateToString.yyyyMMdd(barn.getRegdato()), ConvertDateToString.hhMMss(barn.getRegdato()));
-        addSkdParametersExtractedFromForeldre(skdMeldingTrans1, barn, ConvertDateToString.yyyyMMdd(barn.getRegdato()));
+        addSkdParametersExtractedFromPerson(skdMeldingTrans1, barn);
+        addSkdParametersExtractedFromForeldre(skdMeldingTrans1, barn);
         addDefaultParam(skdMeldingTrans1);
 
         return skdMeldingTrans1;
@@ -51,14 +51,14 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         return creator instanceof FoedselsmeldingSkdParametere;
     }
 
-    private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person barn, String regdato, String regtid) {
+    private void addSkdParametersExtractedFromPerson(SkdMeldingTrans1 skdMeldingTrans1, Person barn) {
 
         skdMeldingTrans1.setFodselsdato(getDato(barn));
         skdMeldingTrans1.setPersonnummer(getPersonnr(barn));
 
-        skdMeldingTrans1.setMaskintid(regtid);
-        skdMeldingTrans1.setMaskindato(regdato);
-        skdMeldingTrans1.setRegDato(regdato);
+        skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(barn.getRegdato()));
+        skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
+        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
 
         skdMeldingTrans1.setFoedekommLand("0301");
         skdMeldingTrans1.setFoedested("Sykehus");
@@ -67,17 +67,20 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setSlektsnavn(barn.getEtternavn());
         skdMeldingTrans1.setKjonn(hentKjoennFraIdentService.execute(barn.getIdent()));
 
-        skdMeldingTrans1.setRegdatoAdr(regdato);
+        skdMeldingTrans1.setRegdatoAdr(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
         skdMeldingTrans1.setPersonkode("3");
         skdMeldingTrans1.setLevendeDoed("1");
+
+        skdMeldingTrans1.setSpesRegType(barn.getSpesreg());
+        skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(barn.getSpesregDato()));
     }
 
-    private void addSkdParametersExtractedFromForeldre(SkdMeldingTrans1 skdMeldingTrans1, Person barn, String regdato) {
+    private void addSkdParametersExtractedFromForeldre(SkdMeldingTrans1 skdMeldingTrans1, Person barn) {
         Person forelderMor = null;
         Person forelderFar = null;
         List<Relasjon> relasjoner = barn.getRelasjoner();
         for (Relasjon relasjon : relasjoner) {
-            if (RelasjonType.FOEDSEL.getName().equals(relasjon.getRelasjonTypeNavn())) {
+            if (RelasjonType.MOR.getName().equals(relasjon.getRelasjonTypeNavn())) {
                 forelderMor = relasjon.getPersonRelasjonMed();
                 continue;
             }
@@ -93,7 +96,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setMorsPersonnummer(getPersonnr(forelderMor));
         skdMeldingTrans1.setSlektsnavn(forelderMor.getEtternavn());
         skdMeldingTrans1.setFamilienummer(forelderMor.getIdent());
-        skdMeldingTrans1.setRegdatoFamnr(regdato);
+        skdMeldingTrans1.setRegdatoFamnr(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
 
         if (forelderFar != null) {
             skdMeldingTrans1.setForeldreansvar("D");
@@ -102,7 +105,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         } else {
             skdMeldingTrans1.setForeldreansvar("M");
         }
-        skdMeldingTrans1.setDatoForeldreansvar(regdato);
+        skdMeldingTrans1.setDatoForeldreansvar(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
 
         setAdresseService.execute(skdMeldingTrans1, barn);
     }
