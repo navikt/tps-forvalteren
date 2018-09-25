@@ -1,14 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Postadresse;
-import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentUtdaterteRelasjonIder;
-import no.nav.tps.forvalteren.service.command.testdata.utils.OppdaterRelasjonReferanser;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,10 +18,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentUtdaterteRelasjonIder;
+import no.nav.tps.forvalteren.service.command.testdata.utils.OppdaterRelasjonReferanser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SavePersonListServiceTest {
@@ -42,9 +42,6 @@ public class SavePersonListServiceTest {
 
     @Mock
     private RelasjonRepository relasjonRepository;
-
-    @Mock
-    private UppercaseDataInPerson uppercaseDataInPerson;
 
     @Mock
     private OppdaterRelasjonReferanser oppdaterRelasjonReferanser;
@@ -83,7 +80,6 @@ public class SavePersonListServiceTest {
         verify(oppdaterRelasjonReferanser).execute(person, person);
         verify(hentUtdaterteRelasjonIder).execute(person, person);
         verify(adresseRepository).deleteAllByPerson(person);
-        verify(uppercaseDataInPerson).execute(person);
         verify(personRepository).save(persons.get(0));
         verify(relasjonRepository).deleteByIdIn(utdaterteRelasjonIder);
 
@@ -100,7 +96,6 @@ public class SavePersonListServiceTest {
         verify(oppdaterRelasjonReferanser, never()).execute(person, person);
         verify(hentUtdaterteRelasjonIder, never()).execute(person, person);
         verify(adresseRepository, never()).deleteAllByPerson(person);
-        verify(uppercaseDataInPerson).execute(person);
         verify(personRepository).save(persons.get(0));
         verify(relasjonRepository, never()).deleteByIdIn(utdaterteRelasjonIder);
 
