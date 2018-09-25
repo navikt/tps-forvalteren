@@ -4,7 +4,7 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
-import no.nav.tps.forvalteren.domain.rs.RsRestPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
@@ -26,7 +26,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public RsPersonKriteriumRequest execute(RsRestPersonKriteriumRequest req){
+    public RsPersonKriteriumRequest execute(RsPersonBestillingKriteriumRequest req){
         RsPersonKriterier rsPerson = new RsPersonKriterier();
         rsPerson.setAntall(req.getAntall());
         rsPerson.setIdenttype(req.getIdenttype());
@@ -40,7 +40,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return kriteriumRequest;
     }
 
-    public RsPersonKriteriumRequest extractPartner(RsRestPersonKriteriumRequest request){
+    public RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request){
         RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         if(rel != null && rel.getPartner() != null){
@@ -62,7 +62,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personRequestListe;
     }
 
-    public RsPersonKriteriumRequest extractBarn(RsRestPersonKriteriumRequest request){
+    public RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request){
         RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         personRequestListe.setPersonKriterierListe(new ArrayList<>());
@@ -92,7 +92,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personRequestListe;
     }
 
-    public List<Person> addDollyKriterumValuesToPersonAndSave(RsRestPersonKriteriumRequest req, List<Person> personer){
+    public List<Person> addDollyKriterumValuesToPersonAndSave(RsPersonBestillingKriteriumRequest req, List<Person> personer){
         personer.forEach(person -> {
                     person.setRegdato(req.getRegdato());
                     person.setDoedsdato(req.getDoedsdato());
@@ -124,7 +124,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personer;
     }
 
-    private boolean hasGateAdresse(RsRestPersonKriteriumRequest req){
+    private boolean hasGateAdresse(RsPersonBestillingKriteriumRequest req){
         return req.getBoadresse() != null;
     }
 }

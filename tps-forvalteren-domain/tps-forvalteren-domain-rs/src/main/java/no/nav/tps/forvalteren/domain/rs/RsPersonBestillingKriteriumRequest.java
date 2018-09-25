@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
-public class RsRestPersonKriteriumRequest {
+public class RsPersonBestillingKriteriumRequest {
 
     private List<String> environments;
 

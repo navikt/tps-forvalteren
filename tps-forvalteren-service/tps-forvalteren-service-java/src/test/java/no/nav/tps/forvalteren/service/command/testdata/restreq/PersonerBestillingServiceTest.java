@@ -18,10 +18,10 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RestPersonerServiceTest {
+public class PersonerBestillingServiceTest {
 
     @InjectMocks
-    RestPersonerService service;
+    PersonerBestillingService service;
 
     @Test
     public void createTpsfPersonFromRestRequest() {
@@ -65,12 +65,12 @@ public class RestPersonerServiceTest {
 
         assertThat(mann.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
         ));
 
         assertThat(barn.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(mann))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
         ));
     }
 
@@ -88,17 +88,17 @@ public class RestPersonerServiceTest {
 
         assertThat(kvinne.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(barn.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(kvinne))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
         ));
     }
 
     @Test
-    public void setRelasjonerPaaPersoner_MannOgKvinneOgBarnGirFarOgMorRelasjonOgFodselRelasjonPaaMor() {
+    public void setRelasjonerPaaPersoner_MannKvinneOgBarnGirFoedselRelasjonPaaFarOgMorOgMorFarRelasjonPaaBarn() {
         Person mann = new Person();
         Person kvinne = new Person();
         Person barn = new Person();
@@ -114,7 +114,7 @@ public class RestPersonerServiceTest {
 
         assertThat(mann.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(mann.getRelasjoner(), hasItem(both(
@@ -124,7 +124,7 @@ public class RestPersonerServiceTest {
 
         assertThat(kvinne.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(kvinne.getRelasjoner(), hasItem(both(
@@ -134,12 +134,12 @@ public class RestPersonerServiceTest {
 
         assertThat(barn.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(kvinne))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
         ));
 
         assertThat(barn.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(mann))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
         ));
     }
 
@@ -163,12 +163,12 @@ public class RestPersonerServiceTest {
 
         assertThat(mann.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn1))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(mann.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn2))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(mann.getRelasjoner(), hasItem(both(
@@ -178,12 +178,12 @@ public class RestPersonerServiceTest {
 
         assertThat(kvinne.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn1))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(kvinne.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn2))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
         ));
 
         assertThat(kvinne.getRelasjoner(), hasItem(both(
@@ -193,27 +193,27 @@ public class RestPersonerServiceTest {
 
         assertThat(barn1.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(kvinne))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
         ));
 
         assertThat(barn1.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(mann))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
         ));
 
         assertThat(barn2.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(kvinne))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FOEDSEL.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.MOR.getRelasjonTypeNavn())))
         ));
 
         assertThat(barn2.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(mann))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
         ));
     }
 
     @Test
-    public void setRelasjonerPaaPersoner_MannOgMannOgBarnGirFarRelasjonPaaBeggeFedreMenIngenFodsel() {
+    public void setRelasjonerPaaPersoner_MannMannOgBarnGirFarRelasjonPaaBeggeFedreMenIngenFodselMenBarnRelasjon() {
         Person mann1 = new Person();
         Person mann2 = new Person();
         Person barn = new Person();
@@ -228,7 +228,7 @@ public class RestPersonerServiceTest {
 
         assertThat(mann1.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
         ));
 
         assertThat(mann1.getRelasjoner(), hasItem(both(
@@ -238,12 +238,22 @@ public class RestPersonerServiceTest {
 
         assertThat(mann2.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(barn))).and(
-                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.BARN.getRelasjonTypeNavn())))
         ));
 
         assertThat(mann2.getRelasjoner(), hasItem(both(
                 hasProperty("personRelasjonMed", equalTo(mann1))).and(
                 hasProperty("relasjonTypeNavn", equalTo(RelasjonType.EKTEFELLE.getRelasjonTypeNavn())))
+        ));
+
+        assertThat(barn.getRelasjoner(), hasItem(both(
+                hasProperty("personRelasjonMed", equalTo(mann1))).and(
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
+        ));
+
+        assertThat(barn.getRelasjoner(), hasItem(both(
+                hasProperty("personRelasjonMed", equalTo(mann2))).and(
+                hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getRelasjonTypeNavn())))
         ));
     }
 
