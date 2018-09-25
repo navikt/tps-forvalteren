@@ -22,6 +22,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
@@ -64,7 +65,10 @@ public class LagreTilTps {
     
     @Autowired
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
-    
+
+    @Autowired
+    private UppercaseDataInPerson uppercaseDataInPerson;
+
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
     
     public RsSkdMeldingResponse execute(Long gruppeId, List<String> environments) {
@@ -72,6 +76,11 @@ public class LagreTilTps {
         
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
+        for (Person person : personerIGruppen) {
+            // TPS behaves predictably with UPPERCASE on its string data
+            uppercaseDataInPerson.execute(person);
+        }
+
         List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, environments);
         List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
         List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
@@ -96,8 +105,7 @@ public class LagreTilTps {
         
         return new RsSkdMeldingResponse(gruppeId, listTpsResponsene, serviceRoutineResponseList);
     }
-    
-    //TODO ALle disse private metodene bør ut egen felles metode som ligger i egen klasse. Få sendDoedsmelding til å ta inn liste av personer i steden for gruppe.
+
     private List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(Long gruppeId, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(gruppeId, true);

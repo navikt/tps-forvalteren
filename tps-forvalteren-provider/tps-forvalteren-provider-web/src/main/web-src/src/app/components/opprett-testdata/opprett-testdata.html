@@ -115,16 +115,16 @@
 
                         <div layout="row" layout-align="center center" flex="90" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
                     </div>
-                    <div layout="row" flex>
-                        <div flex></div>
+                    <div layout="row" class="adresse">
+                        <div flex="10" class="label">Adresse</div>
                         <md-input-container class="tps-vk-input-container" flex="15">
                             <md-tooltip>Valgfritt: Velg ingen spesifikasjoner, kommunenummer eller postnummer som kriterium for adressen</md-tooltip>
                             <label>Adresse-kriterium</label>
                             <md-select ng-model="adresseNrInfo.nummertype" class="md-no-underline"
                                        ng-change="endret($index + pager.startIndex)">
                                 <md-option selected value="Uspesifisert">Uspesifisert</md-option>
-                                <md-option value="KOMMUNENR">KOMMUNENR</md-option>
-                                <md-option value="POSTNR">POSTNR</md-option>
+                                <md-option value="KOMMUNENR">Kommunenr</md-option>
+                                <md-option value="POSTNR">Postnummer</md-option>
                             </md-select>
                         </md-input-container>
                         <postnummer postnummer="adresseNrInfo.nummer" endret-fn="endret" class="autocomplete"
@@ -135,13 +135,7 @@
                                    index="$index + pager.startIndex" paakrevet=false ng-if="adresseNrInfo.nummertype == 'KOMMUNENR'">
                         </kommunenr>
 
-                        <md-input-container class="tps-vk-input-container" style="padding-top: 15px">
-                            <md-tooltip>Med adresse: Tilfeldig adresse valgt fra TPS sitt utvalg</md-tooltip>
-                            <md-checkbox ng-model="withAdresse" aria-label="Legg til adresse på alle personer">
-                                Med adresse
-                            </md-checkbox>
-                        </md-input-container>
-
+                        <div flex></div>
                         <md-input-container class="tps-vk-input-container">
                             <md-tooltip>Avbryt operasjon "Legg til testpersoner"</md-tooltip>
                             <md-button class="md-raised" ng-disabled="!editMode" ng-click="avbryt()"

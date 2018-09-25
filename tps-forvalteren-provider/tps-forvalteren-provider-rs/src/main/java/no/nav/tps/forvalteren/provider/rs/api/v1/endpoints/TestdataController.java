@@ -131,9 +131,8 @@ public class TestdataController {
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerServiceFraIdenter.execute(identer);
 
-        if (personKriterierListe.isWithAdresse()) {
-            setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
-        }
+        setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
+
         personNameService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
     }
