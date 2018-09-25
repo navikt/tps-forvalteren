@@ -18,7 +18,7 @@ public enum DiskresjonskoderType {
         navn = diskresjonskodeNavn;
     }
 
-    public String getRelasjonTypeNavn() {
+    public String getName() {
         return navn;
     }
 }

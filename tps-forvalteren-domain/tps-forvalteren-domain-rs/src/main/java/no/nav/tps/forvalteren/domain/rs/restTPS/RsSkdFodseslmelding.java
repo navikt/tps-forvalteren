@@ -13,7 +13,7 @@ public class RsSkdFodseslmelding {
 
     private LocalDate fodseldato;
 
-    private Character kjonn;
+    private String kjonn;
 
     private String fodeKommuneNrEllerLand;
 

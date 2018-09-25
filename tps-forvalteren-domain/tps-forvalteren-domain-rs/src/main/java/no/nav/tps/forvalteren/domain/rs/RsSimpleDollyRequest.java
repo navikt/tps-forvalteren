@@ -11,7 +11,7 @@ public class RsSimpleDollyRequest {
 
     private String identtype;
 
-    private Character kjonn;
+    private String kjonn;
 
     private LocalDate foedtEtter;
 

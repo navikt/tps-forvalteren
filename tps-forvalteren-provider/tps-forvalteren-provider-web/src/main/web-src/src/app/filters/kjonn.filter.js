@@ -4,7 +4,7 @@ angular.module('tps-forvalteren.filter')
     // Create the return function
     return function (kjonn) {
         if (kjonn) {
-            return kjonn == 'K' ? 'Kvinne' : 'Mann';
+            return kjonn == "K" ? 'Kvinne' : 'Mann';
         } else {
             return '';
         }

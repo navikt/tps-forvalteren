@@ -37,7 +37,7 @@ public class RsPersonBestillingKriteriumRequest {
 
     @NotBlank
     @Size(min = 3, max = 3)
-    private Character kjonn;
+    private String kjonn;
 
     private String statsborgerskap;
 

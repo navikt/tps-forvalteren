@@ -38,7 +38,7 @@ public class FindPersonerSomSkalHaFoedselsmelding {
 
     private boolean containsFodsel(List<Relasjon> relasjoner) {
         for(Relasjon r : relasjoner){
-            if(r.getRelasjonTypeNavn().equals(RelasjonType.FOEDSEL.getRelasjonTypeNavn())){
+            if(r.getRelasjonTypeNavn().equals(RelasjonType.FOEDSEL.getName())){
                 return true;
             }
         }

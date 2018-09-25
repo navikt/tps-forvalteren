@@ -42,11 +42,11 @@ public class TpsRestSkdApiController {
         List<Person> person = Arrays.asList(mapperFacade.map(req.getPerson(), Person.class));
         List<SendSkdMeldingTilTpsResponse> response = skdMeldingSender.sendInnvandringsMeldinger(person ,req.getEnvironments());
 
-        if(response != null && !response.isEmpty()){
-            return response.get(0);
+        if(response == null || !response.isEmpty()){
+            throw new TpsServiceRutineException("Noe gikk feil med innvandringsmeldingen");
         }
 
-        throw new TpsServiceRutineException("Noe gikk feil med innvandringsmeldingen");
+        return response.get(0);
     }
 
     @PutMapping("/innvandring")
@@ -54,34 +54,18 @@ public class TpsRestSkdApiController {
         List<Person> person = Arrays.asList(mapperFacade.map(req.getPerson(), Person.class));
         List<SendSkdMeldingTilTpsResponse> response = skdMeldingSender.sendUpdateInnvandringsMeldinger(person , req.getEnvironments());
 
-        if(response != null && !response.isEmpty()){
-            return response.get(0);
+        if(response == null || !response.isEmpty()){
+            throw new TpsServiceRutineException("Noe gikk feil med innvandring-oppdateringgsmeldingen");
         }
 
-        throw new TpsServiceRutineException("Noe gikk feil med innvandring-oppdateringgsmeldingen");
+        return response.get(0);
     }
-
-    @PutMapping("/vigsel-og-partnerskap")
-    public List<Map> vigselOgPartnerskap(@RequestBody RsVigselPartner req){
-        List<Map> mapper = new ArrayList<>();
-
-//        skdMeldingSender.sendRelasjonsmeldinger()
-//        req.getEnvironments().forEach(e -> {
-//            try{
-//                Map<String, Object> map  = tpsRestApiController.fetchKjerneinfoPaaPersonS610(req.getPersonIdent(), "A0", e);
-//                mapper.add(map);
-//            } catch (Exception ex){}
-//        });
-
-        return mapper;
-    }
-
-    @PostMapping("/fodsel")
-    public SendSkdMeldingTilTpsResponse sendFodselsmelding(@RequestBody RsSkdFodseslmelding fodselRequest){
-        // Send en fodselsmelding
-        Map responseMother = tpsRestApiController.fetchPersonopplysningerS004(fodselRequest.getMorFodselsnumemr(), "A0", "2018-09-09", fodselRequest.getEnvironment());
-        Person mother =null;
+//
+//    @PostMapping("/fodsel")
+//    public SendSkdMeldingTilTpsResponse sendFodselsmelding(@RequestBody RsSkdFodseslmelding fodselRequest){
+//        Map responseMother = tpsRestApiController.fetchPersonopplysningerS004(fodselRequest.getMorFodselsnumemr(), "A0", "2018-09-09", fodselRequest.getEnvironment());
+//        Person mother =null;
 //        skdMeldingSender.sendFoedselsMeldinger( , new HashSet<>(Arrays.asList(fodselRequest.getEnvironment())));
-        return null;
-    }
+//        return null;
+//    }
 }

@@ -106,11 +106,11 @@ public class PersonerBestillingService {
             return;
         }
 
-        if(forelder.getKjonn() == 'M'){
+        if(forelder.getKjonn().equals("M")){
             setFarBarnRelasjonMedInnvadring(forelder, barn);
         }
 
-        if(forelder.getKjonn() == 'K'){
+        if(forelder.getKjonn().equals("K")){
             setMorBarnRelasjonMedFodsel(forelder, barn);
         }
     }
@@ -139,18 +139,18 @@ public class PersonerBestillingService {
     }
 
     private void setFarBarnRelasjonMedInnvadring(Person far, Person barn){
-        far.getRelasjoner().add(new Relasjon(far, barn, RelasjonType.BARN.getRelasjonTypeNavn()));
-        barn.getRelasjoner().add(new Relasjon(barn, far, RelasjonType.FAR.getRelasjonTypeNavn()));
+        far.getRelasjoner().add(new Relasjon(far, barn, RelasjonType.BARN.getName()));
+        barn.getRelasjoner().add(new Relasjon(barn, far, RelasjonType.FAR.getName()));
     }
 
     private void setMorBarnRelasjonMedFodsel(Person mor, Person barn){
-        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getRelasjonTypeNavn()));
-        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.MOR.getRelasjonTypeNavn()));
+        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getName()));
+        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.MOR.getName()));
     }
 
     private void setFarBarnRelasjonMedFodsel(Person mor, Person barn){
-        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getRelasjonTypeNavn()));
-        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.FAR.getRelasjonTypeNavn()));
+        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getName()));
+        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.FAR.getName()));
     }
 
     private boolean harPartner(RsPersonBestillingKriteriumRequest request){
@@ -166,15 +166,15 @@ public class PersonerBestillingService {
     }
 
     private boolean erToKvinner(Person person, Person partner){
-        return person.getKjonn() == 'K' && partner.getKjonn() == 'K';
+        return person.getKjonn().equals("K") && partner.getKjonn().equals("K");
     }
 
     private boolean erKvinne(Person person){
-        return person.getKjonn() == 'K';
+        return person.getKjonn().equals("K");
     }
 
     private void lagPartnerRelasjon(Person person, Person partner){
-        person.getRelasjoner().add(new Relasjon(person, partner, RelasjonType.EKTEFELLE.getRelasjonTypeNavn()));
-        partner.getRelasjoner().add(new Relasjon(partner, person, RelasjonType.EKTEFELLE.getRelasjonTypeNavn()));
+        person.getRelasjoner().add(new Relasjon(person, partner, RelasjonType.EKTEFELLE.getName()));
+        partner.getRelasjoner().add(new Relasjon(partner, person, RelasjonType.EKTEFELLE.getName()));
     }
 }
