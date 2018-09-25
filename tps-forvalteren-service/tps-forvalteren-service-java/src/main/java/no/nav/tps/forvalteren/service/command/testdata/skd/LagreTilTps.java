@@ -26,6 +26,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
@@ -34,48 +35,51 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LagreTilTps {
-
+    
     @Autowired
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
-
+    
     @Autowired
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
-
+    
     @Autowired
     private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
-
+    
     @Autowired
     private CreateRelasjoner createRelasjoner;
-
+    
     @Autowired
     private CreateDoedsmeldinger createDoedsmeldinger;
-
+    
     @Autowired
     private CreateFoedselsmeldinger createFoedselsmeldinger;
-
+    
     @Autowired
     private CreateVergemaal createVergemaal;
-
+    
     @Autowired
     private CreateUtvandring createUtvandring;
-
+    
     @Autowired
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
-
+    
     @Autowired
     private FindGruppeById findGruppeById;
-
+    
     @Autowired
     private SkdMeldingResolver innvandring;
-
+    
     @Autowired
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
+
+    @Autowired
+    private UppercaseDataInPerson uppercaseDataInPerson;
 
     @Autowired
     private SkdMeldingSender skdMeldingSender;
 
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
-
+    
     public RsSkdMeldingResponse execute(Long gruppeId, List<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
@@ -87,17 +91,20 @@ public class LagreTilTps {
     }
 
     private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, List<String> environments){
+        for (Person person : personerIGruppen) {
+            uppercaseDataInPerson.execute(person);
+        }
         List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, environments);
         List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
         List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 
         Set<String> environmentsSet = new HashSet<>(environments);
-
+        
         personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
-
+        
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
-
+        
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
         listTpsResponsene.addAll(skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
@@ -112,12 +119,12 @@ public class LagreTilTps {
 
         return new RsSkdMeldingResponse(null, listTpsResponsene, serviceRoutineResponseList);
     }
-
+    
     private List<Person> createListPersonerSomAlleredeEksiterer(List<Person> personerIGruppe, List<Person> personerSomIkkeEksisterer) {
         List<Person> personerSomAlleredeEksisterer = new ArrayList<>();
         personerSomAlleredeEksisterer.addAll(personerIGruppe);
         personerSomAlleredeEksisterer.removeAll(personerSomIkkeEksisterer);
-
+        
         return personerSomAlleredeEksisterer;
     }
 }

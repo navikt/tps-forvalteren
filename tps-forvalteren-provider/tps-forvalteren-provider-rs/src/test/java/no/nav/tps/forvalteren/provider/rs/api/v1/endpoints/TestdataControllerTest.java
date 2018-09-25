@@ -38,6 +38,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPers
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -90,6 +91,9 @@ public class TestdataControllerTest {
 
     @Mock
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
+
+    @Mock
+    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
     @InjectMocks
     private TestdataController testdataController;

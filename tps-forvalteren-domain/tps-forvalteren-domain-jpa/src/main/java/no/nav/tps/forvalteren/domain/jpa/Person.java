@@ -49,7 +49,7 @@ public class Person extends ChangeStamp {
     private String identtype;
 
     @Column(name = "KJONN", nullable = false)
-    private Character kjonn;
+    private String kjonn;
 
     @Column(name = "FORNAVN", nullable = false, length = 50)
     private String fornavn;
@@ -74,6 +74,10 @@ public class Person extends ChangeStamp {
 
     @Column(name = "DOEDSDATO")
     private LocalDateTime doedsdato;
+
+    @Column(name = "SIVILSTAND", length = 1)
+    private String sivilstand;
+
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
     private String innvandretFraLand;
 
@@ -126,4 +130,20 @@ public class Person extends ChangeStamp {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner = new ArrayList<>();
+
+    public List<Postadresse> getPostadresse() {
+        if (postadresse == null) {
+            postadresse = new ArrayList<>();
+        }
+        return postadresse;
+    }
+
+    public List<Relasjon> getRelasjoner() {
+        if (relasjoner == null) {
+            relasjoner = new ArrayList<>();
+        }
+        return relasjoner;
+    }
+
+
 }

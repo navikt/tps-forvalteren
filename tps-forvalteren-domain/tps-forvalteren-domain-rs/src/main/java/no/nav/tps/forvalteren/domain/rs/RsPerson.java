@@ -29,7 +29,7 @@ public class RsPerson {
 
     @NotBlank
     @Size(min = 3, max = 3)
-    private Character kjonn;
+    private String kjonn;
 
     @NotBlank
     @Size(min = 1, max = 50)
@@ -52,6 +52,8 @@ public class RsPerson {
     private LocalDateTime spesregDato;
 
     private LocalDateTime doedsdato;
+
+    private String sivilstand;
 
     @Size(min = 0, max = 3)
     private String innvandretFraLand;

@@ -17,7 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpprettPersonerServiceTest {
@@ -29,17 +30,20 @@ public class OpprettPersonerServiceTest {
     private String identDummyBNR = "11311111111";
 
     @Mock
-    private HentKjoennFraIdent hentKjoennFraIdentMock;
+    private HentKjoennFraIdentService hentKjoennFraIdentServiceMock;
 
     @Mock
     private HentDatoFraIdent hentDatoFraIdent;
+
+    @Mock
+    private LandkodeEncoder landkodeEncoder;
 
     @InjectMocks
     private OpprettPersonerService opprettPersonerService;
 
     @Before
     public void setup() {
-        when(hentKjoennFraIdentMock.execute(anyString())).thenReturn('M');
+        when(hentKjoennFraIdentServiceMock.execute(anyString())).thenReturn("M");
     }
 
     @Test
@@ -61,15 +65,15 @@ public class OpprettPersonerServiceTest {
     public void hvisKjonnErMannSaErPersonMann() {
         identerInput.add(identDummy1);
         List<Person> personer = opprettPersonerService.execute(identerInput);
-        assertThat(personer.get(0).getKjonn(), is('M'));
+        assertThat(personer.get(0).getKjonn(), is("M"));
     }
 
     @Test
     public void hvisKjonnErKvinneSaErPersonKvinne() {
-        when(hentKjoennFraIdentMock.execute(anyString())).thenReturn('K');
+        when(hentKjoennFraIdentServiceMock.execute(anyString())).thenReturn("K");
         identerInput.add(identDummy1);
         List<Person> personer = opprettPersonerService.execute(identerInput);
-        assertThat(personer.get(0).getKjonn(), is('K'));
+        assertThat(personer.get(0).getKjonn(), is("K"));
     }
 
     @Test

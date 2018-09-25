@@ -1,98 +1,94 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FoedselsmeldingSkdParametere;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringUpdateSkdParametere;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
-import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyLong;
-import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
-@RunWith(MockitoJUnitRunner.class)
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FoedselsmeldingSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringUpdateSkdParametere;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.HusbokstavEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@Import({HentKjoennFraIdentService.class, SetAdresseService.class, HusbokstavEncoder.class})
 public class FoedselsmeldingSkdParameterStrategyTest {
 
-    @Mock
-    private SavePersonListService savePersonListService;
+    @Autowired
+    private HentKjoennFraIdentService hentKjoennFraIdentService;
 
-    @Mock
-    private RelasjonRepository relasjonRepository;
+    @Autowired
+    private SetAdresseService setAdresseService;
 
-    @Mock
-    private PersonRepository personRepository;
-
-    @Mock
-    private AdresseRepository adresseRepository;
-
-    @InjectMocks
     private FoedselsmeldingSkdParameterStrategy foedselsmeldingSkdParameterStrategy;
 
     private Person barn;
-    private Person mor;
-    private Person far;
 
-    private Relasjon relasjoner;
+    private Relasjon morsrelasjon;
+    private Relasjon farsrelasjon;
+
     private Gateadresse gateadresse;
-    private Adresse adresse;
     private SkdMeldingTrans1 result;
-
-    private HashMap<String, String> skdParameters;
-
-    private List<Relasjon> resultRelasjonRepository;
 
     @Before
     public void setup() {
+        foedselsmeldingSkdParameterStrategy = new FoedselsmeldingSkdParameterStrategy();
+        ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "setAdresseService", setAdresseService);
+        ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "hentKjoennFraIdentService", hentKjoennFraIdentService);
+
         barn = new Person();
 
         barn.setId(0001L);
-        barn.setFornavn("MARI");
-        barn.setIdent("01011845678");
+        barn.setFornavn("Anne");
+        barn.setEtternavn("Knutsdottir");
+        barn.setIdent("01011846678");
         barn.setRegdato(LocalDateTime.now());
 
-        mor = new Person();
+        Person mor = new Person();
         mor.setId(0101L);
         mor.setIdent("12128024680");
-        mor.setEtternavn("HANSEN");
+        mor.setEtternavn("Hansen");
+        morsrelasjon = Relasjon.builder()
+                .person(barn)
+                .personRelasjonMed(mor)
+                .relasjonTypeNavn(RelasjonType.MOR.name())
+                .build();
 
-        far = new Person();
+        Person far = new Person();
         far.setId(0102L);
         far.setIdent("21027013579");
+        farsrelasjon = Relasjon.builder()
+                .person(barn)
+                .personRelasjonMed(far)
+                .relasjonTypeNavn(RelasjonType.FAR.name())
+                .build();
 
-        gateadresse = new Gateadresse();
-        gateadresse.setAdresse("Storgata");
-        gateadresse.setHusnummer("2");
-        gateadresse.setGatekode("12345");
+        gateadresse = Gateadresse.builder()
+                .adresse("Storgata")
+                .husnummer("2")
+                .gatekode("12345")
+                .build();
+
         gateadresse.setKommunenr("0341");
-
-        resultRelasjonRepository = new ArrayList<>();
-        resultRelasjonRepository.add(new Relasjon(0002L, new Person(), mor, "MOR"));
-        resultRelasjonRepository.add(new Relasjon(0003L, new Person(), far, "FAR"));
-
-        skdParameters = new HashMap<>();
-
-        when(relasjonRepository.findByPersonId(anyLong())).thenReturn(resultRelasjonRepository);
-        when(personRepository.findById(0101L)).thenReturn(mor);
+        gateadresse.setPostnr("1234");
+        barn.setBoadresse(gateadresse);
     }
 
     @Test
@@ -106,35 +102,34 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Test
     public void createCorrectFoedselmeldingParamsFromPerson() {
-        when(personRepository.findById(0102L)).thenReturn(far);
+        barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon, farsrelasjon));
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
         assertThat(result.getFodselsdato(), is("010118"));
-        assertThat(result.getPersonnummer(), is("45678"));
+        assertThat(result.getPersonnummer(), is("46678"));
         assertThat(result.getKjonn(), is("K"));
         assertThat(result.getFarsFodselsdato(), is("210270"));
         assertThat(result.getFarsPersonnummer(), is("13579"));
-        assertThat(result.getSlektsnavn(), is("HANSEN"));
+        assertThat(result.getSlektsnavn(), is("Hansen"));
         assertThat(result.getForeldreansvar(), is("D"));
     }
 
     @Test
     public void createFoedselsmeldingParamsWithOnlyOneParent() {
+        barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon));
+
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
         assertThat(result.getFarsFodselsdato(), is(nullValue()));
         assertThat(result.getFarsPersonnummer(), is(nullValue()));
         assertThat(result.getForeldreansvar(), is("M"));
-
     }
 
     @Test
     public void createFoedselsmeldingParamsWithGateadresse() {
-        gateadresse.setPostnr("1234");
-
-        when(adresseRepository.getAdresseByPersonId(anyLong())).thenReturn(gateadresse);
-
+        barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon, farsrelasjon));
+        barn.setBoadresse(gateadresse);
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
