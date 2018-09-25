@@ -91,10 +91,10 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
             }
         }
         if (forelderMor == null) {
-            throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " mangler en mor");
+            throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " mangler en mor i fødselsmeldingen.");
         }
         if (countMothers > 1 || countFathers > 1) {
-            throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " kan ikke ha mer enn en forelder hver av MOR og FAR.");
+            throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " kan ikke ha mer enn en forelder hver av MOR og FAR i fødselsmeldingen.");
         }
 
         skdMeldingTrans1.setMorsFodselsdato(getDato(forelderMor));
