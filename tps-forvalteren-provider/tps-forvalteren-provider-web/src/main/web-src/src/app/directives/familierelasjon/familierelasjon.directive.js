@@ -47,7 +47,6 @@ angular.module('tps-forvalteren.directives')
                                         case MOR:
                                             return BARN;
                                         case BARN:
-                                            return kjonn === 'K' ? MOR : FAR;
                                         case FOEDSEL:
                                             return kjonn === 'K' ? MOR : FAR;
                                     }

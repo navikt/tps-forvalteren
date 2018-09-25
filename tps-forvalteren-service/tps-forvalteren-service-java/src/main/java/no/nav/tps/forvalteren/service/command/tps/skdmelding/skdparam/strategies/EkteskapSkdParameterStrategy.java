@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String AARSAKSKODE_FOR_VIGSEL = "11";
-    private static final String AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP = "61";
-    private static final String TILDELINGSKODE_PARTNERSKAP = "0";
+    private static final String AARSAKS_KO_DE_FOR_VIGSEL = "11";
+    private static final String AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP = "61";
+    private static final String TILDELINGS_KO_DE_PARTNERSKAP = "0";
 
     @Autowired
     private RelasjonRepository relasjonRepository;
@@ -31,7 +31,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
     @Override
     public String hentTildelingskode() {
-        return TILDELINGSKODE_PARTNERSKAP;
+        return TILDELINGS_KO_DE_PARTNERSKAP;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         Person ektefelle = null;
         List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
         for (Relasjon relasjon : personRelasjoner) {
-            if (RelasjonType.EKTEFELLE.getRelasjonTypeNavn().equals(relasjon.getRelasjonTypeNavn())) {
+            if (RelasjonType.EKTEFELLE.getName().equals(relasjon.getRelasjonTypeNavn())) {
                 ektefelle = personRepository.findById(relasjon.getPersonRelasjonMed().getId());
                 break;
             }
@@ -76,10 +76,10 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         }
 
         if (person.getKjonn().equals(ektefelle.getKjonn())) {
-            skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_INNGAAELSE_PARTNERSKAP);
+            skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
             skdMeldingTrans1.setSivilstand(Integer.toString(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode()));
         } else {
-            skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_VIGSEL);
+            skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VIGSEL);
             skdMeldingTrans1.setSivilstand(Integer.toString(Sivilstand.GIFT.getRelasjonTypeKode()));
         }
 

@@ -14,7 +14,7 @@ public enum RelasjonType {
         navn = relasjonNavn;
     }
 
-    public String getRelasjonTypeNavn() {
+    public String getName() {
         return navn;
     }
 }

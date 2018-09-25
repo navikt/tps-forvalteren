@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Service
 public class OpprettPersonerService {
 
     @Autowired
-    private HentKjoennFraIdent hentKjoennFraIdent;
+    private HentKjoennFraIdentService hentKjoennFraIdentService;
 
     @Autowired
     private HentDatoFraIdent hentDatoFraIdent;
@@ -30,7 +30,7 @@ public class OpprettPersonerService {
             Person newPerson = new Person();
             newPerson.setIdenttype(getIdenttypeFraIdent(ident));
             newPerson.setIdent(ident);
-            newPerson.setKjonn(hentKjoennFraIdent.execute(ident));
+            newPerson.setKjonn(hentKjoennFraIdentService.execute(ident));
             newPerson.setRegdato(LocalDateTime.now());
             newPerson.setSivilstand("0");
             newPerson.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
