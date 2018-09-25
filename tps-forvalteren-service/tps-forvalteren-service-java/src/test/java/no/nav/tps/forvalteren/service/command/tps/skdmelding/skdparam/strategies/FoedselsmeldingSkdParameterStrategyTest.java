@@ -41,7 +41,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     private Person barn;
 
-    private Relasjon fodeselsRelasjon;
+    private Relasjon morsrelasjon;
     private Relasjon farsrelasjon;
 
     private Gateadresse gateadresse;
@@ -65,10 +65,10 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         mor.setId(0101L);
         mor.setIdent("12128024680");
         mor.setEtternavn("Hansen");
-        fodeselsRelasjon = Relasjon.builder()
+        morsrelasjon = Relasjon.builder()
                 .person(barn)
                 .personRelasjonMed(mor)
-                .relasjonTypeNavn(RelasjonType.FOEDSEL.name())
+                .relasjonTypeNavn(RelasjonType.MOR.name())
                 .build();
 
         Person far = new Person();
@@ -102,7 +102,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Test
     public void createCorrectFoedselmeldingParamsFromPerson() {
-        barn.getRelasjoner().addAll(Arrays.asList(fodeselsRelasjon, farsrelasjon));
+        barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon, farsrelasjon));
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
@@ -117,7 +117,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Test
     public void createFoedselsmeldingParamsWithOnlyOneParent() {
-        barn.getRelasjoner().addAll(Arrays.asList(fodeselsRelasjon));
+        barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon));
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 
@@ -128,7 +128,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Test
     public void createFoedselsmeldingParamsWithGateadresse() {
-        barn.getRelasjoner().addAll(Arrays.asList(fodeselsRelasjon, farsrelasjon));
+        barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon, farsrelasjon));
         barn.setBoadresse(gateadresse);
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
