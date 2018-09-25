@@ -52,9 +52,6 @@ public class TestdataBestillingsController {
     private ListExtractorKommaSeperated listExtractorKommaSeperated;
 
     @Autowired
-    private FetchPersonByIdent fetchPersonByIdent;
-
-    @Autowired
     private FindPersonerByIdIn findPersonerByIdIn;
 
     @LogExceptions
