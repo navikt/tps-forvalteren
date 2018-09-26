@@ -93,24 +93,22 @@ public class PersonerBestillingService {
 
             for(int j = 0; j < antallbarn; j++){
                 int startIndexBarn = i*antallbarn;
-                Person barnet = barn.get(startIndexBarn +j);
-
-                //TODO Sette fodsel paa begge hvis fodselsmelding.
+                Person barnet = barn != null ? barn.get(startIndexBarn + j) : null;     // Sonar klagde på at det kunne bli NullPinter. Sonar tar feil....
                 setBarnRelasjon(person, partner, barnet);
             }
         }
     }
 
     private void setBarnRelasjon(Person forelder, Person barn){
-        if(forelder == null) {
+        if(forelder == null || barn == null) {
             return;
         }
 
-        if(forelder.getKjonn().equals("M")){
+        if("M".equals(forelder.getKjonn())){
             setFarBarnRelasjonMedInnvadring(forelder, barn);
         }
 
-        if(forelder.getKjonn().equals("K")){
+        if("K".equals(forelder.getKjonn())){
             setMorBarnRelasjonMedFodsel(forelder, barn);
         }
     }
@@ -162,15 +160,15 @@ public class PersonerBestillingService {
     }
 
     private boolean erMotsattKjonn(Person person, Person partner){
-        return person.getKjonn() != partner.getKjonn();
+        return !person.getKjonn().equals(partner.getKjonn());
     }
 
     private boolean erToKvinner(Person person, Person partner){
-        return person.getKjonn().equals("K") && partner.getKjonn().equals("K");
+        return "K".equals(person.getKjonn()) && "K".equals(partner.getKjonn());
     }
 
     private boolean erKvinne(Person person){
-        return person.getKjonn().equals("K");
+        return "K".equals(person.getKjonn());
     }
 
     private void lagPartnerRelasjon(Person person, Person partner){
