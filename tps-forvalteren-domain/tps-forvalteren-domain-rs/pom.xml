@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-domain</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>forUtviklingsmiljo-42</version>
+        <version>forUtviklingsmiljo-47</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
