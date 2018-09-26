@@ -28,7 +28,7 @@ import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.Send
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
 
 @Service
-public class LagreTilTps {
+public class LagreTilTpsService {
     
     @Autowired
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;

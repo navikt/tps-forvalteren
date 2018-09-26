@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
@@ -22,13 +23,16 @@ public class OpprettPersonerService {
     private HentDatoFraIdent hentDatoFraIdent;
 
     @Autowired
+    private HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
+
+    @Autowired
     private LandkodeEncoder landkodeEncoder;
 
     public List<Person> execute(Collection<String> tilgjengeligIdenter) {
         List<Person> personer = new ArrayList<>();
         for (String ident : tilgjengeligIdenter) {
             Person newPerson = new Person();
-            newPerson.setIdenttype(getIdenttypeFraIdent(ident));
+            newPerson.setIdenttype(hentIdenttypeFraIdentService.execute(ident));
             newPerson.setIdent(ident);
             newPerson.setKjonn(hentKjoennFraIdentService.execute(ident));
             newPerson.setRegdato(LocalDateTime.now());
@@ -42,15 +46,5 @@ public class OpprettPersonerService {
             personer.add(newPerson);
         }
         return personer;
-    }
-
-    private String getIdenttypeFraIdent(String ident) {
-        if (Integer.parseInt(ident.substring(2, 3)) >= 2) {
-            return "BNR";
-        } else if (Integer.parseInt(ident.substring(0, 1)) >= 4) {
-            return "DNR";
-        } else {
-            return "FNR";
-        }
     }
 }

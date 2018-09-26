@@ -1,0 +1,36 @@
+package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
+
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import no.nav.freg.metrics.annotations.Metrics;
+import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SendTpsEndringsmeldingService;
+
+@RestController
+@RequestMapping(value = "api/v1/tpsmelding")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
+public class TpsMeldingController {
+
+    private static final String REST_SERVICE_NAME = "tpsmelding";
+
+    @Autowired
+    private SendTpsEndringsmeldingService sendTpsEndringsmeldingService;
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendFoedselsmelding") })
+    @RequestMapping(value = "/foedselsmelding", method = RequestMethod.POST)
+    public SendSkdMeldingTilTpsResponse sendFoedselsMelding(@RequestBody RsTpsFoedselsmelding tpsFoedselsmelding) {
+
+        return sendTpsEndringsmeldingService.sendFoedselsmelding(tpsFoedselsmelding);
+    }
+}

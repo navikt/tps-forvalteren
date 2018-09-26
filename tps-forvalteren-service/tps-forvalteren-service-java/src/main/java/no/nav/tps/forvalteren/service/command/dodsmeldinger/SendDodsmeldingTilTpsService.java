@@ -15,7 +15,7 @@ import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.AdresseService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonstatusService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertStringToDate;
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
@@ -47,7 +47,7 @@ public class SendDodsmeldingTilTpsService {
     private PersonstatusService personstatusService;
 
     @Autowired
-    private AdresseService adresseService;
+    private PersonAdresseService personAdresseService;
 
     public void execute() {
 
@@ -92,7 +92,7 @@ public class SendDodsmeldingTilTpsService {
     }
 
     private void findLastAddress(Person person, String doedsdato, String miljoe) {
-        Adresse adresse = adresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
+        Adresse adresse = personAdresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
 
         if (adresse != null) {
             adresse.setId(person.getId());

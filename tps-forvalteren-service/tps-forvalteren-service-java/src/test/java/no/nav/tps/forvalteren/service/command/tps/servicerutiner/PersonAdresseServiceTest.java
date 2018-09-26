@@ -23,14 +23,14 @@ import no.nav.tps.xjc.ctg.domain.s018.LOffAdrType;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AdresseServiceTest {
+public class PersonAdresseServiceTest {
 
     private final static String IDENT = "12345678901";
     private final static LocalDateTime BODATO = LocalDateTime.of(2000, 11, 15, 0, 0);
     private final static String MILJOE = "U5";
 
     @InjectMocks
-    private AdresseService adresseService;
+    private PersonAdresseService personAdresseService;
 
     @Mock
     private PersonhistorikkService personhistorikkService;
@@ -40,7 +40,7 @@ public class AdresseServiceTest {
 
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(new S018PersonType());
 
-        Gateadresse adresse = (Gateadresse) adresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
+        Gateadresse adresse = (Gateadresse) personAdresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
         assertThat(adresse, is(nullValue()));
@@ -52,7 +52,7 @@ public class AdresseServiceTest {
         S018PersonType gateadresse = createGateadresse();
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(gateadresse);
 
-        Gateadresse adresse = (Gateadresse) adresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
+        Gateadresse adresse = (Gateadresse) personAdresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
 
@@ -73,7 +73,7 @@ public class AdresseServiceTest {
         S018PersonType gateadresse = createMatrikkeladresse();
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(gateadresse);
 
-        Matrikkeladresse adresse = (Matrikkeladresse) adresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
+        Matrikkeladresse adresse = (Matrikkeladresse) personAdresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
 

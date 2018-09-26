@@ -53,7 +53,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
@@ -108,7 +108,7 @@ public class TestdataController {
     private MapperFacade mapper;
 
     @Autowired
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTpsService;
 
     @Autowired
     private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
@@ -176,7 +176,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
-        return lagreTilTps.execute(gruppeId, environments);
+        return lagreTilTpsService.execute(gruppeId, environments);
     }
 
     @Transactional

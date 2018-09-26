@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LagreTilTpsTest {
+public class LagreTilTpsServiceTest {
 
     private static final boolean ADD_HEADER = true;
     private static final Long GRUPPE_ID = 1337L;
@@ -65,7 +65,7 @@ public class LagreTilTpsTest {
     private FindGruppeById findGruppeByIdMock;
 
     @InjectMocks
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTpsService;
     private List<Person> persons = new ArrayList<>();
     private List<Person> personsInGruppe = new ArrayList<>();
     private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
@@ -108,7 +108,7 @@ public class LagreTilTpsTest {
 
     @Test
     public void checkThatServicesGetsCalled() {
-        lagreTilTps.execute(GRUPPE_ID, environments);
+        lagreTilTpsService.execute(GRUPPE_ID, environments);
 
         verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
         verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
@@ -132,7 +132,7 @@ public class LagreTilTpsTest {
     @Test
     public void shouldReturnResponsesWithStatus() {
         when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(TPSResponse);
-        RsSkdMeldingResponse actualResponse = lagreTilTps.execute(GRUPPE_ID, environments);
+        RsSkdMeldingResponse actualResponse = lagreTilTpsService.execute(GRUPPE_ID, environments);
         assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
         assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal", "Utvandring"),
                 actualResponse.getSendSkdMeldingTilTpsResponsene()
