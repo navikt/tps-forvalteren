@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-repository</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>forUtviklingsmiljo-49</version>
+        <version>forUtviklingsmiljo-51</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
