@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
@@ -17,15 +18,20 @@ import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePe
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import static org.mockito.Matchers.any;
 import org.mockito.Mock;
+
+import static org.mockito.Matchers.anySet;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -63,6 +69,12 @@ public class LagreTilTpsTest {
     private TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition;
     @Mock
     private FindGruppeById findGruppeByIdMock;
+
+    @Mock
+    private UppercaseDataInPerson uppercaseDataInPerson;
+
+    @Mock
+    private SkdMeldingSender skdMeldingSender;
 
     @InjectMocks
     private LagreTilTps lagreTilTps;
@@ -106,21 +118,24 @@ public class LagreTilTpsTest {
         when(createVergemaal.execute(personsInGruppe, ADD_HEADER)).thenReturn(vergemaalsMeldinger);
     }
 
+    //TODO Lag nye tester her. De gamle bare verifier, noe som egentlig er ubrukelig.
     @Test
     public void checkThatServicesGetsCalled() {
-        //TODO Lag nye tester når refaktor er ferdig
-
-//        lagreTilTps.executeFromPersons(GRUPPE_ID, environments);
 //
-//        verify(findPersonsNotInEnvironments).executeFromPersons(personsInGruppe, environments);
-//        verify(skdMessageCreatorTrans1).executeFromPersons(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
-//        verify(createRelasjoner).executeFromPersons(persons, ADD_HEADER);
-//        verify(createDoedsmeldinger).executeFromPersons(personsInGruppe, ADD_HEADER);
-//        verify(createUtvandring).executeFromPersons(personsInGruppe, ADD_HEADER);
+//        lagreTilTps.execute(GRUPPE_ID, environments);
+//
+//        ArgumentCaptor<Set> captor = ArgumentCaptor.forClass(Set.class);
+//
+//        verify(findGruppeByIdMock).execute(GRUPPE_ID);
+//        verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
+//        verify(skdMeldingSender.sendInnvandringsMeldinger(persons, anySet()));
+//        verify(skdMeldingSender.sendRelasjonsmeldinger(eq(persons), captor.capture()));
+//        verify(skdMeldingSender.sendDoedsmeldinger(personsInGruppe, ADD_HEADER);
+//        verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
 //        verify(innvandring).resolve();
 //        verify(createFoedselsmeldinger).executeFromPersons(persons, ADD_HEADER);
-//        verify(sendSkdMeldingTilGitteMiljoer).executeFromPersons(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
-//        verify(createVergemaal).executeFromPersons(personsInGruppe, ADD_HEADER);
+//        verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
+//        verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
 
     }
 
@@ -133,7 +148,6 @@ public class LagreTilTpsTest {
      */
     @Test
     public void shouldReturnResponsesWithStatus() {
-        //TODO Lag nye tester når refaktor er ferdig
 //        when(sendSkdMeldingTilGitteMiljoer.executeFromPersons(any(), any(), any())).thenReturn(TPSResponse);
 //        RsSkdMeldingResponse actualResponse = lagreTilTps.executeFromPersons(GRUPPE_ID, environments);
 //        assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
