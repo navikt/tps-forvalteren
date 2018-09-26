@@ -7,6 +7,7 @@ import no.nav.tps.forvalteren.service.user.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -22,11 +23,17 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public String getDisplayName() {
+        if(getUserDetails() == null) {
+            return "ananomys";
+        }
         return getUserDetails().getDn();
     }
 
     @Override
     public String getUsername() {
+        if(getUserDetails() == null) {
+            return "ananomys_user";
+        }
         return getUserDetails().getUsername();
     }
 
@@ -38,6 +45,9 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public User getUser() {
+        if(getAuthentication() == null || getAuthentication().getPrincipal().equals("anonymousUser")){
+            return new User("anonymousUser", "anonymousUser");
+        }
         return new User(getDisplayName(), getUsername());
     }
 
@@ -51,12 +61,17 @@ public class DefaultUserContextHolder implements UserContextHolder {
     }
 
     private LdapUserDetails getUserDetails() {
+        if(getAuthentication() == null){
+            return null;
+        }
+
         Object userDetails = getAuthentication().getPrincipal();
 
         Boolean isUserDetails = userDetails instanceof LdapUserDetails;
 
         if ( !isUserDetails ) {
-            throw new TpsfFunctionalException("User details is an incorrect type: " + userDetails.getClass());
+            return null;
+//            throw new TpsfFunctionalException("User details is an incorrect type: " + userDetails.getClass());
         }
 
         return (LdapUserDetails) userDetails;

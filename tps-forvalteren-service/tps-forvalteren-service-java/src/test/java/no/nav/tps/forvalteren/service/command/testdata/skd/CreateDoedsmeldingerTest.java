@@ -64,6 +64,8 @@ public class CreateDoedsmeldingerTest {
     @Captor
     private ArgumentCaptor<List<Person>> personCaptor;
 
+    //TODO Fiks disse testene!
+
     @Before
     public void setup() {
         Gruppe gruppeMock = mock(Gruppe.class);
@@ -91,7 +93,7 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
-        createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER);
+        createDoedsmeldinger.execute(personer, ADD_HEADER);
 
         verify(skdMessageCreatorTrans1Mock).execute(anyString(), personCaptor.capture(), eq(ADD_HEADER));
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
@@ -99,7 +101,7 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void saveDoedsmeldingToDBCalledWithDoedePersonerWithoutDoedsmelding() {
-        createDoedsmeldinger.execute(GRUPPE_ID, ADD_HEADER);
+        createDoedsmeldinger.execute(personer, ADD_HEADER);
 
         verify(saveDoedsmeldingToDBMock).execute(personCaptor.capture());
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
@@ -107,7 +109,7 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void noFurtherCallsWhenNoDoedePersoner() {
-        createDoedsmeldinger.execute(GRUPPE_ID_NO_DEAD_PERSONS, ADD_HEADER);
+        createDoedsmeldinger.execute(alivePersoner, ADD_HEADER);
 
         verify(skdMessageCreatorTrans1Mock, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
         verify(saveDoedsmeldingToDBMock, never()).execute(anyListOf(Person.class));

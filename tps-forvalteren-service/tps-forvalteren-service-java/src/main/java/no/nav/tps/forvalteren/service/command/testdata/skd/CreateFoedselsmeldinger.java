@@ -19,7 +19,7 @@ public class CreateFoedselsmeldinger {
 
     private static final String NAVN_FOEDSELSMELDING = "Foedselsmelding";
 
-    public List<SkdMeldingTrans1> execute(List<Person> personer, boolean addHeader) {
+    public List<SkdMeldingTrans1> executeFromPersons(List<Person> personer, boolean addHeader) {
 
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         List<Person> personerSomSkalHaFoedselsmelding = new ArrayList();
@@ -28,6 +28,10 @@ public class CreateFoedselsmeldinger {
             skdMeldinger.addAll(skdMessageCreatorTrans1.execute(NAVN_FOEDSELSMELDING, personerSomSkalHaFoedselsmelding, addHeader));
         }
         return skdMeldinger;
+    }
+
+    public SkdMeldingTrans1 executeFromArgs(){
+        return null;
     }
 
 }

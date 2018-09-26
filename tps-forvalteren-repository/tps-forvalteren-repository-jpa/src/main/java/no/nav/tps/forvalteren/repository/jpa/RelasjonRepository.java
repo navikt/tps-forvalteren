@@ -13,6 +13,8 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
 
     List<Relasjon> findByPersonId(Long id);
 
+    List<Relasjon> findByPersonRelasjonMedId(Long id);
+
     List<Relasjon> findByPersonAndRelasjonTypeNavn(Person person, String relasjonTypeNavn);
 
     void deleteByIdIn(Set<Long> ids);

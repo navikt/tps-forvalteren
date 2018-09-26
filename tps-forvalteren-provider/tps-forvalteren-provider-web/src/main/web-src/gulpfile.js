@@ -23,7 +23,6 @@ var autoprefix = new lessAutoprefix({
    browsers: ['last 2 versions']
 });
 
-
 var proxyServer = 'localhost:8080';
 
 var folders = {

@@ -60,7 +60,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @RequestMapping(value = "/adrlinjhist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getAdrlinjhist(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put(AKSJONSKODE.getName(), "A0");
-        tpsRequestParameters.put("adresseTypeS015", "ALLE");
+        tpsRequestParameters.put("adresseType", "ALLE");
         loggSporing(String.format(LOG_SPORING, REST_SERVICE_NAME, METHOD_ADRLINJHIST), tpsRequestParameters);
         return tpsServiceRoutineService.execute(ADRESSELINJEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
