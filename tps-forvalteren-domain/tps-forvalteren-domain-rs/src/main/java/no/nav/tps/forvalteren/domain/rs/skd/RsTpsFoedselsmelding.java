@@ -24,6 +24,7 @@ public class RsTpsFoedselsmelding {
     @Size(min = 11, max = 11)
     private String identFar;
 
+    @NotBlank
     @Size(min = 3, max = 3)
     private String identtype;
 
