@@ -44,6 +44,6 @@ public class RsTpsFoedselsmeldingRequest {
     private String miljoe;
 
     public boolean validatesOk() {
-        return isNotBlank(identMor) && identtype != null && foedselsdato != null && isNotBlank(miljoe);
+        return identtype != null && foedselsdato != null && isNotBlank(identMor) && isNotBlank(miljoe);
     }
 }

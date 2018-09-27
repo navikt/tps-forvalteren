@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.annotation.Import;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -26,7 +25,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.Se
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 
 @RunWith(MockitoJUnitRunner.class)
-@Import(OpprettPersonerMedRelasjonerConfig.class)
 public class OpprettPersonMedEksisterendeForeldreServiceTest {
 
     private static final String IDENT_MOR = "12129012345";
