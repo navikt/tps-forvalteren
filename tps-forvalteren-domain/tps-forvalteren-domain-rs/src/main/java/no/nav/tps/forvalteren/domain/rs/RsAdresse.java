@@ -26,7 +26,6 @@ public abstract class RsAdresse {
 
     private Long adresseId;
 
-    @NotNull
     private Long personId;
 
     @Size(min = 4, max = 4)

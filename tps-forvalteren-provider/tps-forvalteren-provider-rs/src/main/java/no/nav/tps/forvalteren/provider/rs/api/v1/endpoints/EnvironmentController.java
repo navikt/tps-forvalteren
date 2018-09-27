@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_LES;
 import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SERVICERUTINER;
 import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SKDMELDING;
@@ -61,11 +63,19 @@ public class EnvironmentController {
         environment.setProductionMode(currentEnvironmentIsProd);
 
         Map<String, Boolean> roller = new HashMap<>();
-        Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
-        roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
-        roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
-        roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
-        roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+        if(currentEnvironmentIsProd) {
+            Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
+            roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
+            roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
+            roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
+            roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+        } else {
+            roller.put(HAS_GT, true);
+            roller.put(HAS_TST, true);
+            roller.put(HAS_MLD, true);
+            roller.put(HAS_SRV, true);
+        }
+
         environment.setRoles(roller);
 
         return environment;

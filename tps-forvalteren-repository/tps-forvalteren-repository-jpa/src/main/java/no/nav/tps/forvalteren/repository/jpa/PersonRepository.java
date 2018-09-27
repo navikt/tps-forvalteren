@@ -11,8 +11,8 @@ public interface PersonRepository extends Repository<Person, Long> {
 
     void deleteByIdIn(List<Long> ids);
 
-    void save(Iterable<Person> personer);
-    
+    List<Person> save(Iterable<Person> personer);
+
     Person save(Person person);
 
     List<Person> findByIdentIn(List<String> identListe);

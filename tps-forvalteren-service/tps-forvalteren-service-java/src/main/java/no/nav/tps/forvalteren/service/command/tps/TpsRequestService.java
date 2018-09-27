@@ -1,11 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
-import java.io.IOException;
-import javax.jms.JMSException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.xml.XmlMapper;
-
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.Request;
@@ -16,6 +11,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
+
+import javax.jms.JMSException;
+import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TpsRequestService {
@@ -31,15 +32,20 @@ public class TpsRequestService {
 
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
-    
+
+    @Value("${tps.forvalteren.production.mode}")
+    private boolean currentEnvironmentIsProd;
+
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context, long timeout)
             throws JMSException, IOException {
 
-        forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
+        if(currentEnvironmentIsProd){
+            forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
+        }
 
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue());
 
-        if(tpsRequest instanceof TpsServiceRoutineHentByFnrRequest){
+        if(currentEnvironmentIsProd && (tpsRequest instanceof TpsServiceRoutineHentByFnrRequest) ){
             forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 

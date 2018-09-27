@@ -49,6 +49,8 @@
     "highlight.js": "^9.8.0",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
+    "native": "^0.3.3",
+    "natives": "^1.1.5",
     "nav-frontend-core": "^4.0.5",
     "nav-frontend-knapper-style": "^0.3.5",
     "nav-frontend-lenker-style": "^0.2.5",
