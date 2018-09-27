@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmelding;
+import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.foedselsmeldinger.SendTpsEndringsmeldingService;
 
@@ -29,7 +29,7 @@ public class TpsMeldingController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendFoedselsmelding") })
     @RequestMapping(value = "/foedselsmelding", method = RequestMethod.POST)
-    public SendSkdMeldingTilTpsResponse sendFoedselsMelding(@RequestBody RsTpsFoedselsmelding tpsFoedselsmelding) {
+    public SendSkdMeldingTilTpsResponse sendFoedselsMelding(@RequestBody RsTpsFoedselsmeldingRequest tpsFoedselsmelding) {
 
         return sendTpsEndringsmeldingService.sendFoedselsmelding(tpsFoedselsmelding);
     }

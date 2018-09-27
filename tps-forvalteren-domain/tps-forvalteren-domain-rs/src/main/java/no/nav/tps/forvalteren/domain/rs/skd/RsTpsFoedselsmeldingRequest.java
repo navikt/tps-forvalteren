@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.time.LocalDateTime;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
@@ -15,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RsTpsFoedselsmelding {
+public class RsTpsFoedselsmeldingRequest {
 
     @NotBlank
     @Size(min = 11, max = 11)
@@ -26,7 +28,7 @@ public class RsTpsFoedselsmelding {
 
     @NotBlank
     @Size(min = 3, max = 3)
-    private String identtype;
+    private IdentType identtype;
 
     @NotBlank
     private LocalDateTime foedselsdato;
@@ -40,4 +42,8 @@ public class RsTpsFoedselsmelding {
     @NotBlank
     @Size(min = 2, max = 2)
     private String miljoe;
+
+    public boolean validatesOk() {
+        return isNotBlank(identMor) && identtype != null && foedselsdato != null && isNotBlank(miljoe);
+    }
 }

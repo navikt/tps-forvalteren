@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmelding;
+import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
@@ -45,7 +45,7 @@ public class OpprettPersonMedEksisterendeForeldreService {
     @Autowired
     private HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
 
-    public Person execute(RsTpsFoedselsmelding request) {
+    public Person execute(RsTpsFoedselsmeldingRequest request) {
 
         Person person = createPerson(request);
 
@@ -58,12 +58,12 @@ public class OpprettPersonMedEksisterendeForeldreService {
         return person;
     }
 
-    private Person createPerson(RsTpsFoedselsmelding request) {
+    private Person createPerson(RsTpsFoedselsmeldingRequest request) {
 
         RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest(
                 Arrays.asList(RsPersonKriterier.builder()
                         .antall(1)
-                        .identtype(request.getIdenttype())
+                        .identtype(request.getIdenttype().name())
                         .kjonn(request.getKjonn().name())
                         .foedtEtter(request.getFoedselsdato().toLocalDate())
                         .foedtFoer(request.getFoedselsdato().toLocalDate())

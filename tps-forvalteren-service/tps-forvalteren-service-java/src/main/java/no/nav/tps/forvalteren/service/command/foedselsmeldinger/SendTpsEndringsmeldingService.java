@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.foedselsmeldinger;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +15,7 @@ import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmelding;
+import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
@@ -52,8 +53,9 @@ public class SendTpsEndringsmeldingService {
     @Autowired
     private SkdMeldingResolver foedselsmelding;
 
-    public SendSkdMeldingTilTpsResponse sendFoedselsmelding(RsTpsFoedselsmelding request) {
+    public SendSkdMeldingTilTpsResponse sendFoedselsmelding(RsTpsFoedselsmeldingRequest request) {
 
+        validate(request);
         S018PersonType persondataMor = getPersonhistorikk(request.getIdentMor(), request.getFoedselsdato(), request.getMiljoe());
         checkBosatt("Mor", persondataMor.getPersonStatus(), request.getFoedselsdato());
 
@@ -73,7 +75,16 @@ public class SendTpsEndringsmeldingService {
         return sendMeldingToTps(person, request.getMiljoe());
     }
 
-    private Adresse findAdresse(RsTpsFoedselsmelding request, S018PersonType persondataMor, S018PersonType persondataFar) {
+    private void validate(RsTpsFoedselsmeldingRequest request) {
+        if (!request.validatesOk()) {
+            throw new TpsfFunctionalException("Påkrevet parameter mangler.");
+        }
+        if (isBlank(request.getIdentFar()) && request.getAdresseFra() == FAR) {
+            throw new TpsfFunctionalException("Suppler ident fra far for å kunne hente adresse fra TPS.");
+        }
+    }
+
+    private Adresse findAdresse(RsTpsFoedselsmeldingRequest request, S018PersonType persondataMor, S018PersonType persondataFar) {
 
         if (request.getAdresseFra() == null || request.getAdresseFra() == MOR) {
             return personAdresseService.getBoAdresse(persondataMor.getBostedsAdresse(), request.getFoedselsdato());
@@ -87,7 +98,7 @@ public class SendTpsEndringsmeldingService {
         try {
             return personhistorikkService.hentPersonhistorikk(ident, date, env);
         } catch (TpsfTechnicalException e) {
-            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s", ident, env));
+            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env), e);
         }
     }
 
@@ -95,7 +106,7 @@ public class SendTpsEndringsmeldingService {
         for (PersonstatusType personStatus : personStatuses) {
             if (PersonStatus.BOSA == personStatus.getKodePersonstatus() &&
                     foedselsdag.compareTo(ConvertStringToDate.yyyysMMsdd(personStatus.getDatoFom())) >= 0 &&
-                    (StringUtils.isBlank(personStatus.getDatoTom()) ||
+                    (isBlank(personStatus.getDatoTom()) ||
                             foedselsdag.compareTo(ConvertStringToDate.yyyysMMsdd(personStatus.getDatoTom())) <= 0)) {
                 return;
             }

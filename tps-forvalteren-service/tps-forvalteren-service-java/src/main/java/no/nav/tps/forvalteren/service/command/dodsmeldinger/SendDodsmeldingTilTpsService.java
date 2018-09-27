@@ -1,8 +1,10 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
@@ -64,7 +66,7 @@ public class SendDodsmeldingTilTpsService {
 
             if (Action.U.name().equals(deathRow.getHandling()) || Action.D.name().equals(deathRow.getHandling())) {
 
-                if (StringUtils.isBlank(persondataFraTpsS004.getDatoDo())) {
+                if (isBlank(persondataFraTpsS004.getDatoDo())) {
                     throw new TpsfFunctionalException(String.format(PERSON_IKKE_DOED, person.getIdent(), deathRow.getMiljoe()));
                 }
                 
