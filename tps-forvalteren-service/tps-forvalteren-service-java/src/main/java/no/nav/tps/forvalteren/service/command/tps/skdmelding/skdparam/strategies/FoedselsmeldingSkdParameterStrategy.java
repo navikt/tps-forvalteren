@@ -99,7 +99,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
         skdMeldingTrans1.setMorsFodselsdato(getDato(forelderMor));
         skdMeldingTrans1.setMorsPersonnummer(getPersonnr(forelderMor));
-        skdMeldingTrans1.setSlektsnavn(forelderMor.getEtternavn());
+        skdMeldingTrans1.setSlektsnavn(barn.getEtternavn());
         skdMeldingTrans1.setFamilienummer(forelderMor.getIdent());
         skdMeldingTrans1.setRegdatoFamnr(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
 

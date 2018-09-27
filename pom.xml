@@ -37,6 +37,7 @@
         <application.name>tps-forvalteren</application.name>
         <application.version>${project.version}</application.version>
         <lombok.version>1.16.10</lombok.version>
+        <commons-lang3.version>3.5</commons-lang3.version>
 
         <!--SonarQube-->
         <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-forvalteren/domain/test/**</sonar.exclusions>
@@ -106,6 +107,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
     </dependencies>
 

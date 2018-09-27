@@ -1,18 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import ma.glasnost.orika.MapperFacade;
-import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.RsPerson;
-import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.FetchPersonByIdent;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
-import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
+import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
+import ma.glasnost.orika.MapperFacade;
+import no.nav.freg.metrics.annotations.Metrics;
+import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @RestController
 @RequestMapping(value = "api/v1/dolly/testdata")
@@ -46,7 +45,7 @@ public class TestdataBestillingsController {
     private MapperFacade mapper;
 
     @Autowired
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTps;
 
     @Autowired
     private ListExtractorKommaSeperated listExtractorKommaSeperated;
