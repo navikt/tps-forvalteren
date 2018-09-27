@@ -14,7 +14,7 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SendTpsEndringsmeldingService;
+import no.nav.tps.forvalteren.service.command.foedselsmeldinger.SendTpsEndringsmeldingService;
 
 @RestController
 @RequestMapping(value = "api/v1/tpsmelding")

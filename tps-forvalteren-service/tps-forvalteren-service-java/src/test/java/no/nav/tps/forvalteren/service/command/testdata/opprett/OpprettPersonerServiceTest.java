@@ -17,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
@@ -31,6 +32,9 @@ public class OpprettPersonerServiceTest {
 
     @Mock
     private HentKjoennFraIdentService hentKjoennFraIdentServiceMock;
+
+    @Mock
+    HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
 
     @Mock
     private HentDatoFraIdent hentDatoFraIdent;
@@ -79,6 +83,7 @@ public class OpprettPersonerServiceTest {
     @Test
     public void hvisIdentErDNRSaaHarPersonDNR(){
         identerInput.add(identDummyDNR);
+        when(hentIdenttypeFraIdentService.execute(anyString())).thenReturn("DNR");
         List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdenttype(), is("DNR"));
     }
@@ -86,6 +91,7 @@ public class OpprettPersonerServiceTest {
     @Test
     public void hvisIdentErBNRSaaHarPersonBNR(){
         identerInput.add(identDummyBNR);
+        when(hentIdenttypeFraIdentService.execute(anyString())).thenReturn("BNR");
         List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdenttype(), is("BNR"));
     }
@@ -93,6 +99,7 @@ public class OpprettPersonerServiceTest {
     @Test
     public void hvisIdentErFNRSaaHarPersonFNR(){
         identerInput.add(identDummy1);
+        when(hentIdenttypeFraIdentService.execute(anyString())).thenReturn("FNR");
         List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getIdenttype(), is("FNR"));
     }

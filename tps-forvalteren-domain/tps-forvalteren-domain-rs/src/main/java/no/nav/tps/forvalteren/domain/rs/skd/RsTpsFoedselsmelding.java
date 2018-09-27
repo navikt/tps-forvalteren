@@ -30,10 +30,10 @@ public class RsTpsFoedselsmelding {
     @NotBlank
     private LocalDateTime foedselsdato;
 
-    @NotBlank
-    @Size(min = 3, max = 3)
-    private String kjonn;
+    @Size(min = 1, max = 1)
+    private KjonnType kjonn;
 
+    @Size(min = 3, max = 5)
     private AddressOrigin adresseFra;
 
     @NotBlank

@@ -49,10 +49,10 @@ public class OpprettPersonMedEksisterendeForeldreService {
 
         Person person = createPerson(request);
 
-        person.getRelasjoner().add(createRelasjon(MOR, person, request.getIdentMor(), request.getMiljoe()));
+        person.getRelasjoner().add(createRelasjon(MOR, person, request.getIdentMor()));
 
         if (StringUtils.isNotBlank(request.getIdentFar())) {
-            person.getRelasjoner().add(createRelasjon(FAR, person, request.getIdentFar(), request.getMiljoe()));
+            person.getRelasjoner().add(createRelasjon(FAR, person, request.getIdentFar()));
         }
 
         return person;
@@ -64,7 +64,7 @@ public class OpprettPersonMedEksisterendeForeldreService {
                 Arrays.asList(RsPersonKriterier.builder()
                         .antall(1)
                         .identtype(request.getIdenttype())
-                        .kjonn(request.getKjonn())
+                        .kjonn(request.getKjonn().name())
                         .foedtEtter(request.getFoedselsdato().toLocalDate())
                         .foedtFoer(request.getFoedselsdato().toLocalDate())
                         .build()),

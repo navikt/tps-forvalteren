@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata.skd;
+package no.nav.tps.forvalteren.service.command.foedselsmeldinger;
 
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
@@ -12,13 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmelding;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
-import no.nav.tps.forvalteren.service.command.foedselsmeldinger.OpprettPersonMedEksisterendeForeldreService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonhistorikkService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertStringToDate;
@@ -64,12 +67,20 @@ public class SendTpsEndringsmeldingService {
 
         Person person = opprettPersonMedEksisterendeForeldreService.execute(request);
         if (LAGNY != request.getAdresseFra()) {
-            person.setBoadresse(personAdresseService.getBoAdresse(
-                    MOR == request.getAdresseFra() ? persondataMor.getBostedsAdresse() : persondataFar.getBostedsAdresse(),
-                    request.getFoedselsdato()));
+            person.setBoadresse(findAdresse(request, persondataMor, persondataFar));
         }
 
         return sendMeldingToTps(person, request.getMiljoe());
+    }
+
+    private Adresse findAdresse(RsTpsFoedselsmelding request, S018PersonType persondataMor, S018PersonType persondataFar) {
+
+        if (request.getAdresseFra() == null || request.getAdresseFra() == MOR) {
+            return personAdresseService.getBoAdresse(persondataMor.getBostedsAdresse(), request.getFoedselsdato());
+        } else if (request.getAdresseFra() == FAR && persondataFar != null) {
+            return personAdresseService.getBoAdresse(persondataFar.getBostedsAdresse(), request.getFoedselsdato());
+        }
+        return null;
     }
 
     private S018PersonType getPersonhistorikk(String ident, LocalDateTime date, String env) {

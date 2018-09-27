@@ -106,7 +106,7 @@ public class PersonhistorikkServiceTest {
                 + "        </svarStatus>\n"
                 + "        <personDataS018>\n"
                 + "            <fnr>"+ IDENT + "</fnr>\n"
-                + "            <identtype>FNR</identtype>\n"
+                + "            <identType>FNR</identType>\n"
                 + "        </personDataS018>\n"
                 + "    </tpsSvar>\n"
                 + "</tpsPersonData>";
