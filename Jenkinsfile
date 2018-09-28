@@ -1,8 +1,8 @@
 applicationPipeline {
     applicationName = "tps-forvalteren"
     javaVersion = "1.8"
-    environment = "t9"
-    namespace="default"
+    environment = "u2"
+    namespace="u2"
     hasPerformanceTest = false
     hasSmoketests = false
 }
