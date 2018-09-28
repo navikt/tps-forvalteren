@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.foedselsmeldinger;
+package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
@@ -23,23 +23,22 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.skd.IdentType;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
+import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonhistorikkService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum;
 import no.nav.tps.xjc.ctg.domain.s018.PersonStatus;
 import no.nav.tps.xjc.ctg.domain.s018.PersonstatusType;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendTpsEndringsmeldingServiceTest {
+public class SendTpsFoedselsmeldingServiceTest {
 
     private static final String NAVN_FOEDSELSMELDING = "Foedselsmelding";
     private static final String IDENT_MOR = "12129012345";
@@ -66,8 +65,11 @@ public class SendTpsEndringsmeldingServiceTest {
     @Mock
     private SkdMeldingTrans1 skdMeldingTrans1;
 
+    @Mock
+    private UppercaseDataInPerson uppercaseDataInPerson;
+
     @InjectMocks
-    private SendTpsEndringsmeldingService sendTpsEndringsmeldingService;
+    private SendTpsFoedselsmeldingService sendTpsFoedselsmeldingService;
 
     RsTpsFoedselsmeldingRequest rsTpsFoedselsmeldingRequest;
 
@@ -92,7 +94,7 @@ public class SendTpsEndringsmeldingServiceTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage("Påkrevet parameter mangler.");
 
-        sendTpsEndringsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
     }
 
     @Test
@@ -106,7 +108,7 @@ public class SendTpsEndringsmeldingServiceTest {
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
-        sendTpsEndringsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
 
         verify(personhistorikkService).hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString());
     }
@@ -124,7 +126,7 @@ public class SendTpsEndringsmeldingServiceTest {
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
-        sendTpsEndringsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
 
         verify(personhistorikkService, times(2)).hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString());
     }
@@ -145,7 +147,7 @@ public class SendTpsEndringsmeldingServiceTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage("Suppler ident fra far for å kunne hente adresse fra TPS.");
 
-        sendTpsEndringsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
     }
 
     @Test
@@ -162,7 +164,7 @@ public class SendTpsEndringsmeldingServiceTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage("Mor var ikke bosatt på gitt dato.");
 
-        sendTpsEndringsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
     }
 
     @Test
@@ -182,7 +184,7 @@ public class SendTpsEndringsmeldingServiceTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage("Person med ident " + IDENT_MOR + " finnes ikke i miljø u27.");
 
-        sendTpsEndringsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
     }
 
     private S018PersonType hentPersonType() {

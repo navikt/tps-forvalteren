@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.foedselsmeldinger;
+package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;

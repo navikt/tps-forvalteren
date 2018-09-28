@@ -72,7 +72,7 @@ public class SetRandomAdresseOnPersons {
         try {
             return unmarshaller.unmarshal(tpsServiceRoutineResponse.getXml());
         } catch (JAXBException e) {
-            throw new TpsfFunctionalException(e);
+            throw new TpsfFunctionalException(e.getMessage());
         }
     }
 

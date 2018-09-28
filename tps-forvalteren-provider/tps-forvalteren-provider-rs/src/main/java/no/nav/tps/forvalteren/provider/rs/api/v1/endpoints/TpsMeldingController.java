@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
+import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
+import no.nav.tps.forvalteren.service.command.dodsmeldinger.SendTpsDoedsmeldingService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
-import no.nav.tps.forvalteren.service.command.foedselsmeldinger.SendTpsEndringsmeldingService;
+import no.nav.tps.forvalteren.service.command.foedselsmelding.SendTpsFoedselsmeldingService;
 
 @RestController
 @RequestMapping(value = "api/v1/tpsmelding")
@@ -24,13 +26,24 @@ public class TpsMeldingController {
     private static final String REST_SERVICE_NAME = "tpsmelding";
 
     @Autowired
-    private SendTpsEndringsmeldingService sendTpsEndringsmeldingService;
+    private SendTpsFoedselsmeldingService sendTpsFoedselsmeldingService;
+
+    @Autowired
+    private SendTpsDoedsmeldingService sendTpsDoedsmeldingService;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendFoedselsmelding") })
     @RequestMapping(value = "/foedselsmelding", method = RequestMethod.POST)
-    public SendSkdMeldingTilTpsResponse sendFoedselsMelding(@RequestBody RsTpsFoedselsmeldingRequest tpsFoedselsmelding) {
+    public SendSkdMeldingTilTpsResponse sendFoedselsmelding(@RequestBody RsTpsFoedselsmeldingRequest tpsFoedselsmeldingRequest) {
 
-        return sendTpsEndringsmeldingService.sendFoedselsmelding(tpsFoedselsmelding);
+        return sendTpsFoedselsmeldingService.sendFoedselsmelding(tpsFoedselsmeldingRequest);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendFoedselsmelding") })
+    @RequestMapping(value = "/doedsmelding", method = RequestMethod.POST)
+    public SendSkdMeldingTilTpsResponse sendDoedsmelding(@RequestBody RsTpsDoedsmeldingRequest tpsDoedsmeldinpsRequest) {
+
+        return sendTpsDoedsmeldingService.sendDoedsmelding(tpsDoedsmeldinpsRequest);
     }
 }
