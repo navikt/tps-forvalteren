@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.foedselsmeldinger;
+package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

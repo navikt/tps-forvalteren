@@ -53,7 +53,7 @@ public class HttpExceptionAdvice {
                 .setError( status.getReasonPhrase() )
                 .setStatus( status.value() )
                 .setMessage( exception.getMessage() )
-                .setPath( exception.getPath() )
+                .setPath( exception.getPath())
                 .setTimestamp( new Date().getTime() );
     }
 }

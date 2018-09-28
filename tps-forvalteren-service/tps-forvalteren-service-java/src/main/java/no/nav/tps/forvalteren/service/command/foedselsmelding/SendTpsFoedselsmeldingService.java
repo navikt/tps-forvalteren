@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.foedselsmeldinger;
+package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
@@ -19,6 +19,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
+import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -31,7 +32,7 @@ import no.nav.tps.xjc.ctg.domain.s018.PersonstatusType;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
 
 @Service
-public class SendTpsEndringsmeldingService {
+public class SendTpsFoedselsmeldingService {
 
     private static final String NAVN_FOEDSELSMELDING = "Foedselsmelding";
 
@@ -49,6 +50,9 @@ public class SendTpsEndringsmeldingService {
 
     @Autowired
     private OpprettPersonMedEksisterendeForeldreService opprettPersonMedEksisterendeForeldreService;
+
+    @Autowired
+    private UppercaseDataInPerson uppercaseDataInPerson;
 
     @Autowired
     private SkdMeldingResolver foedselsmelding;
@@ -72,6 +76,7 @@ public class SendTpsEndringsmeldingService {
             person.setBoadresse(findAdresse(request, persondataMor, persondataFar));
         }
 
+        uppercaseDataInPerson.execute(person);
         return sendMeldingToTps(person, request.getMiljoe());
     }
 
@@ -98,7 +103,7 @@ public class SendTpsEndringsmeldingService {
         try {
             return personhistorikkService.hentPersonhistorikk(ident, date, env);
         } catch (TpsfTechnicalException e) {
-            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env), e);
+            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env));
         }
     }
 
@@ -119,7 +124,7 @@ public class SendTpsEndringsmeldingService {
         SkdMeldingTrans1 melding = skdMessageCreatorTrans1.execute(NAVN_FOEDSELSMELDING, personSomSkalFoedes, true);
         Map<String, String> sentStatus = sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), Sets.newHashSet(miljoe));
 
-        sentStatus.replaceAll((env, status) -> status.contains("^00.+") ? "OK" : status);
+        sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : status);
         return SendSkdMeldingTilTpsResponse.builder()
                 .personId(melding.getFodselsnummer())
                 .skdmeldingstype(NAVN_FOEDSELSMELDING)
