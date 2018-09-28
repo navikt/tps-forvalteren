@@ -215,7 +215,7 @@ public class CommandConfig {
     }
 
     @Bean
-    SkdMeldingResolver foedsel() {
+    SkdMeldingResolver foedselsmelding() {
         return new FoedselsmeldingAarsakskode01();
     }
 

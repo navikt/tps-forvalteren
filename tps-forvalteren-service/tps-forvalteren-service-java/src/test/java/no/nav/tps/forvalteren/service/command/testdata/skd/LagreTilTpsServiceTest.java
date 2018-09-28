@@ -1,43 +1,40 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
-import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import static org.mockito.Matchers.any;
-import org.mockito.Mock;
-
-import static org.mockito.Matchers.anySet;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LagreTilTpsTest {
+public class LagreTilTpsServiceTest {
 
     private static final boolean ADD_HEADER = true;
     private static final Long GRUPPE_ID = 1337L;
@@ -77,7 +74,7 @@ public class LagreTilTpsTest {
     private SkdMeldingSender skdMeldingSender;
 
     @InjectMocks
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTpsService;
     private List<Person> persons = new ArrayList<>();
     private List<Person> personsInGruppe = new ArrayList<>();
     private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
@@ -90,7 +87,7 @@ public class LagreTilTpsTest {
     private List<SkdMeldingTrans1> vergemaalsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding4).build());
 
     private Map<String, String> expectedStatus = new HashMap<>();
-    private Map<String, String> TPSResponse = new HashMap<>();
+    private Map<String, String> tpsResponse = new HashMap<>();
 
     {
         persons.add(person);
@@ -100,9 +97,11 @@ public class LagreTilTpsTest {
         expectedStatus.put("env", "OK");
         expectedStatus.put("env2", "persistering feilet");
         expectedStatus.put("u2", "Environment is not deployed");
-        TPSResponse.put("env", "00");
-        TPSResponse.put("env2", "persistering feilet");
+        tpsResponse.put("env", "00");
+        tpsResponse.put("env2", "persistering feilet");
     }
+
+    // TODO Mangelfull testing her må rettes opp
 
     @Before
     public void setup() {
@@ -118,25 +117,20 @@ public class LagreTilTpsTest {
         when(createVergemaal.execute(personsInGruppe, ADD_HEADER)).thenReturn(vergemaalsMeldinger);
     }
 
-    //TODO Lag nye tester her. De gamle bare verifier, noe som egentlig er ubrukelig.
     @Test
+    @Ignore
     public void checkThatServicesGetsCalled() {
-//
-//        lagreTilTps.execute(GRUPPE_ID, environments);
-//
-//        ArgumentCaptor<Set> captor = ArgumentCaptor.forClass(Set.class);
-//
-//        verify(findGruppeByIdMock).execute(GRUPPE_ID);
-//        verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
-//        verify(skdMeldingSender.sendInnvandringsMeldinger(persons, anySet()));
-//        verify(skdMeldingSender.sendRelasjonsmeldinger(eq(persons), captor.capture()));
-//        verify(skdMeldingSender.sendDoedsmeldinger(personsInGruppe, ADD_HEADER);
-//        verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
-//        verify(innvandring).resolve();
-//        verify(createFoedselsmeldinger).executeFromPersons(persons, ADD_HEADER);
-//        verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
-//        verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
+        lagreTilTpsService.execute(GRUPPE_ID, environments);
 
+        verify(findPersonsNotInEnvironments).execute(personsInGruppe, environments);
+        verify(skdMessageCreatorTrans1).execute(INNVANDRING_CREATE_MLD_NAVN, persons, ADD_HEADER);
+        verify(createRelasjoner).execute(persons, ADD_HEADER);
+        verify(createDoedsmeldinger).execute(persons, ADD_HEADER);
+        verify(createUtvandring).execute(personsInGruppe, ADD_HEADER);
+        verify(innvandring).resolve();
+        verify(createFoedselsmeldinger).executeFromPersons(persons, ADD_HEADER);
+        verify(sendSkdMeldingTilGitteMiljoer).execute(innvandringsMeldinger.get(0).toString(), skdRequestMeldingDefinition, new HashSet<>(environments));
+        verify(createVergemaal).execute(personsInGruppe, ADD_HEADER);
     }
 
     /**
@@ -147,16 +141,17 @@ public class LagreTilTpsTest {
      * - Responsen skal inneholde skdMeldingstypene som ble sendt, gruppeId og personId-ene for å identifisere skdMeldingene.
      */
     @Test
+    @Ignore
     public void shouldReturnResponsesWithStatus() {
-//        when(sendSkdMeldingTilGitteMiljoer.executeFromPersons(any(), any(), any())).thenReturn(TPSResponse);
-//        RsSkdMeldingResponse actualResponse = lagreTilTps.executeFromPersons(GRUPPE_ID, environments);
-//        assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
-//        assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal", "Utvandring"),
-//                actualResponse.getSendSkdMeldingTilTpsResponsene()
-//                        .stream()
-//                        .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
-//                        .collect(Collectors.toList()));
-//        assertEquals(GRUPPE_ID, actualResponse.getGruppeid());
-//        assertEquals(innvandringsMeldinger.get(0).getFodselsnummer(), actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
+        when(sendSkdMeldingTilGitteMiljoer.execute(any(), any(), any())).thenReturn(tpsResponse);
+        RsSkdMeldingResponse actualResponse = lagreTilTpsService.execute(GRUPPE_ID, environments);
+        assertEquals(expectedStatus, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
+        assertEquals(Arrays.asList(INNVANDRING_CREATE_MLD_NAVN, "Relasjonsmelding", "Doedsmelding", "Vergemaal", "Utvandring"),
+                actualResponse.getSendSkdMeldingTilTpsResponsene()
+                        .stream()
+                        .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
+                        .collect(Collectors.toList()));
+        assertEquals(GRUPPE_ID, actualResponse.getGruppeid());
+        assertEquals(innvandringsMeldinger.get(0).getFodselsnummer(), actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId());
     }
 }

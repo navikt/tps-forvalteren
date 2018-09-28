@@ -1,13 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 
 @Service
-public class Testdata {
+public class TestdataService {
 
     @Autowired
     private TaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;

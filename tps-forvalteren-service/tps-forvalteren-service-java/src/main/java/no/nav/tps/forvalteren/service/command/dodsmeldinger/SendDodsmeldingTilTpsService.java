@@ -1,8 +1,10 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
@@ -15,7 +17,7 @@ import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.AdresseService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonstatusService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertStringToDate;
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
@@ -47,7 +49,7 @@ public class SendDodsmeldingTilTpsService {
     private PersonstatusService personstatusService;
 
     @Autowired
-    private AdresseService adresseService;
+    private PersonAdresseService personAdresseService;
 
     public void execute() {
 
@@ -64,7 +66,7 @@ public class SendDodsmeldingTilTpsService {
 
             if (Action.U.name().equals(deathRow.getHandling()) || Action.D.name().equals(deathRow.getHandling())) {
 
-                if (StringUtils.isBlank(persondataFraTpsS004.getDatoDo())) {
+                if (isBlank(persondataFraTpsS004.getDatoDo())) {
                     throw new TpsfFunctionalException(String.format(PERSON_IKKE_DOED, person.getIdent(), deathRow.getMiljoe()));
                 }
                 
@@ -92,7 +94,7 @@ public class SendDodsmeldingTilTpsService {
     }
 
     private void findLastAddress(Person person, String doedsdato, String miljoe) {
-        Adresse adresse = adresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
+        Adresse adresse = personAdresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
 
         if (adresse != null) {
             adresse.setId(person.getId());

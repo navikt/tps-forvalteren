@@ -37,7 +37,7 @@ public class SetRandomAdresseOnPersons {
         this.hentGyldigeAdresserService = hentGyldigeAdresserService;
     }
 
-    public void execute(List<Person> persons, AdresseNrInfo adresseNrInfo) {
+    public List<Person> execute(List<Person> persons, AdresseNrInfo adresseNrInfo) {
         String kommuneNr = null;
         String postNr = null;
         if (adresseNrInfo != null) {
@@ -58,6 +58,8 @@ public class SetRandomAdresseOnPersons {
             Gateadresse adresse = createGateAdresse(adresseDataList.get(i % adresseDataList.size()), persons.get(i));
             persons.get(i).setBoadresse(adresse);
         }
+
+        return persons;
     }
 
     private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {

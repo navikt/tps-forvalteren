@@ -1,6 +1,11 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.advices;
 
 import java.util.Date;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import no.nav.tps.forvalteren.service.command.exceptions.ExceptionInformation;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpBadRequestException;
@@ -10,12 +15,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @ControllerAdvice
 public class HttpExceptionAdvice {
@@ -35,30 +35,16 @@ public class HttpExceptionAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler(HttpInternalServerErrorException.class)
+    @ExceptionHandler({HttpInternalServerErrorException.class, HttpCantSatisfyRequestException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     ExceptionInformation internalServerError(HttpException exception) {
         return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ResponseBody
-    @ExceptionHandler(HttpCantSatisfyRequestException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    ExceptionInformation cantSatisfyRequest(HttpException exception) {
-        return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(HttpBadRequestException.class)
+    @ExceptionHandler({HttpBadRequestException.class, HttpIllegalEnvironmentException.class, TpsfFunctionalException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     ExceptionInformation badRequest(HttpException exception) {
-        return informationForException(exception, HttpStatus.BAD_REQUEST);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(HttpIllegalEnvironmentException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    ExceptionInformation illegalEnvironment(HttpException exception){
         return informationForException(exception, HttpStatus.BAD_REQUEST);
     }
 

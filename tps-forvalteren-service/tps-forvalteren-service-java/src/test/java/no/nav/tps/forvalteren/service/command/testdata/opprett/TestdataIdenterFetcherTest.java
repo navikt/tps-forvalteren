@@ -1,9 +1,16 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,17 +20,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataIdenterFetcherTest {
@@ -48,7 +48,7 @@ public class TestdataIdenterFetcherTest {
     private MessageProvider messageProviderMock;
 
     @Mock
-    private Testdata testdataMock;
+    private TestdataService testdataService;
 
     @InjectMocks
     private TestdataIdenterFetcher testdataIdenterFetcher;
@@ -82,11 +82,11 @@ public class TestdataIdenterFetcherTest {
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
         testdataRequest2.getIdenterTilgjengligIMiljoe().add(dummyIdent2);
 
-        when(testdataMock.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1,testdataRequest2));
+        when(testdataService.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1,testdataRequest2));
 
         testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdataMock, times(1)).genererIdenterForTestdataRequests(any());
+        verify(testdataService, times(1)).genererIdenterForTestdataRequests(any());
     }
 
 
@@ -101,7 +101,7 @@ public class TestdataIdenterFetcherTest {
         testdataRequest3.getIdenterTilgjengligIMiljoe().add(dummyIdent3);
         testdataRequest4.getIdenterTilgjengligIMiljoe().add(dummyIdent4);
 
-        when(testdataMock.genererIdenterForTestdataRequests(any()))
+        when(testdataService.genererIdenterForTestdataRequests(any()))
                 .thenReturn(
                         Arrays.asList(testdataRequest1,testdataRequest2),
                         Arrays.asList(testdataRequest3),
@@ -110,7 +110,7 @@ public class TestdataIdenterFetcherTest {
 
         List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdataMock, times(3)).genererIdenterForTestdataRequests(any());
+        verify(testdataService, times(3)).genererIdenterForTestdataRequests(any());
 
         assertThat(requests.get(1).getIdenterTilgjengligIMiljoe()
                 .containsAll(Arrays.asList(dummyIdent2,dummyIdent3, dummyIdent4)), is(true));
@@ -123,7 +123,7 @@ public class TestdataIdenterFetcherTest {
 
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
 
-        when(testdataMock.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1));
+        when(testdataService.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1));
         when(messageProviderMock.get(anyString())).thenReturn("msg");
 
         expectedException.expect(HttpCantSatisfyRequestException.class);

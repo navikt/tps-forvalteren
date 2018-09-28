@@ -33,7 +33,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.AdresseService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonstatusService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
@@ -70,7 +70,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     private PersonstatusService personstatusService;
 
     @Mock
-    private AdresseService adresseService;
+    private PersonAdresseService personAdresseService;
 
     @Mock
     private PersondataFraTpsS004 persondataFraTpsS004;
@@ -160,7 +160,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
         when(doedsmeldingAnnuller.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
         when(doedsmelding.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
-        when(adresseService.hentBoadresseForDato(eq(IDENT), eq(DOEDSDATO.minusDays(1)), eq(MILJOE))).thenReturn(adresse);
+        when(personAdresseService.hentBoadresseForDato(eq(IDENT), eq(DOEDSDATO.minusDays(1)), eq(MILJOE))).thenReturn(adresse);
 
         sendDodsmeldingTilTpsService.execute();
 

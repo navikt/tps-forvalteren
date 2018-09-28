@@ -34,12 +34,12 @@ import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
-import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataControllerTest {
@@ -81,7 +81,7 @@ public class TestdataControllerTest {
     private SaveGruppe saveGruppe;
 
     @Mock
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTpsService;
 
     @Mock
     private DeleteGruppeById deleteGruppeById;
@@ -177,7 +177,7 @@ public class TestdataControllerTest {
 
         testdataController.lagreTilTPS(GRUPPE_ID, environments);
 
-        verify(lagreTilTps).execute(GRUPPE_ID, environments);
+        verify(lagreTilTpsService).execute(GRUPPE_ID, environments);
     }
 
     @Test

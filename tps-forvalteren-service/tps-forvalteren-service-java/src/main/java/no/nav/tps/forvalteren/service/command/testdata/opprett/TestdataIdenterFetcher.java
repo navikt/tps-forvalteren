@@ -19,17 +19,17 @@ public class TestdataIdenterFetcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestdataIdenterFetcher.class);
 
     @Autowired
-    private Testdata testdata;
+    private TestdataService testdataService;
 
     @Autowired
     private MessageProvider messageProvider;
 
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe) {
-        List<TestdataRequest> testdataRequests = testdata.genererIdenterForTestdataRequests(personKriterierListe);
+        List<TestdataRequest> testdataRequests = testdataService.genererIdenterForTestdataRequests(personKriterierListe);
 
-        testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
+        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
 
-        testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
+        testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
 
         taBortOverflodigeIdenterFraTestRequests(testdataRequests);
 
@@ -49,11 +49,11 @@ public class TestdataIdenterFetcher {
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
                     singelKriterieListe.getPersonKriterierListe().add(request.getKriterie());
 
-                    List<TestdataRequest> testdataRequestSingelList = testdata.genererIdenterForTestdataRequests(singelKriterieListe);
+                    List<TestdataRequest> testdataRequestSingelList = testdataService.genererIdenterForTestdataRequests(singelKriterieListe);
 
-                    testdata.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequestSingelList);
+                    testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequestSingelList);
 
-                    testdata.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequestSingelList);
+                    testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequestSingelList);
 
                     taBortOverflodigeIdenterFraTestRequests(testdataRequestSingelList);
 
@@ -73,12 +73,12 @@ public class TestdataIdenterFetcher {
     }
 
     private void taBortOverflodigeIdenterFraTestRequest(TestdataRequest request) {
-        testdata.taBortOverfloedigIdenterITestdataRequest(request);
+        testdataService.taBortOverfloedigIdenterITestdataRequest(request);
     }
 
     private void taBortOverflodigeIdenterFraTestRequests(List<TestdataRequest> requests) {
         for (TestdataRequest request : requests) {
-            testdata.taBortOverfloedigIdenterITestdataRequest(request);
+            testdataService.taBortOverfloedigIdenterITestdataRequest(request);
         }
     }
 
