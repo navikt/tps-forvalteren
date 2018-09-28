@@ -4,7 +4,7 @@
     <parent>
         <artifactId>tps-forvalteren-provider</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>forUtviklingsmiljo-51</version>
+        <version>forUtviklingsmiljo-53</version>
     </parent>
 
     <artifactId>tps-forvalteren-provider-integration-test</artifactId>
