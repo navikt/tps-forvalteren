@@ -35,14 +35,14 @@ public class HttpExceptionAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler({HttpInternalServerErrorException.class, HttpCantSatisfyRequestException.class})
+    @ExceptionHandler({ HttpInternalServerErrorException.class, HttpCantSatisfyRequestException.class })
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     ExceptionInformation internalServerError(HttpException exception) {
         return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ResponseBody
-    @ExceptionHandler({HttpBadRequestException.class, HttpIllegalEnvironmentException.class, TpsfFunctionalException.class})
+    @ExceptionHandler({ HttpBadRequestException.class, HttpIllegalEnvironmentException.class, TpsfFunctionalException.class })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     ExceptionInformation badRequest(HttpException exception) {
         return informationForException(exception, HttpStatus.BAD_REQUEST);
@@ -50,10 +50,10 @@ public class HttpExceptionAdvice {
 
     private ExceptionInformation informationForException(HttpException exception, HttpStatus status) {
         return ExceptionInformation.create()
-                .setError( status.getReasonPhrase() )
-                .setStatus( status.value() )
-                .setMessage( exception.getMessage() )
-                .setPath( exception.getPath() )
-                .setTimestamp( new Date().getTime() );
+                .setError(status.getReasonPhrase())
+                .setStatus(status.value())
+                .setMessage(exception.getMessage())
+                .setPath(exception.getPath())
+                .setTimestamp(new Date().getTime());
     }
 }
