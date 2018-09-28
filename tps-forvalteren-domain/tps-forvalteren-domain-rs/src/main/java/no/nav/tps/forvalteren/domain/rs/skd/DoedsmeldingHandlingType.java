@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.domain.rs.skd;
 
 public enum DoedsmeldingHandlingType {
 
-    C("Send dødsmelding"),
-    U("Endre dødsmelding"),
-    D("Annuler");
+    C("CREATE -- Send dødsmelding"),
+    U("UPDATE -- Endre dødsmelding"),
+    D("DELETE -- Annuler");
 
     private String name;
 
