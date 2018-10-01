@@ -60,9 +60,22 @@ public class PersonerBestillingService {
         personerSomSkalPersisteres.addAll(deresPartnere);
         personerSomSkalPersisteres.addAll(deresBarn);
 
-        List<Person> tpsfPersoner = extractOpprettKritereFromDollyKriterier.addDollyKriterumValuesToPersonAndSave(personKriteriumRequest, personerSomSkalPersisteres);
+        List<Person> tpsfPersoner = extractOpprettKritereFromDollyKriterier.addDollyKriterumValuesToPerson(personKriteriumRequest, personerSomSkalPersisteres);
+        List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
-        return savePersonBulk.execute(tpsfPersoner);
+        return sortWithBestiltPersonFoerstIListe(lagredePersoner, opprettedePersoner.get(0).getIdent());
+    }
+
+    private List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson){
+        List<Person> sorted = new ArrayList<>();
+        for(Person p : personer){
+            if(p.getIdent().equals(identBestiltPerson)){
+                sorted.add(0, p);
+            } else {
+                sorted.add(p);
+            }
+        }
+        return sorted;
     }
 
     public List<Person> convertRequestTilPersoner(RsPersonKriteriumRequest personKriterierListe){

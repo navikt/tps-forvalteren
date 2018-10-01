@@ -44,6 +44,8 @@ public class RsPersonBestillingKriteriumRequest {
     @Size(min = 1, max = 1)
     private String spesreg;
 
+    private String sivilstand;
+
     private LocalDateTime spesregDato;
 
     private LocalDateTime doedsdato;

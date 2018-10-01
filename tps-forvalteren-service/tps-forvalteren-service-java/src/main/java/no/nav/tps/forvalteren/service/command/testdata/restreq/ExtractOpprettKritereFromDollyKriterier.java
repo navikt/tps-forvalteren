@@ -33,6 +33,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         rsPerson.setKjonn(req.getKjonn());
         rsPerson.setFoedtEtter(req.getFoedtEtter());
         rsPerson.setFoedtFoer(req.getFoedtFoer());
+        rsPerson.setSivilstand(req.getSivilstand());
 
         RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest();
         kriteriumRequest.setPersonKriterierListe(Arrays.asList(rsPerson));
@@ -92,7 +93,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personRequestListe;
     }
 
-    public List<Person> addDollyKriterumValuesToPersonAndSave(RsPersonBestillingKriteriumRequest req, List<Person> personer){
+    public List<Person> addDollyKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> personer){
         personer.forEach(person -> {
                     person.setRegdato(req.getRegdato());
                     person.setDoedsdato(req.getDoedsdato());
