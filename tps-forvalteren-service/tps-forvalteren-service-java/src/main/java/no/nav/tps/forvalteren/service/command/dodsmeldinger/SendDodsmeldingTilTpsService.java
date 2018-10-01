@@ -81,7 +81,7 @@ public class SendDodsmeldingTilTpsService {
             return personstatusService.hentPersonstatus(ident, miljoe);
         } catch (TpsfTechnicalException e) {
             throw new TpsfFunctionalException(
-                    String.format("Fant ikke person med ident %s i miljø %s", ident, miljoe));
+                    String.format("Fant ikke person med ident %s i miljø %s", ident, miljoe), e);
         }
     }
 
