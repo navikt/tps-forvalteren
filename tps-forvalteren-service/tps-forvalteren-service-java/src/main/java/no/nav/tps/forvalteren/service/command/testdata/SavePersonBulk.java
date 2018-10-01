@@ -34,8 +34,9 @@ public class SavePersonBulk {
             }
 
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("En T_PERSON DB constraint er brutt! Kan ikke lagre Person. Error: " + e.getMessage()
-                    + " Cause: " + e.getCause().getCause());
+            throw new DataIntegrityViolationException(
+                    String.format("En T_PERSON DB constraint er brutt! Kan ikke lagre Person. Error: %s Cause: %s",
+                            e.getMessage(), e.getCause().getCause()), e);
         }
     }
 }

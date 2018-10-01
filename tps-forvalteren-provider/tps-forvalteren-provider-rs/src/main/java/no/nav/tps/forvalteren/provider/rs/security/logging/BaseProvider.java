@@ -1,9 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.security.logging;
 
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 public abstract class BaseProvider {
 
@@ -14,7 +13,7 @@ public abstract class BaseProvider {
         if (SPORINGSLOGGER.isInfoEnabled()) {
             SPORINGSLOGGER.info("ServiceRutine: {}, Request: {}",
                     serviceRutine,
-                    requestParameters.toString()
+                    requestParameters
             );
         }
     }

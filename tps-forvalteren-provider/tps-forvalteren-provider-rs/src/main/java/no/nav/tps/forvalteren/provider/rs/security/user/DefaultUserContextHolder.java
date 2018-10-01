@@ -1,18 +1,16 @@
 package no.nav.tps.forvalteren.provider.rs.security.user;
 
-import no.nav.tps.forvalteren.domain.service.user.User;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.service.user.UserRole;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.stereotype.Service;
+
+import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import no.nav.tps.forvalteren.service.user.UserRole;
 
 /**
  * Implementation of the UserContextHolder interface using spring security
@@ -21,20 +19,18 @@ import java.util.Set;
 @Service
 public class DefaultUserContextHolder implements UserContextHolder {
 
+    private static final String ANONYMOUS_USER = "anonymousUser";
+
     @Override
     public String getDisplayName() {
-        if(getUserDetails() == null) {
-            return "ananomys";
-        }
-        return getUserDetails().getDn();
+        LdapUserDetails ldapUserDetails = getUserDetails();
+        return ldapUserDetails != null ? ldapUserDetails.getDn() : "anonymous";
     }
 
     @Override
     public String getUsername() {
-        if(getUserDetails() == null) {
-            return "ananomys_user";
-        }
-        return getUserDetails().getUsername();
+        LdapUserDetails ldapUserDetails = getUserDetails();
+        return ldapUserDetails != null ? ldapUserDetails.getUsername() : ANONYMOUS_USER;
     }
 
     @Override
@@ -45,35 +41,27 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public User getUser() {
-        if(getAuthentication() == null || getAuthentication().getPrincipal().equals("anonymousUser")){
-            return new User("anonymousUser", "anonymousUser");
-        }
-        return new User(getDisplayName(), getUsername());
+        Authentication authentication = getAuthentication();
+        return authentication == null || ANONYMOUS_USER.equals(authentication.getPrincipal()) ?
+                new User(ANONYMOUS_USER, ANONYMOUS_USER) :
+                new User(getDisplayName(), getUsername());
     }
 
     @Override
     public Set<UserRole> getRoles() {
-        return new HashSet<>((Collection<UserRole>)getAuthentication().getAuthorities());
+        Authentication authentication = getAuthentication();
+        return authentication != null && authentication.getAuthorities() != null ?
+                new HashSet<>((Collection<UserRole>) authentication.getAuthorities()) : null;
     }
 
     private Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+        return SecurityContextHolder.getContext() != null ?
+                SecurityContextHolder.getContext().getAuthentication() : null;
     }
 
     private LdapUserDetails getUserDetails() {
-        if(getAuthentication() == null){
-            return null;
-        }
-
-        Object userDetails = getAuthentication().getPrincipal();
-
-        Boolean isUserDetails = userDetails instanceof LdapUserDetails;
-
-        if ( !isUserDetails ) {
-            return null;
-//            throw new TpsfFunctionalException("User details is an incorrect type: " + userDetails.getClass());
-        }
-
-        return (LdapUserDetails) userDetails;
+        Authentication authentication = getAuthentication();
+        return authentication != null && authentication.getPrincipal() instanceof LdapUserDetails ?
+                (LdapUserDetails) authentication.getPrincipal() : null;
     }
 }

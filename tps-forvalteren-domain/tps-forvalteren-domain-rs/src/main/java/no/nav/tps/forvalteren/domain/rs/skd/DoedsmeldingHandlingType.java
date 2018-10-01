@@ -6,9 +6,9 @@ public enum DoedsmeldingHandlingType {
     U("UPDATE -- Endre dødsmelding"),
     D("DELETE -- Annuler");
 
-    private String name;
+    private String handling;
 
-    DoedsmeldingHandlingType(String name) {
-        this.name = name;
+    DoedsmeldingHandlingType(String handling) {
+        this.handling = handling;
     }
 }
