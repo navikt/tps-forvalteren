@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.request.RsSkdmeldingerMedLoepenrRequest;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
@@ -163,5 +165,12 @@ public class SkdEndringsmeldingController {
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
         List<SkdEndringsmeldingLogg> log = getLoggForGruppe.execute(gruppeId);
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
+    }
+    
+    @PostMapping("syntetiserte/{avspillergruppeId}")
+    public void swapLoepenrMedIdentogLagre(@PathVariable Long avspillergruppeId, @RequestBody RsSkdmeldingerMedLoepenrRequest request) {
+        //validere responsen
+        //swapLoepenrMedIdent
+        //lagre til repository
     }
 }
