@@ -23,18 +23,20 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public String getDisplayName() {
-        if(getUserDetails() == null) {
+        if(getUserDetails() != null) {
+            return getUserDetails().getDn();
+        } else {
             return "ananomys";
         }
-        return getUserDetails().getDn();
     }
 
     @Override
     public String getUsername() {
-        if(getUserDetails() == null) {
+        if(getUserDetails() != null) {
+            return getUserDetails().getUsername();
+        } else {
             return "ananomys_user";
         }
-        return getUserDetails().getUsername();
     }
 
     @Override
