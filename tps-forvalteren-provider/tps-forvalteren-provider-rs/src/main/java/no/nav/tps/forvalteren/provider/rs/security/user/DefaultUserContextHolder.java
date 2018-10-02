@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -23,20 +24,12 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public String getDisplayName() {
-        if(getUserDetails() != null) {
-            return getUserDetails().getDn();
-        } else {
-            return "ananomys";
-        }
+        return Optional.ofNullable(getUserDetails()).map(userDetails -> userDetails.getDn()).orElse("anonymous");
     }
 
     @Override
     public String getUsername() {
-        if(getUserDetails() != null) {
-            return getUserDetails().getUsername();
-        } else {
-            return "ananomys_user";
-        }
+        return Optional.ofNullable(getUserDetails()).map(userDetails -> userDetails.getUsername()).orElse("anonymous_user");
     }
 
     @Override
