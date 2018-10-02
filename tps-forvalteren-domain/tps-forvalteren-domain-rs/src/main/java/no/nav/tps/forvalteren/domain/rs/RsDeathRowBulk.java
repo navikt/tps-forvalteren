@@ -1,17 +1,16 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter

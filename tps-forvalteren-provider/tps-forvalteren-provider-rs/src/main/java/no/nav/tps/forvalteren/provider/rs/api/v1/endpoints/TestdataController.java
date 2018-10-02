@@ -54,7 +54,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 
 @RestController
@@ -110,7 +110,7 @@ public class TestdataController {
     private MapperFacade mapper;
 
     @Autowired
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTpsService;
 
     @Autowired
     private TestdataGruppeToSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe;
@@ -147,9 +147,8 @@ public class TestdataController {
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerServiceFraIdenter.execute(identer);
 
-        if (personKriterierListe.isWithAdresse()) {
-            setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
-        }
+        setRandomAdresseOnPersons.execute(personerSomSkalPersisteres, personKriterierListe.getAdresseNrInfo());
+
         personNameService.execute(personerSomSkalPersisteres);
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
     }
@@ -162,7 +161,6 @@ public class TestdataController {
         deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
-    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
@@ -171,7 +169,6 @@ public class TestdataController {
         savePersonListService.execute(personer);
     }
 
-    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
@@ -193,7 +190,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
-        return lagreTilTps.execute(gruppeId, environments);
+        return lagreTilTpsService.execute(gruppeId, environments);
     }
 
     @Transactional

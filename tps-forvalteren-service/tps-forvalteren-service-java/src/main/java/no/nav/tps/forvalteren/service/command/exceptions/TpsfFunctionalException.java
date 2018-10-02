@@ -4,13 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class TpsfFunctionalException extends RuntimeException {
-    
+public class TpsfFunctionalException extends HttpException {
+
     public TpsfFunctionalException(String message) {
-        super(message);
+        super(message, null);
     }
 
-    public TpsfFunctionalException(Throwable cause) {
-        super(cause);
+    public TpsfFunctionalException(String message, Throwable throwable) {
+        this(message);
     }
 }

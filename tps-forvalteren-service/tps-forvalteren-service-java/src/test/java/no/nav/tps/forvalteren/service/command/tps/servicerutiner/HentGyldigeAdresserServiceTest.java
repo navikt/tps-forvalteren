@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.Typesok;
@@ -49,6 +50,8 @@ public class HentGyldigeAdresserServiceTest {
         user = new User("name", "username");
         when(userContextHolder.getUser()).thenReturn(user);
         when(tpsRequestSender.sendTpsRequest(any(), any(), anyLong())).thenReturn(new TpsServiceRoutineResponse("<xml>", new Object()));
+
+        ReflectionTestUtils.setField(hentGyldigeAdresserService,"env", "u6");
     }
     
     @Test

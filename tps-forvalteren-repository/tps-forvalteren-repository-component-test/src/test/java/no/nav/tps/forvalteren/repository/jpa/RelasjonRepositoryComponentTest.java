@@ -60,7 +60,7 @@ public class RelasjonRepositoryComponentTest {
         Relasjon rel = new Relasjon();
         rel.setPerson(personKari);
         rel.setPersonRelasjonMed(personOla);
-        rel.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
+        rel.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getName());
 
         personKari.setRelasjoner(Arrays.asList(rel));
 
@@ -74,7 +74,7 @@ public class RelasjonRepositoryComponentTest {
         assertSame(relasjon.get(0).getPerson().getFornavn(), personKari.getFornavn());
         assertSame(relasjon.get(0).getPersonRelasjonMed().getFornavn(), personOla.getFornavn());
 
-        assertSame(relasjon.get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
+        assertSame(relasjon.get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getName());
 
         assertSame(personer.get(0).getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), personOla.getFornavn());
     }
@@ -91,7 +91,7 @@ public class RelasjonRepositoryComponentTest {
         Relasjon rel = new Relasjon();
         rel.setPerson(personKari);
         rel.setPersonRelasjonMed(personOla);
-        rel.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
+        rel.setRelasjonTypeNavn(RelasjonType.EKTEFELLE.getName());
 
         personKari.setRelasjoner(Arrays.asList(rel));
 
@@ -124,10 +124,10 @@ public class RelasjonRepositoryComponentTest {
         ola = personRepository.findByIdentIn(Arrays.asList(personOla.getIdent())).get(0);
 
         assertSame(kari.getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), ola.getFornavn());
-        assertSame(kari.getRelasjoner().get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
+        assertSame(kari.getRelasjoner().get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getName());
 
         assertSame(ola.getRelasjoner().get(0).getPersonRelasjonMed().getFornavn(), kari.getFornavn());
-        assertSame(ola.getRelasjoner().get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getRelasjonTypeNavn());
+        assertSame(ola.getRelasjoner().get(0).getRelasjonTypeNavn(), RelasjonType.EKTEFELLE.getName());
     }
 
     private void saveGiftemaalCopyOfGiftemaalService(Person person1, Person person2){
@@ -141,8 +141,8 @@ public class RelasjonRepositoryComponentTest {
 
         RelasjonType relasjonType = RelasjonType.EKTEFELLE;
 
-        relasjon1.setRelasjonTypeNavn(relasjonType.getRelasjonTypeNavn());
-        relasjon2.setRelasjonTypeNavn(relasjonType.getRelasjonTypeNavn());
+        relasjon1.setRelasjonTypeNavn(relasjonType.getName());
+        relasjon2.setRelasjonTypeNavn(relasjonType.getName());
 
         // Gjor dette fordi H2 ikke lager tom liste(Sender NULL) naar den ikke finner data av en eller annen grunn.
         if(person1.getRelasjoner() == null){
@@ -153,7 +153,7 @@ public class RelasjonRepositoryComponentTest {
         }
 
         for(Relasjon relasjon : person1.getRelasjoner()){
-            if(relasjon.getRelasjonTypeNavn().equals(relasjonType.getRelasjonTypeNavn()) &&
+            if(relasjon.getRelasjonTypeNavn().equals(relasjonType.getName()) &&
                     relasjon.getPersonRelasjonMed().getIdent().equalsIgnoreCase(person2.getIdent())){
                 return;
             }

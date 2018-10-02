@@ -8,7 +8,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 
 @Service
-public class Testdata {
+public class TestdataService {
 
     @Autowired
     private TaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;

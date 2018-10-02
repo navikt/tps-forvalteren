@@ -40,7 +40,8 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTps;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -83,7 +84,7 @@ public class TestdataControllerTest {
     private SaveGruppe saveGruppe;
 
     @Mock
-    private LagreTilTps lagreTilTps;
+    private LagreTilTpsService lagreTilTpsService;
 
     @Mock
     private DeleteGruppeById deleteGruppeById;
@@ -93,6 +94,9 @@ public class TestdataControllerTest {
 
     @Mock
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
+
+    @Mock
+    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
     @Mock
     private CreateTestdataPerson createTestdataPerson;
@@ -190,7 +194,7 @@ public class TestdataControllerTest {
 
         testdataController.lagreTilTPS(GRUPPE_ID, environments);
 
-        verify(lagreTilTps).execute(GRUPPE_ID, environments);
+        verify(lagreTilTpsService).execute(GRUPPE_ID, environments);
     }
 
     @Test
@@ -251,5 +255,4 @@ public class TestdataControllerTest {
         verify(testdataGruppeToSkdEndringsmeldingGruppe).execute(GRUPPE_ID);
         verify(mapper).map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
-
 }

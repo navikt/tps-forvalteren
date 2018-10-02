@@ -49,6 +49,7 @@ public class TpsServicesControllerTest {
 
     @Test
     public void getTpsServiceRutinerReturnererBareLovligeServiceRutiner() throws Exception {
+        //FJernet at man er authorised til å bruke servicerutiner, så unodvendig teste
         TpsServiceRoutineDefinitionRequest serviceRoutineMock1 = mock(TpsServiceRoutineDefinitionRequest.class);
         TpsServiceRoutineDefinitionRequest serviceRoutineMock2 = mock(TpsServiceRoutineDefinitionRequest.class);
         TpsServiceRoutineDefinitionRequest serviceRoutineMock3 = mock(TpsServiceRoutineDefinitionRequest.class);
@@ -61,6 +62,7 @@ public class TpsServicesControllerTest {
         List<TpsServiceRoutineDefinitionRequest> rutiner = tpsServicesController.getTpsServicesMenu();
 
         assertSame(rutiner.size() , 2);
+//        assertThat(rutiner, containsInAnyOrder(serviceRoutineMock1, serviceRoutineMock2, serviceRoutineMock3));
         assertThat(rutiner, containsInAnyOrder(serviceRoutineMock2, serviceRoutineMock3));
     }
 }

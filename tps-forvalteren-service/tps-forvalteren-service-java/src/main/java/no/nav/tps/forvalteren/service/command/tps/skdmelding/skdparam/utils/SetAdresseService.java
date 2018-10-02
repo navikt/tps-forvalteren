@@ -13,7 +13,7 @@ import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 
 @Service
-public class SetAdresse {
+public class SetAdresseService {
 
     @Autowired
     private HusbokstavEncoder husbokstavEncoder;
@@ -27,12 +27,14 @@ public class SetAdresse {
         Adresse boadresse = person.getBoadresse();
         if (person.getBoadresse() != null) {
             if (boadresse instanceof Matrikkeladresse) {
+                skdMeldingTrans1.setAdressetype("M");
                 skdMeldingTrans1.setGateGaard(((Matrikkeladresse) boadresse).getGardsnr());
                 skdMeldingTrans1.setHusBruk(((Matrikkeladresse) boadresse).getBruksnr());
                 skdMeldingTrans1.setBokstavFestenr(((Matrikkeladresse) boadresse).getFestenr());
                 skdMeldingTrans1.setUndernr(((Matrikkeladresse) boadresse).getUndernr());
                 skdMeldingTrans1.setAdressenavn(((Matrikkeladresse) boadresse).getMellomnavn());
             } else {
+                skdMeldingTrans1.setAdressetype("O");
                 skdMeldingTrans1.setGateGaard(((Gateadresse) boadresse).getGatekode());
                 addHusBrukAndBokstavFestenr(skdMeldingTrans1, (Gateadresse) boadresse);
                 String adresse = ((Gateadresse) boadresse).getAdresse();
@@ -45,7 +47,6 @@ public class SetAdresse {
             skdMeldingTrans1.setPostnummer(boadresse.getPostnr());
 
             skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(boadresse.getFlyttedato()));
-            skdMeldingTrans1.setAdressetype("O");
         }
 
         /* Postadresse */
@@ -70,7 +71,5 @@ public class SetAdresse {
                 skdMeldingTrans1.setHusBruk(husnummerMatcher.group(1));
             }
         }
-
     }
-
 }

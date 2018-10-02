@@ -1,5 +1,12 @@
 package no.nav.tps.forvalteren.provider.rs;
 
+import javax.transaction.Transactional;
+import org.junit.After;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.transaction.TestTransaction;
+
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
@@ -10,17 +17,8 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingLoggRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
-import javax.transaction.Transactional;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.transaction.TestTransaction;
-
 @Transactional
 public class TransactionalRegressionTestBase {
-
-    private static final long CURRENT_TIME_MILLISECONDS = 13370000000L;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

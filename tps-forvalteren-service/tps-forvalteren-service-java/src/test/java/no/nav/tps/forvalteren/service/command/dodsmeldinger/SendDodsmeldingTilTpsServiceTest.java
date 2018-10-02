@@ -26,6 +26,7 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
@@ -33,7 +34,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.AdresseService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonstatusService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
@@ -45,8 +46,6 @@ public class SendDodsmeldingTilTpsServiceTest {
     private static final String MILJOE = "u5";
     private static final String SKDMLD = "Very long unreadable message";
     private static final LocalDateTime DOEDSDATO = LocalDateTime.of(2018, 9, 19, 0, 0);
-
-    private enum Action {C, U, D}
 
     @InjectMocks
     private SendDodsmeldingTilTpsService sendDodsmeldingTilTpsService;
@@ -70,7 +69,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     private PersonstatusService personstatusService;
 
     @Mock
-    private AdresseService adresseService;
+    private PersonAdresseService personAdresseService;
 
     @Mock
     private PersondataFraTpsS004 persondataFraTpsS004;
@@ -87,7 +86,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     @Test
     public void sendDoedsmeldingPersonAlleredeDoed() {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(DOEDSDATO));
-        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(Action.C)));
+        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.C)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
 
         expectedException.expect(TpsfFunctionalException.class);
@@ -98,7 +97,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     @Test
     public void sendDoedsmeldingForPersonOk() {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(null);
-        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(Action.C)));
+        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.C)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
         when(skdCreator.execute(eq("Doedsmelding"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
@@ -113,7 +112,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     @Test
     public void sendAnnuleringPersonErIkkeDoed() {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(null);
-        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(Action.D)));
+        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.D)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
 
         expectedException.expect(TpsfFunctionalException.class);
@@ -124,7 +123,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     @Test
     public void sendAnnuleringForDoedPersonOk() {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(DOEDSDATO));
-        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(Action.D)));
+        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.D)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
         when(skdCreator.execute(eq("DoedsmeldingAnnullering"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
@@ -139,7 +138,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     @Test
     public void sendEndreDoedsdatoPersonErIkkeDoed() {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(null);
-        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(Action.U)));
+        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.U)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
 
         expectedException.expect(TpsfFunctionalException.class);
@@ -153,14 +152,14 @@ public class SendDodsmeldingTilTpsServiceTest {
         Adresse adresse = Gateadresse.builder().build();
 
         when(persondataFraTpsS004.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(DOEDSDATO));
-        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(Action.U)));
+        when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.U)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
         when(skdCreator.execute(eq("DoedsmeldingAnnullering"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdCreator.execute(eq("Doedsmelding"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
         when(doedsmeldingAnnuller.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
         when(doedsmelding.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
-        when(adresseService.hentBoadresseForDato(eq(IDENT), eq(DOEDSDATO.minusDays(1)), eq(MILJOE))).thenReturn(adresse);
+        when(personAdresseService.hentBoadresseForDato(eq(IDENT), eq(DOEDSDATO.minusDays(1)), eq(MILJOE))).thenReturn(adresse);
 
         sendDodsmeldingTilTpsService.execute();
 
@@ -171,7 +170,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         assertThat(personCaptor.getValue().getBoadresse(), is(equalTo(adresse)));
     }
 
-    private DeathRow buildDoedsmelding(Action action) {
+    private DeathRow buildDoedsmelding(DoedsmeldingHandlingType action) {
         return DeathRow.builder()
                 .ident(IDENT)
                 .handling(action.name())

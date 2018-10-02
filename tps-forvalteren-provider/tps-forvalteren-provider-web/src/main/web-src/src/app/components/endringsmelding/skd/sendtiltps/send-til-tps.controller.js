@@ -22,8 +22,7 @@ angular.module('tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', ['ngMaterial
                         $mdDialog.hide();
                         var alert = $mdDialog.alert()
                             .title('Bekreftelse')
-                            .htmlContent('SKD-melding(er) for gruppe har blitt sendt til TPS.<br>' +
-                                    'På grunn av prosessering i batch kan det ta flere minutter før endringen er synlig.')
+                            .htmlContent('SKD-melding(er) for gruppe har blitt sendt til TPS.')
                             .ariaLabel('Bekreftelse på at SKD-meldinger har blitt sendt til TPS')
                             .ok('OK');
                         $mdDialog.show(alert);

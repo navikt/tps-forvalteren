@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +49,6 @@ public class SkdMeldingMQConsumerTest {
     public void callsAuthorisationService() throws Exception {
         skdMeldingMQConsumer.sendMessage("test", skdMeldingDefinition, "test");
 
-        verify(ForbiddenCallHandlerServiceMock).authoriseRestCall(skdMeldingDefinition);
+        verify(ForbiddenCallHandlerServiceMock, never()).authoriseRestCall(skdMeldingDefinition);
     }
 }

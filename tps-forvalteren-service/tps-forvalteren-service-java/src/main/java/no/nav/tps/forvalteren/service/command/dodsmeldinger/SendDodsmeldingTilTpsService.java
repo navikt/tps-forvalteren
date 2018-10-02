@@ -1,8 +1,15 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.C;
+import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.D;
+import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.U;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
-import org.codehaus.plexus.util.StringUtils;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
@@ -13,9 +20,10 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.AdresseService;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonstatusService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertStringToDate;
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
@@ -25,8 +33,6 @@ public class SendDodsmeldingTilTpsService {
 
     private static final String PERSON_ER_DOED = "Personen med ident %s er allerede død i miljø %s.";
     private static final String PERSON_IKKE_DOED = "Personen med ident %s er ikke død i miljø %s.";
-
-    private enum Action {C, U, D}
 
     @Autowired
     private DeathRowRepository deathRowRepository;
@@ -47,10 +53,9 @@ public class SendDodsmeldingTilTpsService {
     private PersonstatusService personstatusService;
 
     @Autowired
-    private AdresseService adresseService;
+    private PersonAdresseService personAdresseService;
 
     public void execute() {
-
         List<DeathRow> deathRowTasks = deathRowRepository.findAllByStatus("Ikke sendt");
 
         for (DeathRow deathRow : deathRowTasks) {
@@ -60,45 +65,70 @@ public class SendDodsmeldingTilTpsService {
             person.setIdent(deathRow.getIdent());
             person.setRegdato(LocalDateTime.now());
 
-            PersondataFraTpsS004 persondataFraTpsS004 = personstatusService.hentPersonstatus(person.getIdent(), deathRow.getMiljoe());
+            PersondataFraTpsS004 persondataFraTps = hentPersonstatus(person.getIdent(), deathRow.getMiljoe());
 
-            if (Action.U.name().equals(deathRow.getHandling()) || Action.D.name().equals(deathRow.getHandling())) {
-
-                if (StringUtils.isBlank(persondataFraTpsS004.getDatoDo())) {
-                    throw new TpsfFunctionalException(String.format(PERSON_IKKE_DOED, person.getIdent(), deathRow.getMiljoe()));
-                }
-                
-                findLastAddress(person, persondataFraTpsS004.getDatoDo(), deathRow.getMiljoe());
-
-                String melding = skdCreator.execute("DoedsmeldingAnnullering", person, true).toString();
-                sendSkdMeldingTilMiljoe.execute(melding, doedsmeldingAnnuller.resolve(), Sets.newHashSet(deathRow.getMiljoe()));
-            }
-
-            if (Action.U.name().equals(deathRow.getHandling()) || Action.C.name().equals(deathRow.getHandling())) {
-
-                if (Action.C.name().equals(deathRow.getHandling()) && StringUtils.isNotBlank(persondataFraTpsS004.getDatoDo())) {
-                    throw new TpsfFunctionalException(String.format(PERSON_ER_DOED, person.getIdent(), deathRow.getMiljoe()));
-                }
-
-                person.setDoedsdato(deathRow.getDoedsdato());
-
-                String melding = skdCreator.execute("Doedsmelding", person, true).toString();
-                sendSkdMeldingTilMiljoe.execute(melding, doedsmelding.resolve(), Sets.newHashSet(deathRow.getMiljoe()));
-            }
+            sendAnnulering(person, persondataFraTps.getDatoDo(), deathRow.getHandling(), deathRow.getMiljoe());
+            sendDoedsmelding(person, persondataFraTps.getDatoDo(), deathRow.getDoedsdato(), deathRow.getHandling(), deathRow.getMiljoe());
 
             deathRow.setStatus("Sendt");
             deathRowRepository.save(deathRow);
         }
     }
 
+    protected PersondataFraTpsS004 hentPersonstatus(String ident, String miljoe) {
+
+        try {
+            return personstatusService.hentPersonstatus(ident, miljoe);
+        } catch (TpsfTechnicalException e) {
+            throw new TpsfFunctionalException(
+                    String.format("Fant ikke person med ident %s i miljø %s", ident, miljoe), e);
+        }
+    }
+
+    protected Map<String, String> sendDoedsmelding(Person person, String tpsDoedsdato, LocalDateTime doedsdato, String handling, String miljoe) {
+
+        if (U.name().equals(handling) || C.name().equals(handling)) {
+
+            if (C.name().equals(handling) && StringUtils.isNotBlank(tpsDoedsdato)) {
+                throw new TpsfFunctionalException(String.format(PERSON_ER_DOED, person.getIdent(), miljoe));
+            }
+
+            person.setDoedsdato(doedsdato);
+
+            return sendMelding(person, "Doedsmelding", doedsmelding, miljoe);
+        }
+        return Collections.emptyMap();
+    }
+
+    protected Map<String, String> sendAnnulering(Person person, String doedsdato, String handling, String miljoe) {
+
+        if (U.name().equals(handling) || D.name().equals(handling)) {
+
+            if (isBlank(doedsdato)) {
+                throw new TpsfFunctionalException(String.format(PERSON_IKKE_DOED, person.getIdent(), miljoe));
+            }
+
+            findLastAddress(person, doedsdato, miljoe);
+
+            return sendMelding(person, "DoedsmeldingAnnullering", doedsmeldingAnnuller, miljoe);
+        }
+        return Collections.emptyMap();
+    }
+
+    private Map<String, String> sendMelding(Person person, String type, SkdMeldingResolver resolver, String miljoe) {
+
+        String melding = skdCreator.execute(type, person, true).toString();
+        return sendSkdMeldingTilMiljoe.execute(melding, resolver.resolve(), Sets.newHashSet(miljoe));
+    }
+
     private void findLastAddress(Person person, String doedsdato, String miljoe) {
-        Adresse adresse = adresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
+
+        Adresse adresse = personAdresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
 
         if (adresse != null) {
             adresse.setId(person.getId());
             adresse.setPerson(person);
             person.setBoadresse(adresse);
-
         }
     }
 }

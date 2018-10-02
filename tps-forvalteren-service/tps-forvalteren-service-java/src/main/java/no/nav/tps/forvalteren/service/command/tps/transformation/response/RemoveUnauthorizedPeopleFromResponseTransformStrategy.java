@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Tra
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
@@ -19,6 +20,9 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     @Autowired
     private ForbiddenCallHandlerService forbiddenCallHandlerService;
 
+    @Value("${tps.forvalteren.production.mode}")
+    private boolean currentEnvironmentIsProd;
+
     @Override
     public boolean isSupported(Object o) {
         return o instanceof RemoveUnauthorizedPeopleFromResponseTransform;
@@ -26,7 +30,9 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
 
     @Override
     public void execute(Response response, Transformer transformer) {
-        removeUnauthorizedPeopleFromResponse(response, (RemoveUnauthorizedPeopleFromResponseTransform) transformer);
+        if(currentEnvironmentIsProd){
+            removeUnauthorizedPeopleFromResponse(response, (RemoveUnauthorizedPeopleFromResponseTransform) transformer);
+        }
     }
 
     private void removeUnauthorizedPeopleFromResponse(Response response, RemoveUnauthorizedPeopleFromResponseTransform transformer) {

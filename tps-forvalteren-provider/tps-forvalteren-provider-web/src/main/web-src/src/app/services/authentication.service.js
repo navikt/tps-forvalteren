@@ -11,6 +11,7 @@ angular.module('tps-forvalteren.service')
                 sessionService.setIsAuthenticated(true);
                 sessionService.setIsSignedIn(true);
                 sessionService.setCurrentUser(res.data);
+                // sessionService.setCurrentUser({"name": "bruker", "username": "user"});
             };
 
             self.authenticate = function (credentials, callback) {
@@ -40,7 +41,10 @@ angular.module('tps-forvalteren.service')
             self.loadUser = function () {
                 var defer = $q.defer();
 
+
                 if (!sessionService.getIsAuthenticated()) {
+
+
                     $http.get(loginRoute, {
                         headers: {}
                     })

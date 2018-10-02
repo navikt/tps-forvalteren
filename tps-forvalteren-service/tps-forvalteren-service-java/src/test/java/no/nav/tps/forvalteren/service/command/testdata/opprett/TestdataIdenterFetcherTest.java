@@ -50,7 +50,7 @@ public class TestdataIdenterFetcherTest {
     private MessageProvider messageProvider;
 
     @Mock
-    private Testdata testdata;
+    private TestdataService testdataService;
 
     @InjectMocks
     private TestdataIdenterFetcher testdataIdenterFetcher;
@@ -74,11 +74,11 @@ public class TestdataIdenterFetcherTest {
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
         testdataRequest2.getIdenterTilgjengligIMiljoe().add(dummyIdent2);
 
-        when(testdata.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1, testdataRequest2));
+        when(testdataService.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1,testdataRequest2));
 
         testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdata, times(1)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
+        verify(testdataService, times(1)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class TestdataIdenterFetcherTest {
         testdataRequest3.getIdenterTilgjengligIMiljoe().add(dummyIdent3);
         testdataRequest4.getIdenterTilgjengligIMiljoe().add(dummyIdent4);
 
-        when(testdata.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class)))
+        when(testdataService.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class)))
                 .thenReturn(
                         Arrays.asList(testdataRequest1, testdataRequest2),
                         Arrays.asList(testdataRequest3),
@@ -101,7 +101,7 @@ public class TestdataIdenterFetcherTest {
 
         List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdata, times(3)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
+        verify(testdataService, times(3)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
 
         assertThat(requests.get(1).getIdenterTilgjengligIMiljoe()
                 .containsAll(Arrays.asList(dummyIdent2, dummyIdent3, dummyIdent4)), is(true));
@@ -114,7 +114,7 @@ public class TestdataIdenterFetcherTest {
 
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
 
-        when(testdata.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1));
+        when(testdataService.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1));
         when(messageProvider.get(anyString())).thenReturn("msg");
 
         expectedException.expect(HttpCantSatisfyRequestException.class);

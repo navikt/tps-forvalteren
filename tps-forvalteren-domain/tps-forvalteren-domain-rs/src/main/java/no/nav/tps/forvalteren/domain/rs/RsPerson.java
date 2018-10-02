@@ -29,7 +29,7 @@ public class RsPerson {
 
     @NotBlank
     @Size(min = 3, max = 3)
-    private Character kjonn;
+    private String kjonn;
 
     @NotBlank
     @Size(min = 1, max = 50)
@@ -76,7 +76,6 @@ public class RsPerson {
     @NotNull
     private LocalDateTime regdato;
 
-    @NotNull
     private RsSimpleGruppe gruppe;
 
     private List<RsSimpleRelasjon> relasjoner;

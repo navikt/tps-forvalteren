@@ -9,6 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Utvandrin
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {

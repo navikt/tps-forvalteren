@@ -1,28 +1,30 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
+import java.time.LocalDate;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import org.hibernate.validator.constraints.NotBlank;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RsPersonKriterier {
 
     @NotBlank
     @Size(min = 3, max = 3)
     private String identtype;
 
-    private Character kjonn;
+    private String kjonn;
 
     private LocalDate foedtEtter;
 

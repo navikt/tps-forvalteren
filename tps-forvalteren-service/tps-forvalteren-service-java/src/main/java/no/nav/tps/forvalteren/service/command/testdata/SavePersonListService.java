@@ -28,9 +28,6 @@ public class SavePersonListService {
     private RelasjonRepository relasjonRepository;
 
     @Autowired
-    private UppercaseDataInPerson uppercaseDataInPerson;
-
-    @Autowired
     private OppdaterRelasjonReferanser oppdaterRelasjonReferanser;
 
     @Autowired
@@ -44,12 +41,11 @@ public class SavePersonListService {
 
             Person personDb = personRepository.findById(person.getId());
             if (personDb != null) {
-                oppdaterRelasjonReferanser.execute(person, personDb);//dette er vel mer synkronisering av relasjonsreferanser enn opprettelse?
-                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb); //denne itererer gjennom de samme relasjonene på samme måte som linjen ovenfor, men i stedet for å sette id fra relasjonDB til person.getRelasjon på de relasjoner de har felles,så returnerer den id til de relasjoner som den ikke har felles. Derfor kan disse to metoden samles til én. Begge metodene blir kun brukt her. TODO refaktureringsoppgave for å samle disse to metodene til en metode for synkronisering av relasjoner.
+                oppdaterRelasjonReferanser.execute(person, personDb);
+                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
                 adresseRepository.deleteAllByPerson(personDb);
             }
 
-            uppercaseDataInPerson.execute(person);
             if (person.getPostadresse() != null) {
                 for (Postadresse adr : person.getPostadresse()) {
                     adr.setPerson(person);

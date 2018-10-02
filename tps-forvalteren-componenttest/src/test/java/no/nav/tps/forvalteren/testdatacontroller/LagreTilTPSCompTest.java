@@ -111,7 +111,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilPerson3.setFlyttedato(LocalDateTime.of(2018, 04, 26, 12, 11, 10));
         Person person3 = Person.builder().gruppe(testgruppe).ident("04121656499").identtype("FNR")
                 .fornavn("GLITRENDE").etternavn("NORDMANN").statsborgerskap("349")
-                .kjonn('M')
+                .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .boadresse(adressenTilPerson3).build();
         adressenTilPerson3.setPerson(person3);
@@ -123,7 +123,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private void opprettPersonerSomTriggerUpdateInnvandringsMelding() {
         Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").identtype("FNR")
                 .etternavn("Kake").fornavn("Snill")
-                .kjonn('M')
+                .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .build();
         personRepository.save(person5);
@@ -136,7 +136,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilEktemann.setFlyttedato(LocalDateTime.of(2018, 04, 05, 11, 30, 28));
         Person ektemann = Person.builder().gruppe(testgruppe).ident("10050552565").identtype("FNR")
                 .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap("000")
-                .kjonn('K')
+                .kjonn("K")
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .boadresse(adressenTilEktemann).build();
         adressenTilEktemann.setPerson(ektemann);
@@ -148,7 +148,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilKone.setFlyttedato(LocalDateTime.of(2018, 05, 15, 14, 10, 44));
         Person kone = Person.builder().gruppe(testgruppe).ident("12017500617").identtype("FNR")
                 .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap("000")
-                .kjonn('M')
+                .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .boadresse(adressenTilKone).build();
         adressenTilKone.setPerson(kone);
@@ -161,7 +161,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private void opprettPersonerSomTriggerDoedsmeldinger() {
         Person doedPerson = Person.builder().gruppe(testgruppe).ident("11031250155").identtype("DNR")
                 .doedsdato(LocalDateTime.of(2018, 05, 15, 14, 10, 44))
-                .kjonn('M')
+                .kjonn("M")
                 .fornavn("Døende").etternavn("Person")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .build();

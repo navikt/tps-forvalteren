@@ -112,7 +112,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .identtype("FNR")
                 .gruppe(testgruppe)
                 .identtype("per")
-                .kjonn('m')
+                .kjonn("m")
                 .regdato(LocalDateTime.now())
                 .fornavn("lol")
                 .etternavn("sdf")

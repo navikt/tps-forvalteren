@@ -19,8 +19,7 @@ public class RsPersonKriteriumRequest {
     @NotEmpty
     @Size(min = 1)
     private List<RsPersonKriterier> personKriterierListe;
-    
-    private boolean withAdresse;
+
     @Valid
     private AdresseNrInfo adresseNrInfo;
 }

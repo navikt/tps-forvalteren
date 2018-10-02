@@ -34,7 +34,7 @@ public class PersonmalMappingStrategyTest {
     public void MapsFromJpaPersonmalToRsPersonmal() {
         RsPersonMal rsPersonMal = mapperFacade.map(PERSONMAL_A, RsPersonMal.class);
 
-        assertThat(rsPersonMal.getKjonn(), is(PERSONMAL_A.getKjonn().toCharArray()[0]));
+        assertThat(rsPersonMal.getKjonn(), is(PERSONMAL_A.getKjonn()));
         assertThat(rsPersonMal.getMinAntallBarn(), is(String.valueOf(PERSONMAL_A.getMinAntallBarn())));
         assertThat(rsPersonMal.getMaxAntallBarn(), is(String.valueOf(PERSONMAL_A.getMinAntallBarn())));
         assertThat(rsPersonMal.getAdresse(), is(PERSONMAL_A.getAdresse()));
@@ -48,7 +48,7 @@ public class PersonmalMappingStrategyTest {
         RsPersonMal rsPersonMal = mapperFacade.map(PERSONMAL_A, RsPersonMal.class);
         Personmal personmal = mapperFacade.map(rsPersonMal, Personmal.class);
 
-        assertThat(personmal.getKjonn(), is(rsPersonMal.getKjonn().toString()));
+        assertThat(personmal.getKjonn(), is(rsPersonMal.getKjonn()));
         assertThat(personmal.getMinAntallBarn(), is(Integer.parseInt(rsPersonMal.getMinAntallBarn())));
         assertThat(personmal.getMaxAntallBarn(), is(Integer.parseInt(rsPersonMal.getMaxAntallBarn())));
         assertThat(personmal.getAdresse(), is(rsPersonMal.getAdresse()));

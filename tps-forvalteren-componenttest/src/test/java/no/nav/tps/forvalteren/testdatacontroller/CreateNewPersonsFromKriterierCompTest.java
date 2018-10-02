@@ -1,7 +1,9 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
-import static java.lang.Integer.parseInt;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -108,12 +110,11 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
         List<Person> lagredePersoner = gruppeRepository.findById(gruppeId).getPersoner();
         assertEquals(2, lagredePersoner.size());
         lagredePersoner.forEach(person -> {
-            assertEquals("FNR", person.getIdenttype());
-            assertEquals("kjønn = kvinne i FNR", 0, parseInt(person.getIdent().substring(8, 9)) % 2);
-            assertEquals(((Character) 'K'), person.getKjonn());
+            assertThat(person.getIdenttype(), is(equalTo("FNR")));
+            assertThat(person.getKjonn(), is(equalTo("K")));
             assertTrue(identer.contains(person.getIdent()));
             assertNotNull(person.getBoadresse());
-            assertEquals("0901", person.getBoadresse().getKommunenr());
+            assertThat(person.getBoadresse().getKommunenr(), is(equalTo("0901")));
         });
     }
     

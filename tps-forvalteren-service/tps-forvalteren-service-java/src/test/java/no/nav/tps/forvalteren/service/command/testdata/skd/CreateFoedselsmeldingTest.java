@@ -50,7 +50,7 @@ public class CreateFoedselsmeldingTest {
 
     @Test
     public void execute() {
-        List<SkdMeldingTrans1> result = createFoedselsmeldinger.execute(listeMedPersoner, ADD_HEADER);
+        List<SkdMeldingTrans1> result = createFoedselsmeldinger.executeFromPersons(listeMedPersoner, ADD_HEADER);
 
         verify(findPersonerSomSkalHaFoedselsmelding).execute(anyListOf(Person.class));
         verify(skdMessageCreatorTrans1).execute(anyString(), anyListOf(Person.class), anyBoolean());

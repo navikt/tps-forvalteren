@@ -2,15 +2,14 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
 
-import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresse;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 public abstract class InnvandringSkdParameterStrategy implements SkdParametersStrategy {
 
@@ -20,7 +19,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     private LandkodeEncoder landkodeEncoder;
 
     @Autowired
-    private SetAdresse setAdresse;
+    private SetAdresseService setAdresse;
 
     @Override
     public SkdMeldingTrans1 execute(Person person) {
@@ -59,17 +58,9 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
         setAdresse.execute(skdMeldingTrans1, person);
-        addSpesreg(skdMeldingTrans1, person);
-    }
 
-    private void addSpesreg(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
-        if (person.getSpesreg() != null) {
-            skdMeldingTrans1.setSpesRegType(person.getSpesreg());
-        }
-        LocalDateTime spesregDato = person.getSpesregDato();
-        if (spesregDato != null) {
-            skdMeldingTrans1.setDatoSpesRegType(String.format("%04d%02d%02d", spesregDato.getYear(), spesregDato.getMonthValue(), spesregDato.getDayOfMonth()));
-        }
+        skdMeldingTrans1.setSpesRegType(person.getSpesreg());
+        skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(person.getSpesregDato()));
     }
 
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {

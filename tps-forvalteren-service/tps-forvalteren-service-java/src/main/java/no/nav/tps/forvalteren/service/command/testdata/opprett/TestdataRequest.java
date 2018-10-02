@@ -19,12 +19,12 @@ public class TestdataRequest {
 
     Set<String> identerTilgjengligIMiljoe;
 
-    public TestdataRequest(RsPersonKriterier personKriterier){
-        kriterium = personKriterier  ;
+    public TestdataRequest(RsPersonKriterier personKriterier) {
+        kriterium = personKriterier;
     }
 
-    public TestdataRequest(RsPersonMal personMal){
-        inputPerson = personMal ;
+    public TestdataRequest(RsPersonMal personMal) {
+        inputPerson = personMal;
     }
 
     public Set<String> getIdenterGenerertForKriteria() {

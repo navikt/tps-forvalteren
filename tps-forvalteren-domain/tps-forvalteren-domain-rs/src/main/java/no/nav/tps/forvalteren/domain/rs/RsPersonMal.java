@@ -40,7 +40,7 @@ public class RsPersonMal {
     private String fodtFor;
 
     @Size(max = 1)
-    private Character kjonn;
+    private String kjonn;
 
     @Size(min = 1, max = 3)
     private String statsborgerskap;
