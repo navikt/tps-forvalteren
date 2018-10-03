@@ -28,6 +28,7 @@ import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.domain.rs.RsVergemaal;
@@ -46,14 +47,15 @@ import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
+import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 
 @RestController
 @RequestMapping(value = "api/v1/testdata")
@@ -118,12 +120,17 @@ public class TestdataController {
 
     @Autowired
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
+
     @Autowired
     private StatusPaaIdenterITps statusPaaIdenterITps;
 
-    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
+    @Autowired
+    private CreateTestdataPerson createTestdataPerson;
+
+    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
+            + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody @Valid RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
@@ -240,5 +247,13 @@ public class TestdataController {
     @RequestMapping(value = "/vergemaal/{vergemaalId}", method = RequestMethod.DELETE)
     public void deleteVergemaal(@PathVariable("vergemaalId") Long vergemaalId) {
         vergemaalRepository.deleteById(vergemaalId);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
+    @RequestMapping(value = "/mal/personer/{gruppeId}", method = RequestMethod.POST)
+    public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
+
+        createTestdataPerson.execute(gruppeId, inputPersonRequest);
     }
 }

@@ -14,6 +14,7 @@ import org.junit.runners.Parameterized;
 
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.xjc.ctg.domain.s051.StatusFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.SvarFraTPS;

@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
@@ -37,7 +37,7 @@ public class OpprettPersonerServiceTest {
     HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
 
     @Mock
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Mock
     private LandkodeEncoder landkodeEncoder;

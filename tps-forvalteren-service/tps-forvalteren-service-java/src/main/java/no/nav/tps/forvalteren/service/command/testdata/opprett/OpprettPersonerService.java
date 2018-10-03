@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
@@ -20,7 +20,7 @@ public class OpprettPersonerService {
     private HentKjoennFraIdentService hentKjoennFraIdentService;
 
     @Autowired
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Autowired
     private HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
@@ -40,9 +40,9 @@ public class OpprettPersonerService {
             newPerson.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
             if ("FNR".equals(newPerson.getIdenttype())) {
                 newPerson.setStatsborgerskap("NOR");
-                newPerson.setStatsborgerskapRegdato(hentDatoFraIdent.extract(ident));
+                newPerson.setStatsborgerskapRegdato(hentDatoFraIdentService.extract(ident));
             }
-            newPerson.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(ident));
+            newPerson.setInnvandretFraLandFlyttedato(hentDatoFraIdentService.extract(ident));
             personer.add(newPerson);
         }
         return personer;

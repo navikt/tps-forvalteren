@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterF
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 
 @RunWith(MockitoJUnitRunner.class)

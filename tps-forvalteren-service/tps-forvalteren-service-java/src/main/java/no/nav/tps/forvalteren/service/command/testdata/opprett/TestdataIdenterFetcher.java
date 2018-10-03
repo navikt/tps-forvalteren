@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class TestdataIdenterFetcher {
 
         taBortOverflodigeIdenterFraTestRequests(testdataRequests);
 
-        if (!erAlleKriterieOppfylt(testdataRequests)) {
+        if (!erAlleKriteriaOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
         }
 
@@ -47,7 +46,7 @@ public class TestdataIdenterFetcher {
                 while ((counter < MAX_TRIES) && !harNokIdenterForKritereIRequest(request)) {
                     RsPersonKriteriumRequest singelKriterieListe = new RsPersonKriteriumRequest();
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
-                    singelKriterieListe.getPersonKriterierListe().add(request.getKriterie());
+                    singelKriterieListe.getPersonKriterierListe().add(request.getKriterium());
 
                     List<TestdataRequest> testdataRequestSingelList = testdataService.genererIdenterForTestdataRequests(singelKriterieListe);
 
@@ -82,7 +81,7 @@ public class TestdataIdenterFetcher {
         }
     }
 
-    private boolean erAlleKriterieOppfylt(List<TestdataRequest> testdataRequests) {
+    private boolean erAlleKriteriaOppfylt(List<TestdataRequest> testdataRequests) {
         for (TestdataRequest request : testdataRequests) {
             if (!harNokIdenterForKritereIRequest(request)) {
                 return false;
@@ -92,7 +91,7 @@ public class TestdataIdenterFetcher {
     }
 
     private boolean harNokIdenterForKritereIRequest(TestdataRequest request) {
-        return request.getIdenterTilgjengligIMiljoe().size() >= request.getKriterie().getAntall();
+        return request.getIdenterTilgjengligIMiljoe().size() >= request.getKriterium().getAntall();
     }
 
 }

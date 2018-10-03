@@ -1,14 +1,14 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class VergemaalSkdParameterStrategy {
@@ -55,7 +55,6 @@ public class VergemaalSkdParameterStrategy {
         skdMeldingTrans1.setSakstype(vergemaal.getSakstype());
         skdMeldingTrans1.setVedtaksdato(ConvertDateToString.yyyyMMdd(vergemaal.getVedtaksdato()));
         skdMeldingTrans1.setInternVergeid(vergemaal.getInternVergeId());
-
         skdMeldingTrans1.setVergeFnrDnr(vergemaal.getVergeFnr());
         skdMeldingTrans1.setVergetype(vergemaal.getVergetype());
         skdMeldingTrans1.setMandattype(vergemaal.getMandattype());

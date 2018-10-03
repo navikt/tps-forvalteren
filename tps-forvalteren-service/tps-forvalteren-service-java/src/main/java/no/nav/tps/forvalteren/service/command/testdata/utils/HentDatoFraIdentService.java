@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.utils;
 import static java.lang.Integer.parseInt;
 
 import java.time.LocalDateTime;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * INDIVID(POS 7-9) 500-749 OG ÅR > 54 => ÅRHUNDRE = 1800
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
  * INDIVID(POS 7-9) 900-999 OG ÅR > 39 => ÅRHUNDRE = 1900
  * INDIVID(POS 7-9) 500-999 OG ÅR < 40 => ÅRHUNDRE = 2000
  */
-@Component
-public class HentDatoFraIdent {
+@Service
+public class HentDatoFraIdentService {
 
     public LocalDateTime extract(String ident) {
 
