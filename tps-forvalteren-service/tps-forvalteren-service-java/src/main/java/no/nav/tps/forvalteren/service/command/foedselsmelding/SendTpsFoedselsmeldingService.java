@@ -61,14 +61,10 @@ public class SendTpsFoedselsmeldingService {
 
         validate(request);
         S018PersonType persondataMor = getPersonhistorikk(request.getIdentMor(), request.getFoedselsdato(), request.getMiljoe());
-        checkBosatt("Mor", persondataMor.getPersonStatus(), request.getFoedselsdato());
 
         S018PersonType persondataFar = null;
         if (StringUtils.isNotBlank(request.getIdentFar())) {
             persondataFar = getPersonhistorikk(request.getIdentFar(), request.getFoedselsdato(), request.getMiljoe());
-            if (FAR == request.getAdresseFra()) {
-                checkBosatt("Far", persondataFar.getPersonStatus(), request.getFoedselsdato());
-            }
         }
 
         Person person = opprettPersonMedEksisterendeForeldreService.execute(request);

@@ -82,11 +82,12 @@ public class OpprettPersonMedEksisterendeForeldreService {
     private Relasjon createRelasjon(RelasjonType relasjonType, Person hovedperson, String identRelasjon) {
 
         return Relasjon.builder()
-                .person(Person.builder()
+                .person(hovedperson)
+                .personRelasjonMed(Person.builder()
                         .ident(identRelasjon)
                         .identtype(hentIdenttypeFraIdentService.execute(identRelasjon))
-                        .build())
-                .personRelasjonMed(hovedperson)
+                        .build()
+                )
                 .relasjonTypeNavn(relasjonType.name())
                 .build();
     }
