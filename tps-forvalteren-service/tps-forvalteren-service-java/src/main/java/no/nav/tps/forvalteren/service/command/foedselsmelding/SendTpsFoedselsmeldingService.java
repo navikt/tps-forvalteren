@@ -103,7 +103,7 @@ public class SendTpsFoedselsmeldingService {
         try {
             return personhistorikkService.hentPersonhistorikk(ident, date, env);
         } catch (TpsfTechnicalException e) {
-            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env));
+            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env), e);
         }
     }
 

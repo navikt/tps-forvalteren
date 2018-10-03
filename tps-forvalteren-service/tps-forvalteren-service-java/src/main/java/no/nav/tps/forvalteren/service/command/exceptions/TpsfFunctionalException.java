@@ -9,4 +9,8 @@ public class TpsfFunctionalException extends HttpException {
     public TpsfFunctionalException(String message) {
         super(message, null);
     }
+
+    public TpsfFunctionalException(String message, Throwable throwable) {
+        this(message);
+    }
 }

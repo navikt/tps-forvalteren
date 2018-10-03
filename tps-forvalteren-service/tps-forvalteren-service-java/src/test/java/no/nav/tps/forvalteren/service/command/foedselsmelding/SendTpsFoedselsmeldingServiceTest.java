@@ -80,11 +80,10 @@ public class SendTpsFoedselsmeldingServiceTest {
     public void setup() {
         when(personhistorikkService.hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString())).thenReturn(hentPersonType());
         when(skdMessageCreatorTrans1.execute(eq(NAVN_FOEDSELSMELDING), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
-
     }
 
     @Test
-    public void tpsEndringsmeldingServicePakrevetFeltMangler() {
+    public void tpsEndringsmeldingServiceMissingRequestParameters() {
 
         rsTpsFoedselsmeldingRequest = RsTpsFoedselsmeldingRequest.builder()
                 .foedselsdato(LocalDateTime.now())

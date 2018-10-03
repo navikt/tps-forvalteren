@@ -80,12 +80,12 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         int countMothers = 0;
         int countFathers = 0;
         for (Relasjon relasjon : barn.getRelasjoner()) {
+
             if (RelasjonType.MOR.getName().equals(relasjon.getRelasjonTypeNavn())) {
                 forelderMor = relasjon.getPersonRelasjonMed();
                 countMothers++;
-                continue;
-            }
-            if (RelasjonType.FAR.getName().equals(relasjon.getRelasjonTypeNavn())) {
+
+            } else if (RelasjonType.FAR.getName().equals(relasjon.getRelasjonTypeNavn())) {
                 forelderFar = relasjon.getPersonRelasjonMed();
                 countFathers++;
             }
