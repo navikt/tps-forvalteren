@@ -1,11 +1,19 @@
 package no.nav.tps.forvalteren;
 
-import static org.mockito.Mockito.mock;
+import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
+import no.nav.tps.forvalteren.config.TestUserDetails;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
+import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
+import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
+import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.mockito.Mockito;
@@ -17,17 +25,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
-import no.nav.tps.forvalteren.ApplicationStarter;
-import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
-import no.nav.tps.forvalteren.config.TestUserDetails;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
-import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
-import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
-import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import static org.mockito.Mockito.mock;
 
 @Configuration
 @Import(ApplicationStarter.class)
