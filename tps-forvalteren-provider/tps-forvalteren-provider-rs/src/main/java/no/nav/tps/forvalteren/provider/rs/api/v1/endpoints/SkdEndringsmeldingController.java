@@ -5,6 +5,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 import java.util.List;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsm
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SyntetiserteSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
 
@@ -84,6 +86,9 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private GetLoggForGruppe getLoggForGruppe;
+    
+    @Autowired
+    private SyntetiserteSkdEndringsmeldingerService syntetiserteSkdService;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -168,9 +173,8 @@ public class SkdEndringsmeldingController {
     }
     
     @PostMapping("syntetiserte/{avspillergruppeId}")
-    public void swapLoepenrMedIdentogLagre(@PathVariable Long avspillergruppeId, @RequestBody RsSkdmeldingerMedLoepenrRequest request) {
+    public void swapLoepenrMedIdentogLagre(@PathVariable Long avspillergruppeId, @RequestBody @Valid RsSkdmeldingerMedLoepenrRequest request) {
         //validere responsen
-        //swapLoepenrMedIdent
-        //lagre til repository
+        System.out.println(request.getSkdmeldingerMedLoepenummer());
     }
 }

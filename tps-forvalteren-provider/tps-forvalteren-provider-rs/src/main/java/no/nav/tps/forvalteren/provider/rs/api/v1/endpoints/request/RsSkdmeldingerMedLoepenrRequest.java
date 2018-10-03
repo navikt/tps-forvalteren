@@ -1,9 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.request;
 
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,9 +11,8 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 @Getter
 public class RsSkdmeldingerMedLoepenrRequest {
 
-    @Size(min = 1)
     private int antallLoepenumre;
     
-    @NotNull
+    @Valid
     private List<RsMeldingstype> skdmeldingerMedLoepenummer;
 }

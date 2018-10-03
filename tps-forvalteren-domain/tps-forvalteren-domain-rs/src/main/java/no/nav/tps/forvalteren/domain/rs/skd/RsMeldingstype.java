@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
+import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -18,19 +19,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class RsMeldingstype {
-
+    
     private Long id;
     
     private String beskrivelse;
-    
+    @Size(max = 1)
     private String transtype;
-    
+    @Size(max = 8)
     private String maskindato;
-
+    @Size(max = 6)
     private String maskintid;
-
+    @Size(max = 2)
     private String aarsakskode;
-
+    @Size(max = 6)
     private String sekvensnr;
-
+    
 }
