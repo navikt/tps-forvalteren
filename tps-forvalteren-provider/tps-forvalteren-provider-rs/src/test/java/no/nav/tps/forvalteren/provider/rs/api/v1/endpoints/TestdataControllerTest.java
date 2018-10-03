@@ -20,6 +20,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsGruppe;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
@@ -38,7 +39,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -104,7 +105,7 @@ public class TestdataControllerTest {
     public void createNewPersonsFromKriterier() {
         RsPersonKriteriumRequest rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
 
-        TestdataRequest testdataRequest = new TestdataRequest(null);
+        TestdataRequest testdataRequest = new TestdataRequest((RsPersonKriterier) null);
         List<TestdataRequest> testdataRequestsList = new ArrayList<>();
         testdataRequestsList.add(testdataRequest);
 
@@ -238,5 +239,4 @@ public class TestdataControllerTest {
         verify(testdataGruppeToSkdEndringsmeldingGruppe).execute(GRUPPE_ID);
         verify(mapper).map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
-
 }

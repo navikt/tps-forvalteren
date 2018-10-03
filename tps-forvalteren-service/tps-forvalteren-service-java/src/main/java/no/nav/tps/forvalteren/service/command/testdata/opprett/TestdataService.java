@@ -21,8 +21,7 @@ public class TestdataService {
     @Autowired
     private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
 
-
-    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests){
+    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests) {
         filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
     }
 
@@ -34,11 +33,11 @@ public class TestdataService {
         filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests);
     }
 
-    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){
+    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest) {
         return genererIdenterForTestdataRequests.execute(personKriterierRequest);
     }
 
-    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request){
+    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request) {
         taBortOverfloedigIdenterITestdataRequest.execute(request);
     }
 }

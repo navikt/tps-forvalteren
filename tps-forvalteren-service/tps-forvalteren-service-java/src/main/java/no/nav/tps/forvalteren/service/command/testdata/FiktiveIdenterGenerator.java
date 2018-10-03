@@ -54,7 +54,7 @@ public class FiktiveIdenterGenerator {
         while (identSet.size() != (kriteria.getAntall() * MULTIPLY_ANT_IDENTER)) {
             identitetBuilder = new StringBuilder();
             LocalDate fodselsdatoDate = genererFodsselsdatoBasertPaaKriterie(kriteria);
-            String fodselsdato = genererFnrDnrBnrStringified(kriteria, fodselsdatoDate);
+            String fodselsdato = genererFnrDnrBnrStringified(kriteria.getIdenttype(), fodselsdatoDate);
             List<Integer> rangeList = hentKategoriIntervallForDato(fodselsdatoDate);
             identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), kriteria.getKjonn()));
             int forsteKontrollSiffer = hentForsteKontrollSiffer(identitetBuilder.toString());
@@ -71,8 +71,8 @@ public class FiktiveIdenterGenerator {
         return identSet;
     }
 
-    private String genererFnrDnrBnrStringified(RsPersonKriterier personKriterier, LocalDate date) {
-        switch (personKriterier.getIdenttype()) {
+    private String genererFnrDnrBnrStringified(String identtype, LocalDate date) {
+        switch (identtype) {
         case "DNR":
             return genererNyttDnummer(date);
         case "BNR":
@@ -209,5 +209,4 @@ public class FiktiveIdenterGenerator {
     private String lagTilfeldigKvinneEllerMann() {
         return randomNumberProvider.nextDouble() < 0.5 ? "K" : "M";
     }
-
 }

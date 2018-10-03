@@ -18,7 +18,8 @@ import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 
@@ -54,7 +55,7 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
         toPersoner = Arrays.asList(aMalePerson().build(), aMalePerson().build());
         tpsServiceRoutineResponse = createServiceRutineTpsResponse(tpsResponsUrl);
         when(hentGyldigeAdresserServiceMock.hentTilfeldigAdresse(eq(1), any(), any())).thenReturn(tpsServiceRoutineResponse);
-        setRandomAdresseOnPersons.setHentDatoFraIdent(mock(HentDatoFraIdent.class));
+        setRandomAdresseOnPersons.setHentDatoFraIdentService(mock(HentDatoFraIdentService.class));
     }
     
 }
