@@ -70,7 +70,7 @@ public class OpprettPersonMedEksisterendeForeldreServiceTest {
 
         Person result = opprettPersonService.execute(rsTpsFoedselsmeldingRequest);
 
-        assertThat(result.getRelasjoner().get(0).getPerson().getIdent(), is(equalTo(IDENT_MOR)));
-        assertThat(result.getRelasjoner().get(1).getPerson().getIdent(), is(equalTo(IDENT_FAR)));
+        assertThat(result.getRelasjoner().get(0).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_MOR)));
+        assertThat(result.getRelasjoner().get(1).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_FAR)));
     }
 }
