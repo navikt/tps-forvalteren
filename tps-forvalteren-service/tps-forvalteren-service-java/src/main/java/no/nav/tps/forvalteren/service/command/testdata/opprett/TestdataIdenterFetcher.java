@@ -26,7 +26,7 @@ public class TestdataIdenterFetcher {
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
 
-        if (!erAlleKriterieOppfylt(testdataRequests)) {
+        if (!erAlleKriteriaOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, false);
         }
 
@@ -36,7 +36,7 @@ public class TestdataIdenterFetcher {
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenterAlleMiljoer(RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
 
-        if (!erAlleKriterieOppfylt(testdataRequests)) {
+        if (!erAlleKriteriaOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, true);
         }
 
@@ -51,10 +51,6 @@ public class TestdataIdenterFetcher {
         testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
 
         taBortOverflodigeIdenterFraTestRequests(testdataRequests);
-
-        if (!erAlleKriteriaOppfylt(testdataRequests)) {
-            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
-        }
 
         return testdataRequests;
     }

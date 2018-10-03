@@ -9,8 +9,8 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
     private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
     @Autowired
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdent;
 
     @Autowired
     private MapperFacade mapperFacade;

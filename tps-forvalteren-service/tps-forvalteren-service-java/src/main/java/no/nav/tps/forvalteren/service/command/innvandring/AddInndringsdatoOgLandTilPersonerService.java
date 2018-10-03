@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.innvandring;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class AddInndringsdatoOgLandTilPersonerService {
     private LandkodeEncoder landkodeEncoder;
 
     @Autowired
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdent;
 
     @Autowired
     private PersonRepository personRepository;

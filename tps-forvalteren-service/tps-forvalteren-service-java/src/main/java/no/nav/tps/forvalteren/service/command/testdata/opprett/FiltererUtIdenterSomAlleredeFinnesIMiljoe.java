@@ -34,7 +34,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = new HashSet<>();
         for (TestdataRequest request : testdataRequests) {
-            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
+            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());
         }
 
         // Environment q0 only verified for existence
