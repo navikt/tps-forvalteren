@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,12 +23,11 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
+import no.nav.tps.forvalteren.repository.TestGruppeRepository;
 
-import no.nav.tps.forvalteren.config.ComptestConfig;
-
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = { ComptestConfig.class,  ApplicationStarter.class })
+//@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ComptestConfig.class)
 @ActiveProfiles("comptest")
 public abstract class AbstractRsProviderComponentTest {
     

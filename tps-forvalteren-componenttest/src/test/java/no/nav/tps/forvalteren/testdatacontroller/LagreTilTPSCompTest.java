@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
-import static no.nav.tps.forvalteren.config.ComptestConfig.actualConnectedToEnvironments;
+import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 
+import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
 import no.nav.tps.forvalteren.config.TestUserDetails;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
@@ -56,7 +57,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     
     private Long gruppeId;
     private Gruppe testgruppe;
-    
+
     @Autowired
     private MessageQueueConsumer messageQueueConsumerMock;
     
@@ -71,7 +72,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         setupTestdataInTpsfDatabase();
         mockTps();
     }
-    
+
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldSendSuccesfulSkdMessagesToTPS() throws Exception {
@@ -90,7 +91,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
     
     private void mockTps() throws JMSException {
-        //mock findPersonsNotInEnvironments:
         when(messageQueueConsumerMock.sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl)), DEFAULT_TIMEOUT))
                 .thenReturn(getResourceFileContent("testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_response.xml"));
     }

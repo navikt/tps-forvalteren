@@ -16,6 +16,7 @@ import com.google.common.base.Charsets;
 import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.repository.TestGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -30,7 +31,7 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
     
     @Autowired
     protected GruppeRepository gruppeRepository;
-    
+
     @Autowired
     protected PersonRepository personRepository;
     

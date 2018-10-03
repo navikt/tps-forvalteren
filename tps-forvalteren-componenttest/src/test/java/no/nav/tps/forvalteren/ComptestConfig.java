@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.config;
+package no.nav.tps.forvalteren;
 
 import static org.mockito.Mockito.mock;
 
@@ -10,20 +10,28 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-
+import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
+import no.nav.tps.forvalteren.ApplicationStarter;
+import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
+import no.nav.tps.forvalteren.config.TestUserDetails;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
 import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Configuration
+@Import(ApplicationStarter.class)
+@ComponentScan(basePackageClasses = ComptestConfig.class)
 public class ComptestConfig {
     
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
@@ -94,5 +102,9 @@ public class ComptestConfig {
     public Queue responseQueue() {
         return new ActiveMQQueue(TPS_TEST_RESPONSE_QUEUE);
     }
-    
+
+    @Bean
+    public LandkodeEncoder landkodeEncoder() {
+        return new TestLandkodeEncoder();
+    }
 }
