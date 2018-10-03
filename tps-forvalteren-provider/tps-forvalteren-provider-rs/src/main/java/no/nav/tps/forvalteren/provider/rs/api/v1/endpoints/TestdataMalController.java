@@ -54,7 +54,7 @@ public class TestdataMalController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public void updateTestdataMal() {
 
-        throw new TpsfFunctionalException("Funksjonen er ikke iomplementert");
+        throw new TpsfFunctionalException("Funksjonen er ikke implementert");
     }
 
     @Transactional

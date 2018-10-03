@@ -1,11 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
-import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
-import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
-import org.junit.Test;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,6 +7,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.Test;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
+
+import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
+import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
 public class UserControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
 
@@ -26,18 +27,12 @@ public class UserControllerIntegrationTest extends AbstractRsProviderIntegration
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void getUserReturnsJsonUser() throws Exception {
-        // Virker ikke grunnet endret til testbruker. se  UserController
-//        mvc.perform(get(BASE_URL+"/user"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-//                .andExpect(jsonPath("$.name", is(equalTo(TestUserDetails.DISPLAY_NAME))))
-//                .andExpect(jsonPath("$.username", is(equalTo(TestUserDetails.USERNAME))));
 
         mvc.perform(get(BASE_URL+"/user"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.name", is(equalTo("test_dn"))))
-                .andExpect(jsonPath("$.username", is(equalTo("test_username"))));
+                .andExpect(jsonPath("$.name", is(equalTo(TestUserDetails.DISPLAY_NAME))))
+                .andExpect(jsonPath("$.username", is(equalTo(TestUserDetails.USERNAME))));
     }
 
     @Test

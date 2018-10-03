@@ -49,7 +49,9 @@ public final class PersonmalProvider {
                 .postPostnr("")
                 .postKommunenr("")
                 .postFlyttedatoFra(null)
-                .postFlyttedatoTil(null);
+                .postFlyttedatoTil(null)
+                .identType("FNR")
+                .antallIdenter(1);
     }
 
     public static Personmal.PersonmalBuilder personmalB() {
@@ -84,6 +86,8 @@ public final class PersonmalProvider {
                 .postPostnr("")
                 .postKommunenr("")
                 .postFlyttedatoFra(null)
-                .postFlyttedatoTil(null);
+                .postFlyttedatoTil(null)
+                .identType("FNR")
+                .antallIdenter(1);
     }
 }
