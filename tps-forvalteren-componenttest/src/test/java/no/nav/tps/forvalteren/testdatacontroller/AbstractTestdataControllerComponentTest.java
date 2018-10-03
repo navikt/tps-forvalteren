@@ -1,5 +1,14 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import com.google.common.base.Charsets;
+import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
+import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,16 +20,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.transaction.TestTransaction;
-import com.google.common.base.Charsets;
-
-import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.repository.TestGruppeRepository;
-import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
-import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 
 public abstract class AbstractTestdataControllerComponentTest extends AbstractRsProviderComponentTest {
     

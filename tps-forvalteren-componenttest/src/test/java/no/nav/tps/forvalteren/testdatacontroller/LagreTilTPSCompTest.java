@@ -1,5 +1,26 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import no.nav.tps.forvalteren.config.TestUserDetails;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+
+import javax.jms.JMSException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
+
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
@@ -10,28 +31,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.jms.JMSException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
-
-import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
-import no.nav.tps.forvalteren.config.TestUserDetails;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
 /**
  * Komptesten utfører følgende fra REST-grensesnitt til mock-versjon av messageQueueConsumer:
