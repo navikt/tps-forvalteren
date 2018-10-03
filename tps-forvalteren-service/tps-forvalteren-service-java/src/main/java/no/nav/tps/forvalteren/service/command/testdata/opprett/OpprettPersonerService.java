@@ -37,12 +37,10 @@ public class OpprettPersonerService {
             newPerson.setKjonn(hentKjoennFraIdentService.execute(ident));
             newPerson.setRegdato(LocalDateTime.now());
             newPerson.setSivilstand("0");
-            newPerson.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
             if ("FNR".equals(newPerson.getIdenttype())) {
                 newPerson.setStatsborgerskap("NOR");
                 newPerson.setStatsborgerskapRegdato(hentDatoFraIdent.extract(ident));
             }
-            newPerson.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(ident));
             personer.add(newPerson);
         }
         return personer;
