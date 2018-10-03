@@ -62,6 +62,21 @@ public class SetRandomAdresseOnPersons {
         return persons;
     }
 
+    public List<Person> execute(List<Person> persons){
+        TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(persons.size(), null, null);
+        final TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
+        throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
+
+        List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
+
+        for (int i = 0; i < persons.size(); i++) {
+            Gateadresse adresse = createGateAdresse(adresseDataList.get(i % adresseDataList.size()), persons.get(i));
+            persons.get(i).setBoadresse(adresse);
+        }
+
+        return persons;
+    }
+
     private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {
         if (!"00".equals(svarStatus.getReturStatus()) && !Arrays.asList("S051002I", "S051003I").contains(svarStatus.getReturMelding())) {
             throw new TpsfFunctionalException(svarStatus.getUtfyllendeMelding());

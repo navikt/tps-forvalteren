@@ -39,9 +39,6 @@ public class OpprettPersonerServiceTest {
     @Mock
     private HentDatoFraIdent hentDatoFraIdent;
 
-    @Mock
-    private LandkodeEncoder landkodeEncoder;
-
     @InjectMocks
     private OpprettPersonerService opprettPersonerService;
 

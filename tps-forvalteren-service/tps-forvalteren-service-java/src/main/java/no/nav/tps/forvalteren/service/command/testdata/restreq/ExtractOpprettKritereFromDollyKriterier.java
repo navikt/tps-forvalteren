@@ -5,11 +5,12 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,10 @@ import org.springframework.stereotype.Service;
 public class ExtractOpprettKritereFromDollyKriterier {
 
     @Autowired
-    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
+    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
+
+    @Autowired
+    private HentDatoFraIdent hentDatoFraIdent;
 
     @Autowired
     private MapperFacade mapperFacade;
@@ -108,6 +112,9 @@ public class ExtractOpprettKritereFromDollyKriterier {
 
                     if(req.getBoadresse() != null){
                         person.setBoadresse(mapperFacade.map(req.getBoadresse(), Adresse.class));
+                        if(person.getBoadresse().getFlyttedato() == null){
+                            person.getBoadresse().setFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
+                        }
                         person.getBoadresse().setPerson(person);
                     }
 
@@ -119,7 +126,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         );
 
         if(!hasGateAdresse(req)){
-            setDummyAdresseOnPersons.execute(personer);
+            setRandomAdresseOnPersons.execute(personer);
         }
 
         return personer;
