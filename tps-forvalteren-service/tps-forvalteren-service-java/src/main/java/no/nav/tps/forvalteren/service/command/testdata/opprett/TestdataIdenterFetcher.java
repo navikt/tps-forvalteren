@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 
 @Service
@@ -26,22 +25,6 @@ public class TestdataIdenterFetcher {
 
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe) {
         List<TestdataRequest> testdataRequests = testdataService.genererIdenterForTestdataRequests(personKriterierListe);
-
-        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
-
-        testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
-
-        taBortOverflodigeIdenterFraTestRequests(testdataRequests);
-
-        if (!erAlleKriteriaOppfylt(testdataRequests)) {
-            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
-        }
-
-        return testdataRequests;
-    }
-
-    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonMalRequest inputPersonRequest) {
-        List<TestdataRequest> testdataRequests = testdataService.genererIdenterForTestdataRequests(inputPersonRequest);
 
         testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
 

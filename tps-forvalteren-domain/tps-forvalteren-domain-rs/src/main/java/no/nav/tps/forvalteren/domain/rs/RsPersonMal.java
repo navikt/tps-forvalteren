@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -34,10 +35,10 @@ public class RsPersonMal {
     private String personmalBeskrivelse;
 
     @Size(min = 1, max = 8)
-    private String fodtEtter;
+    private LocalDate fodtEtter;
 
     @Size(min = 1, max = 8)
-    private String fodtFor;
+    private LocalDate fodtFor;
 
     @Size(max = 1)
     private String kjonn;
@@ -121,6 +122,8 @@ public class RsPersonMal {
     private String postFlyttedatoTil;
 
     @Max(99)
-    private int antallIdenter;
+    private Integer antallIdenter;
 
+    @Size(max = 3)
+    private String identType;
 }

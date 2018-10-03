@@ -17,13 +17,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FiltrerPaaIdenterSomIkkeFinnesIDBTest {
 
     private TestdataRequest testdataRequest1, testdataRequest2;
-    private RsPersonMal dummyInputFraPersonMal = new RsPersonMal();
+    private RsPersonKriterier dummyInputFraPersonMal = new RsPersonKriterier();
     private String dummyIdent1 = "dummy1";
     private String dummyIdent2 = "dummy2";
     private String dummyIdent3 = "dummy3";

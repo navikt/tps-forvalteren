@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,10 +41,10 @@ public class Personmal extends ChangeStamp {
     private String personmalBeskrivelse;
 
     @Column(name = "FODT_ETTER")
-    private String fodtEtter;
+    private LocalDate fodtEtter;
 
     @Column(name = "FODT_FOR")
-    private String fodtFor;
+    private LocalDate fodtFor;
 
     @Column(name = "KJONN")
     private String kjonn;
@@ -49,20 +52,56 @@ public class Personmal extends ChangeStamp {
     @Column(name = "STATSBORGERSKAP")
     private String statsborgerskap;
 
+    @Column(name = "STATSBORGERSKAP_REGDATO")
+    private LocalDate statsborgerskapRegdato;
+
     @Column(name = "SPESREG")
     private String spesreg;
 
     @Column(name = "SPESREG_DATO")
-    private String spesregDato;
+    private LocalDate spesregDato;
 
     @Column(name = "DOEDSDATO")
-    private String doedsdato;
+    private LocalDate doedsdato;
 
     @Column(name = "SIVILSTAND")
     private String sivilstand;
 
     @Column(name = "INNVANDRET_FRA_LAND")
     private String innvandretFraLand;
+
+    @Column(name = "INNVANDRET_FRA_LAND_FLYTTEDATO")
+    private LocalDate innvandretFraLandFlyttedato;
+
+    @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
+    private LocalDate innvandretFraLandRegdato;
+
+    @Column(name = "UTVANDRET_TIL_LAND", length = 3)
+    private String utvandretTilLand;
+
+    @Column(name = "UTVANDRET_TIL_LAND_FLYTTEDATO")
+    private LocalDate utvandretTilLandFlyttedato;
+
+    @Column(name = "UTVANDRET_TIL_LAND_REGDATO")
+    private LocalDate utvandretTilLandRegdato;
+
+    @Column(name = "EGEN_ANSATT_DATO_FOM")
+    private LocalDate egenAnsattDatoFom;
+
+    @Column(name = "EGEN_ANSATT_DATO_TOM")
+    private LocalDate egenAnsattDatoTom;
+
+    @Column(name = "TYPE_SIKKERHETSTILTAK", length = 4)
+    private String typeSikkerhetsTiltak;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_FOM")
+    private LocalDate sikkerhetsTiltakDatoFom;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_TOM")
+    private LocalDate sikkerhetsTiltakDatoTom;
+
+    @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
+    private String beskrSikkerhetsTiltak;
 
     @Column(name = "MIN_ANTALL_BARN")
     private int minAntallBarn;
@@ -83,10 +122,10 @@ public class Personmal extends ChangeStamp {
     private String gateKommunenr;
 
     @Column(name = "GATE_FLYTTEDATO_FRA")
-    private String gateFlyttedatoFra;
+    private LocalDate gateFlyttedatoFra;
 
     @Column(name = "GATE_FLYTTEDATO_TIL")
-    private String gateFlyttedatoTil;
+    private LocalDate gateFlyttedatoTil;
 
     @Column(name = "POST_LINJE1")
     private String postLinje1;
@@ -119,8 +158,16 @@ public class Personmal extends ChangeStamp {
     private String postKommunenr;
 
     @Column(name = "POST_FLYTTEDATO_FRA")
-    private String postFlyttedatoFra;
+    private LocalDate postFlyttedatoFra;
 
     @Column(name = "POST_FLYTTEDATO_TIL")
-    private String postFlyttedatoTil;
+    private LocalDate postFlyttedatoTil;
+
+    @NotBlank
+    @Column(name = "IDENT_TYPE")
+    private String identType;
+
+    @NotNull
+    @Column(name = "ANTALL_IDENTER")
+    private Integer antallIdenter;
 }

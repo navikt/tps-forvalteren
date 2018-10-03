@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
+package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
 

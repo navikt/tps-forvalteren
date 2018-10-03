@@ -3,9 +3,6 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.DateGenerator;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Service
 public class SetRandomFieldValues {
@@ -22,6 +20,9 @@ public class SetRandomFieldValues {
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
 
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
+
     public Person execute(String fieldName, Person person) {
 
         switch (fieldName) {
@@ -29,7 +30,7 @@ public class SetRandomFieldValues {
             person.setDoedsdato(getRandomDoedsdato(person));
             break;
         case "statsborgerskap":
-            person.setStatsborgerskap(getRandomLandKode().getLandkodesiffer());
+            person.setStatsborgerskap(landkodeEncoder.getRandomLandTla());
             break;
         case "spesreg":
             person.setSpesreg(getRandomSpesreg());
@@ -50,11 +51,6 @@ public class SetRandomFieldValues {
     private LocalDateTime getRandomDoedsdato(Person person) {
         return LocalDateTime.of(DateGenerator.genererRandomDatoInnenforIntervalInclusiveDatoEtterExclusiveDatoFoer(
                 hentDatoFraIdentService.extract(person.getIdent()).toLocalDate(), LocalDate.now()), LocalTime.now());
-    }
-
-    private LandKode getRandomLandKode() {
-        List<LandKode> landkoder = Collections.unmodifiableList(Arrays.asList(LandKode.values()));
-        return landkoder.get(random.nextInt(landkoder.size()));
     }
 
     private String getRandomSpesreg() {

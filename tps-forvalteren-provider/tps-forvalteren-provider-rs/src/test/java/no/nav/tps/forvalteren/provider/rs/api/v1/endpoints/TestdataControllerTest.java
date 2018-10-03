@@ -22,7 +22,6 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonIdListe;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.DeleteGruppeById;
@@ -40,9 +39,8 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
-import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataControllerTest {
@@ -98,14 +96,10 @@ public class TestdataControllerTest {
     @Mock
     private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
-    @Mock
-    private CreateTestdataPerson createTestdataPerson;
-
     @InjectMocks
     private TestdataController testdataController;
 
     private static final Long GRUPPE_ID = 0L;
-
 
     @Test
     public void createNewPersonsFromKriterier() {
@@ -129,16 +123,6 @@ public class TestdataControllerTest {
         verify(opprettPersonerServiceFraIdenter).execute(identer);
         verify(personNameService).execute(personerSomSkalPersisteres);
         verify(setGruppeIdAndSavePersonBulkTx).execute(personerSomSkalPersisteres, GRUPPE_ID);
-    }
-
-    @Test
-    public void createNewPersonsFromMal() {
-
-        RsPersonMalRequest rsPersonMalRequest = new RsPersonMalRequest();
-
-        testdataController.createNewPersonsFromMal(GRUPPE_ID, rsPersonMalRequest);
-
-        verify(createTestdataPerson).execute(GRUPPE_ID, rsPersonMalRequest);
     }
 
     @Test

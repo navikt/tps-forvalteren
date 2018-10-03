@@ -18,7 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
@@ -26,7 +26,7 @@ import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
     private TestdataRequest testdataRequest1, testdataRequest2;
-    private RsPersonMal dummyInputFraPersonMal = new RsPersonMal();
+    private RsPersonKriterier dummyInputFraPersonMal = new RsPersonKriterier();
     private String dummyIdent1 = "dummy1";
     private String dummyIdent2 = "dummy2";
     private String dummyIdent3 = "dummy3";
@@ -129,6 +129,5 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(false));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(false));
         assertThat(testdataRequest2.getIdenterTilgjengligIMiljoe().contains(dummyIdent3), is(false));
-
     }
 }

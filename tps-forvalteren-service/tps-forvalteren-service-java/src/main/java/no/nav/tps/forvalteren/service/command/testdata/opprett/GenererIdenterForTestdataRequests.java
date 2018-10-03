@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 @Service
@@ -25,19 +24,6 @@ public class GenererIdenterForTestdataRequests {
             taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriteria());
             requests.add(request);
         }
-        return requests;
-    }
-
-    public List<TestdataRequest> execute(RsPersonMalRequest inputPersonRequest) {
-        List<TestdataRequest> requests = new ArrayList<>();
-
-        inputPersonRequest.getInputPersonMalRequest().stream().forEach(rsPersonMal -> {
-            TestdataRequest request = new TestdataRequest(rsPersonMal);
-            request.setIdenterGenerertForKriteria(fiktiveIdenterGenerator.genererFiktiveIdenter(rsPersonMal));
-            taBortIdenterLagtTilIAndreKriterier(requests, request.getIdenterGenerertForKriteria());
-            requests.add(request);
-        });
-
         return requests;
     }
 
