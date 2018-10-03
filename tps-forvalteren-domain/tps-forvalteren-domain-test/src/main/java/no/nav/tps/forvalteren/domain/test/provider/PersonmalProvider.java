@@ -19,7 +19,7 @@ public final class PersonmalProvider {
                 .kjonn("K")
                 .statsborgerskap("001")
                 .spesreg("1")
-                .spesregDato(LocalDate.of(2018, 10, 01))
+                .spesregDato(LocalDate.of(2018, 10, 1))
                 .doedsdato(LocalDate.now())
                 .egenAnsattDatoFom(LocalDate.of(2016, 10, 10))
                 .egenAnsattDatoTom(LocalDate.of(2017,4,5))
