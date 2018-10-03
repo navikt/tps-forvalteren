@@ -79,7 +79,7 @@ public class PersonerBestillingService {
     }
 
     public List<Person> convertRequestTilPersoner(RsPersonKriteriumRequest personKriterierListe){
-        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(personKriterierListe);
+        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenterAlleMiljoer(personKriterierListe);
 
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);

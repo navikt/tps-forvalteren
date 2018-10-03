@@ -27,7 +27,11 @@ public class TestdataService {
     }
 
     public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests){
-        filtererUtIdenterSomAlleredeFinnesIMiljoe.execute(testdataRequests);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotQ0(testdataRequests);
+    }
+
+    public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(List<TestdataRequest> testdataRequests){
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests);
     }
 
     public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){

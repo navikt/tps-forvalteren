@@ -25,22 +25,38 @@ public class TestdataIdenterFetcher {
     private MessageProvider messageProvider;
 
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe) {
-        List<TestdataRequest> testdataRequests = testdataService.genererIdenterForTestdataRequests(personKriterierListe);
-
-        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequests);
-
-        testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
-
-        taBortOverflodigeIdenterFraTestRequests(testdataRequests);
+        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
 
         if (!erAlleKriterieOppfylt(testdataRequests)) {
-            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests);
+            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, false);
         }
 
         return testdataRequests;
     }
 
-    private void oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(List<TestdataRequest> testdataRequests) {
+    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenterAlleMiljoer(RsPersonKriteriumRequest personKriterierListe) {
+        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
+
+        if (!erAlleKriterieOppfylt(testdataRequests)) {
+            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, true);
+        }
+
+        return testdataRequests;
+    }
+
+    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe){
+        List<TestdataRequest> testdataRequests = testdataService.genererIdenterForTestdataRequests(personKriterierListe);
+
+        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(testdataRequests);
+
+        testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
+
+        taBortOverflodigeIdenterFraTestRequests(testdataRequests);
+
+        return testdataRequests;
+    }
+
+    private void oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(List<TestdataRequest> testdataRequests, boolean alleMiljoer) {
         for (TestdataRequest request : testdataRequests) {
             if (!harNokIdenterForKritereIRequest(request)) {
                 int counter = 0;
@@ -51,7 +67,11 @@ public class TestdataIdenterFetcher {
 
                     List<TestdataRequest> testdataRequestSingelList = testdataService.genererIdenterForTestdataRequests(singelKriterieListe);
 
-                    testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequestSingelList);
+                    if(alleMiljoer){
+                        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(testdataRequestSingelList);
+                    } else {
+                        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequestSingelList);
+                    }
 
                     testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequestSingelList);
 

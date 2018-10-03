@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.innvandring;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
@@ -30,6 +31,9 @@ public class AddInndringsdatoOgLandTilPersonerServiceTest {
 
     @Mock
     private HentDatoFraIdent hentDatoFraIdent;
+
+    @Mock
+    private PersonRepository personRepository;
 
     @InjectMocks
     private AddInndringsdatoOgLandTilPersonerService addInndringsdatoOgLandTilPersonerService;

@@ -66,7 +66,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(new HashSet<>());
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotQ0(Arrays.asList(testdataRequest1,testdataRequest2));
 
         verify(filtrerPaaIdenterTilgjengeligeIMiljoMock).filtrer(arg.capture(), any());
 
@@ -87,7 +87,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotQ0(Arrays.asList(testdataRequest1,testdataRequest2));
 
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(true));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(false));
@@ -107,7 +107,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotQ0(Arrays.asList(testdataRequest1,testdataRequest2));
 
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(true));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(true));
@@ -124,7 +124,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.execute(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotQ0(Arrays.asList(testdataRequest1,testdataRequest2));
 
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(false));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(false));

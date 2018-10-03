@@ -19,7 +19,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    public void execute(List<TestdataRequest> testdataRequests) {
+    public void executeMotQ0(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = new HashSet<>();
         for (TestdataRequest request : testdataRequests) {
             alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
@@ -27,6 +27,18 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
 
         // Environment q0 only verified for existence
         Set<String> environments = Sets.newHashSet("q0");
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
+        taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
+    }
+
+    public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests) {
+        Set<String> alleGenererteIdenter = new HashSet<>();
+        for (TestdataRequest request : testdataRequests) {
+            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
+        }
+
+        // Environment q0 only verified for existence
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }

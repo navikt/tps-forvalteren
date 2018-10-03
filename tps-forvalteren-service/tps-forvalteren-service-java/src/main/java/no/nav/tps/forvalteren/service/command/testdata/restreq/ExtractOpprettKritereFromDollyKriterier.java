@@ -101,7 +101,12 @@ public class ExtractOpprettKritereFromDollyKriterier {
         personer.forEach(person -> {
                     person.setRegdato(req.getRegdato());
                     person.setDoedsdato(req.getDoedsdato());
-                    person.setStatsborgerskap(req.getStatsborgerskap());
+                    if(req.getStatsborgerskap() != null){
+                        person.setStatsborgerskap(req.getStatsborgerskap());
+                    } else {
+                        person.setStatsborgerskap("NOR");
+                    }
+                    person.setStatsborgerskapRegdato(hentDatoFraIdent.extract(person.getIdent()));
                     person.setTypeSikkerhetsTiltak(req.getTypeSikkerhetsTiltak());
                     person.setSikkerhetsTiltakDatoFom(req.getSikkerhetsTiltakDatoFom());
                     person.setSikkerhetsTiltakDatoTom(req.getSikkerhetsTiltakDatoTom());
