@@ -1,17 +1,17 @@
 package no.nav.tps.forvalteren.provider.rs.security.user;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
-import org.springframework.stereotype.Service;
+import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import no.nav.tps.forvalteren.service.user.UserRole;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of the UserContextHolder interface using spring security
@@ -29,7 +29,7 @@ public class DefaultUserContextHolder implements UserContextHolder {
 
     @Override
     public String getUsername() {
-        return Optional.ofNullable(getUserDetails()).map(userDetails -> userDetails.getUsername()).orElse("anonymous_user");
+        return Optional.ofNullable(getUserDetails()).map(userDetails -> userDetails.getUsername()).orElse(ANONYMOUS_USER);
     }
 
     @Override
