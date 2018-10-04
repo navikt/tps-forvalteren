@@ -24,7 +24,7 @@ public class AddInndringsdatoOgLandTilPersonerService {
     public void execute(List<Person> personer){
         personer.forEach(person -> {
             if(person.getInnvandretFraLand() == null){
-                person.setInnvandretFraLand("SWE");
+                person.setInnvandretFraLand("106");
 //                person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
             }
             person.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
