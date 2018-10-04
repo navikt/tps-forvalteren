@@ -1,18 +1,6 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
-import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
-import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
-import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import org.codehaus.plexus.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
-
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -26,10 +14,18 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonhistorikkService;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertStringToDate;
-import no.nav.tps.xjc.ctg.domain.s018.PersonStatus;
-import no.nav.tps.xjc.ctg.domain.s018.PersonstatusType;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+import org.codehaus.plexus.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
+import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
+import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class SendTpsFoedselsmeldingService {
@@ -101,18 +97,6 @@ public class SendTpsFoedselsmeldingService {
         } catch (TpsfTechnicalException e) {
             throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env), e);
         }
-    }
-
-    private void checkBosatt(String forelder, List<PersonstatusType> personStatuses, LocalDateTime foedselsdag) {
-        for (PersonstatusType personStatus : personStatuses) {
-            if (PersonStatus.BOSA == personStatus.getKodePersonstatus() &&
-                    foedselsdag.compareTo(ConvertStringToDate.yyyysMMsdd(personStatus.getDatoFom())) >= 0 &&
-                    (isBlank(personStatus.getDatoTom()) ||
-                            foedselsdag.compareTo(ConvertStringToDate.yyyysMMsdd(personStatus.getDatoTom())) <= 0)) {
-                return;
-            }
-        }
-        throw new TpsfFunctionalException(String.format("%s var ikke bosatt på gitt dato.", forelder));
     }
 
     private SendSkdMeldingTilTpsResponse sendMeldingToTps(Person personSomSkalFoedes, String miljoe) {

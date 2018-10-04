@@ -19,11 +19,8 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    public void executeMotQ0(List<TestdataRequest> testdataRequests) {
-        Set<String> alleGenererteIdenter = new HashSet<>();
-        for (TestdataRequest request : testdataRequests) {
-            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());
-        }
+    public void executeMotProduliktMiljoe(List<TestdataRequest> testdataRequests) {
+        Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         // Environment q0 only verified for existence
         Set<String> environments = Sets.newHashSet("q0");
@@ -32,15 +29,20 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     }
 
     public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests) {
-        Set<String> alleGenererteIdenter = new HashSet<>();
-        for (TestdataRequest request : testdataRequests) {
-            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());
-        }
+        Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         // Environment q0 only verified for existence
         Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
+    }
+
+    private Set<String> getAlleGenererteIdenter(List<TestdataRequest> testdataRequests){
+        Set<String> alleGenererteIdenter = new HashSet<>();
+        for (TestdataRequest request : testdataRequests) {
+            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());
+        }
+        return alleGenererteIdenter;
     }
 
     private void taBortOpptatteIdenterRequest(List<TestdataRequest> testdataRequests, Set<String> alleTilgjengligIdenterIMiljoe) {

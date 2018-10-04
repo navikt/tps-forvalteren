@@ -26,7 +26,7 @@ public class TestdataService {
     }
 
     public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests){
-        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotQ0(testdataRequests);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotProduliktMiljoe(testdataRequests);
     }
 
     public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(List<TestdataRequest> testdataRequests){
