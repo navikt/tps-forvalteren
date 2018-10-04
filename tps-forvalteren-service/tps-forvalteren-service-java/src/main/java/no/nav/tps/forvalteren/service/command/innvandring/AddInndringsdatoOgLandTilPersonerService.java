@@ -23,7 +23,10 @@ public class AddInndringsdatoOgLandTilPersonerService {
 
     public void execute(List<Person> personer){
         personer.forEach(person -> {
-            person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+            if(person.getInnvandretFraLand() == null){
+                person.setInnvandretFraLand("SWE");
+//                person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+            }
             person.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
         });
 
