@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class ExtractOpprettKritereFromDollyKriterier {
 
     @Autowired
-    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
+    private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdent;
@@ -131,7 +131,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         );
 
         if(!hasGateAdresse(req)){
-            setRandomAdresseOnPersons.execute(personer);
+            setDummyAdresseOnPersons.execute(personer);
         }
 
         return personer;
