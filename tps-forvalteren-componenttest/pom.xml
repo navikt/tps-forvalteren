@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tps-forvalteren</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>forUtviklingsmiljo-77</version>
+        <version>forUtviklingsmiljo-79</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
