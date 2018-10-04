@@ -91,6 +91,20 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @GetMapping("/personstatus-og-adresse-person")
+    public Map fetchPersonstatusOgAdresseS018(
+            @RequestParam("fnr") String fnr,
+            @RequestParam(value = "aksjonsKode", defaultValue = "A0") String aksjonsKode,
+            @RequestParam(value = "aksjonsDato", required = false) String aksjonsDato,
+            @RequestParam(value = "adresseType", defaultValue = "ALLE") String adresseType,
+            @RequestParam("environment") String environment
+    ) {
+        Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
+        collectionOfQueryParams.put("adresseType", adresseType);
+        TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-PADRHIST-O");
+        return tpsResponseToJsonHandler.execute(res);
+    }
+
     @GetMapping("/adresse-historikk-linjeadresse")
     public Map fetchAdresseHistorikkLinjeS015(
             @RequestParam("fnr") String fnr,
