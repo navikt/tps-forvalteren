@@ -17,7 +17,7 @@ public class LandkodeEncoder {
     private Random random = new SecureRandom();
 
     static {
-        landkoderMap.put("???", "990");
+//        landkoderMap.put("???", "990");
         landkoderMap.put("ABW", "657");
         landkoderMap.put("AFG", "404");
         landkoderMap.put("AGO", "204");
@@ -286,6 +286,6 @@ public class LandkodeEncoder {
     }
 
     public String encode(String statsborgerskap) {
-        return landkoderMap.getOrDefault(statsborgerskap, "000");
+        return landkoderMap.getOrDefault(statsborgerskap, "106");
     }
 }
