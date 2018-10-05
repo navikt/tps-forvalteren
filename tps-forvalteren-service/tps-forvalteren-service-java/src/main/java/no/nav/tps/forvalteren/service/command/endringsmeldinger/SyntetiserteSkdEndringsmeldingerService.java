@@ -2,12 +2,14 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.consumer.rs.identpool.HentIdenterRequest;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentPoolClient;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 
 @Service
 public class SyntetiserteSkdEndringsmeldingerService {
@@ -22,10 +24,15 @@ public class SyntetiserteSkdEndringsmeldingerService {
     }
     
     public List<String> swapLoepenrMedNyeIdenter(List<RsMeldingstype> request) {
-        //int antallNyeIdenter = tell antall fødselsmelding og innvandringsmeldinger
-        List<String> identer = identPoolClient.hentNyeIdenter(HentIdenterRequest.builder().antall(1).foedtEtter(LocalDate.now()).foedtFoer(LocalDate.now()).build());
-        //bytt ut loepenummer i fødselsmelding og innvandringsmelding med nye fødselsnumre
-        //
+        List<RsMeldingstype> innvandrOgFoedselsmeldinger = request.stream()
+                .filter(mld -> mld instanceof RsMeldingstype1Felter && ("01".equals(mld.getAarsakskode()) || "02".equals(mld.getAarsakskode())))
+                .collect(Collectors.toList());
+        int antallNyeIdenter = innvandrOgFoedselsmeldinger.size();
+        List<String> identer = identPoolClient.hentNyeIdenter(HentIdenterRequest.builder().antall(antallNyeIdenter).foedtEtter(LocalDate.now()).foedtFoer(LocalDate.now()).build());
+        for (int i = 0; i < antallNyeIdenter; i++) {
+            ((RsMeldingstype1Felter) innvandrOgFoedselsmeldinger.get(i)).setFodselsdato(identer.get(i).substring(0, 6));
+            ((RsMeldingstype1Felter) innvandrOgFoedselsmeldinger.get(i)).setPersonnummer(identer.get(i).substring(6));
+        }
         return identer;
     }
     
