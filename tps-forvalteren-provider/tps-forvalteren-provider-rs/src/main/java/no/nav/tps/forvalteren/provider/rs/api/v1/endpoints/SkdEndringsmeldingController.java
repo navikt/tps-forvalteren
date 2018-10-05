@@ -7,6 +7,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.Avspill
 @Transactional
 @RestController
 @RequestMapping(value = "api/v1/endringsmelding/skd")
-//@PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
+@PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
 public class SkdEndringsmeldingController {
     
     private static final String REST_SERVICE_NAME = "testdata";
