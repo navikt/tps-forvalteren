@@ -71,7 +71,7 @@ public class ExtractOpprettKritereFromDollyKriterier {
         RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         personRequestListe.setPersonKriterierListe(new ArrayList<>());
-        if(rel != null && !rel.getBarn().isEmpty()){
+        if(harBarn(request)){
 
             for(int i=0; i < request.getAntall(); i++){
                 for(RsSimpleDollyRequest req : rel.getBarn()){
@@ -95,6 +95,11 @@ public class ExtractOpprettKritereFromDollyKriterier {
         }
 
         return personRequestListe;
+    }
+
+    private boolean harBarn(RsPersonBestillingKriteriumRequest request){
+        RsSimpleRelasjoner rel = request.getRelasjoner();
+        return rel != null && (rel.getBarn() != null && !rel.getBarn().isEmpty());
     }
 
     public List<Person> addDollyKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> personer){
