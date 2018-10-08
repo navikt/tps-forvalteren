@@ -171,8 +171,8 @@ public class SkdEndringsmeldingController {
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
     }
     
-    @PostMapping("syntetiserte/{avspillergruppeId}")
-    public void swapLoepenrMedIdentogLagre(@PathVariable Long avspillergruppeId, @RequestBody @Valid List<RsMeldingstype> skdmeldingerMedLoepenummer) {
-        syntetiserteSkdService.swapLoepenrMedIdentogLagre(avspillergruppeId, skdmeldingerMedLoepenummer);
+    @PostMapping("syntetiserte/{gruppeId}")
+    public void insertIdentsInSkdmeldingerAndSave(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> skdmeldingerMedLoepenumre) {
+        syntetiserteSkdService.swapLoepenrMedIdentogLagre(gruppeId, skdmeldingerMedLoepenumre);
     }
 }

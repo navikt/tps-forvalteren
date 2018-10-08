@@ -39,7 +39,7 @@ public class SyntetiserteSkdEndringsmeldingerServiceTest {
         
         when(identPoolClient.hentNyeIdenter(any())).thenReturn(Arrays.asList(expectedFNR1, expectedFNR2));
         
-        final List<String> nyeIdenter = service.swapLoepenrMedNyeIdenter(Arrays.asList(foedselsmelding, innvandringsmelding, flyttemelding));
+        final List<String> nyeIdenter = service.settInnNyeIdenterIAktuelleMeldinger(Arrays.asList(foedselsmelding, innvandringsmelding, flyttemelding));
         
         assertEquals(2, nyeIdenter.size());
         assertEquals(expectedFNR1, foedselsmelding.getFodselsdato() + foedselsmelding.getPersonnummer());
