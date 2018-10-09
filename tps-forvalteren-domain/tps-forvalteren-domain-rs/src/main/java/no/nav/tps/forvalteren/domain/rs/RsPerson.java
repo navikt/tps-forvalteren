@@ -94,4 +94,7 @@ public class RsPerson {
     @Size(min = 1, max = 50)
     private String beskrSikkerhetsTiltak;
 
+    private LocalDateTime foedselsdato;
+
+    private Integer alder;
 }

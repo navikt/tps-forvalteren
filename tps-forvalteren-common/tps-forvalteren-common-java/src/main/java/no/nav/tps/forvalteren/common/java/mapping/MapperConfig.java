@@ -1,13 +1,13 @@
 package no.nav.tps.forvalteren.common.java.mapping;
 
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 
 @Configuration
 public class MapperConfig {
@@ -16,7 +16,7 @@ public class MapperConfig {
     private List<MappingStrategy> mappingStrategies = new ArrayList<>();
 
     @Bean
-    MapperFacade mapperFacade() {
+    public MapperFacade mapperFacade() {
         DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
         for (MappingStrategy mapper : mappingStrategies) {
