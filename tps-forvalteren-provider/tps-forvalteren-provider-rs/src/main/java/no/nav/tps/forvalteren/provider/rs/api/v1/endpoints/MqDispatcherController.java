@@ -35,7 +35,7 @@ public class MqDispatcherController {
             @RequestParam("hostname") String hostname,
             @RequestParam("port") String port,
             @RequestParam("queueName") String queueName,
-            @RequestParam("channel") String channel) {
+            @RequestParam("channel") String channel) throws Exception{
 
         MessageQueueConsumer messageQueueConsumer = mqConnectionFactoryByFasit.createMessageQueueConsumer(name, hostname, port, queueName, channel);
 
