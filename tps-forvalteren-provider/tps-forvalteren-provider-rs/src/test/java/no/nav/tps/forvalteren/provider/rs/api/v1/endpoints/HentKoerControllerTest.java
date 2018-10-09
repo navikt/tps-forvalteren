@@ -21,7 +21,7 @@ public class HentKoerControllerTest {
     public void getQueuesTest() {
         hentKoerController.getQueues();
 
-        verify(getQueuesFromEnvironment).execute();
+        verify(getQueuesFromEnvironment).execute("tpsws");
     }
 
 }
