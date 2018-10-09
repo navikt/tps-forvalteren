@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static no.nav.tps.forvalteren.consumer.rs.identpool.HentIdenterRequest.IdentType.FNR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
@@ -39,7 +40,7 @@ public class SyntetiserteSkdEndringsmeldingerServiceTest {
         
         when(identPoolClient.hentNyeIdenter(any())).thenReturn(Arrays.asList(expectedFNR1, expectedFNR2));
         
-        final List<String> nyeIdenter = service.settInnNyeIdenterIAktuelleMeldinger(Arrays.asList(foedselsmelding, innvandringsmelding, flyttemelding));
+        final List<String> nyeIdenter = service.settInnNyeIdenterIAktuelleMeldinger(FNR, Arrays.asList(foedselsmelding, innvandringsmelding, flyttemelding), Arrays.asList("01", "02", "39"));
         
         assertEquals(2, nyeIdenter.size());
         assertEquals(expectedFNR1, foedselsmelding.getFodselsdato() + foedselsmelding.getPersonnummer());

@@ -7,12 +7,20 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 
 @Service
-public class FindSkdEndringsmeldingGruppeById {
-
+public class SkdEndringsmeldingsgruppeService {
+    
     @Autowired
     private SkdEndringsmeldingGruppeRepository repository;
-
-    public SkdEndringsmeldingGruppe execute(Long gruppeId) {
+    
+    public void save(SkdEndringsmeldingGruppe gruppe) {
+        repository.save(gruppe);
+    }
+    
+    public void deleteGruppeById(Long id) {
+        repository.deleteById(id);
+    }
+    
+    public SkdEndringsmeldingGruppe findGruppeById(Long gruppeId) {
         return repository.findById(gruppeId);
     }
 }

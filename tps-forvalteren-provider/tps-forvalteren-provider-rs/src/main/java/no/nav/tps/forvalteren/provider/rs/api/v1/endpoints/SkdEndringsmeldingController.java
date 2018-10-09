@@ -32,12 +32,10 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFr
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SyntetiserteSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
@@ -57,13 +55,7 @@ public class SkdEndringsmeldingController {
     private FindAllSkdEndringsmeldingGrupper findAllSkdEndringsmeldingGrupper;
     
     @Autowired
-    private FindSkdEndringsmeldingGruppeById findSkdEndringsmeldingGruppeById;
-    
-    @Autowired
-    private SaveSkdEndringsmeldingGruppe saveSkdEndringsmeldingGruppe;
-    
-    @Autowired
-    private DeleteSkdEndringsmeldingGruppeById deleteSkdEndringsmeldingGruppeById;
+    private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
     
     @Autowired
     private DeleteSkdEndringsmeldingByIdIn deleteSkdEndringsmeldingByIdIn;
@@ -101,7 +93,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        SkdEndringsmeldingGruppe gruppe = findSkdEndringsmeldingGruppeById.execute(gruppeId);
+        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
         return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
     
@@ -110,14 +102,14 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
     public void createGruppe(@RequestBody RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe) {
         SkdEndringsmeldingGruppe gruppe = mapper.map(rsSkdEndringsmeldingGruppe, SkdEndringsmeldingGruppe.class);
-        saveSkdEndringsmeldingGruppe.execute(gruppe);
+        skdEndringsmeldingsgruppeService.save(gruppe);
     }
     
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        deleteSkdEndringsmeldingGruppeById.execute(gruppeId);
+        skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
     }
     
     @LogExceptions

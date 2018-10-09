@@ -15,26 +15,41 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FindSkdEndringsmeldingGruppeByIdTest {
-
+public class SkdEndringsmeldingsgruppeServiceTest {
+    
     @InjectMocks
-    private FindSkdEndringsmeldingGruppeById findSkdEndringsmeldingGruppeById;
-
+    private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
+    
     @Mock
     private SkdEndringsmeldingGruppeRepository repository;
-
+    
     @Mock
     private SkdEndringsmeldingGruppe gruppe;
-
+    
+    @Test
+    public void checkThatGruppeGetsSaved() {
+        skdEndringsmeldingsgruppeService.save(gruppe);
+        verify(repository).save(gruppe);
+    }
+    
+    @Test
+    public void checkThatGruppeGetsDeleted() {
+        Long gruppeId = 1337L;
+        
+        skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
+        
+        verify(repository).deleteById(gruppeId);
+    }
+    
     @Test
     public void checkThatCorrectGruppeIsFound() {
         Long gruppeId = 1337L;
         when(repository.findById(gruppeId)).thenReturn(gruppe);
-
-        SkdEndringsmeldingGruppe result = findSkdEndringsmeldingGruppeById.execute(gruppeId);
-
+        
+        SkdEndringsmeldingGruppe result = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
+        
         verify(repository).findById(gruppeId);
         assertThat(result, is(gruppe));
     }
-
+    
 }
