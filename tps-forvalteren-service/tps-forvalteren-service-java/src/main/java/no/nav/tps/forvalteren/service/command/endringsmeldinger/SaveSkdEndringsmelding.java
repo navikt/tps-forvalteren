@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonProcessingException;
 
@@ -29,9 +31,23 @@ public class SaveSkdEndringsmelding {
         try {
             String meldingAsJson = mapper.writeValueAsString(melding);
             skdEndringsmelding.setEndringsmelding(meldingAsJson);
+            skdEndringsmelding.setAarsakskode(melding.getAarsakskode());
+            skdEndringsmelding.setFoedselsnummer(exctractFoedselsnummer(melding));
+            skdEndringsmelding.setTransaksjonstype(melding.getTranstype());
+            
             skdEndringsmeldingRepository.save(skdEndringsmelding);
         } catch (JsonProcessingException exception) {
             throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()), exception);
         }
+    }
+    
+    private String exctractFoedselsnummer(RsMeldingstype melding) {
+        if (melding instanceof RsMeldingstype1Felter) {
+            return ((RsMeldingstype1Felter) melding).getFodselsdato() + ((RsMeldingstype1Felter) melding).getPersonnummer();
+        }
+        if (melding instanceof RsMeldingstype2Felter) {
+            return ((RsMeldingstype2Felter) melding).getFodselsnr();
+        }
+        return null;
     }
 }
