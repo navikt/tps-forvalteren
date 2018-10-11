@@ -40,7 +40,11 @@ angular.module('tps-forvalteren.service')
             });
         };
 
-        self.flattenObject = function(jsonObject){
+        self.arrayContains = function(array, string){
+            return (array.indexOf(string) > -1);
+        };
+
+        self.flattenObject = function (jsonObject) {
             var result = {};
 
             function recurse(jObject, properties) {

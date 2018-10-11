@@ -28,7 +28,7 @@ import no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl;
 @Component
 public class FasitApiConsumer {
 
-    protected static final String BASE_URL_F = "https://fasit.adeo.no";
+    protected static final String BASE_URL = "https://fasit.adeo.no";
 
     @Autowired
     MapperFacade mapperFacade;
@@ -45,7 +45,7 @@ public class FasitApiConsumer {
     }
 
     private Set<String> getEnvironments(String application, boolean usage) {
-        Collection<FasitApplication> applications = getApplications(application, usage);
+        Collection<FasitApplication> applications = getApplicationInstances(application, usage);
 
         return applications.stream()
                 .map(FasitApplication::getEnvironment)
@@ -65,9 +65,19 @@ public class FasitApiConsumer {
     }
 
     @Cacheable("fasit")
-    public List<FasitApplication> getApplications(String application, boolean usage) {
+    public List<FasitApplication> getApplications(String name) {
+        String urlPattern = FasitUrl.APPLICATIONS_V2_GET.getUrl() + createQueryPatternByParamName("name", "pr_page");
+        String url = String.format(urlPattern, BASE_URL, name, 1000);
+
+        ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
+
+        return Arrays.asList(applications.getBody());
+    }
+
+    @Cacheable("fasit")
+    public List<FasitApplication> getApplicationInstances(String application, boolean usage) {
         String urlPattern = FasitUrl.APPLICATIONINSTANCES_V2_GET.getUrl() + createQueryPatternByParamName("application", "usage");
-        String url = String.format(urlPattern, BASE_URL_F, application, true);
+        String url = String.format(urlPattern, BASE_URL, application, true);
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
@@ -77,7 +87,7 @@ public class FasitApiConsumer {
     @Cacheable("fasit")
     public List<FasitResource> getResourcesByAliasAndType(String alias, FasitPropertyTypes propertyTypes) {
         String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type");
-        String url = String.format(urlPattern, BASE_URL_F, alias, propertyTypes.getPropertyName());
+        String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName());
 
         ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
 

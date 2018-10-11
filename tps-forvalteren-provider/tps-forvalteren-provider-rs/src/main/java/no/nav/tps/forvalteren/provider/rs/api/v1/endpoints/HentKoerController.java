@@ -24,7 +24,7 @@ import no.nav.tps.forvalteren.consumer.rs.environments.mapper.MqInfoMapper;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitChannel;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitQueue;
-import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.GetQueuesFromEnvironment;
 
 @RestController
@@ -45,17 +45,23 @@ public class HentKoerController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
-    @RequestMapping(value = "/queues", method = RequestMethod.GET)
-    public List<RsTpsMeldingKo> getQueues() {
-        return getQueuesFromEnvironment.execute("tpsws");
+    @RequestMapping(value = "/applications", method = RequestMethod.GET)
+    public List<FasitApplication> getApplications(@RequestParam(name = "appname", required = false, defaultValue = "") String appNavn) {
+
+        return fasitApiConsumer.getApplications("undefined".equals(appNavn) ? "" : appNavn);
     }
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
-    @RequestMapping(value = "/fasitresources", method = RequestMethod.GET)
-    public List<FasitMQInformation> getAllQueues(@RequestParam("appNavn") String appNavn) {
+    @RequestMapping(value = "/queues", method = RequestMethod.GET)
+    public List<FasitMQInformation> getQueues(@RequestParam("appname") String appNavn) {
 
-        List<FasitApplication> applications = fasitApiConsumer.getApplications(appNavn, true);
+        List<FasitApplication> applications = fasitApiConsumer.getApplicationInstances(appNavn, true);
+
+        if (applications.isEmpty()) {
+            throw new NotFoundException(String.format("Applikasjon \"%s\" ble ikke funnet i Fasit", appNavn));
+        }
+
         List<FasitUsedResources> usedResource = fasitApiConsumer.getUsedResourcesFromAppByTypes(applications.get(0),
                 FasitPropertyTypes.QUEUE
         );

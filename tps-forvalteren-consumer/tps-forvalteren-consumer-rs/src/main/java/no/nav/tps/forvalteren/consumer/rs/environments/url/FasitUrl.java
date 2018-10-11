@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum FasitUrl {
 
+    APPLICATIONS_V2_GET("%s/api/v2/applications"),
     APPLICATIONINSTANCES_V2_GET("%s/api/v2/applicationinstances"),
     RESOURCES_V2_GET("%s/api/v2/resources");
 
