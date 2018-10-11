@@ -1,15 +1,16 @@
 package no.nav.tps.forvalteren.service.command.tpsconfig;
 
 
-import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsConsumer;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetEnvironmentsTest {
@@ -17,7 +18,7 @@ public class GetEnvironmentsTest {
     private static final String APPLICATION = "tpsws";
 
     @Mock
-    private FetchEnvironmentsConsumer veraConsumerMock;
+    private FasitApiConsumer veraConsumerMock;
 
     @InjectMocks
     GetEnvironments getEnvironments;

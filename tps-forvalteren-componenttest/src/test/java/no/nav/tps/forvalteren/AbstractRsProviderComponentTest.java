@@ -1,16 +1,13 @@
 package no.nav.tps.forvalteren;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.io.Resources;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -23,11 +20,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.collect.Sets;
+import com.google.common.io.Resources;
+
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ComptestConfig.class)
 @ActiveProfiles("comptest")
 public abstract class AbstractRsProviderComponentTest {
+
+    protected static final Set ENV_SET = Sets.newHashSet("t0", "t1", "t2", "t3");
     
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -36,6 +43,9 @@ public abstract class AbstractRsProviderComponentTest {
     protected WebApplicationContext context;
 
     public MockMvc mvc;
+
+    @Autowired
+    private FasitApiConsumer fasitApiConsumer;
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -49,6 +59,7 @@ public abstract class AbstractRsProviderComponentTest {
         if (context != null) {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
+        when(fasitApiConsumer.getEnvironments("tpsws")).thenReturn(ENV_SET);
     }
     
     protected String getResourceFileContent(String path) {

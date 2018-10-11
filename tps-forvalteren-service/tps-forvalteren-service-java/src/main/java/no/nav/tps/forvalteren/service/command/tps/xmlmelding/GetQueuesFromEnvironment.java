@@ -1,16 +1,17 @@
 package no.nav.tps.forvalteren.service.command.tps.xmlmelding;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
-import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
-import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 @Service
 public class GetQueuesFromEnvironment {
@@ -29,10 +30,10 @@ public class GetQueuesFromEnvironment {
     @Autowired
     private GetEnvironments getEnvironments;
 
-    public List<RsTpsMeldingKo> execute() {
+    public List<RsTpsMeldingKo> execute(String appNavn) {
 
         RsTpsMeldingKo ko;
-        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
+        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit(appNavn));
         removeDuplicateTestEnvironments(environments);
 
         List<RsTpsMeldingKo> koListe = new ArrayList<>();

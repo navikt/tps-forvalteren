@@ -1,19 +1,11 @@
 package no.nav.tps.forvalteren;
 
-import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
-import no.nav.tps.forvalteren.config.TestUserDetails;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
-import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
-import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
-import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import static org.mockito.Mockito.mock;
 
-import javax.jms.Queue;
-import javax.jms.QueueConnectionFactory;
 import java.util.ArrayList;
 import java.util.List;
+import javax.jms.Queue;
+import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.mockito.Mockito;
@@ -25,7 +17,16 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import static org.mockito.Mockito.mock;
+import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
+import no.nav.tps.forvalteren.config.TestUserDetails;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
+import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
+import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
+import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
+import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Configuration
 @Import(ApplicationStarter.class)
@@ -104,5 +105,10 @@ public class ComptestConfig {
     @Bean
     public LandkodeEncoder landkodeEncoder() {
         return new TestLandkodeEncoder();
+    }
+
+    @Bean
+    public FasitApiConsumer fasitApiConsumer() {
+        return mock(FasitApiConsumer.class);
     }
 }
