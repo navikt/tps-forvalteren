@@ -33,6 +33,7 @@ import no.nav.tps.forvalteren.service.command.tps.xmlmelding.GetQueuesFromEnviro
 public class HentKoerController {
 
     private static final String REST_SERVICE_NAME = "service";
+    private static final String NOT_FOUND = "Applikasjon \"%s\" ble ikke funnet i Fasit";
 
     @Autowired
     private GetQueuesFromEnvironment getQueuesFromEnvironment;
@@ -48,7 +49,13 @@ public class HentKoerController {
     @RequestMapping(value = "/applications", method = RequestMethod.GET)
     public List<FasitApplication> getApplications(@RequestParam(name = "appname", required = false, defaultValue = "") String appNavn) {
 
-        return fasitApiConsumer.getApplications("undefined".equals(appNavn) ? "" : appNavn);
+        List<FasitApplication> applikasjoner = fasitApiConsumer.getApplications("undefined".equals(appNavn) ? "" : appNavn);
+
+        if (applikasjoner.isEmpty()) {
+            throw new NotFoundException(String.format(NOT_FOUND, appNavn));
+        }
+
+        return applikasjoner;
     }
 
     @LogExceptions
@@ -59,7 +66,7 @@ public class HentKoerController {
         List<FasitApplication> applications = fasitApiConsumer.getApplicationInstances(appNavn, true);
 
         if (applications.isEmpty()) {
-            throw new NotFoundException(String.format("Applikasjon \"%s\" ble ikke funnet i Fasit", appNavn));
+            throw new NotFoundException(String.format(NOT_FOUND, appNavn));
         }
 
         List<FasitUsedResources> usedResource = fasitApiConsumer.getUsedResourcesFromAppByTypes(applications.get(0),

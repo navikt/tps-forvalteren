@@ -162,7 +162,7 @@ angular.module('tps-forvalteren.service')
                     ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
                 },
                 404: {
-                    title: 'Ukjent side',
+                    title: 'Ukjent ressurs',
                     text: error.config.url + ' finnes ikke',
                     ariaLabel: 'Opprett siden på server og forsøk igjen.'
                 },

@@ -15,26 +15,28 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             $scope.applications = [];
             var appobjects = [];
 
+            $scope.findApps = function (inp) {
+
+                xmlmeldingService.hentApplikasjoner(inp).then(function (result) {
+
+                    $scope.applications = [];
+                    result.data.forEach(function (app) {
+                        if (!utilsService.arrayContains($scope.applications, app.name)) {
+                            $scope.applications.push(app.name);
+                        }
+                    });
+
+                }, function(error) {
+                    utilsService.showAlertError(error);
+                });
+            };
+
             $scope.onChangeApp = function () {
 
                 xmlmeldingService.hentAppRessurser($scope.valgtApp).then(function (result) {
 
                     prepAppResources(result.data);
                 });
-            };
-
-            $scope.clicker = function (inp) {
-
-                xmlmeldingService.hentAppRessurser(inp).then(function (result) {
-
-                    $scope.applications = [];
-                    result.data.forEach(function (app) {
-                        if (!utilsService.arrayContains($scope.applications, app.appnavn)) {
-                            $scope.applications.push(app.appnavn);
-                        }
-                    });
-                    prepAppResources(result.data);
-                })
             };
 
             function prepAppResources(result) {
@@ -151,11 +153,17 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
             }
 
             function hentApplikasjonerFraFasit() {
-                xmlmeldingService.hentApplikasjoner().then(function (result) {
+                xmlmeldingService.hentAppRessurser("tpsws").then(function (result) {
 
-                    angular.forEach(result.data, function (app) {
-                        $scope.applications.push(app.name);
+                    $scope.applications = [];
+                    result.data.forEach(function (app) {
+                        if (!utilsService.arrayContains($scope.applications, app.appnavn)) {
+                            $scope.applications.push(app.appnavn);
+                        }
                     });
+
+                    prepAppResources(result.data);
+                    $scope.valgtApp = "tpsws";
                 });
             }
 
