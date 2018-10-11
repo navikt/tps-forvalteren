@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.common.collect.Lists;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -79,7 +79,7 @@ public class TestdataMalController {
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public List getAllTestdataMal() {
         List<Personmal> personmalList = personmalRepository.findAll();
-        List<RsPersonMal> rsPersonMalList = new ArrayList<>();
+        List<RsPersonMal> rsPersonMalList = Lists.newArrayListWithExpectedSize(personmalList.size());
 
         for (Personmal personmal : personmalList) {
             rsPersonMalList.add(mapper.map(personmal, RsPersonMal.class));

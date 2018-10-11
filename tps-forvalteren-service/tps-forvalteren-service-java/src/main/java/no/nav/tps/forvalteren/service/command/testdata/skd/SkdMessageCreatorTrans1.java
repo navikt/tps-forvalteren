@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
@@ -36,7 +38,7 @@ public class SkdMessageCreatorTrans1 {
 
     public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
 
-        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = Lists.newArrayListWithExpectedSize(persons.size());
         for (Person person : persons) {
             skdMeldinger.add(execute(skdMeldingNavn, person, addHeader));
         }

@@ -1,5 +1,13 @@
 package no.nav.tps.forvalteren.consumer.ws.kodeverk.mapping;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Component;
+import com.google.common.collect.Lists;
+
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.Mapper;
 import ma.glasnost.orika.MapperFactory;
@@ -10,13 +18,6 @@ import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Kodeverk;
 import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Kodeverkselement;
 import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Term;
 import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
-import org.springframework.stereotype.Component;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class HentKodeverkMappingStrategy implements MappingStrategy {
@@ -51,7 +52,7 @@ public class HentKodeverkMappingStrategy implements MappingStrategy {
     }
 
     private List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mapCode(Kode fromCode) {
-        List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mappedCodes = new ArrayList<>();
+        List<no.nav.tps.forvalteren.domain.ws.kodeverk.Kode> mappedCodes = Lists.newArrayListWithExpectedSize(fromCode.getTerm().size());
         for (Term fromTerm : fromCode.getTerm()) {
             no.nav.tps.forvalteren.domain.ws.kodeverk.Kode toCode = new no.nav.tps.forvalteren.domain.ws.kodeverk.Kode();
             toCode.setNavn(fromCode.getNavn());
