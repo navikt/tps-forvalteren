@@ -11,20 +11,19 @@ public enum FasitUrl {
 
     private final String url;
 
-    FasitUrl (String url){
-        this.url = url;
+    FasitUrl(String appUrl) {
+        url = appUrl;
     }
 
-    public static String createQueryPatternByParamName(String... paramNames){
-        StringBuilder sb = new StringBuilder("?");
-        for(int i = 0; i < paramNames.length; i++){
-            if(i==0){
-                sb.append(paramNames[i]).append("=%s");
-            } else {
-                sb.append("&").append(paramNames[i]).append("=%s");
-            }
+    public static String createQueryPatternByParamName(String... paramNames) {
+        StringBuilder queryStr = new StringBuilder();
+        for (int i = 0; i < paramNames.length; i++) {
+            queryStr
+                    .append(i == 0 ? '?' : '&')
+                    .append(paramNames[i])
+                    .append("=%s");
         }
-        return sb.toString();
+        return queryStr.toString();
     }
 }
 
