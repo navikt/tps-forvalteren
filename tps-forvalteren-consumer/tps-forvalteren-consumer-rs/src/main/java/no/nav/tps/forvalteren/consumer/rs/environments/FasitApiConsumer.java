@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.consumer.rs.environments;
 import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,10 +52,15 @@ public class FasitApiConsumer {
                 .collect(toSet());
     }
 
-    public List<FasitUsedResources> getUsedResourcesFromAppByTypes(FasitApplication app, FasitPropertyTypes fasitProperties) {
+    public List<FasitUsedResources> getUsedResourcesFromAppByTypes(FasitApplication app, FasitPropertyTypes... fasitProperties) {
+        List<String> propertyName = new ArrayList<>();
+
+        for (FasitPropertyTypes fasitProperty : fasitProperties) {
+            propertyName.add(fasitProperty.getPropertyName());
+        }
 
         return app.getUsedresources().stream()
-                .filter(resources -> fasitProperties.name().contains(resources.getType()))
+                .filter(resources -> propertyName.contains(resources.getType()))
                 .collect(Collectors.toList());
     }
 
