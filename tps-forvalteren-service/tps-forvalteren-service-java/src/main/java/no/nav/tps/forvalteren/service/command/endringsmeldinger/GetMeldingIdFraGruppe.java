@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
+import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
@@ -24,7 +25,9 @@ public class GetMeldingIdFraGruppe {
         }
 
         List<Long> idListe = Lists.newArrayListWithExpectedSize(skdEndringsmeldingGruppe.getSkdEndringsmeldinger().size());
-        skdEndringsmeldingGruppe.getSkdEndringsmeldinger().forEach(melding -> idListe.add(melding.getId()));
+        for(SkdEndringsmelding melding : skdEndringsmeldingGruppe.getSkdEndringsmeldinger()) {
+            idListe.add(melding.getId());
+        }
 
         return idListe;
     }
