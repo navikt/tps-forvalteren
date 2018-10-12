@@ -34,6 +34,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindSkdEndringsmeldingGruppeById;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
@@ -82,6 +83,9 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private GetLoggForGruppe getLoggForGruppe;
+
+    @Autowired
+    private GetMeldingIdFraGruppe getMeldingIdFraGruppe;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -163,5 +167,13 @@ public class SkdEndringsmeldingController {
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
         List<SkdEndringsmeldingLogg> log = getLoggForGruppe.execute(gruppeId);
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
+    @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
+    public List<Long> getMeldinger(@PathVariable("gruppeId") Long gruppeId) {
+
+        return getMeldingIdFraGruppe.execute(gruppeId);
     }
 }

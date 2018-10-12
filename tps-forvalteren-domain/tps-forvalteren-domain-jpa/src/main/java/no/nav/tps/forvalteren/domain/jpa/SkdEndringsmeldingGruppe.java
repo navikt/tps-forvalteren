@@ -46,6 +46,12 @@ public class SkdEndringsmeldingGruppe extends ChangeStamp {
 
     @OrderBy
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "gruppe")
-    private List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
+    private List<SkdEndringsmelding> skdEndringsmeldinger;
 
+    public List<SkdEndringsmelding> getSkdEndringsmeldinger() {
+        if (skdEndringsmeldinger == null) {
+            skdEndringsmeldinger = new ArrayList<>();
+        }
+        return skdEndringsmeldinger;
+    }
 }

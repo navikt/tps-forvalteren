@@ -38,5 +38,4 @@ public class FindAllSkdEndringsmeldingGrupperTest {
         verify(repository).findAllByOrderByIdAsc();
         assertThat(result, hasSize(2));
     }
-
 }
