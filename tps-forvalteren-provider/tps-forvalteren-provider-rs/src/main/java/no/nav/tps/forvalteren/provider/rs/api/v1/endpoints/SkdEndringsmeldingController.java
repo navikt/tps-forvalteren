@@ -43,7 +43,6 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldi
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.syntetisering.SyntetiserteSkdEndringsmeldingerService;
 
 @Transactional
 @RestController
@@ -84,9 +83,6 @@ public class SkdEndringsmeldingController {
     private GetLoggForGruppe getLoggForGruppe;
     
     @Autowired
-    private SyntetiserteSkdEndringsmeldingerService syntetiserteSkdService;
-    
-    @Autowired
     private SkdEndringsmeldingService skdEndringsmeldingService;
     
     @LogExceptions
@@ -94,7 +90,6 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
         List<SkdEndringsmeldingGruppe> grupper = findAllSkdEndringsmeldingGrupper.execute();
-        grupper.forEach(mld -> mld.setSkdEndringsmeldinger(null));
         return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
     }
     
