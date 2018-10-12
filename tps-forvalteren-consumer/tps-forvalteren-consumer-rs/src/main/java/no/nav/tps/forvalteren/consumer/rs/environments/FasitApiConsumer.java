@@ -53,7 +53,7 @@ public class FasitApiConsumer {
     }
 
     public List<FasitUsedResources> getUsedResourcesFromAppByTypes(FasitApplication app, FasitPropertyTypes... fasitProperties) {
-        List<String> propertyName = new ArrayList<>();
+        List<String> propertyName = new ArrayList<>(app.getUsedresources().size());
 
         for (FasitPropertyTypes fasitProperty : fasitProperties) {
             propertyName.add(fasitProperty.getPropertyName());
