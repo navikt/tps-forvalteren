@@ -4,17 +4,21 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERAT
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.util.List;
+import java.util.Set;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
@@ -35,10 +39,11 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.SyntetiserteSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.syntetisering.SyntetiserteSkdEndringsmeldingerService;
 
 @Transactional
 @RestController
@@ -81,11 +86,15 @@ public class SkdEndringsmeldingController {
     @Autowired
     private SyntetiserteSkdEndringsmeldingerService syntetiserteSkdService;
     
+    @Autowired
+    private SkdEndringsmeldingService skdEndringsmeldingService;
+    
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
         List<SkdEndringsmeldingGruppe> grupper = findAllSkdEndringsmeldingGrupper.execute();
+        grupper.forEach(mld -> mld.setSkdEndringsmeldinger(null));
         return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
     }
     
@@ -163,8 +172,16 @@ public class SkdEndringsmeldingController {
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
     }
     
-    @PostMapping("syntetiserte/{gruppeId}")
-    public void insertIdentsInSkdmeldingerAndSave(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> skdmeldingerMedLoepenumre) {
-        syntetiserteSkdService.swapLoepenrMedIdentogLagre(gruppeId, skdmeldingerMedLoepenumre);
+    @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")
+    @LogExceptions
+    @PostMapping("save/{gruppeId}")
+    public void saveSkdEndringsmeldingerInTPSF(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> skdmeldingerMedLoepenumre) {
+    
+    }
+    
+    @LogExceptions
+    @GetMapping("identer/{gruppeId}")
+    public Set<String> filtrerIdenterPaaAarsakskodeOgTransaksjonstype(@PathVariable Long gruppeId, @RequestParam List<String> aarsakskode, @RequestParam String transaksjonstype) {
+        return skdEndringsmeldingService.filtrerIdenterPaaAarsakskodeOgTransaksjonstype(gruppeId, aarsakskode, transaksjonstype);
     }
 }
