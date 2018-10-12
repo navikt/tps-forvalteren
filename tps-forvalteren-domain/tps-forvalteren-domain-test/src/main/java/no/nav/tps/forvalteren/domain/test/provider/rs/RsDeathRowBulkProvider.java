@@ -1,8 +1,7 @@
 package no.nav.tps.forvalteren.domain.test.provider.rs;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import no.nav.tps.forvalteren.domain.rs.RsDeathRowBulk;
 
@@ -13,11 +12,9 @@ public final class RsDeathRowBulkProvider {
     }
 
     public static RsDeathRowBulk.RsDeathRowBulkBuilder aDeathRowBulk() {
-        List<String> identList = new ArrayList<>();
-        identList.add("1111");
-        identList.add("2222");
+
         return RsDeathRowBulk.builder()
-                .identer(identList)
+                .identer(Arrays.asList("1111", "2222"))
                 .bruker("bruker")
                 .doedsdato(LocalDateTime.now().minusDays(1))
                 .handling("handling")

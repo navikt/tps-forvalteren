@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdatamal;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Personmal;
@@ -57,7 +57,8 @@ public class CreateTestdataPerson {
     }
 
     private List hentPersonmalListe(RsPersonMalRequest inputPersonRequest) {
-        List<Personmal> personmalListe = new ArrayList<>();
+
+        List<Personmal> personmalListe = Lists.newArrayListWithExpectedSize(inputPersonRequest.getPersonmalIdListe().size());
 
         for (Long id : inputPersonRequest.getPersonmalIdListe()) {
             personmalListe.add(personmalRepository.findById(id));
