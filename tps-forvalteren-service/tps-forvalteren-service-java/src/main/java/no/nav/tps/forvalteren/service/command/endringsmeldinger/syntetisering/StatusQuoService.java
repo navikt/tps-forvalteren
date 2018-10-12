@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.endringsmeldinger;
+package no.nav.tps.forvalteren.service.command.endringsmeldinger.syntetisering;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 
 /**
  * Service som gir status quo på en person basert på historikken til personen i en liste med skdmeldinger.

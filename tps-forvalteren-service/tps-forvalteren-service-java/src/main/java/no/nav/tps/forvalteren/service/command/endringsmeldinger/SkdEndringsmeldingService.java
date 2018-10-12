@@ -2,6 +2,8 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +33,11 @@ public class SkdEndringsmeldingService {
             rsSkdmeldingene.add(convertJsonToRsMeldingstype.execute(mld));
         }
         return rsSkdmeldingene;
+    }
+    
+    public Set<String> filtrerIdenterPaaAarsakskodeOgTransaksjonstype(Long gruppeId, List<String> aarsakskoder, String transaksjonstype) {
+        SkdEndringsmeldingGruppe gruppe = gruppeRepository.findById(gruppeId);
+        List<SkdEndringsmelding> meldinger = skdEndringsmeldingRepository.findByAarsakskodeInAndTransaksjonstypeAndGruppe(aarsakskoder, transaksjonstype, gruppe);
+        return meldinger.stream().map(SkdEndringsmelding::getFoedselsnummer).collect(Collectors.toSet());
     }
 }
