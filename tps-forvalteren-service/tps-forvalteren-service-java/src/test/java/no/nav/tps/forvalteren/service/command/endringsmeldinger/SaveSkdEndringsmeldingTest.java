@@ -3,9 +3,7 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -24,22 +22,22 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonP
 
 @RunWith(MockitoJUnitRunner.class)
 public class SaveSkdEndringsmeldingTest {
-
+    
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     
     @Mock
     private MessageProvider messageProvider;
-
+    
     @Mock
     private ObjectMapper mapper;
-
+    
     @Mock
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-
+    
     @InjectMocks
     private SaveSkdEndringsmelding saveSkdEndringsmelding;
-
+    
     @Mock
     private RsMeldingstype melding;
     
@@ -48,21 +46,21 @@ public class SaveSkdEndringsmeldingTest {
     
     @Test
     public void checkThatServicesGetsCalled() throws JsonProcessingException {
-        saveSkdEndringsmelding.execute(melding, skdEndringsmelding);
+        saveSkdEndringsmelding.save(melding, skdEndringsmelding);
         
         verify(mapper).writeValueAsString(melding);
         verify(skdEndringsmeldingRepository).save(skdEndringsmelding);
     }
-
+    
     @Test
     public void throwsSkdEndringsmeldingJsonProcessingException() throws JsonProcessingException {
         doThrow(SkdEndringsmeldingJsonProcessingException.class).when(mapper).writeValueAsString(melding);
         
         expectedException.expect(SkdEndringsmeldingJsonProcessingException.class);
         
-        saveSkdEndringsmelding.execute(melding, skdEndringsmelding);
+        saveSkdEndringsmelding.save(melding, skdEndringsmelding);
         
         verify(messageProvider).get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId());
     }
-
+    
 }

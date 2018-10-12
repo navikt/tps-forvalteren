@@ -15,19 +15,19 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGrupp
 
 @Service
 public class CreateSkdEndringsmeldingFromType {
-
+    
     @Autowired
     private MessageProvider messageProvider;
-
+    
     @Autowired
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
-
+    
     @Autowired
     private GetRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
-
+    
     @Autowired
     private SaveSkdEndringsmelding saveSkdEndringsmelding;
-
+    
     public void execute(Long gruppeId, RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
         if (gruppe != null) {
@@ -35,10 +35,10 @@ public class CreateSkdEndringsmeldingFromType {
             skdEndringsmelding.setGruppe(gruppe);
             RsMeldingstype melding = getRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
             melding.setBeskrivelse(rsNewSkdEndringsmelding.getNavn());
-            saveSkdEndringsmelding.execute(melding, skdEndringsmelding);
+            saveSkdEndringsmelding.save(melding, skdEndringsmelding);
         } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
         }
     }
-
+    
 }

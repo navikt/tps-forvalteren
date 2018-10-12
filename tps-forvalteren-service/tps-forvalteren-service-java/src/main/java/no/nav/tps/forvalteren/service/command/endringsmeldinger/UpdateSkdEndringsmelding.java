@@ -14,25 +14,25 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingNotFo
 
 @Service
 public class UpdateSkdEndringsmelding {
-
+    
     @Autowired
     private MessageProvider messageProvider;
-
+    
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-
+    
     @Autowired
     private SaveSkdEndringsmelding saveSkdEndringsmelding;
-
-    public void execute(List<RsMeldingstype> meldinger) {
+    
+    public void update(List<RsMeldingstype> meldinger) {
         for (RsMeldingstype melding : meldinger) {
             SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(melding.getId());
             if (skdEndringsmelding != null) {
-                saveSkdEndringsmelding.execute(melding, skdEndringsmelding);
+                saveSkdEndringsmelding.save(melding, skdEndringsmelding);
             } else {
                 throw new SkdEndringsmeldingNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, melding.getId()));
             }
         }
     }
-
+    
 }

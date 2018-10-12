@@ -17,17 +17,17 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonP
 
 @Service
 public class SaveSkdEndringsmelding {
-
+    
     @Autowired
     private MessageProvider messageProvider;
     
     @Autowired
     private ObjectMapper mapper;
-
+    
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
     
-    public void execute(RsMeldingstype melding, SkdEndringsmelding skdEndringsmelding) {
+    public SkdEndringsmelding save(RsMeldingstype melding, SkdEndringsmelding skdEndringsmelding) {
         try {
             String meldingAsJson = mapper.writeValueAsString(melding);
             skdEndringsmelding.setEndringsmelding(meldingAsJson);
@@ -35,7 +35,7 @@ public class SaveSkdEndringsmelding {
             skdEndringsmelding.setFoedselsnummer(exctractFoedselsnummer(melding));
             skdEndringsmelding.setTransaksjonstype(melding.getTranstype());
             
-            skdEndringsmeldingRepository.save(skdEndringsmelding);
+            return skdEndringsmeldingRepository.save(skdEndringsmelding);
         } catch (JsonProcessingException exception) {
             throw new SkdEndringsmeldingJsonProcessingException(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId()), exception);
         }

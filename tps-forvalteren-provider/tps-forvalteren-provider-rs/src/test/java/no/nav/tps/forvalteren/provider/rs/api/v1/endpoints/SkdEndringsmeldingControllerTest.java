@@ -166,7 +166,7 @@ public class SkdEndringsmeldingControllerTest {
     public void updateMeldingVerify() {
         skdEndringsmeldingController.updateMeldinger(rsMeldinger);
         
-        verify(updateSkdEndringsmelding).execute(rsMeldinger);
+        verify(updateSkdEndringsmelding).update(rsMeldinger);
     }
     
     @Test

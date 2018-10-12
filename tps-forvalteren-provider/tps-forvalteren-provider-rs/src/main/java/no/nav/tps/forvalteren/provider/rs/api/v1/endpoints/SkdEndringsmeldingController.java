@@ -38,6 +38,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
@@ -84,6 +85,9 @@ public class SkdEndringsmeldingController {
     
     @Autowired
     private SkdEndringsmeldingService skdEndringsmeldingService;
+    
+    @Autowired
+    private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -141,7 +145,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updateMeldinger") })
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
-        updateSkdEndringsmelding.execute(meldinger);
+        updateSkdEndringsmelding.update(meldinger);
     }
     
     @LogExceptions
@@ -170,8 +174,8 @@ public class SkdEndringsmeldingController {
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")
     @LogExceptions
     @PostMapping("save/{gruppeId}")
-    public void saveSkdEndringsmeldingerInTPSF(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> skdmeldingerMedLoepenumre) {
-    
+    public List<Long> saveSkdEndringsmeldingerInTPSF(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> rsSkdMeldinger) {
+        return saveSkdEndringsmeldingerService.save(rsSkdMeldinger, gruppeId);
     }
     
     @LogExceptions
