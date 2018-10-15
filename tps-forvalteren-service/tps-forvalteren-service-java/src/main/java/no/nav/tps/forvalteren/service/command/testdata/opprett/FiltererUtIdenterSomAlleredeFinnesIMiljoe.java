@@ -19,11 +19,8 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
-    public void execute(List<TestdataRequest> testdataRequests) {
-        Set<String> alleGenererteIdenter = new HashSet<>();
-        for (TestdataRequest request : testdataRequests) {
-            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriterie());
-        }
+    public void executeMotProduliktMiljoe(List<TestdataRequest> testdataRequests) {
+        Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         // Environment q0 only verified for existence
         Set<String> environments = Sets.newHashSet("q0");
@@ -31,9 +28,26 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 
+    public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests) {
+        Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
+
+        // Environment q0 only verified for existence
+        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
+        taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
+    }
+
+    private Set<String> getAlleGenererteIdenter(List<TestdataRequest> testdataRequests){
+        Set<String> alleGenererteIdenter = new HashSet<>();
+        for (TestdataRequest request : testdataRequests) {
+            alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());
+        }
+        return alleGenererteIdenter;
+    }
+
     private void taBortOpptatteIdenterRequest(List<TestdataRequest> testdataRequests, Set<String> alleTilgjengligIdenterIMiljoe) {
         for (TestdataRequest request : testdataRequests) {
-            request.setIdenterTilgjengligIMiljoe(new HashSet<>(request.getIdenterGenerertForKriterie()));
+            request.setIdenterTilgjengligIMiljoe(new HashSet<>(request.getIdenterGenerertForKriteria()));
             request.getIdenterTilgjengligIMiljoe().retainAll(alleTilgjengligIdenterIMiljoe);
         }
     }

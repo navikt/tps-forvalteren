@@ -37,49 +37,51 @@ public class MessageQueueConsumer {
 
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
 
-        Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD);
-        connection.start();
+        TextMessage responseMessage;
+        try (Connection connection = connectionFactory.createConnection(MessageQueueConsumerConstants.USERNAME, MessageQueueConsumerConstants.PASSWORD)) {
+            connection.start();
 
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            try (Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)) {
 
         /* Prepare destinations */
-        Destination requestDestination = session.createQueue(requestQueueName);
+                Destination requestDestination = session.createQueue(requestQueueName);
 
-        Destination responseDestination;
-        if (requestQueueName.toUpperCase().contains("SFE")) {
-            responseDestination = session.createQueue(requestQueueName.toUpperCase() + "_REPLY");
-        } else {
-            responseDestination = createTemporaryQueueFor(session);
-        }
+                Destination responseDestination;
+                if (requestQueueName.toUpperCase().contains("SFE")) {
+                    responseDestination = session.createQueue(requestQueueName.toUpperCase() + "_REPLY");
+                } else {
+                    responseDestination = createTemporaryQueueFor(session);
+                }
 
-        if (requestDestination instanceof MQQueue) {
-            ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);         //TODO: This method should be provider independent
-        }
+                if (requestDestination instanceof MQQueue) {
+                    ((MQQueue) requestDestination).setTargetClient(JMSC.MQJMS_CLIENT_NONJMS_MQ);         //TODO: This method should be provider independent
+                }
 
         /* Prepare request message */
-        TextMessage requestMessage = session.createTextMessage(requestMessageContent);
-        try {
-            MessageProducer producer = session.createProducer(requestDestination);
-            requestMessage.setJMSReplyTo(responseDestination);
+                TextMessage requestMessage = session.createTextMessage(requestMessageContent);
+                try {
+                    try (MessageProducer producer = session.createProducer(requestDestination)) {
+                        requestMessage.setJMSReplyTo(responseDestination);
 
-            producer.send(requestMessage);
-        } catch (JMSException e) {
-            LOGGER.warn(String.format("%s: %s", FEIL_KOENAVN, e.getMessage()), e);
-            return e.getMessage();
+                        producer.send(requestMessage);
+                    }
+                } catch (JMSException e) {
+                    LOGGER.warn(String.format("%s: %s", FEIL_KOENAVN, e.getMessage()), e);
+                    return e.getMessage();
+                }
+
+                responseMessage = null;
+                if (timeout > 0) {
+                    /* Wait for response */
+                    String attributes = String.format("JMSCorrelationID='%s'", requestMessage.getJMSMessageID());
+
+                    try (MessageConsumer consumer = session.createConsumer(responseDestination, attributes)) {
+
+                        responseMessage = (TextMessage) consumer.receive(timeout);
+                    }
+                }
+            }
         }
-
-        TextMessage responseMessage = null;
-        if (timeout > 0) {
-            /* Wait for response */
-            String attributes = String.format("JMSCorrelationID='%s'", requestMessage.getJMSMessageID());
-
-            MessageConsumer consumer = session.createConsumer(responseDestination, attributes);
-
-            responseMessage = (TextMessage) consumer.receive(timeout);
-        }
-
-        /* Close the queues, the session, and the connection */
-        connection.close();
 
         return responseMessage != null ? responseMessage.getText() : "";
     }

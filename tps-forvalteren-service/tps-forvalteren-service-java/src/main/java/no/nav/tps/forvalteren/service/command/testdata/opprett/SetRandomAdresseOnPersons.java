@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
+package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
 
@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdent;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.xjc.ctg.domain.s051.AdresseData;
@@ -29,7 +29,7 @@ public class SetRandomAdresseOnPersons {
 
     @Autowired
     @Setter
-    private HentDatoFraIdent hentDatoFraIdent;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Autowired
     public SetRandomAdresseOnPersons(TpsServiceRutineS051Unmarshaller unmarshaller, HentGyldigeAdresserService hentGyldigeAdresserService) {
@@ -49,6 +49,21 @@ public class SetRandomAdresseOnPersons {
         }
 
         TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(persons.size(), kommuneNr, postNr);
+        final TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
+        throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
+
+        List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
+
+        for (int i = 0; i < persons.size(); i++) {
+            Gateadresse adresse = createGateAdresse(adresseDataList.get(i % adresseDataList.size()), persons.get(i));
+            persons.get(i).setBoadresse(adresse);
+        }
+
+        return persons;
+    }
+
+    public List<Person> execute(List<Person> persons){
+        TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(persons.size(), null, null);
         final TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
         throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
 
@@ -83,7 +98,7 @@ public class SetRandomAdresseOnPersons {
         adresse.setAdresse(adresseData.getAdrnavn());
         adresse.setPostnr(adresseData.getPnr());
         adresse.setKommunenr(adresseData.getKnr());
-        adresse.setFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
+        adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
         adresse.setPerson(person);
         return adresse;
     }

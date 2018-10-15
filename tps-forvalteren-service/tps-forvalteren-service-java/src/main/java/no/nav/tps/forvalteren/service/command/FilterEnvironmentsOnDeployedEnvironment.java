@@ -14,10 +14,6 @@ public class FilterEnvironmentsOnDeployedEnvironment {
         char env = deployedEnvironment.charAt(0);
         switch (env) {
         case 'u':
-            return EnvironmentsFilter.create()
-                    .include("u*")
-                    .include("t*")
-                    .filter(environments);
         case 't':
         case 'q':
             return EnvironmentsFilter.create()

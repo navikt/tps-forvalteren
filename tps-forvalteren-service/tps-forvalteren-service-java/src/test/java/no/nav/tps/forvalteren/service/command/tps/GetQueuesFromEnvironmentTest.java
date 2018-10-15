@@ -1,24 +1,25 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.GetQueueName;
 import no.nav.tps.forvalteren.service.command.tps.xmlmelding.GetQueuesFromEnvironment;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetQueuesFromEnvironmentTest {
@@ -50,7 +51,7 @@ public class GetQueuesFromEnvironmentTest {
 
     @Test
     public void getQueuesFromEnvironmentTest() {
-        List<RsTpsMeldingKo> test = getQueuesFromEnvironment.execute();
+        List<RsTpsMeldingKo> test = getQueuesFromEnvironment.execute("tpsws");
 
         assertThat(test.get(0).getKoNavn(), is(equalTo("QA.Q1_411.TPS_FORESPORSEL_XML_O")));
         assertThat(test.get(1).getKoNavn(), is(equalTo("QA.Q1_412.SFE_ENDRINGSMELDING")));
@@ -59,5 +60,4 @@ public class GetQueuesFromEnvironmentTest {
         assertThat(test.get(4).getKoNavn(), is(equalTo("QA.T9_411.TPS_FORESPORSEL_XML_O")));
         assertThat(test.get(5).getKoNavn(), is(equalTo("QA.T9_412.SFE_ENDRINGSMELDING")));
     }
-
 }

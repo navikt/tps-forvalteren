@@ -27,7 +27,7 @@ public class BiasedRandomTest {
 
     /*
     Teknisk sett kan testene under feile hvis man har veldig uflaks med randoms,
-    men med så mnage loops bør det være lite tilfeldighet.
+    men med så mange loops bør det være lite tilfeldighet.
     */
     @Test
     public void topptungRandomErTopptung() throws Exception {

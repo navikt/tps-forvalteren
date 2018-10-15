@@ -21,20 +21,23 @@ public class TestdataService {
     @Autowired
     private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
 
-
-    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests){
+    public void filtrerPaaIdenterSomIkkeFinnesIDB(List<TestdataRequest> testdataRequests) {
         filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
     }
 
     public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(List<TestdataRequest> testdataRequests){
-        filtererUtIdenterSomAlleredeFinnesIMiljoe.execute(testdataRequests);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotProduliktMiljoe(testdataRequests);
     }
 
-    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest){
+    public void filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(List<TestdataRequest> testdataRequests){
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests);
+    }
+
+    public List<TestdataRequest> genererIdenterForTestdataRequests(RsPersonKriteriumRequest personKriterierRequest) {
         return genererIdenterForTestdataRequests.execute(personKriterierRequest);
     }
 
-    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request){
+    public void taBortOverfloedigIdenterITestdataRequest(TestdataRequest request) {
         taBortOverfloedigIdenterITestdataRequest.execute(request);
     }
 }

@@ -24,7 +24,7 @@ public abstract class BaseProvider {
             }
             SPORINGSLOGGER.info("ServiceRutine: {}, Request: {}",
                     serviceRutine,
-                    parameters.toString()
+                    parameters.toString().replaceAll("[\r\n]","")
             );
         }
     }

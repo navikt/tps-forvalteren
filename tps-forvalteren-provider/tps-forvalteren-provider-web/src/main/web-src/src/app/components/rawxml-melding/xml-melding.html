@@ -4,7 +4,36 @@
     <div class="xmlMelding-content md-whiteframe-z1 request-form">
         <!--Form - Sending a xml message-->
         <form name="xmlMeldingForm" flex="100" class="accent">
+
             <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column" flex="30">
+                    <md-input-container class="input-container">
+                        <label>Fasit app-navn søk</label>
+                        <input name="appsok" md-maxlength="25"
+                               ng-model="sokefelt"/>
+                    </md-input-container>
+                </div>
+
+                <div class="input-container-div" layout="column" flex="30">
+                    <md-input-container class="input-container">
+                        <md-button type="submit" class="md-button md-raised md-accent"
+                                   aria-label="Send til kø" ng-click="findApps(sokefelt)">
+                            Søk
+                        </md-button>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div layout="row" class="xmlMelding-content-row">
+
+                <div class="input-container-div" layout="column" flex="20">
+                    <md-input-container class="input-container">
+                        <label>Applikasjon</label>
+                        <md-select name="applikasjon" ng-model="valgtApp" ng-required="" ng-change="onChangeApp()">
+                            <md-option ng-value="app" ng-repeat="app in applications | orderBy">{{ app }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
 
                 <div class="input-container-div" layout="column" flex="10">
                     <md-input-container class="input-container">
@@ -25,9 +54,9 @@
                 </div>
 
                 <div layout="column">
-                    <md-input-container aria-label="Send xml til tps">
+                    <md-input-container aria-label="Send til kø">
                         <md-button type="submit" class="md-button md-raised md-accent" ng-click="sendTilTps()"
-                                   ng-disabled="xmlMeldingForm.$invalid || !valgtKoe || !valgtMiljoe || (!egenkoe && showOwnQueue)">
+                                   ng-disabled="xmlMeldingForm.$invalid || !valgtKoe || !valgtMiljoe || (!egenkoe && showOwnQueue) || !melding">
                             Send til TPS
                         </md-button>
                     </md-input-container>
@@ -54,8 +83,8 @@
                 <div class="input-container-div" layout="column">
                     <md-input-container class="tps-vk-input-container">
                         <label>XML melding</label>
-                        <textarea cols="120" name="xmlMelding" ng-model="melding" required class="textarea-xmlMelding"
-                                  placeholder="Skriv eller lim inn melding i XML format" minlength="1">
+                        <textarea cols="120" name="xmlMelding" ng-model="melding" class="textarea-xmlMelding"
+                                  placeholder="Skriv eller lim inn melding i XML format">
                         </textarea>
                     </md-input-container>
                 </div>

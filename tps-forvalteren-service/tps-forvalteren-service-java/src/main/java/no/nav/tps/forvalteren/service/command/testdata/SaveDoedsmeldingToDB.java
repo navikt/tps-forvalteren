@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -18,7 +18,7 @@ public class SaveDoedsmeldingToDB {
     private DoedsmeldingRepository doedsmeldingRepository;
 
     public void execute(List<Person> personer) {
-        List<Doedsmelding> doedsmeldinger = new ArrayList<>();
+        List<Doedsmelding> doedsmeldinger = Lists.newArrayListWithExpectedSize(personer.size());
 
         for (Person person : personer) {
             Doedsmelding newDoedsmelding = new Doedsmelding();

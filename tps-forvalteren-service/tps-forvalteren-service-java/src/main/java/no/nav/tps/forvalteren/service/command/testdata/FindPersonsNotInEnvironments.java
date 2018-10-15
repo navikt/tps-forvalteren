@@ -7,12 +7,12 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import com.google.common.collect.Lists;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @Service
 public class FindPersonsNotInEnvironments {
-
 
     @Autowired
     private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
@@ -35,7 +35,9 @@ public class FindPersonsNotInEnvironments {
     }
 
     private List<String> ekstraherIdenterFraPersoner(List<Person> personer) {
-        List<String> identer = new ArrayList<>();
+
+        List<String> identer = Lists.newArrayListWithExpectedSize(personer.size());
+
         for (Person person : personer) {
             identer.add(person.getIdent());
         }

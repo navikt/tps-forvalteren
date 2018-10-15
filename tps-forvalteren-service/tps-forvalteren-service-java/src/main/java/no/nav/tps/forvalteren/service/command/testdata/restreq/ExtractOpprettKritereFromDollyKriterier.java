@@ -1,21 +1,22 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Postadresse;
-import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
 public class ExtractOpprettKritereFromDollyKriterier {
@@ -24,15 +25,19 @@ public class ExtractOpprettKritereFromDollyKriterier {
     private SetDummyAdresseOnPersons setDummyAdresseOnPersons;
 
     @Autowired
+    private HentDatoFraIdentService hentDatoFraIdent;
+
+    @Autowired
     private MapperFacade mapperFacade;
 
-    public RsPersonKriteriumRequest execute(RsPersonBestillingKriteriumRequest req){
+    public RsPersonKriteriumRequest execute(RsPersonBestillingKriteriumRequest req) {
         RsPersonKriterier rsPerson = new RsPersonKriterier();
         rsPerson.setAntall(req.getAntall());
         rsPerson.setIdenttype(req.getIdenttype());
         rsPerson.setKjonn(req.getKjonn());
         rsPerson.setFoedtEtter(req.getFoedtEtter());
         rsPerson.setFoedtFoer(req.getFoedtFoer());
+        rsPerson.setSivilstand(req.getSivilstand());
 
         RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest();
         kriteriumRequest.setPersonKriterierListe(Arrays.asList(rsPerson));
@@ -40,18 +45,14 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return kriteriumRequest;
     }
 
-    public RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request){
+    public RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
         RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
-        if(rel != null && rel.getPartner() != null){
+        if (rel != null && rel.getPartner() != null) {
             RsPersonKriterier partnerReq = new RsPersonKriterier();
             partnerReq.setAntall(request.getAntall());
 
-            if(partnerReq.getIdenttype() != null){
-                partnerReq.setIdenttype(rel.getPartner().getIdenttype()); // BAre for teste
-            } else {
-                partnerReq.setIdenttype("FNR");
-            }
+            partnerReq.setIdenttype(getIdenttype(rel.getPartner().getIdenttype()));
 
             partnerReq.setKjonn(rel.getPartner().getKjonn());
             partnerReq.setFoedtFoer(rel.getPartner().getFoedtFoer());
@@ -62,22 +63,22 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personRequestListe;
     }
 
-    public RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request){
+    private String getIdenttype(String identype) {
+        return identype != null ? identype : "FNR";
+    }
+
+    public RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request) {
         RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         personRequestListe.setPersonKriterierListe(new ArrayList<>());
-        if(rel != null && !rel.getBarn().isEmpty()){
+        if (harBarn(request)) {
 
-            for(int i=0; i < request.getAntall(); i++){
-                for(RsSimpleDollyRequest req : rel.getBarn()){
+            for (int i = 0; i < request.getAntall(); i++) {
+                for (RsSimpleDollyRequest req : rel.getBarn()) {
                     RsPersonKriterier barnKriterie = new RsPersonKriterier();
                     barnKriterie.setAntall(1);
 
-                    if(barnKriterie.getIdenttype() != null){
-                        barnKriterie.setIdenttype(req.getIdenttype());
-                    } else {
-                        barnKriterie.setIdenttype("FNR");
-                    }
+                    barnKriterie.setIdenttype(getIdenttype(req.getIdenttype()));
 
                     barnKriterie.setKjonn(req.getKjonn());
                     barnKriterie.setFoedtFoer(req.getFoedtFoer());
@@ -92,11 +93,21 @@ public class ExtractOpprettKritereFromDollyKriterier {
         return personRequestListe;
     }
 
-    public List<Person> addDollyKriterumValuesToPersonAndSave(RsPersonBestillingKriteriumRequest req, List<Person> personer){
+    private boolean harBarn(RsPersonBestillingKriteriumRequest request) {
+        RsSimpleRelasjoner rel = request.getRelasjoner();
+        return rel != null && (rel.getBarn() != null && !rel.getBarn().isEmpty());
+    }
+
+    public List<Person> addDollyKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> personer) {
         personer.forEach(person -> {
                     person.setRegdato(req.getRegdato());
                     person.setDoedsdato(req.getDoedsdato());
-                    person.setStatsborgerskap(req.getStatsborgerskap());
+                    if (req.getStatsborgerskap() != null) {
+                        person.setStatsborgerskap(req.getStatsborgerskap());
+                    } else {
+                        person.setStatsborgerskap("NOR");
+                    }
+                    person.setStatsborgerskapRegdato(hentDatoFraIdent.extract(person.getIdent()));
                     person.setTypeSikkerhetsTiltak(req.getTypeSikkerhetsTiltak());
                     person.setSikkerhetsTiltakDatoFom(req.getSikkerhetsTiltakDatoFom());
                     person.setSikkerhetsTiltakDatoTom(req.getSikkerhetsTiltakDatoTom());
@@ -105,26 +116,29 @@ public class ExtractOpprettKritereFromDollyKriterier {
                     person.setEgenAnsattDatoFom(req.getEgenAnsattDatoFom());
                     person.setEgenAnsattDatoTom(req.getEgenAnsattDatoTom());
 
-                    if(req.getBoadresse() != null){
+                    if (req.getBoadresse() != null) {
                         person.setBoadresse(mapperFacade.map(req.getBoadresse(), Adresse.class));
+                        if (person.getBoadresse().getFlyttedato() == null) {
+                            person.getBoadresse().setFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
+                        }
                         person.getBoadresse().setPerson(person);
                     }
 
-                    if(req.getPostadresse() != null && !req.getPostadresse().isEmpty()){
+                    if (req.getPostadresse() != null && !req.getPostadresse().isEmpty()) {
                         person.setPostadresse(mapperFacade.mapAsList(req.getPostadresse(), Postadresse.class));
                         person.getPostadresse().forEach(adr -> adr.setPerson(person));
                     }
                 }
         );
 
-        if(!hasGateAdresse(req)){
+        if (!hasGateAdresse(req)) {
             setDummyAdresseOnPersons.execute(personer);
         }
 
         return personer;
     }
 
-    private boolean hasGateAdresse(RsPersonBestillingKriteriumRequest req){
+    private boolean hasGateAdresse(RsPersonBestillingKriteriumRequest req) {
         return req.getBoadresse() != null;
     }
 }

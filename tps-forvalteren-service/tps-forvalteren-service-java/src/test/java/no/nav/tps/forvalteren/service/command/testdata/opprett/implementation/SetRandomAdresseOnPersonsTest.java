@@ -49,7 +49,14 @@ public class SetRandomAdresseOnPersonsTest extends AbstractSetRandomAdresseOnPer
         
         assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse());
         assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse());
-        
+    }
+
+    @Test
+    public void setRandomAdresseUtenKommuneEllerPostnummer() {
+        setRandomAdresseOnPersons.execute(toPersoner);
+
+        assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse());
+        assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse());
     }
     
     private void assertAdresse(Gateadresse adresse) {

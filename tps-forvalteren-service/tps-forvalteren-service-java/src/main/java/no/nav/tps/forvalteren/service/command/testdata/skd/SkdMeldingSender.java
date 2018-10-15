@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.service.command.innvandring.AddInndringsdatoOgLandTilPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 
 @Service
 public class SkdMeldingSender {
+
+    @Autowired
+    private AddInndringsdatoOgLandTilPersonerService addInndringsdatoOgLandTilPersonerService;
 
     @Autowired
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
@@ -66,6 +70,7 @@ public class SkdMeldingSender {
 
     public List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger(List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+        addInndringsdatoOgLandTilPersonerService.execute(personerSomIkkeEksitererITpsMiljoe);
         List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, personerSomIkkeEksitererITpsMiljoe, true);
         innvandringsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);

@@ -66,7 +66,9 @@ public class SjekkIdenter {
     }
 
     protected Set<IdentMedStatus> mapToIdentMedStatusSet(Map<String, String> identer) {
-        Set<IdentMedStatus> identerMedStatus = new HashSet<>();
+
+        Set<IdentMedStatus> identerMedStatus = Sets.newHashSetWithExpectedSize(identer.size());
+
         for (Map.Entry<String, String> entry : identer.entrySet()) {
             identerMedStatus.add(new IdentMedStatus(entry.getKey(), entry.getValue()));
         }

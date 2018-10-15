@@ -150,23 +150,6 @@ public class SendTpsFoedselsmeldingServiceTest {
     }
 
     @Test
-    public void tpsEndringsmeldingServiceAdrIkkeBosatt() {
-
-        rsTpsFoedselsmeldingRequest = RsTpsFoedselsmeldingRequest.builder()
-                .identMor(IDENT_MOR)
-                .adresseFra(MOR)
-                .foedselsdato(LocalDateTime.of(1995, 2, 1, 0, 0))
-                .identtype(FNR)
-                .miljoe("u5")
-                .build();
-
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage("Mor var ikke bosatt på gitt dato.");
-
-        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
-    }
-
-    @Test
     public void tpsEndringsmeldingServiceAdrForelderFinnesIkke() {
 
         rsTpsFoedselsmeldingRequest = RsTpsFoedselsmeldingRequest.builder()

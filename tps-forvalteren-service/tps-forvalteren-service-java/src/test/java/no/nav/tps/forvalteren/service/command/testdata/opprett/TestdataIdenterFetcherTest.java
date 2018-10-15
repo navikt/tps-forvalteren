@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +33,10 @@ public class TestdataIdenterFetcherTest {
     private RsPersonKriterier personKriterier3 = new RsPersonKriterier();
     private RsPersonKriterier personKriterier4 = new RsPersonKriterier();
 
-    private TestdataRequest testdataRequest1, testdataRequest2, testdataRequest3,testdataRequest4;
+    private TestdataRequest testdataRequest1;
+    private TestdataRequest testdataRequest2;
+    private TestdataRequest testdataRequest3;
+    private TestdataRequest testdataRequest4;
 
     private String dummyIdent1 = "dummy1";
     private String dummyIdent2 = "dummy2";
@@ -45,7 +47,7 @@ public class TestdataIdenterFetcherTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
-    private MessageProvider messageProviderMock;
+    private MessageProvider messageProvider;
 
     @Mock
     private TestdataService testdataService;
@@ -56,42 +58,31 @@ public class TestdataIdenterFetcherTest {
     @Before
     public void setup() {
         rsPersonKriteriumRequest = new RsPersonKriteriumRequest();
-        rsPersonKriteriumRequest.setPersonKriterierListe(Arrays.asList(personKriterier1,personKriterier2));
+        rsPersonKriteriumRequest.setPersonKriterierListe(Arrays.asList(personKriterier1, personKriterier2));
 
         testdataRequest1 = new TestdataRequest(personKriterier1);
         testdataRequest2 = new TestdataRequest(personKriterier2);
         testdataRequest3 = new TestdataRequest(personKriterier3);
         testdataRequest4 = new TestdataRequest(personKriterier4);
-
-        testdataRequest1.setIdenterTilgjengligIMiljoe(new HashSet<>());
-        testdataRequest2.setIdenterTilgjengligIMiljoe(new HashSet<>());
-        testdataRequest3.setIdenterTilgjengligIMiljoe(new HashSet<>());
-        testdataRequest4.setIdenterTilgjengligIMiljoe(new HashSet<>());
-
-        testdataRequest1.setIdenterGenerertForKriterie(new HashSet<>());
-        testdataRequest2.setIdenterGenerertForKriterie(new HashSet<>());
-        testdataRequest3.setIdenterGenerertForKriterie(new HashSet<>());
-        testdataRequest4.setIdenterGenerertForKriterie(new HashSet<>());
     }
 
     @Test
-    public void hvisAlleKriterierErOppfyltSaaKAllesIkkeMetodeForAaOppdatereForManglendeIdenterForKriterier(){
+    public void hvisAlleKriterierErOppfyltSaaKAllesIkkeMetodeForAaOppdatereForManglendeIdenterForKriterier() {
         personKriterier1.setAntall(1);
         personKriterier2.setAntall(1);
 
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
         testdataRequest2.getIdenterTilgjengligIMiljoe().add(dummyIdent2);
 
-        when(testdataService.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1,testdataRequest2));
+        when(testdataService.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1,testdataRequest2));
 
         testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdataService, times(1)).genererIdenterForTestdataRequests(any());
+        verify(testdataService, times(1)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
     }
 
-
     @Test
-    public void hvisIkkeAlleKriterierErOppfyltVedForsteForskSaaOppdatererManRequestForMangelendeIdenter(){
+    public void hvisIkkeAlleKriterierErOppfyltVedForsteForskSaaOppdatererManRequestForMangelendeIdenter() {
 
         personKriterier1.setAntall(1);
         personKriterier2.setAntall(3);
@@ -101,19 +92,19 @@ public class TestdataIdenterFetcherTest {
         testdataRequest3.getIdenterTilgjengligIMiljoe().add(dummyIdent3);
         testdataRequest4.getIdenterTilgjengligIMiljoe().add(dummyIdent4);
 
-        when(testdataService.genererIdenterForTestdataRequests(any()))
+        when(testdataService.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class)))
                 .thenReturn(
-                        Arrays.asList(testdataRequest1,testdataRequest2),
+                        Arrays.asList(testdataRequest1, testdataRequest2),
                         Arrays.asList(testdataRequest3),
                         Arrays.asList(testdataRequest4)
-                        );
+                );
 
         List<TestdataRequest> requests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
 
-        verify(testdataService, times(3)).genererIdenterForTestdataRequests(any());
+        verify(testdataService, times(3)).genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class));
 
         assertThat(requests.get(1).getIdenterTilgjengligIMiljoe()
-                .containsAll(Arrays.asList(dummyIdent2,dummyIdent3, dummyIdent4)), is(true));
+                .containsAll(Arrays.asList(dummyIdent2, dummyIdent3, dummyIdent4)), is(true));
 
     }
 
@@ -123,12 +114,11 @@ public class TestdataIdenterFetcherTest {
 
         testdataRequest1.getIdenterTilgjengligIMiljoe().add(dummyIdent1);
 
-        when(testdataService.genererIdenterForTestdataRequests(any())).thenReturn(Arrays.asList(testdataRequest1));
-        when(messageProviderMock.get(anyString())).thenReturn("msg");
+        when(testdataService.genererIdenterForTestdataRequests(any(RsPersonKriteriumRequest.class))).thenReturn(Arrays.asList(testdataRequest1));
+        when(messageProvider.get(anyString())).thenReturn("msg");
 
         expectedException.expect(HttpCantSatisfyRequestException.class);
 
         testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(rsPersonKriteriumRequest);
     }
-
 }

@@ -14,6 +14,9 @@ public class FindAllSkdEndringsmeldingGrupper {
     private SkdEndringsmeldingGruppeRepository repository;
 
     public List<SkdEndringsmeldingGruppe> execute() {
-        return repository.findAllByOrderByIdAsc();
+        List<SkdEndringsmeldingGruppe> grupper = repository.findAllByOrderByIdAsc();
+
+        grupper.forEach(gruppe -> gruppe.setSkdEndringsmeldinger(null));
+        return grupper;
     }
 }

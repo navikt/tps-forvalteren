@@ -38,6 +38,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndring
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
@@ -89,6 +90,10 @@ public class SkdEndringsmeldingController {
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     
+
+    @Autowired
+    private GetMeldingIdFraGruppe getMeldingIdFraGruppe;
+
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
@@ -169,6 +174,14 @@ public class SkdEndringsmeldingController {
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
         List<SkdEndringsmeldingLogg> log = getLoggForGruppe.execute(gruppeId);
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
+    }
+    
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
+    @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
+    public List<Long> getMeldinger(@PathVariable("gruppeId") Long gruppeId) {
+        
+        return getMeldingIdFraGruppe.execute(gruppeId);
     }
     
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")

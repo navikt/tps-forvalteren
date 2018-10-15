@@ -40,6 +40,10 @@ angular.module('tps-forvalteren.service')
             });
         };
 
+        self.arrayContains = function(array, string){
+            return (array.indexOf(string) > -1);
+        };
+
         self.flattenObject = function (jsonObject) {
             var result = {};
 
@@ -148,17 +152,17 @@ angular.module('tps-forvalteren.service')
                     ariaLabel: 'Ugyldig forespørsel fra din bruker.'
                 },
                 401: {
-                    title: 'Ikke autentisert',
+                    title: 'Ikke autorisert',
                     text: 'Bruker er ikke autentisert. Prøv å logge inn på nytt',
                     ariaLabel: 'Bruker er ikke autentisert. Prøv å logge inn på nytt'
                 },
                 403: {
-                    title: 'Ikke autorisert',
-                    text: 'Din bruker har ikke tilgang til denne spørringen.',
+                    title: 'Forbudt',
+                    text: 'Din bruker har ikke tillatelse til denne spørringen.',
                     ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
                 },
                 404: {
-                    title: 'Ukjent side',
+                    title: 'Ukjent ressurs',
                     text: error.config.url + ' finnes ikke',
                     ariaLabel: 'Opprett siden på server og forsøk igjen.'
                 },
