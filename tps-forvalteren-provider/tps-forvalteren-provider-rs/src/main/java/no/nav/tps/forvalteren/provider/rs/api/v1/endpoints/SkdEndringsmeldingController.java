@@ -36,7 +36,6 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFr
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
@@ -56,9 +55,6 @@ public class SkdEndringsmeldingController {
     
     @Autowired
     private MapperFacade mapper;
-    
-    @Autowired
-    private FindAllSkdEndringsmeldingGrupper findAllSkdEndringsmeldingGrupper;
     
     @Autowired
     private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
@@ -90,15 +86,14 @@ public class SkdEndringsmeldingController {
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     
-
     @Autowired
     private GetMeldingIdFraGruppe getMeldingIdFraGruppe;
-
+    
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
-        List<SkdEndringsmeldingGruppe> grupper = findAllSkdEndringsmeldingGrupper.execute();
+        List<SkdEndringsmeldingGruppe> grupper = skdEndringsmeldingsgruppeService.findAllGrupper();
         return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
     }
     

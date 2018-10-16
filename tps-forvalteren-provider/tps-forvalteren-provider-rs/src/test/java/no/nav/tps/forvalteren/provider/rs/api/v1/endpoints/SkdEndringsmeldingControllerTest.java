@@ -33,7 +33,6 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFr
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.FindAllSkdEndringsmeldingGrupper;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
@@ -47,9 +46,6 @@ public class SkdEndringsmeldingControllerTest {
     
     @Mock
     private MapperFacade mapper;
-    
-    @Mock
-    private FindAllSkdEndringsmeldingGrupper findAllSkdEndringsmeldingGrupper;
     
     @Mock
     private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
@@ -87,12 +83,12 @@ public class SkdEndringsmeldingControllerTest {
     @Test
     public void getGrupperReturnsAllGrupper() {
         when(rsGrupper.size()).thenReturn(1337);
-        when(findAllSkdEndringsmeldingGrupper.execute()).thenReturn(grupper);
+        when(skdEndringsmeldingsgruppeService.findAllGrupper()).thenReturn(grupper);
         when(mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class)).thenReturn(rsGrupper);
         
         List<RsSkdEndringsmeldingGruppe> result = skdEndringsmeldingController.getGrupper();
         
-        verify(findAllSkdEndringsmeldingGrupper).execute();
+        verify(skdEndringsmeldingsgruppeService).findAllGrupper();
         verify(mapper).mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
         assertThat(result, hasSize(1337));
     }

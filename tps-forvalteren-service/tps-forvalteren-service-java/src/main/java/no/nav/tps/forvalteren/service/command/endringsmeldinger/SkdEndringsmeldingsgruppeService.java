@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,12 @@ public class SkdEndringsmeldingsgruppeService {
     
     public SkdEndringsmeldingGruppe findGruppeById(Long gruppeId) {
         return repository.findById(gruppeId);
+    }
+    
+    public List<SkdEndringsmeldingGruppe> findAllGrupper() {
+        List<SkdEndringsmeldingGruppe> grupper = repository.findAllByOrderByIdAsc();
+        
+        grupper.forEach(gruppe -> gruppe.setSkdEndringsmeldinger(null));
+        return grupper;
     }
 }
