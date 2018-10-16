@@ -16,7 +16,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.Avspill
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendSkdMeldingerOgLeggTilResponslisteTest {
+public class SendSkdMeldingerOgLeggTilResponslisteServiceTest {
     
     private final String miljoe = "u5";
     private final String skdmeldingen = "skdmeldingen";
@@ -24,7 +24,7 @@ public class SendSkdMeldingerOgLeggTilResponslisteTest {
     private SendEnSkdMelding SendEnSkdMelding;
     
     @InjectMocks
-    private SendSkdMeldingerOgLeggTilResponsliste sendToTps;
+    private SendSkdMeldingerOgLeggTilResponslisteService sendToTps;
     
     @Test
     public void shouldReportFailedSkdMessages() {

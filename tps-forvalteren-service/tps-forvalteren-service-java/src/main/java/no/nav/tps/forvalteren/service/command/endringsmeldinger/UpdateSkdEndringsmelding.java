@@ -22,13 +22,13 @@ public class UpdateSkdEndringsmelding {
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
     
     @Autowired
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     
     public void update(List<RsMeldingstype> meldinger) {
         for (RsMeldingstype melding : meldinger) {
             SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(melding.getId());
             if (skdEndringsmelding != null) {
-                saveSkdEndringsmelding.save(melding, skdEndringsmelding);
+                saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
             } else {
                 throw new SkdEndringsmeldingNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, melding.getId()));
             }

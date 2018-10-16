@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonProcessingException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SaveSkdEndringsmeldingTest {
+public class SaveSkdEndringsmeldingServiceTest {
     
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -36,7 +36,7 @@ public class SaveSkdEndringsmeldingTest {
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
     
     @InjectMocks
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     
     @Mock
     private RsMeldingstype melding;
@@ -46,7 +46,7 @@ public class SaveSkdEndringsmeldingTest {
     
     @Test
     public void checkThatServicesGetsCalled() throws JsonProcessingException {
-        saveSkdEndringsmelding.save(melding, skdEndringsmelding);
+        saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
         
         verify(mapper).writeValueAsString(melding);
         verify(skdEndringsmeldingRepository).save(skdEndringsmelding);
@@ -58,7 +58,7 @@ public class SaveSkdEndringsmeldingTest {
         
         expectedException.expect(SkdEndringsmeldingJsonProcessingException.class);
         
-        saveSkdEndringsmelding.save(melding, skdEndringsmelding);
+        saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
         
         verify(messageProvider).get(SKD_ENDRINGSMELDING_JSON_PROCESSING, melding.getId());
     }

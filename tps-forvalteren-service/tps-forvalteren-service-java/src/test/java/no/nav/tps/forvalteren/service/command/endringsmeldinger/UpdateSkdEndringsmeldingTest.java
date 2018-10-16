@@ -39,7 +39,7 @@ public class UpdateSkdEndringsmeldingTest {
     @Mock
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
     @Mock
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     @InjectMocks
     private UpdateSkdEndringsmelding updateSkdEndringsmelding;
     private RsMeldingstype meldingType1 = Mockito.mock(RsMeldingstype1Felter.class);
@@ -69,8 +69,8 @@ public class UpdateSkdEndringsmeldingTest {
         verify(skdEndringsmeldingRepository).findById(MELDING_ID1);
         verify(skdEndringsmeldingRepository).findById(MELDING_ID2);
         
-        verify(saveSkdEndringsmelding).save(meldinger.get(0), skdMelding1);
-        verify(saveSkdEndringsmelding).save(meldinger.get(1), skdMelding2);
+        verify(saveSkdEndringsmeldingService).save(meldinger.get(0), skdMelding1);
+        verify(saveSkdEndringsmeldingService).save(meldinger.get(1), skdMelding2);
     }
     
     @Test

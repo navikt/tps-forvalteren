@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 
 @Service
-public class CreateSkdEndringsmeldingFromType {
+public class CreateSkdEndringsmeldingFromTypeService {
     
     @Autowired
     private MessageProvider messageProvider;
@@ -26,7 +26,7 @@ public class CreateSkdEndringsmeldingFromType {
     private GetRsMeldingstypeFromTypeText getRsMeldingstypeFromTypeText;
     
     @Autowired
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     
     public void execute(Long gruppeId, RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
@@ -35,7 +35,7 @@ public class CreateSkdEndringsmeldingFromType {
             skdEndringsmelding.setGruppe(gruppe);
             RsMeldingstype melding = getRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype());
             melding.setBeskrivelse(rsNewSkdEndringsmelding.getNavn());
-            saveSkdEndringsmelding.save(melding, skdEndringsmelding);
+            saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
         } else {
             throw new SkdEndringsmeldingGruppeNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, gruppeId));
         }

@@ -24,7 +24,7 @@ public class SaveSkdEndringsmeldingerService {
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
     
     @Autowired
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     
     public List<Long> save(List<RsMeldingstype> meldinger, Long gruppeId) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingGruppeRepository.findById(gruppeId);
@@ -33,7 +33,7 @@ public class SaveSkdEndringsmeldingerService {
             for (RsMeldingstype melding : meldinger) {
                 SkdEndringsmelding skdEndringsmelding = new SkdEndringsmelding();
                 skdEndringsmelding.setGruppe(gruppe);
-                SkdEndringsmelding savedMelding = saveSkdEndringsmelding.save(melding, skdEndringsmelding);
+                SkdEndringsmelding savedMelding = saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
                 lagredeMeldingersId.add(savedMelding.getId());
             }
         } else {

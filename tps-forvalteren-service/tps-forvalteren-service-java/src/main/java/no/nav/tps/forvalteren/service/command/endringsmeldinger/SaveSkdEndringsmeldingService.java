@@ -16,7 +16,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonProcessingException;
 
 @Service
-public class SaveSkdEndringsmelding {
+public class SaveSkdEndringsmeldingService {
     
     @Autowired
     private MessageProvider messageProvider;

@@ -24,7 +24,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateSkdEndringsmeldingFromTypeTest {
+public class CreateSkdEndringsmeldingFromTypeServiceTest {
     
     private static final Long GRUPPE_ID = 1337L;
     private static final Long MELDING_ID = 42L;
@@ -39,9 +39,9 @@ public class CreateSkdEndringsmeldingFromTypeTest {
     @Mock
     private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
     @Mock
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     @InjectMocks
-    private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
+    private CreateSkdEndringsmeldingFromTypeService createSkdEndringsmeldingFromTypeService;
     @Mock
     private RsNewSkdEndringsmelding rsNewSkdEndringsmelding;
     @Mock
@@ -60,10 +60,10 @@ public class CreateSkdEndringsmeldingFromTypeTest {
     
     @Test
     public void checkThatMeldingGetsSaved() {
-        createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
+        createSkdEndringsmeldingFromTypeService.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
         
         verify(GetRsMeldingstypeFromTypeText).execute(MELDINGSTYPE);
-        verify(saveSkdEndringsmelding).save(any(RsMeldingstype.class), any(SkdEndringsmelding.class));
+        verify(saveSkdEndringsmeldingService).save(any(RsMeldingstype.class), any(SkdEndringsmelding.class));
     }
     
     @Test
@@ -72,7 +72,7 @@ public class CreateSkdEndringsmeldingFromTypeTest {
         
         expectedException.expect(SkdEndringsmeldingGruppeNotFoundException.class);
         
-        createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
+        createSkdEndringsmeldingFromTypeService.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
         
         verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);
     }

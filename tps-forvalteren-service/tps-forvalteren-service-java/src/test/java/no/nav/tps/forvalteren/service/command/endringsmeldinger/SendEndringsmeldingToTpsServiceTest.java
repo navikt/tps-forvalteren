@@ -35,7 +35,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMeld
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendEndringsmeldingGruppeToTpsTest {
+public class SendEndringsmeldingToTpsServiceTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -47,7 +47,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
 
     @Mock
-    private SendSkdMeldingerOgLeggTilResponsliste sendSkdMeldinger;
+    private SendSkdMeldingerOgLeggTilResponslisteService sendSkdMeldinger;
 
     @Mock
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
@@ -68,7 +68,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
     private SkdEndringsmeldingLoggRepository skdEndringsmeldingLoggRepository;
 
     @InjectMocks
-    private SendEndringsmeldingGruppeToTps sendEndringsmeldingGruppeToTps;
+    private SendEndringsmeldingToTpsService sendEndringsmeldingToTpsService;
 
     private static final Long GRUPPE_ID = 1337L;
     private static final String ENVIRONMENT = "u5";
@@ -116,7 +116,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
         skdEndringsmeldingIdListToTps.setEnvironment(environment);
         skdEndringsmeldingIdListToTps.setIds(ids);
 
-        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
+        sendEndringsmeldingToTpsService.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
 
         verify(skdEndringsmeldingGruppeRepository).findById(GRUPPE_ID);
         verify(convertJsonToRsMeldingstype, times(3)).execute(any(SkdEndringsmelding.class));
@@ -148,7 +148,7 @@ public class SendEndringsmeldingGruppeToTpsTest {
         skdEndringsmeldingIdListToTps.setEnvironment(environment);
         skdEndringsmeldingIdListToTps.setIds(ids);
 
-        sendEndringsmeldingGruppeToTps.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
+        sendEndringsmeldingToTpsService.execute(GRUPPE_ID, skdEndringsmeldingIdListToTps);
 
         verify(skdEndringsmeldingGruppeRepository).findById(GRUPPE_ID);
         verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);

@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.StatusP
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 
 @Service
-public class SendSkdMeldingerOgLeggTilResponsliste {
+public class SendSkdMeldingerOgLeggTilResponslisteService {
 
     @Autowired
     private SendEnSkdMelding sendEnSkdMelding;
