@@ -28,7 +28,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UpdateSkdEndringsmeldingTest {
+public class UpdateSkdEndringsmeldingServiceTest {
     
     private static final Long MELDING_ID1 = 1L;
     private static final Long MELDING_ID2 = 2L;
@@ -41,7 +41,7 @@ public class UpdateSkdEndringsmeldingTest {
     @Mock
     private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
     @InjectMocks
-    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
+    private UpdateSkdEndringsmeldingService updateSkdEndringsmeldingService;
     private RsMeldingstype meldingType1 = Mockito.mock(RsMeldingstype1Felter.class);
     private RsMeldingstype meldingType2 = Mockito.mock(RsMeldingstype2Felter.class);
     @Mock
@@ -64,7 +64,7 @@ public class UpdateSkdEndringsmeldingTest {
     
     @Test
     public void updateMeldingHappyPath() {
-        updateSkdEndringsmelding.update(meldinger);
+        updateSkdEndringsmeldingService.update(meldinger);
         
         verify(skdEndringsmeldingRepository).findById(MELDING_ID1);
         verify(skdEndringsmeldingRepository).findById(MELDING_ID2);
@@ -80,7 +80,7 @@ public class UpdateSkdEndringsmeldingTest {
         expectedException.expect(SkdEndringsmeldingNotFoundException.class);
         expectedException.expectMessage("not found");
         
-        updateSkdEndringsmelding.update(meldinger);
+        updateSkdEndringsmeldingService.update(meldinger);
         
         verify(messageProvider).get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID1);
         verify(messageProvider).get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID2);

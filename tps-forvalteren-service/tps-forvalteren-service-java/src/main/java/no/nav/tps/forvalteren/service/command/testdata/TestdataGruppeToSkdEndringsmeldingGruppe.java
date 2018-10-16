@@ -15,7 +15,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWithMeldingstype;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWithMeldingstypeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
@@ -60,7 +60,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
     private CreateFoedselsmeldinger createFoedselsmeldinger;
     
     @Autowired
-    private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
+    private CreateMeldingWithMeldingstypeService createMeldingWithMeldingstypeService;
     
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
@@ -88,7 +88,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             skdMeldinger.addAll(vergemaalMeldinger);
             
             gruppe = skdEndringsmeldingGruppeRepository.save(gruppe);
-            List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(skdMeldinger);
+            List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstypeService.execute(skdMeldinger);
             saveSkdEndringsmeldingerService.save(rsMeldinger, gruppe.getId());
             return gruppe;
         } else {

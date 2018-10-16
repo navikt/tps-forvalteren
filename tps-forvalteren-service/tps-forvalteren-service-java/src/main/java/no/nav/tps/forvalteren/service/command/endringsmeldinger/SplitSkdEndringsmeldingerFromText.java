@@ -11,7 +11,7 @@ import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingIllegalLengthException;
 
 @Service
-public class SplitSkdEndringsmeldingerFromTextService {
+public class SplitSkdEndringsmeldingerFromText {
 
     @Autowired
     private MessageProvider messageProvider;

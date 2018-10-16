@@ -13,7 +13,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingNotFoundException;
 
 @Service
-public class UpdateSkdEndringsmelding {
+public class UpdateSkdEndringsmeldingService {
     
     @Autowired
     private MessageProvider messageProvider;

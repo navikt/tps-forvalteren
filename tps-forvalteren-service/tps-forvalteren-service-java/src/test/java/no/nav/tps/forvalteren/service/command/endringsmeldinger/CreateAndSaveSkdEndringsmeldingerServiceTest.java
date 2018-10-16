@@ -25,15 +25,15 @@ public class CreateAndSaveSkdEndringsmeldingerServiceTest {
     private static final Long GRUPPE_ID = 1337L;
     SkdMeldingTrans2 melding = new SkdMeldingTrans2("some message");
     @Mock
-    private SplitSkdEndringsmeldingerFromTextService splitSkdEndringsmeldingerFromTextService;
+    private SplitSkdEndringsmeldingerFromText splitSkdEndringsmeldingerFromText;
     @Mock
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     @Mock
-    private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
+    private CreateMeldingWithMeldingstypeService createMeldingWithMeldingstypeService;
     @Mock
     private UnmarshalSkdMelding unmarshalSkdMelding;
     @InjectMocks
-    private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
+    private CreateAndSaveSkdEndringsmeldingerFromTextService createAndSaveSkdEndringsmeldingerFromTextService;
     @Mock
     private RsRawMeldinger rawMeldinger;
     private List<SkdMelding> meldinger = Arrays.asList(melding);
@@ -43,17 +43,17 @@ public class CreateAndSaveSkdEndringsmeldingerServiceTest {
     
     @Before
     public void setup() {
-        when(splitSkdEndringsmeldingerFromTextService.execute(rawMeldinger.getRaw())).thenReturn(meldingerString);
-        when(createMeldingWithMeldingstype.execute(meldinger)).thenReturn(rsMeldingstyper);
+        when(splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw())).thenReturn(meldingerString);
+        when(createMeldingWithMeldingstypeService.execute(meldinger)).thenReturn(rsMeldingstyper);
         when(unmarshalSkdMelding.unmarshalMeldingUtenHeader(anyString())).thenReturn(melding);
     }
     
     @Test
     public void checkThatAllServicesGetsCalled() {
-        createAndSaveSkdEndringsmeldingerFromText.execute(GRUPPE_ID, rawMeldinger);
+        createAndSaveSkdEndringsmeldingerFromTextService.execute(GRUPPE_ID, rawMeldinger);
         
-        verify(splitSkdEndringsmeldingerFromTextService).execute(rawMeldinger.getRaw());
-        verify(createMeldingWithMeldingstype).execute(meldinger);
+        verify(splitSkdEndringsmeldingerFromText).execute(rawMeldinger.getRaw());
+        verify(createMeldingWithMeldingstypeService).execute(meldinger);
         verify(saveSkdEndringsmeldingerService).save(rsMeldingstyper, GRUPPE_ID);
     }
 }

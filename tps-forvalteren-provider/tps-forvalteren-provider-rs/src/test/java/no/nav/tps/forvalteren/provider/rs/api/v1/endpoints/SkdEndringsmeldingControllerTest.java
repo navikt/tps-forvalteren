@@ -30,13 +30,13 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromTextService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromTypeService;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingToTpsService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmeldingService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SkdEndringsmeldingControllerTest {
@@ -57,10 +57,10 @@ public class SkdEndringsmeldingControllerTest {
     private CreateSkdEndringsmeldingFromTypeService createSkdEndringsmeldingFromTypeService;
     
     @Mock
-    private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
+    private CreateAndSaveSkdEndringsmeldingerFromTextService createAndSaveSkdEndringsmeldingerFromTextService;
     
     @Mock
-    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
+    private UpdateSkdEndringsmeldingService updateSkdEndringsmeldingService;
     
     @Mock
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
@@ -69,7 +69,7 @@ public class SkdEndringsmeldingControllerTest {
     private SendEndringsmeldingToTpsService sendEndringsmeldingToTpsService;
     
     @Mock
-    private GetLoggForGruppe getLoggForGruppe;
+    private GetLoggForGruppeService getLoggForGruppeService;
     
     @Mock
     private List<SkdEndringsmeldingGruppe> grupper;
@@ -146,7 +146,7 @@ public class SkdEndringsmeldingControllerTest {
         
         skdEndringsmeldingController.createMeldingerFromText(gruppeId, meldingerAsText);
         
-        verify(createAndSaveSkdEndringsmeldingerFromText).execute(gruppeId, meldingerAsText);
+        verify(createAndSaveSkdEndringsmeldingerFromTextService).execute(gruppeId, meldingerAsText);
     }
     
     @Test
@@ -162,7 +162,7 @@ public class SkdEndringsmeldingControllerTest {
     public void updateMeldingVerify() {
         skdEndringsmeldingController.updateMeldinger(rsMeldinger);
         
-        verify(updateSkdEndringsmelding).update(rsMeldinger);
+        verify(updateSkdEndringsmeldingService).update(rsMeldinger);
     }
     
     @Test
@@ -200,11 +200,11 @@ public class SkdEndringsmeldingControllerTest {
         Long gruppeId = 1337L;
         List<SkdEndringsmeldingLogg> log = Arrays.asList(new SkdEndringsmeldingLogg());
         
-        when(getLoggForGruppe.execute(gruppeId)).thenReturn(log);
+        when(getLoggForGruppeService.execute(gruppeId)).thenReturn(log);
         
         skdEndringsmeldingController.getLogg(gruppeId);
         
-        verify(getLoggForGruppe).execute(gruppeId);
+        verify(getLoggForGruppeService).execute(gruppeId);
         verify(mapper).mapAsList(log, RsSkdEndringsmeldingLogg.class);
     }
     

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 
 @Service
-public class CreateMeldingWithMeldingstype {
+public class CreateMeldingWithMeldingstypeService {
 
     @Autowired
     private MapToRsMelding mapToRsMelding;

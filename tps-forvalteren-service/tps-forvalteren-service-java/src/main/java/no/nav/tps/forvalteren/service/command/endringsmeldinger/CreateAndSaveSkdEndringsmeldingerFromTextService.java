@@ -11,23 +11,23 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.UnmarshalSkdMelding;
 
 @Service
-public class CreateAndSaveSkdEndringsmeldingerFromText {
+public class CreateAndSaveSkdEndringsmeldingerFromTextService {
     
     @Autowired
     UnmarshalSkdMelding unmarshalSkdMelding;
     @Autowired
-    private SplitSkdEndringsmeldingerFromTextService splitSkdEndringsmeldingerFromTextService;
+    private SplitSkdEndringsmeldingerFromText splitSkdEndringsmeldingerFromText;
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     @Autowired
-    private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
+    private CreateMeldingWithMeldingstypeService createMeldingWithMeldingstypeService;
     
     public void execute(Long gruppeId, RsRawMeldinger rawMeldinger) {
-        List<String> meldinger = splitSkdEndringsmeldingerFromTextService.execute(rawMeldinger.getRaw());
+        List<String> meldinger = splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw());
         List<SkdMelding> skdMeldinger = meldinger.stream()
                 .map(unmarshalSkdMelding::unmarshalMeldingUtenHeader)
                 .collect(Collectors.toList());
-        List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstype.execute(skdMeldinger);
+        List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstypeService.execute(skdMeldinger);
         saveSkdEndringsmeldingerService.save(rsMeldinger, gruppeId);
     }
     

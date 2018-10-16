@@ -33,15 +33,15 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromTextService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromTypeService;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppe;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppeService;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingToTpsService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
 
 @Transactional
@@ -59,13 +59,13 @@ public class SkdEndringsmeldingController {
     private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
     
     @Autowired
-    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
+    private UpdateSkdEndringsmeldingService updateSkdEndringsmeldingService;
     
     @Autowired
     private CreateSkdEndringsmeldingFromTypeService createSkdEndringsmeldingFromTypeService;
     
     @Autowired
-    private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
+    private CreateAndSaveSkdEndringsmeldingerFromTextService createAndSaveSkdEndringsmeldingerFromTextService;
     
     @Autowired
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
@@ -74,7 +74,7 @@ public class SkdEndringsmeldingController {
     private SendEndringsmeldingToTpsService sendEndringsmeldingToTpsService;
     
     @Autowired
-    private GetLoggForGruppe getLoggForGruppe;
+    private GetLoggForGruppeService getLoggForGruppeService;
     
     @Autowired
     private SkdEndringsmeldingService skdEndringsmeldingService;
@@ -83,7 +83,7 @@ public class SkdEndringsmeldingController {
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     
     @Autowired
-    private GetMeldingIdFraGruppe getMeldingIdFraGruppe;
+    private GetMeldingIdFraGruppeService getMeldingIdFraGruppeService;
     
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -127,7 +127,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMeldingerFromText") })
     @RequestMapping(value = "/gruppe/{gruppeId}/raw", method = RequestMethod.POST)
     public void createMeldingerFromText(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsRawMeldinger meldingerAsText) {
-        createAndSaveSkdEndringsmeldingerFromText.execute(gruppeId, meldingerAsText);
+        createAndSaveSkdEndringsmeldingerFromTextService.execute(gruppeId, meldingerAsText);
     }
     
     @LogExceptions
@@ -141,7 +141,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updateMeldinger") })
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
-        updateSkdEndringsmelding.update(meldinger);
+        updateSkdEndringsmeldingService.update(meldinger);
     }
     
     @LogExceptions
@@ -163,7 +163,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
     @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
-        List<SkdEndringsmeldingLogg> log = getLoggForGruppe.execute(gruppeId);
+        List<SkdEndringsmeldingLogg> log = getLoggForGruppeService.execute(gruppeId);
         return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
     }
     
@@ -172,7 +172,7 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
     public List<Long> getMeldinger(@PathVariable("gruppeId") Long gruppeId) {
         
-        return getMeldingIdFraGruppe.execute(gruppeId);
+        return getMeldingIdFraGruppeService.execute(gruppeId);
     }
     
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")

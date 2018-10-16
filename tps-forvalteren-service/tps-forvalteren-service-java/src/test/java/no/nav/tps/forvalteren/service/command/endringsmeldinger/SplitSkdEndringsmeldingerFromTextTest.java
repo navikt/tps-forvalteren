@@ -22,7 +22,7 @@ import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingIllegalLengthException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SplitSkdEndringsmeldingerFromTextServiceTest {
+public class SplitSkdEndringsmeldingerFromTextTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -31,7 +31,7 @@ public class SplitSkdEndringsmeldingerFromTextServiceTest {
     private MessageProvider messageProvider;
 
     @InjectMocks
-    private SplitSkdEndringsmeldingerFromTextService splitSkdEndringsmeldingerFromTextService;
+    private SplitSkdEndringsmeldingerFromText splitSkdEndringsmeldingerFromText;
 
     private static final int ILLLEGAL_LENGTH = 1337;
 
@@ -44,7 +44,7 @@ public class SplitSkdEndringsmeldingerFromTextServiceTest {
     public void returnsOneMelding() {
         String oneMelding = StringUtils.repeat(" ", 1500);
 
-        List<String> result = splitSkdEndringsmeldingerFromTextService.execute(oneMelding);
+        List<String> result = splitSkdEndringsmeldingerFromText.execute(oneMelding);
 
         assertThat(result, hasSize(1));
     }
@@ -53,7 +53,7 @@ public class SplitSkdEndringsmeldingerFromTextServiceTest {
     public void returnsTenMeldinger() {
         String tenMeldinger = StringUtils.repeat(" ", 15000);
 
-        List<String> result = splitSkdEndringsmeldingerFromTextService.execute(tenMeldinger);
+        List<String> result = splitSkdEndringsmeldingerFromText.execute(tenMeldinger);
 
         assertThat(result, hasSize(10));
     }
@@ -65,7 +65,7 @@ public class SplitSkdEndringsmeldingerFromTextServiceTest {
         String melding3 = StringUtils.repeat("3", 1500);
         String threeMeldinger = melding1 + melding2 + melding3;
 
-        List<String> result = splitSkdEndringsmeldingerFromTextService.execute(threeMeldinger);
+        List<String> result = splitSkdEndringsmeldingerFromText.execute(threeMeldinger);
 
         assertThat(result, hasSize(3));
         assertThat(result.get(0), equalTo(melding1));
@@ -80,7 +80,7 @@ public class SplitSkdEndringsmeldingerFromTextServiceTest {
         expectedException.expect(SkdEndringsmeldingIllegalLengthException.class);
         expectedException.expectMessage("illegal length");
 
-        splitSkdEndringsmeldingerFromTextService.execute(meldinger);
+        splitSkdEndringsmeldingerFromText.execute(meldinger);
 
         verify(messageProvider).get(SKD_ENDRINGSMELDING_ILLEGAL_LENGTH, ILLLEGAL_LENGTH);
     }

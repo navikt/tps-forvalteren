@@ -26,7 +26,7 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWithMeldingstype;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateMeldingWithMeldingstypeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
@@ -66,7 +66,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     @Mock
     private GruppeRepository gruppeRepository;
     @Mock
-    private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
+    private CreateMeldingWithMeldingstypeService createMeldingWithMeldingstypeService;
     @Mock
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     @InjectMocks
@@ -88,7 +88,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(innvandringsMeldinger);
         when(createRelasjoner.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(relasjonsMeldinger);
         when(createDoedsmeldinger.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(doedsMeldinger);
-        when(createMeldingWithMeldingstype.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
+        when(createMeldingWithMeldingstypeService.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
         when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
@@ -103,9 +103,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(skdMessageCreatorTrans1).execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createRelasjoner).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createDoedsmeldinger).execute(testdataGruppe.getPersoner(), ADD_HEADER);
-        verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
+        verify(createMeldingWithMeldingstypeService).execute(anyListOf(SkdMelding.class));
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
-        verify(createMeldingWithMeldingstype).execute(anyListOf(SkdMelding.class));
+        verify(createMeldingWithMeldingstypeService).execute(anyListOf(SkdMelding.class));
         verify(saveSkdEndringsmeldingerService).save(rsMeldinger, GRUPPE_ID);
         verify(createVergemaal).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
