@@ -35,7 +35,6 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
@@ -58,9 +57,6 @@ public class SkdEndringsmeldingController {
     
     @Autowired
     private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
-    
-    @Autowired
-    private DeleteSkdEndringsmeldingByIdIn deleteSkdEndringsmeldingByIdIn;
     
     @Autowired
     private UpdateSkdEndringsmelding updateSkdEndringsmelding;
@@ -138,7 +134,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteMeldinger") })
     @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
     public void deleteSkdEndringsmeldinger(@RequestBody RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe) {
-        deleteSkdEndringsmeldingByIdIn.execute(rsSkdEdnringsmeldingIdListe.getIds());
+        skdEndringsmeldingService.deleteById(rsSkdEdnringsmeldingIdListe.getIds());
     }
     
     @LogExceptions

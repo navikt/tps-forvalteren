@@ -16,14 +16,14 @@ public class CreateAndSaveSkdEndringsmeldingerFromText {
     @Autowired
     UnmarshalSkdMelding unmarshalSkdMelding;
     @Autowired
-    private SplitSkdEndringsmeldingerFromText splitSkdEndringsmeldingerFromText;
+    private SplitSkdEndringsmeldingerFromTextService splitSkdEndringsmeldingerFromTextService;
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     @Autowired
     private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
     
     public void execute(Long gruppeId, RsRawMeldinger rawMeldinger) {
-        List<String> meldinger = splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw());
+        List<String> meldinger = splitSkdEndringsmeldingerFromTextService.execute(rawMeldinger.getRaw());
         List<SkdMelding> skdMeldinger = meldinger.stream()
                 .map(unmarshalSkdMelding::unmarshalMeldingUtenHeader)
                 .collect(Collectors.toList());

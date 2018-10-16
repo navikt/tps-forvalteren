@@ -25,7 +25,7 @@ public class CreateAndSaveSkdEndringsmeldingerServiceTest {
     private static final Long GRUPPE_ID = 1337L;
     SkdMeldingTrans2 melding = new SkdMeldingTrans2("some message");
     @Mock
-    private SplitSkdEndringsmeldingerFromText splitSkdEndringsmeldingerFromText;
+    private SplitSkdEndringsmeldingerFromTextService splitSkdEndringsmeldingerFromTextService;
     @Mock
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
     @Mock
@@ -43,7 +43,7 @@ public class CreateAndSaveSkdEndringsmeldingerServiceTest {
     
     @Before
     public void setup() {
-        when(splitSkdEndringsmeldingerFromText.execute(rawMeldinger.getRaw())).thenReturn(meldingerString);
+        when(splitSkdEndringsmeldingerFromTextService.execute(rawMeldinger.getRaw())).thenReturn(meldingerString);
         when(createMeldingWithMeldingstype.execute(meldinger)).thenReturn(rsMeldingstyper);
         when(unmarshalSkdMelding.unmarshalMeldingUtenHeader(anyString())).thenReturn(melding);
     }
@@ -52,7 +52,7 @@ public class CreateAndSaveSkdEndringsmeldingerServiceTest {
     public void checkThatAllServicesGetsCalled() {
         createAndSaveSkdEndringsmeldingerFromText.execute(GRUPPE_ID, rawMeldinger);
         
-        verify(splitSkdEndringsmeldingerFromText).execute(rawMeldinger.getRaw());
+        verify(splitSkdEndringsmeldingerFromTextService).execute(rawMeldinger.getRaw());
         verify(createMeldingWithMeldingstype).execute(meldinger);
         verify(saveSkdEndringsmeldingerService).save(rsMeldingstyper, GRUPPE_ID);
     }

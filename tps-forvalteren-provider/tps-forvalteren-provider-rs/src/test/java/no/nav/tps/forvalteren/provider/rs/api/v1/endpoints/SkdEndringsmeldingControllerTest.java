@@ -32,9 +32,9 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromType;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.DeleteSkdEndringsmeldingByIdIn;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppe;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingGruppeToTps;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmelding;
 
@@ -51,13 +51,13 @@ public class SkdEndringsmeldingControllerTest {
     private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
     
     @Mock
+    private SkdEndringsmeldingService skdEndringsmeldingService;
+    
+    @Mock
     private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
     
     @Mock
     private CreateAndSaveSkdEndringsmeldingerFromText createAndSaveSkdEndringsmeldingerFromText;
-    
-    @Mock
-    private DeleteSkdEndringsmeldingByIdIn deleteSkdEndringsmeldingByIdIn;
     
     @Mock
     private UpdateSkdEndringsmelding updateSkdEndringsmelding;
@@ -155,7 +155,7 @@ public class SkdEndringsmeldingControllerTest {
         
         skdEndringsmeldingController.deleteSkdEndringsmeldinger(rsSkdEdnringsmeldingIdListe);
         
-        verify(deleteSkdEndringsmeldingByIdIn).execute(rsSkdEdnringsmeldingIdListe.getIds());
+        verify(skdEndringsmeldingService).deleteById(rsSkdEdnringsmeldingIdListe.getIds());
     }
     
     @Test

@@ -33,6 +33,12 @@ public class SkdEndringsmeldingServiceTest {
     @Mock
     private SkdEndringsmeldingGruppeRepository gruppeRepository;
     
+    @Test
+    public void verifyRepositoryCall() {
+        ArrayList<Long> skdendringsmeldingIds = new ArrayList<>();
+        skdEndringsmeldingService.deleteById(skdendringsmeldingIds);
+        verify(skdEndringsmeldingRepository).deleteByIdIn(skdendringsmeldingIds);
+    }
     
     @Test
     public void shouldReturnereskdmeldingsIdenterMedAngittAarsakskodeOgTransaksjonskode() {
