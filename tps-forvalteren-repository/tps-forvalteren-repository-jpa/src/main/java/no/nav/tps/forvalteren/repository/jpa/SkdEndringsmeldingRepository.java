@@ -16,8 +16,6 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
     
     List<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe);
     
-    List<SkdEndringsmelding> findAllByGruppeOrderByIdAsc(SkdEndringsmeldingGruppe gruppe);
-    
     void deleteAll();
     
     List<SkdEndringsmelding> findByAarsakskodeInAndTransaksjonstypeAndGruppe(List<String> aarsakskode, String transaksjonstype, SkdEndringsmeldingGruppe gruppe);
