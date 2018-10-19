@@ -3,8 +3,6 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_NOT_FOUND;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,8 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -29,41 +25,31 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
-import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingJsonProcessingException;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UpdateSkdEndringsmeldingTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+public class UpdateSkdEndringsmeldingServiceTest {
     
-    @Mock
-    private MessageProvider messageProvider;
-    
-    @Mock
-    private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-    
-    @Mock
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
-
-    @InjectMocks
-    private UpdateSkdEndringsmelding updateSkdEndringsmelding;
-
-    private RsMeldingstype meldingType1 = Mockito.mock(RsMeldingstype1Felter.class);
-
-    private RsMeldingstype meldingType2 = Mockito.mock(RsMeldingstype2Felter.class);
-
-    @Mock
-    private SkdEndringsmelding skdMelding1;
-
-    @Mock
-    private SkdEndringsmelding skdMelding2;
-
     private static final Long MELDING_ID1 = 1L;
     private static final Long MELDING_ID2 = 2L;
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    @Mock
+    private MessageProvider messageProvider;
+    @Mock
+    private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
+    @Mock
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
+    @InjectMocks
+    private UpdateSkdEndringsmeldingService updateSkdEndringsmeldingService;
+    private RsMeldingstype meldingType1 = Mockito.mock(RsMeldingstype1Felter.class);
+    private RsMeldingstype meldingType2 = Mockito.mock(RsMeldingstype2Felter.class);
+    @Mock
+    private SkdEndringsmelding skdMelding1;
+    @Mock
+    private SkdEndringsmelding skdMelding2;
     private List<RsMeldingstype> meldinger = new ArrayList<>(Arrays.asList(meldingType1, meldingType2));
-
+    
     @Before
     public void setup() {
         when(meldingType1.getId()).thenReturn(MELDING_ID1);
@@ -75,30 +61,30 @@ public class UpdateSkdEndringsmeldingTest {
         when(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID1)).thenReturn("not found");
         when(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID2)).thenReturn("not found");
     }
-
+    
     @Test
     public void updateMeldingHappyPath() {
-        updateSkdEndringsmelding.execute(meldinger);
-
+        updateSkdEndringsmeldingService.update(meldinger);
+        
         verify(skdEndringsmeldingRepository).findById(MELDING_ID1);
         verify(skdEndringsmeldingRepository).findById(MELDING_ID2);
         
-        verify(saveSkdEndringsmelding).execute(meldinger.get(0), skdMelding1);
-        verify(saveSkdEndringsmelding).execute(meldinger.get(1), skdMelding2);
+        verify(saveSkdEndringsmeldingService).save(meldinger.get(0), skdMelding1);
+        verify(saveSkdEndringsmeldingService).save(meldinger.get(1), skdMelding2);
     }
     
     @Test
     public void skdEndringsmeldingThrowsExceptionWhenNotExists() {
         when(skdEndringsmeldingRepository.findById(any())).thenReturn(null);
-
+        
         expectedException.expect(SkdEndringsmeldingNotFoundException.class);
         expectedException.expectMessage("not found");
-
-        updateSkdEndringsmelding.execute(meldinger);
-
+        
+        updateSkdEndringsmeldingService.update(meldinger);
+        
         verify(messageProvider).get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID1);
         verify(messageProvider).get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID2);
-
+        
     }
-
+    
 }

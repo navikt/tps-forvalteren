@@ -42,4 +42,13 @@ public class SkdEndringsmelding extends ChangeStamp {
     @Column(name = "ENDRINGSMELDING_JSON", nullable = false)
     private String endringsmelding;
 
+    @Column(name = "AARSAKSKODE")
+    private String aarsakskode;
+    
+    @Column(name = "FOEDSELSNUMMER")
+    private String foedselsnummer;
+    
+    @Column(name = "TRANSAKSJONSTYPE")
+    private String transaksjonstype;
+
 }

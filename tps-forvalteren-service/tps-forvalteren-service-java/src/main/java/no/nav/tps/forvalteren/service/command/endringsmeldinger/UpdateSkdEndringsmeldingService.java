@@ -13,26 +13,26 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingNotFoundException;
 
 @Service
-public class UpdateSkdEndringsmelding {
-
+public class UpdateSkdEndringsmeldingService {
+    
     @Autowired
     private MessageProvider messageProvider;
-
+    
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-
+    
     @Autowired
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
-
-    public void execute(List<RsMeldingstype> meldinger) {
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
+    
+    public void update(List<RsMeldingstype> meldinger) {
         for (RsMeldingstype melding : meldinger) {
             SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(melding.getId());
             if (skdEndringsmelding != null) {
-                saveSkdEndringsmelding.execute(melding, skdEndringsmelding);
+                saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
             } else {
                 throw new SkdEndringsmeldingNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, melding.getId()));
             }
         }
     }
-
+    
 }

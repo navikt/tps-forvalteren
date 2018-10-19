@@ -11,19 +11,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingLoggRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GetLoggForGruppeTest {
+public class GetLoggForGruppeServiceTest {
 
     @Mock
     private SkdEndringsmeldingLoggRepository skdEndringsmeldingLoggRepository;
 
     @InjectMocks
-    private GetLoggForGruppe getLoggForGruppe;
+    private GetLoggForGruppeService getLoggForGruppeService;
 
     private static final Long GRUPPE_ID = 1337L;
 
     @Test
     public void verifyServiceCall() {
-        getLoggForGruppe.execute(GRUPPE_ID);
+        getLoggForGruppeService.execute(GRUPPE_ID);
 
         verify(skdEndringsmeldingLoggRepository).findAllByMeldingsgruppeId(GRUPPE_ID);
     }

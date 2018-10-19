@@ -8,14 +8,26 @@ import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 
 @Service
-public class FindAllSkdEndringsmeldingGrupper {
-
+public class SkdEndringsmeldingsgruppeService {
+    
     @Autowired
     private SkdEndringsmeldingGruppeRepository repository;
-
-    public List<SkdEndringsmeldingGruppe> execute() {
+    
+    public void save(SkdEndringsmeldingGruppe gruppe) {
+        repository.save(gruppe);
+    }
+    
+    public void deleteGruppeById(Long id) {
+        repository.deleteById(id);
+    }
+    
+    public SkdEndringsmeldingGruppe findGruppeById(Long gruppeId) {
+        return repository.findById(gruppeId);
+    }
+    
+    public List<SkdEndringsmeldingGruppe> findAllGrupper() {
         List<SkdEndringsmeldingGruppe> grupper = repository.findAllByOrderByIdAsc();
-
+        
         grupper.forEach(gruppe -> gruppe.setSkdEndringsmeldinger(null));
         return grupper;
     }

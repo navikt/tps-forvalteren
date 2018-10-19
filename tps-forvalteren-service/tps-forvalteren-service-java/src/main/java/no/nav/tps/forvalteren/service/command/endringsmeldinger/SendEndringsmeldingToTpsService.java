@@ -25,7 +25,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdAddHeaderToSkdMeld
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 
 @Service
-public class SendEndringsmeldingGruppeToTps {
+public class SendEndringsmeldingToTpsService {
 
     @Autowired
     private MessageProvider messageProvider;
@@ -43,7 +43,7 @@ public class SendEndringsmeldingGruppeToTps {
     private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
 
     @Autowired
-    private SendSkdMeldingerOgLeggTilResponsliste sendSkdMeldinger;
+    private SendSkdMeldingerOgLeggTilResponslisteService sendSkdMeldinger;
 
     @Autowired
     private ConvertJsonToRsMeldingstype convertJsonToRsMeldingstype;

@@ -20,7 +20,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GetMeldingIdFraGruppeTest {
+public class GetMeldingIdFraGruppeServiceTest {
 
     private static final Long GRUPPE_ID = 100000000L;
 
@@ -28,7 +28,7 @@ public class GetMeldingIdFraGruppeTest {
     private static final Long MLD_ID_2 = 12L;
 
     @InjectMocks
-    private GetMeldingIdFraGruppe getMeldingIdFraGruppe;
+    private GetMeldingIdFraGruppeService getMeldingIdFraGruppeService;
 
     @Mock
     private SkdEndringsmeldingGruppeRepository endringsmeldingGruppeRepository;
@@ -50,7 +50,7 @@ public class GetMeldingIdFraGruppeTest {
         when(endringsmeldingGruppeRepository.findById(GRUPPE_ID)).thenReturn(skdEndringsmeldingGruppe);
         when(skdEndringsmeldingGruppe.getSkdEndringsmeldinger()).thenReturn(Lists.newArrayList(skdEndringsmelding1, skdEndringsmelding2));
 
-        List<Long> result = getMeldingIdFraGruppe.execute(GRUPPE_ID);
+        List<Long> result = getMeldingIdFraGruppeService.execute(GRUPPE_ID);
 
         verify(endringsmeldingGruppeRepository).findById(GRUPPE_ID);
         assertThat(result, containsInAnyOrder(MLD_ID_1, MLD_ID_2));
@@ -60,7 +60,7 @@ public class GetMeldingIdFraGruppeTest {
     public void hentMeldingerFraGruppeNotFound() {
         when(endringsmeldingGruppeRepository.findById(GRUPPE_ID)).thenReturn(null);
 
-        getMeldingIdFraGruppe.execute(GRUPPE_ID);
+        getMeldingIdFraGruppeService.execute(GRUPPE_ID);
 
         verify(endringsmeldingGruppeRepository).findById(GRUPPE_ID);
     }

@@ -5,4 +5,5 @@ applicationPipeline {
     namespace="default"
     hasPerformanceTest = false
     hasSmoketests = false
+    isTestApplication = true
 }

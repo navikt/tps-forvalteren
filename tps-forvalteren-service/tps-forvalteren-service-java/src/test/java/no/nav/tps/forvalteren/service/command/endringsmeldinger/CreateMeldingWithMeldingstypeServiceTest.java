@@ -14,19 +14,19 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateMeldingWithMeldingstypeTest {
+public class CreateMeldingWithMeldingstypeServiceTest {
 
     @Mock
     private MapToRsMelding mapToRsMelding;
 
     @InjectMocks
-    private CreateMeldingWithMeldingstype createMeldingWithMeldingstype;
+    private CreateMeldingWithMeldingstypeService createMeldingWithMeldingstypeService;
     
     @Test
     public void verifyServiceCall() {
         List<SkdMelding> meldinger = Arrays.asList(new SkdMeldingTrans2("melding"));
         
-        createMeldingWithMeldingstype.execute(meldinger);
+        createMeldingWithMeldingstypeService.execute(meldinger);
         
         verify(mapToRsMelding).execute(meldinger.get(0));
     }
@@ -35,7 +35,7 @@ public class CreateMeldingWithMeldingstypeTest {
     public void verifyMultipleServiceCall() {
         List<SkdMelding> meldinger = Arrays.asList(new SkdMeldingTrans2("melding"), new SkdMeldingTrans2("melding2"), new SkdMeldingTrans2("melding3"));
 
-        createMeldingWithMeldingstype.execute(meldinger);
+        createMeldingWithMeldingstypeService.execute(meldinger);
 
         verify(mapToRsMelding).execute(meldinger.get(0));
         verify(mapToRsMelding).execute(meldinger.get(1));

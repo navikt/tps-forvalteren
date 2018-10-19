@@ -31,5 +31,4 @@ public class SplitSkdEndringsmeldingerFromText {
             throw new SkdEndringsmeldingIllegalLengthException(messageProvider.get(SKD_ENDRINGSMELDING_ILLEGAL_LENGTH, meldingerAsText.length()));
         }
     }
-
 }

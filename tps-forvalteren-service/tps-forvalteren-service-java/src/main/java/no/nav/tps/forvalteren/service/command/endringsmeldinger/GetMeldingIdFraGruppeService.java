@@ -11,7 +11,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 
 @Service
-public class GetMeldingIdFraGruppe {
+public class GetMeldingIdFraGruppeService {
 
     @Autowired
     private SkdEndringsmeldingGruppeRepository endringsmeldingGruppeRepository;

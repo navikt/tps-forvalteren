@@ -4,6 +4,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -28,7 +31,7 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
         NaisEndpointController.class,
         HttpExceptionAdvice.class
 })
-public class RestProviderConfig {
+public class RestProviderConfig extends WebMvcConfigurerAdapter {
 
     @Component
     public class MyObjectMapper extends ObjectMapper {
@@ -39,5 +42,10 @@ public class RestProviderConfig {
             enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
             findAndRegisterModules();
         }
+    }
+    
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/api").setViewName("redirect:/swagger-ui.html");
     }
 }

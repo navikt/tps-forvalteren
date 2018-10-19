@@ -24,40 +24,31 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateSkdEndringsmeldingFromTypeTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
-    @Mock
-    private MessageProvider messageProvider;
-
-    @Mock
-    private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
-
-    @Mock
-    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
-
-    @Mock
-    private SaveSkdEndringsmelding saveSkdEndringsmelding;
-
-    @InjectMocks
-    private CreateSkdEndringsmeldingFromType createSkdEndringsmeldingFromType;
-
-    @Mock
-    private RsNewSkdEndringsmelding rsNewSkdEndringsmelding;
-
-    @Mock
-    private SkdEndringsmeldingGruppe gruppe;
-
-    @Mock
-    private RsMeldingstype rsMeldingstype;
-
+public class CreateSkdEndringsmeldingFromTypeServiceTest {
+    
     private static final Long GRUPPE_ID = 1337L;
     private static final Long MELDING_ID = 42L;
     private static final String MELDINGSTYPE = "t1";
     private static final String MELDING_NAVN = "navn";
-
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    @Mock
+    private MessageProvider messageProvider;
+    @Mock
+    private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
+    @Mock
+    private GetRsMeldingstypeFromTypeText GetRsMeldingstypeFromTypeText;
+    @Mock
+    private SaveSkdEndringsmeldingService saveSkdEndringsmeldingService;
+    @InjectMocks
+    private CreateSkdEndringsmeldingFromTypeService createSkdEndringsmeldingFromTypeService;
+    @Mock
+    private RsNewSkdEndringsmelding rsNewSkdEndringsmelding;
+    @Mock
+    private SkdEndringsmeldingGruppe gruppe;
+    @Mock
+    private RsMeldingstype rsMeldingstype;
+    
     @Before
     public void setup() {
         when(rsMeldingstype.getId()).thenReturn(MELDING_ID);
@@ -66,24 +57,24 @@ public class CreateSkdEndringsmeldingFromTypeTest {
         when(rsNewSkdEndringsmelding.getNavn()).thenReturn(MELDING_NAVN);
         when(GetRsMeldingstypeFromTypeText.execute(rsNewSkdEndringsmelding.getMeldingstype())).thenReturn(rsMeldingstype);
     }
-
+    
     @Test
     public void checkThatMeldingGetsSaved() {
-        createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
-
+        createSkdEndringsmeldingFromTypeService.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
+        
         verify(GetRsMeldingstypeFromTypeText).execute(MELDINGSTYPE);
-        verify(saveSkdEndringsmelding).execute(any(RsMeldingstype.class), any(SkdEndringsmelding.class));
+        verify(saveSkdEndringsmeldingService).save(any(RsMeldingstype.class), any(SkdEndringsmelding.class));
     }
-
+    
     @Test
     public void throwsSkdEndringsmeldingGruppeNotFoundException() {
         when(skdEndringsmeldingGruppeRepository.findById(anyLong())).thenReturn(null);
-
+        
         expectedException.expect(SkdEndringsmeldingGruppeNotFoundException.class);
-
-        createSkdEndringsmeldingFromType.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
-
+        
+        createSkdEndringsmeldingFromTypeService.execute(GRUPPE_ID, rsNewSkdEndringsmelding);
+        
         verify(messageProvider).get(SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND, GRUPPE_ID);
     }
-
+    
 }
