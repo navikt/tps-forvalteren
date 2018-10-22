@@ -10,12 +10,12 @@ healthcheck:
     path: /internal/isAlive
     initialDelay: 15
     periodSeconds: 2
-    failureThreshold: 120
+    failureThreshold: 240
   readiness:
     path: /internal/isReady
     initialDelay: 15
     periodSeconds: 2
-    failureThreshold: 120
+    failureThreshold: 240
 prometheus:
   enabled: true
   path: /internal/prometheus
