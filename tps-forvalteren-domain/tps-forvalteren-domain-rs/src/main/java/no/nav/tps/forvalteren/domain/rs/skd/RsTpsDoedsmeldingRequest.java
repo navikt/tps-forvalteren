@@ -35,6 +35,10 @@ public class RsTpsDoedsmeldingRequest {
     private List<String> miljoer;
 
     public boolean validatesOk() {
-        return (doedsdato != null || handling != D) && isNotBlank(ident) && miljoer != null && !miljoer.isEmpty();
+        return (doedsdato != null || handling != D) && isValidMiljoe();
+    }
+
+    private boolean isValidMiljoe() {
+        return isNotBlank(ident) && miljoer != null && !miljoer.isEmpty();
     }
 }
