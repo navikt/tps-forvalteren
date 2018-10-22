@@ -4,6 +4,7 @@ import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.D;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -31,9 +32,13 @@ public class RsTpsDoedsmeldingRequest {
 
     @NotBlank
     @Size(min = 2, max = 2)
-    private String miljoe;
+    private List<String> miljoer;
 
     public boolean validatesOk() {
-        return (doedsdato != null || handling != D) && isNotBlank(ident) && isNotBlank(miljoe);
+        return (doedsdato != null || handling != D) && isValidMiljoe();
+    }
+
+    private boolean isValidMiljoe() {
+        return isNotBlank(ident) && miljoer != null && !miljoer.isEmpty();
     }
 }

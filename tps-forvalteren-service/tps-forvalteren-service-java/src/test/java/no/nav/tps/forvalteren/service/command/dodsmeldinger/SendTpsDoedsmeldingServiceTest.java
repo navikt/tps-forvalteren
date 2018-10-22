@@ -4,11 +4,16 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,6 +29,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
@@ -36,7 +42,7 @@ import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
 public class SendTpsDoedsmeldingServiceTest {
 
     private static final String IDENT = "12345678901";
-    private static final String MILJOE = "u2";
+    private static final List<String> MILJOER = Arrays.asList("u2");
     
     @Mock
     private SkdMessageCreatorTrans1 skdCreator;
@@ -73,7 +79,7 @@ public class SendTpsDoedsmeldingServiceTest {
 
     @Before
     public void setup() {
-        when(personstatusService.hentPersonstatus(IDENT, MILJOE)).thenReturn(persondataFraTps);
+        when(personstatusService.hentPersonstatus(eq(IDENT), anyString())).thenReturn(persondataFraTps);
 
         when(skdCreator.execute(anyString(), any(Person.class), anyBoolean())).thenReturn(skdMeldingTrans1);
         when(sendSkdMeldingTilMiljoe.execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet())).thenReturn(sendStatus);
@@ -91,10 +97,10 @@ public class SendTpsDoedsmeldingServiceTest {
     @Test
     public void sendAnnuleringPersonErIkkeDoed() {
 
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage("Personen med ident " + IDENT + " er ikke død i miljø " + MILJOE + ".");
+        SendSkdMeldingTilTpsResponse response = sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.D));
 
-        sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.D));
+        MatcherAssert.assertThat(response.getStatus().get("u2"),
+                CoreMatchers.is("FEIL: Personen med ident 12345678901 er ikke død i miljø u2."));
     }
 
     @Test
@@ -104,7 +110,7 @@ public class SendTpsDoedsmeldingServiceTest {
 
         sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.D));
 
-        verify(personstatusService).hentPersonstatus(IDENT, MILJOE);
+        verify(personstatusService).hentPersonstatus(eq(IDENT), anyString());
         verify(sendSkdMeldingTilMiljoe).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
     }
 
@@ -113,9 +119,10 @@ public class SendTpsDoedsmeldingServiceTest {
 
         when(persondataFraTps.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(LocalDateTime.now()));
 
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage("Personen med ident " + IDENT + " er allerede død i miljø " + MILJOE + ".");
-        sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.C));
+        SendSkdMeldingTilTpsResponse response = sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.C));
+
+        MatcherAssert.assertThat(response.getStatus().get("u2"),
+                CoreMatchers.is("FEIL: Personen med ident 12345678901 er allerede død i miljø u2."));
     }
 
     @Test
@@ -125,7 +132,7 @@ public class SendTpsDoedsmeldingServiceTest {
 
         sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.C));
 
-        verify(personstatusService).hentPersonstatus(IDENT, MILJOE);
+        verify(personstatusService).hentPersonstatus(eq(IDENT), anyString());
         verify(sendSkdMeldingTilMiljoe).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
     }
 
@@ -133,7 +140,7 @@ public class SendTpsDoedsmeldingServiceTest {
         return RsTpsDoedsmeldingRequest.builder()
                 .doedsdato(LocalDateTime.now())
                 .ident(IDENT)
-                .miljoe(MILJOE)
+                .miljoer(MILJOER)
                 .handling(handling)
                 .build();
     }
