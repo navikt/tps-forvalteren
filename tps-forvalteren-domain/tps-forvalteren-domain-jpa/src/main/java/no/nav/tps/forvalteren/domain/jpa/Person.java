@@ -145,5 +145,9 @@ public class Person extends ChangeStamp {
         return relasjoner;
     }
 
+    @Column(name = "OPPRETTET_DATO")
+    private LocalDateTime opprettetDato;
 
+    @Column(name = "OPPRETTET_AV")
+    private String opprettetAv;
 }
