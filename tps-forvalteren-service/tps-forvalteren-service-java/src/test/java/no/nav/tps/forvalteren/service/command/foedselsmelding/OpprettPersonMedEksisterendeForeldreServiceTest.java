@@ -20,8 +20,8 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -65,7 +65,7 @@ public class OpprettPersonMedEksisterendeForeldreServiceTest {
                 .foedselsdato(LocalDateTime.now())
                 .identMor(IDENT_MOR)
                 .identFar(IDENT_FAR)
-                .miljoe("u6")
+                .miljoer(Arrays.asList("u6"))
                 .build();
 
         Person result = opprettPersonService.execute(rsTpsFoedselsmeldingRequest);

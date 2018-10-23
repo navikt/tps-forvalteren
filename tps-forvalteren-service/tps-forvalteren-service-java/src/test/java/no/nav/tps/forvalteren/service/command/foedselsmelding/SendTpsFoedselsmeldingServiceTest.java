@@ -5,6 +5,8 @@ import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.BNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -13,6 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -28,6 +32,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
@@ -87,7 +92,7 @@ public class SendTpsFoedselsmeldingServiceTest {
 
         rsTpsFoedselsmeldingRequest = RsTpsFoedselsmeldingRequest.builder()
                 .foedselsdato(LocalDateTime.now())
-                .miljoe("u5")
+                .miljoer(Arrays.asList("u5"))
                 .build();
 
         expectedException.expect(TpsfFunctionalException.class);
@@ -103,7 +108,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .foedselsdato(LocalDateTime.now())
                 .identMor(IDENT_MOR)
                 .identtype(FNR)
-                .miljoe("u5")
+                .miljoer(Arrays.asList("u5"))
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
@@ -121,7 +126,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .identFar(IDENT_FAR)
                 .identtype(DNR)
                 .adresseFra(FAR)
-                .miljoe("u6")
+                .miljoer(Arrays.asList("u6"))
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
@@ -138,7 +143,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .identMor(IDENT_MOR)
                 .adresseFra(FAR)
                 .identtype(BNR)
-                .miljoe("u5")
+                .miljoer(Arrays.asList("u5"))
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
@@ -157,16 +162,15 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .adresseFra(MOR)
                 .foedselsdato(LocalDateTime.now())
                 .identtype(FNR)
-                .miljoe("u27")
+                .miljoer(Lists.newArrayList("u27"))
                 .build();
 
         when(personhistorikkService.hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString()))
                 .thenThrow(new TpsfTechnicalException("test"));
 
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage("Person med ident " + IDENT_MOR + " finnes ikke i miljø u27.");
+        SendSkdMeldingTilTpsResponse sendSkdMeldingTilTpsResponse = sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
 
-        sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
+        assertThat(sendSkdMeldingTilTpsResponse.getStatus().get("u27"), is("FEIL: Person med ident " + IDENT_MOR + " finnes ikke i miljø u27."));
     }
 
     private S018PersonType hentPersonType() {
