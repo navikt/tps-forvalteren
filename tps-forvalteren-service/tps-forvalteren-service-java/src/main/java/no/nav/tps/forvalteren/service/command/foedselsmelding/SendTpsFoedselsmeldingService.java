@@ -1,6 +1,21 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
+import static java.lang.String.format;
+import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
+import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
+import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import org.codehaus.plexus.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
+
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -15,17 +30,6 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTran
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonhistorikkService;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
-
-import java.time.LocalDateTime;
-import java.util.Map;
-import org.codehaus.plexus.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
-import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
-import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class SendTpsFoedselsmeldingService {
@@ -56,20 +60,43 @@ public class SendTpsFoedselsmeldingService {
     public SendSkdMeldingTilTpsResponse sendFoedselsmelding(RsTpsFoedselsmeldingRequest request) {
 
         validate(request);
-        S018PersonType persondataMor = getPersonhistorikk(request.getIdentMor(), request.getFoedselsdato(), request.getMiljoe());
-
+        S018PersonType persondataMor = null;
         S018PersonType persondataFar = null;
-        if (StringUtils.isNotBlank(request.getIdentFar())) {
-            persondataFar = getPersonhistorikk(request.getIdentFar(), request.getFoedselsdato(), request.getMiljoe());
+        Map<String, String> sentStatus = new HashMap<>();
+
+        Iterator<String> miljoeIterator = request.getMiljoer().iterator();
+        while (miljoeIterator.hasNext()) {
+            String miljoe = miljoeIterator.next();
+            try {
+                persondataMor = getPersonhistorikk(request.getIdentMor(), request.getFoedselsdato(), miljoe);
+
+                if (StringUtils.isNotBlank(request.getIdentFar())) {
+                    persondataFar = getPersonhistorikk(request.getIdentFar(), request.getFoedselsdato(), miljoe);
+                }
+            } catch (TpsfTechnicalException | TpsfFunctionalException e) {
+                sentStatus.put(miljoe, format("FEIL: %s", e.getMessage()));
+                miljoeIterator.remove();
+            }
         }
 
-        Person person = opprettPersonMedEksisterendeForeldreService.execute(request);
-        if (LAGNY != request.getAdresseFra()) {
-            person.setBoadresse(findAdresse(request, persondataMor, persondataFar));
-        }
+        Person person = null;
+        if (!request.getMiljoer().isEmpty()) {
+            person = opprettPersonMedEksisterendeForeldreService.execute(request);
+            if (LAGNY != request.getAdresseFra()) {
+                person.setBoadresse(findAdresse(request, persondataMor, persondataFar));
+            }
+            uppercaseDataInPerson.execute(person);
 
-        uppercaseDataInPerson.execute(person);
-        return sendMeldingToTps(person, request.getMiljoe());
+            for (String miljoe : request.getMiljoer()) {
+                try {
+                    sentStatus.putAll(sendMeldingToTps(person, miljoe));
+                } catch (TpsfFunctionalException | TpsfTechnicalException e) {
+                    sentStatus.put(miljoe, format("FEIL: %s", e.getMessage()));
+                }
+            }
+        }
+        return prepareStatus(sentStatus, person != null ? person.getIdent() :
+                request.getFoedselsdato().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
     }
 
     private void validate(RsTpsFoedselsmeldingRequest request) {
@@ -95,18 +122,20 @@ public class SendTpsFoedselsmeldingService {
         try {
             return personhistorikkService.hentPersonhistorikk(ident, date, env);
         } catch (TpsfTechnicalException e) {
-            throw new TpsfFunctionalException(String.format("Person med ident %s finnes ikke i miljø %s.", ident, env), e);
+            throw new TpsfFunctionalException(format("Person med ident %s finnes ikke i miljø %s.", ident, env), e);
         }
     }
 
-    private SendSkdMeldingTilTpsResponse sendMeldingToTps(Person personSomSkalFoedes, String miljoe) {
+    private Map sendMeldingToTps(Person personSomSkalFoedes, String miljoe) {
 
         SkdMeldingTrans1 melding = skdMessageCreatorTrans1.execute(NAVN_FOEDSELSMELDING, personSomSkalFoedes, true);
-        Map<String, String> sentStatus = sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), Sets.newHashSet(miljoe));
+        return sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), Sets.newHashSet(miljoe));
+    }
 
+    private SendSkdMeldingTilTpsResponse prepareStatus(Map<String, String> sentStatus, String ident) {
         sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : status);
         return SendSkdMeldingTilTpsResponse.builder()
-                .personId(melding.getFodselsnummer())
+                .personId(ident)
                 .skdmeldingstype(NAVN_FOEDSELSMELDING)
                 .status(sentStatus)
                 .build();

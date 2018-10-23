@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.ImmutableMap;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
@@ -34,7 +33,7 @@ public class SendTpsDoedsmeldingService extends SendDodsmeldingTilTpsService {
                 sentStatus.putAll(sendDoedsmelding(person, persondataFraTps.getDatoDo(), request.getDoedsdato(), request.getHandling().name(), miljoe));
 
             } catch (TpsfFunctionalException | TpsfTechnicalException e) {
-                sentStatus.putAll(ImmutableMap.<String, String>builder().put(miljoe, format("FEIL: %s", e.getMessage())).build());
+                sentStatus.put(miljoe, format("FEIL: %s", e.getMessage()));
             }
         }
         return prepareStatus(sentStatus, person.getIdent());
