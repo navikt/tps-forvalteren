@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.domain.rs.skd;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -41,9 +42,13 @@ public class RsTpsFoedselsmeldingRequest {
 
     @NotBlank
     @Size(min = 2, max = 2)
-    private String miljoe;
+    private List<String> miljoer;
 
     public boolean validatesOk() {
-        return identtype != null && foedselsdato != null && isNotBlank(identMor) && isNotBlank(miljoe);
+        return identtype != null && foedselsdato != null && isNotBlank(identMor) && isValidateMiljoer();
+    }
+
+    private boolean isValidateMiljoer() {
+        return miljoer != null && !miljoer.isEmpty();
     }
 }
