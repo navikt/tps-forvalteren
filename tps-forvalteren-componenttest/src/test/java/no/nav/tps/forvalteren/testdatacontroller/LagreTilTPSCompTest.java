@@ -1,26 +1,5 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
-import no.nav.tps.forvalteren.config.TestUserDetails;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-
-import javax.jms.JMSException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
-
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
@@ -31,6 +10,27 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.jms.JMSException;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
+
+import no.nav.tps.forvalteren.config.TestUserDetails;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
 /**
  * Komptesten utfører følgende fra REST-grensesnitt til mock-versjon av messageQueueConsumer:
@@ -112,6 +112,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .fornavn("GLITRENDE").etternavn("NORDMANN").statsborgerskap("349")
                 .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("A123456")
                 .boadresse(adressenTilPerson3).build();
         adressenTilPerson3.setPerson(person3);
         
@@ -124,6 +126,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .etternavn("Kake").fornavn("Snill")
                 .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("A123456")
                 .build();
         personRepository.save(person5);
     }
@@ -137,6 +141,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap("000")
                 .kjonn("K")
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("A123456")
                 .boadresse(adressenTilEktemann).build();
         adressenTilEktemann.setPerson(ektemann);
         final Person lagretEktemann = personRepository.save(ektemann);
@@ -149,6 +155,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap("000")
                 .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("A123456")
                 .boadresse(adressenTilKone).build();
         adressenTilKone.setPerson(kone);
         final Person lagretKone = personRepository.save(kone);
@@ -163,6 +171,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .kjonn("M")
                 .fornavn("Døende").etternavn("Person")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("A123456")
                 .build();
         personRepository.save(doedPerson);
     }
