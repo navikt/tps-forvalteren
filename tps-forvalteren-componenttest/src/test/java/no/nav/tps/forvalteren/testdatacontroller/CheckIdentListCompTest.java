@@ -117,6 +117,8 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .fornavn("lol")
                 .etternavn("sdf")
                 .statsborgerskap("nor")
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("a123456")
                 .build();
         Person person = personRepository.save(personToSave);
         return person.getIdent();

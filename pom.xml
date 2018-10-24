@@ -217,10 +217,8 @@
 
             <dependency>
                 <groupId>no.nav.freg</groupId>
-                <artifactId>freg-spring-boot-starter-dependencies</artifactId>
+                <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
                 <version>${freg-spring-boot-starter-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>no.nav.freg</groupId>
@@ -245,6 +243,11 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
                 <version>${spring-security-ldap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>

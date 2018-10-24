@@ -17,7 +17,9 @@ public final class PersonProvider {
                 .mellomnavn("0")
                 .etternavn("Nordmann")
                 .statsborgerskap("000")
-                .regdato(LocalDateTime.now());
+                .regdato(LocalDateTime.now())
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("a123456");
     }
 
     public static Person.PersonBuilder aFemalePerson() {
@@ -29,6 +31,8 @@ public final class PersonProvider {
                 .mellomnavn("0")
                 .etternavn("Nordmann")
                 .statsborgerskap("000")
-                .regdato(LocalDateTime.now());
+                .regdato(LocalDateTime.now())
+                .opprettetDato(LocalDateTime.now())
+                .opprettetAv("b234567");
     }
 }

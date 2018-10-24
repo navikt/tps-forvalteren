@@ -131,6 +131,12 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner = new ArrayList<>();
 
+    @Column(name = "OPPRETTET_DATO")
+    private LocalDateTime opprettetDato;
+
+    @Column(name = "OPPRETTET_AV")
+    private String opprettetAv;
+
     public List<Postadresse> getPostadresse() {
         if (postadresse == null) {
             postadresse = new ArrayList<>();
@@ -144,6 +150,4 @@ public class Person extends ChangeStamp {
         }
         return relasjoner;
     }
-
-
 }

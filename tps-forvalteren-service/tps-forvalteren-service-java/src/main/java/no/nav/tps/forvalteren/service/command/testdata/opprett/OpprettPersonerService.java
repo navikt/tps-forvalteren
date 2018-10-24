@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
@@ -38,6 +39,9 @@ public class OpprettPersonerService {
                 newPerson.setStatsborgerskap("NOR");
                 newPerson.setStatsborgerskapRegdato(hentDatoFraIdentService.extract(ident));
             }
+            newPerson.setOpprettetDato(LocalDateTime.now());
+            newPerson.setOpprettetAv(SecurityContextHolder.getContext().getAuthentication() != null ?
+                    SecurityContextHolder.getContext().getAuthentication().getName() : null);
             personer.add(newPerson);
         }
         return personer;

@@ -62,7 +62,7 @@ public class SendTpsFoedselsmeldingService {
         validate(request);
         S018PersonType persondataMor = null;
         S018PersonType persondataFar = null;
-        Map<String, String> sentStatus = new HashMap<>();
+        Map<String, String> sentStatus = new HashMap<>(request.getMiljoer().size());  //NOSONAR http://freg-sonar.adeo.no/code?id=no.nav.tps.forvalteren%3Atps-forvalteren&selected=no.nav.tps.forvalteren%3Atps-forvalteren-service-java%3Asrc%2Fmain%2Fjava%2Fno%2Fnav%2Ftps%2Fforvalteren%2Fservice%2Fcommand%2Ffoedselsmelding%2FSendTpsFoedselsmeldingService.java
 
         Iterator<String> miljoeIterator = request.getMiljoer().iterator();
         while (miljoeIterator.hasNext()) {

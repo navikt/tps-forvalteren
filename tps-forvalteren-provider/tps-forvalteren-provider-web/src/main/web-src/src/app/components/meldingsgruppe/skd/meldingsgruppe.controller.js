@@ -2,7 +2,7 @@ angular.module('tps-forvalteren.skd-meldingsgruppe', [])
     .controller('SkdMeldingsgruppeCtrl', ['$scope', 'headerService', 'endringsmeldingService', 'utilsService', 'locationService', '$mdDialog',
         function ($scope, headerService, endringsmeldingService, utilsService, locationService, $mdDialog) {
 
-            headerService.setHeader('SKD Endringsmeldinger');
+            headerService.setHeader('TPS Endringsmeldinger');
 
             var nyGruppeDialog = function (ev) {
                 var confirm = $mdDialog.confirm({

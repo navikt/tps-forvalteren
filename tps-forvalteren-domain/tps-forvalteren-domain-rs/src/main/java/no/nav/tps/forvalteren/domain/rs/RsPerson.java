@@ -97,4 +97,8 @@ public class RsPerson {
     private LocalDateTime foedselsdato;
 
     private Integer alder;
+
+    private LocalDateTime opprettetDato;
+
+    private String opprettetAv;
 }

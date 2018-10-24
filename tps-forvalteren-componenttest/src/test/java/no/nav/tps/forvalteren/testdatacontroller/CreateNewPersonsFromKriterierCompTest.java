@@ -47,8 +47,10 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
 
     @Autowired
     private FetchEnvironmentsManager fetchEnvironmentsManagerSpy; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
+
     @Autowired
     private FiktiveIdenterGenerator fiktiveIdenterGeneratormock;
+
     @Autowired
     private MessageQueueConsumer messageQueueConsumer;
 
