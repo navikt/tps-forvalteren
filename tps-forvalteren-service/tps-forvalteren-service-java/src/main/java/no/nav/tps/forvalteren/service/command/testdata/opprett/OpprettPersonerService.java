@@ -40,7 +40,8 @@ public class OpprettPersonerService {
                 newPerson.setStatsborgerskapRegdato(hentDatoFraIdentService.extract(ident));
             }
             newPerson.setOpprettetDato(LocalDateTime.now());
-            newPerson.setOpprettetAv(SecurityContextHolder.getContext().getAuthentication().getName());
+            newPerson.setOpprettetAv(SecurityContextHolder.getContext().getAuthentication() != null ?
+                    SecurityContextHolder.getContext().getAuthentication().getName() : null);
             personer.add(newPerson);
         }
         return personer;
