@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +31,12 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
         HttpExceptionAdvice.class
 })
 public class RestProviderConfig extends WebMvcConfigurerAdapter {
-
+    
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/api").setViewName("redirect:/swagger-ui.html");
+    }
+    
     @Component
     public class MyObjectMapper extends ObjectMapper {
         public MyObjectMapper() {
@@ -42,10 +46,5 @@ public class RestProviderConfig extends WebMvcConfigurerAdapter {
             enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
             findAndRegisterModules();
         }
-    }
-    
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/api").setViewName("redirect:/swagger-ui.html");
     }
 }
