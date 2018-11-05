@@ -1,9 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFeltDefinisjon;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans1;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans2;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdInputParamsToSkdMeldingInnhold;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,14 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFeltDefinisjon;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans2;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdInputParamsToSkdMeldingInnhold;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SkdInputParamsToSkdMeldingInnholdTest {
