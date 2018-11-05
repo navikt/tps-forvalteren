@@ -205,27 +205,27 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
     private String vigselsdato;
     @Size(max = 1)
     private String medlKirken;
-    @Size(max = 6)
-    private String bolignr;
     @Size(max = 5)
-    private String dufId;
+    private String bolignr;
     @Size(max = 12)
-    private String brukerident;
+    private String dufId;
     @Size(max = 8)
+    private String brukerident;
+    @Size(max = 4)
     private String skolerets;
     @Size(max = 4)
     private String tkNr;
-    @Size(max = 4)
+    @Size(max = 40)
     private String dnrHjemlandsadresse1;
     @Size(max = 40)
     private String dnrHjemlandsadresse2;
     @Size(max = 40)
     private String dnrHjemlandsadresse3;
-    @Size(max = 40)
-    private String dnrHjemlandLandkode;
     @Size(max = 3)
-    private String dnrHjemlandRegDato;
+    private String dnrHjemlandLandkode;
     @Size(max = 8)
+    private String dnrHjemlandRegDato;
+    @Size(max = 1)
     private String dnrIdKontroll;
     @Size(max = 1)
     private String utvandringstype;
