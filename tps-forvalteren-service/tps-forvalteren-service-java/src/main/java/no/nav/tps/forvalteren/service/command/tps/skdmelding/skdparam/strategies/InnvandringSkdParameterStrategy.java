@@ -39,7 +39,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setMellomnavn(person.getMellomnavn());
         skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
         skdMeldingTrans1.setStatsborgerskap(landkodeEncoder.encode(person.getStatsborgerskap()));
-        skdMeldingTrans1.setStatsborgerskapRegdato(ConvertDateToString.yyyyMMdd(person.getStatsborgerskapRegdato()));
+        skdMeldingTrans1.setRegdatoStatsb(ConvertDateToString.yyyyMMdd(person.getStatsborgerskapRegdato()));
         skdMeldingTrans1.setFamilienummer(person.getIdent());
 
         skdMeldingTrans1.setSivilstand(person.getSivilstand() != null ? person.getSivilstand() : "0");

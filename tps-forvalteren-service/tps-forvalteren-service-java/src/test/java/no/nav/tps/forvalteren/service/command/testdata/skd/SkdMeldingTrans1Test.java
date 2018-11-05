@@ -16,9 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 @RunWith(Parameterized.class)
 public class SkdMeldingTrans1Test {
 	@Parameterized.Parameter

@@ -108,7 +108,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
         assertThat(result.getFodselsdato(), is("010118"));
         assertThat(result.getPersonnummer(), is("46678"));
-        assertThat(result.getKjonn(), is("K"));
+        assertThat(result.getKjoenn(), is("K"));
         assertThat(result.getFarsFodselsdato(), is("210270"));
         assertThat(result.getFarsPersonnummer(), is("13579"));
         assertThat(result.getSlektsnavn(), is("Knutsdottir"));

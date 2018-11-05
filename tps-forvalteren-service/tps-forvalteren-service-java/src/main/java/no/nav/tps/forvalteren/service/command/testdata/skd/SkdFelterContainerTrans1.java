@@ -76,7 +76,7 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon(SLEKTSNAVN, WHITESPACE_50_STK, 10, 50, 46, 95));
         skdFelter.add(new SkdFeltDefinisjon(FORNAVN, WHITESPACE_50_STK, 11, 50, 96, 145));
         skdFelter.add(new SkdFeltDefinisjon(MELLOMNAVN, WHITESPACE_50_STK, 12, 50, 146, 195));
-        skdFelter.add(new SkdFeltDefinisjon("slekstnavnUgift", WHITESPACE_50_STK, 13, 50, 196, 245));
+        skdFelter.add(new SkdFeltDefinisjon("slektsnavnUgift", WHITESPACE_50_STK, 13, 50, 196, 245));
         skdFelter.add(new SkdFeltDefinisjon("forkortetNavn", WHITESPACE_25_STK, 14, 25, 246, 270));
         skdFelter.add(new SkdFeltDefinisjon("regDatoNavn", DUMMY_DATO, 15, 8, 271, 278));
         skdFelter.add(new SkdFeltDefinisjon("foedekommLand", "    ", 16, 4, 279, 282));
@@ -143,7 +143,7 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("morsStatsbSkap", "000", 72, 3, 767, 769));
         skdFelter.add(new SkdFeltDefinisjon("farsFodselsdato", SIX_OES, 74, 6, 770, 775));
         skdFelter.add(new SkdFeltDefinisjon("farsPersonnummer", FIVE_OES, 75, 5, 776, 780));
-        skdFelter.add(new SkdFeltDefinisjon("farsFarsNavn", WHITESPACE_50_STK, 76, 50, 781, 830));
+        skdFelter.add(new SkdFeltDefinisjon("farsNavn", WHITESPACE_50_STK, 76, 50, 781, 830));
         skdFelter.add(new SkdFeltDefinisjon("farsStatsbSkap", "000", 77, 3, 831, 833));
         skdFelter.add(new SkdFeltDefinisjon("tidligereFnrDnr", DUMMY_IDENT, 78, 11, 834, 844));
         skdFelter.add(new SkdFeltDefinisjon("datoTidlFnrDnr", DUMMY_DATO, 79, 8, 845, 852));
@@ -151,10 +151,10 @@ public class SkdFelterContainerTrans1 implements SkdFelterContainer {
         skdFelter.add(new SkdFeltDefinisjon("datoNyttFnr", DUMMY_DATO, 81, 8, 864, 871));
 
         skdFelter.add(new SkdFeltDefinisjon("levendeDoed", " ", 82, 1, 872, 872));
-        skdFelter.add(new SkdFeltDefinisjon("kjonn", " ", 83, 1, 873, 873));
+        skdFelter.add(new SkdFeltDefinisjon("kjoenn", " ", 83, 1, 873, 873));
         skdFelter.add(new SkdFeltDefinisjon(TILDELING_KO_DE, " ", 84, 1, 874, 874));
         skdFelter.add(new SkdFeltDefinisjon("foedselstype", "  ", 85, 2, 875, 876));
-        skdFelter.add(new SkdFeltDefinisjon("morsSiviltilstand", " ", 86, 1, 877, 877));
+        skdFelter.add(new SkdFeltDefinisjon("morsSivilstand", " ", 86, 1, 877, 877));
         skdFelter.add(new SkdFeltDefinisjon("ekteskPartnskNr", " ", 87, 1, 878, 878));
         skdFelter.add(new SkdFeltDefinisjon("ektfEkteskPartnskNr", " ", 88, 1, 879, 879));
         skdFelter.add(new SkdFeltDefinisjon("vigselstype", " ", 89, 1, 880, 880));
