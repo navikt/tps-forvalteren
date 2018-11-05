@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFeltDefinisjon;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans2;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdInputParamsToSkdMeldingInnhold;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class SkdInputParamsToSkdMeldingInnholdTest {
     private String DEFAULT_VERDI_SKD = "0000000000";
 
     @Mock
-    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
+    private SkdFelterContainerTrans2 skdFelterContainerTrans2;
 
     @InjectMocks
     private SkdInputParamsToSkdMeldingInnhold skdInputParamsToSkdMeldingInnhold;
@@ -43,7 +44,7 @@ public class SkdInputParamsToSkdMeldingInnholdTest {
         feltDefinisjoner.add(skdFeltDefinisjon1);
         feltDefinisjoner.add(skdFeltDefinisjon2);
 
-        when(skdFelterContainerTrans1.hentSkdFelter()).thenReturn(feltDefinisjoner);
+        when(skdFelterContainerTrans2.hentSkdFelter()).thenReturn(feltDefinisjoner);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class SkdInputParamsToSkdMeldingInnholdTest {
 
         String finalSkdMelding = "test100000test200000";
 
-        StringBuilder skdMldSB = skdInputParamsToSkdMeldingInnhold.execute(skdInputMap, skdFelterContainerTrans1);
+        StringBuilder skdMldSB = skdInputParamsToSkdMeldingInnhold.execute(skdInputMap, skdFelterContainerTrans2);
 
         assertThat(finalSkdMelding, is(equalTo(skdMldSB.toString())));
     }
@@ -77,7 +78,7 @@ public class SkdInputParamsToSkdMeldingInnholdTest {
 
         String finalSkdMelding = "test1test1test2test2";
 
-        StringBuilder skdMldSB = skdInputParamsToSkdMeldingInnhold.execute(skdInputMap, skdFelterContainerTrans1);
+        StringBuilder skdMldSB = skdInputParamsToSkdMeldingInnhold.execute(skdInputMap, skdFelterContainerTrans2);
 
         assertThat(finalSkdMelding, is(equalTo(skdMldSB.toString())));
     }
@@ -92,7 +93,7 @@ public class SkdInputParamsToSkdMeldingInnholdTest {
 
         String finalSkdMelding = DEFAULT_VERDI_SKD + DEFAULT_VERDI_SKD;
 
-        StringBuilder skdMldSB = skdInputParamsToSkdMeldingInnhold.execute(skdInputMap, skdFelterContainerTrans1);
+        StringBuilder skdMldSB = skdInputParamsToSkdMeldingInnhold.execute(skdInputMap, skdFelterContainerTrans2);
 
         assertThat(finalSkdMelding, is(equalTo(skdMldSB.toString())));
     }

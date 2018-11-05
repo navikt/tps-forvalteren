@@ -13,8 +13,8 @@ public class SkdOpprettSkdMeldingMedHeaderOgInnhold {
     @Autowired
     private SkdAddHeaderToSkdMelding skdAddHeaderToSkdMelding;
 
-    public String execute(Map<String, String> skdParameters, SkdFelterContainer skdFelterContainer, boolean addHeader) {
-        StringBuilder skdMelding = skdInputParamsToSkdMeldingInnhold.execute(skdParameters, skdFelterContainer);
+    public String execute(Map<String, String> skdParameters, SkdFelterContainerTrans2 skdFelterContainerTrans2, boolean addHeader) {
+        StringBuilder skdMelding = skdInputParamsToSkdMeldingInnhold.execute(skdParameters, skdFelterContainerTrans2);
         if (addHeader) {
             StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(skdMelding);
             return skdMeldingMedHeader.toString();

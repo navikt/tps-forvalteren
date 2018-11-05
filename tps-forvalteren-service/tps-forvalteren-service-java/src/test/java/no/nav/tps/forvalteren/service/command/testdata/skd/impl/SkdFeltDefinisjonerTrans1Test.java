@@ -38,5 +38,4 @@ public class SkdFeltDefinisjonerTrans1Test {
                 .regdatoFamnr("20180404").build();
 
     }
-
 }
