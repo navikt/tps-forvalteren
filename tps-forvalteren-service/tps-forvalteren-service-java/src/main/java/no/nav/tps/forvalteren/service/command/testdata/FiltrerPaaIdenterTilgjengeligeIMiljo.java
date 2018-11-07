@@ -95,7 +95,7 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
                     .get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
             
-            checkForTpsSystemfeil(tpsResponse);
+            checkForTpsSystemfeil(tpsResponse, miljoe);
             
             Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse);
             
@@ -103,9 +103,9 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
         }
     }
     
-    private void checkForTpsSystemfeil(TpsServiceRoutineResponse response) {
+    private void checkForTpsSystemfeil(TpsServiceRoutineResponse response, String miljoe) {
         if (response.getXml().isEmpty()) {
-            throw new TpsfTechnicalException("TPS returnerte tom streng");
+            log.error("Request mot TPS i miljoe {} fikk timeout.  Sjekk av tilgjengelighet på ident i miljoe feilet.", miljoe);
         }
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
