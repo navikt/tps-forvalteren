@@ -36,10 +36,10 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
         mvc.perform(get("/api/v1/environments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.environments", hasSize(28)))
+                .andExpect(jsonPath("$.environments", hasSize(27)))
                 .andExpect(jsonPath("$.environments", containsInAnyOrder(
                         "u5", "u6", "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t10", "t11", "t12", "t13",
-                        "q11", "q10", "q9", "q8", "q7", "q6", "q5", "q4", "q3", "q2", "q1", "q0", "qx"
+                        "q11", "q10", "q8", "q7", "q6", "q5", "q4", "q3", "q2", "q1", "q0", "qx"
                 )))
                 .andExpect(jsonPath("$.productionMode", is(false)));
     }
