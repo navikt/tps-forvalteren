@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Service
 public class SkdInputParamsToSkdMeldingInnhold {
 
-    public StringBuilder execute(Map<String, String> skdInputMap, SkdFelterContainer skdFelterContainer) {
+    public StringBuilder execute(Map<String, String> skdInputMap, SkdFelterContainerTrans2 skdFelterContainer) {
         StringBuilder skdMelding = new StringBuilder();
         List<SkdFeltDefinisjon> skdFelter = skdFelterContainer.hentSkdFelter();
         skdFelter.forEach(skdFeltDefinisjon -> {

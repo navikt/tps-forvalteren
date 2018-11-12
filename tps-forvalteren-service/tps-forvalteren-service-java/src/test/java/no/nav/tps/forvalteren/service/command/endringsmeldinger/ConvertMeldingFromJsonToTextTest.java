@@ -16,9 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype2Felter;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdFelterContainerTrans2;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdInputParamsToSkdMeldingInnhold;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.MapBetweenRsMeldingstypeAndSkdMelding;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConvertMeldingFromJsonToTextTest {
@@ -27,7 +28,7 @@ public class ConvertMeldingFromJsonToTextTest {
     private ObjectMapper mapper;
 
     @Mock
-    private SkdFelterContainerTrans1 skdFelterContainerTrans1;
+    private MapBetweenRsMeldingstypeAndSkdMelding mapBetweenRsMeldingstypeAndSkdMelding;
 
     @Mock
     private SkdFelterContainerTrans2 skdFelterContainerTrans2;
@@ -40,7 +41,7 @@ public class ConvertMeldingFromJsonToTextTest {
     
     @Before
     public void setup() {
-        when(skdInputParamsToSkdMeldingInnhold.execute(anyMap(), any(SkdFelterContainerTrans1.class))).thenReturn(new StringBuilder("meldingstype1"));
+        when(mapBetweenRsMeldingstypeAndSkdMelding.mapReverse(any())).thenReturn(new SkdMeldingTrans1());
         when(skdInputParamsToSkdMeldingInnhold.execute(anyMap(), any(SkdFelterContainerTrans2.class))).thenReturn(new StringBuilder("meldingstype2"));
     }
     
@@ -50,7 +51,7 @@ public class ConvertMeldingFromJsonToTextTest {
         
         convertMeldingFromJsonToText.execute(melding);
         
-        verify(skdInputParamsToSkdMeldingInnhold).execute(anyMap(), any(SkdFelterContainerTrans1.class));
+        verify(mapBetweenRsMeldingstypeAndSkdMelding).mapReverse(any(RsMeldingstype1Felter.class));
     }
 
     @Test

@@ -1,19 +1,16 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+
 public class SkdFeltDefinisjonerTrans1Test {
+    
     SkdMeldingTrans1 skdMeldingTrans1 = createVigselsmelding();
     String skdMeldingStringUtenHeader = skdMeldingTrans1.toString();
-
-    @Test
-    public void extractMeldingsverdiFromString() {
-        SkdFeltDefinisjonerTrans1.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDef ->
-                assertEquals(skdMeldingTrans1.getMeldingsverdien(skdFeltDef), skdFeltDef.extractMeldingsfeltverdiFromString(skdMeldingStringUtenHeader)));
-    }
-
+    
     private static SkdMeldingTrans1 createVigselsmelding() {
         return SkdMeldingTrans1.builder()
                 .vigselstype("1")
@@ -36,7 +33,12 @@ public class SkdFeltDefinisjonerTrans1Test {
                 .ektefellePartnerFoedselsdato("250416")
                 .tidligereSivilstand("1")
                 .regdatoFamnr("20180404").build();
-
+        
     }
-
+    
+    @Test
+    public void extractMeldingsverdiFromString() {
+        SkdFeltDefinisjonerTrans1.getAllFeltDefinisjonerInSortedList().forEach(skdFeltDef ->
+                assertEquals(skdMeldingTrans1.getMeldingsverdien(skdFeltDef), skdFeltDef.extractMeldingsfeltverdiFromString(skdMeldingStringUtenHeader)));
+    }
 }
