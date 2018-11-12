@@ -20,9 +20,9 @@ import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 
 @Service
@@ -71,7 +71,7 @@ public class OpprettPersonMedEksisterendeForeldreService {
                         .build()),
                 null);
 
-        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenter(kriteriumRequest);
+        List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenterFlereMiljoer(kriteriumRequest, request.getMiljoer());
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
         List<Person> personer = opprettPersonerService.execute(identer);
         personNameService.execute(personer);

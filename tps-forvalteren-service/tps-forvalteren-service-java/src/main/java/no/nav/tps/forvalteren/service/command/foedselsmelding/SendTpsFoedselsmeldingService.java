@@ -27,6 +27,7 @@ import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.Send
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonhistorikkService;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
@@ -57,12 +58,13 @@ public class SendTpsFoedselsmeldingService {
     @Autowired
     private SkdMeldingResolver foedselsmelding;
 
+    @SuppressWarnings("fb-contrib:WOC_WRITE_ONLY_COLLECTION_LOCAL")
     public SendSkdMeldingTilTpsResponse sendFoedselsmelding(RsTpsFoedselsmeldingRequest request) {
 
         validate(request);
         S018PersonType persondataMor = null;
         S018PersonType persondataFar = null;
-        Map<String, String> sentStatus = new HashMap<>(request.getMiljoer().size());  //NOSONAR http://freg-sonar.adeo.no/code?id=no.nav.tps.forvalteren%3Atps-forvalteren&selected=no.nav.tps.forvalteren%3Atps-forvalteren-service-java%3Asrc%2Fmain%2Fjava%2Fno%2Fnav%2Ftps%2Fforvalteren%2Fservice%2Fcommand%2Ffoedselsmelding%2FSendTpsFoedselsmeldingService.java
+        Map<String, String> sentStatus = new HashMap<>(request.getMiljoer().size());
 
         Iterator<String> miljoeIterator = request.getMiljoer().iterator();
         while (miljoeIterator.hasNext()) {
@@ -133,7 +135,7 @@ public class SendTpsFoedselsmeldingService {
     }
 
     private SendSkdMeldingTilTpsResponse prepareStatus(Map<String, String> sentStatus, String ident) {
-        sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : status);
+        sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : ExtractErrorStatus.extract(status));
         return SendSkdMeldingTilTpsResponse.builder()
                 .personId(ident)
                 .skdmeldingstype(NAVN_FOEDSELSMELDING)

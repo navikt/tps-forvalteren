@@ -28,16 +28,15 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 
-    public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests) {
+    public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests, List<String> miljoer) {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
-        // Environment q0 only verified for existence
-        Set<String> environments = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
-        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter,
+                miljoer != null ? Sets.newHashSet(miljoer) : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 
-    private Set<String> getAlleGenererteIdenter(List<TestdataRequest> testdataRequests){
+    private Set<String> getAlleGenererteIdenter(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = new HashSet<>();
         for (TestdataRequest request : testdataRequests) {
             alleGenererteIdenter.addAll(request.getIdenterGenerertForKriteria());

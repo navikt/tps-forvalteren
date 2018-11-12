@@ -80,9 +80,7 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context, Set<String> environments) {
         Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>) tpsRequestParameters.get("fnr"));
         
-        Set<String> environmentsToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
-        
-        filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(tilgjengeligeIdenterAlleMiljoer, environmentsToCheck, tpsRequestParameters, context);
+        filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(tilgjengeligeIdenterAlleMiljoer, environments, tpsRequestParameters, context);
         
         return tilgjengeligeIdenterAlleMiljoer;
     }

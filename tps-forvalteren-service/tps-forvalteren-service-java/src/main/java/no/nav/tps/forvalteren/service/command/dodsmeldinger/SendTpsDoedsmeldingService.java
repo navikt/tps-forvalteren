@@ -12,6 +12,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
+import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 import no.nav.tps.xjc.ctg.domain.s004.PersondataFraTpsS004;
 
 @Service
@@ -46,7 +47,7 @@ public class SendTpsDoedsmeldingService extends SendDodsmeldingTilTpsService {
     }
 
     private SendSkdMeldingTilTpsResponse prepareStatus(Map<String, String> sentStatus, String ident) {
-        sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : status);
+        sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : ExtractErrorStatus.extract(status));
         return SendSkdMeldingTilTpsResponse.builder()
                 .personId(ident)
                 .skdmeldingstype("Doedsmelding")

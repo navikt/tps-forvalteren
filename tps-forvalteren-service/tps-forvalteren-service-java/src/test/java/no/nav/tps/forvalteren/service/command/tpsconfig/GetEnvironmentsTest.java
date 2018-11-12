@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tpsconfig;
 
 
+import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetEnvironmentsTest {
@@ -20,14 +22,17 @@ public class GetEnvironmentsTest {
     @Mock
     private FasitApiConsumer veraConsumerMock;
 
+    @Mock
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+
     @InjectMocks
     GetEnvironments getEnvironments;
-
 
     @Test
     public void callsGetEnvironmentsOnVeraConsumer() {
         getEnvironments.getEnvironmentsFromFasit(APPLICATION);
 
         verify(veraConsumerMock).getEnvironments(eq(APPLICATION));
+        verify(filterEnvironmentsOnDeployedEnvironment).execute(anySet());
     }
 }
