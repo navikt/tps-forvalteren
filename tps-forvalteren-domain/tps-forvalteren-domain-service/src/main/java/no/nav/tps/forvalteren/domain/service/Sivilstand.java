@@ -5,36 +5,38 @@ import java.util.Map;
 
 public enum  Sivilstand {
 
-    UOPPGITT(0),
-    UGIFT(1),
-    GIFT(2),
-    ENKE_ELLER_ENKEMANN(3),
-    SKILT(4),
-    SEPARERT(5),
-    REGISTRERT_PARTNER(6),
-    SEPARERT_PARTNER(7),
-    SKILT_PARTNER(8),
-    GJENLEVENDE_PARTNER(9);
+    UOPPGITT("0", "NULL"),
+    UGIFT("1", "UGIF"),
+    GIFT("2", "GIFT"),
+    ENKE_ELLER_ENKEMANN("3", "ENKE"),
+    SKILT("4", "SKIL"),
+    SEPARERT("5", "SEPA"),
+    REGISTRERT_PARTNER("6", "REPA"),
+    SEPARERT_PARTNER("7", "SEPA"),
+    SKILT_PARTNER("8", "SEPR"),
+    GJENLEVENDE_PARTNER("9", "GJPA");
 
-    private final int kode;
-
-    private static Map<Integer, Sivilstand> map = new HashMap<>();
-
-    Sivilstand(final int sivilstandKode){
-        kode = sivilstandKode;
-    }
-
-    public int getRelasjonTypeKode() {
-        return kode;
-    }
+    private static Map<String, Sivilstand> map = new HashMap<>();
 
     static {
         for (Sivilstand sivilstand : Sivilstand.values()) {
-            map.put(sivilstand.kode, sivilstand);
+            map.put(sivilstand.kodeverkskode, sivilstand);
         }
     }
+    private final String kode;
 
-    public static Sivilstand valueOf(int kode) {
-        return map.get(kode);
+    private final String kodeverkskode;
+
+    Sivilstand(final String sivilstandKode, String kodeverkkode){
+        kode = sivilstandKode;
+        this.kodeverkskode = kodeverkkode;
+    }
+
+    public String getRelasjonTypeKode() {
+        return kode;
+    }
+
+    public static Sivilstand lookup(String kode) {
+        return map.getOrDefault(kode, UOPPGITT);
     }
 }

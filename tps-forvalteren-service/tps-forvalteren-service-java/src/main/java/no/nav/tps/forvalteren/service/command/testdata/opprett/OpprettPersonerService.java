@@ -34,7 +34,6 @@ public class OpprettPersonerService {
             newPerson.setIdent(ident);
             newPerson.setKjonn(hentKjoennFraIdentService.execute(ident));
             newPerson.setRegdato(LocalDateTime.now());
-            newPerson.setSivilstand("0");
             if ("FNR".equals(newPerson.getIdenttype())) {
                 newPerson.setStatsborgerskap("NOR");
                 newPerson.setStatsborgerskapRegdato(hentDatoFraIdentService.extract(ident));
