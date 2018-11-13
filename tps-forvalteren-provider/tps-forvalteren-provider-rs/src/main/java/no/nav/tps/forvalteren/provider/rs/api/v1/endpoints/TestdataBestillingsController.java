@@ -20,7 +20,8 @@ import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
-import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
@@ -65,10 +66,9 @@ public class TestdataBestillingsController {
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "flereTilTps") })
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
-    public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestParam("environments") String environments, @RequestBody List<String> personIdentListe) {
-        List<Person> personer = findPersonerByIdIn.execute(personIdentListe);
-        List<String> envs = listExtractorKommaSeperated.extractEnvironments(environments);
-        return lagreTilTps.execute(personer, envs);
+    public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestBody RsIdenterMiljoer tpsRequest) {
+        List<Person> personer = findPersonerByIdIn.execute(tpsRequest.getIdenter());
+        return lagreTilTps.execute(personer, tpsRequest.getMiljoer());
     }
 
     @LogExceptions
