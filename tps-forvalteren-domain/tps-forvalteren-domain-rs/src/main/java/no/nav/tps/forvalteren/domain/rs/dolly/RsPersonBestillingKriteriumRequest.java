@@ -1,16 +1,19 @@
-package no.nav.tps.forvalteren.domain.rs;
+package no.nav.tps.forvalteren.domain.rs.dolly;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
+
+import lombok.Getter;
+import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.RsAdresse;
+import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 
 @Getter
 @Setter

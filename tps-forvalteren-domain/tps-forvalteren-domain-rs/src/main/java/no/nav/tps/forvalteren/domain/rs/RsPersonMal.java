@@ -55,7 +55,7 @@ public class RsPersonMal {
     @Size(max = 8)
     private String doedsdato;
 
-    @Size(min = 1, max = 1)
+    @Size(min = 1, max = 4)
     private String sivilstand;
 
     @Size(max = 3)

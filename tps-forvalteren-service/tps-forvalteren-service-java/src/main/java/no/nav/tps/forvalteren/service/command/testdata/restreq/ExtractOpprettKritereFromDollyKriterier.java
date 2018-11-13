@@ -10,11 +10,11 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
-import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleDollyRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetDummyAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 

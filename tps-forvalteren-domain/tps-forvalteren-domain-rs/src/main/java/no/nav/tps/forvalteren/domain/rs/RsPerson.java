@@ -101,4 +101,6 @@ public class RsPerson {
     private LocalDateTime opprettetDato;
 
     private String opprettetAv;
+
+    private String maalform;
 }

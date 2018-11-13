@@ -71,15 +71,15 @@
         <label>Sivilstand</label>
         <md-select ng-model="person.sivilstand" class="md-no-underline"
                    ng-change="endret($index + pager.startIndex)">
-            <md-option value="0">Ikke oppgitt</md-option>
-            <md-option value="1">Ugift</md-option>
-            <md-option value="2">Gift</md-option>
-            <md-option value="3">Enke/Enkemann</md-option>
-            <md-option value="4">Skilt</md-option>
-            <md-option value="5">Separert</md-option>
-            <md-option value="6">Reg. partner</md-option>
-            <md-option value="7">Separert partner</md-option>
-            <md-option value="8">Skilt partner</md-option>
+            <md-option value="NULL">Ikke oppgitt</md-option>
+            <md-option value="UGIF">Ugift</md-option>
+            <md-option value="GIFT">Gift</md-option>
+            <md-option value="ENKE">Enke/Enkemann</md-option>
+            <md-option value="SKIL">Skilt</md-option>
+            <md-option value="SEPR">Separert</md-option>
+            <md-option value="REPA">Reg. partner</md-option>
+            <md-option value="SEPA">Separert partner</md-option>
+            <md-option value="SKPA">Skilt partner</md-option>
         </md-select>
     </md-input-container>
 

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.rs.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;

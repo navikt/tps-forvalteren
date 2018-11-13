@@ -75,7 +75,7 @@ public class Person extends ChangeStamp {
     @Column(name = "DOEDSDATO")
     private LocalDateTime doedsdato;
 
-    @Column(name = "SIVILSTAND", length = 1)
+    @Column(name = "SIVILSTAND", length = 4)
     private String sivilstand;
 
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
@@ -136,6 +136,9 @@ public class Person extends ChangeStamp {
 
     @Column(name = "OPPRETTET_AV")
     private String opprettetAv;
+
+    @Column(name = "MAALFORM")
+    private String maalform;
 
     public List<Postadresse> getPostadresse() {
         if (postadresse == null) {
