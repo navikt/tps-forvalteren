@@ -124,7 +124,7 @@ public class SkdMeldingSender {
     }
 
     private Map<String, String> mapSkdMeldingStatus(Map<String, String> responseSkdMeldingerPerEnv, Set<String> environmentsSet) {
-        responseSkdMeldingerPerEnv.replaceAll((env, status) -> status.matches("^00.*")  ? "OK" : ExtractErrorStatus.extract(status));
+        responseSkdMeldingerPerEnv.replaceAll((env, status) -> status != null && status.matches("^00.*")  ? "OK" : ExtractErrorStatus.extract(status));
         environmentsSet.forEach(env -> responseSkdMeldingerPerEnv.putIfAbsent(env, "Environment is not deployed"));
         return responseSkdMeldingerPerEnv;
     }
