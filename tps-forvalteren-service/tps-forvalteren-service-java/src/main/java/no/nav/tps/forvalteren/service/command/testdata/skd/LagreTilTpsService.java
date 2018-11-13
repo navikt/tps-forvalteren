@@ -59,6 +59,7 @@ public class LagreTilTpsService {
         
         personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+        personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
         
         personerSomAlleredeEksitererITpsMiljoe.removeAll(personerSomIkkeEksitererITpsMiljoe);
         
@@ -66,7 +67,7 @@ public class LagreTilTpsService {
 
         listTpsResponsene.addAll(skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environmentsSet));
         listTpsResponsene.addAll(skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environmentsSet));
-        listTpsResponsene.addAll(skdMeldingSender.sendFoedselsMeldinger(personerIGruppen, environmentsSet));
+        listTpsResponsene.addAll(skdMeldingSender.sendFoedselsMeldinger(personerSomSkalFoedes, environmentsSet));
         listTpsResponsene.addAll(skdMeldingSender.sendRelasjonsmeldinger(personerIGruppen, environmentsSet));
         listTpsResponsene.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, environmentsSet));
         listTpsResponsene.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, environmentsSet));

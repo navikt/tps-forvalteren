@@ -1,13 +1,14 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
-import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anySet;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,15 +25,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anySet;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
+import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LagreTilTpsServiceTest {
@@ -75,6 +75,7 @@ public class LagreTilTpsServiceTest {
 
     private Map<String, String> expectedStatus = new HashMap<>();
     private Map<String, String> tpsResponseStatus = new HashMap<>();
+
     {
         persons.add(person);
         environments.add("u2");
@@ -130,7 +131,7 @@ public class LagreTilTpsServiceTest {
 
     @Test
     public void shouldReturnResponsesWithStatus() {
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("u2", "00");
 
         innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("1").skdmeldingstype(INNVANDRING_MLD).status(map).build());
@@ -145,7 +146,6 @@ public class LagreTilTpsServiceTest {
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(1).getPersonId(), is("2"));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(2).getPersonId(), is("3"));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(3).getPersonId(), is("4"));
-
 
         assertEquals(map, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
         assertEquals(Arrays.asList(INNVANDRING_MLD, FOEDSELS_MLD, RELASJON_MLD, UTVANDRING_MLD),
