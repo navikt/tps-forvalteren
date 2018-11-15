@@ -9,10 +9,10 @@ public enum  Sivilstand {
     GIFT("2", "GIFT"),
     ENKE_ELLER_ENKEMANN("3", "ENKE"),
     SKILT("4", "SKIL"),
-    SEPARERT("5", "SEPA"),
+    SEPARERT("5", "SEPR"),
     REGISTRERT_PARTNER("6", "REPA"),
     SEPARERT_PARTNER("7", "SEPA"),
-    SKILT_PARTNER("8", "SEPR"),
+    SKILT_PARTNER("8", "SKPA"),
     GJENLEVENDE_PARTNER("9", "GJPA");
 
     private static Map<String, Sivilstand> map = new HashMap<>();
