@@ -5,7 +5,6 @@ import java.util.Map;
 
 public enum  Sivilstand {
 
-    UOPPGITT("0", "NULL"),
     UGIFT("1", "UGIF"),
     GIFT("2", "GIFT"),
     ENKE_ELLER_ENKEMANN("3", "ENKE"),
@@ -37,6 +36,6 @@ public enum  Sivilstand {
     }
 
     public static Sivilstand lookup(String kode) {
-        return map.getOrDefault(kode, UOPPGITT);
+        return map.getOrDefault(kode, UGIFT);
     }
 }
