@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.common.collect.Sets;
 
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
@@ -49,9 +50,9 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterF
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
@@ -181,7 +182,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
-        return lagreTilTpsService.execute(gruppeId, environments);
+        return lagreTilTpsService.execute(gruppeId, Sets.newHashSet(environments));
     }
 
     @Transactional

@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anySet;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,9 +39,9 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterF
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -174,11 +176,9 @@ public class TestdataControllerTest {
 
     @Test
     public void lagreTilTips() {
-        List<String> environments = new ArrayList<>();
+        testdataController.lagreTilTPS(GRUPPE_ID, new ArrayList<>());
 
-        testdataController.lagreTilTPS(GRUPPE_ID, environments);
-
-        verify(lagreTilTpsService).execute(GRUPPE_ID, environments);
+        verify(lagreTilTpsService).execute(eq(GRUPPE_ID), anySet());
     }
 
     @Test

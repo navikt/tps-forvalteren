@@ -1,23 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateFoedselsmeldingTest {
@@ -26,9 +26,6 @@ public class CreateFoedselsmeldingTest {
 
     @Mock
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
-
-    @Mock
-    private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
 
     @InjectMocks
     private CreateFoedselsmeldinger createFoedselsmeldinger;
@@ -44,7 +41,6 @@ public class CreateFoedselsmeldingTest {
 
         listeMedPersoner.add(person);
 
-        when(findPersonerSomSkalHaFoedselsmelding.execute(anyListOf(Person.class))).thenReturn(listeMedPersoner);
         when(skdMessageCreatorTrans1.execute(anyString(), anyListOf(Person.class), anyBoolean())).thenReturn(skdMeldinger);
     }
 
@@ -52,10 +48,8 @@ public class CreateFoedselsmeldingTest {
     public void execute() {
         List<SkdMeldingTrans1> result = createFoedselsmeldinger.executeFromPersons(listeMedPersoner, ADD_HEADER);
 
-        verify(findPersonerSomSkalHaFoedselsmelding).execute(anyListOf(Person.class));
         verify(skdMessageCreatorTrans1).execute(anyString(), anyListOf(Person.class), anyBoolean());
 
         assertThat(result, is(skdMeldinger));
-
     }
 }
