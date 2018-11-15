@@ -71,7 +71,6 @@
         <label>Sivilstand</label>
         <md-select ng-model="person.sivilstand" class="md-no-underline"
                    ng-change="endret($index + pager.startIndex)">
-            <md-option value="NULL">Ikke oppgitt</md-option>
             <md-option value="UGIF">Ugift</md-option>
             <md-option value="GIFT">Gift</md-option>
             <md-option value="ENKE">Enke/Enkemann</md-option>
@@ -80,6 +79,7 @@
             <md-option value="REPA">Reg. partner</md-option>
             <md-option value="SEPA">Separert partner</md-option>
             <md-option value="SKPA">Skilt partner</md-option>
+            <md-option value="GJPA">Gjenlevende partner</md-option>
         </md-select>
     </md-input-container>
 
