@@ -24,6 +24,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -42,7 +43,7 @@ public class LagreTilTpsServiceTest {
     private static final String FOEDSELS_MLD = "Foedsel";
     private static final String UTVANDRING_MLD = "Innvandring";
     private static final Long GRUPPE_ID = 1337L;
-    private static final String melding1 = "11111111111111", melding2 = "222222222222", melding3 = "33333333333", melding4 = "44444444444";
+    private static final String melding1 = "11111111111111";
     List<SendSkdMeldingTilTpsResponse> innvandringResponse = new ArrayList<>();
     List<SendSkdMeldingTilTpsResponse> updateInnvadringResponse = new ArrayList<>();
     List<SendSkdMeldingTilTpsResponse> foedselsmeldingResponse = new ArrayList<>();
@@ -70,7 +71,7 @@ public class LagreTilTpsServiceTest {
     private List<Person> personsInGruppe = new ArrayList<>();
     private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
     private Person person = aMalePerson().build();
-    private List<String> environments = new ArrayList<>();
+    private Set<String> environments = Sets.newHashSet("u2", "env", "env2");
     private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
 
     private Map<String, String> expectedStatus = new HashMap<>();
@@ -78,9 +79,6 @@ public class LagreTilTpsServiceTest {
 
     {
         persons.add(person);
-        environments.add("u2");
-        environments.add("env");
-        environments.add("env2");
         expectedStatus.put("env", "OK");
         expectedStatus.put("env2", "persistering feilet");
         expectedStatus.put("u2", "Environment is not deployed");
@@ -153,6 +151,5 @@ public class LagreTilTpsServiceTest {
                         .stream()
                         .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
                         .collect(Collectors.toList()));
-
     }
 }

@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -39,7 +40,7 @@ public class FindPersonsNotInEnvironmentsTest {
     private Gruppe gruppe = GruppeProvider.aGruppe().id(GRUPPE_ID).build();
     private Person person = PersonProvider.aMalePerson().build();
     private Person person2 = PersonProvider.aFemalePerson().build();
-    private List<String> environments = new ArrayList<>(Arrays.asList("u2", "u6"));
+    private Set<String> environments = Sets.newHashSet("u2", "u6");
     private List<String> personIdenter = new ArrayList<>(Arrays.asList(person.getIdent(), person2.getIdent()));
 
     @Before

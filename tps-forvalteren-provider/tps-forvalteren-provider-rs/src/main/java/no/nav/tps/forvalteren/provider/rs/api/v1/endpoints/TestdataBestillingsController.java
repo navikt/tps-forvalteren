@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.common.collect.Sets;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -68,7 +69,7 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
     public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestBody RsIdenterMiljoer tpsRequest) {
         List<Person> personer = findPersonerByIdIn.execute(tpsRequest.getIdenter());
-        return lagreTilTps.execute(personer, tpsRequest.getMiljoer());
+        return lagreTilTps.execute(personer, Sets.newHashSet(tpsRequest.getMiljoer()));
     }
 
     @LogExceptions
@@ -79,5 +80,4 @@ public class TestdataBestillingsController {
         List<Person> personList = personRepository.findByIdentIn(identer);
         return mapper.mapAsList(personList, RsPerson.class);
     }
-
 }
