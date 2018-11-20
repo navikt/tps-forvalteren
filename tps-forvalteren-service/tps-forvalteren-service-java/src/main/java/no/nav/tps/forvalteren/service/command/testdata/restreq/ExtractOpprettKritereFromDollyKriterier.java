@@ -112,6 +112,8 @@ public class ExtractOpprettKritereFromDollyKriterier {
                     person.setSpesregDato(req.getSpesregDato());
                     person.setEgenAnsattDatoFom(req.getEgenAnsattDatoFom());
                     person.setEgenAnsattDatoTom(req.getEgenAnsattDatoTom());
+                    person.setSprakKode(req.getSprakKode());
+                    person.setDatoSprak(req.getDatoSprak());
 
                     if (req.getBoadresse() != null) {
                         person.setBoadresse(mapperFacade.map(req.getBoadresse(), Adresse.class));

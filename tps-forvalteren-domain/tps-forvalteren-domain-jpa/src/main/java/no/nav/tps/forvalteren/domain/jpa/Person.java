@@ -137,8 +137,11 @@ public class Person extends ChangeStamp {
     @Column(name = "OPPRETTET_AV")
     private String opprettetAv;
 
-    @Column(name = "MAALFORM")
-    private String maalform;
+    @Column(name = "SPRAK_KODE")
+    private String sprakKode;
+
+    @Column(name = "DATO_SPRAK")
+    private LocalDateTime datoSprak;
 
     public List<Postadresse> getPostadresse() {
         if (postadresse == null) {

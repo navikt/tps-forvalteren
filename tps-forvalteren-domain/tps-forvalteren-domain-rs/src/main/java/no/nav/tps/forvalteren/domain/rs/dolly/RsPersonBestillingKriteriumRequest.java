@@ -72,4 +72,9 @@ public class RsPersonBestillingKriteriumRequest {
 
     @Size(min = 1, max = 50)
     private String beskrSikkerhetsTiltak;
+
+    @Size(min = 2, max = 2)
+    private String sprakKode;
+
+    private LocalDateTime datoSprak;
 }
