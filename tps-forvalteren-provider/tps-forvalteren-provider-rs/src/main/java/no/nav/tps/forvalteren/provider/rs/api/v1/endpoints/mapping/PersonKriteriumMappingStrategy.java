@@ -44,7 +44,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 } else {
                                     dummyAdresseOnPersonService.execute(person);
                                 }
-                                if (person.getBoadresse().getFlyttedato() == null) {
+                                if (person.getBoadresse() != null && person.getBoadresse().getFlyttedato() == null) {
                                     person.getBoadresse().setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
                                 }
                                 person.getBoadresse().setPerson(person);
