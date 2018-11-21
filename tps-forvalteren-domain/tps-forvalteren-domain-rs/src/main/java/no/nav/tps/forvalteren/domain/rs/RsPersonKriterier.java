@@ -5,7 +5,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
@@ -31,16 +30,6 @@ public class RsPersonKriterier {
     private LocalDate foedtEtter;
 
     private LocalDate foedtFoer;
-
-    private String fornavn;
-
-    private String mellomnavn;
-
-    private String etternavn;
-
-    private String sivilstand;
-
-    private String innvandretFraLand;
 
     @NotNull
     @Min(1)

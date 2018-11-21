@@ -27,6 +27,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreSikkerhetstiltakRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.command.testdata.EndreSpraakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
@@ -41,6 +42,9 @@ public class SendNavEndringsmeldingerTest {
 
     @Mock
     private OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
+
+    @Mock
+    private EndreSpraakkodeService endreSpraakkodeService;
 
     @Mock
     private UserContextHolder userContextHolder;

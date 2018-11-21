@@ -5,9 +5,9 @@ application:
 
 spring:
   datasource:
-    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=d26dbfl023.test.local)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TPSFORVALTERENU6)(INSTANCE_NAME=ccuf02)(UR=A)(SERVER=DEDICATED)))
-    username: TPSFORVALTEREN_U6
-    password: 5afWDfd0jLBn
+    url: jdbc:oracle:thin:@d26dbfl023.test.local:1521/tpsforvalteren_u2
+    username: TPSFORVALTEREN_U2
+    password: JfLeGbWL09xs
     driver-class-name: oracle.jdbc.driver.OracleDriver
     continue-on-error: true
   jpa:
