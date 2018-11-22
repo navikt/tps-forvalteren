@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullCheckSetDefault.nullCheckSetDefaultValue;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
 
         skdMeldingTrans1.setSivilstand(Sivilstand.lookup(person.getSivilstand()).getRelasjonTypeKode());
         skdMeldingTrans1.setInnvandretFraLand(landkodeEncoder.encode((String)
-                nullCheckSetDefaultValue(person.getInnvandretFraLand(), "???")));
+                nullcheckSetDefaultValue(person.getInnvandretFraLand(), "???")));
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
@@ -63,7 +63,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
 
         skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
         skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd((LocalDateTime)
-                nullCheckSetDefaultValue(person.getInnvandretFraLandFlyttedato(),
+                nullcheckSetDefaultValue(person.getInnvandretFraLandFlyttedato(),
                         hentDatoFraIdentService.extract(person.getIdent()))));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 

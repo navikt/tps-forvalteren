@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,12 +96,12 @@ public class ExtractOpprettKriterier {
         hovedPersoner.forEach(person -> mapperFacade.map(req, person));
         partnere.forEach(partner -> {
                     mapperFacade.map(req, partner);
-                    mapPersonAttributes(req.getRelasjoner().getPartner(), partner);
+                    overrideDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
                 }
         );
         IntStream.range(0, barn.size()).forEach(i -> {
             mapperFacade.map(req, barn.get(i));
-            mapPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
+            overrideDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
         });
 
         List<Person> personer = new ArrayList<>();
@@ -106,15 +109,13 @@ public class ExtractOpprettKriterier {
         return personer;
     }
 
-    private Person mapPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
-        person.setStatsborgerskap(kriterier.getStatsborgerskap() != null ?
-                kriterier.getStatsborgerskap() : person.getStatsborgerskap());
-        person.setStatsborgerskapRegdato(kriterier.getStatsborgerskapRegdato() != null ?
-                kriterier.getStatsborgerskapRegdato() : person.getStatsborgerskapRegdato());
-        person.setSprakKode(kriterier.getSprakKode() != null ?
-                kriterier.getSprakKode() : person.getSprakKode());
-        person.setDatoSprak(kriterier.getDatoSprak() != null ?
-                kriterier.getDatoSprak() : person.getDatoSprak());
+    private Person overrideDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
+        person.setStatsborgerskap((String) nullcheckSetDefaultValue(kriterier.getStatsborgerskap(), person.getStatsborgerskap()));
+        person.setStatsborgerskapRegdato((LocalDateTime) nullcheckSetDefaultValue(kriterier.getStatsborgerskapRegdato(), person.getStatsborgerskapRegdato()));
+        person.setSprakKode((String) nullcheckSetDefaultValue(kriterier.getSprakKode(), person.getSprakKode()));
+        person.setDatoSprak((LocalDateTime) nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
+        person.setSpesreg((String) nullcheckSetDefaultValue(kriterier.getSpesreg(), person.getSpesreg()));
+        person.setSpesregDato((LocalDateTime) nullcheckSetDefaultValue(kriterier.getSpesregDato(), person.getSpesregDato()));
         return person;
     }
 }

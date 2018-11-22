@@ -33,6 +33,7 @@ public class PersonKriteriumMappingStrategyTest {
     private static final String STATSBORGERSKAP = "SWE";
     private static final String IDENTTYPE = "FNR";
     private static final String KJONN = "M";
+    private static final String SPESREG = "KODE6";
 
     @Autowired
     private DummyAdresseOnPersonService dummyAdresseOnPersonService;
@@ -54,7 +55,7 @@ public class PersonKriteriumMappingStrategyTest {
     public void matchVerificationOk() {
 
         Person person = mapper.map(RsPersonBestillingKriteriumRequest.builder()
-                        .antall(1)
+
                         .typeSikkerhetsTiltak(TYPESIKKERHET)
                         .beskrSikkerhetsTiltak(SIKKERHETSTILTAK)
                         .datoSprak(TIMENOW)
@@ -63,6 +64,8 @@ public class PersonKriteriumMappingStrategyTest {
                         .statsborgerskapRegdato(TIMENOW)
                         .identtype(IDENTTYPE)
                         .kjonn(KJONN)
+                        .spesreg(SPESREG)
+                        .spesregDato(TIMENOW)
                         .build(),
                 Person.class);
 
@@ -74,6 +77,7 @@ public class PersonKriteriumMappingStrategyTest {
         assertThat(person.getDatoSprak(), is(equalTo(TIMENOW)));
         assertThat(person.getBeskrSikkerhetsTiltak(), is(equalTo(SIKKERHETSTILTAK)));
         assertThat(person.getTypeSikkerhetsTiltak(), is(equalTo(TYPESIKKERHET)));
-
+        assertThat(person.getSpesreg(), is(equalTo(SPESREG)));
+        assertThat(person.getSpesregDato(), is(equalTo(TIMENOW)));
     }
 }

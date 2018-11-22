@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullCheckSetDefault.nullCheckSetDefaultValue;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +34,15 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
                             @Override public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
 
-                                person.setStatsborgerskap((String) nullCheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), "NOR"));
-                                person.setStatsborgerskapRegdato((LocalDateTime) nullCheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
+                                person.setStatsborgerskap((String) nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), "NOR"));
+                                person.setStatsborgerskapRegdato((LocalDateTime) nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
                                         hentDatoFraIdentService.extract(person.getIdent())));
 
-                                person.setSprakKode((String) nullCheckSetDefaultValue(kriteriumRequest.getSprakKode(), "NB"));
-                                person.setDatoSprak((LocalDateTime) nullCheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
+                                person.setSprakKode((String) nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), "NB"));
+                                person.setDatoSprak((LocalDateTime) nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                                         hentDatoFraIdentService.extract(person.getIdent())));
 
-                                person.setSikkerhetsTiltakDatoFom((LocalDateTime) nullCheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
+                                person.setSikkerhetsTiltakDatoFom((LocalDateTime) nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
                                 if (kriteriumRequest.getBoadresse() != null) {
                                     person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));
                                 } else {

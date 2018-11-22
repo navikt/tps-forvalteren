@@ -25,4 +25,8 @@ public class RsSimplePersonRequest {
     private String statsborgerskap;
 
     private LocalDateTime statsborgerskapRegdato;
+
+    private String spesreg;
+
+    private LocalDateTime spesregDato;
 }
