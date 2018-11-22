@@ -13,7 +13,7 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.EndreSpraakkodeService;
+import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
@@ -31,7 +31,7 @@ public class SendNavEndringsmeldinger {
     private OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
 
     @Autowired
-    private EndreSpraakkodeService endreSpraakkodeService;
+    private EndreSprakkodeService endreSprakkodeService;
 
     @Autowired
     private TpsRequestSender tpsRequestSender;
@@ -51,7 +51,7 @@ public class SendNavEndringsmeldinger {
         listeMedPersoner.forEach(person -> {
             navEndringsMeldinger.addAll(opprettEgenAnsattMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
-            navEndringsMeldinger.addAll(endreSpraakkodeService.execute(person, environmentsSet));
+            navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
         });
 
         List<ServiceRoutineResponseStatus> responseStatuses = new ArrayList<>();

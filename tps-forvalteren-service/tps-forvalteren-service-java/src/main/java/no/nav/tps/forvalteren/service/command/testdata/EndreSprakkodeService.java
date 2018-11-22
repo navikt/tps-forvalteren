@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak.SIKKERHETSTILTAK_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode.ENDRE_SPRAKKODE;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.TpsNavEndringsMelding
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 
 @Service
-public class EndreSpraakkodeService {
+public class EndreSprakkodeService {
     
     public List<TpsNavEndringsMelding> execute(Person person, Set<String> environmentSet) {
         List<TpsNavEndringsMelding> navMeldinger = new ArrayList<>();
@@ -30,7 +30,7 @@ public class EndreSpraakkodeService {
     
     public TpsEndreSprakkodeRequest buildRequest(Person person) {
         return TpsEndreSprakkodeRequest.builder()
-                .serviceRutinenavn(SIKKERHETSTILTAK_MLD_NAVN)
+                .serviceRutinenavn(ENDRE_SPRAKKODE)
                 .offentligIdent(person.getIdent())
                 .sprakKode(person.getSprakKode())
                 .datoSprak(ConvertDateToString.yyyysMMsdd(person.getDatoSprak() != null ? person.getDatoSprak() : LocalDateTime.now()))

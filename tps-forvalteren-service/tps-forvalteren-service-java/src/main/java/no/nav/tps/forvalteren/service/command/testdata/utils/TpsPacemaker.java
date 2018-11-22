@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class TpsPacemaker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TpsPacemaker.class);
-    private static final String DELAY_TIMEOUT_ERROR = "TpsPacemaker delay error";
     private static final long MAX_NO_OF_MSG_WITHOUT_DELAY = 1000L;
     private static final long DEFAULT_DELAY = 100L;
 
@@ -18,7 +17,7 @@ public class TpsPacemaker {
             try {
                 Thread.sleep(DEFAULT_DELAY);
             } catch (InterruptedException e) {
-                LOGGER.error(String.format("%s: %s", DELAY_TIMEOUT_ERROR, e.getMessage()), e);
+                LOGGER.error("TpsPacemaker delay error {}", e.getMessage(), e);
                 Thread.currentThread().interrupt();
             }
         }

@@ -16,6 +16,7 @@ import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørSikkerhetsTiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
@@ -168,7 +169,6 @@ public class CommandConfig {
         return new S301HentGDPR();
     }
 
-
     @Bean
     ServiceRoutineResolver hentPersonInfoKortGT() {
         return new S300HentKortPersonopplysningInklGT();
@@ -182,6 +182,11 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver endreSikkerhetsTiltak() {
         return new EndreSikkerhetsTiltak();
+    }
+
+    @Bean
+    ServiceRoutineResolver endreSprakkode() {
+        return new EndreSpraakkode();
     }
 
     @Bean

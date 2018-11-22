@@ -68,7 +68,7 @@ public class LagreTilTpsService {
         listTpsResponsene.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, environments));
         listTpsResponsene.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environments));
 
-        List<ServiceRoutineResponseStatus> serviceRoutineResponseList = sendNavEndringsmeldinger.execute(personerSomIkkeEksitererITpsMiljoe, environments);
+        List<ServiceRoutineResponseStatus> serviceRoutineResponseList = sendNavEndringsmeldinger.execute(personerIGruppen, environments);
 
         return new RsSkdMeldingResponse(null, listTpsResponsene, serviceRoutineResponseList);
     }

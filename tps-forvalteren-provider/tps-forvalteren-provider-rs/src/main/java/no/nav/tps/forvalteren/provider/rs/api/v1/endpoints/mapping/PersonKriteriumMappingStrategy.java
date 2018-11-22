@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static java.time.LocalDateTime.now;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullCheckSetDefault.nullCheckSetDefaultValue;
+
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +42,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 person.setDatoSprak((LocalDateTime) nullCheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                                         hentDatoFraIdentService.extract(person.getIdent())));
 
+                                person.setSikkerhetsTiltakDatoFom((LocalDateTime) nullCheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
                                 if (kriteriumRequest.getBoadresse() != null) {
                                     person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));
                                 } else {
@@ -58,9 +62,5 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("relasjoner")
                 .byDefault()
                 .register();
-    }
-
-    private Object nullCheckSetDefaultValue(Object object, Object defaultValue) {
-        return object != null ? object : defaultValue;
     }
 }

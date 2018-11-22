@@ -14,13 +14,13 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.req
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class EndreSpraakkode implements ServiceRoutineResolver {
-    public static final String ENDRE_SPRAAKKODE = "endre_spraakkode";
+    public static final String ENDRE_SPRAKKODE = "endre_sprakkode";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name(ENDRE_SPRAAKKODE)
-                .internalName("Endre Spraakkode")
+                .name(ENDRE_SPRAKKODE)
+                .internalName("Endre Sprakkode")
                 .javaClass(TpsEndreSprakkodeRequest.class)
                 .config()
                 .requestQueue(REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
