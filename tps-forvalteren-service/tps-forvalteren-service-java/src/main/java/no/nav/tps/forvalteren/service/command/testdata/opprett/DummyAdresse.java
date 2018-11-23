@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 
-public final class DummyAdresseService {
+public final class DummyAdresse {
 
     private static final String GATEADRESSE = "SANNERGATA";
     private static final String HUSNR = "2";
@@ -12,7 +12,7 @@ public final class DummyAdresseService {
     private static final String KOMMUNENR = "0301";
     private static final Gateadresse ADRESSE;
 
-    private DummyAdresseService() {
+    private DummyAdresse() {
     }
 
     static {
