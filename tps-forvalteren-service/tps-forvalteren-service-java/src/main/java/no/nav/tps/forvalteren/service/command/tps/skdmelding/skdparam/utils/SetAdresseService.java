@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,16 @@ import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
 public class SetAdresseService {
 
     @Autowired
     private HusbokstavEncoder husbokstavEncoder;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     private static final Pattern HUSNUMMER_PATTERN = Pattern.compile("(\\d+)");
     private static final Pattern HUSBOKSTAV_PATTERN = Pattern.compile("([A-ZÆØÅÁ])");
@@ -46,7 +52,8 @@ public class SetAdresseService {
             skdMeldingTrans1.setKommunenummer(boadresse.getKommunenr());
             skdMeldingTrans1.setPostnummer(boadresse.getPostnr());
 
-            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(boadresse.getFlyttedato()));
+            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(boadresse.getFlyttedato(),
+                    hentDatoFraIdentService.extract(person.getIdent()))));
         }
 
         /* Postadresse */

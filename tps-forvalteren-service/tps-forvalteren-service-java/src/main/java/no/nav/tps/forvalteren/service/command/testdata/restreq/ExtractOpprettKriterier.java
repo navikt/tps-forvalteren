@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -110,12 +109,12 @@ public class ExtractOpprettKriterier {
     }
 
     private Person overrideDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
-        person.setStatsborgerskap((String) nullcheckSetDefaultValue(kriterier.getStatsborgerskap(), person.getStatsborgerskap()));
-        person.setStatsborgerskapRegdato((LocalDateTime) nullcheckSetDefaultValue(kriterier.getStatsborgerskapRegdato(), person.getStatsborgerskapRegdato()));
-        person.setSprakKode((String) nullcheckSetDefaultValue(kriterier.getSprakKode(), person.getSprakKode()));
-        person.setDatoSprak((LocalDateTime) nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
-        person.setSpesreg((String) nullcheckSetDefaultValue(kriterier.getSpesreg(), person.getSpesreg()));
-        person.setSpesregDato((LocalDateTime) nullcheckSetDefaultValue(kriterier.getSpesregDato(), person.getSpesregDato()));
+        person.setStatsborgerskap(nullcheckSetDefaultValue(kriterier.getStatsborgerskap(), person.getStatsborgerskap()));
+        person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriterier.getStatsborgerskapRegdato(), person.getStatsborgerskapRegdato()));
+        person.setSprakKode(nullcheckSetDefaultValue(kriterier.getSprakKode(), person.getSprakKode()));
+        person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
+        person.setSpesreg(nullcheckSetDefaultValue(kriterier.getSpesreg(), person.getSpesreg()));
+        person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), person.getSpesregDato()));
         return person;
     }
 }

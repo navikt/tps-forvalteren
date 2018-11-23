@@ -4,7 +4,7 @@ public final class NullcheckUtil {
 
     private NullcheckUtil() {}
 
-    public static Object nullcheckSetDefaultValue(Object value, Object defaultValue) {
+    public static <T> T nullcheckSetDefaultValue(T value, T defaultValue) {
         return value != null ? value : defaultValue;
     }
 }
