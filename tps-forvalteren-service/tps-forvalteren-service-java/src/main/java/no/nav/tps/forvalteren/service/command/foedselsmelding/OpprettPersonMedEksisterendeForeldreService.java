@@ -66,8 +66,8 @@ public class OpprettPersonMedEksisterendeForeldreService {
                         .antall(1)
                         .identtype(request.getIdenttype() != null ? request.getIdenttype().name() : FNR.name())
                         .kjonn(request.getKjonn() != null ? request.getKjonn().name() : null)
-                        .foedtEtter(request.getFoedselsdato().toLocalDate())
-                        .foedtFoer(request.getFoedselsdato().toLocalDate())
+                        .foedtEtter(request.getFoedselsdato())
+                        .foedtFoer(request.getFoedselsdato())
                         .build()),
                 null);
 

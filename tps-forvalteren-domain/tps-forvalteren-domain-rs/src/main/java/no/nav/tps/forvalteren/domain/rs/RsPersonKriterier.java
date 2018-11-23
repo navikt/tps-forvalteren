@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -27,9 +27,9 @@ public class RsPersonKriterier {
 
     private String kjonn;
 
-    private LocalDate foedtEtter;
+    private LocalDateTime foedtEtter;
 
-    private LocalDate foedtFoer;
+    private LocalDateTime foedtFoer;
 
     @NotNull
     @Min(1)

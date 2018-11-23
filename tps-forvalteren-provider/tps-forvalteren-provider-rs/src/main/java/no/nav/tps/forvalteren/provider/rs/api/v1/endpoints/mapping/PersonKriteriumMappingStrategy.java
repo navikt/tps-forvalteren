@@ -14,11 +14,14 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresse;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Component
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
+
+    @Autowired
+    private DummyAdresseService dummyAdresseService;
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -42,7 +45,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 person.setBoadresse(kriteriumRequest.getBoadresse() != null ?
                                         mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class) :
-                                        DummyAdresse.create());
+                                        dummyAdresseService.create());
 
                                 person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
                                         hentDatoFraIdentService.extract(person.getIdent())));

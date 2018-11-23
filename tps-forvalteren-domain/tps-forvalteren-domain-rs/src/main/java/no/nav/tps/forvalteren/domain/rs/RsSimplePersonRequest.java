@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -14,9 +13,9 @@ public class RsSimplePersonRequest {
 
     private String kjonn;
 
-    private LocalDate foedtEtter;
+    private LocalDateTime foedtEtter;
 
-    private LocalDate foedtFoer;
+    private LocalDateTime foedtFoer;
 
     private String sprakKode;
 

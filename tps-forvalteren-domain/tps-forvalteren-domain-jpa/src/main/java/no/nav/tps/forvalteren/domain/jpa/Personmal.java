@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,10 +42,10 @@ public class Personmal extends ChangeStamp {
     private String personmalBeskrivelse;
 
     @Column(name = "FODT_ETTER")
-    private LocalDate fodtEtter;
+    private LocalDateTime fodtEtter;
 
     @Column(name = "FODT_FOR")
-    private LocalDate fodtFor;
+    private LocalDateTime fodtFor;
 
     @Column(name = "KJONN")
     private String kjonn;
