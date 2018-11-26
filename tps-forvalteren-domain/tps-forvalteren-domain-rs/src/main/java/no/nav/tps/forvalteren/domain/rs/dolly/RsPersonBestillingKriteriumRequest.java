@@ -43,8 +43,6 @@ public class RsPersonBestillingKriteriumRequest {
 
     private boolean withAdresse;
 
-    @NotBlank
-    @Size(min = 3, max = 3)
     private String kjonn;
 
     private String statsborgerskap;
@@ -84,4 +82,11 @@ public class RsPersonBestillingKriteriumRequest {
     private String sprakKode;
 
     private LocalDateTime datoSprak;
+
+    public RsSimpleRelasjoner getRelasjoner() {
+        if (relasjoner == null) {
+            relasjoner = new RsSimpleRelasjoner();
+        }
+        return relasjoner;
+    }
 }

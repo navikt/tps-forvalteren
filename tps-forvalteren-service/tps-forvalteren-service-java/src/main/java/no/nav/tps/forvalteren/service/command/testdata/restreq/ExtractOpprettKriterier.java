@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -15,7 +15,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 
 @Service
@@ -25,69 +24,46 @@ public class ExtractOpprettKriterier {
     private MapperFacade mapperFacade;
 
     public RsPersonKriteriumRequest execute(RsPersonBestillingKriteriumRequest req) {
-        RsPersonKriterier rsPerson = new RsPersonKriterier();
-        rsPerson.setAntall(req.getAntall());
-        rsPerson.setIdenttype(req.getIdenttype());
-        rsPerson.setKjonn(req.getKjonn());
-        rsPerson.setFoedtEtter(req.getFoedtEtter());
-        rsPerson.setFoedtFoer(req.getFoedtFoer());
 
-        RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest();
-        kriteriumRequest.setPersonKriterierListe(Arrays.asList(rsPerson));
-
-        return kriteriumRequest;
+        return RsPersonKriteriumRequest.builder()
+                .personKriterierListe(singletonList(RsPersonKriterier.builder()
+                        .antall(req.getAntall())
+                        .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
+                        .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
+                        .foedtEtter(req.getFoedtEtter())
+                        .foedtFoer(req.getFoedtFoer())
+                        .build()))
+                .build();
     }
 
-    public RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
-        RsSimpleRelasjoner rel = request.getRelasjoner();
+    public RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
+
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
-        if (rel != null && rel.getPartner() != null) {
-            RsPersonKriterier partnerReq = new RsPersonKriterier();
-            partnerReq.setAntall(request.getAntall());
-
-            partnerReq.setIdenttype(getIdenttype(rel.getPartner().getIdenttype()));
-
-            partnerReq.setKjonn(rel.getPartner().getKjonn());
-            partnerReq.setFoedtFoer(rel.getPartner().getFoedtFoer());
-            partnerReq.setFoedtEtter(rel.getPartner().getFoedtEtter());
-            personRequestListe.setPersonKriterierListe(Arrays.asList(partnerReq));
+        if (request != null) {
+            addKriterium(personRequestListe, request);
         }
 
         return personRequestListe;
     }
 
-    private String getIdenttype(String identype) {
-        return identype != null ? identype : "FNR";
-    }
+    public RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
 
-    public RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request) {
-        RsSimpleRelasjoner rel = request.getRelasjoner();
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
-        personRequestListe.setPersonKriterierListe(new ArrayList<>());
-        if (harBarn(request)) {
-
-            for (int i = 0; i < request.getAntall(); i++) {
-                for (RsSimplePersonRequest req : rel.getBarn()) {
-                    RsPersonKriterier barnKriterie = new RsPersonKriterier();
-                    barnKriterie.setAntall(1);
-
-                    barnKriterie.setIdenttype(getIdenttype(req.getIdenttype()));
-
-                    barnKriterie.setKjonn(req.getKjonn());
-                    barnKriterie.setFoedtFoer(req.getFoedtFoer());
-                    barnKriterie.setFoedtEtter(req.getFoedtEtter());
-
-                    personRequestListe.getPersonKriterierListe().add(barnKriterie);
-                }
-            }
+        for (RsSimplePersonRequest req : request) {
+            addKriterium(personRequestListe, req);
         }
 
         return personRequestListe;
     }
 
-    private boolean harBarn(RsPersonBestillingKriteriumRequest request) {
-        RsSimpleRelasjoner rel = request.getRelasjoner();
-        return rel != null && (rel.getBarn() != null && !rel.getBarn().isEmpty());
+    private void addKriterium(RsPersonKriteriumRequest personRequestListe, RsSimplePersonRequest req) {
+        personRequestListe.getPersonKriterierListe().add(RsPersonKriterier.builder()
+                .antall(1)
+                .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
+                .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
+                .foedtFoer(req.getFoedtFoer())
+                .foedtEtter(req.getFoedtEtter())
+                .build());
     }
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {

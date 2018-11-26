@@ -40,8 +40,8 @@ public class PersonerBestillingService {
 
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
         RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.execute(personKriteriumRequest);
-        RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest);
-        RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest);
+        RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
+        RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 
         List<Person> partnere = new ArrayList<>();
         List<Person> barn = new ArrayList<>();

@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 import static java.time.LocalDateTime.now;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .customize(
                         new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
                             @Override public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
+
+                                person.setIdenttype(nullcheckSetDefaultValue(person.getIdenttype(), "FNR"));
+                                person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
+                                person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), LocalDateTime.now()));
 
                                 person.setStatsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), "NOR"));
                                 person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
