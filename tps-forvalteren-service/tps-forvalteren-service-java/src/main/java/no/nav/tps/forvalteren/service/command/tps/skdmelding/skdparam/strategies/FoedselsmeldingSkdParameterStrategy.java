@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FoedselsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
@@ -70,7 +71,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setPersonkode("3");
         skdMeldingTrans1.setLevendeDoed("1");
 
-        skdMeldingTrans1.setSpesRegType(barn.getSpesreg());
+        skdMeldingTrans1.setSpesRegType(barn.getSpesreg() != null ? DiskresjonskoderType.valueOf(barn.getSpesreg()).getKodeverdi() : null);
         skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(barn.getSpesregDato()));
     }
 

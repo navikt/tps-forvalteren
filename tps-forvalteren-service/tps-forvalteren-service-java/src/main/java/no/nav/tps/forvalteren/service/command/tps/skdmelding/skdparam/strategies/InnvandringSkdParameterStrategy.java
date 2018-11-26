@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
@@ -69,7 +70,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
 
         setAdresse.execute(skdMeldingTrans1, person);
 
-        skdMeldingTrans1.setSpesRegType(person.getSpesreg());
+        skdMeldingTrans1.setSpesRegType(person.getSpesreg() != null ? DiskresjonskoderType.valueOf(person.getSpesreg()).getKodeverdi() : null);
         skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(person.getSpesregDato()));
     }
 

@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -40,7 +41,7 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setFodselsdato(person.getIdent().substring(0, 6));
         skdMeldingTrans1.setPersonnummer(person.getIdent().substring(6, 11));
 
-        skdMeldingTrans1.setSpesRegType(person.getSpesreg());
+        skdMeldingTrans1.setSpesRegType(person.getSpesreg() != null ? DiskresjonskoderType.valueOf(person.getSpesreg()).getKodeverdi() : null);
 
         skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(person.getRegdato()));
         skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(person.getRegdato()));

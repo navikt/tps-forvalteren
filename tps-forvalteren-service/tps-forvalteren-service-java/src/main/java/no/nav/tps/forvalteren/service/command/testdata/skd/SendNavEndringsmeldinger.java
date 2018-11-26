@@ -62,9 +62,8 @@ public class SendNavEndringsmeldinger {
             TpsServiceRoutineResponse svar = tpsRequestSender.sendTpsRequest(serviceRoutineRequest.getMelding(), tpsRequestContext);
 
             ResponseStatus status = ekstraherStatusFraServicerutineRespons(svar);
-            if ("00" != status.getKode()) {
-                responseStatuses.add(byggRespons(serviceRoutineRequest, status));
-            }
+            status.setKode("00" != status.getKode() || "04" != status.getKode() ? "OK" : "FEIL");
+            responseStatuses.add(byggRespons(serviceRoutineRequest, status));
 
             tpsPacemaker.iteration(i);
         }
@@ -84,5 +83,4 @@ public class SendNavEndringsmeldinger {
                 .environment(serviceRoutineRequest.getMiljo())
                 .status(responseStatus).build();
     }
-
 }
