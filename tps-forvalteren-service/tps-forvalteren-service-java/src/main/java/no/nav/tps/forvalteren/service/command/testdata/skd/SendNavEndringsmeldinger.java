@@ -54,7 +54,7 @@ public class SendNavEndringsmeldinger {
             navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
         });
 
-        List<ServiceRoutineResponseStatus> responseStatuses = new ArrayList<>();
+        List<ServiceRoutineResponseStatus> responseStatuses = new ArrayList<>(navEndringsMeldinger.size());
         for (int i = 0; i < navEndringsMeldinger.size(); i++) {
             TpsNavEndringsMelding serviceRoutineRequest = navEndringsMeldinger.get(i);
 
