@@ -46,6 +46,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                                         hentDatoFraIdentService.extract(person.getIdent())));
 
+                                if (person.getSpesreg() != null) {
+                                    person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
+                                }
+
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
 
                                 person.setBoadresse(kriteriumRequest.getBoadresse() != null ?

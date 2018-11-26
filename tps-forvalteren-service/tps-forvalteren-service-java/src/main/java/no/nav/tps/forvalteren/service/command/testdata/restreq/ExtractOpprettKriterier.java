@@ -16,12 +16,16 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
 public class ExtractOpprettKriterier {
 
     @Autowired
     private MapperFacade mapperFacade;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     public RsPersonKriteriumRequest execute(RsPersonBestillingKriteriumRequest req) {
 
@@ -91,6 +95,9 @@ public class ExtractOpprettKriterier {
         person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
         person.setSpesreg(nullcheckSetDefaultValue(kriterier.getSpesreg(), person.getSpesreg()));
         person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), person.getSpesregDato()));
+        if (person.getSpesreg() != null && person.getSpesregDato() == null) {
+            person.setSpesregDato(hentDatoFraIdentService.extract(person.getIdent()));
+        }
         return person;
     }
 }
