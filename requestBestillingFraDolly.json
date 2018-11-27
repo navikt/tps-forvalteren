@@ -1,0 +1,27 @@
+{
+  "environments": [
+    "t0"
+  ],
+  "identtype": "FNR",
+  "antall": "1",
+  "relasjoner": {
+    "barn": [
+      {
+        "foedtEtter": "1965-11-01T00:00:00.000Z",
+        "foedtFoer": "2018-11-23T00:00:00.000Z",
+        "identtype": "FNR",
+        "kjonn": "M"
+      }
+    ],
+    "partner": {
+      "foedtEtter": "1964-01-01T00:00:00.000Z",
+      "foedtFoer": "2018-11-23T00:00:00.000Z",
+      "identtype": "FNR",
+      "kjonn": "K"
+    }
+  },
+  "withAdresse": "true",
+  "kjonn": "K",
+  "sivilstand": "GIFT",
+  "regdato": "2018-11-23T08:42:44.059Z"
+}

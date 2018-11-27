@@ -23,12 +23,13 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Foedselsm
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringUpdateSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.HusbokstavEncoder;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@Import({HentKjoennFraIdentService.class, SetAdresseService.class, HusbokstavEncoder.class})
+@Import({HentKjoennFraIdentService.class, SetAdresseService.class, HusbokstavEncoder.class, HentDatoFraIdentService.class})
 public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Autowired
@@ -36,6 +37,9 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Autowired
     private SetAdresseService setAdresseService;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     private FoedselsmeldingSkdParameterStrategy foedselsmeldingSkdParameterStrategy;
 
@@ -52,6 +56,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         foedselsmeldingSkdParameterStrategy = new FoedselsmeldingSkdParameterStrategy();
         ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "setAdresseService", setAdresseService);
         ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "hentKjoennFraIdentService", hentKjoennFraIdentService);
+        ReflectionTestUtils.setField(setAdresseService, "hentDatoFraIdentService", hentDatoFraIdentService);
 
         barn = new Person();
 

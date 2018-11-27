@@ -9,6 +9,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -43,8 +44,8 @@ public class FiktiveIdenterGeneratorTest {
 
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("M");
-        LocalDate dateFoer = LocalDate.of(1900, Month.JANUARY, 1);
-        LocalDate dateEtter = LocalDate.of(1854, Month.MAY, 15);
+        LocalDateTime dateFoer = LocalDate.of(1900, Month.JANUARY, 1).atStartOfDay();
+        LocalDateTime dateEtter = LocalDate.of(1854, Month.MAY, 15).atStartOfDay();
 
         testpersonKriterier.setFoedtFoer(dateFoer);
         testpersonKriterier.setFoedtEtter(dateEtter);
@@ -61,8 +62,8 @@ public class FiktiveIdenterGeneratorTest {
     public void personerFodtIPerioden1900til1939skalHaNummerIIntervall0til499() {
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("M");
-        LocalDate dateFoer = LocalDate.of(1940, Month.JANUARY, 1);
-        LocalDate dateEtter = LocalDate.of(1900, Month.MAY, 15);
+        LocalDateTime dateFoer = LocalDate.of(1940, Month.JANUARY, 1).atStartOfDay();
+        LocalDateTime dateEtter = LocalDate.of(1900, Month.MAY, 15).atStartOfDay();
         testpersonKriterier.setFoedtFoer(dateFoer);
         testpersonKriterier.setFoedtEtter(dateEtter);
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
@@ -76,8 +77,8 @@ public class FiktiveIdenterGeneratorTest {
     public void personerFodtIPerioden1940til1999skalHaNummerIIntervall900til999eller0til499() {
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("M");
-        LocalDate dateFoer = LocalDate.of(2000, Month.JANUARY, 1);
-        LocalDate dateEtter = LocalDate.of(1940, Month.MAY, 15);
+        LocalDateTime dateFoer = LocalDate.of(2000, Month.JANUARY, 1).atStartOfDay();
+        LocalDateTime dateEtter = LocalDate.of(1940, Month.MAY, 15).atStartOfDay();
         testpersonKriterier.setFoedtFoer(dateFoer);
         testpersonKriterier.setFoedtEtter(dateEtter);
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
@@ -91,8 +92,8 @@ public class FiktiveIdenterGeneratorTest {
     public void personerFodtIPerioden2000til2039skalHaNummerIInterval500til999() {
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("M");
-        LocalDate dateFoer = LocalDate.of(2040, Month.JANUARY, 1);
-        LocalDate dateEtter = LocalDate.of(2000, Month.MAY, 15);
+        LocalDateTime dateFoer = LocalDate.of(2040, Month.JANUARY, 1).atStartOfDay();
+        LocalDateTime dateEtter = LocalDate.of(2000, Month.MAY, 15).atStartOfDay();
         testpersonKriterier.setFoedtFoer(dateFoer);
         testpersonKriterier.setFoedtEtter(dateEtter);
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
@@ -106,11 +107,11 @@ public class FiktiveIdenterGeneratorTest {
     public void genererFiktiveIdenterRiktigStorrelse() throws Exception {
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("M");
-        LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
+        LocalDateTime date = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
         testpersonKriterier.setFoedtEtter(date);
 
         testpersonKriterier.setKjonn("M");
-        LocalDate dateEtter = LocalDate.of(1992, Month.JANUARY, 15);
+        LocalDateTime dateEtter = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
         testpersonKriterier.setFoedtEtter(dateEtter);
 
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
@@ -131,7 +132,7 @@ public class FiktiveIdenterGeneratorTest {
     public void genererKvinneIdentHvisKjonnErSattTilKvinne() throws Exception {
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("K");
-        LocalDate dateEtter = LocalDate.of(1992, Month.JANUARY, 15);
+        LocalDateTime dateEtter = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
         testpersonKriterier.setFoedtEtter(dateEtter);
 
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
@@ -145,7 +146,7 @@ public class FiktiveIdenterGeneratorTest {
     public void genererMannIdentHvisKjonnErSattTilMann() throws Exception {
         testpersonKriterier.setIdenttype(FNR);
         testpersonKriterier.setKjonn("M");
-        LocalDate dateEtter = LocalDate.of(1992, Month.JANUARY, 15);
+        LocalDateTime dateEtter = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
         testpersonKriterier.setFoedtEtter(dateEtter);
 
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
@@ -160,7 +161,7 @@ public class FiktiveIdenterGeneratorTest {
     public void genererDNummerMedRiktigStatsborgerskapNummer() throws Exception {
                 testpersonKriterier.setIdenttype(DNR);
                 testpersonKriterier.setKjonn("K");
-                LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
+                LocalDateTime date = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
                 testpersonKriterier.setFoedtEtter(date);
                 testpersonKriterier.setFoedtFoer(date);
 
@@ -180,7 +181,7 @@ public class FiktiveIdenterGeneratorTest {
     public void genererBNummerMedRiktigMonthNummer() throws Exception {
         testpersonKriterier.setIdenttype(BNR);
         testpersonKriterier.setKjonn("K");
-        LocalDate date = LocalDate.of(1992, Month.JANUARY, 15);
+        LocalDateTime date = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
         testpersonKriterier.setFoedtEtter(date);
 
         Set<String> bNummerList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);

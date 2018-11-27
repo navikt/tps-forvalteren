@@ -36,34 +36,31 @@ public class PersonerBestillingService {
     private SavePersonBulk savePersonBulk;
 
     @Autowired
-    private ExtractOpprettKritereFromDollyKriterier extractOpprettKritereFromDollyKriterier;
+    private ExtractOpprettKriterier extractOpprettKriterier;
 
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
-        RsPersonKriteriumRequest personKriterier = extractOpprettKritereFromDollyKriterier.execute(personKriteriumRequest);
-        RsPersonKriteriumRequest kriteriePartner = extractOpprettKritereFromDollyKriterier.extractPartner(personKriteriumRequest);
-        RsPersonKriteriumRequest kriterieBarn = extractOpprettKritereFromDollyKriterier.extractBarn(personKriteriumRequest);
+        RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.execute(personKriteriumRequest);
+        RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
+        RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 
-        List<Person> deresPartnere = new ArrayList<>();
-        List<Person> deresBarn = new ArrayList<>();
-        List<Person> opprettedePersoner = savePersonBulk.execute(convertRequestTilPersoner(personKriterier));
+        List<Person> partnere = new ArrayList<>();
+        List<Person> barn = new ArrayList<>();
+        List<Person> hovedPersoner = savePersonBulk.execute(convertRequestTilPersoner(personKriterier));
 
         if (harPartner(personKriteriumRequest)) {
-            deresPartnere = savePersonBulk.execute(convertRequestTilPersoner(kriteriePartner));
+            partnere = savePersonBulk.execute(convertRequestTilPersoner(kriteriePartner));
         }
         if (harBarn(personKriteriumRequest)) {
-            deresBarn = savePersonBulk.execute(convertRequestTilPersoner(kriterieBarn));
+            barn = savePersonBulk.execute(convertRequestTilPersoner(kriterieBarn));
         }
 
-        setRelasjonerPaaPersoner(opprettedePersoner, deresPartnere, deresBarn);
+        setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
 
-        List<Person> personerSomSkalPersisteres = new ArrayList<>(opprettedePersoner);
-        personerSomSkalPersisteres.addAll(deresPartnere);
-        personerSomSkalPersisteres.addAll(deresBarn);
+        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(personKriteriumRequest, hovedPersoner, partnere, barn);
 
-        List<Person> tpsfPersoner = extractOpprettKritereFromDollyKriterier.addDollyKriterumValuesToPerson(personKriteriumRequest, personerSomSkalPersisteres);
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
-        return sortWithBestiltPersonFoerstIListe(lagredePersoner, opprettedePersoner.get(0).getIdent());
+        return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent());
     }
 
     private List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {

@@ -102,5 +102,7 @@ public class RsPerson {
 
     private String opprettetAv;
 
-    private String maalform;
+    private String sprakKode;
+
+    private LocalDateTime datoSprak;
 }

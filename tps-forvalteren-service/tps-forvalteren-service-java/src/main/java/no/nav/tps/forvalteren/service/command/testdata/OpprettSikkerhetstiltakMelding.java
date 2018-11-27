@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak.SIKKERHETSTILTAK_MLD_NAVN;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ public class OpprettSikkerhetstiltakMelding {
     }
     
     private boolean sjekkForSikkerhetstiltak(Person person) {
-        return person.getTypeSikkerhetsTiltak() != null;
+        return isNotBlank(person.getTypeSikkerhetsTiltak()) &&
+                isNotBlank(person.getBeskrSikkerhetsTiltak()) &&
+                person.getSikkerhetsTiltakDatoFom() != null;
     }
 }

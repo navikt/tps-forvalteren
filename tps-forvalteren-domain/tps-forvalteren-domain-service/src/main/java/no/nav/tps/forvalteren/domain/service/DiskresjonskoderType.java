@@ -2,23 +2,29 @@ package no.nav.tps.forvalteren.domain.service;
 
 public enum DiskresjonskoderType {
 
-    VABO("Vanlig bosatt"),
-    URIK("I utenrikstjeneste"),
-    MILI("Militær"),
-    SVAL("Svalbard"),
-    KLIE("Klientadresse"),
-    UFB("Uten fast bobel"),
-    SPSF("Sperret adresse, strengt fortrolig"),  //kode 6
-    SPFO("Sperret adresse, fortrolig"),          //kode 7
-    PEND("Pendler");
+    VABO("0", "Vanlig bosatt"),
+    URIK("1", "I utenrikstjeneste"),
+    MILI("2", "Militær"),
+    SVAL("3", "Svalbard"),
+    KLIE("4", "Klientadresse"),
+    UFB("5", "Uten fast bobel"),
+    SPSF("6", "Sperret adresse, strengt fortrolig"),  //kode 6
+    SPFO("7", "Sperret adresse, fortrolig"),          //kode 7
+    PEND("8", "Pendler");
 
-    private final String navn;
+    private String navn;
+    private String kodeverdi;
 
-    DiskresjonskoderType(final String diskresjonskodeNavn){
+    DiskresjonskoderType(final String kode, final String diskresjonskodeNavn){
+        kodeverdi = kode;
         navn = diskresjonskodeNavn;
     }
 
     public String getName() {
         return navn;
+    }
+
+    public String getKodeverdi() {
+        return kodeverdi;
     }
 }

@@ -13,6 +13,7 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
@@ -28,6 +29,9 @@ public class SendNavEndringsmeldinger {
 
     @Autowired
     private OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
+
+    @Autowired
+    private EndreSprakkodeService endreSprakkodeService;
 
     @Autowired
     private TpsRequestSender tpsRequestSender;
@@ -47,9 +51,10 @@ public class SendNavEndringsmeldinger {
         listeMedPersoner.forEach(person -> {
             navEndringsMeldinger.addAll(opprettEgenAnsattMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
+            navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
         });
 
-        List<ServiceRoutineResponseStatus> responseStatuses = new ArrayList<>();
+        List<ServiceRoutineResponseStatus> responseStatuses = new ArrayList<>(navEndringsMeldinger.size());
         for (int i = 0; i < navEndringsMeldinger.size(); i++) {
             TpsNavEndringsMelding serviceRoutineRequest = navEndringsMeldinger.get(i);
 
@@ -57,9 +62,8 @@ public class SendNavEndringsmeldinger {
             TpsServiceRoutineResponse svar = tpsRequestSender.sendTpsRequest(serviceRoutineRequest.getMelding(), tpsRequestContext);
 
             ResponseStatus status = ekstraherStatusFraServicerutineRespons(svar);
-            if ("00" != status.getKode()) {
-                responseStatuses.add(byggRespons(serviceRoutineRequest, status));
-            }
+            status.setKode("00" != status.getKode() || "04" != status.getKode() ? "OK" : "FEIL");
+            responseStatuses.add(byggRespons(serviceRoutineRequest, status));
 
             tpsPacemaker.iteration(i);
         }
@@ -79,5 +83,4 @@ public class SendNavEndringsmeldinger {
                 .environment(serviceRoutineRequest.getMiljo())
                 .status(responseStatus).build();
     }
-
 }
