@@ -68,9 +68,9 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             }
                         })
 
-                .exclude("relasjoner")
-                .exclude("kjonn")
                 .exclude("identtype")
+                .exclude("kjonn")
+                .exclude("relasjoner")
                 .byDefault()
                 .register();
     }

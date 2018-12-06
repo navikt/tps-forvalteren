@@ -32,7 +32,6 @@ public class PersonKriteriumMappingStrategyTest {
     private static final String SPRAK = "EN";
     private static final String STATSBORGERSKAP = "SWE";
     private static final String IDENTTYPE = "FNR";
-    private static final String KJONN = "M";
     private static final String SPESREG = "KODE6";
 
     @Mock
@@ -64,14 +63,12 @@ public class PersonKriteriumMappingStrategyTest {
                         .statsborgerskap(STATSBORGERSKAP)
                         .statsborgerskapRegdato(TIMENOW)
                         .identtype(IDENTTYPE)
-                        .kjonn(KJONN)
                         .spesreg(SPESREG)
                         .spesregDato(TIMENOW)
                         .build(),
                 Person.class);
 
         assertThat(person.getIdenttype(), is(equalTo(IDENTTYPE)));
-        assertThat(person.getKjonn(), is(equalTo(KJONN)));
         assertThat(person.getStatsborgerskap(), is(equalTo(STATSBORGERSKAP)));
         assertThat(person.getStatsborgerskapRegdato(), is(equalTo(TIMENOW)));
         assertThat(person.getSprakKode(), is(equalTo(SPRAK)));
