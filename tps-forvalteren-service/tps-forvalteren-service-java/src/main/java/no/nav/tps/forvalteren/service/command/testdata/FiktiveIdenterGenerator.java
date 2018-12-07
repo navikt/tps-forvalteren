@@ -1,11 +1,14 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static java.lang.Character.getNumericValue;
+import static java.lang.String.format;
+import static java.util.Collections.emptyList;
+
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -44,30 +47,29 @@ public class FiktiveIdenterGenerator {
     private static final int CATEGORY4_TIME_PERIOD_START = 1949;
     private static final int CATEGORY4_TIME_PERIOD_END = 1999;
 
-    private static final int[] KONTROLL_SIFFER_C1 = { 3, 7, 6, 1, 8, 9, 4, 5, 2 };
-    private static final int[] KONTROLL_SIFFER_C2 = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
+    private static final int[] KONTROLL_SIFFER_1 = { 3, 7, 6, 1, 8, 9, 4, 5, 2 };
+    private static final int[] KONTROLL_SIFFER_2 = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
 
     private static final SecureRandom randomNumberProvider = new SecureRandom();
 
     public Set<String> genererFiktiveIdenter(RsPersonKriterier kriteria) {
-        StringBuilder identitetBuilder;
+
         HashSet<String> identSet = new HashSet<>();
         while (identSet.size() != (kriteria.getAntall() * MULTIPLY_ANT_IDENTER)) {
-            identitetBuilder = new StringBuilder();
+            StringBuilder identitetBuilder = new StringBuilder();
             LocalDateTime fodselsdatoDate = genererFodsselsdatoBasertPaaKriterie(kriteria);
             String fodselsdato = genererFnrDnrBnrStringified(kriteria.getIdenttype(), fodselsdatoDate);
             List<Integer> rangeList = hentKategoriIntervallForDato(fodselsdatoDate);
             identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), kriteria.getKjonn()));
-            int forsteKontrollSiffer = hentForsteKontrollSiffer(identitetBuilder.toString());
+            int forsteKontrollSiffer = genererKontrollsiffer(identitetBuilder, KONTROLL_SIFFER_1);
             identitetBuilder.append(forsteKontrollSiffer);
-            int andreKontrollSiffer = getAndreKontrollSiffer(identitetBuilder.toString());
+            int andreKontrollSiffer = genererKontrollsiffer(identitetBuilder, KONTROLL_SIFFER_2);
             identitetBuilder.append(andreKontrollSiffer);
             if (forsteKontrollSiffer == 10 || andreKontrollSiffer == 10) {
                 // Hvis kontrollsiffer er 10, så må fodselsnummeret forkastes, og man prøver å lage et nytt.
                 continue;
             }
-            String fnr = identitetBuilder.toString();
-            identSet.add(fnr);
+            identSet.add(identitetBuilder.toString());
         }
         return identSet;
     }
@@ -90,14 +92,14 @@ public class FiktiveIdenterGenerator {
     private String genererNyttDnummer(LocalDateTime date) {
         String fodselsdato = localDateToDDmmYYStringFormat(date);
 
-        int forsteSiffer = Character.getNumericValue(fodselsdato.charAt(0)) + 4;
+        int forsteSiffer = getNumericValue(fodselsdato.charAt(0)) + 4;
         return Integer.toString(forsteSiffer) + fodselsdato.substring(1);
     }
 
     private String genererNyttBNummer(LocalDateTime date) {
         String fodselsdato = localDateToDDmmYYStringFormat(date);
 
-        int maanedSiffer = Character.getNumericValue(fodselsdato.charAt(2)) + 2;
+        int maanedSiffer = getNumericValue(fodselsdato.charAt(2)) + 2;
         return fodselsdato.substring(0, 2) + Integer.toString(maanedSiffer) + fodselsdato.substring(3);
     }
 
@@ -123,56 +125,34 @@ public class FiktiveIdenterGenerator {
     }
 
     private List<Integer> hentKategoriIntervallForDato(LocalDateTime date) {
-        List<Integer> rangeList = new ArrayList<>();
+
         if (isInYearRange(date, CATEGORY1_TIME_PERIOD_START, CATEGORY1_TIME_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END));
+            return Arrays.asList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END);
         } else if (isInYearRange(date, CATEGORY2_TIME_PERIOD_START, CATEGORY2_TIME_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY2_NUMBER_RANGE_START, CATEGORY2_NUMBER_RANGE_END));
+            return Arrays.asList(CATEGORY2_NUMBER_RANGE_START, CATEGORY2_NUMBER_RANGE_END);
         } else if (isInYearRange(date, CATEGORY_3_TIME_PERIOD_START, CATEGORY_3_TIME_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY_3_NUMBER_RANGE_START, CATEGORY_3_NUMBER_RANGE_END));
+            return Arrays.asList(CATEGORY_3_NUMBER_RANGE_START, CATEGORY_3_NUMBER_RANGE_END);
         } else if (isInYearRange(date, CATEGORY4_TIME_PERIOD_START, CATEGORY4_TIME_PERIOD_END)) {
-            rangeList.addAll(Arrays.asList(CATEGORY4_NUMBER_RANGE_START, CATEGORY4_NUMBER_RANGE_END));
+            return Arrays.asList(CATEGORY4_NUMBER_RANGE_START, CATEGORY4_NUMBER_RANGE_END);
         }
-        return rangeList;
+        return emptyList();
     }
 
     private String genererIndividnummer(int rangeStart, int rangeSlutt, String kjonn) {
-        int individNummber;
 
-        String kjoennPaaIdent = kjonn == null || (!"K".equals(kjonn) && !"M".equals(kjonn)) ? lagTilfeldigKvinneEllerMann() : kjonn;
+        String kjoennPaaIdent = isKvinne(kjonn) || isMann(kjonn) ? kjonn : lagTilfeldigKvinneEllerMann();
+        int individnummer = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt);
 
-        if (erKvinne(kjoennPaaIdent)) {         //KVINNE: Individnummer avsluttes med partall
-            individNummber = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt);
-            if (individNummber % 2 > 0) {
-                individNummber = individNummber + 1;
-            }
-        } else {                                  // MANN: Individnummer avsluttes med oddetall
-            individNummber = BiasedRandom.lagBunntungRandom(rangeStart, rangeSlutt);
-            if (individNummber % 2 == 0) {
-                individNummber = individNummber + 1;
-            }
-        }
-        if (individNummber > rangeSlutt) {
-            individNummber = individNummber - 2;
+        //Kvinne har partall og mann har oddetall
+        if (isKvinne(kjoennPaaIdent) && isOdd(individnummer) || isMann(kjoennPaaIdent) && isEven(individnummer)) {
+            individnummer += 1;
         }
 
-        StringBuilder individNummerBuilder = new StringBuilder(Integer.toString(individNummber));
-        individNummerBuilder.reverse();
-        if (individNummber < 10) {
-            individNummerBuilder.append(0);
+        if (individnummer > rangeSlutt) {
+            individnummer -= 2;
         }
-        if (individNummber < 100) {
-            individNummerBuilder.append(0);
-        }
-        return individNummerBuilder.reverse().toString();
-    }
 
-    private int hentForsteKontrollSiffer(String fnrCharacters) {
-        return getKontrollSiffer(fnrCharacters, KONTROLL_SIFFER_C1);
-    }
-
-    private int getAndreKontrollSiffer(String fnrCharacters) {
-        return getKontrollSiffer(fnrCharacters, KONTROLL_SIFFER_C2);
+        return format("%03d", individnummer);
     }
 
     /**
@@ -182,29 +162,37 @@ public class FiktiveIdenterGenerator {
      * kontrollsiffer-2 = 11 - ((5*d + 4*d + 3*m + 2*m + 7*å + 6* å + 5*i + 4*i + 3*i + 2 *k1)  mod 11)
      * </pre>
      *
-     * @param fnrCharacters:              Fodselsnummer
+     * @param datoMedIndvid:              Fodselsnummer
      * @param formelMultiplierSifferListe Array med tallene som skal multipliseres med fodselsnummer i kontrollsifferformelen
      * @return Kontrollsiffer
      */
-    private int getKontrollSiffer(String fnrCharacters, int... formelMultiplierSifferListe) {
-        int kontrollSiffer;
-        int kontrollSifferFormelSum = 0;
+    private int genererKontrollsiffer(StringBuilder datoMedIndvid, int... formelMultiplierSifferListe) {
+        int kontrollsiffer = 0;
+
         for (int i = 0; i < formelMultiplierSifferListe.length; i++) {
-            int multiplierSiffer = formelMultiplierSifferListe[i];
-            int fodselsnummerChar = Character.getNumericValue(fnrCharacters.charAt(i));
-            kontrollSifferFormelSum = kontrollSifferFormelSum + (multiplierSiffer * fodselsnummerChar);
+            kontrollsiffer += getNumericValue(datoMedIndvid.charAt(i)) * formelMultiplierSifferListe[i];
         }
-        kontrollSiffer = 11 - (kontrollSifferFormelSum % 11);
-        kontrollSiffer = kontrollSiffer == 11 ? 0 : kontrollSiffer;
-        return kontrollSiffer;
+        return (11 - (kontrollsiffer % 11)) % 11;
     }
 
     private boolean isInYearRange(LocalDateTime date, int rangeYearStart, int rangeYearEnd) {
         return (date.getYear() >= rangeYearStart && date.getYear() <= rangeYearEnd);
     }
 
-    private boolean erKvinne(String kjonn) {
+    private boolean isKvinne(String kjonn) {
         return "K".equals(kjonn);
+    }
+
+    private boolean isMann(String kjonn) {
+        return "M".equals(kjonn);
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
+    }
+
+    private boolean isOdd(int number) {
+        return number % 2 != 0;
     }
 
     private String lagTilfeldigKvinneEllerMann() {
