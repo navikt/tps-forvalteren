@@ -25,11 +25,17 @@ public class SendSkdMeldingerOgLeggTilResponslisteServiceTest {
     
     @InjectMocks
     private SendSkdMeldingerOgLeggTilResponslisteService sendToTps;
-    
+
+    /**
+     * Når skdmelding-request feiler i TPS, skal feilmeldingene fra TPS returneres fra service-metoden sendSkdMeldingAndAddResponseToList.
+     * Dersom TPS responderer med status OK (TPS returnerer da en string som begynner på 00),
+     * så ble skdmeldingene lagret vellykket i TPS. TPSF skal ikke returnere status på vellykkede.
+     */
     @Test
     public void shouldReportFailedSkdMessages() {
         String feilmelding = "Feilmelding: skdmeldingen feilet";
-        when(SendEnSkdMelding.sendSkdMelding(any(), any(), any())).thenReturn("00");
+        String svarstatus_OK = "00;"; //Må starte med 00
+        when(SendEnSkdMelding.sendSkdMelding(any(), any(), any())).thenReturn(svarstatus_OK);
         when(SendEnSkdMelding.sendSkdMelding(eq(skdmeldingen), any(), eq(miljoe))).thenReturn(feilmelding);
         
         AvspillingResponse response = new AvspillingResponse();
