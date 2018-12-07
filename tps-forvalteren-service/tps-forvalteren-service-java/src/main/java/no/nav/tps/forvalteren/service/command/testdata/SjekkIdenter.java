@@ -11,7 +11,6 @@ import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 
 @Service
@@ -24,10 +23,7 @@ public class SjekkIdenter {
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
 
     @Autowired
-    private GetEnvironments getEnvironmentsCommand;
-
-    @Autowired
-    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
+    private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
 
     private static final String IKKE_GYLDIG = "IG";
     private static final String IKKE_LEDIG = "IL";
@@ -55,7 +51,7 @@ public class SjekkIdenter {
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
         // Environment q0 only verified for existence
         Set<String> environments = Sets.newHashSet("q0");
-        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(gyldigeIdenter, environments);
+        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(gyldigeIdenter, environments);
 
         Set<String> ledigeIdenterDBOgMiljo = new HashSet<>();
         ledigeIdenterDBOgMiljo.addAll(ledigeIdenterMiljo);

@@ -93,7 +93,7 @@ public class TestdataIdenterFetcher {
                     counter++;
                 }
                 if (counter == MAX_TRIES) {
-                    HttpCantSatisfyRequestException exception = new HttpCantSatisfyRequestException(messageProvider.get("rest.service.request.exception.Unsatisfied"), "api/v1/testdata/");
+                    HttpCantSatisfyRequestException exception = new HttpCantSatisfyRequestException("Feilet å finne ledige fødselsnummer i miljø", "api/v1/testdata/");
                     LOGGER.error(exception.getMessage(), exception);
                     throw exception;
                 }

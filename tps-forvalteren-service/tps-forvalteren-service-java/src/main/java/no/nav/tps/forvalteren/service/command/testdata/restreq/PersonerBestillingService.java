@@ -39,7 +39,7 @@ public class PersonerBestillingService {
     private ExtractOpprettKriterier extractOpprettKriterier;
 
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
-        RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.execute(personKriteriumRequest);
+        RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.extractMainPerson(personKriteriumRequest);
         RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
         RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 

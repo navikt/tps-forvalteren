@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,7 +33,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
     private Set<String> environments = new HashSet<>();
 
     @Mock
-    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljoMock;
+    private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljoMock;
 
     @Mock
     private GetEnvironments getEnvironmentsCommand;
@@ -64,11 +64,11 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         ArgumentCaptor<Set> arg = ArgumentCaptor.forClass(Set.class);
 
-        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(new HashSet<>());
+        when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(new HashSet<>());
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProduliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
 
-        verify(filtrerPaaIdenterTilgjengeligeIMiljoMock).filtrer(arg.capture(), any());
+        verify(filtrerPaaIdenterTilgjengeligIMiljoMock).filtrer(arg.capture(), any());
 
         Set<String> identerSet = arg.getValue();
 
@@ -85,7 +85,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         identerTilgjenglig.add(dummyIdent1);
         identerTilgjenglig.add(dummyIdent3);
 
-        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
+        when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProduliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
 
@@ -105,7 +105,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         identerTilgjenglig.add(dummyIdent2);
         identerTilgjenglig.add(dummyIdent3);
 
-        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
+        when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProduliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
 
@@ -122,7 +122,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         Set<String> identerTilgjenglig = new HashSet<>();
 
-        when(filtrerPaaIdenterTilgjengeligeIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
+        when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
         filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProduliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
 

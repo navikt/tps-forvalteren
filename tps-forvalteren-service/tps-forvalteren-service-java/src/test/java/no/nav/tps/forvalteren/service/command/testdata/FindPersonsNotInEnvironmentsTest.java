@@ -34,7 +34,7 @@ public class FindPersonsNotInEnvironmentsTest {
     private FindGruppeById findGruppeById;
 
     @Mock
-    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
+    private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
 
     private final Long GRUPPE_ID = 1337L;
     private Gruppe gruppe = GruppeProvider.aGruppe().id(GRUPPE_ID).build();
@@ -55,7 +55,7 @@ public class FindPersonsNotInEnvironmentsTest {
         identerSomIkkeFinnesiTPSiMiljoe.add(person.getIdent());
         identerSomIkkeFinnesiTPSiMiljoe.add(person2.getIdent());
 
-        when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
+        when(filtrerPaaIdenterTilgjengeligIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
 
         List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
 
@@ -66,7 +66,7 @@ public class FindPersonsNotInEnvironmentsTest {
     @Test
     public void allPersonsAreInEnvironments() {
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = new HashSet<>();
-        when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
+        when(filtrerPaaIdenterTilgjengeligIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
 
         List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
         assertThat(result, hasSize(0));
@@ -76,7 +76,7 @@ public class FindPersonsNotInEnvironmentsTest {
     public void onePersonIsNotInEnvironment() {
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = new HashSet<>();
         identerSomIkkeFinnesiTPSiMiljoe.add(person.getIdent());
-        when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
+        when(filtrerPaaIdenterTilgjengeligIMiljo.filtrer(personIdenter, new HashSet<>(environments))).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
 
         List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
         assertThat(result, hasSize(1));
