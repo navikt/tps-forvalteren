@@ -115,7 +115,14 @@ public class FiktiveIdenterGeneratorTest {
         testpersonKriterier.setFoedtEtter(dateEtter);
 
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
-        assertThat(fnrList.size(), is(equalTo(80)));
+        assertThat(fnrList.size(), is(equalTo(120)));
+        for (String fnr : fnrList) {
+            assertThat(fnr.length(), is(equalTo(11)));
+        }
+
+        testpersonKriterier.setAntall(5);
+        fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
+        assertThat(fnrList.size(), is(equalTo(10)));
         for (String fnr : fnrList) {
             assertThat(fnr.length(), is(equalTo(11)));
         }
