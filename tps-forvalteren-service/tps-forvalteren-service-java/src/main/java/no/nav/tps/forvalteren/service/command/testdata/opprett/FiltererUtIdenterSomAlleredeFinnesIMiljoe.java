@@ -19,7 +19,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     @Autowired
     private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
 
-    public void executeMotProduliktMiljoe(List<TestdataRequest> testdataRequests) {
+    public void executeMotProdliktMiljoe(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         // Environment q0 only verified for existence

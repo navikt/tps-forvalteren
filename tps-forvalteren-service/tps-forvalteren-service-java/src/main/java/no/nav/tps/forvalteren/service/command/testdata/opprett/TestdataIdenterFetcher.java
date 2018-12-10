@@ -18,7 +18,16 @@ public class TestdataIdenterFetcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestdataIdenterFetcher.class);
 
     @Autowired
-    private TestdataService testdataService;
+    private FiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtIdenterSomAlleredeFinnesIMiljoe;
+
+    @Autowired
+    private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
+
+    @Autowired
+    private TaBortOverfloedigIdenterITestdataRequest taBortOverfloedigIdenterITestdataRequest;
+
+    @Autowired
+    private GenererIdenterForTestdataRequests genererIdenterForTestdataRequests;
 
     @Autowired
     private MessageProvider messageProvider;
@@ -43,22 +52,12 @@ public class TestdataIdenterFetcher {
         return testdataRequests;
     }
 
-    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenterAlleMiljoer(RsPersonKriteriumRequest personKriterierListe) {
-        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
-
-        if (!erAlleKriteriaOppfylt(testdataRequests)) {
-            oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, true, null);
-        }
-
-        return testdataRequests;
-    }
-
     private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe){
-        List<TestdataRequest> testdataRequests = testdataService.genererIdenterForTestdataRequests(personKriterierListe);
+        List<TestdataRequest> testdataRequests = genererIdenterForTestdataRequests.execute(personKriterierListe);
 
-        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(testdataRequests, null);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests, null);
 
-        testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequests);
+        filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
 
         taBortOverflodigeIdenterFraTestRequests(testdataRequests);
 
@@ -74,19 +73,19 @@ public class TestdataIdenterFetcher {
                     singelKriterieListe.setPersonKriterierListe(new ArrayList<>());
                     singelKriterieListe.getPersonKriterierListe().add(request.getKriterium());
 
-                    List<TestdataRequest> testdataRequestSingelList = testdataService.genererIdenterForTestdataRequests(singelKriterieListe);
+                    List<TestdataRequest> testdataRequestSingleList = genererIdenterForTestdataRequests.execute(singelKriterieListe);
 
                     if(alleMiljoer){
-                        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequestAlleMiljoer(testdataRequestSingelList, miljoer);
+                        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequestSingleList, miljoer);
                     } else {
-                        testdataService.filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest(testdataRequestSingelList);
+                        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotProdliktMiljoe(testdataRequestSingleList);
                     }
 
-                    testdataService.filtrerPaaIdenterSomIkkeFinnesIDB(testdataRequestSingelList);
+                    filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequestSingleList);
 
-                    taBortOverflodigeIdenterFraTestRequests(testdataRequestSingelList);
+                    taBortOverflodigeIdenterFraTestRequests(testdataRequestSingleList);
 
-                    request.getIdenterTilgjengligIMiljoe().addAll(testdataRequestSingelList.get(0).getIdenterTilgjengligIMiljoe());
+                    request.getIdenterTilgjengligIMiljoe().addAll(testdataRequestSingleList.get(0).getIdenterTilgjengligIMiljoe());
 
                     taBortOverflodigeIdenterFraTestRequest(request);
 
@@ -102,16 +101,16 @@ public class TestdataIdenterFetcher {
     }
 
     private void taBortOverflodigeIdenterFraTestRequest(TestdataRequest request) {
-        testdataService.taBortOverfloedigIdenterITestdataRequest(request);
+        taBortOverfloedigIdenterITestdataRequest.execute(request);
     }
 
     private void taBortOverflodigeIdenterFraTestRequests(List<TestdataRequest> requests) {
         for (TestdataRequest request : requests) {
-            testdataService.taBortOverfloedigIdenterITestdataRequest(request);
+            taBortOverfloedigIdenterITestdataRequest.execute(request);
         }
     }
 
-    private boolean erAlleKriteriaOppfylt(List<TestdataRequest> testdataRequests) {
+    private static boolean erAlleKriteriaOppfylt(List<TestdataRequest> testdataRequests) {
         for (TestdataRequest request : testdataRequests) {
             if (!harNokIdenterForKritereIRequest(request)) {
                 return false;
@@ -120,8 +119,7 @@ public class TestdataIdenterFetcher {
         return true;
     }
 
-    private boolean harNokIdenterForKritereIRequest(TestdataRequest request) {
+    private static boolean harNokIdenterForKritereIRequest(TestdataRequest request) {
         return request.getIdenterTilgjengligIMiljoe().size() >= request.getKriterium().getAntall();
     }
-
 }
