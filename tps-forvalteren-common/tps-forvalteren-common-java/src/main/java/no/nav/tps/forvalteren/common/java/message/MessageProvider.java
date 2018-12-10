@@ -41,7 +41,7 @@ public class MessageProvider {
             String[] messageKeyAsArray = { messageKey };
             LOGGER.warn(messageSource.getMessage(UNKNOWN_MESSAGE_KEY, messageKeyAsArray, locale));
         } catch (NoSuchMessageException exception) {
-            LOGGER.error("Unable find the standard message, '{}', in messages_nb_NO.properties", UNKNOWN_MESSAGE_KEY);
+            LOGGER.error("Unable find the standard message, '{}', in messages.properties", UNKNOWN_MESSAGE_KEY);
         }
     }
 

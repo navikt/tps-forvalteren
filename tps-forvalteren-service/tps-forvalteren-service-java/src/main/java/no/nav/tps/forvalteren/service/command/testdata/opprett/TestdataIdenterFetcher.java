@@ -33,7 +33,7 @@ public class TestdataIdenterFetcher {
     private MessageProvider messageProvider;
 
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenter(RsPersonKriteriumRequest personKriterierListe) {
-        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
+        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe, null);
 
         if (!erAlleKriteriaOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, false, null);
@@ -43,7 +43,7 @@ public class TestdataIdenterFetcher {
     }
 
     public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenterFlereMiljoer(RsPersonKriteriumRequest personKriterierListe, List<String> miljoer) {
-        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe);
+        List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe, miljoer);
 
         if (!erAlleKriteriaOppfylt(testdataRequests)) {
             oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(testdataRequests, true, miljoer);
@@ -52,10 +52,10 @@ public class TestdataIdenterFetcher {
         return testdataRequests;
     }
 
-    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe){
+    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe, List<String> environments){
         List<TestdataRequest> testdataRequests = genererIdenterForTestdataRequests.execute(personKriterierListe);
 
-        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests, null);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests, environments);
 
         filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
 
@@ -92,7 +92,7 @@ public class TestdataIdenterFetcher {
                     counter++;
                 }
                 if (counter == MAX_TRIES) {
-                    HttpCantSatisfyRequestException exception = new HttpCantSatisfyRequestException("Feilet å finne ledige fødselsnummer i miljø", "api/v1/testdata/");
+                    HttpCantSatisfyRequestException exception = new HttpCantSatisfyRequestException(messageProvider.get("rest.service.request.exception.Unsatisfied"), "api/v1/testdata/");
                     LOGGER.error(exception.getMessage(), exception);
                     throw exception;
                 }
