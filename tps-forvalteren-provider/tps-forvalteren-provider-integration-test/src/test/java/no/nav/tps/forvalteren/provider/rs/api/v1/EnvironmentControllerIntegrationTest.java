@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,11 +24,6 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
     private EnvironmentController environmentController;
 
     @Test
-    public void test() {
-
-    }
-
-    @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void getsEnvironments() throws Exception {
 
@@ -36,11 +31,7 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
         mvc.perform(get("/api/v1/environments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.environments", hasSize(25)))
-                .andExpect(jsonPath("$.environments", containsInAnyOrder(
-                        "u5", "u6", "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t10", "t13",
-                        "q11", "q10", "q8", "q7", "q6", "q5", "q4", "q3", "q2", "q1", "q0", "qx"
-                )))
+                .andExpect(jsonPath("$.environments", hasSize(greaterThanOrEqualTo(8))))
                 .andExpect(jsonPath("$.productionMode", is(false)));
     }
 }
