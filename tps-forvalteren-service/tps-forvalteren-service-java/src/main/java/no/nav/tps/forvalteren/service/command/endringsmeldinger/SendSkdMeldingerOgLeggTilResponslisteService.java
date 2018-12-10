@@ -11,13 +11,15 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding
 @Service
 public class SendSkdMeldingerOgLeggTilResponslisteService {
 
+    private static final String STATUS_OK = "00";
+
     @Autowired
     private SendEnSkdMelding sendEnSkdMelding;
 
     public void sendSkdMeldingAndAddResponseToList(AvspillingResponse avspillingResponse, String skdmelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
         String status = sendEnSkdMelding.sendSkdMelding(skdmelding, skdRequestMeldingDefinition, env);
         avspillingResponse.incrementAntallSendte();
-        if (!"00".equals(status)) {
+        if (status == null || !STATUS_OK.equals(status.substring(0, 2))) {
             rapporterFeiletMelding(status, avspillingResponse);
         }
     }
