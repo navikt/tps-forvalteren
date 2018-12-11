@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
-import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligeIMiljo;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 @Service
@@ -17,21 +17,21 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     private GetEnvironments getEnvironmentsCommand;
 
     @Autowired
-    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
+    private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
 
-    public void executeMotProduliktMiljoe(List<TestdataRequest> testdataRequests) {
+    public void executeMotProdliktMiljoe(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         // Environment q0 only verified for existence
         Set<String> environments = Sets.newHashSet("q0");
-        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter, environments);
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 
     public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests, List<String> miljoer) {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
-        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(alleGenererteIdenter,
+        Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter,
                 miljoer != null ? Sets.newHashSet(miljoer) : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }

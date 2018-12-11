@@ -27,11 +27,11 @@ public class ExtractOpprettKriterier {
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
 
-    public RsPersonKriteriumRequest execute(RsPersonBestillingKriteriumRequest req) {
+    public RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(singletonList(RsPersonKriterier.builder()
-                        .antall(req.getAntall())
+                        .antall(req.getAntall() > 0 ? req.getAntall() : 1)
                         .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
                         .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
                         .foedtEtter(req.getFoedtEtter())

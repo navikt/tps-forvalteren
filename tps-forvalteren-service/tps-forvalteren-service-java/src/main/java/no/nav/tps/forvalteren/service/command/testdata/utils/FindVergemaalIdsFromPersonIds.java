@@ -2,13 +2,13 @@ package no.nav.tps.forvalteren.service.command.testdata.utils;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class FindVergemaalIdsFromPersonIds {
@@ -26,12 +26,9 @@ public class FindVergemaalIdsFromPersonIds {
                 .collect(Collectors.toList());
 
         List<Vergemaal> vergemaalListe = vergemaalRepository.findAllByIdentIn(listeFnr);
-        List<Long> listeVergemaal = vergemaalListe.stream()
+        return vergemaalListe.stream()
                 .map(vergemaal -> vergemaal.getId())
                 .distinct()
                 .collect(Collectors.toList());
-
-        return listeVergemaal;
     }
-
 }
