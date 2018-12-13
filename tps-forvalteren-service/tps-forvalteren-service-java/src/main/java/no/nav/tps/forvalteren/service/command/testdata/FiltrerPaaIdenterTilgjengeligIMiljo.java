@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusIkkeFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
+import static org.assertj.core.util.Sets.newHashSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +19,6 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
@@ -26,9 +26,9 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Slf4j
 @Service
-public class FiltrerPaaIdenterTilgjengeligeIMiljo {
+public class FiltrerPaaIdenterTilgjengeligIMiljo {
     
-    private static final int MAX_ANTALL_IDENTER_TIL_REQUEST_M201 = 80;
+    public static final int MAX_ANTALL_IDENTER_PER_REQUEST = 80; // Service routine M201 maximum
     
     private static final String TPS_SYSTEM_ERROR_CODE = "12";
     
@@ -41,11 +41,8 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
     
-    @Autowired
-    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
-    
     public Set<String> filtrer(Collection<String> identer, Set<String> environments) {
-        if (identer.size() <= MAX_ANTALL_IDENTER_TIL_REQUEST_M201) {
+        if (identer.size() <= MAX_ANTALL_IDENTER_PER_REQUEST) {
             return filtrerPaaIdenter(identer, environments);
             
         } else {
@@ -54,19 +51,19 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
             int batchStart = 0;
             while (batchStart < identer.size()) {
                 tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe, environments));
-                batchStart = batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201;
+                batchStart = batchStart + MAX_ANTALL_IDENTER_PER_REQUEST;
             }
             return tilgjengeligeIdenter;
         }
     }
     
     private Set<String> hentEnBatchTilgjengeligeIdenter(int batchStart, List<String> identer, Set<String> environments) {
-        int batchStop = (identer.size() <= batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201)
-                ? identer.size() : (batchStart + MAX_ANTALL_IDENTER_TIL_REQUEST_M201);
-        
+        int batchStop = (identer.size() <= batchStart + MAX_ANTALL_IDENTER_PER_REQUEST)
+                ? identer.size() : (batchStart + MAX_ANTALL_IDENTER_PER_REQUEST);
+
         return filtrerPaaIdenter(identer.subList(batchStart, batchStop), environments);
     }
-    
+
     private Set<String> filtrerPaaIdenter(Collection<String> identer, Set<String> environments) {
         
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
@@ -74,19 +71,9 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
         
-        return hentIdenterSomErTilgjengeligeIAlleMiljoer(tpsRequestParameters, context, environments);
-    }
-    
-    private Set<String> hentIdenterSomErTilgjengeligeIAlleMiljoer(Map<String, Object> tpsRequestParameters, TpsRequestContext context, Set<String> environments) {
-        Set<String> tilgjengeligeIdenterAlleMiljoer = new HashSet<>((Collection<String>) tpsRequestParameters.get("fnr"));
+        Set<String> tilgjengeligeIdenterAlleMiljoer = newHashSet((Collection<String>) tpsRequestParameters.get("fnr"));
         
-        filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(tilgjengeligeIdenterAlleMiljoer, environments, tpsRequestParameters, context);
-        
-        return tilgjengeligeIdenterAlleMiljoer;
-    }
-    
-    private void filtrerOgTaVarePaaIdenterTilgjengeligIMiljoer(Set<String> tilgjengligIdenter, Set<String> miljoerAaSjekke, Map<String, Object> tpsRequestParameters, TpsRequestContext context) {
-        for (String miljoe : miljoerAaSjekke) {
+        for (String miljoe : environments) {
             context.setEnvironment(miljoe);
             
             TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
@@ -96,9 +83,14 @@ public class FiltrerPaaIdenterTilgjengeligeIMiljo {
             checkForTpsSystemfeil(tpsResponse, miljoe);
             
             Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse);
-            
-            tilgjengligIdenter.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
+
+            tilgjengeligeIdenterAlleMiljoer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
+            if (tilgjengeligeIdenterAlleMiljoer.isEmpty()) {
+                log.info("Ledige identer ikke funnet i {}", miljoe);
+                break;
+            }
         }
+        return tilgjengeligeIdenterAlleMiljoer;
     }
     
     private void checkForTpsSystemfeil(TpsServiceRoutineResponse response, String miljoe) {

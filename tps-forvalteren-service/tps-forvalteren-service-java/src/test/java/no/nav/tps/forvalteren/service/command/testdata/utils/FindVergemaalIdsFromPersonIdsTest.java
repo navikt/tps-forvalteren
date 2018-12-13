@@ -1,24 +1,25 @@
 package no.nav.tps.forvalteren.service.command.testdata.utils;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyListOf;
-import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindVergemaalIdsFromPersonIdsTest {
@@ -38,12 +39,12 @@ public class FindVergemaalIdsFromPersonIdsTest {
     @InjectMocks
     private FindVergemaalIdsFromPersonIds findVergemaalIdsFromPersonIds;
 
+    private static final String ident = "01234512345";
+    private static final Long id = 0000001L;
+
     private List<Long> listeMedId;
     private List<Person> listeMedPersoner;
     private List<Vergemaal> listeMedVergemaal;
-
-    private String ident = "01234512345";
-    private Long id = 0000001L;
 
     @Before
     public void setup() {

@@ -3,9 +3,9 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
@@ -13,11 +13,11 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 public class FindPersonsNotInEnvironments {
 
     @Autowired
-    private FiltrerPaaIdenterTilgjengeligeIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
+    private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
 
     public List<Person> execute(List<Person> personerIGruppen, Set<String> environments) {
-        List<String> identer = ekstraherIdenterFraPersoner(personerIGruppen);
-        Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(identer, environments);
+        List<String> identer = personerIGruppen.stream().map(ident -> ident.getIdent()).collect(Collectors.toList());
+        Set<String> identerSomIkkeFinnesiTPSiMiljoe = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(identer, environments);
 
         return personerSomIkkeFinnesIMiljoe(identerSomIkkeFinnesiTPSiMiljoe, personerIGruppen);
     }
@@ -30,15 +30,5 @@ public class FindPersonsNotInEnvironments {
             }
         }
         return personerSomIkkeAlleredeFinnesIMiljoe;
-    }
-
-    private List<String> ekstraherIdenterFraPersoner(List<Person> personer) {
-
-        List<String> identer = Lists.newArrayListWithExpectedSize(personer.size());
-
-        for (Person person : personer) {
-            identer.add(person.getIdent());
-        }
-        return identer;
     }
 }
