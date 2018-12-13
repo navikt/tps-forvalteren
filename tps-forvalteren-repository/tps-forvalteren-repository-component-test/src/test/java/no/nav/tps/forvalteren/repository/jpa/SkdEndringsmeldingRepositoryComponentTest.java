@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.repository.jpa;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingProvider.aSkdEndringsmelding;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -89,5 +90,23 @@ public class SkdEndringsmeldingRepositoryComponentTest {
 
         assertThat(result, hasSize(3));
         assertThat(result, hasItems(storedSkdEndringsmelding1, storedSkdEndringsmelding2, storedSkdEndringsmelding3));
+    }
+
+    @Test
+    @Rollback
+    public void happypathTest_findFoedselsnummerByAarsakskodeInAndTransaksjonstypeAndGruppe() {
+        SkdEndringsmelding storedSkdEndringsmelding1_shouldNotBeFound1 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).aarsakskode("91").build());
+        String foedselsnummer2 = "22222222222";
+        String foedselsnummer3 = "33333333333";
+        testRepository.save(aSkdEndringsmelding()
+                .aarsakskode("02").foedselsnummer(foedselsnummer2).gruppe(gruppe).build());
+        testRepository.save(aSkdEndringsmelding()
+                .aarsakskode("01").foedselsnummer(foedselsnummer3).gruppe(gruppe).build());
+
+        List<String> resultFoedselsnumre = repository.findFoedselsnummerBy(Arrays.asList("01", "02"), "1", gruppe);
+
+        assertThat(resultFoedselsnumre, hasSize(2));
+        assertThat(resultFoedselsnumre, hasItems(foedselsnummer2, foedselsnummer3));
+        assertThat(resultFoedselsnumre, not(hasItems(storedSkdEndringsmelding1_shouldNotBeFound1.getFoedselsnummer()))); //Skal ikke hente fnr fra en annen gruppe
     }
 }

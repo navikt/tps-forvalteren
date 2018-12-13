@@ -9,6 +9,9 @@ public class SkdEndringsmeldingProvider {
     public static SkdEndringsmelding.SkdEndringsmeldingBuilder aSkdEndringsmelding() {
         return SkdEndringsmelding.builder()
                 .endringsmelding("Melding")
+                .foedselsnummer("11111111111")
+                .aarsakskode("01")
+                .transaksjonstype("1")
                 .gruppe(aSkdEndringsmeldingGruppe().build());
     }
 
