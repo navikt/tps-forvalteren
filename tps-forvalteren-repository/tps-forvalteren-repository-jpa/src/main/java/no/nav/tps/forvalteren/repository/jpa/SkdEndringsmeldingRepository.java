@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +19,7 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     void deleteByIdIn(List<Long> ids);
 
-    List<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe);
+    Page<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe, Pageable pageable);
 
     void deleteAll();
 

@@ -5,10 +5,14 @@ import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataCons
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Lists;
 
+import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
@@ -16,11 +20,18 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 @Service
 public class SkdEndringsmeldingService {
 
+    public static int ANTALL_MELDINGER_PER_PAGE = 10;
+
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
 
     @Autowired
     private SkdEndringsmeldingGruppeRepository gruppeRepository;
+
+    public List<SkdEndringsmelding> findSkdEndringsmeldingerOnPage(Long gruppeId, int pageNumber) {
+        SkdEndringsmeldingGruppe gruppe = gruppeRepository.findById(gruppeId);
+        return skdEndringsmeldingRepository.findAllByGruppe(gruppe, new PageRequest(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
+    }
 
     public Set<String> filtrerIdenterPaaAarsakskodeOgTransaksjonstype(Long gruppeId, List<String> aarsakskoder, String transaksjonstype) {
         SkdEndringsmeldingGruppe gruppe = gruppeRepository.findById(gruppeId);

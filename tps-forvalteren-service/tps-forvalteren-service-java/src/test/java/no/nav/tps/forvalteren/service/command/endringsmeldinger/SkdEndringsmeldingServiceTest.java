@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,12 +11,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
 
+import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
@@ -40,6 +44,33 @@ public class SkdEndringsmeldingServiceTest {
     }
 
     @Test
+    public void shouldFindSkdEndringsmeldingOnPage() {
+        long gruppeId = 123L;
+        Long meldingsId1 = 1234L;
+        Long meldingsId2 = 2468L;
+
+        SkdEndringsmeldingGruppe gruppe = SkdEndringsmeldingGruppe.builder().id(gruppeId).build();
+
+        List<SkdEndringsmelding> skdEndringsmeldinger = Arrays.asList(
+                SkdEndringsmelding.builder().id(meldingsId1).build(),
+                SkdEndringsmelding.builder().id(meldingsId2).build());
+
+        PageImpl<SkdEndringsmelding> page = new PageImpl<>(skdEndringsmeldinger);
+
+        when(gruppeRepository.findById(gruppeId)).thenReturn(gruppe);
+        when(skdEndringsmeldingRepository
+                .findAllByGruppe(eq(gruppe), any())).thenReturn(page);
+
+        List<SkdEndringsmelding> endringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, 0);
+
+        verify(gruppeRepository).findById(gruppeId);
+        verify(skdEndringsmeldingRepository).findAllByGruppe(eq(gruppe), any());
+        assertEquals(2, endringsmeldinger.size());
+        assertEquals(meldingsId1, endringsmeldinger.get(0).getId());
+        assertEquals(meldingsId2, endringsmeldinger.get(1).getId());
+    }
+
+    @Test
     public void shouldReturnereskdmeldingsIdenterMedAngittAarsakskodeOgTransaksjonskode() {
         long gruppeId = 123L;
         List<String> aarsakskoder = Arrays.asList("01", "02");
@@ -50,8 +81,7 @@ public class SkdEndringsmeldingServiceTest {
         SkdEndringsmeldingGruppe gruppe = SkdEndringsmeldingGruppe.builder().id(gruppeId).build();
         when(gruppeRepository.findById(gruppeId)).thenReturn(gruppe);
         when(skdEndringsmeldingRepository
-                .findFoedselsnummerBy(eq(aarsakskoder), eq(transaksjonstype), eq(gruppe))
-        ).thenReturn(Arrays.asList(expectedFoedselsnummer));
+                .findFoedselsnummerBy(eq(aarsakskoder), eq(transaksjonstype), eq(gruppe))).thenReturn(Arrays.asList(expectedFoedselsnummer));
 
         final Set<String> actualFoedselsnumre = skdEndringsmeldingService.filtrerIdenterPaaAarsakskodeOgTransaksjonstype(gruppeId, aarsakskoder, transaksjonstype);
 
