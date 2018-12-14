@@ -93,11 +93,9 @@ public class ExtractOpprettKriterier {
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriterier.getStatsborgerskapRegdato(), person.getStatsborgerskapRegdato()));
         person.setSprakKode(nullcheckSetDefaultValue(kriterier.getSprakKode(), person.getSprakKode()));
         person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
-        person.setSpesreg(nullcheckSetDefaultValue(kriterier.getSpesreg(), person.getSpesreg()));
-        person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), person.getSpesregDato()));
-        if (person.getSpesreg() != null && person.getSpesregDato() == null) {
-            person.setSpesregDato(hentDatoFraIdentService.extract(person.getIdent()));
-        }
+        person.setSpesreg(nullcheckSetDefaultValue(kriterier.getSpesreg(), null));
+        person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), null));
+
         return person;
     }
 }
