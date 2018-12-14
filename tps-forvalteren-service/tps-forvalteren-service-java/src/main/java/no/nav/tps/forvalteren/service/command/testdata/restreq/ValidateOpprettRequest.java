@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 @Component
 public class ValidateOpprettRequest {
 
-    private static final LocalDateTime LOWER_BOUND = LocalDateTime.of(1900, 01, 01, 00, 00, 00);
+    private static final LocalDateTime LOWER_BOUND = LocalDateTime.of(1900, 1, 1, 0, 0, 0);
     private static final LocalDateTime UPPER_BOUND = LocalDateTime.of(2039, 12, 31, 23, 59, 59);
 
     @Autowired
