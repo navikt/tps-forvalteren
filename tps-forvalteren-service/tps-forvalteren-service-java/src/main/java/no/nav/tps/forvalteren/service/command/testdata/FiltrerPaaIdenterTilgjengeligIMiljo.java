@@ -27,9 +27,9 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 @Slf4j
 @Service
 public class FiltrerPaaIdenterTilgjengeligIMiljo {
-    
+
     public static final int MAX_ANTALL_IDENTER_PER_REQUEST = 80; // Service routine M201 maximum
-    
+    private static final String PRODLIKE_ENV = "q0";
     private static final String TPS_SYSTEM_ERROR_CODE = "12";
     
     @Autowired
@@ -42,6 +42,8 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
     private RsTpsRequestMappingUtils mappingUtils;
     
     public Set<String> filtrer(Collection<String> identer, Set<String> environments) {
+
+        environments.add(PRODLIKE_ENV);
         if (identer.size() <= MAX_ANTALL_IDENTER_PER_REQUEST) {
             return filtrerPaaIdenter(identer, environments);
             
@@ -51,7 +53,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
             int batchStart = 0;
             while (batchStart < identer.size()) {
                 tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe, environments));
-                batchStart = batchStart + MAX_ANTALL_IDENTER_PER_REQUEST;
+                batchStart+= MAX_ANTALL_IDENTER_PER_REQUEST;
             }
             return tilgjengeligeIdenter;
         }

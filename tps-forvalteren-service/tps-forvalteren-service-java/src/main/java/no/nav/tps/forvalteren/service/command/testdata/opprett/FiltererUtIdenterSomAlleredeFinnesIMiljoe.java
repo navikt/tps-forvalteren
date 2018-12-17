@@ -13,6 +13,8 @@ import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 @Service
 public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
 
+    private static final String PRODLIKE_ENV = "q0";
+
     @Autowired
     private GetEnvironments getEnvironmentsCommand;
 
@@ -22,8 +24,8 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
     public void executeMotProdliktMiljoe(List<TestdataRequest> testdataRequests) {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
-        // Environment q0 only verified for existence
-        Set<String> environments = Sets.newHashSet("q0");
+        // Environment PRODLIKE only verified for existence
+        Set<String> environments = Sets.newHashSet(PRODLIKE_ENV);
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
