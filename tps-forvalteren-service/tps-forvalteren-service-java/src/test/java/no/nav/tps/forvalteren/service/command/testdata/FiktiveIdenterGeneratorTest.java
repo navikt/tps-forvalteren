@@ -3,15 +3,12 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,25 +34,6 @@ public class FiktiveIdenterGeneratorTest {
     public void setup() {
         testpersonKriterier = new RsPersonKriterier();
         testpersonKriterier.setAntall(60);
-    }
-
-    @Test
-    public void personerFodtIPerioden1854til1899skalHaNummerIIntervall500til749OgDatoInnenforRiktigIntervall() {
-
-        testpersonKriterier.setIdenttype(FNR);
-        testpersonKriterier.setKjonn("M");
-        LocalDateTime dateFoer = LocalDate.of(1900, Month.JANUARY, 1).atStartOfDay();
-        LocalDateTime dateEtter = LocalDate.of(1854, Month.MAY, 15).atStartOfDay();
-
-        testpersonKriterier.setFoedtFoer(dateFoer);
-        testpersonKriterier.setFoedtEtter(dateEtter);
-        Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
-        for (String fnr : fnrList) {
-            int individNummer = Integer.parseInt(fnr.substring(6, 9));
-            assertTrue(individNummer >= 500 && individNummer <= 749);
-            assertThat(fnr.substring(0, 6), is(lessThan(dateEtter.format(DateTimeFormatter.ofPattern("uuMMdd")))));
-            assertThat(fnr.substring(0, 6), is(greaterThan(dateFoer.format(DateTimeFormatter.ofPattern("uuMMdd")))));
-        }
     }
 
     @Test

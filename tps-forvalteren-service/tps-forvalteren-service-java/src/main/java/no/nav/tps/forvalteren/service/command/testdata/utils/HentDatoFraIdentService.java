@@ -6,9 +6,8 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 /**
- * INDIVID(POS 7-9) 500-749 OG ÅR > 54 => ÅRHUNDRE = 1800
+ * Simplified unambiguous interpretation
  * INDIVID(POS 7-9) 000-499            => ÅRHUNDRE = 1900
- * INDIVID(POS 7-9) 900-999 OG ÅR > 39 => ÅRHUNDRE = 1900
  * INDIVID(POS 7-9) 500-999 OG ÅR < 40 => ÅRHUNDRE = 2000
  */
 @Service
@@ -19,17 +18,8 @@ public class HentDatoFraIdentService {
         int year = parseInt(ident.substring(4, 6));
         int individ = parseInt(ident.substring(6, 9));
 
-        // Find century
-        int century;
-        if (individ < 500 || (individ >= 900 && year > 39)) {
-            century = 1900;
-        } else if (individ >= 500 && year < 40) {
-            century = 2000;
-        } else if (individ >= 500 && individ < 750 && year > 54) {
-            century = 1800;
-        } else {
-            century = 2000;
-        }
+        // Determine century
+        int century = individ < 500 ? 1900 : 2000;
 
         return LocalDateTime.of(century + year, getMonth(ident), getDay(ident), 0, 0);
     }

@@ -38,7 +38,11 @@ public class PersonerBestillingService {
     @Autowired
     private ExtractOpprettKriterier extractOpprettKriterier;
 
+    @Autowired
+    private ValidateOpprettRequest validateOpprettRequest;
+
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
+        validateOpprettRequest.validate(personKriteriumRequest);
         RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.extractMainPerson(personKriteriumRequest);
         RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
         RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
