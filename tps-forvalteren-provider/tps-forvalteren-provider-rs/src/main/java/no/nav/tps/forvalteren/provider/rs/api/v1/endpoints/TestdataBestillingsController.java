@@ -84,7 +84,7 @@ public class TestdataBestillingsController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "personerdata") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentpersoner") })
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
         //Begrenser maks antall identer i SQL spørring
