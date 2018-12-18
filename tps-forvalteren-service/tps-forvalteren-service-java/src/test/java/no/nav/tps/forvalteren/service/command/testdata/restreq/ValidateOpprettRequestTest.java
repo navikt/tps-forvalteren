@@ -1,10 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Arrays.asList;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_FOEDT_ETTER;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_FOEDT_FOER;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_UGYLDIG_INTERVALL;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_UGYLDIG_KJOENN;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -28,7 +24,7 @@ public class ValidateOpprettRequestTest {
 
     private static final LocalDateTime UGYLDIG_FOEDT_FOER_DATO = LocalDateTime.of(1899, 12, 31, 23, 59);
     private static final LocalDateTime UGYLDIG_FOEDT_ETTER_DATO = LocalDateTime.of(2040, 1, 1, 0, 0);
-    private static final String TEKST_FOEDT_ETTER = "Dato født etter kan ikke være etter år 2039.";
+    private static final String TEKST_FOEDT_ETTER = "Dato født etter kan ikke være etter dagens dato.";
     private static final String TEKST_FOEDT_FOER = "Dato født før kan ikke være før år 1900.";
     private static final String TEKST_UGYLDIG_DATO_INTERVALL = "Ugyldig datointervall er oppgitt.";
     private static final String TEKST_UGYLDIG_KJOENN = "Ugyldig kjønn, en av U, K eller M forventet.";
@@ -44,10 +40,10 @@ public class ValidateOpprettRequestTest {
 
     @Before
     public void setup() {
-        when(messageProvider.get(BESTILLING_VALIDERING_FOEDT_ETTER)).thenReturn(TEKST_FOEDT_ETTER);
-        when(messageProvider.get(BESTILLING_VALIDERING_FOEDT_FOER)).thenReturn(TEKST_FOEDT_FOER);
-        when(messageProvider.get(BESTILLING_VALIDERING_UGYLDIG_INTERVALL)).thenReturn(TEKST_UGYLDIG_DATO_INTERVALL);
-        when(messageProvider.get(BESTILLING_VALIDERING_UGYLDIG_KJOENN)).thenReturn(TEKST_UGYLDIG_KJOENN);
+        when(messageProvider.get("bestilling.input.validation.dato.foedt.etter")).thenReturn(TEKST_FOEDT_ETTER);
+        when(messageProvider.get("bestilling.input.validation.dato.foedt.foer")).thenReturn(TEKST_FOEDT_FOER);
+        when(messageProvider.get("bestilling.input.validation.ugyldig.intervall")).thenReturn(TEKST_UGYLDIG_DATO_INTERVALL);
+        when(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn")).thenReturn(TEKST_UGYLDIG_KJOENN);
     }
 
     @Test(expected = Test.None.class)
@@ -212,7 +208,7 @@ public class ValidateOpprettRequestTest {
                 .relasjoner(RsSimpleRelasjoner.builder()
                         .barn(asList(
                                 RsSimplePersonRequest.builder()
-                                        .foedtFoer(LocalDateTime.of(2020, 1, 1, 0, 0))
+                                        .foedtFoer(LocalDateTime.of(1980, 1, 1, 0, 0))
                                         .build(),
                                 RsSimplePersonRequest.builder()
                                         .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
