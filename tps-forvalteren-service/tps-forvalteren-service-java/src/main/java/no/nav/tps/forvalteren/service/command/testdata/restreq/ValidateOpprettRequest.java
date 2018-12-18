@@ -1,10 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.time.LocalDateTime.now;
+import static java.time.LocalDateTime.of;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_FOEDT_ETTER;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_FOEDT_FOER;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_UGYLDIG_INTERVALL;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.BESTILLING_VALIDERING_UGYLDIG_KJOENN;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 @Component
 public class ValidateOpprettRequest {
 
-    private static final LocalDateTime LOWER_BOUND = LocalDateTime.of(1900, 1, 1, 0, 0, 0);
-    private static final LocalDateTime UPPER_BOUND = LocalDateTime.of(2039, 12, 31, 23, 59, 59);
+    private static final LocalDateTime LOWER_BOUND = of(1900, 1, 1, 0, 0, 0);
 
     @Autowired
     private MessageProvider messageProvider;
@@ -46,26 +43,26 @@ public class ValidateOpprettRequest {
     }
 
     private void validateDatoFoedtEtter(LocalDateTime datoFoedtEtter) {
-        if (nonNull(datoFoedtEtter) && datoFoedtEtter.isAfter(UPPER_BOUND)) {
-            throw new TpsfFunctionalException(messageProvider.get(BESTILLING_VALIDERING_FOEDT_ETTER));
+        if (nonNull(datoFoedtEtter) && (datoFoedtEtter.isAfter(now()) || datoFoedtEtter.isBefore(LOWER_BOUND))) {
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.dato.foedt.etter"));
         }
     }
 
     private void validateDatoFoedtFoer(LocalDateTime datoFoedtFoer) {
-        if (nonNull(datoFoedtFoer) && datoFoedtFoer.isBefore(LOWER_BOUND)) {
-            throw new TpsfFunctionalException(messageProvider.get(BESTILLING_VALIDERING_FOEDT_FOER));
+        if (nonNull(datoFoedtFoer) && (datoFoedtFoer.isBefore(LOWER_BOUND) || datoFoedtFoer.isAfter(now()))) {
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.dato.foedt.foer"));
         }
     }
 
     private void validateDatoIntervall(LocalDateTime datoFoedtEtter, LocalDateTime datoFoedtFoer) {
         if (nonNull(datoFoedtEtter) && nonNull(datoFoedtFoer) && datoFoedtFoer.isBefore(datoFoedtEtter)) {
-            throw new TpsfFunctionalException(messageProvider.get(BESTILLING_VALIDERING_UGYLDIG_INTERVALL));
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.intervall"));
         }
     }
 
     private void validateKjoenn(String kjoenn) {
         if (nonNull(kjoenn) && !"M".equals(kjoenn) && !"K".equals(kjoenn) && !"U".equals(kjoenn)) {
-            throw new TpsfFunctionalException(messageProvider.get(BESTILLING_VALIDERING_UGYLDIG_KJOENN));
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn"));
         }
     }
 }

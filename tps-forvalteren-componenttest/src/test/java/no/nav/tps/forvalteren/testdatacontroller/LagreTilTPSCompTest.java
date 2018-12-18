@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
@@ -13,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.jms.JMSException;
@@ -42,17 +42,17 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
  */
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
     
-    List<String> expectedSkdInnvandringCreateRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
+    private static final List<String> EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_innvandringCreate_fnr_11031250155.txt");
-    List<String> expectedSkdUpdateInnvandringRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_updateInnvandring_fnr_02020403694.txt");
-    List<String> expectedSkdRelasjonsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
+    private static final List<String> EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_updateInnvandring_fnr_02020403694.txt");
+    private static final List<String> EXPECTED_SKD_RELASJONSMELDING_ER_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");
-    List<String> expectedSkdDoedsmeldingerRequestsUrl = Arrays.asList("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
-    String xmlFindNonexistingIdenterInTpsUrl = "testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_request.xml";
-    private List<String> environments = Arrays.asList("t1", "t2", "u5");
-    List<String> expectedSkdRequests = constructExpectedRequests();
+    private static final List<String> EXPECTED_SKD_DOEDSMELDING_IS_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
+    private static final String XML_FIND_NON_EXISTING_IDENTS_IN_TPS_URL = "testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_request.xml";
+    private static final List<String> ENVIRONMENTS = asList("t1", "t2", "u5", "q0");
+    private List<String> expectedSkdRequests = constructExpectedRequests();
     
     private Long gruppeId;
     private Gruppe testgruppe;
@@ -76,10 +76,10 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldSendSuccesfulSkdMessagesToTPS() throws Exception {
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content("[\"" + String.join("\",\"", environments) + "\"]"))
+                .content("[\"" + String.join("\",\"", ENVIRONMENTS) + "\"]"))
                 .andExpect(status().isOk());
     
-        verify(messageQueueConsumerMock, times(3)).sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl)), DEFAULT_TIMEOUT);
+        verify(messageQueueConsumerMock, times(ENVIRONMENTS.size())).sendMessage(removeNewLineAndTab(getResourceFileContent(XML_FIND_NON_EXISTING_IDENTS_IN_TPS_URL)), DEFAULT_TIMEOUT);
         
         assertCalledEnvironments();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
@@ -90,7 +90,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
     
     private void mockTps() throws JMSException {
-        when(messageQueueConsumerMock.sendMessage(removeNewLineAndTab(getResourceFileContent(xmlFindNonexistingIdenterInTpsUrl)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumerMock.sendMessage(removeNewLineAndTab(getResourceFileContent(XML_FIND_NON_EXISTING_IDENTS_IN_TPS_URL)), DEFAULT_TIMEOUT))
                 .thenReturn(getResourceFileContent("testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_response.xml"));
     }
     
@@ -186,18 +186,18 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .filter(pair -> "TPS_FORESPORSEL_XML_O".equals(pair.getSecond()))
                 .map(pair -> pair.getFirst())
                 .collect(Collectors.toList());
-        assertTrue("Sjekk at skdmeldinger blir sendt til alle miljøene", environments.stream().allMatch(env -> actualEnvironmentsToRecieveSkdMelding.contains(env)));
-        assertTrue("Sjekk at xml-er blir sendt til alle miljøene", environments.stream().allMatch(env -> actualEnvironmentsToRecieveXml.contains(env)));
+        assertTrue("Sjekk at skdmeldinger blir sendt til alle miljøene", ENVIRONMENTS.stream().allMatch(env -> actualEnvironmentsToRecieveSkdMelding.contains(env)));
+        assertTrue("Sjekk at xml-er blir sendt til alle miljøene", ENVIRONMENTS.stream().allMatch(env -> actualEnvironmentsToRecieveXml.contains(env)));
         actualConnectedToEnvironments.clear();
     }
     
     private List<String> constructExpectedRequests() {
         List<String> expectedRequests = new ArrayList<>();
         
-        expectedSkdInnvandringCreateRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
-        expectedSkdUpdateInnvandringRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
-        expectedSkdRelasjonsmeldingerRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
-        expectedSkdDoedsmeldingerRequestsUrl.forEach(url -> environments.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
+        EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
+        EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
+        EXPECTED_SKD_RELASJONSMELDING_ER_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
+        EXPECTED_SKD_DOEDSMELDING_IS_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
         
         return expectedRequests.stream().map(request -> removeNewLineAndTab(request)).collect(Collectors.toList());
     }

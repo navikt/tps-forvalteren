@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
+import static org.assertj.core.util.Sets.newHashSet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,8 +19,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.jms.JMSException;
@@ -40,8 +40,8 @@ import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataControllerComponentTest {
 
-    private static final Set<String> identer = new HashSet<>();
-    private static final Set<String> fasitRegistrerteEnvMedTps = new HashSet<>();
+    private static final Set<String> IDENTER = newHashSet(asList("10050552665", "04121656499", "12017500617", "11031250855"));
+
     private Long gruppeId;
     private Gruppe testgruppe;
 
@@ -62,14 +62,10 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     @Before
     public void setup() throws JMSException {
         reset(messageQueueConsumer);
-        identer.addAll(Arrays.asList("10050552665",
-                "04121656499",
-                "12017500617",
-                "11031250855"));
-        when(fiktiveIdenterGeneratormock.genererFiktiveIdenter(any(RsPersonKriterier.class))).thenReturn(identer);
 
-        fasitRegistrerteEnvMedTps.addAll(ENV_SET);
-        when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
+        when(fiktiveIdenterGeneratormock.genererFiktiveIdenter(any(RsPersonKriterier.class))).thenReturn(IDENTER);
+
+        when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(ENV_SET);
 
         mockTps();
     }
@@ -86,7 +82,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                         "{\"personKriterierListe\":[{\"identtype\":\"FNR\",\"kjonn\":\"K\",\"foedtEtter\":\"2016-02-16T00:00:00.000Z\",\"foedtFoer\":\"2018-04-20T00:00:00.000Z\",\"antall\":\"2\"}],\"withAdresse\":true}"))
                 .andExpect(status().isOk());
 
-        verify(messageQueueConsumer, times(fasitRegistrerteEnvMedTps.size())).sendMessage(
+        verify(messageQueueConsumer, times(ENV_SET.size())).sendMessage(
                 removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
         verify(messageQueueConsumer).sendMessage(eq(
                 removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());
@@ -114,7 +110,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
         lagredePersoner.forEach(person -> {
             assertThat(person.getIdenttype(), is(equalTo("FNR")));
             assertThat(person.getKjonn(), is(equalTo("K")));
-            assertTrue(identer.contains(person.getIdent()));
+            assertTrue(IDENTER.contains(person.getIdent()));
             assertNotNull(person.getBoadresse());
             assertThat(person.getBoadresse().getKommunenr(), is(equalTo("0901")));
         });

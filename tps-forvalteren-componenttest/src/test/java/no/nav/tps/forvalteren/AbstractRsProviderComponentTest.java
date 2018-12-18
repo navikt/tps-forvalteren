@@ -34,7 +34,7 @@ import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 @ActiveProfiles("comptest")
 public abstract class AbstractRsProviderComponentTest {
 
-    protected static final Set ENV_SET = Sets.newHashSet("t0", "t1", "t2", "t3");
+    protected static final Set ENV_SET = Sets.newHashSet("t0", "t1", "t2", "t3", "q0");
     
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

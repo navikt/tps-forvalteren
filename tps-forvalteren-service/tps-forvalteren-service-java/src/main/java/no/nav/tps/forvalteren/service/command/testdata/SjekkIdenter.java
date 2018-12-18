@@ -16,6 +16,8 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 @Service
 public class SjekkIdenter {
 
+    private static final String PRODLIKE_ENV = "q0";
+
     @Autowired
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
@@ -49,8 +51,8 @@ public class SjekkIdenter {
 
     private Set<String> finnLedigeIdenterDBOgMiljoOgSetStatus(Map<String, String> identerMedStatus, Set<String> gyldigeIdenter) {
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
-        // Environment q0 only verified for existence
-        Set<String> environments = Sets.newHashSet("q0");
+        // Environment PRODLIKE only verified for existence
+        Set<String> environments = Sets.newHashSet(PRODLIKE_ENV);
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(gyldigeIdenter, environments);
 
         Set<String> ledigeIdenterDBOgMiljo = new HashSet<>();

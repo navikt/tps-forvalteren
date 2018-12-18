@@ -17,11 +17,6 @@ public final class MessageConstants {
     public static final String SKD_ILLEGAL_MELDINGSTYPE = "service.exception.message.skd.illegal.meldingstype";
     public static final String SKD_ENDRINGSMELDING_JSON_TO_OBJECT = "service.exception.message.skd.json.to.object";
     public static final String SKD_ENDRINGSMELDING_ILLEGAL_LENGTH = "service.exception.message.skd.illegal.length";
-    public static final String BESTILLING_VALIDERING_FOEDT_ETTER = "bestilling.input.validation.dato.foedt.etter";
-
-    public static final String BESTILLING_VALIDERING_FOEDT_FOER = "bestilling.input.validation.dato.foedt.foer";
-    public static final String BESTILLING_VALIDERING_UGYLDIG_INTERVALL = "bestilling.input.validation.ugyldig.intervall";
-    public static final String BESTILLING_VALIDERING_UGYLDIG_KJOENN = "bestilling.input.validation.ugyldig.kjoenn";
 
     private MessageConstants() {
     }
