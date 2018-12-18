@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import ma.glasnost.orika.MapperFacade;
@@ -79,5 +81,18 @@ public class TestdataBestillingsController {
         List<String> identer = listExtractorKommaSeperated.extractIdenter(personer);
         List<Person> personList = personRepository.findByIdentIn(identer);
         return mapper.mapAsList(personList, RsPerson.class);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "personerdata") })
+    @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
+    public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
+        //Begrenser maks antall identer i SQL spørring
+        List<List<String>> identLists = Lists.partition(identer, 1000);
+        List<Person> resultat = new ArrayList<>(identer.size());
+        for (List<String> subset : identLists) {
+            resultat.addAll(personRepository.findByIdentIn(subset));
+        }
+        return mapper.mapAsList(resultat, RsPerson.class);
     }
 }
