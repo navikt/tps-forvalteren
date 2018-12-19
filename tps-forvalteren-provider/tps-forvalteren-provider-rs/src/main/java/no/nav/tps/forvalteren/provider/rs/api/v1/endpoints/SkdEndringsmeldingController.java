@@ -121,7 +121,7 @@ public class SkdEndringsmeldingController {
     public List<RsMeldingstype> getGruppePaginert(@PathVariable("gruppeId") Long gruppeId, @PathVariable("pageNumber") int pageNumber) throws IOException {
         List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, pageNumber);
 
-        List<RsMeldingstype> rsMeldingstypeMeldinger = new ArrayList<>();
+        List<RsMeldingstype> rsMeldingstypeMeldinger = new ArrayList<>(skdEndringsmeldinger.size());
         ObjectMapper objectMapper = new ObjectMapper();
 
         for (SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {

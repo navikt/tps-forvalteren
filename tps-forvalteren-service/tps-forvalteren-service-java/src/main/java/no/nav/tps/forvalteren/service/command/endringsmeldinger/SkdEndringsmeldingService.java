@@ -20,7 +20,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 @Service
 public class SkdEndringsmeldingService {
 
-    public static int ANTALL_MELDINGER_PER_PAGE = 10;
+    private static final int ANTALL_MELDINGER_PER_PAGE = 10;
 
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
