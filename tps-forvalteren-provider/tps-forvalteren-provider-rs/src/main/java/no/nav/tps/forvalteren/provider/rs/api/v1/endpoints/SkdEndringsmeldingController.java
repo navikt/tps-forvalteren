@@ -50,6 +50,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldi
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
+import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeTooLargeException;
 
 @Transactional
 @RestController
@@ -58,6 +59,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.Avspill
 public class SkdEndringsmeldingController {
 
     private static final String REST_SERVICE_NAME = "testdata";
+    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 25000;
 
     @Autowired
     private MapperFacade mapper;
@@ -101,17 +103,22 @@ public class SkdEndringsmeldingController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppeInfo") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
-    public RsSkdEndringsmeldingGruppe getGruppeInfo(@PathVariable("gruppeId") Long gruppeId) {
+    public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
+        if (gruppe.getSkdEndringsmeldinger().size() > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
+            throw new SkdEndringsmeldingGruppeTooLargeException("Kunne ikke hente gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger. " +
+                    "Vennligst bruk endepunkt '/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. " +
+                    "Frontend foreløpig ikke implementert for dette endepunktet.");
+        }
         return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppensMeldinger") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppePaginert") })
     @RequestMapping(value = "/gruppe/meldinger/{gruppeId}/{pageNumber}", method = RequestMethod.GET)
-    public List<RsMeldingstype> getGruppensMeldinger(@PathVariable("gruppeId") Long gruppeId, @PathVariable("pageNumber") int pageNumber) throws IOException {
+    public List<RsMeldingstype> getGruppePaginert(@PathVariable("gruppeId") Long gruppeId, @PathVariable("pageNumber") int pageNumber) throws IOException {
         List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, pageNumber);
 
         List<RsMeldingstype> rsMeldingstypeMeldinger = new ArrayList<>();

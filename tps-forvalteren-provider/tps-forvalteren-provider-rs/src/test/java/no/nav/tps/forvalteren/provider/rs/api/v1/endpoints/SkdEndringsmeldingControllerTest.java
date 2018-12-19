@@ -100,14 +100,14 @@ public class SkdEndringsmeldingControllerTest {
     }
 
     @Test
-    public void getGruppeInfoReturnsGruppe() {
+    public void getGruppeReturnsGruppe() {
         SkdEndringsmeldingGruppe gruppe = aSkdEndringsmeldingGruppe().id(1337L).build();
         RsSkdEndringsmeldingGruppe rsGruppe = new RsSkdEndringsmeldingGruppe();
 
         when(skdEndringsmeldingsgruppeService.findGruppeById(gruppe.getId())).thenReturn(gruppe);
         when(mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class)).thenReturn(rsGruppe);
 
-        RsSkdEndringsmeldingGruppe result = skdEndringsmeldingController.getGruppeInfo(gruppe.getId());
+        RsSkdEndringsmeldingGruppe result = skdEndringsmeldingController.getGruppe(gruppe.getId());
 
         verify(skdEndringsmeldingsgruppeService).findGruppeById(gruppe.getId());
         verify(mapper).map(gruppe, RsSkdEndringsmeldingGruppe.class);
@@ -115,7 +115,7 @@ public class SkdEndringsmeldingControllerTest {
     }
 
     @Test
-    public void getGruppensMeldingerReturnsPaginatedSkdMeldinger() throws IOException {
+    public void getGruppePaginertReturnsPaginatedSkdMeldinger() throws IOException {
         Long meldingsId1 = 1234L;
         Long meldingsId2 = 2468L;
         Long gruppeId = 123L;
@@ -125,7 +125,7 @@ public class SkdEndringsmeldingControllerTest {
 
         when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(eq(gruppeId), anyInt())).thenReturn(skdEndringsmeldinger);
 
-        List<RsMeldingstype> meldinger = skdEndringsmeldingController.getGruppensMeldinger(gruppeId, 0);
+        List<RsMeldingstype> meldinger = skdEndringsmeldingController.getGruppePaginert(gruppeId, 0);
 
         assertEquals(meldingsId1, meldinger.get(0).getId());
         assertEquals(meldingsId2, meldinger.get(1).getId());

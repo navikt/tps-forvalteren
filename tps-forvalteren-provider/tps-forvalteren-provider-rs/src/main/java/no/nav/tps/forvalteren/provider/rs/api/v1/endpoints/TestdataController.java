@@ -196,7 +196,7 @@ public class TestdataController {
 
     @Transactional
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppeInfo") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
