@@ -59,7 +59,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGrupp
 public class SkdEndringsmeldingController {
 
     private static final String REST_SERVICE_NAME = "testdata";
-    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 25000;
+    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 50000;
 
     @Autowired
     private MapperFacade mapper;
