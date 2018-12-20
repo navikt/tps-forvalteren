@@ -21,6 +21,8 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     Page<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe, Pageable pageable);
 
+    int countByGruppe(SkdEndringsmeldingGruppe gruppe);
+
     void deleteAll();
 
     @Query("SELECT foedselsnummer FROM SkdEndringsmelding "

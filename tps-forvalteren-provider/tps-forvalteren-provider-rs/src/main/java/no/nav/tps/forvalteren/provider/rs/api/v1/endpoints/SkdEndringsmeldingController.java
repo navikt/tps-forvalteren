@@ -107,11 +107,13 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
-        if (gruppe.getSkdEndringsmeldinger().size() > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
-            throw new SkdEndringsmeldingGruppeTooLargeException("Kunne ikke hente gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger. " +
-                    "Vennligst bruk endepunkt '/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. " +
+
+        if (skdEndringsmeldingService.countMeldingerByGruppe(gruppe) > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
+            throw new SkdEndringsmeldingGruppeTooLargeException("Kan ikke hente gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger på " +
+                    "grunn av minnebegrensninger. Vennligst bruk endepunkt '/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. " +
                     "Frontend foreløpig ikke implementert for dette endepunktet.");
         }
+
         return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
 

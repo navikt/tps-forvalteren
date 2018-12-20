@@ -28,6 +28,10 @@ public class SkdEndringsmeldingService {
     @Autowired
     private SkdEndringsmeldingGruppeRepository gruppeRepository;
 
+    public int countMeldingerByGruppe(SkdEndringsmeldingGruppe gruppe) {
+        return skdEndringsmeldingRepository.countByGruppe(gruppe);
+    }
+
     public List<SkdEndringsmelding> findSkdEndringsmeldingerOnPage(Long gruppeId, int pageNumber) {
         SkdEndringsmeldingGruppe gruppe = gruppeRepository.findById(gruppeId);
         return skdEndringsmeldingRepository.findAllByGruppe(gruppe, new PageRequest(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
