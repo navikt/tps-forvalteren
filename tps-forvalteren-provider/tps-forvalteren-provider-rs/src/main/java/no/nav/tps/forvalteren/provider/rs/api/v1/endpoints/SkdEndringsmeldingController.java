@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -122,15 +120,32 @@ public class SkdEndringsmeldingController {
     @RequestMapping(value = "/gruppe/meldinger/{gruppeId}/{pageNumber}", method = RequestMethod.GET)
     public List<RsMeldingstype> getGruppePaginert(@PathVariable("gruppeId") Long gruppeId, @PathVariable("pageNumber") int pageNumber) throws IOException {
         List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, pageNumber);
+        return skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
+    }
 
-        List<RsMeldingstype> rsMeldingstypeMeldinger = new ArrayList<>(skdEndringsmeldinger.size());
-        ObjectMapper objectMapper = new ObjectMapper();
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "klonAvspillergruppe") })
+    @RequestMapping(value = "/gruppe/kloning/{originalGruppeId}", method = RequestMethod.POST)
+    public void klonAvspillergruppe(@PathVariable("originalGruppeId") Long originalGruppeId, @RequestBody String nyttNavn) throws IOException {
+        SkdEndringsmeldingGruppe originalGruppe = skdEndringsmeldingsgruppeService.findGruppeById(originalGruppeId);
 
-        for (SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {
-            rsMeldingstypeMeldinger.add(objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class));
+        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe);
+        int antallSiderIAvspillergruppe = (int) Math.ceil(antallMeldingerIAvspillergruppe / 10.0);
+        List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>(antallMeldingerIAvspillergruppe);
+
+        for (int i = 0; i < antallSiderIAvspillergruppe; i++) {
+            skdEndringsmeldinger.addAll(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(originalGruppeId, i));
         }
 
-        return rsMeldingstypeMeldinger;
+        List<RsMeldingstype> meldinger = skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
+
+        RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe = new RsSkdEndringsmeldingGruppe();
+        rsSkdEndringsmeldingGruppe.setBeskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId());
+        rsSkdEndringsmeldingGruppe.setNavn(nyttNavn);
+        rsSkdEndringsmeldingGruppe.setMeldinger(meldinger);
+
+        SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = mapper.map(rsSkdEndringsmeldingGruppe, SkdEndringsmeldingGruppe.class);
+        skdEndringsmeldingsgruppeService.save(skdEndringsmeldingGruppe);
     }
 
     @LogExceptions

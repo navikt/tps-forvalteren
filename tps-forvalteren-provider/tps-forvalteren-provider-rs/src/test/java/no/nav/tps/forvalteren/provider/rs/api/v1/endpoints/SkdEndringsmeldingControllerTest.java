@@ -137,8 +137,10 @@ public class SkdEndringsmeldingControllerTest {
         Long meldingsId2 = 2468L;
         Long gruppeId = 123L;
         List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger(meldingsId1, meldingsId2);
+        List<RsMeldingstype> rsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1, meldingsId2);
 
         when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(eq(gruppeId), anyInt())).thenReturn(skdEndringsmeldinger);
+        when(skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger)).thenReturn(rsMeldingstypeMeldinger);
 
         List<RsMeldingstype> meldinger = skdEndringsmeldingController.getGruppePaginert(gruppeId, 0);
 
@@ -250,5 +252,14 @@ public class SkdEndringsmeldingControllerTest {
         return Arrays.asList(
                 SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build(),
                 SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build());
+    }
+
+    private List<RsMeldingstype> createRsMeldingstypeMeldinger(Long meldingsId1, Long meldingsId2) {
+        List<RsMeldingstype> meldinger = new ArrayList<>();
+        meldinger.add(RsMeldingstype1Felter.builder().build());
+        meldinger.add(RsMeldingstype1Felter.builder().build());
+        meldinger.get(0).setId(meldingsId1);
+        meldinger.get(1).setId(meldingsId2);
+        return meldinger;
     }
 }

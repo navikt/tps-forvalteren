@@ -7,6 +7,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
@@ -71,6 +73,18 @@ public class SkdEndringsmeldingServiceTest {
     }
 
     @Test
+    public void shouldConvertSkdEndringsmeldingerToRsMeldingstyper() throws IOException {
+        Long meldingsId1 = 1234L;
+        Long meldingsId2 = 2468L;
+        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger(meldingsId1, meldingsId2);
+
+        List<RsMeldingstype> meldinger = skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
+
+        assertEquals(meldingsId1, meldinger.get(0).getId());
+        assertEquals(meldingsId2, meldinger.get(1).getId());
+    }
+
+    @Test
     public void shouldReturnereskdmeldingsIdenterMedAngittAarsakskodeOgTransaksjonskode() {
         long gruppeId = 123L;
         List<String> aarsakskoder = Arrays.asList("01", "02");
@@ -88,5 +102,11 @@ public class SkdEndringsmeldingServiceTest {
         verify(gruppeRepository).findById(gruppeId);
         assertEquals(1, actualFoedselsnumre.size());
         assertTrue(actualFoedselsnumre.contains(expectedFoedselsnummer));
+    }
+
+    private List<SkdEndringsmelding> createSkdMeldinger(Long meldingsId1, Long meldingsId2) {
+        return Arrays.asList(
+                SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build(),
+                SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build());
     }
 }
