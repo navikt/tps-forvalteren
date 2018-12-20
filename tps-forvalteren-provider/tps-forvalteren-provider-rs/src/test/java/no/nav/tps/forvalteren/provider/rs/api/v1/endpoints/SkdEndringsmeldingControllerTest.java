@@ -3,9 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -117,18 +115,10 @@ public class SkdEndringsmeldingControllerTest {
         assertThat(result, is(rsGruppe));
     }
 
-    @Test
+    @Test(expected = SkdEndringsmeldingGruppeTooLargeException.class)
     public void requestForTooManyMessagesShouldCauseException() {
         when(skdEndringsmeldingService.countMeldingerByGruppe(any())).thenReturn(100000);
-
-        try {
-            skdEndringsmeldingController.getGruppe(123L);
-            fail();
-        } catch (SkdEndringsmeldingGruppeTooLargeException e) {
-            assertEquals("Kan ikke hente gruppe med flere enn " + 50000 + " meldinger på " +
-                    "grunn av minnebegrensninger. Vennligst bruk endepunkt '/gruppe/meldinger/{gruppeId}/{pageNumber}' " +
-                    "for å hente meldinger i denne gruppen. Frontend foreløpig ikke implementert for dette endepunktet.", e.getMessage());
-        }
+        skdEndringsmeldingController.getGruppe(123L);
     }
 
     @Test
@@ -142,8 +132,8 @@ public class SkdEndringsmeldingControllerTest {
 
         List<RsMeldingstype> meldinger = skdEndringsmeldingController.getGruppePaginert(gruppeId, 0);
 
-        assertEquals(meldingsId1, meldinger.get(0).getId());
-        assertEquals(meldingsId2, meldinger.get(1).getId());
+        assertThat(meldinger.get(0).getId(), is(meldingsId1));
+        assertThat(meldinger.get(1).getId(), is(meldingsId2));
     }
 
     @Test
