@@ -119,9 +119,7 @@ public class SkdEndringsmeldingControllerTest {
         Long meldingsId1 = 1234L;
         Long meldingsId2 = 2468L;
         Long gruppeId = 123L;
-        SkdEndringsmelding skdEndringsmelding1 = SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build();
-        SkdEndringsmelding skdEndringsmelding2 = SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build();
-        List<SkdEndringsmelding> skdEndringsmeldinger = Arrays.asList(skdEndringsmelding1, skdEndringsmelding2);
+        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger(meldingsId1, meldingsId2);
 
         when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(eq(gruppeId), anyInt())).thenReturn(skdEndringsmeldinger);
 
@@ -231,4 +229,9 @@ public class SkdEndringsmeldingControllerTest {
         verify(mapper).mapAsList(log, RsSkdEndringsmeldingLogg.class);
     }
 
+    private List<SkdEndringsmelding> createSkdMeldinger(Long meldingsId1, Long meldingsId2) {
+        return Arrays.asList(
+                SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build(),
+                SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build());
+    }
 }
