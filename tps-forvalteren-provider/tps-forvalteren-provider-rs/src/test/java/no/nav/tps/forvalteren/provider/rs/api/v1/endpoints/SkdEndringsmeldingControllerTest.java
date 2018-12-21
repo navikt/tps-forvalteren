@@ -290,17 +290,4 @@ public class SkdEndringsmeldingControllerTest {
         meldinger.get(1).setId(meldingsId2);
         return meldinger;
     }
-
-    private List<SkdEndringsmelding> createLargeSkdEndringsmelding(int numberOfMeldingIds) {
-        List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>();
-        for (int i = 0; i < numberOfMeldingIds; i++) {
-            Long randomMeldingsId = (long) (Math.random() * (10000L));
-            skdEndringsmeldinger.add(
-                    SkdEndringsmelding.builder()
-                            .id(randomMeldingsId)
-                            .endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + randomMeldingsId + "}")
-                            .build());
-        }
-        return skdEndringsmeldinger;
-    }
 }

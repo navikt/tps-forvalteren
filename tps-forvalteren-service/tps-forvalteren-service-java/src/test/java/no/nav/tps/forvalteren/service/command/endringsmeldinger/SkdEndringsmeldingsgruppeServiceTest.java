@@ -77,10 +77,9 @@ public class SkdEndringsmeldingsgruppeServiceTest {
     @Test
     public void konfigurerKlonAvGruppeShouldSetupCorrectly() {
         Long meldingsId1 = 1234L;
-        Long meldingsId2 = 2468L;
         SkdEndringsmeldingGruppe originalGruppe = aSkdEndringsmeldingGruppe().id(1337L).build();
         String nyttNavn = "Some name";
-        List<RsMeldingstype> originalRsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1, meldingsId2);
+        List<RsMeldingstype> originalRsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1);
 
         RsSkdEndringsmeldingGruppe newGruppe = skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(originalGruppe, nyttNavn, originalRsMeldingstypeMeldinger);
 
@@ -89,12 +88,10 @@ public class SkdEndringsmeldingsgruppeServiceTest {
         assertThat(newGruppe.getMeldinger(), equalTo(originalRsMeldingstypeMeldinger));
     }
 
-    private List<RsMeldingstype> createRsMeldingstypeMeldinger(Long meldingsId1, Long meldingsId2) {
+    private List<RsMeldingstype> createRsMeldingstypeMeldinger(Long meldingsId1) {
         List<RsMeldingstype> meldinger = new ArrayList<>();
         meldinger.add(RsMeldingstype1Felter.builder().build());
-        meldinger.add(RsMeldingstype1Felter.builder().build());
         meldinger.get(0).setId(meldingsId1);
-        meldinger.get(1).setId(meldingsId2);
         return meldinger;
     }
 }
