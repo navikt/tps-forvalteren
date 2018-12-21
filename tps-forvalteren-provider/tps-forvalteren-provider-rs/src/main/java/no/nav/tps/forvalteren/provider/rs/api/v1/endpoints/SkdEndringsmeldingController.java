@@ -106,10 +106,11 @@ public class SkdEndringsmeldingController {
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
         SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
 
-        if (skdEndringsmeldingService.countMeldingerByGruppe(gruppe) > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
+        int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerByGruppe(gruppe);
+        if (antallMeldingerIGruppe > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
             throw new SkdEndringsmeldingGruppeTooLargeException("Kan ikke hente gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger på " +
-                    "grunn av minnebegrensninger. Vennligst bruk endepunkt '/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. " +
-                    "Frontend foreløpig ikke implementert for dette endepunktet.");
+                    "grunn av minnebegrensninger. Denne gruppen inneholder " + antallMeldingerIGruppe + " meldinger. Vennligst bruk endepunkt " +
+                    "'/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. Frontend foreløpig ikke implementert for dette endepunktet.");
         }
 
         return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
@@ -130,7 +131,7 @@ public class SkdEndringsmeldingController {
         SkdEndringsmeldingGruppe originalGruppe = skdEndringsmeldingsgruppeService.findGruppeById(originalGruppeId);
 
         int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe);
-        int antallSiderIAvspillergruppe = (int) Math.ceil(antallMeldingerIAvspillergruppe / 10.0);
+        int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
         List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>(antallMeldingerIAvspillergruppe);
 
         for (int i = 0; i < antallSiderIAvspillergruppe; i++) {
@@ -138,14 +139,14 @@ public class SkdEndringsmeldingController {
         }
 
         List<RsMeldingstype> meldinger = skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
+        meldinger.forEach(rsMeldingstype -> rsMeldingstype.setId(null));
 
-        RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe = new RsSkdEndringsmeldingGruppe();
-        rsSkdEndringsmeldingGruppe.setBeskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId());
-        rsSkdEndringsmeldingGruppe.setNavn(nyttNavn);
-        rsSkdEndringsmeldingGruppe.setMeldinger(meldinger);
+        RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe = skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(originalGruppe, nyttNavn, meldinger);
 
         SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = mapper.map(rsSkdEndringsmeldingGruppe, SkdEndringsmeldingGruppe.class);
+
         skdEndringsmeldingsgruppeService.save(skdEndringsmeldingGruppe);
+        saveSkdEndringsmeldingerService.save(meldinger, skdEndringsmeldingGruppe.getId());
     }
 
     @LogExceptions

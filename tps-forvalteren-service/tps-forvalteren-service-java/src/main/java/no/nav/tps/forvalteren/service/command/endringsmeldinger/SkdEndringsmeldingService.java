@@ -8,16 +8,16 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
@@ -34,6 +34,10 @@ public class SkdEndringsmeldingService {
 
     public int countMeldingerByGruppe(SkdEndringsmeldingGruppe gruppe) {
         return skdEndringsmeldingRepository.countByGruppe(gruppe);
+    }
+
+    public int getAntallSiderIGruppe(int antallMeldingerIGruppe) {
+        return (int) Math.ceil(antallMeldingerIGruppe / (double) ANTALL_MELDINGER_PER_PAGE);
     }
 
     public List<SkdEndringsmelding> findSkdEndringsmeldingerOnPage(Long gruppeId, int pageNumber) {

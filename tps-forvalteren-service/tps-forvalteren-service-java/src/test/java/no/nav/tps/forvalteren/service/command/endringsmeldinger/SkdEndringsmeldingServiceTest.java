@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -43,6 +45,14 @@ public class SkdEndringsmeldingServiceTest {
         ArrayList<Long> skdendringsmeldingIds = new ArrayList<>();
         skdEndringsmeldingService.deleteById(skdendringsmeldingIds);
         verify(skdEndringsmeldingRepository).deleteByIdIn(skdendringsmeldingIds);
+    }
+
+    @Test
+    public void shouldGetCorrectNumberOfPagesGivenAntallMeldingerIGruppe() {
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(0), is(0));
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(10), is(1));
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(11), is(2));
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(29), is(3));
     }
 
     @Test
