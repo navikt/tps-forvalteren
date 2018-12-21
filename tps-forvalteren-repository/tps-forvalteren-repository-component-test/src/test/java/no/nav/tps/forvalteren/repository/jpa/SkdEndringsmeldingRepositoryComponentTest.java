@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.repository.jpa;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingProvider.aSkdEndringsmelding;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -11,12 +12,16 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -86,10 +91,10 @@ public class SkdEndringsmeldingRepositoryComponentTest {
         SkdEndringsmelding storedSkdEndringsmelding2 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
         SkdEndringsmelding storedSkdEndringsmelding3 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
 
-        List<SkdEndringsmelding> result = repository.findAllByGruppe(skdEndringsmelding.getGruppe());
+        Page<SkdEndringsmelding> result = repository.findAllByGruppe(skdEndringsmelding.getGruppe(), new PageRequest(0, 10));
 
-        assertThat(result, hasSize(3));
-        assertThat(result, hasItems(storedSkdEndringsmelding1, storedSkdEndringsmelding2, storedSkdEndringsmelding3));
+        assertThat(result.getTotalElements(), equalTo(3L));
+        assertThat(result.getContent(), hasItems(storedSkdEndringsmelding1, storedSkdEndringsmelding2, storedSkdEndringsmelding3));
     }
 
     @Test
@@ -107,6 +112,6 @@ public class SkdEndringsmeldingRepositoryComponentTest {
 
         assertThat(resultFoedselsnumre, hasSize(2));
         assertThat(resultFoedselsnumre, hasItems(foedselsnummer2, foedselsnummer3));
-        assertThat(resultFoedselsnumre, not(hasItems(storedSkdEndringsmelding1_shouldNotBeFound1.getFoedselsnummer()))); //Skal ikke hente fnr fra en annen gruppe
+        assertThat(resultFoedselsnumre, not(hasItems(storedSkdEndringsmelding1_shouldNotBeFound1.getFoedselsnummer()))); // Skal ikke hente fnr fra en annen gruppe
     }
 }

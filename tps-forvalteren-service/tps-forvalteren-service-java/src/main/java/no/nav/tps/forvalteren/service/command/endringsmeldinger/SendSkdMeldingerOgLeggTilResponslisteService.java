@@ -19,7 +19,7 @@ public class SendSkdMeldingerOgLeggTilResponslisteService {
     public void sendSkdMeldingAndAddResponseToList(AvspillingResponse avspillingResponse, String skdmelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
         String status = sendEnSkdMelding.sendSkdMelding(skdmelding, skdRequestMeldingDefinition, env);
         avspillingResponse.incrementAntallSendte();
-        if (status == null || !STATUS_OK.equals(status.substring(0, 2))) {
+        if (status == null || status.length() < 2 || !STATUS_OK.equals(status.substring(0, 2))) {
             rapporterFeiletMelding(status, avspillingResponse);
         }
     }

@@ -92,7 +92,6 @@ public class SendEndringsmeldingToTpsServiceTest {
     public void setup() {
         when(rsMeldingstype1Felter.getBeskrivelse()).thenReturn("beskrivelse");
         when(skdEndringsmeldingGruppeRepository.findById(GRUPPE_ID)).thenReturn(gruppe);
-        when(skdEndringsmeldingRepository.findAllByGruppe(gruppe)).thenReturn(skdEndringsmeldinger);
         when(convertJsonToRsMeldingstype.execute(skdEndringsmelding)).thenReturn(rsMeldingstype1Felter);
         when(innvandring.resolve()).thenReturn(new TpsSkdRequestMeldingDefinition());
         when(skdAddHeaderToSkdMelding.execute(any(StringBuilder.class))).thenReturn(new StringBuilder("lol"));
