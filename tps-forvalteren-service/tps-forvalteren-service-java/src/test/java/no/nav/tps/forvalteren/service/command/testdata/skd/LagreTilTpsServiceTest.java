@@ -44,26 +44,35 @@ public class LagreTilTpsServiceTest {
     private static final String UTVANDRING_MLD = "Innvandring";
     private static final Long GRUPPE_ID = 1337L;
     private static final String melding1 = "11111111111111";
-    List<SendSkdMeldingTilTpsResponse> innvandringResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> updateInnvadringResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> foedselsmeldingResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> relasjonsResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> doedsmeldingResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> vergemaalsresponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> utvandringsResponse = new ArrayList<>();
+
+    private List<SendSkdMeldingTilTpsResponse> innvandringResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> updateInnvadringResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> foedselsmeldingResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> relasjonsResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> doedsmeldingResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> vergemaalsresponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> utvandringsResponse = new ArrayList<>();
 
     @Mock
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
+
     @Mock
     private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+
     @Mock
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
+
     @Mock
     private FindGruppeById findGruppeByIdMock;
+
     @Mock
     private SkdMeldingSender skdMeldingSender;
+
     @Mock
     private UppercaseDataInPerson uppercaseDataInPerson;
+
+    @Mock
+    private TknrOgGtFraMiljoService tknrOgGtFraMiljoService;
 
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;
