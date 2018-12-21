@@ -3,12 +3,12 @@ package no.nav.tps.forvalteren.repository.jpa;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingProvider.aSkdEndringsmelding;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
@@ -93,7 +93,7 @@ public class SkdEndringsmeldingRepositoryComponentTest {
 
         Page<SkdEndringsmelding> result = repository.findAllByGruppe(skdEndringsmelding.getGruppe(), new PageRequest(0, 10));
 
-        assertEquals(3, result.getTotalElements());
+        assertThat(result.getTotalElements(), equalTo(3L));
         assertThat(result.getContent(), hasItems(storedSkdEndringsmelding1, storedSkdEndringsmelding2, storedSkdEndringsmelding3));
     }
 
