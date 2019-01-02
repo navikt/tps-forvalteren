@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -16,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,9 +22,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageImpl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
@@ -84,9 +84,9 @@ public class SkdEndringsmeldingServiceTest {
 
         verify(gruppeRepository).findById(gruppeId);
         verify(skdEndringsmeldingRepository).findAllByGruppe(eq(gruppe), any());
-        assertEquals(2, endringsmeldinger.size());
-        assertEquals(MELDINGS_ID_1, endringsmeldinger.get(0).getId());
-        assertEquals(MELDINGS_ID_2, endringsmeldinger.get(1).getId());
+        assertThat(endringsmeldinger.size(), is(equalTo(2)));
+        assertThat(endringsmeldinger.get(0).getId(), is(equalTo(MELDINGS_ID_1)));
+        assertThat(endringsmeldinger.get(1).getId(), is(equalTo(MELDINGS_ID_2)));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class SkdEndringsmeldingServiceTest {
         final Set<String> actualFoedselsnumre = skdEndringsmeldingService.filtrerIdenterPaaAarsakskodeOgTransaksjonstype(gruppeId, aarsakskoder, transaksjonstype);
 
         verify(gruppeRepository).findById(gruppeId);
-        assertEquals(1, actualFoedselsnumre.size());
+        assertThat(actualFoedselsnumre.size(), is(equalTo(1)));
         assertTrue(actualFoedselsnumre.contains(expectedFoedselsnummer));
     }
 
