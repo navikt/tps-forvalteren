@@ -39,6 +39,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFr
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromTextService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromTypeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppeService;
+import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingToTpsService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingsgruppeService;
@@ -87,6 +88,9 @@ public class SkdEndringsmeldingControllerTest {
     @Mock
     private List<RsMeldingstype> rsMeldinger;
 
+    @Mock
+    private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
+
     @Test
     public void getGrupperReturnsAllGrupper() {
         when(rsGrupper.size()).thenReturn(1337);
@@ -127,13 +131,54 @@ public class SkdEndringsmeldingControllerTest {
         Long meldingsId2 = 2468L;
         Long gruppeId = 123L;
         List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger(meldingsId1, meldingsId2);
+        List<RsMeldingstype> rsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1, meldingsId2);
 
         when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(eq(gruppeId), anyInt())).thenReturn(skdEndringsmeldinger);
+        when(skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger)).thenReturn(rsMeldingstypeMeldinger);
 
         List<RsMeldingstype> meldinger = skdEndringsmeldingController.getGruppePaginert(gruppeId, 0);
 
         assertThat(meldinger.get(0).getId(), is(meldingsId1));
         assertThat(meldinger.get(1).getId(), is(meldingsId2));
+    }
+
+    @Test
+    public void klonAvspillergruppeShouldCreateCloneOfOriginalGruppe() throws IOException {
+        String newName = "Some name";
+        Long meldingsId1 = 1234L;
+        Long meldingsId2 = 2468L;
+        SkdEndringsmeldingGruppe originalGruppe = aSkdEndringsmeldingGruppe().id(1337L).build();
+        List<SkdEndringsmelding> originalSkdEndringsmeldingerPage1 = createSkdMeldinger(meldingsId1, meldingsId2);
+        List<RsMeldingstype> originalRsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1, meldingsId2);
+        originalGruppe.setSkdEndringsmeldinger(originalSkdEndringsmeldingerPage1);
+
+        RsSkdEndringsmeldingGruppe newRsSkdEndringsmeldingGruppe = new RsSkdEndringsmeldingGruppe();
+        newRsSkdEndringsmeldingGruppe.setBeskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId());
+        newRsSkdEndringsmeldingGruppe.setNavn(newName);
+
+        SkdEndringsmeldingGruppe newSkdEndringsmeldingGruppe = SkdEndringsmeldingGruppe.builder()
+                .id(1338L)
+                .beskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId())
+                .navn(newName)
+                .skdEndringsmeldinger(originalSkdEndringsmeldingerPage1).build();
+
+        when(skdEndringsmeldingsgruppeService.findGruppeById(originalGruppe.getId())).thenReturn(originalGruppe);
+        when(skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(any(), any())).thenReturn(newRsSkdEndringsmeldingGruppe);
+        when(mapper.map(any(), eq(SkdEndringsmeldingGruppe.class))).thenReturn(newSkdEndringsmeldingGruppe);
+        when(skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe)).thenReturn(originalGruppe.getSkdEndringsmeldinger().size());
+        when(skdEndringsmeldingService.getAntallSiderIGruppe(originalGruppe.getSkdEndringsmeldinger().size())).thenReturn(1);
+        when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(originalGruppe.getId(), 0)).thenReturn(originalSkdEndringsmeldingerPage1);
+        when(skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(any())).thenReturn(originalRsMeldingstypeMeldinger);
+
+        skdEndringsmeldingController.klonAvspillergruppe(originalGruppe.getId(), newName);
+
+        verify(skdEndringsmeldingsgruppeService).findGruppeById(originalGruppe.getId());
+        verify(skdEndringsmeldingService).countMeldingerByGruppe(originalGruppe);
+        verify(skdEndringsmeldingService).getAntallSiderIGruppe(originalGruppe.getSkdEndringsmeldinger().size());
+        verify(skdEndringsmeldingService).findSkdEndringsmeldingerOnPage(originalGruppe.getId(), 0);
+        verify(skdEndringsmeldingService).convertSkdEndringsmeldingerToRsMeldingstyper(any());
+        verify(skdEndringsmeldingsgruppeService).save(newSkdEndringsmeldingGruppe);
+        verify(saveSkdEndringsmeldingerService).save(any(), eq(newSkdEndringsmeldingGruppe.getId()));
     }
 
     @Test
@@ -240,5 +285,14 @@ public class SkdEndringsmeldingControllerTest {
         return Arrays.asList(
                 SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build(),
                 SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build());
+    }
+
+    private List<RsMeldingstype> createRsMeldingstypeMeldinger(Long meldingsId1, Long meldingsId2) {
+        List<RsMeldingstype> meldinger = new ArrayList<>();
+        meldinger.add(RsMeldingstype1Felter.builder().build());
+        meldinger.add(RsMeldingstype1Felter.builder().build());
+        meldinger.get(0).setId(meldingsId1);
+        meldinger.get(1).setId(meldingsId2);
+        return meldinger;
     }
 }

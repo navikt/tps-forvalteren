@@ -1,12 +1,15 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +22,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageImpl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
+import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
@@ -36,6 +43,12 @@ public class SkdEndringsmeldingServiceTest {
     @Mock
     private SkdEndringsmeldingGruppeRepository gruppeRepository;
 
+    @Mock
+    private ObjectMapper objectMapperMock;
+
+    private static final Long MELDINGS_ID_1 = 1234L;
+    private static final Long MELDINGS_ID_2 = 2468L;
+
     @Test
     public void verifyRepositoryCall() {
         ArrayList<Long> skdendringsmeldingIds = new ArrayList<>();
@@ -44,16 +57,22 @@ public class SkdEndringsmeldingServiceTest {
     }
 
     @Test
+    public void shouldGetCorrectNumberOfPagesGivenAntallMeldingerIGruppe() {
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(0), is(0));
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(10), is(1));
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(11), is(2));
+        assertThat(skdEndringsmeldingService.getAntallSiderIGruppe(29), is(3));
+    }
+
+    @Test
     public void shouldFindSkdEndringsmeldingOnPage() {
         long gruppeId = 123L;
-        Long meldingsId1 = 1234L;
-        Long meldingsId2 = 2468L;
 
         SkdEndringsmeldingGruppe gruppe = SkdEndringsmeldingGruppe.builder().id(gruppeId).build();
 
         List<SkdEndringsmelding> skdEndringsmeldinger = Arrays.asList(
-                SkdEndringsmelding.builder().id(meldingsId1).build(),
-                SkdEndringsmelding.builder().id(meldingsId2).build());
+                SkdEndringsmelding.builder().id(MELDINGS_ID_1).build(),
+                SkdEndringsmelding.builder().id(MELDINGS_ID_2).build());
 
         PageImpl<SkdEndringsmelding> page = new PageImpl<>(skdEndringsmeldinger);
 
@@ -65,9 +84,27 @@ public class SkdEndringsmeldingServiceTest {
 
         verify(gruppeRepository).findById(gruppeId);
         verify(skdEndringsmeldingRepository).findAllByGruppe(eq(gruppe), any());
-        assertEquals(2, endringsmeldinger.size());
-        assertEquals(meldingsId1, endringsmeldinger.get(0).getId());
-        assertEquals(meldingsId2, endringsmeldinger.get(1).getId());
+        assertThat(endringsmeldinger.size(), is(equalTo(2)));
+        assertThat(endringsmeldinger.get(0).getId(), is(equalTo(MELDINGS_ID_1)));
+        assertThat(endringsmeldinger.get(1).getId(), is(equalTo(MELDINGS_ID_2)));
+    }
+
+    @Test
+    public void shouldConvertSkdEndringsmeldingerToRsMeldingstyper() throws IOException {
+        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger(MELDINGS_ID_1, MELDINGS_ID_2);
+
+        RsMeldingstype1Felter rsMeldingstype1Felter1 = RsMeldingstype1Felter.builder().build();
+        rsMeldingstype1Felter1.setId(MELDINGS_ID_1);
+        RsMeldingstype1Felter rsMeldingstype1Felter2 = RsMeldingstype1Felter.builder().build();
+        rsMeldingstype1Felter2.setId(MELDINGS_ID_2);
+
+        when(objectMapperMock.readValue(eq(skdEndringsmeldinger.get(0).getEndringsmelding()), eq(RsMeldingstype.class))).thenReturn(rsMeldingstype1Felter1);
+        when(objectMapperMock.readValue(eq(skdEndringsmeldinger.get(1).getEndringsmelding()), eq(RsMeldingstype.class))).thenReturn(rsMeldingstype1Felter2);
+
+        List<RsMeldingstype> meldinger = skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
+
+        assertThat(meldinger.get(0).getId(), is(equalTo(MELDINGS_ID_1)));
+        assertThat(meldinger.get(1).getId(), is(equalTo(MELDINGS_ID_2)));
     }
 
     @Test
@@ -86,7 +123,13 @@ public class SkdEndringsmeldingServiceTest {
         final Set<String> actualFoedselsnumre = skdEndringsmeldingService.filtrerIdenterPaaAarsakskodeOgTransaksjonstype(gruppeId, aarsakskoder, transaksjonstype);
 
         verify(gruppeRepository).findById(gruppeId);
-        assertEquals(1, actualFoedselsnumre.size());
+        assertThat(actualFoedselsnumre.size(), is(equalTo(1)));
         assertTrue(actualFoedselsnumre.contains(expectedFoedselsnummer));
+    }
+
+    private List<SkdEndringsmelding> createSkdMeldinger(Long meldingsId1, Long meldingsId2) {
+        return Arrays.asList(
+                SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build(),
+                SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build());
     }
 }
