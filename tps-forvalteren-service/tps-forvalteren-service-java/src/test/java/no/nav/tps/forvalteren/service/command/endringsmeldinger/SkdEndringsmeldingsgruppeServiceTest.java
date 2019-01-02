@@ -18,8 +18,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype1Felter;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 
@@ -76,22 +74,12 @@ public class SkdEndringsmeldingsgruppeServiceTest {
 
     @Test
     public void konfigurerKlonAvGruppeShouldSetupCorrectly() {
-        Long meldingsId1 = 1234L;
         SkdEndringsmeldingGruppe originalGruppe = aSkdEndringsmeldingGruppe().id(1337L).build();
         String nyttNavn = "Some name";
-        List<RsMeldingstype> originalRsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1);
 
-        RsSkdEndringsmeldingGruppe newGruppe = skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(originalGruppe, nyttNavn, originalRsMeldingstypeMeldinger);
+        RsSkdEndringsmeldingGruppe newGruppe = skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(originalGruppe, nyttNavn);
 
-        assertThat(newGruppe.getBeskrivelse(), equalTo("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId()));
-        assertThat(newGruppe.getNavn(), equalTo("Some name"));
-        assertThat(newGruppe.getMeldinger(), equalTo(originalRsMeldingstypeMeldinger));
-    }
-
-    private List<RsMeldingstype> createRsMeldingstypeMeldinger(Long meldingsId1) {
-        List<RsMeldingstype> meldinger = new ArrayList<>();
-        meldinger.add(RsMeldingstype1Felter.builder().build());
-        meldinger.get(0).setId(meldingsId1);
-        return meldinger;
+        assertThat(newGruppe.getBeskrivelse(), is(equalTo("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId())));
+        assertThat(newGruppe.getNavn(), is(equalTo("Some name")));
     }
 }

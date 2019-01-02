@@ -32,6 +32,9 @@ public class SkdEndringsmeldingService {
     @Autowired
     private SkdEndringsmeldingGruppeRepository gruppeRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     public int countMeldingerByGruppe(SkdEndringsmeldingGruppe gruppe) {
         return skdEndringsmeldingRepository.countByGruppe(gruppe);
     }
@@ -47,7 +50,6 @@ public class SkdEndringsmeldingService {
 
     public List<RsMeldingstype> convertSkdEndringsmeldingerToRsMeldingstyper(List<SkdEndringsmelding> skdEndringsmeldinger) throws IOException {
         List<RsMeldingstype> rsMeldingstypeMeldinger = new ArrayList<>(skdEndringsmeldinger.size());
-        ObjectMapper objectMapper = new ObjectMapper();
 
         for (SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {
             rsMeldingstypeMeldinger.add(objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class));

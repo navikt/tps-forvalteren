@@ -4,7 +4,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERAT
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -130,23 +129,22 @@ public class SkdEndringsmeldingController {
     public void klonAvspillergruppe(@PathVariable("originalGruppeId") Long originalGruppeId, @RequestBody String nyttNavn) throws IOException {
         SkdEndringsmeldingGruppe originalGruppe = skdEndringsmeldingsgruppeService.findGruppeById(originalGruppeId);
 
-        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe);
-        int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
-        List<SkdEndringsmelding> skdEndringsmeldinger = new ArrayList<>(antallMeldingerIAvspillergruppe);
-
-        for (int i = 0; i < antallSiderIAvspillergruppe; i++) {
-            skdEndringsmeldinger.addAll(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(originalGruppeId, i));
-        }
-
-        List<RsMeldingstype> meldinger = skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
-        meldinger.forEach(rsMeldingstype -> rsMeldingstype.setId(null));
-
-        RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe = skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(originalGruppe, nyttNavn, meldinger);
-
+        RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe = skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(originalGruppe, nyttNavn);
         SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = mapper.map(rsSkdEndringsmeldingGruppe, SkdEndringsmeldingGruppe.class);
 
         skdEndringsmeldingsgruppeService.save(skdEndringsmeldingGruppe);
-        saveSkdEndringsmeldingerService.save(meldinger, skdEndringsmeldingGruppe.getId());
+
+        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe);
+        int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
+
+        for (int i = 0; i < antallSiderIAvspillergruppe; i++) {
+            List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(originalGruppeId, i);
+
+            List<RsMeldingstype> meldinger = skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
+            meldinger.forEach(rsMeldingstype -> rsMeldingstype.setId(null));
+
+            saveSkdEndringsmeldingerService.save(meldinger, skdEndringsmeldingGruppe.getId());
+        }
     }
 
     @LogExceptions

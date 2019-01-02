@@ -152,18 +152,23 @@ public class SkdEndringsmeldingControllerTest {
         List<RsMeldingstype> originalRsMeldingstypeMeldinger = createRsMeldingstypeMeldinger(meldingsId1, meldingsId2);
         originalGruppe.setSkdEndringsmeldinger(originalSkdEndringsmeldingerPage1);
 
-        SkdEndringsmeldingGruppe newGruppe = SkdEndringsmeldingGruppe.builder()
+        RsSkdEndringsmeldingGruppe newRsSkdEndringsmeldingGruppe = new RsSkdEndringsmeldingGruppe();
+        newRsSkdEndringsmeldingGruppe.setBeskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId());
+        newRsSkdEndringsmeldingGruppe.setNavn(newName);
+
+        SkdEndringsmeldingGruppe newSkdEndringsmeldingGruppe = SkdEndringsmeldingGruppe.builder()
                 .id(1338L)
                 .beskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId())
                 .navn(newName)
                 .skdEndringsmeldinger(originalSkdEndringsmeldingerPage1).build();
 
         when(skdEndringsmeldingsgruppeService.findGruppeById(originalGruppe.getId())).thenReturn(originalGruppe);
+        when(skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(any(), any())).thenReturn(newRsSkdEndringsmeldingGruppe);
+        when(mapper.map(any(), eq(SkdEndringsmeldingGruppe.class))).thenReturn(newSkdEndringsmeldingGruppe);
         when(skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe)).thenReturn(originalGruppe.getSkdEndringsmeldinger().size());
         when(skdEndringsmeldingService.getAntallSiderIGruppe(originalGruppe.getSkdEndringsmeldinger().size())).thenReturn(1);
         when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(originalGruppe.getId(), 0)).thenReturn(originalSkdEndringsmeldingerPage1);
         when(skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(any())).thenReturn(originalRsMeldingstypeMeldinger);
-        when(mapper.map(any(), eq(SkdEndringsmeldingGruppe.class))).thenReturn(newGruppe);
 
         skdEndringsmeldingController.klonAvspillergruppe(originalGruppe.getId(), newName);
 
@@ -172,8 +177,8 @@ public class SkdEndringsmeldingControllerTest {
         verify(skdEndringsmeldingService).getAntallSiderIGruppe(originalGruppe.getSkdEndringsmeldinger().size());
         verify(skdEndringsmeldingService).findSkdEndringsmeldingerOnPage(originalGruppe.getId(), 0);
         verify(skdEndringsmeldingService).convertSkdEndringsmeldingerToRsMeldingstyper(any());
-        verify(skdEndringsmeldingsgruppeService).save(newGruppe);
-        verify(saveSkdEndringsmeldingerService).save(any(), eq(newGruppe.getId()));
+        verify(skdEndringsmeldingsgruppeService).save(newSkdEndringsmeldingGruppe);
+        verify(saveSkdEndringsmeldingerService).save(any(), eq(newSkdEndringsmeldingGruppe.getId()));
     }
 
     @Test

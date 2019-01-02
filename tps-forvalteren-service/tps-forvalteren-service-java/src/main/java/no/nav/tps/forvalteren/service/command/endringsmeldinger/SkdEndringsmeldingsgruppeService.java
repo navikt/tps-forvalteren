@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
-import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 
@@ -35,11 +34,10 @@ public class SkdEndringsmeldingsgruppeService {
         return grupper;
     }
 
-    public RsSkdEndringsmeldingGruppe konfigurerKlonAvGruppe(SkdEndringsmeldingGruppe originalGruppe, String nyttNavn, List<RsMeldingstype> meldinger) {
-        RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe = new RsSkdEndringsmeldingGruppe();
-        rsSkdEndringsmeldingGruppe.setBeskrivelse("Klon av gruppe " + originalGruppe.getNavn() + " med id " + originalGruppe.getId());
-        rsSkdEndringsmeldingGruppe.setNavn(nyttNavn);
-        rsSkdEndringsmeldingGruppe.setMeldinger(meldinger);
-        return rsSkdEndringsmeldingGruppe;
+    public RsSkdEndringsmeldingGruppe konfigurerKlonAvGruppe(SkdEndringsmeldingGruppe originalGruppe, String nyttNavn) {
+        return RsSkdEndringsmeldingGruppe.builder()
+                .beskrivelse(String.format("Klon av gruppe %s med id %d", originalGruppe.getNavn(), originalGruppe.getId()))
+                .navn(nyttNavn)
+                .build();
     }
 }
