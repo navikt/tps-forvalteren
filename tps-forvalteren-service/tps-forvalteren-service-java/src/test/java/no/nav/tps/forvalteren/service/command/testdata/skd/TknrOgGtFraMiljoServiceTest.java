@@ -112,15 +112,18 @@ public class TknrOgGtFraMiljoServiceTest {
 
         Map bruker = new HashMap();
         bruker.put("regelForGeografiskTilknytning", GT_REGEL);
+
         Map geografiskTilknytning = new HashMap();
         geografiskTilknytning.put("landKode", landkode);
         geografiskTilknytning.put("kommunenr", kommuneNr);
         geografiskTilknytning.put("bydel", bydel);
         bruker.put("geografiskTilknytning", geografiskTilknytning);
+
         Map fullBostedsAdresse = new HashMap();
         fullBostedsAdresse.put("tknr", tknr);
         Map bostedsAdresse = new HashMap();
         bostedsAdresse.put("fullBostedsAdresse", fullBostedsAdresse);
+
         Map data = new HashMap();
         data.put("bostedsAdresse", bostedsAdresse);
         data.put("bruker", bruker);
