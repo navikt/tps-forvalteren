@@ -79,9 +79,9 @@ public class TknrOgGtFraMiljoService {
 
     private String getGtVerdi(TpsServiceRoutineResponse response) {
         Map<String, Object> geoTilknytning = (Map) getBruker(response).get(GEO_TILKNYT);
-        for (String key : geoTilknytning.keySet()) {
-            if (isNotBlank((String) geoTilknytning.get(key))) {
-                return (String) geoTilknytning.get(key);
+        for (Map.Entry<String, Object> entry : geoTilknytning.entrySet()) {
+            if (isNotBlank((String) entry.getValue())) {
+                return (String) entry.getValue();
             }
         }
         return null;
