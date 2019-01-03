@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -65,7 +66,7 @@ public class OpprettPersonMedEksisterendeForeldreServiceTest {
                 .foedselsdato(LocalDateTime.now())
                 .identMor(IDENT_MOR)
                 .identFar(IDENT_FAR)
-                .miljoer(Arrays.asList("u6"))
+                .miljoer(newHashSet("u6"))
                 .build();
 
         Person result = opprettPersonService.execute(rsTpsFoedselsmeldingRequest);

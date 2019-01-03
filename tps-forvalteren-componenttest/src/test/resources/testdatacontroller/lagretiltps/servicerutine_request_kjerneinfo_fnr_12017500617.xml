@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tpsPersonData xmlns="http://www.rtv.no/NamespaceTPS">
+    <tpsServiceRutine>
+        <serviceRutinenavn>FS03-FDNUMMER-KERNINFO-O</serviceRutinenavn>
+        <aksjonsDato/>
+        <aksjonsKode>B</aksjonsKode>
+        <aksjonsKode2>0</aksjonsKode2>
+        <fnr>12017500617</fnr>
+    </tpsServiceRutine>
+</tpsPersonData>

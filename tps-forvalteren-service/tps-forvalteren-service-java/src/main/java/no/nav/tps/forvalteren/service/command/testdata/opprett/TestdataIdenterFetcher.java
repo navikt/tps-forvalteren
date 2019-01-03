@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,9 @@ import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestE
 @Service
 public class TestdataIdenterFetcher {
 
-    private static final int MAX_TRIES = 40;
     private static final Logger LOGGER = LoggerFactory.getLogger(TestdataIdenterFetcher.class);
+    private static final int MAX_TRIES = 40;
+    private static final String PRODLIKE_ENV = "q0";
 
     @Autowired
     private FiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtIdenterSomAlleredeFinnesIMiljoe;
@@ -42,7 +44,7 @@ public class TestdataIdenterFetcher {
         return testdataRequests;
     }
 
-    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenterFlereMiljoer(RsPersonKriteriumRequest personKriterierListe, List<String> miljoer) {
+    public List<TestdataRequest> getTestdataRequestsInnholdeneTilgjengeligeIdenterFlereMiljoer(RsPersonKriteriumRequest personKriterierListe, Set<String> miljoer) {
         List<TestdataRequest> testdataRequests = lagTestdatarequester(personKriterierListe, miljoer);
 
         if (!erAlleKriteriaOppfylt(testdataRequests)) {
@@ -52,9 +54,12 @@ public class TestdataIdenterFetcher {
         return testdataRequests;
     }
 
-    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe, List<String> environments){
+    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe, Set<String> environments){
         List<TestdataRequest> testdataRequests = genererIdenterForTestdataRequests.execute(personKriterierListe);
 
+        if (environments != null) {
+            environments.add(PRODLIKE_ENV);
+        }
         filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests, environments);
 
         filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
@@ -64,7 +69,7 @@ public class TestdataIdenterFetcher {
         return testdataRequests;
     }
 
-    private void oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(List<TestdataRequest> testdataRequests, boolean alleMiljoer, List<String> miljoer) {
+    private void oppdaterTestdataRequestsMedIdenterTilManglendeKriterier(List<TestdataRequest> testdataRequests, boolean alleMiljoer, Set<String> miljoer) {
         for (TestdataRequest request : testdataRequests) {
             if (!harNokIdenterForKritereIRequest(request)) {
                 int counter = 0;
@@ -76,6 +81,7 @@ public class TestdataIdenterFetcher {
                     List<TestdataRequest> testdataRequestSingleList = genererIdenterForTestdataRequests.execute(singelKriterieListe);
 
                     if(alleMiljoer){
+                        miljoer.add(PRODLIKE_ENV);
                         filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequestSingleList, miljoer);
                     } else {
                         filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotProdliktMiljoe(testdataRequestSingleList);

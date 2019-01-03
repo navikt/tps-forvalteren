@@ -83,9 +83,9 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                 .andExpect(status().isOk());
 
         verify(messageQueueConsumer, times(ENV_SET.size())).sendMessage(
-                removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
+                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
         verify(messageQueueConsumer).sendMessage(eq(
-                removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());
+                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());
 
         TestTransaction.start(); //Start transaksjon pga. lazy fetch i kall fra databasen
         assertCreatedTestdataInDatabase();
@@ -98,9 +98,9 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     }
 
     private void mockTps() throws JMSException {
-        when(messageQueueConsumer.sendMessage(eq(removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml"))), anyLong()))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml"))), anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_response.xml"));
-        when(messageQueueConsumer.sendMessage(eq(removeNewLineAndTab(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong()))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_response.xml"));
     }
 

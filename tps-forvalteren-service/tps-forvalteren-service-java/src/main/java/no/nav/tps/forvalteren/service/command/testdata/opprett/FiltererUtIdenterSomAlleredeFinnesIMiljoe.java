@@ -1,11 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static com.google.common.collect.Sets.newHashSet;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
@@ -25,16 +26,16 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         // Environment PRODLIKE only verified for existence
-        Set<String> environments = Sets.newHashSet(PRODLIKE_ENV);
+        Set<String> environments = newHashSet(PRODLIKE_ENV);
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter, environments);
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 
-    public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests, List<String> miljoer) {
+    public void executeMotAlleMiljoer(List<TestdataRequest> testdataRequests, Set<String> miljoer) {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter,
-                miljoer != null ? Sets.newHashSet(miljoer) : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
+                miljoer != null ? miljoer : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 
