@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -24,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.collect.Sets;
 import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
@@ -34,7 +34,7 @@ import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 @ActiveProfiles("comptest")
 public abstract class AbstractRsProviderComponentTest {
 
-    protected static final Set ENV_SET = Sets.newHashSet("t0", "t1", "t2", "t3", "q0");
+    protected static final Set ENV_SET = newHashSet("t0", "t1", "t2", "t3");
     
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -70,8 +70,8 @@ public abstract class AbstractRsProviderComponentTest {
             throw new RuntimeException(e);
         }
     }
-    protected String removeNewLineAndTab(String text) {
-        return text.replace("\n", "").replace("\r", "").replace("\t","");
+    protected String removeWhitespaceBetweenTags(String text) {
+        return text.replaceAll(">\\s+<", "><");
     }
     protected static String convertObjectToJson(Object object) throws IOException {
         return MAPPER.writeValueAsString(object);

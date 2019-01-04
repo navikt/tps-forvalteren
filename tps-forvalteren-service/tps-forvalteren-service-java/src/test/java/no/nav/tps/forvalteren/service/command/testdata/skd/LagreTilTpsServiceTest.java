@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,26 +43,35 @@ public class LagreTilTpsServiceTest {
     private static final String UTVANDRING_MLD = "Innvandring";
     private static final Long GRUPPE_ID = 1337L;
     private static final String melding1 = "11111111111111";
-    List<SendSkdMeldingTilTpsResponse> innvandringResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> updateInnvadringResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> foedselsmeldingResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> relasjonsResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> doedsmeldingResponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> vergemaalsresponse = new ArrayList<>();
-    List<SendSkdMeldingTilTpsResponse> utvandringsResponse = new ArrayList<>();
+
+    private List<SendSkdMeldingTilTpsResponse> innvandringResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> updateInnvadringResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> foedselsmeldingResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> relasjonsResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> doedsmeldingResponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> vergemaalsresponse = new ArrayList<>();
+    private List<SendSkdMeldingTilTpsResponse> utvandringsResponse = new ArrayList<>();
 
     @Mock
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
+
     @Mock
     private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+
     @Mock
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
+
     @Mock
     private FindGruppeById findGruppeByIdMock;
+
     @Mock
     private SkdMeldingSender skdMeldingSender;
+
     @Mock
     private UppercaseDataInPerson uppercaseDataInPerson;
+
+    @Mock
+    private TknrOgGtFraMiljoService tknrOgGtFraMiljoService;
 
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;
@@ -72,7 +80,6 @@ public class LagreTilTpsServiceTest {
     private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
     private Person person = aMalePerson().build();
     private Set<String> environments = Sets.newHashSet("u2", "env", "env2");
-    private List<SkdMeldingTrans1> innvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).fodselsdato("110218").personnummer("12345").build());
 
     private Map<String, String> expectedStatus = new HashMap<>();
     private Map<String, String> tpsResponseStatus = new HashMap<>();
@@ -145,11 +152,11 @@ public class LagreTilTpsServiceTest {
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(2).getPersonId(), is("3"));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(3).getPersonId(), is("4"));
 
-        assertEquals(map, actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus());
-        assertEquals(Arrays.asList(INNVANDRING_MLD, FOEDSELS_MLD, RELASJON_MLD, UTVANDRING_MLD),
-                actualResponse.getSendSkdMeldingTilTpsResponsene()
+        assertThat(map, is(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus()));
+        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, RELASJON_MLD, UTVANDRING_MLD),
+                is(actualResponse.getSendSkdMeldingTilTpsResponsene()
                         .stream()
                         .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList())));
     }
 }

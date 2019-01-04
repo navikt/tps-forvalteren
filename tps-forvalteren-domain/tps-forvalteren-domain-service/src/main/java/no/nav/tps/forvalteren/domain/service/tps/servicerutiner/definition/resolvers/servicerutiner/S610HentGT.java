@@ -14,11 +14,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.res
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class S610HentGT implements ServiceRoutineResolver{
+    public static final String PERSON_KERNINFO_SERVICE_ROUTINE = "FS03-FDNUMMER-KERNINFO-O";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("FS03-FDNUMMER-KERNINFO-O")
+                .name(PERSON_KERNINFO_SERVICE_ROUTINE)
                 .internalName("Hent kjerneinfo")
                 .javaClass(TpsServiceRoutineHentByFnrRequest.class)
                 .config()

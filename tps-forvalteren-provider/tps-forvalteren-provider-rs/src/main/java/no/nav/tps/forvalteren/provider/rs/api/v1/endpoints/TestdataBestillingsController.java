@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -71,7 +71,7 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
     public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestBody RsIdenterMiljoer tpsRequest) {
         List<Person> personer = findPersonerByIdIn.execute(tpsRequest.getIdenter());
-        return lagreTilTps.execute(personer, Sets.newHashSet(tpsRequest.getMiljoer()));
+        return lagreTilTps.execute(personer, newHashSet(tpsRequest.getMiljoer()));
     }
 
     @LogExceptions

@@ -105,4 +105,12 @@ public class RsPerson {
     private String sprakKode;
 
     private LocalDateTime datoSprak;
+
+    private String tknr;
+
+    private String gtType;
+
+    private String gtVerdi;
+
+    private String gtRegel;
 }

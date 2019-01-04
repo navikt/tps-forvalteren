@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.BNR;
@@ -15,7 +16,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +24,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -92,7 +91,7 @@ public class SendTpsFoedselsmeldingServiceTest {
 
         rsTpsFoedselsmeldingRequest = RsTpsFoedselsmeldingRequest.builder()
                 .foedselsdato(LocalDateTime.now())
-                .miljoer(Arrays.asList("u5"))
+                .miljoer(newHashSet("u5"))
                 .build();
 
         expectedException.expect(TpsfFunctionalException.class);
@@ -108,7 +107,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .foedselsdato(LocalDateTime.now())
                 .identMor(IDENT_MOR)
                 .identtype(FNR)
-                .miljoer(Arrays.asList("u5"))
+                .miljoer(newHashSet("u5"))
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
@@ -126,7 +125,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .identFar(IDENT_FAR)
                 .identtype(DNR)
                 .adresseFra(FAR)
-                .miljoer(Arrays.asList("u6"))
+                .miljoer(newHashSet("u6"))
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
@@ -143,7 +142,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .identMor(IDENT_MOR)
                 .adresseFra(FAR)
                 .identtype(BNR)
-                .miljoer(Arrays.asList("u5"))
+                .miljoer(newHashSet("u5"))
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
@@ -162,7 +161,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .adresseFra(MOR)
                 .foedselsdato(LocalDateTime.now())
                 .identtype(FNR)
-                .miljoer(Lists.newArrayList("u27"))
+                .miljoer(newHashSet("u27"))
                 .build();
 
         when(personhistorikkService.hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString()))

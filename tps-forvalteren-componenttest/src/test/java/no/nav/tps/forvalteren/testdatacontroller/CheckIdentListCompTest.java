@@ -80,7 +80,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .andExpect(status().isOk()).andReturn();
         
         verify(messageQueueConsumer, times(fasitRegistrerteEnvMedTps.size())).sendMessage(
-                removeNewLineAndTab(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
+                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
         
         assertResponse(expectedResponse, mvcResult);
     }

@@ -29,36 +29,34 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 public class FiltrerPaaIdenterTilgjengeligIMiljo {
 
     public static final int MAX_ANTALL_IDENTER_PER_REQUEST = 80; // Service routine M201 maximum
-    private static final String PRODLIKE_ENV = "q0";
     private static final String TPS_SYSTEM_ERROR_CODE = "12";
-    
+
     @Autowired
     private UserContextHolder userContextHolder;
-    
+
     @Autowired
     private TpsRequestSender tpsRequestSender;
-    
+
     @Autowired
     private RsTpsRequestMappingUtils mappingUtils;
-    
+
     public Set<String> filtrer(Collection<String> identer, Set<String> environments) {
 
-        environments.add(PRODLIKE_ENV);
         if (identer.size() <= MAX_ANTALL_IDENTER_PER_REQUEST) {
             return filtrerPaaIdenter(identer, environments);
-            
+
         } else {
             Set<String> tilgjengeligeIdenter = new HashSet<>();
             List<String> identerListe = new ArrayList<>(identer);
             int batchStart = 0;
             while (batchStart < identer.size()) {
                 tilgjengeligeIdenter.addAll(hentEnBatchTilgjengeligeIdenter(batchStart, identerListe, environments));
-                batchStart+= MAX_ANTALL_IDENTER_PER_REQUEST;
+                batchStart += MAX_ANTALL_IDENTER_PER_REQUEST;
             }
             return tilgjengeligeIdenter;
         }
     }
-    
+
     private Set<String> hentEnBatchTilgjengeligeIdenter(int batchStart, List<String> identer, Set<String> environments) {
         int batchStop = (identer.size() <= batchStart + MAX_ANTALL_IDENTER_PER_REQUEST)
                 ? identer.size() : (batchStart + MAX_ANTALL_IDENTER_PER_REQUEST);
@@ -67,23 +65,23 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
     }
 
     private Set<String> filtrerPaaIdenter(Collection<String> identer, Set<String> environments) {
-        
+
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
-        
+
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        
+
         Set<String> tilgjengeligeIdenterAlleMiljoer = newHashSet((Collection<String>) tpsRequestParameters.get("fnr"));
-        
+
         for (String miljoe : environments) {
             context.setEnvironment(miljoe);
-            
+
             TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
                     .get("serviceRutinenavn")), tpsRequestParameters);
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
-            
+
             checkForTpsSystemfeil(tpsResponse, miljoe);
-            
+
             Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse);
 
             tilgjengeligeIdenterAlleMiljoer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
@@ -94,14 +92,14 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
         }
         return tilgjengeligeIdenterAlleMiljoer;
     }
-    
+
     private void checkForTpsSystemfeil(TpsServiceRoutineResponse response, String miljoe) {
         if (response.getXml().isEmpty()) {
             log.error("Request mot TPS i miljoe {} fikk timeout.  Sjekk av tilgjengelighet på ident i miljoe feilet.", miljoe);
         }
         LinkedHashMap rep = (LinkedHashMap) response.getResponse();
         ResponseStatus status = (ResponseStatus) rep.get("status");
-        
+
         if (TPS_SYSTEM_ERROR_CODE.equals(status.getKode())) {
             log.error("TPS returnerte SYSTEM ERROR");
             throw new TpsfTechnicalException("TPS returnerte SYSTEM ERROR");

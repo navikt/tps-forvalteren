@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.domain.rs.dolly;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -24,7 +25,7 @@ import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 @AllArgsConstructor
 public class RsPersonBestillingKriteriumRequest {
 
-    private List<String> environments;
+    private Set<String> environments;
 
     @NotBlank
     @Size(min = 3, max = 3)

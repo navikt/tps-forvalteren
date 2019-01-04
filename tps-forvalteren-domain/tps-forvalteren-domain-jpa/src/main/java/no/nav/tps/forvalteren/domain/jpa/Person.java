@@ -143,6 +143,18 @@ public class Person extends ChangeStamp {
     @Column(name = "DATO_SPRAK")
     private LocalDateTime datoSprak;
 
+    @Column(name = "TKNR")
+    private String tknr;
+
+    @Column(name = "GT_TYPE")
+    private String gtType;
+
+    @Column(name = "GT_VERDI")
+    private String gtVerdi;
+
+    @Column(name = "GT_REGEL")
+    private String gtRegel;
+
     public List<Postadresse> getPostadresse() {
         if (postadresse == null) {
             postadresse = new ArrayList<>();
