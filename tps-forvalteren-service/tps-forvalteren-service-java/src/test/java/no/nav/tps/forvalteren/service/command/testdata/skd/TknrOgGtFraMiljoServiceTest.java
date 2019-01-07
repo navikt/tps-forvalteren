@@ -81,8 +81,17 @@ public class TknrOgGtFraMiljoServiceTest {
     }
 
     @Test
-    public void hentTknrOgSettPaPersonNullResult() {
+    public void hentTknrOgSettPaPersonDataNull() {
         when(response.getResponse()).thenReturn(newHashMap("data1", null));
+
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+
+        assertThat(resultat.getTknr(), is(nullValue()));
+    }
+
+    @Test
+    public void hentTknrOgSettPaPersonDataBrukerNull() {
+        when(response.getResponse()).thenReturn(newHashMap("data1", newHashMap("bruker", null)));
 
         Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
 
