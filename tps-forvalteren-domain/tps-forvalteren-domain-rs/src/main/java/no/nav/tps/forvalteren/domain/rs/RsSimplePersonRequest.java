@@ -34,4 +34,8 @@ public class RsSimplePersonRequest {
     private String spesreg;
 
     private LocalDateTime spesregDato;
+
+    private LocalDateTime egenAnsattDatoFom;
+
+    private LocalDateTime egenAnsattDatoTom;
 }

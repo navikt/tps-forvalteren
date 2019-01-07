@@ -65,6 +65,8 @@ public class PersonKriteriumMappingStrategyTest {
                         .identtype(IDENTTYPE)
                         .spesreg(SPESREG)
                         .spesregDato(TIMENOW)
+                        .egenAnsattDatoFom(TIMENOW)
+                        .egenAnsattDatoTom(TIMENOW)
                         .build(),
                 Person.class);
 
@@ -77,5 +79,7 @@ public class PersonKriteriumMappingStrategyTest {
         assertThat(person.getTypeSikkerhetsTiltak(), is(equalTo(TYPESIKKERHET)));
         assertThat(person.getSpesreg(), is(equalTo(SPESREG)));
         assertThat(person.getSpesregDato(), is(equalTo(TIMENOW)));
+        assertThat(person.getEgenAnsattDatoFom(), is(equalTo(TIMENOW)));
+        assertThat(person.getEgenAnsattDatoTom(), is(equalTo(TIMENOW)));
     }
 }

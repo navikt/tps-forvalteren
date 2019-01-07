@@ -5,10 +5,12 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RsIdenterMiljoer {
 
     @NotNull

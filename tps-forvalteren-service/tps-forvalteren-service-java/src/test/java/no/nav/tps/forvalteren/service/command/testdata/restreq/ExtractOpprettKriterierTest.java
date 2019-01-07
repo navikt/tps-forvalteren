@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -134,6 +135,7 @@ public class ExtractOpprettKriterierTest {
         List<Person> partner = singletonList(Person.builder().build());
         List<Person> barn = singletonList(Person.builder().build());
 
-        extractOpprettKriterier.addExtendedKriterumValuesToPerson(kriterier, hovedperson, partner, barn);
+        List<Person> personer = extractOpprettKriterier.addExtendedKriterumValuesToPerson(kriterier, hovedperson, partner, barn);
+        assertThat(personer, hasSize(3));
     }
 }

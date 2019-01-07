@@ -97,6 +97,8 @@ public class ExtractOpprettKriterier {
         person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
         person.setSpesreg(nullcheckSetDefaultValue(kriterier.getSpesreg(), null));
         person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), null));
+        person.setEgenAnsattDatoFom(nullcheckSetDefaultValue(kriterier.getEgenAnsattDatoFom(), null));
+        person.setEgenAnsattDatoTom(nullcheckSetDefaultValue(kriterier.getEgenAnsattDatoTom(), null));
 
         return person;
     }
