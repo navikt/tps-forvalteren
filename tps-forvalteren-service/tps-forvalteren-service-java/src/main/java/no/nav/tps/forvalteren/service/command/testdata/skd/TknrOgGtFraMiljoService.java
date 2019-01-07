@@ -59,44 +59,62 @@ public class TknrOgGtFraMiljoService {
     }
 
     private String getGtRegel(TpsServiceRoutineResponse response) {
-        return (String) getBruker(response)
-                .get(REGEL_FOR_GEO_TILKNYTNING);
+        return nonNull(getBruker(response)) ?
+                (String) getBruker(response).get(REGEL_FOR_GEO_TILKNYTNING) : null;
+    }
+
+    private Map getData(TpsServiceRoutineResponse response) {
+        return nonNull(response) && nonNull(response.getResponse()) ?
+                (Map) ((Map) response.getResponse()).get(DATA) : null;
     }
 
     private Map getBruker(TpsServiceRoutineResponse response) {
-        return (Map) ((Map) ((Map) response.getResponse())
-                .get(DATA))
-                .get(BRUKER);
+        return nonNull(getData(response)) ?
+                (Map) getData(response).get(BRUKER) : null;
+    }
+
+    private Map getBostedAdr(TpsServiceRoutineResponse response) {
+        return nonNull(getData(response)) ?
+                (Map) getData(response).get(BOSTED_ADR) : null;
+    }
+
+    private Map getFullBostedAdr(TpsServiceRoutineResponse response) {
+        return nonNull(getBostedAdr(response)) ?
+                (Map) getBostedAdr(response).get(FULL_BOSTED_ADR) : null;
     }
 
     private String getTknr(TpsServiceRoutineResponse response) {
-        return (String) ((Map) ((Map) ((Map) ((Map) response.getResponse())
-                .get(DATA))
-                .get(BOSTED_ADR))
-                .get(FULL_BOSTED_ADR))
-                .get(TKNR);
+        return nonNull(getFullBostedAdr(response)) ?
+                (String) getFullBostedAdr(response).get(TKNR) : null;
+    }
+
+    private Map getGeoTilknytning(TpsServiceRoutineResponse response) {
+        return nonNull(getBruker(response)) ?
+                (Map) getBruker(response).get(GEO_TILKNYT) : null;
     }
 
     private String getGtVerdi(TpsServiceRoutineResponse response) {
-        Map<String, Object> geoTilknytning = (Map) getBruker(response).get(GEO_TILKNYT);
-        for (Map.Entry<String, Object> entry : geoTilknytning.entrySet()) {
-            if (isNotBlank((String) entry.getValue())) {
-                return (String) entry.getValue();
+        if (nonNull(getGeoTilknytning(response))) {
+            for (Map.Entry<String, Object> entry : ((Map<String, Object>) getGeoTilknytning(response)).entrySet()) {
+                if (isNotBlank((String) entry.getValue())) {
+                    return (String) entry.getValue();
+                }
             }
         }
         return null;
     }
 
     private String getGtType(TpsServiceRoutineResponse response) {
-        Map<String, Object> geoTilknytning = (Map) getBruker(response).get(GEO_TILKNYT);
-        if (nonNull(geoTilknytning.get(KOMMUNE))) {
-            return "KNR";
-        } else if (nonNull(geoTilknytning.get(LAND))) {
-            return "LAND";
-        } else if (nonNull(geoTilknytning.get(BYDEL))) {
-            return "BYDEL";
-        } else {
-            return null;
+        Map geoTilknytning = getGeoTilknytning(response);
+        if (nonNull(geoTilknytning)) {
+            if (isNotBlank((String) geoTilknytning.get(KOMMUNE))) {
+                return "KNR";
+            } else if (isNotBlank((String) geoTilknytning.get(LAND))) {
+                return "LAND";
+            } else if (isNotBlank((String) geoTilknytning.get(BYDEL))) {
+                return "BYDEL";
+            }
         }
+        return null;
     }
 }

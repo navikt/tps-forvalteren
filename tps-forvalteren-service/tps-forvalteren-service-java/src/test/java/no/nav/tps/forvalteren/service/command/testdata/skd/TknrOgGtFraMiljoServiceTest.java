@@ -3,10 +3,12 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
+import static org.assertj.core.util.Maps.newHashMap;
 import static org.assertj.core.util.Sets.newHashSet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
@@ -67,6 +69,24 @@ public class TknrOgGtFraMiljoServiceTest {
         Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
 
         assertThat(resultat.getTknr(), is(equalTo(TKNR)));
+    }
+
+    @Test
+    public void hentTknrOgSettPaPersonResponseNull() {
+        when(response.getResponse()).thenReturn(null);
+
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+
+        assertThat(resultat.getTknr(), is(nullValue()));
+    }
+
+    @Test
+    public void hentTknrOgSettPaPersonNullResult() {
+        when(response.getResponse()).thenReturn(newHashMap("data1", null));
+
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+
+        assertThat(resultat.getTknr(), is(nullValue()));
     }
 
     @Test
