@@ -9,12 +9,17 @@ import ma.glasnost.orika.MappingContext;
 import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.RsPersonUtenRelasjon;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePerson;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentAlderFraIdent;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Component
 public class PersonRestMappingStrategy implements MappingStrategy {
+
+    private static final String ID = "id";
+    private static final String PERSON_ID = "personId";
+    private static final String RELASJONER = "relasjoner";
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -25,7 +30,7 @@ public class PersonRestMappingStrategy implements MappingStrategy {
     @Override
     public void register(MapperFactory factory) {
         factory.classMap(Person.class, RsPerson.class)
-                .field("id", "personId")
+                .field(ID, PERSON_ID)
                 .customize(new CustomMapper<Person, RsPerson>() {
                     @Override public void mapAtoB(Person person, RsPerson rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
@@ -35,6 +40,21 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                 .byDefault()
                 .register();
 
-        factory.classMap(Person.class, RsSimplePerson.class).field("id", "personId").byDefault().register();
+        factory.classMap(Person.class, RsSimplePerson.class)
+                .field(ID, PERSON_ID)
+                .byDefault()
+                .register();
+
+        factory.classMap(Person.class, RsPersonUtenRelasjon.class)
+                .field(ID, PERSON_ID)
+                .customize(new CustomMapper<Person, RsPersonUtenRelasjon>() {
+                    @Override public void mapAtoB(Person person, RsPersonUtenRelasjon rsPerson, MappingContext context) {
+                        rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
+                        rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
+                    }
+                })
+                .exclude(RELASJONER)
+                .byDefault()
+                .register();
     }
 }

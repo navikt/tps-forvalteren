@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RsPerson {
 
     private Long personId;
@@ -55,14 +57,14 @@ public class RsPerson {
 
     private String sivilstand;
 
-    @Size(min = 0, max = 3)
+    @Size(max = 3)
     private String innvandretFraLand;
 
     private LocalDateTime innvandretFraLandFlyttedato;
 
     private LocalDateTime innvandretFraLandRegdato;
 
-    @Size(min = 0, max = 3)
+    @Size(max = 3)
     private String utvandretTilLand;
 
     private LocalDateTime utvandretTilLandFlyttedato;
@@ -78,7 +80,7 @@ public class RsPerson {
 
     private RsSimpleGruppe gruppe;
 
-    private List<RsSimpleRelasjon> relasjoner;
+    private List<RsRelasjon> relasjoner;
 
     private LocalDateTime egenAnsattDatoFom;
 
