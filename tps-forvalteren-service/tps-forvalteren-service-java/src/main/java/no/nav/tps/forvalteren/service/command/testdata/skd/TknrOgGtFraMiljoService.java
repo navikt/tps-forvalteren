@@ -116,11 +116,14 @@ public class TknrOgGtFraMiljoService {
     private String getGtType(TpsServiceRoutineResponse response) {
         Map geoTilknytning = getGeoTilknytning(response);
         if (nonNull(geoTilknytning)) {
-            if (geoTilknytning.get(KOMMUNE) instanceof String && isNotBlank((String) geoTilknytning.get(KOMMUNE))) {
+            if (geoTilknytning.get(KOMMUNE) instanceof String && isNotBlank((String) geoTilknytning.get(KOMMUNE)) ||
+                    geoTilknytning.get(KOMMUNE) instanceof Integer) {
                 return "KNR";
-            } else if (geoTilknytning.get(LAND) instanceof String && isNotBlank((String) geoTilknytning.get(LAND))) {
+            } else if (geoTilknytning.get(LAND) instanceof String && isNotBlank((String) geoTilknytning.get(LAND)) ||
+                    geoTilknytning.get(LAND) instanceof Integer) {
                 return "LAND";
-            } else if (geoTilknytning.get(BYDEL) instanceof String && isNotBlank((String) geoTilknytning.get(BYDEL))) {
+            } else if (geoTilknytning.get(BYDEL) instanceof String && isNotBlank((String) geoTilknytning.get(BYDEL)) ||
+                    geoTilknytning.get(BYDEL) instanceof Integer) {
                 return "BYDEL";
             }
         }
