@@ -97,7 +97,7 @@ public class TknrOgGtFraMiljoService {
         Map<String, Object> geoTilknytning =  getGeoTilknytning(response);
         if (nonNull(geoTilknytning)) {
             for (Map.Entry<String, Object> entry : geoTilknytning.entrySet()) {
-                if (isNotBlank((String) entry.getValue())) {
+                if (entry.getValue() instanceof String && isNotBlank((String) entry.getValue())) {
                     return (String) entry.getValue();
                 }
             }
