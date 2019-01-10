@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.domain.rs;
 
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RsSimplePerson {
 
     private Long personId;
@@ -38,5 +40,4 @@ public class RsSimplePerson {
     @NotBlank
     @Size(min = 1, max = 15)
     private String etternavn;
-
 }

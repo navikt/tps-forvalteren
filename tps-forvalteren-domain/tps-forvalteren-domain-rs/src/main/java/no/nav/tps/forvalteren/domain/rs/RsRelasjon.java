@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsSimpleRelasjon {
+public class RsRelasjon {
 
     @NotNull
     private Long id;
@@ -20,9 +20,8 @@ public class RsSimpleRelasjon {
     private RsSimplePerson person;
 
     @NotNull
-    private RsSimplePerson personRelasjonMed;
+    private RsPersonUtenRelasjon personRelasjonMed;
 
     @NotNull
     private String relasjonTypeNavn;
-
 }

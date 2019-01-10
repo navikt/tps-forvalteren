@@ -1,25 +1,23 @@
-package no.nav.tps.forvalteren.domain.rs.dolly;
+package no.nav.tps.forvalteren.domain.rs;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.domain.rs.RsAdresse;
-import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
-import no.nav.tps.forvalteren.domain.rs.RsSimpleGruppe;
-import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjon;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsDollyPerson {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class RsPersonUtenRelasjon {
 
     private Long personId;
 
@@ -33,7 +31,7 @@ public class RsDollyPerson {
 
     @NotBlank
     @Size(min = 3, max = 3)
-    private Character kjonn;
+    private String kjonn;
 
     @NotBlank
     @Size(min = 1, max = 50)
@@ -48,12 +46,30 @@ public class RsDollyPerson {
 
     private String statsborgerskap;
 
+    private LocalDateTime statsborgerskapRegdato;
+
     @Size(min = 1, max = 1)
     private String spesreg;
 
     private LocalDateTime spesregDato;
 
     private LocalDateTime doedsdato;
+
+    private String sivilstand;
+
+    @Size(max = 3)
+    private String innvandretFraLand;
+
+    private LocalDateTime innvandretFraLandFlyttedato;
+
+    private LocalDateTime innvandretFraLandRegdato;
+
+    @Size(max = 3)
+    private String utvandretTilLand;
+
+    private LocalDateTime utvandretTilLandFlyttedato;
+
+    private LocalDateTime utvandretTilLandRegdato;
 
     private RsAdresse boadresse;
 
@@ -62,7 +78,7 @@ public class RsDollyPerson {
     @NotNull
     private LocalDateTime regdato;
 
-    private List<RsSimpleRelasjon> relasjoner;
+    private RsSimpleGruppe gruppe;
 
     private LocalDateTime egenAnsattDatoFom;
 
@@ -78,4 +94,23 @@ public class RsDollyPerson {
     @Size(min = 1, max = 50)
     private String beskrSikkerhetsTiltak;
 
+    private LocalDateTime foedselsdato;
+
+    private Integer alder;
+
+    private LocalDateTime opprettetDato;
+
+    private String opprettetAv;
+
+    private String sprakKode;
+
+    private LocalDateTime datoSprak;
+
+    private String tknr;
+
+    private String gtType;
+
+    private String gtVerdi;
+
+    private String gtRegel;
 }
