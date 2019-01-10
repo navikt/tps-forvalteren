@@ -15,11 +15,15 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.service.command.innvandring.AddInnvandringsdatoOgLandTilPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 
 @Service
 public class SkdMeldingSender {
+
+    @Autowired
+    private AddInnvandringsdatoOgLandTilPersonerService addInnvandringsdatoOgLandTilPersonerService;
 
     @Autowired
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
@@ -67,6 +71,7 @@ public class SkdMeldingSender {
 
     public List<SendSkdMeldingTilTpsResponse> sendInnvandringsMeldinger(List<Person> personerSomIkkeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+        addInnvandringsdatoOgLandTilPersonerService.execute(personerSomIkkeEksitererITpsMiljoe);
         List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, personerSomIkkeEksitererITpsMiljoe, true);
         innvandringsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(INNVANDRING_CREATE_MLD_NAVN, skdMelding, environmentsSet);
