@@ -11,7 +11,6 @@
     "spesreg": null,
     "spesregDato": null,
     "doedsdato": null,
-    "opprettetAv": "Z999999",
     "boadresse": {
       "adressetype": "GATE",
       "gateadresse": "Sannergata",
@@ -44,7 +43,6 @@
           "spesreg": null,
           "spesregDato": null,
           "doedsdato": null,
-          "opprettetAv": "Z999999",
           "boadresse": {
             "adressetype": "GATE",
             "gateadresse": "SANNERGATA",
@@ -90,7 +88,6 @@
           "spesreg": null,
           "spesregDato": null,
           "doedsdato": null,
-          "opprettetAv": "Z999999",
           "boadresse": {
             "adressetype": "GATE",
             "gateadresse": "SANNERGATA",
@@ -152,7 +149,6 @@
     "spesreg": null,
     "spesregDato": null,
     "doedsdato": null,
-    "opprettetAv": "Z999999",
     "boadresse": {
       "adressetype": "GATE",
       "gateadresse": "Sannergata",
@@ -185,7 +181,6 @@
           "spesreg": null,
           "spesregDato": null,
           "doedsdato": null,
-          "opprettetAv": "Z999999",
           "boadresse": {
             "adressetype": "GATE",
             "gateadresse": "SANNERGATA",
@@ -232,7 +227,6 @@
           "spesreg": null,
           "spesregDato": null,
           "doedsdato": null,
-          "opprettetAv": "Z999999",
           "boadresse": {
             "adressetype": "GATE",
             "gateadresse": "SANNERGATA",
