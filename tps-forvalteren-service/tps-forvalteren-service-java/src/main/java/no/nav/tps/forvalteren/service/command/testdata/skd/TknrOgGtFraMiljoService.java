@@ -85,7 +85,12 @@ public class TknrOgGtFraMiljoService {
 
     private String getTknr(TpsServiceRoutineResponse response) {
         Map fullbostedAdr = getFullBostedAdr(response);
-        return nonNull(fullbostedAdr) && fullbostedAdr.get(TKNR) instanceof String ? (String) fullbostedAdr.get(TKNR) : null;
+        if (nonNull(fullbostedAdr) && fullbostedAdr.get(TKNR) instanceof String) {
+            return (String) fullbostedAdr.get(TKNR);
+        } else if (nonNull(fullbostedAdr) && fullbostedAdr.get(TKNR) instanceof Integer) {
+            return ((Integer) fullbostedAdr.get(TKNR)).toString();
+        }
+        return null;
     }
 
     private Map getGeoTilknytning(TpsServiceRoutineResponse response) {
@@ -99,6 +104,8 @@ public class TknrOgGtFraMiljoService {
             for (Map.Entry<String, Object> entry : geoTilknytning.entrySet()) {
                 if (entry.getValue() instanceof String && isNotBlank((String) entry.getValue())) {
                     return (String) entry.getValue();
+                } else if (entry.getValue() instanceof Integer) {
+                    return ((Integer) entry.getValue()).toString();
                 }
             }
         }
