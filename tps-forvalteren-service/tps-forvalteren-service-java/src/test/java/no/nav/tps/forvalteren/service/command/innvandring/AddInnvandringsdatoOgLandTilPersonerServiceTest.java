@@ -1,9 +1,8 @@
 package no.nav.tps.forvalteren.service.command.innvandring;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,12 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AddInndringsdatoOgLandTilPersonerServiceTest {
+public class AddInnvandringsdatoOgLandTilPersonerServiceTest {
 
     private Person emptyPerson1 = new Person();
     private Person emptyPerson2 = new Person();
@@ -36,7 +36,7 @@ public class AddInndringsdatoOgLandTilPersonerServiceTest {
     private PersonRepository personRepository;
 
     @InjectMocks
-    private AddInndringsdatoOgLandTilPersonerService addInndringsdatoOgLandTilPersonerService;
+    private AddInnvandringsdatoOgLandTilPersonerService addInnvandringsdatoOgLandTilPersonerService;
 
     @Before
     public void setup(){
@@ -55,7 +55,7 @@ public class AddInndringsdatoOgLandTilPersonerServiceTest {
         when(hentDatoFraIdent.extract("01011012345")).thenReturn(time1);
         when(hentDatoFraIdent.extract("05050512345")).thenReturn(time2);
 
-        addInndringsdatoOgLandTilPersonerService.execute(personListe);
+        addInnvandringsdatoOgLandTilPersonerService.execute(personListe);
 
         assertThat(personListe.get(0).getInnvandretFraLand(), is("random"));
         assertThat(personListe.get(1).getInnvandretFraLand(), is("random"));

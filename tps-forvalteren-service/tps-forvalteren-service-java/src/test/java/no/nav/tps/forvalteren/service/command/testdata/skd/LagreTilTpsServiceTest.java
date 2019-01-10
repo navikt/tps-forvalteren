@@ -42,7 +42,6 @@ public class LagreTilTpsServiceTest {
     private static final String FOEDSELS_MLD = "Foedsel";
     private static final String UTVANDRING_MLD = "Innvandring";
     private static final Long GRUPPE_ID = 1337L;
-    private static final String melding1 = "11111111111111";
 
     private List<SendSkdMeldingTilTpsResponse> innvandringResponse = new ArrayList<>();
     private List<SendSkdMeldingTilTpsResponse> updateInnvadringResponse = new ArrayList<>();

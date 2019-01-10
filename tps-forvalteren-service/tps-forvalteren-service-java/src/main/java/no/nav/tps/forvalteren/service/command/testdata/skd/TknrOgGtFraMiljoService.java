@@ -85,7 +85,7 @@ public class TknrOgGtFraMiljoService {
 
     private String getTknr(TpsServiceRoutineResponse response) {
         Map fullbostedAdr = getFullBostedAdr(response);
-        return nonNull(fullbostedAdr) ? (String) fullbostedAdr.get(TKNR) : null;
+        return nonNull(fullbostedAdr) && fullbostedAdr.get(TKNR) instanceof String ? (String) fullbostedAdr.get(TKNR) : null;
     }
 
     private Map getGeoTilknytning(TpsServiceRoutineResponse response) {

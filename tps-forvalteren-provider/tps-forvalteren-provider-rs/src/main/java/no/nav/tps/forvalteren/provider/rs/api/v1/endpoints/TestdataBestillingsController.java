@@ -7,6 +7,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,7 @@ public class TestdataBestillingsController {
     @Autowired
     private FindPersonerByIdIn findPersonerByIdIn;
 
+    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,6 +68,7 @@ public class TestdataBestillingsController {
         return personer.stream().map(person -> person.getIdent()).collect(Collectors.toList());
     }
 
+    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "flereTilTps") })
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
