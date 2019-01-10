@@ -60,7 +60,8 @@ public class TknrOgGtFraMiljoService {
 
     private String getGtRegel(TpsServiceRoutineResponse response) {
         Map bruker = getBruker(response);
-        return nonNull(bruker) ? (String) bruker.get(REGEL_FOR_GEO_TILKNYTNING) : null;
+        return nonNull(bruker) && bruker.get(REGEL_FOR_GEO_TILKNYTNING) instanceof String ?
+                (String) bruker.get(REGEL_FOR_GEO_TILKNYTNING) : null;
     }
 
     private Map getData(TpsServiceRoutineResponse response) {
@@ -99,7 +100,7 @@ public class TknrOgGtFraMiljoService {
     }
 
     private String getGtVerdi(TpsServiceRoutineResponse response) {
-        Map<String, Object> geoTilknytning =  getGeoTilknytning(response);
+        Map<String, Object> geoTilknytning = getGeoTilknytning(response);
         if (nonNull(geoTilknytning)) {
             for (Map.Entry<String, Object> entry : geoTilknytning.entrySet()) {
                 if (entry.getValue() instanceof String && isNotBlank((String) entry.getValue())) {
@@ -115,11 +116,11 @@ public class TknrOgGtFraMiljoService {
     private String getGtType(TpsServiceRoutineResponse response) {
         Map geoTilknytning = getGeoTilknytning(response);
         if (nonNull(geoTilknytning)) {
-            if (isNotBlank((String) geoTilknytning.get(KOMMUNE))) {
+            if (geoTilknytning.get(KOMMUNE) instanceof String && isNotBlank((String) geoTilknytning.get(KOMMUNE))) {
                 return "KNR";
-            } else if (isNotBlank((String) geoTilknytning.get(LAND))) {
+            } else if (geoTilknytning.get(LAND) instanceof String && isNotBlank((String) geoTilknytning.get(LAND))) {
                 return "LAND";
-            } else if (isNotBlank((String) geoTilknytning.get(BYDEL))) {
+            } else if (geoTilknytning.get(BYDEL) instanceof String && isNotBlank((String) geoTilknytning.get(BYDEL))) {
                 return "BYDEL";
             }
         }
