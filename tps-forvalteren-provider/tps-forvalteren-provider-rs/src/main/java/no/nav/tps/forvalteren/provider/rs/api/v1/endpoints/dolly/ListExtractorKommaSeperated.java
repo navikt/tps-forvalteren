@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly;
 
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
+
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @Service
 public class ListExtractorKommaSeperated {
@@ -29,7 +29,7 @@ public class ListExtractorKommaSeperated {
                 throw new TpsfFunctionalException(feilmelding);
             }
         }
-        return new ArrayList<>(Arrays.asList(inputSplitted));
+        return newArrayList(inputSplitted);
 
     }
 }

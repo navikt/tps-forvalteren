@@ -5,16 +5,16 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.tps.forvalteren.domain.service.tps.TpsParameter;
+import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Transformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.RequestTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseTransformer;
-import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
-import no.nav.tps.forvalteren.domain.service.tps.TpsParameter;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Transformer;
-
 
 public class TpsServiceRoutineDefinitionBuilder {
+
     public static final String REQUIRED = "required";
     private String name;
     private String internalName;
@@ -24,7 +24,7 @@ public class TpsServiceRoutineDefinitionBuilder {
     private TpsRequestConfig requestConfig;
     private List<ServiceRutineAuthorisationStrategy> securitySearchAuthorisationStrategies = new ArrayList<>();
 
-    public TransformerBuilder transformer(){
+    public TransformerBuilder transformer() {
         return new TransformerBuilder();
     }
 
@@ -72,9 +72,10 @@ public class TpsServiceRoutineDefinitionBuilder {
     }
 
     public class TpsServiceRoutineSecurityBuilder {
+
         private List<ServiceRutineAuthorisationStrategy> serviceStrategies = new ArrayList<>();
 
-        public TpsServiceRoutineSecurityBuilder addRequiredSearchAuthorisationStrategy(ServiceRutineAuthorisationStrategy serviceStrategy){
+        public TpsServiceRoutineSecurityBuilder addRequiredSearchAuthorisationStrategy(ServiceRutineAuthorisationStrategy serviceStrategy) {
             this.serviceStrategies.add(serviceStrategy);
             return this;
         }
@@ -86,6 +87,7 @@ public class TpsServiceRoutineDefinitionBuilder {
     }
 
     public class TpsServiceRoutineParameterBuilder {
+
         private String name;
         private TpsParameterType type;
         private String use;
@@ -133,6 +135,7 @@ public class TpsServiceRoutineDefinitionBuilder {
     }
 
     public class TransformerBuilder {
+
         private List<Transformer> transformers;
 
         TransformerBuilder() {
@@ -156,13 +159,14 @@ public class TpsServiceRoutineDefinitionBuilder {
     }
 
     public class TpsRequestConfigBuilder {
+
         private TpsRequestConfig config;
 
         TpsRequestConfigBuilder() {
             this.config = new TpsRequestConfig();
         }
 
-        public TpsRequestConfigBuilder requestQueue(String requestQueue){
+        public TpsRequestConfigBuilder requestQueue(String requestQueue) {
             config.setRequestQueue(requestQueue);
             return this;
         }

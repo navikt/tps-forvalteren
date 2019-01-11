@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.security.config;
 
-import java.util.Arrays;
+import static com.google.common.collect.Lists.newArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,16 +21,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private String cookiePath="/";
-
     @Value("${tpsf.security.cors.origins: ''}")
     private String[] allowedOrigins;
 
     @Autowired
     private ActiveDirectoryLdapAuthenticationProvider authenticationProvider;
-
-    @Autowired
-    private CsrfTokenRepository tokenRepository;
 
     @Autowired
     private RestAuthenticationEntryPoint authentificationEntryPoint;
@@ -46,9 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        if(!currentEnvironmentIsProd){
+        if (!currentEnvironmentIsProd) {
             http.authorizeRequests()
-//                    .antMatchers(HttpMethod.OPTIONS, "/api/v1/user/**").permitAll()
                     .antMatchers("/api/v1/user/**").hasAnyRole("ACCESS")
                     .antMatchers("/api/v1/appinfo/**").permitAll()
                     .and()
@@ -59,13 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/**").hasAnyRole("ACCESS")
                     .and()
                     .httpBasic();
-            //                .and()
-            //                .csrf()
-            //                .csrfTokenRepository(tokenRepository);
-            //                .and()
-            //                .addFilterAfter(new CsrfHeaderFilter(cookiePath), CsrfFilter.class);
         }
-
 
         http.exceptionHandling().authenticationEntryPoint(authentificationEntryPoint);
 
@@ -78,13 +66,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        if(!currentEnvironmentIsProd){
-//            web.ignoring().antMatchers("/api/**");
-//            web.ignoring().antMatchers(HttpMethod.GET);
-//            web.ignoring().antMatchers(HttpMethod.POST);
-//            web.ignoring().antMatchers(HttpMethod.PUT);
-//            web.ignoring().antMatchers(HttpMethod.DELETE);
-        }
 
         web.ignoring().antMatchers("/webjars/**", "/css/**", "/internal/**");
     }
@@ -92,9 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList(
+        configuration.setAllowedOrigins(newArrayList(allowedOrigins));
+        configuration.setAllowedMethods(newArrayList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(newArrayList(
                 "Access-Control-Allow-Headers",
                 "Access-Control-Request-Headers",
                 "Access-Control-Request-Method",

@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
 
-import java.util.Arrays;
 import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ public class SetRandomAdresseOnPersons {
     }
 
     private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {
-        if (!"00".equals(svarStatus.getReturStatus()) && !Arrays.asList("S051002I", "S051003I").contains(svarStatus.getReturMelding())) {
+        if (!"00".equals(svarStatus.getReturStatus()) && !newArrayList("S051002I", "S051003I").contains(svarStatus.getReturMelding())) {
             throw new TpsfFunctionalException(svarStatus.getUtfyllendeMelding());
         }
     }

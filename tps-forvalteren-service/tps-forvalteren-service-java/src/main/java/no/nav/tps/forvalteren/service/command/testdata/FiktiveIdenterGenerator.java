@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Character.getNumericValue;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
@@ -9,7 +10,6 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -91,9 +91,9 @@ public class FiktiveIdenterGenerator {
     private static List<Integer> hentKategoriIntervallForDato(LocalDateTime date) {
 
         if (isInYearRange(date, CATEGORY1_TIME_PERIOD_START, CATEGORY1_TIME_PERIOD_END)) {
-            return Arrays.asList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END);
+            return newArrayList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END);
         } else if (isInYearRange(date, CATEGORY_2_TIME_PERIOD_START, CATEGORY_2_TIME_PERIOD_END)) {
-            return Arrays.asList(CATEGORY_2_NUMBER_RANGE_START, CATEGORY_2_NUMBER_RANGE_END);
+            return newArrayList(CATEGORY_2_NUMBER_RANGE_START, CATEGORY_2_NUMBER_RANGE_END);
         }
         return emptyList();
     }

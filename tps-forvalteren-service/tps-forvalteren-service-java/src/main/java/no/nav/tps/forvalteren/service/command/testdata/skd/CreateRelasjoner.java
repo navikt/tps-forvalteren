@@ -1,10 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.Familieendring.FAMILIEENDRING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VigselAarsakskode11.VIGSEL_MLD_NAVN;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class CreateRelasjoner {
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
                 if (VIGSEL_MLD_NAVN.equals(skdMeldingNavn)) {
-                    skdMeldinger.addAll(skdMessageCreatorTrans1.execute(skdMeldingNavn, Arrays.asList(person), addHeader));
+                    skdMeldinger.addAll(skdMessageCreatorTrans1.execute(skdMeldingNavn, newArrayList(person), addHeader));
                 } else if (FAMILIEENDRING_MLD_NAVN.equals(skdMeldingNavn)) {
                     hasBarn = true;
                 }

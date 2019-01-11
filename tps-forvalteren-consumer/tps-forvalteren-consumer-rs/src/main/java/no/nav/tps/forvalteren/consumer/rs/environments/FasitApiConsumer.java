@@ -1,10 +1,10 @@
 package no.nav.tps.forvalteren.consumer.rs.environments;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +71,7 @@ public class FasitApiConsumer {
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
-        return Arrays.asList(applications.getBody());
+        return newArrayList(applications.getBody());
     }
 
     @Cacheable("fasit")
@@ -81,7 +81,7 @@ public class FasitApiConsumer {
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
-        return Arrays.asList(applications.getBody());
+        return newArrayList(applications.getBody());
     }
 
     @Cacheable("fasit")

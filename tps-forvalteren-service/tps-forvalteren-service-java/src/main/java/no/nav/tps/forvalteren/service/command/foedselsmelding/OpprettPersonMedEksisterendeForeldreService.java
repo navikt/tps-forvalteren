@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 
-import java.util.Arrays;
 import java.util.List;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class OpprettPersonMedEksisterendeForeldreService {
     private Person createPerson(RsTpsFoedselsmeldingRequest request) {
 
         RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest(
-                Arrays.asList(RsPersonKriterier.builder()
+                newArrayList(RsPersonKriterier.builder()
                         .antall(1)
                         .identtype(request.getIdenttype() != null ? request.getIdenttype().name() : FNR.name())
                         .kjonn(request.getKjonn() != null ? request.getKjonn().name() : null)

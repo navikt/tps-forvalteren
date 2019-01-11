@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static no.nav.tps.forvalteren.service.command.testdata.skd.impl.WhitespaceConstants.DUMMY_DATO;
 import static no.nav.tps.forvalteren.service.command.testdata.skd.impl.WhitespaceConstants.DUMMY_IDENT;
 import static no.nav.tps.forvalteren.service.command.testdata.skd.impl.WhitespaceConstants.FIVE_OES;
@@ -10,7 +11,6 @@ import static no.nav.tps.forvalteren.service.command.testdata.skd.impl.Whitespac
 import static no.nav.tps.forvalteren.service.command.testdata.skd.impl.WhitespaceConstants.WHITESPACE_40_STK;
 import static no.nav.tps.forvalteren.service.command.testdata.skd.impl.WhitespaceConstants.WHITESPACE_50_STK;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -196,7 +196,7 @@ public enum SkdFeltDefinisjonerTrans1 {
     }
 
     public static List<SkdFeltDefinisjonerTrans1> getAllFeltDefinisjonerInSortedList() {
-        return Arrays.asList(SkdFeltDefinisjonerTrans1.values())
+        return newArrayList(SkdFeltDefinisjonerTrans1.values())
                 .stream()
                 .sorted(Comparator.comparingInt(SkdFeltDefinisjonerTrans1::getIdRekkefolge))
                 .collect(Collectors.toList());

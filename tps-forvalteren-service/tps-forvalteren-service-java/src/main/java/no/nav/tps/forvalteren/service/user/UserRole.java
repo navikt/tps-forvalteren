@@ -1,7 +1,8 @@
 package no.nav.tps.forvalteren.service.user;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -22,7 +23,7 @@ public enum UserRole implements GrantedAuthority {
     private ArrayList<String> adRoles = new ArrayList<>();
 
     UserRole(String... name){
-        adRoles.addAll(Arrays.asList(name));
+        adRoles.addAll(newArrayList(name));
     }
 
     @Override

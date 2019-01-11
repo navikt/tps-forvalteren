@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.config;
 
-import java.util.Arrays;
+import static org.assertj.core.util.Lists.newArrayList;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +25,7 @@ public class TestUserDetails implements UserDetailsService {
             LdapUserDetailsImpl.Essence ldapUserDetails = new LdapUserDetailsImpl.Essence();
             ldapUserDetails.setUsername(USERNAME);
             ldapUserDetails.setDn(DISPLAY_NAME);
-            ldapUserDetails.setAuthorities(Arrays.asList(ga, servicerutiner));
+            ldapUserDetails.setAuthorities(newArrayList(ga, servicerutiner));
 
             return ldapUserDetails.createUserDetails();
         }

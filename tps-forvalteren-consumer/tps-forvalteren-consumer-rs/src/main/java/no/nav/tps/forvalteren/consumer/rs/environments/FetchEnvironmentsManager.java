@@ -1,20 +1,19 @@
 package no.nav.tps.forvalteren.consumer.rs.environments;
 
-import java.util.Arrays;
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toSet;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 
 @Component
 public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
@@ -52,7 +51,7 @@ public class FetchEnvironmentsManager implements FetchEnvironmentsConsumer {
         String url = buildUrl(Service.DEPLOYLOG, parameters);
 
         FetchEnvironmentsApplication[] applications = template.getForObject(url, FetchEnvironmentsApplication[].class);
-        return Arrays.asList(applications);
+        return newArrayList(applications);
     }
 
     private String buildUrl(Service service, Map<String, Object> parameters) {
