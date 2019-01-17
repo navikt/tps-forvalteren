@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.utils;
 
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 
 public final class ExtractErrorStatus {
 
@@ -9,10 +10,10 @@ public final class ExtractErrorStatus {
     }
 
     public static String extract(String status) {
-        if (status != null && status.contains("FEIL")) {
+        if (nonNull(status) && status.contains("FEIL")) {
             return status;
-        } else if (status != null && status.length() > 3) {
-            return format("FEIL: %s", status.substring(3));
+        } else if (nonNull(status) && status.length() > 3) {
+            return format("FEIL: %s", status.substring(3).replaceAll("\\d*%[A-Z]\\d*%","").replaceAll("%; *", ""));
         } else {
             return "FEIL: UKJENT";
         }
