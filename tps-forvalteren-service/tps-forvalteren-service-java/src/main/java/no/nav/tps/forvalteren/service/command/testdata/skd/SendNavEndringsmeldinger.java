@@ -1,9 +1,14 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static java.lang.String.format;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.BehandleTpsRespons.ekstraherStatusFraServicerutineRespons;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +21,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.ServiceRoutineResponseStatus;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
@@ -54,33 +59,33 @@ public class SendNavEndringsmeldinger {
             navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
         });
 
-        List<ServiceRoutineResponseStatus> responseStatuses = new ArrayList<>(navEndringsMeldinger.size());
+        Map<String, ServiceRoutineResponseStatus> responseStatuses = new HashMap<>();
         for (int i = 0; i < navEndringsMeldinger.size(); i++) {
             TpsNavEndringsMelding serviceRoutineRequest = navEndringsMeldinger.get(i);
+
+            String ident = ((TpsServiceRoutineEndringRequest) serviceRoutineRequest.getMelding()).getOffentligIdent();
 
             tpsRequestContext.setEnvironment(serviceRoutineRequest.getMiljo());
             TpsServiceRoutineResponse svar = tpsRequestSender.sendTpsRequest(serviceRoutineRequest.getMelding(), tpsRequestContext);
 
-            ResponseStatus status = ekstraherStatusFraServicerutineRespons(svar);
-            status.setKode("00".equals(status.getKode()) || "04".equals(status.getKode()) ? "OK" : "FEIL");
-            responseStatuses.add(byggRespons(serviceRoutineRequest, status));
+            if (!responseStatuses.containsKey(ident)) {
+                responseStatuses.put(ident, ServiceRoutineResponseStatus.builder()
+                        .personId(ident)
+                        .serviceRutinenavn(serviceRoutineRequest.getMelding().getServiceRutinenavn())
+                        .status(newHashMap())
+                        .build()
+                );
+            }
+            responseStatuses.get(ident).getStatus().put(serviceRoutineRequest.getMiljo(), formatResultatMelding(svar));
 
             tpsPacemaker.iteration(i);
         }
 
-        if (responseStatuses.isEmpty()) {
-            responseStatuses.add(new ServiceRoutineResponseStatus("Alle identer", "Alle NAV endringsmeldinger", "alle miljøer", new ResponseStatus("OK", "", "")));
-        }
-
-        return responseStatuses;
+        return newArrayList(responseStatuses.values());
     }
 
-    private ServiceRoutineResponseStatus byggRespons(TpsNavEndringsMelding serviceRoutineRequest, ResponseStatus responseStatus) {
-        String ident = ((TpsServiceRoutineEndringRequest) serviceRoutineRequest.getMelding()).getOffentligIdent();
-        return ServiceRoutineResponseStatus.builder()
-                .personId(ident)
-                .serviceRutinenavn(serviceRoutineRequest.getMelding().getServiceRutinenavn())
-                .environment(serviceRoutineRequest.getMiljo())
-                .status(responseStatus).build();
+    private String formatResultatMelding(TpsServiceRoutineResponse response) {
+        ResponseStatus status = ekstraherStatusFraServicerutineRespons(response);
+        return "00".equals(status.getKode()) || "04".equals(status.getKode()) ? "OK" : format("FEIL: %s", status.getUtfyllendeMelding());
     }
 }

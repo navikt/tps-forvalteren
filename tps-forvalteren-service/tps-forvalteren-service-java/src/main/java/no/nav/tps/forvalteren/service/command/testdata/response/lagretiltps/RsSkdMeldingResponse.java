@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps;
+package no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps;
 
 import java.util.List;
 
@@ -16,5 +16,4 @@ public class RsSkdMeldingResponse {
 
     List<SendSkdMeldingTilTpsResponse> sendSkdMeldingTilTpsResponsene;
     List<ServiceRoutineResponseStatus> serviceRoutineStatusResponsene;
-
 }

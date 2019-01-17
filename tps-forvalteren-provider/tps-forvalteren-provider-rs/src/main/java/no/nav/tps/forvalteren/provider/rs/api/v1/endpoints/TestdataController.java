@@ -54,7 +54,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseO
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 import no.nav.tps.forvalteren.service.command.testdatamal.CreateTestdataPerson;
 

@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils.STATUS_KEY;
+import static org.assertj.core.util.Sets.newLinkedHashSet;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
@@ -8,7 +10,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -70,23 +71,18 @@ public class SendNavEndringsmeldingerTest {
     @InjectMocks
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
 
-    private Person testPerson1 = new Person();
-    private Person testPerson2 = new Person();
-    List<Person> testPersonerListe = new ArrayList<>();
+    List<Person> testPersonerListe;
     
     private Set<String> environments;
 
     @Before
     public void setup() {
         
-        testPersonerListe.add(testPerson1);
-        testPersonerListe.add(testPerson2);
+        testPersonerListe = newArrayList(new Person(), new Person());
 
         tpsServiceRoutineRequest = new TpsServiceRoutineRequest();
 
-        environments = new HashSet<String>();
-        environments.add("u5");
-        environments.add("u6");
+        environments = newLinkedHashSet("u5", "u6");
     
         setupMocks();
     }
