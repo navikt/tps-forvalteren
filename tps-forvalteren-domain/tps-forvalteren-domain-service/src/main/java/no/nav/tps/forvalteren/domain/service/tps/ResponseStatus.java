@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.service.tps;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ResponseStatus {
 
     private String kode;
