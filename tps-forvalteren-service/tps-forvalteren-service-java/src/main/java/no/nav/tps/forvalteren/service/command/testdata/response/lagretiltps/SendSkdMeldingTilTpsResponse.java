@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata.response.lagreTilTps;
+package no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps;
 
 import java.util.Map;
 
@@ -17,6 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class SendSkdMeldingTilTpsResponse {
+
     private String personId;
     private String skdmeldingstype;
     private Map<String, String> status; //Map<Environment, TPS respons statusmelding >
