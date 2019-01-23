@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singleton;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -142,10 +141,10 @@ public class LagreTilTpsServiceTest {
 
         innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("1").skdmeldingstype(INNVANDRING_MLD).status(status).build());
         foedselsmeldingResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("2").skdmeldingstype(FOEDSELS_MLD).status(status).build());
-        relasjonsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("3").skdmeldingstype(RELASJON_MLD).status(status).build());
-        utvandringsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("4").skdmeldingstype(UTVANDRING_MLD).status(status).build());
+        utvandringsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("3").skdmeldingstype(UTVANDRING_MLD).status(status).build());
+        relasjonsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("4").skdmeldingstype(RELASJON_MLD).status(status).build());
 
-        RsSkdMeldingResponse actualResponse = lagreTilTpsService.execute(GRUPPE_ID, singleton("u2"));
+        RsSkdMeldingResponse actualResponse = lagreTilTpsService.execute(GRUPPE_ID, environments);
 
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().size(), is(4));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId(), is("1"));
@@ -154,7 +153,7 @@ public class LagreTilTpsServiceTest {
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(3).getPersonId(), is("4"));
 
         assertThat(status, is(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus()));
-        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, RELASJON_MLD, UTVANDRING_MLD),
+        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, UTVANDRING_MLD, RELASJON_MLD),
                 is(actualResponse.getSendSkdMeldingTilTpsResponsene()
                         .stream()
                         .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)
