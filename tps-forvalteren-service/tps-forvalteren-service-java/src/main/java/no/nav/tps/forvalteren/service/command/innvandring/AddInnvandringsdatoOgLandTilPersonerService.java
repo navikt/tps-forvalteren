@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.service.command.innvandring;
 
+import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +24,14 @@ public class AddInnvandringsdatoOgLandTilPersonerService {
     @Autowired
     private PersonRepository personRepository;
 
-    public void execute(List<Person> personer){
+    public void execute(List<Person> personer) {
         personer.forEach(person -> {
-            if(person.getInnvandretFraLand() == null){
+            if (isBlank(person.getInnvandretFraLand())) {
                 person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
             }
-            person.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
+            if (isNull(person.getInnvandretFraLandFlyttedato())) {
+                person.setInnvandretFraLandFlyttedato(hentDatoFraIdent.extract(person.getIdent()));
+            }
         });
 
         personRepository.save(personer);

@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anySet;
@@ -12,8 +14,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -99,8 +99,8 @@ public class SendTpsDoedsmeldingServiceTest {
 
         SendSkdMeldingTilTpsResponse response = sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.D));
 
-        MatcherAssert.assertThat(response.getStatus().get("u2"),
-                CoreMatchers.is("FEIL: Personen med ident 12345678901 er ikke død i miljø u2."));
+        assertThat(response.getStatus().get("u2"),
+                is("FEIL: Personen med ident 12345678901 er ikke død i miljø u2."));
     }
 
     @Test
@@ -121,8 +121,7 @@ public class SendTpsDoedsmeldingServiceTest {
 
         SendSkdMeldingTilTpsResponse response = sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.C));
 
-        MatcherAssert.assertThat(response.getStatus().get("u2"),
-                CoreMatchers.is("FEIL: Personen med ident 12345678901 er allerede død i miljø u2."));
+        assertThat(response.getStatus().get("u2"), is("FEIL: Personen med ident 12345678901 er allerede død i miljø u2."));
     }
 
     @Test

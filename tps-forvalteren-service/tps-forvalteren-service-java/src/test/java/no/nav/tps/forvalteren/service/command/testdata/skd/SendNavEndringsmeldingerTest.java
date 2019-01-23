@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils.STATUS_KEY;
-import static org.assertj.core.util.Sets.newLinkedHashSet;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
@@ -72,29 +72,29 @@ public class SendNavEndringsmeldingerTest {
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
 
     List<Person> testPersonerListe;
-    
+
     private Set<String> environments;
 
     @Before
     public void setup() {
-        
+
         testPersonerListe = newArrayList(new Person(), new Person());
 
         tpsServiceRoutineRequest = new TpsServiceRoutineRequest();
 
-        environments = newLinkedHashSet("u5", "u6");
-    
+        environments = newHashSet("u5", "u6");
+
         setupMocks();
     }
-    
+
     private void setupMocks() {
         when(userContextHolder.getUser()).thenReturn(new User("Z111111", "Z111111"));
-    
+
         LinkedHashMap xmlAsMap = new LinkedHashMap();
-        xmlAsMap.put(STATUS_KEY, new ResponseStatus("00","melding","utfyllende melding"));
+        xmlAsMap.put(STATUS_KEY, new ResponseStatus("00", "melding", "utfyllende melding"));
         when(tpsRequestSender.sendTpsRequest(any(), any())).thenReturn(new TpsServiceRoutineResponse("xml", xmlAsMap));
     }
-    
+
     /**
      * HVIS sendNavEndringsmelding.sendMessage blir kalt, SÅ skal opprettEgenAnsatt og opprettSikTiltak kalles og meldingene fra dem skal sendes til TPS.
      */
@@ -103,8 +103,8 @@ public class SendNavEndringsmeldingerTest {
         List<TpsNavEndringsMelding> opprettEgenAnsattResultat = new ArrayList<>();
         List<TpsNavEndringsMelding> opprettSikTiltakResultat = new ArrayList<>();
 
-        opprettEgenAnsattResultat.add(new TpsNavEndringsMelding(new TpsEndreEgenansattRequest(),"u5"));
-        opprettSikTiltakResultat.add(new TpsNavEndringsMelding( new TpsEndreSikkerhetstiltakRequest(), "u5"));
+        opprettEgenAnsattResultat.add(new TpsNavEndringsMelding(new TpsEndreEgenansattRequest(), "u5"));
+        opprettSikTiltakResultat.add(new TpsNavEndringsMelding(new TpsEndreSikkerhetstiltakRequest(), "u5"));
 
         when(opprettEgenAnsattMelding.execute(any(), eq(environments))).thenReturn(opprettEgenAnsattResultat);
         when(opprettSikkerhetstiltakMelding.execute(any(), eq(environments))).thenReturn(opprettSikTiltakResultat);

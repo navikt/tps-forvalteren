@@ -20,6 +20,7 @@ public class GetEnvironments {
     @Cacheable("fasit")
     public Set<String> getEnvironmentsFromFasit(String application) {
         Set<String> environments = fasitApiConsumer.getEnvironments(application);
+        environments.remove("qx"); // Miljøet eksisterer, men blir ikke oppdatert og virker ikke sammen med TPSF
 
         return filterEnvironmentsOnDeployedEnvironment.execute(environments);
     }

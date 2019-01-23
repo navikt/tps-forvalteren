@@ -1,10 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
 import static org.assertj.core.util.Maps.newHashMap;
-import static org.assertj.core.util.Sets.newHashSet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -66,7 +64,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, null, null, TKNR));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getTknr(), is(equalTo(TKNR)));
     }
@@ -75,7 +73,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonResponseNull() {
         when(response.getResponse()).thenReturn(null);
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getTknr(), is(nullValue()));
     }
@@ -84,7 +82,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonDataNull() {
         when(response.getResponse()).thenReturn(newHashMap("data1", null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getTknr(), is(nullValue()));
     }
@@ -93,7 +91,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonDataBrukerNull() {
         when(response.getResponse()).thenReturn(newHashMap("data1", newHashMap("bruker", null)));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getTknr(), is(nullValue()));
     }
@@ -102,7 +100,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtLandOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(LANDKODE, null, null, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()),  "u2").get(0);
 
         assertThat(resultat.getGtType(), is(equalTo("LAND")));
         assertThat(resultat.getGtVerdi(), is(equalTo(LANDKODE)));
@@ -112,7 +110,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtKommuneOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, KOMMUNENR, null, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getGtType(), is(equalTo("KNR")));
         assertThat(resultat.getGtVerdi(), is(equalTo(KOMMUNENR)));
@@ -122,7 +120,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtBydelOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, null, BYDEL, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getGtType(), is(equalTo("BYDEL")));
         assertThat(resultat.getGtVerdi(), is(equalTo(BYDEL)));
@@ -132,7 +130,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtRegelOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, null, BYDEL, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), newHashSet(singleton("u2"))).get(0);
+        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
 
         assertThat(resultat.getGtRegel(), is(equalTo(GT_REGEL)));
     }

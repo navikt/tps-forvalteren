@@ -7,7 +7,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +39,8 @@ public class TknrOgGtFraMiljoService {
     @Autowired
     private TpsServiceroutineFnrRequest tpsFnrRequest;
 
-    public List<Person> hentTknrOgGtPaPerson(List<Person> personer, Set<String> environments) {
+    public List<Person> hentTknrOgGtPaPerson(List<Person> personer, String environment) {
 
-        String environment = environments.iterator().next();
         personer.forEach(person -> {
             if (isNull(person.getGtVerdi())) {
                 TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
