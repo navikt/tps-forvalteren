@@ -30,4 +30,9 @@ public class SendSkdMeldingTilGitteMiljoer {
         }
         return responseSkdMeldinger;
     }
+
+    public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String environment) {
+
+        return sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, environment);
+    }
 }

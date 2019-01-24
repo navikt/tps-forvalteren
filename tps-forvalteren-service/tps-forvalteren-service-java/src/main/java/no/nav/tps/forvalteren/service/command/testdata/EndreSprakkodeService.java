@@ -1,8 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode.ENDRE_SPRAKKODE;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,21 +21,17 @@ public class EndreSprakkodeService {
     public List<TpsNavEndringsMelding> execute(Person person, Set<String> environmentSet) {
         List<TpsNavEndringsMelding> navMeldinger = new ArrayList<>();
         
-        if (person.getSprakKode() != null) {
+        if (nonNull(person.getSprakKode())) {
             environmentSet.forEach(environment ->
-                navMeldinger.add(new TpsNavEndringsMelding(buildRequest(person), environment))
+                navMeldinger.add(new TpsNavEndringsMelding(TpsEndreSprakkodeRequest.builder()
+                        .serviceRutinenavn(ENDRE_SPRAKKODE)
+                        .offentligIdent(person.getIdent())
+                        .sprakKode(person.getSprakKode())
+                        .datoSprak(ConvertDateToString.yyyysMMsdd(nullcheckSetDefaultValue(person.getDatoSprak(), now())))
+                        .build(), environment))
             );
         }
         
         return navMeldinger;
-    }
-    
-    public TpsEndreSprakkodeRequest buildRequest(Person person) {
-        return TpsEndreSprakkodeRequest.builder()
-                .serviceRutinenavn(ENDRE_SPRAKKODE)
-                .offentligIdent(person.getIdent())
-                .sprakKode(person.getSprakKode())
-                .datoSprak(ConvertDateToString.yyyysMMsdd(person.getDatoSprak() != null ? person.getDatoSprak() : LocalDateTime.now()))
-                .build();
     }
 }

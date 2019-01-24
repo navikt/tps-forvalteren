@@ -286,6 +286,6 @@ public class LandkodeEncoder {
     }
 
     public String encode(String statsborgerskap) {
-        return landkoderMap.getOrDefault(statsborgerskap, "000");
+        return landkoderMap.getOrDefault(statsborgerskap, "990");
     }
 }

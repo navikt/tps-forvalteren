@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps;
 
+import static java.util.Objects.isNull;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +25,10 @@ public class SendSkdMeldingTilTpsResponse {
     private String skdmeldingstype;
     private Map<String, String> status; //Map<Environment, TPS respons statusmelding >
 
-    public String getStatus(String environment) {
-        return status.get(environment);
+    public Map getStatus() {
+        if(isNull(status)) {
+            status = new HashMap<>();
+        }
+        return status;
     }
-
 }

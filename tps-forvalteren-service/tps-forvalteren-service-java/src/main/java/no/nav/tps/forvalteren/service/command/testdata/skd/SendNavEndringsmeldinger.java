@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.String.format;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.BehandleTpsRespons.ekstraherStatusFraServicerutineRespons;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,6 +87,12 @@ public class SendNavEndringsmeldinger {
 
     private String formatResultatMelding(TpsServiceRoutineResponse response) {
         ResponseStatus status = ekstraherStatusFraServicerutineRespons(response);
-        return "00".equals(status.getKode()) || "04".equals(status.getKode()) ? "OK" : format("FEIL: %s", status.getUtfyllendeMelding());
+        return "00".equals(status.getKode()) || "04".equals(status.getKode()) ? "OK" :
+                formaterFeilmelding(status);
+    }
+
+    private String formaterFeilmelding(ResponseStatus status) {
+        return isNotBlank(status.getUtfyllendeMelding()) ?
+                format("FEIL: %s", status.getUtfyllendeMelding()) : "STATUS: UKJENT";
     }
 }

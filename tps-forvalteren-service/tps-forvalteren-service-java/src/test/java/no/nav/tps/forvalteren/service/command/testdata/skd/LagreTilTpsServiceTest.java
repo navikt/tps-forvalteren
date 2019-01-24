@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anySet;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -115,13 +116,13 @@ public class LagreTilTpsServiceTest {
         innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("123").build());
         lagreTilTpsService.execute(GRUPPE_ID, environments);
 
-        verify(skdMeldingSender).sendInnvandringsMeldinger(any(), anySet());
-        verify(skdMeldingSender).sendUpdateInnvandringsMeldinger(anyList(), anySet());
-        verify(skdMeldingSender).sendFoedselsMeldinger(anyList(), anySet());
+        verify(skdMeldingSender, times(3)).sendInnvandringsMeldinger(any(), anySet());
+        verify(skdMeldingSender, times(3)).sendUpdateInnvandringsMeldinger(anyList(), anySet());
+        verify(skdMeldingSender, times(3)).sendFoedselsMeldinger(anyList(), anySet());
+        verify(skdMeldingSender, times(3)).sendUtvandringsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendRelasjonsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendDoedsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendVergemaalsmeldinger(anyList(), anySet());
-        verify(skdMeldingSender).sendUtvandringsmeldinger(anyList(), anySet());
 
         ArgumentCaptor<Set> captor = ArgumentCaptor.forClass(Set.class);
         verify(sendNavEndringsmeldinger).execute(anyList(), captor.capture());
@@ -135,13 +136,13 @@ public class LagreTilTpsServiceTest {
 
     @Test
     public void shouldReturnResponsesWithStatus() {
-        Map<String, String> map = new HashMap<>();
-        map.put("u2", "00");
+        Map<String, String> status = new HashMap<>();
+        status.put("u2", "00");
 
-        innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("1").skdmeldingstype(INNVANDRING_MLD).status(map).build());
-        foedselsmeldingResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("2").skdmeldingstype(FOEDSELS_MLD).status(map).build());
-        relasjonsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("3").skdmeldingstype(RELASJON_MLD).status(map).build());
-        utvandringsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("4").skdmeldingstype(UTVANDRING_MLD).status(map).build());
+        innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("1").skdmeldingstype(INNVANDRING_MLD).status(status).build());
+        foedselsmeldingResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("2").skdmeldingstype(FOEDSELS_MLD).status(status).build());
+        utvandringsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("3").skdmeldingstype(UTVANDRING_MLD).status(status).build());
+        relasjonsResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("4").skdmeldingstype(RELASJON_MLD).status(status).build());
 
         RsSkdMeldingResponse actualResponse = lagreTilTpsService.execute(GRUPPE_ID, environments);
 
@@ -151,8 +152,8 @@ public class LagreTilTpsServiceTest {
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(2).getPersonId(), is("3"));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(3).getPersonId(), is("4"));
 
-        assertThat(map, is(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus()));
-        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, RELASJON_MLD, UTVANDRING_MLD),
+        assertThat(status, is(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus()));
+        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, UTVANDRING_MLD, RELASJON_MLD),
                 is(actualResponse.getSendSkdMeldingTilTpsResponsene()
                         .stream()
                         .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)

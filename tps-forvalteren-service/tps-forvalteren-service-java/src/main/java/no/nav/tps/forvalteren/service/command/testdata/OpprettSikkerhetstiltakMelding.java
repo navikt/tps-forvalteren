@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak.SIKKERHETSTILTAK_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -21,31 +22,23 @@ public class OpprettSikkerhetstiltakMelding {
         
         if (sjekkForSikkerhetstiltak(person)) {
             environmentSet.forEach(environment ->
-                navMeldinger.add(new TpsNavEndringsMelding(buildRequest(person), environment))
+                navMeldinger.add(new TpsNavEndringsMelding(TpsEndreSikkerhetstiltakRequest.builder()
+                        .serviceRutinenavn(SIKKERHETSTILTAK_MLD_NAVN)
+                        .offentligIdent(person.getIdent())
+                        .typeSikkerhetsTiltak(person.getTypeSikkerhetsTiltak())
+                        .fom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoFom()))
+                        .tom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoTom()))
+                        .beskrSikkerhetsTiltak(person.getBeskrSikkerhetsTiltak())
+                        .build(), environment))
             );
         }
         
         return navMeldinger;
     }
-    
-    public TpsEndreSikkerhetstiltakRequest buildRequest(Person person) {
-        TpsEndreSikkerhetstiltakRequest request = TpsEndreSikkerhetstiltakRequest.builder()
-                .serviceRutinenavn(SIKKERHETSTILTAK_MLD_NAVN)
-                .offentligIdent(person.getIdent())
-                .typeSikkerhetsTiltak(person.getTypeSikkerhetsTiltak())
-                .fom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoFom()))
-                .beskrSikkerhetsTiltak(person.getBeskrSikkerhetsTiltak())
-                .build();
-    
-        if (person.getSikkerhetsTiltakDatoTom() != null) {
-            request.setTom( ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoTom()));
-        }
-        return request;
-    }
-    
+
     private boolean sjekkForSikkerhetstiltak(Person person) {
         return isNotBlank(person.getTypeSikkerhetsTiltak()) &&
                 isNotBlank(person.getBeskrSikkerhetsTiltak()) &&
-                person.getSikkerhetsTiltakDatoFom() != null;
+                nonNull(person.getSikkerhetsTiltakDatoFom());
     }
 }
