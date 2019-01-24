@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.jms.JMSException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,6 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
  * <p>
  * Merk: I flyway-skriptet er regdato DATE. Derfor blir klokkeslettet satt til 00:00:00
  */
-@Ignore
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
 
     private static final List<String> EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
@@ -212,12 +211,12 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private List<String> constructExpectedRequests() {
         List<String> expectedRequests = new ArrayList<>();
 
-        EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
-        EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
+        List<String> innvandringsmeldinger = newArrayList(EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL);
+        innvandringsmeldinger.addAll(EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL);
+        ENVIRONMENTS.forEach(env -> innvandringsmeldinger.forEach(url -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
         EXPECTED_SKD_RELASJONSMELDING_ER_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
         EXPECTED_SKD_DOEDSMELDING_IS_REQUESTS_URL.forEach(url -> ENVIRONMENTS.forEach(env -> expectedRequests.add(getResourceFileContent(url).replace("ENDOFFILE", ""))));
 
         return expectedRequests.stream().map(request -> removeWhitespaceBetweenTags(request)).collect(Collectors.toList());
     }
-
 }
