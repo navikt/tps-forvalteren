@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
@@ -124,9 +125,13 @@ public class SkdMeldingSender {
     }
 
     private Map<String, String> mapSkdMeldingStatus(Map<String, String> responseSkdMeldingerPerEnv, Set<String> environmentsSet) {
-        responseSkdMeldingerPerEnv.replaceAll((env, status) -> status != null && status.matches("^00.*")  ? "OK" : ExtractErrorStatus.extract(status));
+        responseSkdMeldingerPerEnv.replaceAll((env, status) -> prepareStatus(status));
         environmentsSet.forEach(env -> responseSkdMeldingerPerEnv.putIfAbsent(env, "Environment is not deployed"));
         return responseSkdMeldingerPerEnv;
+    }
+
+    private String prepareStatus(String status) {
+        return nonNull(status) && status.matches("^00.*")  ? "OK" : ExtractErrorStatus.extract(status);
     }
 
     private SendSkdMeldingTilTpsResponse sendSkdMeldingTilGitteMiljoer(String skdmeldingstype, SkdMelding skdMelding, Set<String> environmentsSet) {

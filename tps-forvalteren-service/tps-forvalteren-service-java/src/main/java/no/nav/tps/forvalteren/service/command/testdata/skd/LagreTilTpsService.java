@@ -1,7 +1,11 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Collections.singleton;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,27 +58,41 @@ public class LagreTilTpsService {
         for (Person person : personerIGruppen) {
             uppercaseDataInPerson.execute(person);
         }
-        List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, environments);
-        List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
-        List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 
-        personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
-        personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
+        Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();
+        Map<String, SendSkdMeldingTilTpsResponse> innvandringUpdateResponse = newHashMap();
+        Map<String, SendSkdMeldingTilTpsResponse> foedselMldResponse = newHashMap();
+        Map<String, SendSkdMeldingTilTpsResponse> utvandringMldResponse = newHashMap();
 
-        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+        for (String environment : environments) {
+            List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, singleton(environment));
+            List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
+            List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 
-        listTpsResponsene.addAll(skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, environments));
-        listTpsResponsene.addAll(skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, environments));
-        listTpsResponsene.addAll(skdMeldingSender.sendFoedselsMeldinger(personerSomSkalFoedes, environments));
-        listTpsResponsene.addAll(skdMeldingSender.sendRelasjonsmeldinger(personerIGruppen, environments));
-        listTpsResponsene.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, environments));
-        listTpsResponsene.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, environments));
-        listTpsResponsene.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, environments));
+            personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+            personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
 
-        List<ServiceRoutineResponseStatus> serviceRoutineResponseList = sendNavEndringsmeldinger.execute(personerIGruppen, environments);
-        tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(personerIGruppen, environments);
+            amendStatus(innvandringCreateResponse, skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, singleton(environment)));
+            amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(environment)));
+            amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(personerSomSkalFoedes, singleton(environment)));
+            amendStatus(utvandringMldResponse, skdMeldingSender.sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(environment)));
 
-        return new RsSkdMeldingResponse(null, listTpsResponsene, serviceRoutineResponseList);
+            tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(personerIGruppen, environment);
+        }
+
+        List skdMldResponse = new ArrayList();
+        skdMldResponse.addAll(innvandringCreateResponse.values());
+        skdMldResponse.addAll(innvandringUpdateResponse.values());
+        skdMldResponse.addAll(foedselMldResponse.values());
+        skdMldResponse.addAll(utvandringMldResponse.values());
+
+        skdMldResponse.addAll(skdMeldingSender.sendRelasjonsmeldinger(personerIGruppen, environments));
+        skdMldResponse.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, environments));
+        skdMldResponse.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, environments));
+
+        List<ServiceRoutineResponseStatus> serviceRoutineResponser = sendNavEndringsmeldinger.execute(personerIGruppen, environments);
+
+        return new RsSkdMeldingResponse(null, skdMldResponse, serviceRoutineResponser);
     }
 
     private List<Person> createListPersonerSomAlleredeEksiterer(List<Person> personerIGruppe, List<Person> personerSomIkkeEksisterer) {
@@ -83,5 +101,15 @@ public class LagreTilTpsService {
         personerSomAlleredeEksisterer.removeAll(personerSomIkkeEksisterer);
 
         return personerSomAlleredeEksisterer;
+    }
+
+    private void amendStatus(Map<String, SendSkdMeldingTilTpsResponse> total, List<SendSkdMeldingTilTpsResponse> partial) {
+        partial.forEach(response -> {
+            if (total.containsKey(response.getPersonId())) {
+                total.get(response.getPersonId()).getStatus().putAll(response.getStatus());
+            } else {
+                total.put(response.getPersonId(), response);
+            }
+        });
     }
 }
