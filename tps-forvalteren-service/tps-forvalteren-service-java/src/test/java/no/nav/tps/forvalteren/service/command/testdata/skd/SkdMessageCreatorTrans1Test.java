@@ -50,7 +50,6 @@ public class SkdMessageCreatorTrans1Test {
     @Mock
     private GenerateSkdMelding generateSkdMelding;
 
-
     @Test
     public void illegalSkdMeldingByNameThrowsException() {
         expectedException.expect(IllegalArgumentException.class);

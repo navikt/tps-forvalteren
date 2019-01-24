@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tpsconfig;
 
+import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
+
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,7 +19,7 @@ public class GetEnvironments {
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
-    @Cacheable("fasit")
+    @Cacheable(CACHE_FASIT)
     public Set<String> getEnvironmentsFromFasit(String application) {
         Set<String> environments = fasitApiConsumer.getEnvironments(application);
 

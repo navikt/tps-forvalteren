@@ -1,5 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static com.google.common.collect.Sets.newHashSet;
+import static java.util.Collections.emptySet;
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -54,13 +58,10 @@ public class TestdataIdenterFetcher {
         return testdataRequests;
     }
 
-    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe, Set<String> environments){
+    private List<TestdataRequest> lagTestdatarequester(RsPersonKriteriumRequest personKriterierListe, Set<String> environments) {
         List<TestdataRequest> testdataRequests = genererIdenterForTestdataRequests.execute(personKriterierListe);
 
-        if (environments != null) {
-            environments.add(PRODLIKE_ENV);
-        }
-        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests, environments);
+        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequests, appendProdEnv(environments));
 
         filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
 
@@ -80,9 +81,8 @@ public class TestdataIdenterFetcher {
 
                     List<TestdataRequest> testdataRequestSingleList = genererIdenterForTestdataRequests.execute(singelKriterieListe);
 
-                    if(alleMiljoer){
-                        miljoer.add(PRODLIKE_ENV);
-                        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequestSingleList, miljoer);
+                    if (alleMiljoer) {
+                        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotAlleMiljoer(testdataRequestSingleList, appendProdEnv(miljoer));
                     } else {
                         filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotProdliktMiljoe(testdataRequestSingleList);
                     }
@@ -104,6 +104,15 @@ public class TestdataIdenterFetcher {
                 }
             }
         }
+    }
+
+    private Set<String> appendProdEnv(Set<String> miljoer) {
+        if (nonNull(miljoer)) {
+            Set miljoerOgProdlike = newHashSet(miljoer);
+            miljoerOgProdlike.add(PRODLIKE_ENV);
+            return miljoerOgProdlike;
+        }
+        return emptySet();
     }
 
     private void taBortOverflodigeIdenterFraTestRequest(TestdataRequest request) {

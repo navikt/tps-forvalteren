@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static java.util.Objects.nonNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter,
-                miljoer != null ? miljoer : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
+                nonNull(miljoer) && !miljoer.isEmpty() ? miljoer : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 

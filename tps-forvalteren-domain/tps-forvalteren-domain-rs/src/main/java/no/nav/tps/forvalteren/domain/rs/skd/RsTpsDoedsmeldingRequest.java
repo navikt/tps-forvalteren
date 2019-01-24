@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.D;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -35,10 +36,10 @@ public class RsTpsDoedsmeldingRequest {
     private List<String> miljoer;
 
     public boolean validatesOk() {
-        return (doedsdato != null || handling != D) && isValidMiljoe();
+        return (nonNull(doedsdato) || handling != D) && isValidMiljoe();
     }
 
     private boolean isValidMiljoe() {
-        return isNotBlank(ident) && miljoer != null && !miljoer.isEmpty();
+        return isNotBlank(ident) && nonNull(miljoer) && !miljoer.isEmpty();
     }
 }

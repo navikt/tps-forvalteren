@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.consumer.rs.environments;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toSet;
+import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class FasitApiConsumer {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable("fasit")
+    @Cacheable(CACHE_FASIT)
     public List<FasitApplication> getApplications(String name) {
         String urlPattern = FasitUrl.APPLICATIONS_V2_GET.getUrl() + createQueryPatternByParamName("name", "pr_page");
         String url = String.format(urlPattern, BASE_URL, name, 1000);
@@ -74,7 +75,7 @@ public class FasitApiConsumer {
         return newArrayList(applications.getBody());
     }
 
-    @Cacheable("fasit")
+    @Cacheable(CACHE_FASIT)
     public List<FasitApplication> getApplicationInstances(String application, boolean usage) {
         String urlPattern = FasitUrl.APPLICATIONINSTANCES_V2_GET.getUrl() + createQueryPatternByParamName("application", "usage");
         String url = String.format(urlPattern, BASE_URL, application, true);
@@ -84,7 +85,7 @@ public class FasitApiConsumer {
         return newArrayList(applications.getBody());
     }
 
-    @Cacheable("fasit")
+    @Cacheable(CACHE_FASIT)
     public List<FasitResource> getResourcesByAliasAndType(String alias, FasitPropertyTypes propertyTypes) {
         String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type");
         String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName());
@@ -94,7 +95,7 @@ public class FasitApiConsumer {
         return mapperFacade.mapAsList(properties.getBody(), FasitResource.class);
     }
 
-    @Cacheable("fasit")
+    @Cacheable(CACHE_FASIT)
     public FasitResource getResourceFromRef(String refurl) {
         ResponseEntity<FasitResourceWithUnmappedProperties> resource = restTemplate.getForEntity(refurl, FasitResourceWithUnmappedProperties.class);
         return mapperFacade.map(resource.getBody(), FasitResource.class);

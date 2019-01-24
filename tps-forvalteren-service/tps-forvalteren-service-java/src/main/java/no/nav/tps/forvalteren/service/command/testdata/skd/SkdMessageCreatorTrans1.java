@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
@@ -38,7 +36,7 @@ public class SkdMessageCreatorTrans1 {
 
     public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
 
-        List<SkdMeldingTrans1> skdMeldinger = Lists.newArrayListWithExpectedSize(persons.size());
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList(persons.size());
         for (Person person : persons) {
             skdMeldinger.add(execute(skdMeldingNavn, person, addHeader));
         }
@@ -47,7 +45,7 @@ public class SkdMessageCreatorTrans1 {
 
     public List<SkdMeldingTrans1> createVergemaalSkdMelding(List<Vergemaal> vergemaalListe, boolean addHeader) {
         Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute("Vergemaal");
-        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList();
         if (skdRequestMeldingDefinitionOptional.isPresent()) {
             for (Vergemaal vergemaal : vergemaalListe) {
                 SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(vergemaal, addHeader);
