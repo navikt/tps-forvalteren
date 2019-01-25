@@ -12,7 +12,6 @@ import com.google.common.collect.Sets;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
-
 @Service
 public class SjekkIdenter {
 

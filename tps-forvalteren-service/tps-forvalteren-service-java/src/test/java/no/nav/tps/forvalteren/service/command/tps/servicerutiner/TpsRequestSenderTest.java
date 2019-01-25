@@ -22,7 +22,7 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResp
 @RunWith(MockitoJUnitRunner.class)
 public class TpsRequestSenderTest {
     
-    private static long TIMEOUT = 5000;
+    private static long TIMEOUT = 1000;
     
     @Mock
     private FindServiceRoutineByName findServiceRoutineByNameMock;

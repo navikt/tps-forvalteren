@@ -1,7 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
-import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_LES_TIMEOUT;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,22 +30,23 @@ public class TpsRequestSender {
 
     public TpsServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context, long timeout) {
         try {
-            TpsServiceRoutineDefinitionRequest serviceRoutine = findServiceRoutineByName.execute(request.getServiceRutinenavn()).get();
-            Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine, context, timeout);
-            return rsTpsResponseMappingUtils.convertToTpsServiceRutineResponse(response);
-
+            Optional<TpsServiceRoutineDefinitionRequest> serviceRoutine = findServiceRoutineByName.execute(request.getServiceRutinenavn());
+            if (serviceRoutine.isPresent()) {
+                Response response = tpsRequestService.executeServiceRutineRequest(request, serviceRoutine.get(), context, timeout);
+                return rsTpsResponseMappingUtils.convertToTpsServiceRutineResponse(response);
+            }
+            return null;
         } catch (HttpForbiddenException ex) {
             throw new HttpForbiddenException(ex, "api/v1/service/" + request.getServiceRutinenavn());
 
         } catch (Exception exception) {
             throw new HttpInternalServerErrorException(exception, "api/v1/service");
-
         }
 
         //TODO kan kaste SOAP Exception ogsaa. Fra EgenAnsattConsumer.
     }
 
     public TpsServiceRoutineResponse sendTpsRequest(TpsServiceRoutineRequest request, TpsRequestContext context) {
-        return sendTpsRequest(request, context, DEFAULT_TIMEOUT);
+        return sendTpsRequest(request, context, DEFAULT_LES_TIMEOUT);
     }
 }
