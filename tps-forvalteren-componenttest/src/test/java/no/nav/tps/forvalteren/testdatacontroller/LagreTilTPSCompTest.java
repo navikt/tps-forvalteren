@@ -3,9 +3,10 @@ package no.nav.tps.forvalteren.testdatacontroller;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
-import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -87,7 +88,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .content("[\"" + String.join("\",\"", ENVIRONMENTS) + "\"]"))
                 .andExpect(status().isOk());
 
-        verify(messageQueueConsumer, times(ENVIRONMENTS.size())).sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_FIND_EXISTING_IDENTS_IN_TPS_REQUEST)), DEFAULT_TIMEOUT);
+        verify(messageQueueConsumer, times(ENVIRONMENTS.size())).sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_FIND_EXISTING_IDENTS_IN_TPS_REQUEST))), anyLong());
 
         assertCalledEnvironments();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
@@ -98,17 +99,17 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
 
     private void mockTps() throws JMSException {
-        when(messageQueueConsumer.sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_FIND_EXISTING_IDENTS_IN_TPS_REQUEST)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_FIND_EXISTING_IDENTS_IN_TPS_REQUEST))), anyLong()))
                 .thenReturn(getResourceFileContent(XML_FIND_EXISTING_IDENTS_IN_TPS_RESPONSE));
-        when(messageQueueConsumer.sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_02020403694)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_02020403694))), anyLong()))
                 .thenReturn(getResourceFileContent(XML_HENT_KJERNEINFO_RESPONSE));
-        when(messageQueueConsumer.sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_04121656499)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_04121656499))), anyLong()))
                 .thenReturn(getResourceFileContent(XML_HENT_KJERNEINFO_RESPONSE));
-        when(messageQueueConsumer.sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_10050552565)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_10050552565))), anyLong()))
                 .thenReturn(getResourceFileContent(XML_HENT_KJERNEINFO_RESPONSE));
-        when(messageQueueConsumer.sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_11031250155)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_11031250155))), anyLong()))
                 .thenReturn(getResourceFileContent(XML_HENT_KJERNEINFO_RESPONSE));
-        when(messageQueueConsumer.sendMessage(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_12017500617)), DEFAULT_TIMEOUT))
+        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent(XML_HENT_KJERNEINFO_REQUEST_12017500617))), anyLong()))
                 .thenReturn(getResourceFileContent(XML_HENT_KJERNEINFO_RESPONSE));
     }
 

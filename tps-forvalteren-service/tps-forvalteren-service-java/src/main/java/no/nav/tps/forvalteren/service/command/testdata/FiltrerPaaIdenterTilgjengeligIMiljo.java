@@ -78,13 +78,20 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
 
             TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
                     .get("serviceRutinenavn")), tpsRequestParameters);
-            TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+
+            TpsServiceRoutineResponse tpsResponse = null;
+            int loopCount = 3;
+            do {
+                tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, context);
+                loopCount--;
+            } while (loopCount != 0 && tpsResponse.getXml().isEmpty());
 
             checkForTpsSystemfeil(tpsResponse, miljoe);
 
-            Set<String> tilgjengeligeIdenterFraEtBestemtMiljoe = trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse);
+            if (!tpsResponse.getXml().isEmpty()) {
+                tilgjengeligeIdenterAlleMiljoer.retainAll(trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse));
+            }
 
-            tilgjengeligeIdenterAlleMiljoer.retainAll(tilgjengeligeIdenterFraEtBestemtMiljoe);
             if (tilgjengeligeIdenterAlleMiljoer.isEmpty()) {
                 log.info("Ledige identer ikke funnet i {}", miljoe);
                 break;

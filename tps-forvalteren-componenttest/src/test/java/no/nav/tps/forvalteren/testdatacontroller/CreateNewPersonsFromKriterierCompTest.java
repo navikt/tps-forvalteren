@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
 import static java.util.Arrays.asList;
-import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_LES_TIMEOUT;
 import static org.assertj.core.util.Sets.newHashSet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -83,7 +83,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                 .andExpect(status().isOk());
 
         verify(messageQueueConsumer, times(ENV_SET.size())).sendMessage(
-                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
+                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_LES_TIMEOUT);
         verify(messageQueueConsumer).sendMessage(eq(
                 removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());
 
@@ -100,7 +100,8 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     private void mockTps() throws JMSException {
         when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml"))), anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_response.xml"));
-        when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong()))
+        when(messageQueueConsumer
+                .sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_response.xml"));
     }
 

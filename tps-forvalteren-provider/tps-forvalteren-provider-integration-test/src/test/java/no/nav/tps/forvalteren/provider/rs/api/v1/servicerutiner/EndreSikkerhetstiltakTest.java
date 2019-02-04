@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.servicerutiner;
 
-import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -12,7 +11,6 @@ import org.mockito.Mockito;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.provider.rs.api.v1.AbstractServiceroutineControllerIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 

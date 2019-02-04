@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
-import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_TIMEOUT;
+import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_LES_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
@@ -80,7 +80,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .andExpect(status().isOk()).andReturn();
         
         verify(messageQueueConsumer, times(fasitRegistrerteEnvMedTps.size())).sendMessage(
-                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_request.xml")), DEFAULT_TIMEOUT);
+                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_request.xml")), DEFAULT_LES_TIMEOUT);
         
         assertResponse(expectedResponse, mvcResult);
     }

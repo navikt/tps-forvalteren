@@ -17,7 +17,8 @@ import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
 
 public class MessageQueueConsumer {
 
-    public static final long DEFAULT_TIMEOUT = 5000;
+    public static final long DEFAULT_LES_TIMEOUT = 1000;
+    public static final long DEFAULT_SKRIV_TIMEOUT = 5000;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageQueueConsumer.class);
     private static final String FEIL_KOENAVN = "Feil i koenavn eller miljoe";
@@ -32,7 +33,7 @@ public class MessageQueueConsumer {
     }
 
     public String sendMessage(String requestMessageContent) throws JMSException {
-        return sendMessage(requestMessageContent, DEFAULT_TIMEOUT);
+        return sendMessage(requestMessageContent, DEFAULT_SKRIV_TIMEOUT);
     }
 
     public String sendMessage(String requestMessageContent, long timeout) throws JMSException {
