@@ -1,0 +1,139 @@
+<div class="tps-vk-service-rutine-dashboard tps-content" layout="column" flex layout-padding ng-cloak>
+
+    <div class="tps-vk-top md-whiteframe-z1" flex="20" layout="column">
+
+        <form flex="100" name="requestForm" ng-submit="requestForm.$valid && submit()" layout-align="start start">
+
+            <div layout="row" class="avspiller-row">
+                <md-input-container flex="10" class="md-no-flex">
+                    <label>Miljø</label>
+                    <md-select ng-model="request.miljoe" required ng-change="checkOversikt()">
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container flex="20">
+                    <label>Periode fra</label>
+                    <md-datepicker name="periodeFra" class="md-calendar-date"
+                                   ng-model="request.periodeFra"
+                                   md-current-view="year"
+                                   md-min-date="startOfEra"
+                                   md-max-date="periodeTil"
+                                   ng-change="checkOversikt()">
+                    </md-datepicker>
+                    <div ng-messages="requestForm.periodeFra.$error"
+                         ng-show="requestForm.periodeFra.$pristine">
+                        <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container flex="20">
+                    <label>Periode til</label>
+                    <md-datepicker name="periodeTil" class="md-calendar-date"
+                                   ng-model="request.periodeTil"
+                                   md-current-view="year"
+                                   md-min-date="periodeFra"
+                                   md-max-date="today"
+                                   ng-change="checkOversikt()">
+                    </md-datepicker>
+                    <div ng-messages="requestForm.periodeTil.$error"
+                         ng-show="requestForm.periodeTil.$pristine">
+                        <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                    </div>
+                </md-input-container>
+
+                <div flex="5">
+                    <label>Format</label>
+                </div>
+                <md-input-container class="avspiller-radio-gruppe" flex="30" >
+                    <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()">
+                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Fagsystem</md-radio-button>
+                        <md-radio-button value="{{tps}}">Tps</md-radio-button>
+                    </md-radio-group>
+                </md-input-container>
+
+            </div>
+            <div layout="row" class="avspiller-row">
+                <md-input-container class="tps-vk-input-container" flex="20"
+                                    aria-label="Type(r)">
+                    <label>Meldingstype(r)</label>
+                    <md-select name="typer" ng-model="request.typer" placeholder="Velg type(r)" multiple="true" ng-disabled="disableTyperOgKilder">
+                        <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="tps-vk-input-container" flex="20"
+                                    aria-label="Kilde(r)">
+                    <label>Kilde(r)</label>
+                    <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true" ng-disabled="disableTyperOgKilder">
+                        <md-option ng-value="kilde.type" ng-repeat="kilde in kilder">{{kilde.type + getAntall(kilde.antall)}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="tps-vk-input-container" flex>
+                    <md-tooltip>Kopier inn liste av identer</md-tooltip>
+                    <label>Liste av identer</label>
+                    <input cols="120" name="identer" ng-model="request.identer" rows="6" class="testdata-ident-liste"
+                              placeholder="Kopier inn liste av identer"
+                              ng-pattern="/^(\d{11}[\W\s]*)+$/"></input>
+                    <div ng-messages="requestForm.identer.$error"
+                         ng-show="requestForm.identer.$dirty">
+                        <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
+                    </div>
+
+                    <div class="validation-messages" ng-messages="requestForm.identer.$error" ng-show="requestForm.identer.$pristine">
+                        <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
+                    </div>
+                </md-input-container>
+
+                <md-button style="margin-bottom: 100px;" type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                           ng-disabled="requestForm.$invalid || !request.periodeFra || !request.periodeTil">
+                    Hent
+                </md-button>
+            </div>
+        </form>
+        <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+    </div>
+
+    <!-- Resulting Response -->
+    <form name="responseForm" class="top transparent response-form">
+        <h3 layout="row" class="flexbox-parent" ng-if="showResponse">
+            <div flex="10" align="end">Melding#</div>
+            <div flex="5"></div>
+            <div flex="25">Tidspunkt</div>
+            <div flex="25">Hendelse</div>
+            <div flex="15">Kilde</div>
+            <div flex="15">Ident</div>
+        </h3>
+        <div ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
+            <md-card id="melding{{$index + pager.startIndex}}" flex md-whiteframe="10"
+                     ng-init="height = 1"
+                     ng-mouseover="height = 5"
+                     ng-mouseleave="height = 1">
+                <md-card-content flex class="card-content">
+                    <div layout="row">
+                        <div flex="10" align="end">{{message.meldingNummer}}</div>
+                        <div flex="5"></div>
+                        <div flex="25">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                        <div flex="25">{{message.meldingsType }}</div>
+                        <div flex="15">{{message.systemkilde }}</div>
+                        <div flex="15">{{message.ident}}</div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </form>
+    <div layout-align="end end" layout="row" class="btn-group" ng-show="showResponse">
+        <md-input-container flex="10" class="md-no-flex">
+            <label>Miljø</label>
+            <md-select ng-model="request.miljoe" required ng-change="checkOversikt()">
+                <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
+            <md-button class="md-button md-raised md-accent" ng-disabled="isSent"
+                       ng-click="sendTilTps()">Send
+            </md-button>
+        </md-input-container>
+    </div>
+</div>

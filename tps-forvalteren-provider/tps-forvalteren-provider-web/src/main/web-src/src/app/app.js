@@ -27,7 +27,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding',
     'tps-forvalteren.providers', 'tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', 'tps-forvalteren.service-rutine',
     'tps-forvalteren.service-rutine.velg-service-rutine', 'tps-forvalteren.doedsmeldinger', 'tps-forvalteren.doedsmeldinger.endremelding',
-    'tps-forvalteren.rawxml-melding']);
+    'tps-forvalteren.rawxml-melding','tps-forvalteren.avspiller']);
 
 
 require('./shared/index');
@@ -356,6 +356,31 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
+            .state('avspiller', {
+                url: "/avspiller",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/avspiller/avspiller.html",
+                        controller: 'AvspillerCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
 
             .state('root', {
                     url: '/',

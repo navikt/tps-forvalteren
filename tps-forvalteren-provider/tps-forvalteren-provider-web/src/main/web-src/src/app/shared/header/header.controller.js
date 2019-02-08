@@ -32,6 +32,10 @@ angular.module('tps-forvalteren')
                 locationService.redirectToSendDoedsmeldinger();
             };
 
+            $scope.openAvspiller = function () {
+                locationService.redirectToAvspiller();
+            };
+
             $scope.isRoot = locationService.isRoot();
 
             $scope.visGTKnapp = !$scope.$resolve.environmentsPromise.productionMode || $scope.$resolve.environmentsPromise.roles["hasGT"];
