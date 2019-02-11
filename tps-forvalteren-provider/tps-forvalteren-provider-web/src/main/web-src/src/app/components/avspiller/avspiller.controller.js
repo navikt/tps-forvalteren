@@ -12,9 +12,9 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.periodeFra = $scope.startOfEra;
             $scope.periodeTil = $scope.today;
 
-            var computeDefaultPeriode = function(days) {
+            var computeDefaultPeriode = function (days) {
                 var defaultPeriode = new Date();
-                defaultPeriode.setTime(defaultPeriode.getTime() - (24*60*60*1000) * days);
+                defaultPeriode.setTime(defaultPeriode.getTime() - (24 * 60 * 60 * 1000) * days);
                 return defaultPeriode;
             };
 
@@ -24,17 +24,33 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.request.periodeTil = $scope.today;
             $scope.request.format = $scope.fagsystem;
 
+            var oversiktOk = function (data) {
+                $scope.typer = data.typer;
+                $scope.kilder = data.kilder;
+                $scope.disableTyperOgKilder = false;
+                $scope.request.typer = undefined;
+                $scope.request.kilder = undefined;
+            };
+
+            var meldingerOk = function (data) {
+                $scope.meldinger = data.meldinger;
+                $scope.showResponse = data.antallTotalt > 0;
+            };
+
+            var meldingskoerOk = function (data) {
+                $scope.koer = data;
+            };
+
+            var error = function (disrupt) {
+                utilsService.showAlertError(disrupt);
+            };
+
             $scope.checkOversikt = function () {
                 $scope.periodeFra = $scope.request.periodeFra || $scope.startOfEra;
                 $scope.periodeTil = $scope.request.periodeTil || $scope.today;
                 if ($scope.request.miljoe && ((!$scope.request.periodeFra && !$scope.request.periodeTil) || ($scope.request.periodeFra && $scope.request.periodeTil))) {
-                    avspillerService.getTyperOgKilder($scope.request).then(function (data) {
-                        $scope.typer = data.data.typer;
-                        $scope.kilder = data.data.kilder;
-                        $scope.disableTyperOgKilder = false;
-                        $scope.request.typer = undefined;
-                        $scope.request.kilder = undefined;
-                    })
+                    avspillerService.getTyperOgKilder($scope.request)
+                        .then(oversiktOk, error);
                 }
             };
 
@@ -43,10 +59,14 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             $scope.submit = function () {
-                avspillerService.getMeldinger($scope.request).then(function (data) {
-                   $scope.meldinger = data.data.meldinger;
-                   $scope.showResponse = data.data.antallTotalt > 0;
-                });
+                avspillerService.getMeldinger($scope.request)
+                    .then(meldingerOk, error);
+            };
+
+            $scope.checkMeldingskoer = function() {
+                $scope.request2.format = $scope.request.format;
+                avspillerService.getMeldingskoer($scope.request2)
+                    .then(meldingskoerOk, error);
             };
 
             function sortEnvironmentsForDisplay(environments) {
@@ -77,10 +97,10 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 return sortedEnvironments;
             }
 
-            var environments = $scope.$resolve.environmentsPromise;
-            if (environments.status !== undefined) {
-                utilsService.showAlertError(environments);
+            var miljoer = $scope.$resolve.environmentsPromise;
+            if (miljoer && miljoer.environments) {
+                $scope.environments = sortEnvironmentsForDisplay(miljoer.environments);
             } else {
-                $scope.environments = sortEnvironmentsForDisplay(environments.environments);
+                utilsService.showAlertError(miljoer);
             }
         }]);

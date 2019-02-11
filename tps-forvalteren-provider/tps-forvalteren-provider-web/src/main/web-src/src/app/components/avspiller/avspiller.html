@@ -24,6 +24,8 @@
                     <div ng-messages="requestForm.periodeFra.$error"
                          ng-show="requestForm.periodeFra.$pristine">
                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                        <div ng-message="mindate">Dato kan ikke være før 01-01-2002</div>
+                        <div ng-message="maxdate">Dato kan ikke være etter "Periode til", eventuelt dagens dato</div>
                     </div>
                 </md-input-container>
 
@@ -39,13 +41,15 @@
                     <div ng-messages="requestForm.periodeTil.$error"
                          ng-show="requestForm.periodeTil.$pristine">
                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
+                        <div ng-message="mindate">Dato kan ikke være før 01-01-2002, eventuelt dagens dato</div>
+                        <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
                     </div>
                 </md-input-container>
 
                 <div flex="5">
                     <label>Format</label>
                 </div>
-                <md-input-container class="avspiller-radio-gruppe" flex="30" >
+                <md-input-container class="avspiller-radio-gruppe" flex="30">
                     <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()">
                         <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Fagsystem</md-radio-button>
                         <md-radio-button value="{{tps}}">Tps</md-radio-button>
@@ -55,9 +59,9 @@
             </div>
             <div layout="row" class="avspiller-row">
                 <md-input-container class="tps-vk-input-container" flex="20"
-                                    aria-label="Type(r)">
+                                    aria-label="Hendelse(r)">
                     <label>Meldingstype(r)</label>
-                    <md-select name="typer" ng-model="request.typer" placeholder="Velg type(r)" multiple="true" ng-disabled="disableTyperOgKilder">
+                    <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)" multiple="true" ng-disabled="disableTyperOgKilder">
                         <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -74,8 +78,8 @@
                     <md-tooltip>Kopier inn liste av identer</md-tooltip>
                     <label>Liste av identer</label>
                     <input cols="120" name="identer" ng-model="request.identer" rows="6" class="testdata-ident-liste"
-                              placeholder="Kopier inn liste av identer"
-                              ng-pattern="/^(\d{11}[\W\s]*)+$/"></input>
+                           placeholder="Kopier inn liste av identer"
+                           ng-pattern="/^(\d{11}[\W\s]*)+$/"></input>
                     <div ng-messages="requestForm.identer.$error"
                          ng-show="requestForm.identer.$dirty">
                         <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
@@ -123,17 +127,26 @@
             </md-card>
         </div>
     </form>
-    <div layout-align="end end" layout="row" class="btn-group" ng-show="showResponse">
-        <md-input-container flex="10" class="md-no-flex">
-            <label>Miljø</label>
-            <md-select ng-model="request.miljoe" required ng-change="checkOversikt()">
-                <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
-            </md-select>
-        </md-input-container>
-        <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
-            <md-button class="md-button md-raised md-accent" ng-disabled="isSent"
-                       ng-click="sendTilTps()">Send
-            </md-button>
-        </md-input-container>
-    </div>
+
+    <form flex="100" name="requestForm2" ng-submit="requestForm.$valid && submit()" ng-show="showResponse">
+        <div layout-align="end end" layout="row" class="btn-group">
+            <md-input-container flex="10">
+                <label>Miljø</label>
+                <md-select ng-model="request2.miljoe" required ng-change="checkMeldingskoer()">
+                    <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex="30">
+                <label>Meldingskøer</label>
+                <md-select ng-model="request2.meldingskoe" required ng-disabled="!koer">
+                    <md-option ng-repeat="koe in koer" value="{{koe.koenavn}}">{{ koe.koenavn }}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
+                <md-button class="md-button md-raised md-accent" ng-disabled="requestForm2.$invalid"
+                           ng-click="sendTilTps()">Send
+                </md-button>
+            </md-input-container>
+        </div>
+    </form>
 </div>
