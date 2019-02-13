@@ -12,7 +12,7 @@ angular.module('tps-forvalteren.service')
         };
 
         self.getMeldinger = function (request) {
-            return $http.get(url + '/meldinger' + prepareBasicParams(request) + prepareOptionalParams(request))
+            return $http.get(url + '/meldinger' + prepareBasicParams(request) + prepareOptionalParams(request) + prepareBufferParam(request))
                 .then(function (response) {
                     return response.data;
                 });
@@ -35,6 +35,10 @@ angular.module('tps-forvalteren.service')
             return (request.typer ? '&typer=' + request.typer.join(",") : '') +
                 (request.kilder ? '&kilder=' + request.kilder.join(",") : '') +
                 (request.identer ? '&identer=' + request.identer.split(/[\W\s]+/).join(',') : '');
+        };
+
+        var prepareBufferParam = function (request) {
+            return request.buffersize ? '&buffer=' + request.buffersize + '$' + request.buffernumber : '';
         };
 
         var date2String = function (dato) {

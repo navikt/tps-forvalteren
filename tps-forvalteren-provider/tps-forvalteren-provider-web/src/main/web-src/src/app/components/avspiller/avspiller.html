@@ -46,16 +46,20 @@
                     </div>
                 </md-input-container>
 
-                <div flex="5">
-                    <label>Format</label>
-                </div>
-                <md-input-container class="avspiller-radio-gruppe" flex="30">
+                <div flex="5"></div>
+                <div flex="10" style="margin-right: -45px; margin-top:30px; font-size: smaller">Format:</div>
+                <div class="avspiller-radio-gruppe" flex style="margin-top: 28px;">
                     <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()">
-                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Fagsystem</md-radio-button>
+                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Fag</md-radio-button>
                         <md-radio-button value="{{tps}}">Tps</md-radio-button>
                     </md-radio-group>
-                </md-input-container>
-
+                </div>
+                <md-button style="height: 20px; margin-top: 60px;"
+                        type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                           ng-disabled="requestForm.$invalid || !request.periodeFra || !request.periodeTil">
+                    Hent
+                </md-button>
+                <div flex="5"></div>
             </div>
             <div layout="row" class="avspiller-row">
                 <md-input-container class="tps-vk-input-container" flex="20"
@@ -77,7 +81,7 @@
                 <md-input-container class="tps-vk-input-container" flex>
                     <md-tooltip>Kopier inn liste av identer</md-tooltip>
                     <label>Liste av identer</label>
-                    <input cols="120" name="identer" ng-model="request.identer" rows="6" class="testdata-ident-liste"
+                    <input name="identer" ng-model="request.identer" class="testdata-ident-liste"
                            placeholder="Kopier inn liste av identer"
                            ng-pattern="/^(\d{11}[\W\s]*)+$/"></input>
                     <div ng-messages="requestForm.identer.$error"
@@ -89,64 +93,77 @@
                         <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
                     </div>
                 </md-input-container>
-
-                <md-button style="margin-bottom: 100px;" type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                           ng-disabled="requestForm.$invalid || !request.periodeFra || !request.periodeTil">
-                    Hent
-                </md-button>
+                <div flex="5"></div>
             </div>
+
         </form>
         <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
     </div>
 
-    <!-- Resulting Response -->
-    <form name="responseForm" class="top transparent response-form">
-        <h3 layout="row" class="flexbox-parent" ng-if="showResponse">
-            <div flex="10" align="end">Melding#</div>
-            <div flex="5"></div>
-            <div flex="25">Tidspunkt</div>
-            <div flex="25">Hendelse</div>
-            <div flex="15">Kilde</div>
-            <div flex="15">Ident</div>
-        </h3>
-        <div ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
-            <md-card id="melding{{$index + pager.startIndex}}" flex md-whiteframe="10"
-                     ng-init="height = 1"
-                     ng-mouseover="height = 5"
-                     ng-mouseleave="height = 1">
-                <md-card-content flex class="card-content">
-                    <div layout="row">
-                        <div flex="10" align="end">{{message.meldingNummer}}</div>
-                        <div flex="5"></div>
-                        <div flex="25">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
-                        <div flex="25">{{message.meldingsType }}</div>
-                        <div flex="15">{{message.systemkilde }}</div>
-                        <div flex="15">{{message.ident}}</div>
-                    </div>
-                </md-card-content>
-            </md-card>
-        </div>
-    </form>
 
-    <form flex="100" name="requestForm2" ng-submit="requestForm.$valid && submit()" ng-show="showResponse">
-        <div layout-align="end end" layout="row" class="btn-group">
-            <md-input-container flex="10">
-                <label>Miljø</label>
-                <md-select ng-model="request2.miljoe" required ng-change="checkMeldingskoer()">
-                    <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex="30">
-                <label>Meldingskøer</label>
-                <md-select ng-model="request2.meldingskoe" required ng-disabled="!koer">
-                    <md-option ng-repeat="koe in koer" value="{{koe.koenavn}}">{{ koe.koenavn }}</md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container class="input-row" aria-label="Lagre oppdatert gruppeinfo">
-                <md-button class="md-button md-raised md-accent" ng-disabled="requestForm2.$invalid"
-                           ng-click="sendTilTps()">Send
-                </md-button>
-            </md-input-container>
-        </div>
-    </form>
+    <!-- Resulting Response -->
+    <md-content flex="100" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger">
+        <form name="responseForm" class="top transparent response-form">
+
+            <div layout="row" layout-align="end end" class="pagination">
+                <span style="margin-right: 15px; margin-bottom: 6px;">Viser {{pager.viser.display}} av {{totalt}}</span>
+                <li ng-class="{disabled:pager.currentPage === 1 || disable}">
+                    <a ng-click="setPage(1)">&lt;&lt;</a>
+                </li>
+                <li ng-class="{disabled:pager.currentPage === 1 || disable}">
+                    <a ng-click="setPage(pager.currentPage - 1)">&lt;</a>
+                </li>
+                <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page, disabled:disable}">
+                    <a ng-click="setPage(page.pagenum)">{{page.display}}</a>
+                </li>
+                <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
+                    <a ng-click="setPage(pager.currentPage + 1)">&gt;</a>
+                </li>
+                <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
+                    <a ng-click="setPage(pager.totalPages)">&gt;&gt;</a>
+                </li>
+                <div flex="5"></div>
+            </div>
+
+            <h3 layout="row" class="flexbox-parent">
+                <div flex="10" align="end">Melding#</div>
+                <div flex="5"></div>
+                <div flex="25">Tidspunkt</div>
+                <div flex="25">Hendelse</div>
+                <div flex="15">Kilde</div>
+                <div flex="15">Ident</div>
+            </h3>
+            <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
+
+                <div flex="10" align="end">{{message.meldingNummer}}</div>
+                <div flex="5"></div>
+                <div flex="25">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                <div flex="25">{{message.meldingsType }}</div>
+                <div flex="15">{{message.systemkilde }}</div>
+                <div flex="15">{{message.ident}}</div>
+            </div>
+        </form>
+
+        <form flex="100" name="requestForm2" ng-submit="requestForm.$valid && submit()" ng-show="meldinger">
+            <div layout-align="end end" layout="row" class="btn-group">
+                <md-input-container flex="10" aria-label="Velg miljø">
+                    <label>Miljø</label>
+                    <md-select ng-model="request2.miljoe" required ng-change="checkMeldingskoer()">
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="30" aria-label="Velg kønavn">
+                    <label>Meldingskø</label>
+                    <md-select ng-model="request2.meldingskoe" required ng-disabled="!koer">
+                        <md-option ng-repeat="koe in koer" value="{{koe.koenavn}}">{{ koe.koenavn }}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
+                    <md-button class="md-button md-raised md-accent" ng-disabled="requestForm2.$invalid"
+                               ng-click="sendTilTps()">Send
+                    </md-button>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
 </div>

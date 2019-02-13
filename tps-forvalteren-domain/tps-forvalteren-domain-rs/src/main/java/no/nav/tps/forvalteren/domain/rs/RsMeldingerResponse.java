@@ -20,6 +20,8 @@ public class RsMeldingerResponse {
 
     private Long antallTotalt;
     private List<RsMelding> meldinger;
+    private Long buffersize;
+    private Long buffernumber;
 
     public List<RsMelding> getMeldinger() {
         if (isNull(meldinger)) {

@@ -1,9 +1,12 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,17 +65,13 @@ public class AvspillerController {
                 ", identer=" + identer +
                 ", buffer=" + buffer);
 
-        return RsMeldingerResponse.builder().antallTotalt(325L)
-                .meldinger(newArrayList(
-                        RsMelding.builder().meldingNummer(123L).meldingsType("foedselsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678910").build(),
-                        RsMelding.builder().meldingNummer(124L).meldingsType("foedselsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678901").build(),
-                        RsMelding.builder().meldingNummer(125L).meldingsType("innvandringsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678902").build(),
-                        RsMelding.builder().meldingNummer(126L).meldingsType("foedselsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678903").build(),
-                        RsMelding.builder().meldingNummer(127L).meldingsType("innvandringsmelding").systemkilde("SKD").tidspunkt(LocalDateTime.now()).ident("12345678904").build(),
-                        RsMelding.builder().meldingNummer(128L).meldingsType("foedselsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678905").build(),
-                        RsMelding.builder().meldingNummer(129L).meldingsType("foedselsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678906").build(),
-                        RsMelding.builder().meldingNummer(130L).meldingsType("innvandringsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12345678907").build(),
-                        RsMelding.builder().meldingNummer(131L).meldingsType("foedselsmelding").systemkilde("TPSF").tidspunkt(LocalDateTime.now()).ident("12344678908").build()))
+        Long buffersize = nonNull(buffer) ? Long.valueOf(buffer.split("\\$")[0]) : 300;
+        Long buffernumber = nonNull(buffer) ? Long.valueOf(buffer.split("\\$")[1]) : 0;
+
+        return RsMeldingerResponse.builder().antallTotalt(25389L)
+                .meldinger(buildMeldinger(buffersize, buffernumber))
+                .buffersize(buffersize)
+                .buffernumber(buffernumber)
                 .build();
     }
 
@@ -85,5 +84,20 @@ public class AvspillerController {
                 Meldingskoe.builder().koenavn("QA.T8_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build(),
                 Meldingskoe.builder().koenavn("QA.T9_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build()
         );
+    }
+
+    private List<RsMelding> buildMeldinger(Long buffersize, Long buffernumber) {
+
+        String[] meldingstyper = { "foedselsmelding", "innvandringsmelding", "relasjonsmelding" };
+        String[] kilder = { "TPSF", "SKD" };
+
+        List<RsMelding> meldinger = new ArrayList<>();
+
+        for (int i = 0; i < buffersize; i++) {
+            meldinger.add(RsMelding.builder().meldingNummer((buffernumber * buffersize) + i + 1)
+                    .meldingsType(meldingstyper[i % meldingstyper.length]).systemkilde(kilder[i % kilder.length]).tidspunkt(LocalDateTime.now()).ident(
+                            format("123456%05d", ((buffersize * buffernumber) + i + 1) % 100000)).build());
+        }
+        return meldinger;
     }
 }
