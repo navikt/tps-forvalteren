@@ -106,7 +106,7 @@
         <form name="responseForm" class="top transparent response-form">
 
             <div layout="row" layout-align="end end" class="pagination">
-                <span style="margin-right: 15px; margin-bottom: 6px;">Viser {{pager.viser.display}} av {{totalt}}</span>
+                <span style="margin-right: 15px; margin-bottom: 6px;">Viser {{pager.viser.display}} av {{pager.totalt}}</span>
                 <li ng-class="{disabled:pager.currentPage === 1 || disable}">
                     <a ng-click="setPage(1)">&lt;&lt;</a>
                 </li>
@@ -126,20 +126,22 @@
             </div>
 
             <h3 layout="row" class="flexbox-parent">
-                <div flex="10" align="end">Melding#</div>
+                <div flex="10" align="end">Index#</div>
+                <div flex="15" align="end">Melding#</div>
                 <div flex="5"></div>
-                <div flex="25">Tidspunkt</div>
+                <div flex="20">Tidspunkt</div>
                 <div flex="25">Hendelse</div>
-                <div flex="15">Kilde</div>
+                <div flex="10">Kilde</div>
                 <div flex="15">Ident</div>
             </h3>
             <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
 
-                <div flex="10" align="end">{{message.meldingNummer}}</div>
+                <div flex="10" align="end">{{message.index}}</div>
+                <div flex="15" align="end">{{message.meldingNummer}}</div>
                 <div flex="5"></div>
-                <div flex="25">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
+                <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
                 <div flex="25">{{message.meldingsType }}</div>
-                <div flex="15">{{message.systemkilde }}</div>
+                <div flex="10">{{message.systemkilde }}</div>
                 <div flex="15">{{message.ident}}</div>
             </div>
         </form>
@@ -148,14 +150,14 @@
             <div layout-align="end end" layout="row" class="btn-group">
                 <md-input-container flex="10" aria-label="Velg miljø">
                     <label>Miljø</label>
-                    <md-select ng-model="request2.miljoe" required ng-change="checkMeldingskoer()">
+                    <md-select ng-model="target.miljoe" required ng-change="checkMeldingskoer()">
                         <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="30" aria-label="Velg kønavn">
                     <label>Meldingskø</label>
-                    <md-select ng-model="request2.meldingskoe" required ng-disabled="!koer">
-                        <md-option ng-repeat="koe in koer" value="{{koe.koenavn}}">{{ koe.koenavn }}</md-option>
+                    <md-select ng-model="target.meldingskoe" required ng-disabled="!koer">
+                        <md-option ng-repeat="koe in koer" value="{{koe}}">{{ koe.koenavn }}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
@@ -163,6 +165,7 @@
                                ng-click="sendTilTps()">Send
                     </md-button>
                 </md-input-container>
+                <div flex="5"></div>
             </div>
         </form>
     </md-content>

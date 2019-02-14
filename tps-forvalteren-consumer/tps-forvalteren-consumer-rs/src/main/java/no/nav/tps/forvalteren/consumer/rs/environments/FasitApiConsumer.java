@@ -32,7 +32,7 @@ public class FasitApiConsumer {
     protected static final String BASE_URL = "https://fasit.adeo.no";
 
     @Autowired
-    MapperFacade mapperFacade;
+    private MapperFacade mapperFacade;
 
     private RestTemplate restTemplate;
 
@@ -89,6 +89,16 @@ public class FasitApiConsumer {
     public List<FasitResource> getResourcesByAliasAndType(String alias, FasitPropertyTypes propertyTypes) {
         String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type");
         String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName());
+
+        ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
+
+        return mapperFacade.mapAsList(properties.getBody(), FasitResource.class);
+    }
+
+    @Cacheable(CACHE_FASIT)
+    public List<FasitResource> getResourcesByAliasAndTypeAndEnvironment(String alias, FasitPropertyTypes propertyTypes, String environment) {
+        String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type", "environment");
+        String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName(), environment);
 
         ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
 

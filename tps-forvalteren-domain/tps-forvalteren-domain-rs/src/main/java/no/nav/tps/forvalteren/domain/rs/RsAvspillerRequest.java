@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsAvspillerRequest {
 
-    private String miljoe;
+    private String miljoeFra;
     private String datoFra;
     private String tidFra;
     private String datoTil;
@@ -27,6 +27,9 @@ public class RsAvspillerRequest {
     private List<String> typer;
     private List<String> kilder;
     private List<String> identer;
+    private String miljoeTil;
+    private String queue;
+    private String queueManger;
 
     public List<String> getTyper() {
         if (isNull(typer)) {

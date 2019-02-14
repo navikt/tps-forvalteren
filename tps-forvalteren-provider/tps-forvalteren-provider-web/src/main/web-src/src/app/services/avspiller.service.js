@@ -18,6 +18,24 @@ angular.module('tps-forvalteren.service')
                 });
         };
 
+        self.sendMeldinger = function (request, target) {
+            return $http.post(url + '/meldinger', {
+                miljoeFra: target.miljoe,
+                datoFra: date2String(request.periodeFra),
+                datoTil: date2String(request.periodeTil),
+                format: target.format,
+                typer: request.typer,
+                kilder: request.kilder,
+                identer: request.identer ? request.identer.split(/[\W\s]+/) : undefined,
+                miljoeTil: target.miljoe,
+                queue: JSON.parse(target.meldingskoe).koenavn,
+                queueManger: JSON.parse(target.meldingskoe).koemanager
+            })
+                .then(function (response) {
+                    return response.data;
+                });
+        };
+
         self.getMeldingskoer = function (request) {
             return $http.get(url + '/meldingskoer?miljoe=' + request.miljoe + '&format=' + request.format)
                 .then(function (response) {
@@ -25,27 +43,27 @@ angular.module('tps-forvalteren.service')
                 })
         };
 
-        var prepareBasicParams = function (request) {
+        function prepareBasicParams(request) {
             return '?miljoe=' + request.miljoe +
                 '&format=' + request.format +
                 (request.periodeFra ? '&periode=' + date2String(request.periodeFra) + '$' + date2String(request.periodeTil) : '');
-        };
+        }
 
-        var prepareOptionalParams = function (request) {
+        function prepareOptionalParams(request) {
             return (request.typer ? '&typer=' + request.typer.join(",") : '') +
                 (request.kilder ? '&kilder=' + request.kilder.join(",") : '') +
                 (request.identer ? '&identer=' + request.identer.split(/[\W\s]+/).join(',') : '');
-        };
+        }
 
-        var prepareBufferParam = function (request) {
+        function prepareBufferParam(request) {
             return request.buffersize ? '&buffer=' + request.buffersize + '$' + request.buffernumber : '';
-        };
+        }
 
-        var date2String = function (dato) {
+        function date2String(dato) {
             return dato ? dato.getFullYear().toString() + '-' + padWithZero(dato.getMonth() + 1) + '-' + padWithZero(dato.getDay()) : null;
-        };
+        }
 
-        var padWithZero = function (nummer) {
+        function padWithZero(nummer) {
             return (nummer.toString().length == 1 ? "0" : "") + nummer;
         }
     }]);

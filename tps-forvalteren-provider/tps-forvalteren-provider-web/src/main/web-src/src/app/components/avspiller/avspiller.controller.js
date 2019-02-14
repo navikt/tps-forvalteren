@@ -18,11 +18,11 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.periodeFra = $scope.startOfEra;
             $scope.periodeTil = $scope.today;
 
-            var computeDefaultPeriode = function (days) {
+            function computeDefaultPeriode(days) {
                 var defaultPeriode = new Date();
                 defaultPeriode.setTime(defaultPeriode.getTime() - (24 * 60 * 60 * 1000) * days);
                 return defaultPeriode;
-            };
+            }
 
             $scope.disableTyperOgKilder = true;
             $scope.request = {};
@@ -30,45 +30,60 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.request.periodeTil = $scope.today;
             $scope.request.format = $scope.fagsystem;
 
-            var oversiktOk = function (data) {
+            function oversiktOk(data) {
                 $scope.typer = data.typer;
                 $scope.kilder = data.kilder;
                 $scope.disableTyperOgKilder = false;
                 $scope.request.typer = undefined;
                 $scope.request.kilder = undefined;
-            };
+            }
 
-            var display = function (pagenum, offset) {
+            function display(pagenum, offset) {
                 return String((pagesize * (pagenum - 1 + offset)) + 1) + '-' + String((pagesize * (pagenum + offset)))
-            };
+            }
 
-            var determineTpsBuffer = function (buffersize, pagenum) {
+            function determineTpsBuffer(buffersize, pagenum) {
                 return Math.floor((pagenum - 1) / (buffersize / pagesize));
-            };
+            }
 
-            var lagreMeldinger = function (data) {
+            function lagreMeldinger(data) {
                 $scope.tpsmeldinger.data = data.meldinger;
                 $scope.tpsmeldinger.buffersize = data.buffersize;
                 $scope.tpsmeldinger.buffernumber = data.buffernumber;
                 $scope.pager.totalPages = Math.ceil(data.antallTotalt / pagesize);
-                $scope.totalt = data.antallTotalt;
-            };
+                $scope.pager.totalt = data.antallTotalt;
+            }
 
-            var meldingerOk = function (data) {
+            function meldingerOk(data) {
                 lagreMeldinger(data);
                 $scope.setPage(1);
-            };
+            }
 
-            var kopierPage = function (pagenum) {
+            function kopierPage(pagenum) {
                 var startAt = (pagesize * (pagenum - 1)) % buffersize;
-                for (var i = startAt; i < startAt + pagesize; i++) {
+                for (var i = startAt; i < Math.min(startAt + pagesize, $scope.tpsmeldinger.data.length); i++) {
                     $scope.meldinger.push($scope.tpsmeldinger.data[i]);
                 }
-            };
+            }
 
-            var setPages = function (pagenum) {
+            function getOffset(pagenum) {
+                var maxPgNum = Math.ceil($scope.pager.totalt / pagesize);
+                if (pagenum === 1) {
+                    return 0;
+                } else if (pagenum === 2) {
+                    return -1;
+                } else if (pagenum === maxPgNum) {
+                    return -4;
+                } else if (pagenum === maxPgNum - 1) {
+                    return -3;
+                } else {
+                    return -2;
+                }
+            }
+
+            function setPages(pagenum) {
                 $scope.pager.pages = [];
-                var offset = pagenum < 4 ? 0 : -2;
+                var offset = getOffset(pagenum);
                 $scope.pager.pages.push({pagenum: pagenum + offset, display: display(pagenum, offset)});
                 $scope.pager.pages.push({pagenum: pagenum + offset + 1, display: display(pagenum, offset + 1)});
                 $scope.pager.pages.push({pagenum: pagenum + offset + 2, display: display(pagenum, offset + 2)});
@@ -90,8 +105,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 } else {
                     kopierPage(pagenum);
                 }
-            };
-
+            }
 
             $scope.setPage = function (pagenum) {
                 if (pagenum == 0) {
@@ -103,13 +117,14 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 }
             };
 
-            var meldingskoerOk = function (data) {
+            function meldingskoerOk(data) {
                 $scope.koer = data;
-            };
+                $scope.target.meldingskoe = undefined;
+            }
 
-            var error = function (disrupt) {
+            function error(disrupt) {
                 utilsService.showAlertError(disrupt);
-            };
+            }
 
             $scope.checkOversikt = function () {
                 $scope.periodeFra = $scope.request.periodeFra || $scope.startOfEra;
@@ -133,9 +148,16 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             $scope.checkMeldingskoer = function () {
-                $scope.request2.format = $scope.request.format;
-                avspillerService.getMeldingskoer($scope.request2)
+                $scope.target.format = $scope.request.format;
+                avspillerService.getMeldingskoer($scope.target)
                     .then(meldingskoerOk, error);
+            };
+
+            $scope.sendTilTps = function () {
+                avspillerService.sendMeldinger($scope.request, $scope.target)
+                    .then(function (data) {
+                        alert("Sendt !");
+                    }, error);
             };
 
             function sortEnvironmentsForDisplay(environments) {
@@ -173,3 +195,4 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 utilsService.showAlertError(miljoer);
             }
         }])
+;

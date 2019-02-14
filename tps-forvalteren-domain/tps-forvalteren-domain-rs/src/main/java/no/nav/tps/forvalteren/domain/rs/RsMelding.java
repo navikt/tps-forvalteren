@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsMelding {
 
+    private Long index;
     private Long meldingNummer;
     private String meldingsType;
     private String systemkilde;

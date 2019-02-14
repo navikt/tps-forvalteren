@@ -8,14 +8,22 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
+import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
+import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
+import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitQueue;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
 import no.nav.tps.forvalteren.domain.rs.Meldingskoe;
+import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsMelding;
 import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
@@ -24,6 +32,9 @@ import no.nav.tps.forvalteren.domain.rs.TypeOgAntall;
 @RestController
 @RequestMapping("api/v1/avspiller")
 public class AvspillerController {
+
+    @Autowired
+    private FasitApiConsumer fasitApiConsumer;
 
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
@@ -68,33 +79,54 @@ public class AvspillerController {
         Long buffersize = nonNull(buffer) ? Long.valueOf(buffer.split("\\$")[0]) : 300;
         Long buffernumber = nonNull(buffer) ? Long.valueOf(buffer.split("\\$")[1]) : 0;
 
-        return RsMeldingerResponse.builder().antallTotalt(25389L)
-                .meldinger(buildMeldinger(buffersize, buffernumber))
+        Long total = 25389L;
+
+        return RsMeldingerResponse.builder().antallTotalt(total)
+                .meldinger(buildMeldinger(buffersize, buffernumber, total))
                 .buffersize(buffersize)
                 .buffernumber(buffernumber)
                 .build();
     }
 
-    @GetMapping("/meldingskoer")
-    public List<Meldingskoe> getMeldingskøer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
+    @PostMapping("/meldinger")
+    public void sendTilTps(@RequestBody RsAvspillerRequest request) {
 
-        return newArrayList(Meldingskoe.builder().koenavn("QA.T5_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build(),
-                Meldingskoe.builder().koenavn("QA.T4_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build(),
-                Meldingskoe.builder().koenavn("QA.T7_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build(),
-                Meldingskoe.builder().koenavn("QA.T8_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build(),
-                Meldingskoe.builder().koenavn("QA.T9_AKTOERREGISTER.TPSDISTRIBUSJON").koemanager("mq://d26apvl126.test.local:1412/MTLCLIENT01").build()
+        System.out.println("SendTilTps: miljoFra=" + request.getMiljoeFra() +
+                ", datoFra=" + request.getDatoFra() +
+                (isNotBlank(request.getTidFra()) ? ", tidFra=" + request.getTidFra() : "") +
+                ", datoTil=" + request.getDatoTil() +
+                (isNotBlank(request.getTidTil()) ? ", tidTil=" + request.getTidTil() : "") +
+                ", format=" + request.getFormat() +
+                ", meldingstyper=" + request.getTyper() +
+                ", kilder=" + request.getKilder() +
+                ", identer=" + request.getIdenter() +
+                ", miljoeTil=" + request.getMiljoeTil() +
+                ", queue=" + request.getQueue() +
+                ", queueManager=" + request.getQueueManger()
         );
     }
 
-    private List<RsMelding> buildMeldinger(Long buffersize, Long buffernumber) {
+    @GetMapping("/meldingskoer")
+    public List<Meldingskoe> getMeldingskøer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
+
+        List<FasitResource> ressurser = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment("TPSDISTRIBUSJON", FasitPropertyTypes.QUEUE, miljoe);
+        List<Meldingskoe> queues = new ArrayList<>();
+        ressurser.forEach(ressurs -> queues.add(Meldingskoe.builder()
+                .koenavn(((FasitQueue) ressurs.getProperties()).getQueueName())
+                .koemanager(((FasitQueue) ressurs.getProperties()).getQueueManager())
+                .build()));
+        return queues;
+    }
+
+    private List<RsMelding> buildMeldinger(Long buffersize, Long buffernumber, Long total) {
 
         String[] meldingstyper = { "foedselsmelding", "innvandringsmelding", "relasjonsmelding" };
         String[] kilder = { "TPSF", "SKD" };
 
         List<RsMelding> meldinger = new ArrayList<>();
 
-        for (int i = 0; i < buffersize; i++) {
-            meldinger.add(RsMelding.builder().meldingNummer((buffernumber * buffersize) + i + 1)
+        for (int i = 0; i < buffersize && (buffernumber * buffersize) + i + 1 <= total; i++) {
+            meldinger.add(RsMelding.builder().index((buffernumber * buffersize) + i + 1).meldingNummer(999L * ((buffernumber * buffersize) + i + 1))
                     .meldingsType(meldingstyper[i % meldingstyper.length]).systemkilde(kilder[i % kilder.length]).tidspunkt(LocalDateTime.now()).ident(
                             format("123456%05d", ((buffersize * buffernumber) + i + 1) % 100000)).build());
         }
