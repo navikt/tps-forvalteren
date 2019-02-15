@@ -7,7 +7,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.fagsystem = 'Distribusjonsmelding';
             $scope.tps = 'Ajourholdsmelding';
 
-            var pagesize = 30;
+            var pagesize = 25;
             var buffersize = 300;
 
             $scope.tpsmeldinger = {};
@@ -36,6 +36,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.disableTyperOgKilder = false;
                 $scope.request.typer = undefined;
                 $scope.request.kilder = undefined;
+                $scope.loading = false;
             }
 
             function display(pagenum, offset) {
@@ -120,6 +121,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             function meldingskoerOk(data) {
                 $scope.koer = data;
                 $scope.target.meldingskoe = undefined;
+                $scope.loading = false;
             }
 
             function error(disrupt) {
@@ -127,6 +129,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             }
 
             $scope.checkOversikt = function () {
+                $scope.loading = true;
                 $scope.periodeFra = $scope.request.periodeFra || $scope.startOfEra;
                 $scope.periodeTil = $scope.request.periodeTil || $scope.today;
                 if ($scope.request.miljoe && ((!$scope.request.periodeFra && !$scope.request.periodeTil) || ($scope.request.periodeFra && $scope.request.periodeTil))) {
@@ -148,6 +151,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             $scope.checkMeldingskoer = function () {
+                $scope.loading = true;
                 $scope.target.format = $scope.request.format;
                 avspillerService.getMeldingskoer($scope.target)
                     .then(meldingskoerOk, error);
@@ -156,7 +160,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.sendTilTps = function () {
                 avspillerService.sendMeldinger($scope.request, $scope.target)
                     .then(function (data) {
-                        alert("Sendt !");
+                        $scope.progress = true;
                     }, error);
             };
 

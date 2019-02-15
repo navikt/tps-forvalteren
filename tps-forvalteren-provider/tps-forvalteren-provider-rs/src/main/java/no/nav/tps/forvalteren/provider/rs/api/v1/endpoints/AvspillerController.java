@@ -28,6 +28,8 @@ import no.nav.tps.forvalteren.domain.rs.RsMelding;
 import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
 import no.nav.tps.forvalteren.domain.rs.TypeOgAntall;
+import no.nav.tps.forvalteren.domain.rs.skd.RsAvspillerProgress;
+import no.nav.tps.forvalteren.service.command.avspiller.AvspillerService;
 
 @RestController
 @RequestMapping("api/v1/avspiller")
@@ -35,6 +37,9 @@ public class AvspillerController {
 
     @Autowired
     private FasitApiConsumer fasitApiConsumer;
+
+    @Autowired
+    private AvspillerService avspillerService;
 
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
@@ -116,6 +121,12 @@ public class AvspillerController {
                 .koemanager(((FasitQueue) ressurs.getProperties()).getQueueManager())
                 .build()));
         return queues;
+    }
+
+    @GetMapping("/statuser")
+    public List<RsAvspillerProgress> getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
+
+        return avspillerService.getStatuser(bestillingId);
     }
 
     private List<RsMelding> buildMeldinger(Long buffersize, Long buffernumber, Long total) {

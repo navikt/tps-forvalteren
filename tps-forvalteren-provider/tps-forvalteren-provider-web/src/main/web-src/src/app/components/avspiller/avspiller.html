@@ -55,7 +55,7 @@
                     </md-radio-group>
                 </div>
                 <md-button style="height: 20px; margin-top: 60px;"
-                        type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                           type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
                            ng-disabled="requestForm.$invalid || !request.periodeFra || !request.periodeTil">
                     Hent
                 </md-button>
@@ -97,12 +97,12 @@
             </div>
 
         </form>
-        <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+        <md-progress-linear style="margin-top: 30px;" md-mode="indeterminate" ng-show="loading"></md-progress-linear>
     </div>
 
 
     <!-- Resulting Response -->
-    <md-content flex="100" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger">
+    <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger">
         <form name="responseForm" class="top transparent response-form">
 
             <div layout="row" layout-align="end end" class="pagination">
@@ -146,7 +146,7 @@
             </div>
         </form>
 
-        <form flex="100" name="requestForm2" ng-submit="requestForm.$valid && submit()" ng-show="meldinger">
+        <form flex="95" name="requestForm2" ng-submit="requestForm.$valid && submit()" ng-show="meldinger" style="margin-top: 40px;">
             <div layout-align="end end" layout="row" class="btn-group">
                 <md-input-container flex="10" aria-label="Velg miljø">
                     <label>Miljø</label>
@@ -165,8 +165,10 @@
                                ng-click="sendTilTps()">Send
                     </md-button>
                 </md-input-container>
-                <div flex="5"></div>
             </div>
         </form>
+        <div layout="row">
+            <md-progress-linear md-mode="determinate" class="avspiller-progress" ng-show="progress"></md-progress-linear>
+        </div>
     </md-content>
 </div>
