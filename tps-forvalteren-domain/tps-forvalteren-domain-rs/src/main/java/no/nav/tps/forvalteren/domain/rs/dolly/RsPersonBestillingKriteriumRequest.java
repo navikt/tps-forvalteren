@@ -29,7 +29,7 @@ public class RsPersonBestillingKriteriumRequest {
 
     private Set<String> environments;
 
-    private List<String> eksisterendeIdenter;
+    private List<String> opprettFraIdenter;
 
     @NotBlank
     @Size(min = 3, max = 3)
@@ -87,11 +87,11 @@ public class RsPersonBestillingKriteriumRequest {
 
     private LocalDateTime datoSprak;
 
-    public List<String> getEksisterendeIdenter() {
-        if (isNull(eksisterendeIdenter)) {
-            eksisterendeIdenter = new ArrayList();
+    public List<String> getOpprettFraIdenter() {
+        if (isNull(opprettFraIdenter)) {
+            opprettFraIdenter = new ArrayList();
         }
-        return eksisterendeIdenter;
+        return opprettFraIdenter;
     }
 
     public RsSimpleRelasjoner getRelasjoner() {

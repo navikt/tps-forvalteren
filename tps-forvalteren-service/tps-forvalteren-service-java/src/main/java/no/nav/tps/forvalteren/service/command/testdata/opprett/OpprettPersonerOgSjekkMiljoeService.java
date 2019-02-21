@@ -1,24 +1,27 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.util.Sets.newHashSet;
 
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
 @Service
 public class OpprettPersonerOgSjekkMiljoeService {
 
-    @Autowired
-    private FiltererUtIdenterSomAlleredeFinnesIMiljoe filtererUtIdenterSomAlleredeFinnesIMiljoe;
+    private static final String PRODLIKE_ENV = "q0";
 
     @Autowired
-    private FiltrerPaaIdenterSomIkkeFinnesIDB filtrerPaaIdenterSomIkkeFinnesIDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
+
+    @Autowired
+    private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
 
     @Autowired
     private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
@@ -34,13 +37,10 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
     public List<Person> createEksisterendeIdenter(List<String> eksisterendeIdenter) {
 
-        List<TestdataRequest> testdataRequests = newArrayList(TestdataRequest.builder()
-                .identerGenerertForKriteria(newHashSet(eksisterendeIdenter))
-                .build());
-        filtererUtIdenterSomAlleredeFinnesIMiljoe.executeMotProdliktMiljoe(testdataRequests);
-        filtrerPaaIdenterSomIkkeFinnesIDB.execute(testdataRequests);
-        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-        List<Person> personer = opprettPersonerFraIdenter.execute(identer);
+        Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(newHashSet(eksisterendeIdenter));
+        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, Sets.newHashSet(PRODLIKE_ENV));
+
+        List<Person> personer = opprettPersonerFraIdenter.execute(newHashSet(ledigeIdenterMiljo));
         setNameOnPersonsService.execute(personer);
 
         return personer;

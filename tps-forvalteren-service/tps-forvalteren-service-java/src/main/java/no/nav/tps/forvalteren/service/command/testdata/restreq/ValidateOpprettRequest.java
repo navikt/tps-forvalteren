@@ -24,7 +24,7 @@ public class ValidateOpprettRequest {
 
     public void validate(RsPersonBestillingKriteriumRequest request) {
 
-        validate(request.getAntall(), request.getEksisterendeIdenter());
+        validate(request.getAntall(), request.getOpprettFraIdenter());
         validateDatoFoedtEtter(request.getFoedtEtter());
         validateDatoFoedtFoer(request.getFoedtFoer());
         validateDatoIntervall(request.getFoedtEtter(), request.getFoedtFoer());
