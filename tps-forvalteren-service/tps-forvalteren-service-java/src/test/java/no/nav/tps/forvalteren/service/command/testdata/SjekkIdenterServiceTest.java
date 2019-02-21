@@ -22,7 +22,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUse
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SjekkIdenterTest {
+public class SjekkIdenterServiceTest {
 
     @Mock
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -34,7 +34,7 @@ public class SjekkIdenterTest {
     private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
 
     @InjectMocks
-    private SjekkIdenter sjekkIdenter;
+    private SjekkIdenterService sjekkIdenterService;
 
     private List<String> identer;
 
@@ -49,7 +49,7 @@ public class SjekkIdenterTest {
 
     @Test
     public void callsAllServices() {
-        sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+        sjekkIdenterService.finnGyldigeOgLedigeIdenter(identer);
 
         verify(sjekkOmGyldigeIdenter).execute(anySet());
         verify(findIdenterNotUsedInDB).filtrer(anySet());
@@ -58,7 +58,7 @@ public class SjekkIdenterTest {
 
     @Test
     public void callWithEmptyIdentList() {
-        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+        Set<IdentMedStatus> result = sjekkIdenterService.finnGyldigeOgLedigeIdenter(identer);
 
         verify(sjekkOmGyldigeIdenter).execute(anySet());
         verify(findIdenterNotUsedInDB).filtrer(anySet());
@@ -77,7 +77,7 @@ public class SjekkIdenterTest {
         when(findIdenterNotUsedInDB.filtrer(anySet())).thenReturn(new HashSet());
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(anySet(), anySet())).thenReturn(new HashSet());
 
-        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+        Set<IdentMedStatus> result = sjekkIdenterService.finnGyldigeOgLedigeIdenter(identer);
 
         assertThat(result, hasSize(3));
         for (IdentMedStatus ident : result) {
@@ -98,7 +98,7 @@ public class SjekkIdenterTest {
         when(findIdenterNotUsedInDB.filtrer(anySet())).thenReturn(serviceResponse);
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(anySet(),anySet())).thenReturn(serviceResponse);
 
-        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+        Set<IdentMedStatus> result = sjekkIdenterService.finnGyldigeOgLedigeIdenter(identer);
 
         assertThat(result, hasSize(2));
         for (IdentMedStatus ident : result) {
@@ -119,7 +119,7 @@ public class SjekkIdenterTest {
         when(findIdenterNotUsedInDB.filtrer(anySet())).thenReturn(new HashSet());
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(anySet(),anySet())).thenReturn(new HashSet());
 
-        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+        Set<IdentMedStatus> result = sjekkIdenterService.finnGyldigeOgLedigeIdenter(identer);
 
         assertThat(result, hasSize(2));
         for (IdentMedStatus ident : result) {
@@ -153,7 +153,7 @@ public class SjekkIdenterTest {
         when(findIdenterNotUsedInDB.filtrer(anySet())).thenReturn(serviceResponseDB);
         when(filtrerPaaIdenterTilgjengeligeIMiljo.filtrer(anySet(), anySet())).thenReturn(serviceResponseMiljo);
 
-        Set<IdentMedStatus> result = sjekkIdenter.finnGyldigeOgLedigeIdenter(identer);
+        Set<IdentMedStatus> result = sjekkIdenterService.finnGyldigeOgLedigeIdenter(identer);
 
         boolean hasIkkeGyldig = false;
         boolean hasIkkeLedig = false;

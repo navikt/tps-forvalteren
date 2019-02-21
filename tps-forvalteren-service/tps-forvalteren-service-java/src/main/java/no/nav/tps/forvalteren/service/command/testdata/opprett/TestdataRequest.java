@@ -3,12 +3,16 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 public class TestdataRequest {
 
     RsPersonKriterier kriterium;

@@ -9,10 +9,10 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 @Service
 public class PersonNameService {
 
-    private static final String[] fornavn = { "Blå", "Gul", "Grønn", "Rask", "Døll", "Artig", "Stor", "Kriminell", "Luguber", "Smekker", "Glitrende", "Raus", "Naturlig", "Smart", "Kreativ", "God", "Vakker", "Snill",
-            "Lunken", "Absurd", "Robust", "Blåøyd", "Tykkmaget", "Sedat", "Korrupt", "Godslig", "Nobel", "Slapp", "Talentfull", "Frodig", "Treig", "Smidig", "Lur", "Liten" };
+    private static final String[] fornavn = { "Blå", "Gul", "Grønn", "Rask", "Døll", "Nydelig", "Artig", "Stor", "Kriminell", "Luguber", "Smekker", "Gøyal", "Glitrende", "Raus", "Naturlig", "Smart", "Kreativ", "God", "Vakker", "Snill",
+            "Lunken", "Absurd", "Robust", "Blåøyd", "Tykkmaget", "Sedat", "Korrupt", "Godslig", "Nobel", "Slapp", "Triviell", "Talentfull", "Tvilsom", "Frodig", "Treig", "Smidig", "Kløktig", "Lur", "Liten" };
     private static final String[] etternavn = { "Ert", "Hest", "Dorull", "Hatt", "Maskin", "Kaffi", "Kake", "Potet", "Konsoll", "Bærepose", "Blyant", "Penn", "Bolle", "Saks", "Kopp", "Skilpadde", "Busk", "Nordmann",
-            "Veggpryd", "Lapp", "Knott", "Mygg", "Veps", "Bamse" };
+            "Veggpryd", "Lapp", "Knott", "Mygg", "Veps", "Staude", "Midtpunkt", "Gaselle", "Tøffeldyr", "Sekk", "Snerk", "Trane", "Floskel", "Bamse" };
 
     private static SecureRandom randGenerator = new SecureRandom();
 

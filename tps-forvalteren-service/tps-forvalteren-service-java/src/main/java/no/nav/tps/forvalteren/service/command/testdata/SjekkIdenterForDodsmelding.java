@@ -5,14 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
-import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
+import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
+
 @Service
-public class SjekkIdenterForDodsmelding extends SjekkIdenter {
+public class SjekkIdenterForDodsmelding extends SjekkIdenterService {
 
     private static final String IKKE_GYLDIG = "IG";
     private static final String FINNES = "FIN";

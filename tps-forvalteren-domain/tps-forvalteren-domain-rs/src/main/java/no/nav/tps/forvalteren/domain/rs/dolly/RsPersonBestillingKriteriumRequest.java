@@ -1,11 +1,13 @@
 package no.nav.tps.forvalteren.domain.rs.dolly;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,6 +29,8 @@ public class RsPersonBestillingKriteriumRequest {
 
     private Set<String> environments;
 
+    private List<String> eksisterendeIdenter;
+
     @NotBlank
     @Size(min = 3, max = 3)
     private String identtype;
@@ -35,10 +39,9 @@ public class RsPersonBestillingKriteriumRequest {
 
     private LocalDateTime foedtFoer;
 
-    @NotNull
     @Min(1)
     @Max(99)
-    private int antall;
+    private Integer antall;
 
     private RsSimpleRelasjoner relasjoner;
 
@@ -83,6 +86,13 @@ public class RsPersonBestillingKriteriumRequest {
     private String sprakKode;
 
     private LocalDateTime datoSprak;
+
+    public List<String> getEksisterendeIdenter() {
+        if (isNull(eksisterendeIdenter)) {
+            eksisterendeIdenter = new ArrayList();
+        }
+        return eksisterendeIdenter;
+    }
 
     public RsSimpleRelasjoner getRelasjoner() {
         if (relasjoner == null) {

@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,26 +11,10 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 
 @Service
 public class PersonerBestillingService {
-
-    @Autowired
-    private TestdataIdenterFetcher testdataIdenterFetcher;
-
-    @Autowired
-    private EkstraherIdenterFraTestdataRequests ekstraherIdenterFraTestdataRequests;
-
-    @Autowired
-    private PersonNameService setNameOnPersonsService;
-
-    @Autowired
-    private OpprettPersonerService opprettPersonerFraIdenter;
 
     @Autowired
     private SavePersonBulk savePersonBulk;
@@ -42,24 +25,33 @@ public class PersonerBestillingService {
     @Autowired
     private ValidateOpprettRequest validateOpprettRequest;
 
+    @Autowired
+    private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
+
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
         validateOpprettRequest.validate(personKriteriumRequest);
-        RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.extractMainPerson(personKriteriumRequest);
-        RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
-        RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 
+        List<Person> hovedPersoner;
         List<Person> partnere = new ArrayList<>();
         List<Person> barn = new ArrayList<>();
-        List<Person> hovedPersoner = savePersonBulk.execute(createPersonerExistenceCheckAgainstEnvironments(personKriterier, personKriteriumRequest.getEnvironments()));
+        if (personKriteriumRequest.getEksisterendeIdenter().isEmpty()) {
+            RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.extractMainPerson(personKriteriumRequest);
+            RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
+            RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 
-        if (harPartner(personKriteriumRequest)) {
-            partnere = savePersonBulk.execute(createPersonerExistenceCheckAgainstEnvironments(kriteriePartner, personKriteriumRequest.getEnvironments()));
-        }
-        if (harBarn(personKriteriumRequest)) {
-            barn = savePersonBulk.execute(createPersonerExistenceCheckAgainstEnvironments(kriterieBarn, personKriteriumRequest.getEnvironments()));
-        }
+            hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier, personKriteriumRequest.getEnvironments()));
 
-        setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
+            if (harPartner(personKriteriumRequest)) {
+                partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner, personKriteriumRequest.getEnvironments()));
+            }
+            if (harBarn(personKriteriumRequest)) {
+                barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn, personKriteriumRequest.getEnvironments()));
+            }
+
+            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
+        } else {
+            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest.getEksisterendeIdenter());
+        }
 
         List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(personKriteriumRequest, hovedPersoner, partnere, barn);
 
@@ -68,25 +60,15 @@ public class PersonerBestillingService {
         return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent());
     }
 
-    private List<Person> createPersonerExistenceCheckAgainstEnvironments(RsPersonKriteriumRequest personKriterierListe, Set<String> environments) {
-        List<TestdataRequest> testdataRequests =
-                testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenterFlereMiljoer(personKriterierListe, environments);
-
-        List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);
-        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(identer);
-
-        setNameOnPersonsService.execute(personerSomSkalPersisteres);
-
-        return personerSomSkalPersisteres;
-    }
-
     private static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
         List<Person> sorted = new ArrayList<>();
-        for (Person p : personer) {
-            if (p.getIdent().equals(identBestiltPerson)) {
-                sorted.add(0, p);
-            } else {
-                sorted.add(p);
+        if (!personer.isEmpty()) {
+            for (Person person : personer) {
+                if (person.getIdent().equals(identBestiltPerson)) {
+                    sorted.add(0, person);
+                } else {
+                    sorted.add(person);
+                }
             }
         }
         return sorted;
