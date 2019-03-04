@@ -21,11 +21,10 @@
                                    md-max-date="periodeTil"
                                    ng-change="checkOversikt()">
                     </md-datepicker>
-                    <div ng-messages="requestForm.periodeFra.$error"
-                         ng-show="requestForm.periodeFra.$pristine">
+                    <div ng-messages="requestForm.periodeFra.$error">
                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                        <div ng-message="mindate">Dato kan ikke være før 01-01-2002</div>
-                        <div ng-message="maxdate">Dato kan ikke være etter "Periode til", eventuelt dagens dato</div>
+                        <div ng-message="mindate">Dato kan ikke være før {{startOfEra| date: 'dd-MM-yyyy'}}</div>
+                        <div ng-message="maxdate">Dato kan ikke være større enn "Periode til"</div>
                     </div>
                 </md-input-container>
 
@@ -38,11 +37,10 @@
                                    md-max-date="today"
                                    ng-change="checkOversikt()">
                     </md-datepicker>
-                    <div ng-messages="requestForm.periodeTil.$error"
-                         ng-show="requestForm.periodeTil.$pristine">
+                    <div ng-messages="requestForm.periodeTil.$error">
                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                        <div ng-message="mindate">Dato kan ikke være før 01-01-2002, eventuelt dagens dato</div>
-                        <div ng-message="maxdate">Dato kan ikke være etter dagens dato</div>
+                        <div ng-message="mindate">Dato kan ikke være før "Periode fra"</div>
+                        <div ng-message="maxdate">Dato kan ikke settes frem i tid</div>
                     </div>
                 </md-input-container>
 
@@ -98,6 +96,7 @@
 
         </form>
         <md-progress-linear style="margin-top: 30px;" md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+
     </div>
 
 
@@ -161,7 +160,7 @@
                     </md-select>
                 </md-input-container>
                 <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
-                    <md-button class="md-button md-raised md-accent" ng-disabled="requestForm2.$invalid"
+                    <md-button class="md-button md-raised md-accent" ng-disabled="requestForm2.$invalid || requestForm.$dirty"
                                ng-click="sendTilTps()">Send
                     </md-button>
                 </md-input-container>

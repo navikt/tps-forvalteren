@@ -13,7 +13,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.tpsmeldinger = {};
             $scope.pager = {};
 
-            $scope.startOfEra = new Date(2002, 0, 1); // Month is 0-indexed
+            $scope.startOfEra = new Date(2010, 0, 1); // Month is 0-indexed
             $scope.today = new Date();
             $scope.periodeFra = $scope.startOfEra;
             $scope.periodeTil = $scope.today;
@@ -129,10 +129,10 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             }
 
             $scope.checkOversikt = function () {
-                $scope.loading = true;
                 $scope.periodeFra = $scope.request.periodeFra || $scope.startOfEra;
                 $scope.periodeTil = $scope.request.periodeTil || $scope.today;
                 if ($scope.request.miljoe && ((!$scope.request.periodeFra && !$scope.request.periodeTil) || ($scope.request.periodeFra && $scope.request.periodeTil))) {
+                    $scope.loading = true;
                     avspillerService.getTyperOgKilder($scope.request)
                         .then(oversiktOk, error);
                 }
@@ -148,10 +148,10 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.pager.request = angular.copy($scope.request);
                 avspillerService.getMeldinger($scope.request)
                     .then(meldingerOk, error);
+                $scope.requestForm.$dirty=false;
             };
 
             $scope.checkMeldingskoer = function () {
-                $scope.loading = true;
                 $scope.target.format = $scope.request.format;
                 avspillerService.getMeldingskoer($scope.target)
                     .then(meldingskoerOk, error);
