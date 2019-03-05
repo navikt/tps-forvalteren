@@ -33,7 +33,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
-import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
+import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
@@ -66,7 +66,7 @@ public class TestdataControllerTest {
     private SavePersonListService savePersonListService;
 
     @Mock
-    private SjekkIdenter sjekkIdenter;
+    private SjekkIdenterService sjekkIdenterService;
 
     @Mock
     private SetGruppeIdOnPersons setGruppeIdOnPersons;
@@ -156,7 +156,7 @@ public class TestdataControllerTest {
 
         testdataController.checkIdentList(personIdentListe);
 
-        verify(sjekkIdenter).finnGyldigeOgLedigeIdenter(personIdentListe);
+        verify(sjekkIdenterService).finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
     @Test

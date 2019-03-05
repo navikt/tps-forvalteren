@@ -2,9 +2,11 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,7 @@ public class ValidateOpprettRequest {
 
     public void validate(RsPersonBestillingKriteriumRequest request) {
 
+        validate(request.getAntall(), request.getOpprettFraIdenter());
         validateDatoFoedtEtter(request.getFoedtEtter());
         validateDatoFoedtFoer(request.getFoedtFoer());
         validateDatoIntervall(request.getFoedtEtter(), request.getFoedtFoer());
@@ -39,6 +42,12 @@ public class ValidateOpprettRequest {
             request.getRelasjoner().getBarn().forEach(barn -> validateDatoFoedtFoer(barn.getFoedtFoer()));
             request.getRelasjoner().getBarn().forEach(barn -> validateDatoIntervall(barn.getFoedtEtter(), barn.getFoedtFoer()));
             request.getRelasjoner().getBarn().forEach(barn -> validateKjoenn(barn.getKjonn()));
+        }
+    }
+
+    private void validate(Integer antall, List<String> eksisterendeIdenter) {
+        if (isNull(antall) && eksisterendeIdenter.isEmpty()) {
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.antall"));
         }
     }
 
