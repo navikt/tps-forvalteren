@@ -99,6 +99,7 @@ public class ExtractOpprettKriterier {
         person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), null));
         person.setEgenAnsattDatoFom(nullcheckSetDefaultValue(kriterier.getEgenAnsattDatoFom(), null));
         person.setEgenAnsattDatoTom(nullcheckSetDefaultValue(kriterier.getEgenAnsattDatoTom(), null));
+        person.setSivilstand(null);  // partnere og barn skal ikke ha sivilstand -- foreløbig.
 
         return person;
     }
