@@ -45,7 +45,7 @@ public class SetAdresseService {
                 skdMeldingTrans1.setGateGaard(((Gateadresse) boadresse).getGatekode());
                 addHusBrukAndBokstavFestenr(skdMeldingTrans1, (Gateadresse) boadresse);
                 String adresse = ((Gateadresse) boadresse).getAdresse();
-                if (adresse != null) {
+                if (nonNull(adresse)) {
                     int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
                     skdMeldingTrans1.setAdressenavn(((Gateadresse) boadresse).getAdresse().substring(0, lengAdr));
                 }
@@ -60,7 +60,7 @@ public class SetAdresseService {
         }
 
         /* Postadresse */
-        if (person.getPostadresse() != null && !person.getPostadresse().isEmpty()) {
+        if (!person.getPostadresse().isEmpty()) {
             Postadresse postadresse = person.getPostadresse().get(0);
             skdMeldingTrans1.setPostadresse1(postadresse.getPostLinje1());
             skdMeldingTrans1.setPostadresse2(postadresse.getPostLinje2());
@@ -70,7 +70,7 @@ public class SetAdresseService {
     }
 
     private void addHusBrukAndBokstavFestenr(SkdMeldingTrans1 skdMeldingTrans1, Gateadresse gateadresse) {
-        if (gateadresse.getHusnummer() != null) {
+        if (nonNull(gateadresse.getHusnummer())) {
             Matcher husbokstavMatcher = HUSBOKSTAV_PATTERN.matcher(gateadresse.getHusnummer());
             Matcher husnummerMatcher = HUSNUMMER_PATTERN.matcher(gateadresse.getHusnummer());
 
