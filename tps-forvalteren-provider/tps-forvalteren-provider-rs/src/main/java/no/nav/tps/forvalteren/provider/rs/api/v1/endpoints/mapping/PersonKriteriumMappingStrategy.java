@@ -53,22 +53,24 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
 
-                                person.setBoadresse(kriteriumRequest.getBoadresse() != null ?
-                                        mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class) :
-                                        dummyAdresseService.create());
+                                if (!"UFB".equals(person.getSpesreg())) {
+                                    person.setBoadresse(nonNull(kriteriumRequest.getBoadresse()) ?
+                                            mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class) :
+                                            dummyAdresseService.create());
 
-                                person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
-                                        hentDatoFraIdentService.extract(person.getIdent())));
+                                    person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
+                                            hentDatoFraIdentService.extract(person.getIdent())));
 
-                                person.getBoadresse().setPerson(person);
+                                    person.getBoadresse().setPerson(person);
+                                }
 
-                                if (kriteriumRequest.getPostadresse() != null && !kriteriumRequest.getPostadresse().isEmpty()) {
+                                if (nonNull(kriteriumRequest.getPostadresse()) && !kriteriumRequest.getPostadresse().isEmpty()) {
                                     person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
                                     person.getPostadresse().forEach(adr -> adr.setPerson(person));
                                 }
                             }
                         })
-
+                .exclude("boadresse")
                 .exclude("identtype")
                 .exclude("kjonn")
                 .exclude("relasjoner")
