@@ -55,8 +55,6 @@ public class SetAdresseService {
 
             skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(boadresse.getFlyttedato(),
                     hentDatoFraIdentService.extract(person.getIdent()))));
-        } else {
-            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(hentDatoFraIdentService.extract(person.getIdent())));
         }
 
         /* Postadresse */

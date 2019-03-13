@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.anyString;
@@ -26,6 +27,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.UpdatePersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
@@ -54,6 +56,9 @@ public class TestdataBestillingsControllerTest {
 
     @Mock
     private FindPersonerByIdIn findPersonerByIdIn;
+
+    @Mock
+    private UpdatePersonService updatePersonService;
 
     @InjectMocks
     private TestdataBestillingsController testdataBestillingsController;
@@ -102,5 +107,14 @@ public class TestdataBestillingsControllerTest {
 
         verify(personRepository).findByIdentIn(anyList());
         verify(mapper).mapAsList(anyList(), eq(RsPerson.class));
+    }
+
+    @Test
+    public void oppdaterPersonOk() {
+
+        testdataBestillingsController.oppdaterPerson(new RsPerson());
+
+        verify(mapper).map(any(RsPerson.class), eq(Person.class));
+        verify(updatePersonService).update(any(Person.class));
     }
 }

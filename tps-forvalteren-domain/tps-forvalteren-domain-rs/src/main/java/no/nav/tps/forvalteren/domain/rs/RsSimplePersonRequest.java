@@ -38,4 +38,6 @@ public class RsSimplePersonRequest {
     private LocalDateTime egenAnsattDatoFom;
 
     private LocalDateTime egenAnsattDatoTom;
+
+    private boolean utenFastBopel;
 }

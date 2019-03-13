@@ -3,15 +3,12 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -19,11 +16,9 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@Import(DummyAdresseService.class)
 public class PersonKriteriumMappingStrategyTest {
 
     private static final LocalDateTime TIMENOW = LocalDateTime.now();
@@ -37,9 +32,6 @@ public class PersonKriteriumMappingStrategyTest {
     @Mock
     private HentDatoFraIdentService hentDatoFraIdentService;
 
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
-
     private PersonKriteriumMappingStrategy personKriteriumMappingStrategy;
 
     private MapperFacade mapper;
@@ -48,8 +40,7 @@ public class PersonKriteriumMappingStrategyTest {
     public void setup() {
         personKriteriumMappingStrategy = new PersonKriteriumMappingStrategy();
         mapper = MapperTestUtils.createMapperFacadeForMappingStrategy(personKriteriumMappingStrategy);
-        ReflectionTestUtils.setField(personKriteriumMappingStrategy, "hentDatoFraIdentService", mock(HentDatoFraIdentService.class));
-        ReflectionTestUtils.setField(personKriteriumMappingStrategy, "dummyAdresseService", dummyAdresseService);
+        ReflectionTestUtils.setField(personKriteriumMappingStrategy, "hentDatoFraIdentService", hentDatoFraIdentService);
     }
 
     @Test

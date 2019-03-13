@@ -128,7 +128,7 @@ public class TestdataController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
-    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
+    @ApiOperation(value = "createDummyAdresse new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
             + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })

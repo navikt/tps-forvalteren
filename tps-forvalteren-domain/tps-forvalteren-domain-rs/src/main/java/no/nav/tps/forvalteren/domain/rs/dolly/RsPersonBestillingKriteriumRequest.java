@@ -45,8 +45,6 @@ public class RsPersonBestillingKriteriumRequest {
 
     private RsSimpleRelasjoner relasjoner;
 
-    private boolean withAdresse;
-
     private String kjonn;
 
     private String statsborgerskap;
@@ -86,6 +84,8 @@ public class RsPersonBestillingKriteriumRequest {
     private String sprakKode;
 
     private LocalDateTime datoSprak;
+
+    private boolean utenFastBopel;
 
     public List<String> getOpprettFraIdenter() {
         if (isNull(opprettFraIdenter)) {

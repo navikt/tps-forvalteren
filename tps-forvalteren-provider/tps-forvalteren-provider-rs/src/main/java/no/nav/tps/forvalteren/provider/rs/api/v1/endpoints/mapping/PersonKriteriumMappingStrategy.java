@@ -2,6 +2,8 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
+import static no.nav.tps.forvalteren.service.command.testdata.opprett.UfbAdresseUtil.createAdresseUfb;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.time.LocalDateTime;
@@ -16,14 +18,11 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseUtil;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Component
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
-
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -47,22 +46,26 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                                         hentDatoFraIdentService.extract(person.getIdent())));
 
+                                person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
+
                                 if (nonNull(person.getSpesreg())) {
                                     person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
                                 }
 
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
 
-                                if (!"UFB".equals(person.getSpesreg())) {
+                                if (UFB.name().equals(person.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) {
+                                    person.setBoadresse(createAdresseUfb(nonNull(kriteriumRequest.getBoadresse()) ? kriteriumRequest.getBoadresse().getKommunenr() : null));
+                                } else {
                                     person.setBoadresse(nonNull(kriteriumRequest.getBoadresse()) ?
                                             mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class) :
-                                            dummyAdresseService.create());
-
-                                    person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
-                                            hentDatoFraIdentService.extract(person.getIdent())));
-
-                                    person.getBoadresse().setPerson(person);
+                                            DummyAdresseUtil.createDummyAdresse());
                                 }
+
+                                person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
+                                        hentDatoFraIdentService.extract(person.getIdent())));
+
+                                person.getBoadresse().setPerson(person);
 
                                 if (nonNull(kriteriumRequest.getPostadresse()) && !kriteriumRequest.getPostadresse().isEmpty()) {
                                     person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
@@ -70,6 +73,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 }
                             }
                         })
+                .exclude("spesreg")
                 .exclude("boadresse")
                 .exclude("identtype")
                 .exclude("kjonn")

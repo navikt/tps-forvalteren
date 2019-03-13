@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import org.springframework.stereotype.Service;
-
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 
-@Service
-public class DummyAdresseService {
+public final class DummyAdresseUtil {
+
+    private DummyAdresseUtil() {
+    }
 
     private static final String GATEADRESSE = "SANNERGATA";
     private static final String HUSNR = "2";
@@ -14,7 +14,7 @@ public class DummyAdresseService {
     private static final String GATEKODE = "16188";
     private static final String KOMMUNENR = "0301";
 
-    public Adresse create() {
+    public static Adresse createDummyAdresse() {
         Gateadresse gateadresse =
                 Gateadresse.builder()
                         .husnummer(HUSNR)
