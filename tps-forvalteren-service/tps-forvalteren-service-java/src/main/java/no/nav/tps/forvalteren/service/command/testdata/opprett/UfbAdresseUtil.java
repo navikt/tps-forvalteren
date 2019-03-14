@@ -7,11 +7,11 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 
 public final class UfbAdresseUtil {
 
+    public static final String UTEN_FAST_BOSTED = "UTEN FAST BOSTED";
+    private static final String KOMMUNENR = "0301";
+
     private UfbAdresseUtil() {
     }
-
-    private static final String KOMMUNENR = "0301";
-    public static final String UTEN_FAST_BOSTED = "UTEN FAST BOSTED";
 
     public static Adresse createAdresseUfb(String kommunenr) {
         Gateadresse gateadresse = Gateadresse.builder()

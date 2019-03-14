@@ -54,7 +54,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
 
-                                if (UFB.name().equals(person.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) {
+                                if (isUtenFastBopel(kriteriumRequest, person)) {
                                     person.setBoadresse(createAdresseUfb(nonNull(kriteriumRequest.getBoadresse()) ? kriteriumRequest.getBoadresse().getKommunenr() : null));
                                 } else {
                                     person.setBoadresse(nonNull(kriteriumRequest.getBoadresse()) ?
@@ -67,7 +67,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 person.getBoadresse().setPerson(person);
 
-                                if (nonNull(kriteriumRequest.getPostadresse()) && !kriteriumRequest.getPostadresse().isEmpty()) {
+                                if (!kriteriumRequest.getPostadresse().isEmpty()) {
                                     person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
                                     person.getPostadresse().forEach(adr -> adr.setPerson(person));
                                 }
@@ -80,5 +80,9 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("relasjoner")
                 .byDefault()
                 .register();
+    }
+
+    private boolean isUtenFastBopel(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person) {
+        return UFB.name().equals(person.getSpesreg()) || kriteriumRequest.isUtenFastBopel();
     }
 }

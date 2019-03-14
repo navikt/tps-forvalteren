@@ -95,9 +95,16 @@ public class RsPersonBestillingKriteriumRequest {
     }
 
     public RsSimpleRelasjoner getRelasjoner() {
-        if (relasjoner == null) {
+        if (isNull(relasjoner)) {
             relasjoner = new RsSimpleRelasjoner();
         }
         return relasjoner;
+    }
+
+    public List<RsPostadresse> getPostadresse() {
+        if (isNull(postadresse)) {
+            postadresse = new ArrayList();
+        }
+        return postadresse;
     }
 }
