@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static java.lang.Boolean.TRUE;
-import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
@@ -27,7 +26,7 @@ public class AdresseOgSpesregService {
 
         if (SPSF.name().equals(person.getSpesreg())) {
             if (person.getPostadresse().isEmpty()) {
-                person.setPostadresse(singletonList(dummyAdresseService.createDummyPostAdresse(person)));
+                person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
             }
             person.setBoadresse(null);
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
