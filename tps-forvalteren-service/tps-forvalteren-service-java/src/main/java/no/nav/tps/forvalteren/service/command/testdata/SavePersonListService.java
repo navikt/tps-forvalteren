@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static java.util.Objects.nonNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +44,7 @@ public class SavePersonListService {
             Set<Long> utdaterteRelasjonIder = new HashSet<>();
 
             Person personDb = personRepository.findById(person.getId());
-            if (personDb != null) {
+            if (nonNull(personDb)) {
                 oppdaterRelasjonReferanser.execute(person, personDb);
                 utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
                 adresseRepository.deleteAllByPerson(personDb);

@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +30,6 @@ import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKo
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
-import no.nav.tps.forvalteren.service.command.testdata.UpdatePersonService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
@@ -64,9 +62,6 @@ public class TestdataBestillingsController {
 
     @Autowired
     private SjekkIdenterService sjekkIdenterService;
-
-    @Autowired
-    private UpdatePersonService updatePersonService;
 
     @Transactional
     @LogExceptions
@@ -114,13 +109,5 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public CheckIdentResponse checkIdentList(@RequestBody List<String> identer) {
         return sjekkIdenterService.finnLedigeIdenter(identer);
-    }
-
-    @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePerson") })
-    @PutMapping(value = "/person")
-    public void oppdaterPerson(@RequestBody RsPerson rsPerson) {
-        Person person = mapper.map(rsPerson, Person.class);
-        updatePersonService.update(person);
     }
 }
