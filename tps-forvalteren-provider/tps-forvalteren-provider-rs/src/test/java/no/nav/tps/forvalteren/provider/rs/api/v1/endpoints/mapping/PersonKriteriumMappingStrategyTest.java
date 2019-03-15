@@ -8,17 +8,18 @@ import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PersonKriteriumMappingStrategyTest {
 
     private static final LocalDateTime TIMENOW = LocalDateTime.now();
@@ -29,18 +30,20 @@ public class PersonKriteriumMappingStrategyTest {
     private static final String IDENTTYPE = "FNR";
     private static final String SPESREG = "KODE6";
 
+    private MapperFacade mapper;
+
+    @Mock
+    private DummyAdresseService dummyAdresseService;
+
     @Mock
     private HentDatoFraIdentService hentDatoFraIdentService;
 
+    @InjectMocks
     private PersonKriteriumMappingStrategy personKriteriumMappingStrategy;
-
-    private MapperFacade mapper;
 
     @Before
     public void setup() {
-        personKriteriumMappingStrategy = new PersonKriteriumMappingStrategy();
         mapper = MapperTestUtils.createMapperFacadeForMappingStrategy(personKriteriumMappingStrategy);
-        ReflectionTestUtils.setField(personKriteriumMappingStrategy, "hentDatoFraIdentService", hentDatoFraIdentService);
     }
 
     @Test

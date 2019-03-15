@@ -1,9 +1,11 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
+import static java.util.Collections.singletonList;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
-import static no.nav.tps.forvalteren.service.command.testdata.opprett.UfbAdresseUtil.createAdresseUfb;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.time.LocalDateTime;
@@ -18,7 +20,7 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseUtil;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Component
@@ -26,6 +28,9 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Autowired
+    private DummyAdresseService dummyAdresseService;
 
     @Override
     public void register(MapperFactory factory) {
@@ -54,22 +59,26 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
 
-                                if (isUtenFastBopel(kriteriumRequest, person)) {
-                                    person.setBoadresse(getUftAdresse(kriteriumRequest));
-                                } else {
-                                    person.setBoadresse(nonNull(kriteriumRequest.getBoadresse()) ?
-                                            mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class) :
-                                            DummyAdresseUtil.createDummyAdresse());
-                                }
-
-                                person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
-                                        hentDatoFraIdentService.extract(person.getIdent())));
-
-                                person.getBoadresse().setPerson(person);
-
                                 if (!kriteriumRequest.getPostadresse().isEmpty()) {
                                     person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
                                     person.getPostadresse().forEach(adr -> adr.setPerson(person));
+                                }
+
+                                if (SPSF.name().equals(person.getSpesreg())) {
+                                    person.setBoadresse(null);
+                                    if (isNull(person.getPostadresse())) {
+                                        person.setPostadresse(singletonList(dummyAdresseService.createDummyPostAdresse(person)));
+                                    }
+
+                                } else if (isUtenFastBopel(kriteriumRequest)) {
+                                    person.setBoadresse(dummyAdresseService.createAdresseUfb(person));
+
+                                } else if (nonNull(kriteriumRequest.getBoadresse())) {
+                                    person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));
+                                    person.getBoadresse().setPerson(person);
+
+                                } else {
+                                    dummyAdresseService.createDummyBoAdresse(person);
                                 }
                             }
                         })
@@ -82,11 +91,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .register();
     }
 
-    private Adresse getUftAdresse(RsPersonBestillingKriteriumRequest kriteriumRequest) {
-        return createAdresseUfb(nonNull(kriteriumRequest.getBoadresse()) ? kriteriumRequest.getBoadresse().getKommunenr() : null);
-    }
-
-    private boolean isUtenFastBopel(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person) {
-        return UFB.name().equals(person.getSpesreg()) || kriteriumRequest.isUtenFastBopel();
+    private boolean isUtenFastBopel(RsPersonBestillingKriteriumRequest kriteriumRequest) {
+        return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && SPSF.name().equals(kriteriumRequest.getSpesreg());
     }
 }

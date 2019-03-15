@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
@@ -33,6 +32,9 @@ public class SavePersonListService {
     @Autowired
     private HentUtdaterteRelasjonIder hentUtdaterteRelasjonIder;
 
+    @Autowired
+    private AdresseOgSpesregService adresseOgSpesregService;
+
     @Transactional
     public void execute(List<Person> personer) {
 
@@ -46,15 +48,7 @@ public class SavePersonListService {
                 adresseRepository.deleteAllByPerson(personDb);
             }
 
-            if (person.getPostadresse() != null) {
-                for (Postadresse adr : person.getPostadresse()) {
-                    adr.setPerson(person);
-                }
-            }
-
-            if (person.getBoadresse() != null) {
-                person.getBoadresse().setPerson(person);
-            }
+            adresseOgSpesregService.updateAdresseOgSpesregAttributes(person);
 
             if (!utdaterteRelasjonIder.isEmpty()) {
                 relasjonRepository.deleteByIdIn(utdaterteRelasjonIder);
