@@ -49,6 +49,9 @@ public class SavePersonListServiceTest {
     @Mock
     private HentUtdaterteRelasjonIder hentUtdaterteRelasjonIder;
 
+    @Mock
+    private AdresseOgSpesregService adresseOgSpesregService;
+
     private List<Person> persons = new ArrayList<>();
     private Postadresse postadresse = new Postadresse();
     private Adresse boadresse = new Gateadresse();

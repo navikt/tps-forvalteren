@@ -2,6 +2,8 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.time.LocalDateTime;
@@ -23,10 +25,10 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     @Autowired
-    private DummyAdresseService dummyAdresseService;
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Autowired
-    private HentDatoFraIdentService hentDatoFraIdentService;
+    private DummyAdresseService dummyAdresseService;
 
     @Override
     public void register(MapperFactory factory) {
@@ -47,32 +49,47 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                                         hentDatoFraIdentService.extract(person.getIdent())));
 
+                                person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
+
                                 if (nonNull(person.getSpesreg())) {
                                     person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
                                 }
 
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(person.getSikkerhetsTiltakDatoFom(), now()));
 
-                                person.setBoadresse(kriteriumRequest.getBoadresse() != null ?
-                                        mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class) :
-                                        dummyAdresseService.create());
-
-                                person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(),
-                                        hentDatoFraIdentService.extract(person.getIdent())));
-
-                                person.getBoadresse().setPerson(person);
-
-                                if (kriteriumRequest.getPostadresse() != null && !kriteriumRequest.getPostadresse().isEmpty()) {
-                                    person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
+                                if (!kriteriumRequest.getPostadresse().isEmpty()) {
+                                    person.getPostadresse().addAll(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
                                     person.getPostadresse().forEach(adr -> adr.setPerson(person));
+                                }
+
+                                if (SPSF.name().equals(person.getSpesreg())) {
+                                    person.setBoadresse(null);
+                                    if (person.getPostadresse().isEmpty()) {
+                                        person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
+                                    }
+
+                                } else if (isUtenFastBopel(kriteriumRequest)) {
+                                    person.setBoadresse(dummyAdresseService.createAdresseUfb(person));
+
+                                } else if (nonNull(kriteriumRequest.getBoadresse())) {
+                                    person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));
+                                    person.getBoadresse().setPerson(person);
+
+                                } else {
+                                    dummyAdresseService.createDummyBoAdresse(person);
                                 }
                             }
                         })
-
+                .exclude("spesreg")
+                .exclude("boadresse")
                 .exclude("identtype")
                 .exclude("kjonn")
                 .exclude("relasjoner")
                 .byDefault()
                 .register();
+    }
+
+    private boolean isUtenFastBopel(RsPersonBestillingKriteriumRequest kriteriumRequest) {
+        return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && SPSF.name().equals(kriteriumRequest.getSpesreg());
     }
 }

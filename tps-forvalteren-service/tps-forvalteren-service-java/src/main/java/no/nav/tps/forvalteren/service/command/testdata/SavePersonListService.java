@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static java.util.Objects.nonNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
@@ -33,6 +34,9 @@ public class SavePersonListService {
     @Autowired
     private HentUtdaterteRelasjonIder hentUtdaterteRelasjonIder;
 
+    @Autowired
+    private AdresseOgSpesregService adresseOgSpesregService;
+
     @Transactional
     public void execute(List<Person> personer) {
 
@@ -40,21 +44,13 @@ public class SavePersonListService {
             Set<Long> utdaterteRelasjonIder = new HashSet<>();
 
             Person personDb = personRepository.findById(person.getId());
-            if (personDb != null) {
+            if (nonNull(personDb)) {
                 oppdaterRelasjonReferanser.execute(person, personDb);
                 utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
                 adresseRepository.deleteAllByPerson(personDb);
             }
 
-            if (person.getPostadresse() != null) {
-                for (Postadresse adr : person.getPostadresse()) {
-                    adr.setPerson(person);
-                }
-            }
-
-            if (person.getBoadresse() != null) {
-                person.getBoadresse().setPerson(person);
-            }
+            adresseOgSpesregService.updateAdresseOgSpesregAttributes(person);
 
             if (!utdaterteRelasjonIder.isEmpty()) {
                 relasjonRepository.deleteByIdIn(utdaterteRelasjonIder);

@@ -45,8 +45,6 @@ public class RsPersonBestillingKriteriumRequest {
 
     private RsSimpleRelasjoner relasjoner;
 
-    private boolean withAdresse;
-
     private String kjonn;
 
     private String statsborgerskap;
@@ -87,6 +85,8 @@ public class RsPersonBestillingKriteriumRequest {
 
     private LocalDateTime datoSprak;
 
+    private boolean utenFastBopel;
+
     public List<String> getOpprettFraIdenter() {
         if (isNull(opprettFraIdenter)) {
             opprettFraIdenter = new ArrayList();
@@ -95,9 +95,16 @@ public class RsPersonBestillingKriteriumRequest {
     }
 
     public RsSimpleRelasjoner getRelasjoner() {
-        if (relasjoner == null) {
+        if (isNull(relasjoner)) {
             relasjoner = new RsSimpleRelasjoner();
         }
         return relasjoner;
+    }
+
+    public List<RsPostadresse> getPostadresse() {
+        if (isNull(postadresse)) {
+            postadresse = new ArrayList();
+        }
+        return postadresse;
     }
 }
