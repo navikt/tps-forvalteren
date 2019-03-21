@@ -76,7 +76,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                     person.getBoadresse().setPerson(person);
 
                                 } else {
-                                    dummyAdresseService.createDummyBoAdresse(person);
+                                    person.setBoadresse(dummyAdresseService.createDummyBoAdresse(person));
                                 }
                             }
                         })
