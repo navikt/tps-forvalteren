@@ -90,6 +90,6 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     }
 
     private boolean isUtenFastBopel(RsPersonBestillingKriteriumRequest kriteriumRequest) {
-        return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && SPSF.name().equals(kriteriumRequest.getSpesreg());
+        return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && !SPSF.name().equals(kriteriumRequest.getSpesreg());
     }
 }
