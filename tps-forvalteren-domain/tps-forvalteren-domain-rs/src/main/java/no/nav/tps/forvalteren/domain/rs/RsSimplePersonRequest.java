@@ -40,4 +40,6 @@ public class RsSimplePersonRequest {
     private LocalDateTime egenAnsattDatoTom;
 
     private boolean utenFastBopel;
+
+    private RsAdresse boadresse;
 }

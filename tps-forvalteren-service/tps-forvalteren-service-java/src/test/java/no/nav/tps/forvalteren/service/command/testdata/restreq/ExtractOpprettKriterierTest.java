@@ -1,10 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDateTime;
@@ -63,8 +65,10 @@ public class ExtractOpprettKriterierTest {
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(30).format(ISO_LOCAL_DATE)));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }
 
     @Test
@@ -93,8 +97,10 @@ public class ExtractOpprettKriterierTest {
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(30).format(ISO_LOCAL_DATE)));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }
 
     @Test
@@ -124,7 +130,8 @@ public class ExtractOpprettKriterierTest {
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }
 
     @Test
