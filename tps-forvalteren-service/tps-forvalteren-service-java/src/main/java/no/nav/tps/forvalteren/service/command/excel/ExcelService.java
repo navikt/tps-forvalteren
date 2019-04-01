@@ -84,42 +84,31 @@ public class ExcelService {
                 .append(";\"\t")
                 .append(person.getIdent())
                 .append("\";")
-                .append(person.getIdenttype())
-                .append(SEP)
-                .append(person.getKjonn())
-                .append(SEP)
-                .append(person.getSivilstand())
-                .append(SEP)
-                .append(person.getSpesreg())
-                .append(SEP)
-                .append(isUtenFastBobel(person))
-                .append(SEP)
-                .append(isEgenAnsatt(person))
-                .append(SEP)
-                .append(person.getEtternavn())
-                .append(SEP)
-                .append(person.getFornavn())
-                .append(SEP)
-                .append(getBoaresse(person))
-                .append(SEP)
-                .append(getPostadresse(person))
-                .append(SEP)
-                .append(person.getInnvandretFraLand())
-                .append(SEP)
-                .append(person.getGtVerdi())
-                .append(SEP)
-                .append(person.getGtType())
-                .append(SEP)
-                .append(person.getGtRegel())
-                .append(SEP)
-                .append(person.getSprakKode())
-                .append(SEP)
-                .append(person.getStatsborgerskap())
-                .append(SEP)
-                .append(person.getTypeSikkerhetsTiltak())
-                .append(SEP)
-                .append(person.getBeskrSikkerhetsTiltak());
+                .append(person.getIdenttype()).append(SEP)
+                .append(person.getKjonn()).append(SEP)
+                .append(person.getSivilstand()).append(SEP)
+                .append(person.getSpesreg()).append(SEP)
+                .append(isUtenFastBobel(person)).append(SEP)
+                .append(isEgenAnsatt(person)).append(SEP)
+                .append(person.getEtternavn()).append(SEP)
+                .append(person.getFornavn()).append(SEP)
+                .append(getBoaresse(person)).append(SEP)
+                .append(getPostadresse(person)).append(SEP)
+                .append(person.getInnvandretFraLand()).append(SEP)
+                .append(person.getGtVerdi()).append(SEP)
+                .append(person.getGtType()).append(SEP)
+                .append(person.getGtRegel()).append(SEP)
+                .append(person.getSprakKode()).append(SEP)
+                .append(person.getStatsborgerskap()).append(SEP)
+                .append(person.getTypeSikkerhetsTiltak()).append(SEP)
+                .append(person.getBeskrSikkerhetsTiltak())
+                .append(getRelasjoner(person));
 
+        return row.append(format("%n")).substring(1);
+    }
+
+    private static String getRelasjoner(Person person) {
+        StringBuilder row = new StringBuilder();
         for (Relasjon relasjon : person.getRelasjoner()) {
             row.append(SEP)
                     .append(relasjon.getRelasjonTypeNavn())
@@ -127,8 +116,7 @@ public class ExcelService {
                     .append(relasjon.getPersonRelasjonMed().getIdent())
                     .append('\"');
         }
-
-        return row.append(format("%n")).substring(1);
+        return row.toString();
     }
 
     private static boolean isUtenFastBobel(Person person) {
