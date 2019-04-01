@@ -55,7 +55,7 @@ public class ExtractOpprettKriterier {
 
     public static RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList();
+        List<RsPersonKriterier> kriterier = new ArrayList(request.size());
         for (RsSimplePersonRequest req : request) {
             RsPersonKriterier kriterium = prepareKriterium(req);
             kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(18)));

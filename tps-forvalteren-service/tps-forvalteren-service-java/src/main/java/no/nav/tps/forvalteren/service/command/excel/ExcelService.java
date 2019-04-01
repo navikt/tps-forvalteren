@@ -31,6 +31,8 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 @Service
 public class ExcelService {
 
+    private static final char SEP = ';';
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -83,59 +85,43 @@ public class ExcelService {
                 .append(person.getIdent())
                 .append("\";")
                 .append(person.getIdenttype())
-                .append(';')
+                .append(SEP)
                 .append(person.getKjonn())
-                .append(';')
+                .append(SEP)
                 .append(person.getSivilstand())
-                .append(';')
+                .append(SEP)
                 .append(person.getSpesreg())
-                .append(';')
-                .append(TRUE.equals(person.getUtenFastBopel()))
-                .append(';')
-                .append(TRUE.equals(nonNull(person.getEgenAnsattDatoFom())) && TRUE.equals(isNull(person.getEgenAnsattDatoTom())))
-                .append(';')
+                .append(SEP)
+                .append(isUtenFastBobel(person))
+                .append(SEP)
+                .append(isEgenAnsatt(person))
+                .append(SEP)
                 .append(person.getEtternavn())
-                .append(';')
+                .append(SEP)
                 .append(person.getFornavn())
-                .append(';')
-                .append(nonNull(person.getBoadresse()) ? ((Gateadresse) person.getBoadresse()).getAdresse() : null)
-                .append(';')
-                .append(nonNull(person.getBoadresse()) ? ((Gateadresse) person.getBoadresse()).getHusnummer() : null)
-                .append(';')
-                .append(nonNull(person.getBoadresse()) ? ((Gateadresse) person.getBoadresse()).getGatekode() : null)
-                .append(';')
-                .append(nonNull(person.getBoadresse()) ? person.getBoadresse().getPostnr() : null)
-                .append(';')
-                .append(nonNull(person.getBoadresse()) ? person.getBoadresse().getKommunenr() : null)
-                .append(';')
-                .append(nonNull(person.getBoadresse()) ? person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE) : null)
-                .append(';')
-                .append(!person.getPostadresse().isEmpty() ? person.getPostadresse().get(0).getPostLinje1() : null)
-                .append(';')
-                .append(!person.getPostadresse().isEmpty() ? person.getPostadresse().get(0).getPostLinje2() : null)
-                .append(';')
-                .append(!person.getPostadresse().isEmpty() ? person.getPostadresse().get(0).getPostLinje3() : null)
-                .append(';')
-                .append(!person.getPostadresse().isEmpty() ? person.getPostadresse().get(0).getPostLand() : null)
-                .append(';')
+                .append(SEP)
+                .append(getBoaresse(person))
+                .append(SEP)
+                .append(getPostadresse(person))
+                .append(SEP)
                 .append(person.getInnvandretFraLand())
-                .append(';')
+                .append(SEP)
                 .append(person.getGtVerdi())
-                .append(';')
+                .append(SEP)
                 .append(person.getGtType())
-                .append(';')
+                .append(SEP)
                 .append(person.getGtRegel())
-                .append(';')
+                .append(SEP)
                 .append(person.getSprakKode())
-                .append(';')
+                .append(SEP)
                 .append(person.getStatsborgerskap())
-                .append(';')
+                .append(SEP)
                 .append(person.getTypeSikkerhetsTiltak())
-                .append(';')
+                .append(SEP)
                 .append(person.getBeskrSikkerhetsTiltak());
 
         for (Relasjon relasjon : person.getRelasjoner()) {
-            row.append(';')
+            row.append(SEP)
                     .append(relasjon.getRelasjonTypeNavn())
                     .append(";\"\t")
                     .append(relasjon.getPersonRelasjonMed().getIdent())
@@ -143,5 +129,45 @@ public class ExcelService {
         }
 
         return row.append(format("%n")).substring(1);
+    }
+
+    private static boolean isUtenFastBobel(Person person) {
+        return TRUE.equals(person.getUtenFastBopel());
+    }
+
+    private static boolean isEgenAnsatt(Person person) {
+        return TRUE.equals(nonNull(person.getEgenAnsattDatoFom())) && TRUE.equals(isNull(person.getEgenAnsattDatoTom()));
+    }
+
+    private static String getBoaresse(Person person) {
+        return nonNull(person.getBoadresse()) ?
+                new StringBuilder()
+                        .append(((Gateadresse) person.getBoadresse()).getAdresse())
+                        .append(SEP)
+                        .append(((Gateadresse) person.getBoadresse()).getHusnummer())
+                        .append(SEP)
+                        .append(((Gateadresse) person.getBoadresse()).getGatekode())
+                        .append(SEP)
+                        .append(person.getBoadresse().getPostnr())
+                        .append(SEP)
+                        .append(person.getBoadresse().getKommunenr())
+                        .append(SEP)
+                        .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
+                        .toString()
+                : format("%s%s%s%s%s", SEP, SEP, SEP, SEP, SEP);
+    }
+
+    private static String getPostadresse(Person person) {
+        return !person.getPostadresse().isEmpty() ?
+                new StringBuilder()
+                        .append(person.getPostadresse().get(0).getPostLinje1())
+                        .append(SEP)
+                        .append(person.getPostadresse().get(0).getPostLinje2())
+                        .append(SEP)
+                        .append(person.getPostadresse().get(0).getPostLinje3())
+                        .append(SEP)
+                        .append(person.getPostadresse().get(0).getPostLand())
+                        .toString()
+                : format("%s%s%s", SEP, SEP, SEP);
     }
 }

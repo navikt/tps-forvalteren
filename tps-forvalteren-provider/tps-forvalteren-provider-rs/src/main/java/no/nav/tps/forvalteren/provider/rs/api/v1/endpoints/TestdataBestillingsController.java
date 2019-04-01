@@ -136,7 +136,7 @@ public class TestdataBestillingsController {
                     .body(resource);
         } catch (IOException e) {
             log.error(EXCEL_FEILMELDING, e);
-            throw new TpsfFunctionalException(EXCEL_FEILMELDING);
+            throw new TpsfFunctionalException(EXCEL_FEILMELDING, e);
         }
     }
 }
