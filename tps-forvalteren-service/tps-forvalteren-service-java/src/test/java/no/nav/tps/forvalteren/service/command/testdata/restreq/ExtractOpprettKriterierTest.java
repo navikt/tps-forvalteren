@@ -40,14 +40,14 @@ public class ExtractOpprettKriterierTest {
 
     @Test
     public void extractMainPersonAllParamsSet() {
+        RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
+        bestilling.setAntall(ANTALL);
+        bestilling.setKjonn(KJOENN);
+        bestilling.setFoedtEtter(FOEDT_ETTER);
+        bestilling.setFoedtFoer(FOEDT_FOER);
+        bestilling.setIdenttype(IDENTTYPE);
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(RsPersonBestillingKriteriumRequest.builder()
-                .antall(ANTALL)
-                .kjonn(KJOENN)
-                .foedtEtter(FOEDT_ETTER)
-                .foedtFoer(FOEDT_FOER)
-                .identtype(IDENTTYPE)
-                .build());
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(bestilling);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(ANTALL)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
@@ -59,8 +59,7 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractMainPersonNoParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(RsPersonBestillingKriteriumRequest.builder()
-                .build());
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(new RsPersonBestillingKriteriumRequest());
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
@@ -137,7 +136,7 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractDollyParametere() {
 
-        RsPersonBestillingKriteriumRequest kriterier = RsPersonBestillingKriteriumRequest.builder().build();
+        RsPersonBestillingKriteriumRequest kriterier = new RsPersonBestillingKriteriumRequest();
         List<Person> hovedperson = singletonList(Person.builder().build());
         List<Person> partner = singletonList(Person.builder().build());
         List<Person> barn = singletonList(Person.builder().build());
