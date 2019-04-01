@@ -45,12 +45,13 @@ public class ExcelServiceTest {
         while (nonNull((line = reader.readLine()))) {
             builder.append(line);
         }
-        assertThat(builder, is("Ident;Identtype;Kjønn;Sivilstand;Diskresjonskode;ErUtenFastBopel;"
-                + "Egenansatt;Etternavn;Fornavn;Gateadresse;Husnummer;Gatekode;Postnr;Kommunenr;Flyttedato;"
-                + "Postlinje1;Postlinje2;Postlinje3;Postland;InnvandretFraLand;GtVerdi;GtType;GtRegel;Språkkode;"
-                + "Statsborgerskap;TypeSikkerhetTiltak;BeskrivelseSikkerhetTiltak;Relasjon1-Type;Relasjon1-Ident;"
-                + "Relasjon2-Type;Relasjon2-Ident;Relasjon3-Type;Relasjon3-Ident\"\t111111111111\";FNR;M;GIFT;;false;"
-                + "false;MASKIN;GOD;Tveterveien;2B;12345;1234;5678;2018-10-10;;;;;SAU;0617;KNR;A;NB;;;"));
+        assertThat(builder.toString().replaceAll("\t", ""),
+                is("Ident;Identtype;Kjønn;Sivilstand;Diskresjonskode;ErUtenFastBopel;"
+                        + "Egenansatt;Etternavn;Fornavn;Gateadresse;Husnummer;Gatekode;Postnr;Kommunenr;Flyttedato;"
+                        + "Postlinje1;Postlinje2;Postlinje3;Postland;InnvandretFraLand;GtVerdi;GtType;GtRegel;Språkkode;"
+                        + "Statsborgerskap;TypeSikkerhetTiltak;BeskrivelseSikkerhetTiltak;Relasjon1-Type;Relasjon1-Ident;"
+                        + "Relasjon2-Type;Relasjon2-Ident;Relasjon3-Type;Relasjon3-Ident\"111111111111\";FNR;M;GIFT;;false;"
+                        + "false;MASKIN;GOD;Tveterveien;2B;12345;1234;5678;2018-10-10;;;;;SAU;0617;KNR;A;NB;;;"));
     }
 
     private static Person buildPerson() {
