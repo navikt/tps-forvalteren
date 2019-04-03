@@ -1,10 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDateTime;
@@ -38,14 +40,14 @@ public class ExtractOpprettKriterierTest {
 
     @Test
     public void extractMainPersonAllParamsSet() {
+        RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
+        bestilling.setAntall(ANTALL);
+        bestilling.setKjonn(KJOENN);
+        bestilling.setFoedtEtter(FOEDT_ETTER);
+        bestilling.setFoedtFoer(FOEDT_FOER);
+        bestilling.setIdenttype(IDENTTYPE);
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(RsPersonBestillingKriteriumRequest.builder()
-                .antall(ANTALL)
-                .kjonn(KJOENN)
-                .foedtEtter(FOEDT_ETTER)
-                .foedtFoer(FOEDT_FOER)
-                .identtype(IDENTTYPE)
-                .build());
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(bestilling);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(ANTALL)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
@@ -57,14 +59,15 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractMainPersonNoParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(RsPersonBestillingKriteriumRequest.builder()
-                .build());
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(new RsPersonBestillingKriteriumRequest());
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(30).format(ISO_LOCAL_DATE)));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }
 
     @Test
@@ -93,8 +96,10 @@ public class ExtractOpprettKriterierTest {
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(30).format(ISO_LOCAL_DATE)));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }
 
     @Test
@@ -124,13 +129,14 @@ public class ExtractOpprettKriterierTest {
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
+                greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }
 
     @Test
     public void extractDollyParametere() {
 
-        RsPersonBestillingKriteriumRequest kriterier = RsPersonBestillingKriteriumRequest.builder().build();
+        RsPersonBestillingKriteriumRequest kriterier = new RsPersonBestillingKriteriumRequest();
         List<Person> hovedperson = singletonList(Person.builder().build());
         List<Person> partner = singletonList(Person.builder().build());
         List<Person> barn = singletonList(Person.builder().build());

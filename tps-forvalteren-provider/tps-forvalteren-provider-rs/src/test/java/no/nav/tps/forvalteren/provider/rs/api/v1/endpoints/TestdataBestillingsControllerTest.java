@@ -60,7 +60,9 @@ public class TestdataBestillingsControllerTest {
 
     @Test
     public void createPersonerFraBestillingskriterierOk() {
-        RsPersonBestillingKriteriumRequest bestilling = RsPersonBestillingKriteriumRequest.builder().build();
+
+        RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
+
         when(personerBestillingService.createTpsfPersonFromRestRequest(bestilling))
                 .thenReturn(newArrayList(
                         Person.builder().ident(IDENT_1).build(),
