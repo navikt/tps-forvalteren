@@ -48,21 +48,21 @@ public class PersonKriteriumMappingStrategyTest {
 
     @Test
     public void matchVerificationOk() {
-        Person person = mapper.map(RsPersonBestillingKriteriumRequest.builder()
 
-                        .typeSikkerhetsTiltak(TYPESIKKERHET)
-                        .beskrSikkerhetsTiltak(SIKKERHETSTILTAK)
-                        .datoSprak(TIMENOW)
-                        .sprakKode(SPRAK)
-                        .statsborgerskap(STATSBORGERSKAP)
-                        .statsborgerskapRegdato(TIMENOW)
-                        .identtype(IDENTTYPE)
-                        .spesreg(SPESREG)
-                        .spesregDato(TIMENOW)
-                        .egenAnsattDatoFom(TIMENOW)
-                        .egenAnsattDatoTom(TIMENOW)
-                        .build(),
-                Person.class);
+        RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
+        bestilling.setTypeSikkerhetsTiltak(TYPESIKKERHET);
+        bestilling.setBeskrSikkerhetsTiltak(SIKKERHETSTILTAK);
+        bestilling.setDatoSprak(TIMENOW);
+        bestilling.setSprakKode(SPRAK);
+        bestilling.setStatsborgerskap(STATSBORGERSKAP);
+        bestilling.setStatsborgerskapRegdato(TIMENOW);
+        bestilling.setIdenttype(IDENTTYPE);
+        bestilling.setSpesreg(SPESREG);
+        bestilling.setSpesregDato(TIMENOW);
+        bestilling.setEgenAnsattDatoFom(TIMENOW);
+        bestilling.setEgenAnsattDatoTom(TIMENOW);
+
+        Person person = mapper.map(bestilling, Person.class);
 
         assertThat(person.getIdenttype(), is(equalTo(IDENTTYPE)));
         assertThat(person.getStatsborgerskap(), is(equalTo(STATSBORGERSKAP)));
