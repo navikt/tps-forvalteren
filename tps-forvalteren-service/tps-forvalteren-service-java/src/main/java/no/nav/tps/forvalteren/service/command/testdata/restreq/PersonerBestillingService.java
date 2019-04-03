@@ -1,5 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +39,9 @@ public class PersonerBestillingService {
         List<Person> partnere = new ArrayList<>();
         List<Person> barn = new ArrayList<>();
         if (personKriteriumRequest.getOpprettFraIdenter().isEmpty()) {
-            RsPersonKriteriumRequest personKriterier = extractOpprettKriterier.extractMainPerson(personKriteriumRequest);
-            RsPersonKriteriumRequest kriteriePartner = extractOpprettKriterier.extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
-            RsPersonKriteriumRequest kriterieBarn = extractOpprettKriterier.extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
+            RsPersonKriteriumRequest personKriterier = extractMainPerson(personKriteriumRequest);
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier, personKriteriumRequest.getEnvironments()));
 

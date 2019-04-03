@@ -24,7 +24,7 @@ public class ExtractOpprettKriterier {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
+    public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(singletonList(RsPersonKriterier.builder()
@@ -37,7 +37,7 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
+    public static RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
 
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         if (nonNull(request)) {
@@ -47,7 +47,7 @@ public class ExtractOpprettKriterier {
         return personRequestListe;
     }
 
-    public RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
+    public static RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
 
         RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
         for (RsSimplePersonRequest req : request) {
@@ -57,7 +57,7 @@ public class ExtractOpprettKriterier {
         return personRequestListe;
     }
 
-    private void addKriterium(RsPersonKriteriumRequest personRequestListe, RsSimplePersonRequest req) {
+    private static void addKriterium(RsPersonKriteriumRequest personRequestListe, RsSimplePersonRequest req) {
         personRequestListe.getPersonKriterierListe().add(RsPersonKriterier.builder()
                 .antall(1)
                 .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
