@@ -26,10 +26,11 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.HusbokstavEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@Import({HentKjoennFraIdentService.class, SetAdresseService.class, HusbokstavEncoder.class, HentDatoFraIdentService.class})
+@Import({HentKjoennFraIdentService.class, SetAdresseService.class, LandkodeEncoder.class, HusbokstavEncoder.class, HentDatoFraIdentService.class})
 public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Autowired
@@ -37,6 +38,9 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
     @Autowired
     private SetAdresseService setAdresseService;
+
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;

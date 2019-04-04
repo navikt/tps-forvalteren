@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
@@ -91,15 +92,13 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private void mapAdresser(RsSimplePersonRequest kriteriumRequest, Person person, MapperFacade mapperFacade) {
         if (!kriteriumRequest.getPostadresse().isEmpty()) {
-            person.getPostadresse().addAll(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
+            person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
             person.getPostadresse().forEach(adr -> adr.setPerson(person));
         }
 
         if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
             person.setBoadresse(null);
-            if (person.getPostadresse().isEmpty()) {
-                person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
-            }
+            person.setPostadresse(singletonList(dummyAdresseService.createDummyPostAdresse(person)));
 
         } else if (isUtenFastBopel(kriteriumRequest)) {
             person.setBoadresse(dummyAdresseService.createAdresseUfb(person));

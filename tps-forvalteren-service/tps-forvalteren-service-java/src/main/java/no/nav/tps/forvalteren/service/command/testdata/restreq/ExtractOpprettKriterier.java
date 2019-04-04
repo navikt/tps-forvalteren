@@ -84,6 +84,7 @@ public class ExtractOpprettKriterier {
         if (nonNull(req.getRelasjoner().getPartner())) {
             partnere.forEach(partner -> {
                         req.getRelasjoner().getPartner().setBoadresse(req.getBoadresse());
+                        req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
                         mapperFacade.map(req.getRelasjoner().getPartner(), partner);
                         ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
                         partner.setSivilstand(req.getSivilstand());
@@ -93,6 +94,7 @@ public class ExtractOpprettKriterier {
         if (!req.getRelasjoner().getBarn().isEmpty()) {
             IntStream.range(0, barn.size()).forEach(i -> {
                 req.getRelasjoner().getBarn().get(i).setBoadresse(req.getBoadresse());
+                req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
