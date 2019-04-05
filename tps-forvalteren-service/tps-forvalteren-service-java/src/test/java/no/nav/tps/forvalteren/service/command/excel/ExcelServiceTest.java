@@ -52,7 +52,7 @@ public class ExcelServiceTest {
                         + "GtRegel;Språkkode;Statsborgerskap;TypeSikkerhetTiltak;BeskrivelseSikkerhetTiltak;"
                         + "Relasjon1-Type;Relasjon1-Ident;Relasjon2-Type;Relasjon2-Ident;Relasjon3-Type;"
                         + "Relasjon3-Ident\"111111111111\";FNR;M;GIFT;;false;false;MASKIN;GOD;Tveterveien;"
-                        + "\"2B\";\"12345\";\"1234\";\"5678\";2018-10-10;;;;;SAU;\"0617\";KNR;A;NB;;;"));
+                        + "2B;\"12345\";\"1234\";\"5678\";2018-10-10;;;;;SAU;\"0617\";KNR;A;NB;;;"));
     }
 
     private static Person buildPerson() {

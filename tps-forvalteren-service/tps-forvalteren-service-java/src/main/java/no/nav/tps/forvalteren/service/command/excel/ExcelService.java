@@ -119,7 +119,7 @@ public class ExcelService {
                     .append(relasjon.getRelasjonTypeNavn())
                     .append(SEP_STRING_START)
                     .append(relasjon.getPersonRelasjonMed().getIdent())
-                    .append(SEP_STRING_END);
+                    .append("\"");
         }
         return row.toString();
     }
@@ -136,9 +136,9 @@ public class ExcelService {
         return nonNull(person.getBoadresse()) ?
                 new StringBuilder()
                         .append(((Gateadresse) person.getBoadresse()).getAdresse())
-                        .append(SEP_STRING_START)
+                        .append(SEP)
                         .append(((Gateadresse) person.getBoadresse()).getHusnummer())
-                        .append(SEP_STRING_DUAL)
+                        .append(SEP_STRING_START)
                         .append(((Gateadresse) person.getBoadresse()).getGatekode())
                         .append(SEP_STRING_DUAL)
                         .append(person.getBoadresse().getPostnr())
