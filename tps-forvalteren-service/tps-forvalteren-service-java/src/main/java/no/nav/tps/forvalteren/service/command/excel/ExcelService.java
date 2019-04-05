@@ -119,7 +119,7 @@ public class ExcelService {
                     .append(relasjon.getRelasjonTypeNavn())
                     .append(SEP_STRING_START)
                     .append(relasjon.getPersonRelasjonMed().getIdent())
-                    .append("\"");
+                    .append('\"');
         }
         return row.toString();
     }
