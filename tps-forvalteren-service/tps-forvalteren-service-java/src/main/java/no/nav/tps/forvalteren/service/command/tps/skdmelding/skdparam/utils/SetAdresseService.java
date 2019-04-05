@@ -23,6 +23,9 @@ public class SetAdresseService {
     private HusbokstavEncoder husbokstavEncoder;
 
     @Autowired
+    private LandkodeEncoder landkodeEncoder;
+
+    @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
 
     private static final Pattern HUSNUMMER_PATTERN = Pattern.compile("(\\d+)");
@@ -65,7 +68,7 @@ public class SetAdresseService {
             skdMeldingTrans1.setPostadresse1(postadresse.getPostLinje1());
             skdMeldingTrans1.setPostadresse2(postadresse.getPostLinje2());
             skdMeldingTrans1.setPostadresse3(postadresse.getPostLinje3());
-            skdMeldingTrans1.setPostadresseLand(postadresse.getPostLand());
+            skdMeldingTrans1.setPostadresseLand(landkodeEncoder.encode(postadresse.getPostLand()));
         }
     }
 
