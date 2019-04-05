@@ -32,6 +32,9 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 public class ExcelService {
 
     private static final char SEP = ';';
+    private static final String SEP_STRING_START = ";\"\t";
+    private static final String SEP_STRING_END = "\";";
+    private static final String SEP_STRING_DUAL = "\";\"\t";
 
     @Autowired
     private PersonRepository personRepository;
@@ -81,9 +84,9 @@ public class ExcelService {
 
     private static String buildPerson(Person person) {
         StringBuilder row = new StringBuilder()
-                .append(";\"\t")
+                .append(SEP_STRING_START)
                 .append(person.getIdent())
-                .append("\";")
+                .append(SEP_STRING_END)
                 .append(person.getIdenttype()).append(SEP)
                 .append(person.getKjonn()).append(SEP)
                 .append(person.getSivilstand()).append(SEP)
@@ -94,8 +97,10 @@ public class ExcelService {
                 .append(person.getFornavn()).append(SEP)
                 .append(getBoaresse(person)).append(SEP)
                 .append(getPostadresse(person)).append(SEP)
-                .append(person.getInnvandretFraLand()).append(SEP)
-                .append(person.getGtVerdi()).append(SEP)
+                .append(person.getInnvandretFraLand())
+                .append(SEP_STRING_START)
+                .append(person.getGtVerdi())
+                .append(SEP_STRING_END)
                 .append(person.getGtType()).append(SEP)
                 .append(person.getGtRegel()).append(SEP)
                 .append(person.getSprakKode()).append(SEP)
@@ -112,9 +117,9 @@ public class ExcelService {
         for (Relasjon relasjon : person.getRelasjoner()) {
             row.append(SEP)
                     .append(relasjon.getRelasjonTypeNavn())
-                    .append(";\"\t")
+                    .append(SEP_STRING_START)
                     .append(relasjon.getPersonRelasjonMed().getIdent())
-                    .append('\"');
+                    .append(SEP_STRING_END);
         }
         return row.toString();
     }
@@ -131,15 +136,15 @@ public class ExcelService {
         return nonNull(person.getBoadresse()) ?
                 new StringBuilder()
                         .append(((Gateadresse) person.getBoadresse()).getAdresse())
-                        .append(SEP)
+                        .append(SEP_STRING_START)
                         .append(((Gateadresse) person.getBoadresse()).getHusnummer())
-                        .append(SEP)
+                        .append(SEP_STRING_DUAL)
                         .append(((Gateadresse) person.getBoadresse()).getGatekode())
-                        .append(SEP)
+                        .append(SEP_STRING_DUAL)
                         .append(person.getBoadresse().getPostnr())
-                        .append(SEP)
+                        .append(SEP_STRING_DUAL)
                         .append(person.getBoadresse().getKommunenr())
-                        .append(SEP)
+                        .append(SEP_STRING_END)
                         .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
                         .toString()
                 : format("%s%s%s%s%s", SEP, SEP, SEP, SEP, SEP);
