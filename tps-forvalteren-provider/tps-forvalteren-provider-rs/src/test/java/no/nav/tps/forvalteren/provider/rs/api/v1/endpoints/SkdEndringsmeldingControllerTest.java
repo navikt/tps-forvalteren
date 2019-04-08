@@ -6,7 +6,9 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +25,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
+
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
@@ -199,6 +202,21 @@ public class SkdEndringsmeldingControllerTest {
 
         skdEndringsmeldingController.deleteGruppe(gruppeId);
 
+        verify(skdEndringsmeldingsgruppeService).deleteGruppeById(gruppeId);
+    }
+
+    @Test
+    public void deleteStorGruppeDeletesGruppe() {
+        Long gruppeId = 1337L;
+        int antallMeldingerIGruppe = 100;
+        int antallSiderIGruppe = antallMeldingerIGruppe / 10;
+        when(skdEndringsmeldingService.countMeldingerByGruppe(any())).thenReturn(antallMeldingerIGruppe);
+        when(skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIGruppe)).thenReturn(antallSiderIGruppe);
+
+        skdEndringsmeldingController.deleteStorGruppe(gruppeId);
+
+        verify(skdEndringsmeldingService, times(antallSiderIGruppe)).findSkdEndringsmeldingerOnPage(eq(gruppeId), anyInt());
+        verify(skdEndringsmeldingService, times(antallSiderIGruppe)).deleteById(anyListOf(Long.class));
         verify(skdEndringsmeldingsgruppeService).deleteGruppeById(gruppeId);
     }
 

@@ -4,6 +4,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERAT
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -159,6 +160,29 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
+        skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteStorGruppe") })
+    @RequestMapping(value = "deletestorgruppe/{gruppeId}", method = RequestMethod.DELETE)
+    public void deleteStorGruppe(@PathVariable("gruppeId") Long gruppeId) {
+        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
+
+        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(gruppe);
+        int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
+
+        for(int i = antallSiderIAvspillergruppe - 1; i >= 0; i--) {
+            List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, i);
+            List<Long> meldingIdsOnPage = new ArrayList<>(skdEndringsmeldinger.size());
+
+            for(SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {
+                meldingIdsOnPage.add(skdEndringsmelding.getId());
+            }
+
+            skdEndringsmeldingService.deleteById(meldingIdsOnPage);
+        }
+
         skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
     }
 
