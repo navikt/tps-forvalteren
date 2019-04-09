@@ -74,4 +74,10 @@ public class SkdEndringsmeldingService {
             skdEndringsmeldingRepository.deleteByIdIn(ids);
         }
     }
+
+    public List<Long> findAllMeldingIdsInGruppe(Long gruppeId) {
+         SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = gruppeRepository.findById(gruppeId);
+         return skdEndringsmeldingRepository.findAllIdsByGruppe(skdEndringsmeldingGruppe);
+    }
+
 }

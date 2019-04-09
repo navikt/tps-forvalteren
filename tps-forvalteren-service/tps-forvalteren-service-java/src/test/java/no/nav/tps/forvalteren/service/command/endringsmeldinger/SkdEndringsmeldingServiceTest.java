@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,6 +24,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageImpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
@@ -91,7 +93,7 @@ public class SkdEndringsmeldingServiceTest {
 
     @Test
     public void shouldConvertSkdEndringsmeldingerToRsMeldingstyper() throws IOException {
-        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger(MELDINGS_ID_1, MELDINGS_ID_2);
+        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger();
 
         RsMeldingstype1Felter rsMeldingstype1Felter1 = RsMeldingstype1Felter.builder().build();
         rsMeldingstype1Felter1.setId(MELDINGS_ID_1);
@@ -127,9 +129,22 @@ public class SkdEndringsmeldingServiceTest {
         assertTrue(actualFoedselsnumre.contains(expectedFoedselsnummer));
     }
 
-    private List<SkdEndringsmelding> createSkdMeldinger(Long meldingsId1, Long meldingsId2) {
+    @Test
+    public void hentMeldingerFraGruppeOk() {
+        long gruppeId = 123L;
+        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger();
+
+        when(skdEndringsmeldingRepository.findAllIdsByGruppe(any())).thenReturn(Lists.newArrayList(skdEndringsmeldinger.get(0).getId(), skdEndringsmeldinger.get(1).getId()));
+
+        List<Long> result = skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
+
+        verify(skdEndringsmeldingRepository).findAllIdsByGruppe(any());
+        assertThat(result, containsInAnyOrder(MELDINGS_ID_1, MELDINGS_ID_2));
+    }
+
+    private List<SkdEndringsmelding> createSkdMeldinger() {
         return Arrays.asList(
-                SkdEndringsmelding.builder().id(meldingsId1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId1 + "}").build(),
-                SkdEndringsmelding.builder().id(meldingsId2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + meldingsId2 + "}").build());
+                SkdEndringsmelding.builder().id(MELDINGS_ID_1).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + MELDINGS_ID_1 + "}").build(),
+                SkdEndringsmelding.builder().id(MELDINGS_ID_2).endringsmelding("{\"meldingstype\": \"t1\",\"id\": " + MELDINGS_ID_2 + "}").build());
     }
 }
