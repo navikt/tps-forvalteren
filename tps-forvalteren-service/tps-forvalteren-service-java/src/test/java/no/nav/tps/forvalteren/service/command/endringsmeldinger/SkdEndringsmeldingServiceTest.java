@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -140,7 +139,7 @@ public class SkdEndringsmeldingServiceTest {
         List<Long> result = skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
 
         verify(skdEndringsmeldingRepository).findAllIdsByGruppe(any());
-        MatcherAssert.assertThat(result, containsInAnyOrder(MELDINGS_ID_1, MELDINGS_ID_2));
+        assertThat(result, containsInAnyOrder(MELDINGS_ID_1, MELDINGS_ID_2));
     }
 
     private List<SkdEndringsmelding> createSkdMeldinger() {
