@@ -77,7 +77,6 @@ public class SkdEndringsmeldingService {
 
     public List<Long> findAllMeldingIdsInGruppe(Long gruppeId) {
          SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = gruppeRepository.findById(gruppeId);
-         return skdEndringsmeldingRepository.findAllIdsByGruppe(skdEndringsmeldingGruppe);
+         return skdEndringsmeldingRepository.findAllIdsBy(skdEndringsmeldingGruppe);
     }
-
 }

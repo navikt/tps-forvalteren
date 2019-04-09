@@ -134,11 +134,11 @@ public class SkdEndringsmeldingServiceTest {
         long gruppeId = 123L;
         List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger();
 
-        when(skdEndringsmeldingRepository.findAllIdsByGruppe(any())).thenReturn(Lists.newArrayList(skdEndringsmeldinger.get(0).getId(), skdEndringsmeldinger.get(1).getId()));
+        when(skdEndringsmeldingRepository.findAllIdsBy(any())).thenReturn(Lists.newArrayList(skdEndringsmeldinger.get(0).getId(), skdEndringsmeldinger.get(1).getId()));
 
         List<Long> result = skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
 
-        verify(skdEndringsmeldingRepository).findAllIdsByGruppe(any());
+        verify(skdEndringsmeldingRepository).findAllIdsBy(any());
         assertThat(result, containsInAnyOrder(MELDINGS_ID_1, MELDINGS_ID_2));
     }
 
