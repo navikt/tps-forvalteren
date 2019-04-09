@@ -4,7 +4,6 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERAT
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
+
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -41,7 +41,6 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFr
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromTextService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromTypeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetLoggForGruppeService;
-import no.nav.tps.forvalteren.service.command.endringsmeldinger.GetMeldingIdFraGruppeService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SaveSkdEndringsmeldingerService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SendEndringsmeldingToTpsService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldingService;
@@ -88,9 +87,6 @@ public class SkdEndringsmeldingController {
 
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
-
-    @Autowired
-    private GetMeldingIdFraGruppeService getMeldingIdFraGruppeService;
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
@@ -164,29 +160,6 @@ public class SkdEndringsmeldingController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteStorGruppe") })
-    @RequestMapping(value = "deletestorgruppe/{gruppeId}", method = RequestMethod.DELETE)
-    public void deleteStorGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
-
-        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(gruppe);
-        int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
-
-        for(int i = antallSiderIAvspillergruppe - 1; i >= 0; i--) {
-            List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, i);
-            List<Long> meldingIdsOnPage = new ArrayList<>(skdEndringsmeldinger.size());
-
-            for(SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {
-                meldingIdsOnPage.add(skdEndringsmelding.getId());
-            }
-
-            skdEndringsmeldingService.deleteById(meldingIdsOnPage);
-        }
-
-        skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
-    }
-
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMelding") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.POST)
     public void createMeldingFromMeldingstype(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
@@ -241,8 +214,7 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
     public List<Long> getMeldingIder(@PathVariable("gruppeId") Long gruppeId) {
-
-        return getMeldingIdFraGruppeService.execute(gruppeId);
+        return skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
     }
 
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")

@@ -25,6 +25,9 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     void deleteAll();
 
+     @Query("SELECT s.id FROM SkdEndringsmelding s where s.gruppe=:gruppe")
+    List<Long> findAllIdsByGruppe(SkdEndringsmeldingGruppe gruppe);
+
     @Query("SELECT foedselsnummer FROM SkdEndringsmelding "
             + "WHERE aarsakskode in :aarsakskoder AND transaksjonstype=:transaksjonstype AND gruppe=:gruppe")
     List<String> findFoedselsnummerBy(
