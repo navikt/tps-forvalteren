@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.PostadresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentUtdaterteRelasjonIder;
 import no.nav.tps.forvalteren.service.command.testdata.utils.OppdaterRelasjonReferanser;
@@ -39,6 +40,9 @@ public class SavePersonListServiceTest {
 
     @Mock
     private AdresseRepository adresseRepository;
+
+    @Mock
+    private PostadresseRepository postadresseRepository;
 
     @Mock
     private RelasjonRepository relasjonRepository;
