@@ -115,11 +115,11 @@ public class Person extends ChangeStamp {
     private String beskrSikkerhetsTiltak;
 
     @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
     private Adresse boadresse;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<Postadresse> postadresse = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
+    private List<Postadresse> postadresse;
 
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
@@ -129,7 +129,7 @@ public class Person extends ChangeStamp {
     private Gruppe gruppe;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<Relasjon> relasjoner = new ArrayList<>();
+    private List<Relasjon> relasjoner;
 
     @Column(name = "OPPRETTET_DATO")
     private LocalDateTime opprettetDato;
