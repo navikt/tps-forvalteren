@@ -115,10 +115,10 @@ public class Person extends ChangeStamp {
     private String beskrSikkerhetsTiltak;
 
     @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private Adresse boadresse;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
 
     @Column(name = "REGDATO", nullable = false)

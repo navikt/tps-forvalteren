@@ -26,9 +26,9 @@ public class AdresseOgSpesregService {
     public Person updateAdresseOgSpesregAttributes(Person person) {
 
         if (SPSF.name().equals(person.getSpesreg())) {
-            if (person.getPostadresse().isEmpty()) {
-                person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
-            }
+            person.getPostadresse().clear();
+            person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
+
             person.setBoadresse(null);
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
 
@@ -42,7 +42,7 @@ public class AdresseOgSpesregService {
             person.setBoadresse(dummyAdresseService.createDummyBoAdresse(person));
             person.setSpesregDato(null);
             if (!person.getPostadresse().isEmpty() && SPSF_ADR.equals(person.getPostadresse().get(0).getPostLinje1())) {
-                person.setPostadresse(null);
+                person.getPostadresse().clear();
             }
         }
 
@@ -52,6 +52,6 @@ public class AdresseOgSpesregService {
     }
 
     private static boolean isUtenFastBobel(Person person) {
-        return (UFB.name().equals(person.getSpesreg()) || TRUE.equals(person.getUtenFastBopel())) && SPSF.name().equals(person.getSpesreg());
+        return (UFB.name().equals(person.getSpesreg()) || TRUE.equals(person.getUtenFastBopel()));
     }
 }
