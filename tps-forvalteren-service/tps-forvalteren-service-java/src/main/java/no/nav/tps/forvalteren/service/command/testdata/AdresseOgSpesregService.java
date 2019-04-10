@@ -4,6 +4,7 @@ import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
+import static no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService.SPSF_ADR;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,9 @@ public class AdresseOgSpesregService {
     public Person updateAdresseOgSpesregAttributes(Person person) {
 
         if (SPSF.name().equals(person.getSpesreg())) {
-            if (person.getPostadresse().isEmpty()) {
-                person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
-            }
+            person.getPostadresse().clear();
+            person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
+
             person.setBoadresse(null);
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
 
@@ -40,12 +41,17 @@ public class AdresseOgSpesregService {
         } else if (isNull(person.getBoadresse())) {
             person.setBoadresse(dummyAdresseService.createDummyBoAdresse(person));
             person.setSpesregDato(null);
+            if (!person.getPostadresse().isEmpty() && SPSF_ADR.equals(person.getPostadresse().get(0).getPostLinje1())) {
+                person.getPostadresse().clear();
+            }
         }
+
+        person.getPostadresse().forEach(adresse -> adresse.setPerson(person));
 
         return person;
     }
 
     private static boolean isUtenFastBobel(Person person) {
-        return (UFB.name().equals(person.getSpesreg()) || TRUE.equals(person.getUtenFastBopel())) && SPSF.name().equals(person.getSpesreg());
+        return (UFB.name().equals(person.getSpesreg()) || TRUE.equals(person.getUtenFastBopel()));
     }
 }

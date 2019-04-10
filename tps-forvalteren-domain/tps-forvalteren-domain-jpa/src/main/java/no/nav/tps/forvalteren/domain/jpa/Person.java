@@ -119,7 +119,7 @@ public class Person extends ChangeStamp {
     private Adresse boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<Postadresse> postadresse = new ArrayList<>();
+    private List<Postadresse> postadresse;
 
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
@@ -129,7 +129,7 @@ public class Person extends ChangeStamp {
     private Gruppe gruppe;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<Relasjon> relasjoner = new ArrayList<>();
+    private List<Relasjon> relasjoner;
 
     @Column(name = "OPPRETTET_DATO")
     private LocalDateTime opprettetDato;

@@ -16,6 +16,7 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
 public class DummyAdresseService {
 
     public static final String UTEN_FAST_BOSTED = "UTEN FAST BOSTED";
+    public static final String SPSF_ADR = "SOT6";
 
     private static final String GATEADRESSE = "SANNERGATA";
     private static final String HUSNR = "2";
@@ -23,7 +24,7 @@ public class DummyAdresseService {
     private static final String GATEKODE = "16188";
     private static final String KOMMUNENR = "0301";
 
-    private static final String ADRESSE_1 = "SOT6";
+    private static final String ADRESSE_1 = SPSF_ADR;
     private static final String ADRESSE_2 = "POSTBOKS 2094 VIKA";
     private static final String ADRESSE_3 = "0125 OSLO";
     private static final String POST_LAND = "000";
