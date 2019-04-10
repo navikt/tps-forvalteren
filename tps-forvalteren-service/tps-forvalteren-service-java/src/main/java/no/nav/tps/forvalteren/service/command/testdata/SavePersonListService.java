@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.PostadresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentUtdaterteRelasjonIder;
 import no.nav.tps.forvalteren.service.command.testdata.utils.OppdaterRelasjonReferanser;
@@ -24,6 +25,9 @@ public class SavePersonListService {
 
     @Autowired
     private AdresseRepository adresseRepository;
+
+    @Autowired
+    private PostadresseRepository postadresseRepository;
 
     @Autowired
     private RelasjonRepository relasjonRepository;
@@ -48,6 +52,7 @@ public class SavePersonListService {
                 oppdaterRelasjonReferanser.execute(person, personDb);
                 utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
                 adresseRepository.deleteAllByPerson(personDb);
+                personDb.getPostadresse().forEach(adresse -> postadresseRepository.deletePostadresseById(adresse.getId()));
             }
 
             adresseOgSpesregService.updateAdresseOgSpesregAttributes(person);
