@@ -69,10 +69,16 @@ public class HentKoerController {
             throw new NotFoundException(String.format(NOT_FOUND, appNavn));
         }
 
-        List<FasitUsedResources> usedResource = fasitApiConsumer.getUsedResourcesFromAppByTypes(applications.get(0), FasitPropertyTypes.QUEUE);
+        List<FasitUsedResources> usedResources = new ArrayList<>();
+        for (FasitApplication application : applications) {
+            if (application.getApplication().equals(appNavn)) {
+                usedResources = fasitApiConsumer.getUsedResourcesFromAppByTypes(application, FasitPropertyTypes.QUEUE);
+                break;
+            }
+        }
 
         List<FasitQueue> queues = new ArrayList<>();
-        usedResource.forEach(res -> {
+        usedResources.forEach(res -> {
             List<FasitResource> resourceElements = fasitApiConsumer.getResourcesByAliasAndType(res.getAlias(), FasitPropertyTypes.getEnumByName(res.getType()));
             queues.addAll(resourceElements.stream()
                     .map(r -> (FasitQueue) r.getProperties())
