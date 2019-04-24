@@ -27,12 +27,12 @@ public class DummyAdresseService {
     private static final String ADRESSE_1 = SPSF_ADR;
     private static final String ADRESSE_2 = "POSTBOKS 2094 VIKA";
     private static final String ADRESSE_3 = "0125 OSLO";
-    private static final String POST_LAND = "000";
+    private static final String POST_LAND = "NOR";
 
     private static final String ADRESSE_1_UTLAND = "1KOLEJOWA 6/5";
     private static final String ADRESSE_2_UTLAND = "18-500 KOLNO";
     private static final String ADRESSE_3_UTLAND = "POLEN";
-    private static final String POST_LAND_UTLAND = "013";
+    private static final String POST_LAND_UTLAND = "POL";
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
