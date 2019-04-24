@@ -30,6 +30,9 @@ public class AdresseOgSpesregService {
 
             person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
+            person.setSpesreg(null);
+            person.setEgenAnsattDatoFom(null);
+            person.setUtenFastBopel(null);
 
             person.setBoadresse(null);
 

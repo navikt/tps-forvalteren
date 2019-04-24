@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
@@ -46,6 +47,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             }
                         })
                 .exclude("spesreg")
+                .exclude("utenFastBopel")
+                .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
                 .exclude("kjonn")
@@ -63,6 +66,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             }
                         })
                 .exclude("spesreg")
+                .exclude("utenFastBopel")
+                .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
                 .exclude("kjonn")
@@ -83,7 +88,11 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                 hentDatoFraIdentService.extract(person.getIdent())));
 
-        person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
+        if (FNR.name().equals(person.getIdenttype())) {
+            person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
+            person.setUtenFastBopel(kriteriumRequest.isUtenFastBopel());
+            person.setEgenAnsattDatoFom(kriteriumRequest.getEgenAnsattDatoFom());
+        }
 
         if (nonNull(person.getSpesreg())) {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
