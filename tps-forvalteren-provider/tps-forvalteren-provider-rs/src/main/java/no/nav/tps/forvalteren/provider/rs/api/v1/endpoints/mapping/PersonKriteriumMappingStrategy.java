@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
@@ -96,9 +96,13 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.getPostadresse().forEach(adr -> adr.setPerson(person));
         }
 
-        if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
+        if (DNR.name().equals(person.getIdenttype())) {
             person.setBoadresse(null);
-            person.setPostadresse(newArrayList(dummyAdresseService.createDummyPostAdresse(person)));
+            person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
+
+        } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
+            person.setBoadresse(null);
+            person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
 
         } else if (isUtenFastBopel(kriteriumRequest)) {
             person.setBoadresse(dummyAdresseService.createAdresseUfb(person));
