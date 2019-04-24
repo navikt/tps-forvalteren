@@ -56,6 +56,7 @@ public class HentKoerControllerTest {
     @Test
     public void getQueuesOk() {
         when(fasitApiConsumer.getApplicationInstances(APP, true)).thenReturn(Arrays.asList(fasitApplication));
+        when(fasitApplication.getApplication()).thenReturn(APP);
 
         hentKoerController.getQueues(APP);
 
