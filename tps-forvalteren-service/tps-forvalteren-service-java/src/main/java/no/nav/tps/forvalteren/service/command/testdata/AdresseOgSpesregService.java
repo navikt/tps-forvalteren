@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService.SPSF_ADR;
@@ -25,7 +26,18 @@ public class AdresseOgSpesregService {
 
     public Person updateAdresseOgSpesregAttributes(Person person) {
 
-        if (SPSF.name().equals(person.getSpesreg())) {
+        if (DNR.name().equals(person.getIdenttype())) {
+
+            person.getPostadresse().clear();
+            person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
+            person.setSpesreg(null);
+            person.setEgenAnsattDatoFom(null);
+            person.setUtenFastBopel(null);
+
+            person.setBoadresse(null);
+
+        } else if (SPSF.name().equals(person.getSpesreg())) {
+
             person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
 
@@ -39,6 +51,7 @@ public class AdresseOgSpesregService {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
 
         } else if (isNull(person.getBoadresse())) {
+
             person.setBoadresse(dummyAdresseService.createDummyBoAdresse(person));
             person.setSpesregDato(null);
             if (!person.getPostadresse().isEmpty() && SPSF_ADR.equals(person.getPostadresse().get(0).getPostLinje1())) {
@@ -47,6 +60,8 @@ public class AdresseOgSpesregService {
         }
 
         person.getPostadresse().forEach(adresse -> adresse.setPerson(person));
+
+        person.setGtVerdi(null); // Triggers reload of TKNR
 
         return person;
     }

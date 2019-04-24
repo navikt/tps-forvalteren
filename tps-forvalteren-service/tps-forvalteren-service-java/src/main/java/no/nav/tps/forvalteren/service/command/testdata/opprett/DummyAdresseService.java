@@ -27,7 +27,12 @@ public class DummyAdresseService {
     private static final String ADRESSE_1 = SPSF_ADR;
     private static final String ADRESSE_2 = "POSTBOKS 2094 VIKA";
     private static final String ADRESSE_3 = "0125 OSLO";
-    private static final String POST_LAND = "000";
+    private static final String POST_LAND = "NOR";
+
+    private static final String ADRESSE_1_UTLAND = "1KOLEJOWA 6/5";
+    private static final String ADRESSE_2_UTLAND = "18-500 KOLNO";
+    private static final String ADRESSE_3_UTLAND = "POLEN";
+    private static final String POST_LAND_UTLAND = "POL";
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -55,6 +60,17 @@ public class DummyAdresseService {
                 .postLinje2(ADRESSE_2)
                 .postLinje3(ADRESSE_3)
                 .postLand(POST_LAND)
+                .person(person)
+                .build();
+    }
+
+    public Postadresse createDummyPostAdresseUtland(Person person) {
+
+        return Postadresse.builder()
+                .postLinje1(ADRESSE_1_UTLAND)
+                .postLinje2(ADRESSE_2_UTLAND)
+                .postLinje3(ADRESSE_3_UTLAND)
+                .postLand(POST_LAND_UTLAND)
                 .person(person)
                 .build();
     }
