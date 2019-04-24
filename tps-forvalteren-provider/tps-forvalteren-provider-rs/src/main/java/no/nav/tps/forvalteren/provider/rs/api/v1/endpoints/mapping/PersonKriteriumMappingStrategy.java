@@ -111,6 +111,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
             person.setBoadresse(null);
+            person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
 
         } else if (isUtenFastBopel(kriteriumRequest)) {
