@@ -39,7 +39,7 @@
     <md-input-container class="tps-vk-input-container" flex="5">
         <md-tooltip>Land</md-tooltip>
         <label>Land</label>
-        <input name="postLand" ng-required="false" pattern="[0-9]*" md-maxlength="3"
+        <input name="postLand" ng-required="false" pattern="[A-Z]*" md-maxlength="3"
                minlength="3"
                ng-model="person.postadresse[0].postLand"
                ng-change="endret($index + pager.startIndex)"/>
