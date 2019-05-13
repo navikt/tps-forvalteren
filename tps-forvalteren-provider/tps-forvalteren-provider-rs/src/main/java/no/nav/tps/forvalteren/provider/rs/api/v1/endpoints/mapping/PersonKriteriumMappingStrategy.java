@@ -115,7 +115,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
 
         } else if (isUtenFastBopel(kriteriumRequest)) {
-            person.setBoadresse(dummyAdresseService.createAdresseUfb(person));
+            person.setBoadresse(dummyAdresseService.createAdresseUfb(person, mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class)));
 
         } else if (nonNull(kriteriumRequest.getBoadresse())) {
             person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));

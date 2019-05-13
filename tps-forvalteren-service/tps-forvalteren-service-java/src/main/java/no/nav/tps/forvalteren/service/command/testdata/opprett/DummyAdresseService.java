@@ -75,13 +75,13 @@ public class DummyAdresseService {
                 .build();
     }
 
-    public Adresse createAdresseUfb(Person person) {
+    public Adresse createAdresseUfb(Person person, Adresse adresse) {
 
         Gateadresse gateadresse = Gateadresse.builder()
                 .adresse(UTEN_FAST_BOSTED)
                 .build();
-        gateadresse.setKommunenr(nonNull(person.getBoadresse()) ?
-                nullcheckSetDefaultValue(person.getBoadresse().getKommunenr(), KOMMUNENR) : KOMMUNENR);
+        gateadresse.setKommunenr(nonNull(adresse) ?
+                nullcheckSetDefaultValue(adresse.getKommunenr(), KOMMUNENR) : KOMMUNENR);
         gateadresse.setPerson(person);
         gateadresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
 

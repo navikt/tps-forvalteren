@@ -46,7 +46,7 @@ public class AdresseOgSpesregService {
 
         } else if (isUtenFastBobel(person)) {
 
-            person.setBoadresse(dummyAdresseService.createAdresseUfb(person));
+            person.setBoadresse(dummyAdresseService.createAdresseUfb(person, person.getBoadresse()));
             person.setSpesreg(nullcheckSetDefaultValue(person.getSpesreg(), UFB.name()));
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
 
