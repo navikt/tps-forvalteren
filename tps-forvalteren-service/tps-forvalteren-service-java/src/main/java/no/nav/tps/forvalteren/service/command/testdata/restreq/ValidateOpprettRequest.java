@@ -4,6 +4,7 @@ import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,7 +71,7 @@ public class ValidateOpprettRequest {
     }
 
     private void validateKjoenn(String kjoenn) {
-        if (nonNull(kjoenn) && !"M".equals(kjoenn) && !"K".equals(kjoenn) && !"U".equals(kjoenn)) {
+        if (isNotBlank(kjoenn) && !"M".equals(kjoenn) && !"K".equals(kjoenn) && !"U".equals(kjoenn)) {
             throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn"));
         }
     }
