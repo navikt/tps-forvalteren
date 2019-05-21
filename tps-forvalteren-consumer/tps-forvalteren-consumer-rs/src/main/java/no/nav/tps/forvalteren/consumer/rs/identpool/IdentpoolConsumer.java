@@ -12,7 +12,7 @@ public class IdentpoolConsumer {
 
     private static final String IDENT_WHITELIST_URL = "/api/v1/identifikator/whitelist";
 
-    @Value("${identpool.host}")
+    @Value("${identpool.host.url}")
     private String identpoolHost;
 
     @Autowired
