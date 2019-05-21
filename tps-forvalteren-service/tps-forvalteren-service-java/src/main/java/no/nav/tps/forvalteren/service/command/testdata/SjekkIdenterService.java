@@ -12,6 +12,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
@@ -27,6 +28,9 @@ public class SjekkIdenterService {
 
     @Autowired
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
+
+    @Autowired
+    private IdentpoolService identpoolService;
 
     @Autowired
     private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
@@ -59,6 +63,8 @@ public class SjekkIdenterService {
         setStatusOnDifference(gyldigeIdenter, ledigeIdenterDB, identerMedStatus, "Ikke ledig -- ident finnes allerede i database");
 
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, newHashSet(PRODLIKE_ENV));
+        whitelistKorreksjonForLedigeIdenter(gyldigeIdenter, ledigeIdenterMiljo);
+
         insertIntoMap(identerMedStatus, ledigeIdenterMiljo, GYLDIG_OG_LEDIG);
 
         setStatusOnDifference(ledigeIdenterDB, ledigeIdenterMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod.likt miljø (Q0)");
@@ -66,6 +72,16 @@ public class SjekkIdenterService {
         return CheckIdentResponse.builder()
                 .statuser(setAvailibility(mapToIdentMedStatusSet(identerMedStatus)))
                 .build();
+    }
+
+    private void whitelistKorreksjonForLedigeIdenter(Set<String> gyldigeIdenter, Set<String> ledigeIdenterMiljo) {
+
+        Set<String> whitelist = identpoolService.getWhitedlistedIdents();
+        whitelist.forEach(ident -> {
+            if (gyldigeIdenter.contains(ident)) {
+                ledigeIdenterMiljo.add(ident);
+            }
+        });
     }
 
     private List<IdentStatusExtended> setAvailibility(Set<IdentMedStatus> identStatuser) {
@@ -113,5 +129,4 @@ public class SjekkIdenterService {
             identer.put(ident, status);
         }
     }
-
 }
