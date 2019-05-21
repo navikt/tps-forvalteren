@@ -1,17 +1,10 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.config;
 
-import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
-import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
+import static org.mockito.Mockito.mock;
 
+import java.io.IOException;
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
-import java.io.IOException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.mockito.Mockito;
@@ -24,7 +17,14 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import static org.mockito.Mockito.mock;
+import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
+import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
+import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
 
 @Configuration
 @ComponentScan(basePackages = "no.nav.tps.forvalteren.provider")
@@ -62,13 +62,13 @@ public class RsProviderIntegrationTestConfig {
      */
     @Bean(name = "cxfStsClientDiskresjonskode")
     @Primary
-    public TpsfStsClient cxfStsClientDiskresjonskode(){
+    public TpsfStsClient cxfStsClientDiskresjonskode() {
         return mock(TpsfStsClient.class);
     }
 
     @Bean(name = "cxfStsClientEgenAnsatt")
     @Primary
-    public TpsfStsClient cxfStsClientEgenAnsatt(){
+    public TpsfStsClient cxfStsClientEgenAnsatt() {
         return mock(TpsfStsClient.class);
     }
 
@@ -110,6 +110,4 @@ public class RsProviderIntegrationTestConfig {
         jmsTemplate.setReceiveTimeout(100);
         return jmsTemplate;
     }
-
-
 }

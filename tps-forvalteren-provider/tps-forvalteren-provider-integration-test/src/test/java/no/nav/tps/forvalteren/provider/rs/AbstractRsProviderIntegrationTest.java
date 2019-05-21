@@ -7,10 +7,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.Resources;
 
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
@@ -69,44 +63,8 @@ public abstract class AbstractRsProviderIntegrationTest {
 
         when(egenAnsattConsumerMock.isEgenAnsatt(any(String.class))).thenReturn(false);
     }
-    
-    protected String getResourceFileContent(String path) {
-        URL fileUrl = Resources.getResource(path);
-        try {
-            return Resources.toString(fileUrl, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    protected String removeNewLineAndTab(String text) {
-        return text.replace("\n", "").replace("\r", "").replace("\t","");
-    }
-
-    protected static String convertObjectToJson(Object object) throws IOException {
-        return MAPPER.writeValueAsString(object);
-    }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {
         return MAPPER.readValue(mvcResult.getResponse().getContentAsString(), resultClass);
-    }
-
-    protected static <T> List<T> convertMvcResultToList(MvcResult mvcResult, Class<T> resultClass) throws IOException {
-        JavaType type = MAPPER.getTypeFactory().constructCollectionType(List.class, resultClass);
-        return MAPPER.readValue(mvcResult.getResponse().getContentAsString(), type);
-    }
-
-    protected static String getErrorMessage(MvcResult mvcResult) throws IOException {
-        JavaType type = MAPPER.getTypeFactory().constructMapType(Map.class, String.class, String.class);
-        Map<String, String> json = MAPPER.readValue(mvcResult.getResponse().getContentAsString(), type);
-        return json.get("message");
-    }
-
-    protected static Map<String, String> getErrorMessageAtIndex(MvcResult mvcResult, int index) throws IOException {
-        JavaType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, String.class, String.class);
-        JavaType listOfMapType = MAPPER.getTypeFactory().constructCollectionLikeType(List.class, mapType);
-
-        List<Map<String, String>> listOfMap = MAPPER.readValue(mvcResult.getResponse().getContentAsString(), listOfMapType);
-        return listOfMap.get(index);
     }
 }
