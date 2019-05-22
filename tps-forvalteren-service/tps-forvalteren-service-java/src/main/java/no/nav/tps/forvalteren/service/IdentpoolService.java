@@ -29,7 +29,7 @@ public class IdentpoolService {
         Set<String> adjustedIdents = newHashSet(availableInEnvironment);
 
         getWhitedlistedIdents().forEach(ident -> {
-            if (requestedIdenter.contains(ident) && !availableInDB.contains(ident)) {
+            if (requestedIdenter.contains(ident) && availableInDB.contains(ident)) {
                 adjustedIdents.add(ident);
             }
         });

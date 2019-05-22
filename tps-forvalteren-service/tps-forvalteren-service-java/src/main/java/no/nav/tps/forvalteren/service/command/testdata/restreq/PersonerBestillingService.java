@@ -14,6 +14,7 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 
@@ -61,7 +62,11 @@ public class PersonerBestillingService {
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
-        return !hovedPersoner.isEmpty() ? sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent()) : hovedPersoner;
+        if (!hovedPersoner.isEmpty()) {
+            return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent());
+        } else {
+            throw new TpsfFunctionalException("Ingen ledige identer funnet i miljø.");
+        }
     }
 
     private static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
