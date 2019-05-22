@@ -61,7 +61,7 @@ public class PersonerBestillingService {
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
-        return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent());
+        return !hovedPersoner.isEmpty() ? sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent()) : hovedPersoner;
     }
 
     private static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {

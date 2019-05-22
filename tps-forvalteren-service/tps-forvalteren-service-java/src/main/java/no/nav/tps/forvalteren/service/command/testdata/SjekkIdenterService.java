@@ -63,25 +63,15 @@ public class SjekkIdenterService {
         setStatusOnDifference(gyldigeIdenter, ledigeIdenterDB, identerMedStatus, "Ikke ledig -- ident finnes allerede i database");
 
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, newHashSet(PRODLIKE_ENV));
-        whitelistKorreksjonForLedigeIdenter(gyldigeIdenter, ledigeIdenterMiljo);
+        Set<String> koorigerteLedigeIdenterIMiljo = identpoolService.whitelistAjustmentOfIdents(gyldigeIdenter, ledigeIdenterDB, ledigeIdenterMiljo);
 
-        insertIntoMap(identerMedStatus, ledigeIdenterMiljo, GYLDIG_OG_LEDIG);
+        insertIntoMap(identerMedStatus, koorigerteLedigeIdenterIMiljo, GYLDIG_OG_LEDIG);
 
-        setStatusOnDifference(ledigeIdenterDB, ledigeIdenterMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod.likt miljø (Q0)");
+        setStatusOnDifference(ledigeIdenterDB, koorigerteLedigeIdenterIMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod.likt miljø (Q0)");
 
         return CheckIdentResponse.builder()
                 .statuser(setAvailibility(mapToIdentMedStatusSet(identerMedStatus)))
                 .build();
-    }
-
-    private void whitelistKorreksjonForLedigeIdenter(Set<String> gyldigeIdenter, Set<String> ledigeIdenterMiljo) {
-
-        Set<String> whitelist = identpoolService.getWhitedlistedIdents();
-        whitelist.forEach(ident -> {
-            if (gyldigeIdenter.contains(ident)) {
-                ledigeIdenterMiljo.add(ident);
-            }
-        });
     }
 
     private List<IdentStatusExtended> setAvailibility(Set<IdentMedStatus> identStatuser) {
