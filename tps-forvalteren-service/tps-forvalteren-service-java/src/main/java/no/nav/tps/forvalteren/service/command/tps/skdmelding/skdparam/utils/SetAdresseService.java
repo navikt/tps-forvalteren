@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.util.regex.Matcher;
@@ -22,6 +23,9 @@ public class SetAdresseService {
     private HusbokstavEncoder husbokstavEncoder;
 
     @Autowired
+    private LandkodeEncoder landkodeEncoder;
+
+    @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
 
     private static final Pattern HUSNUMMER_PATTERN = Pattern.compile("(\\d+)");
@@ -31,7 +35,7 @@ public class SetAdresseService {
 
         /* Boadresse */
         Adresse boadresse = person.getBoadresse();
-        if (person.getBoadresse() != null) {
+        if (nonNull(person.getBoadresse())) {
             if (boadresse instanceof Matrikkeladresse) {
                 skdMeldingTrans1.setAdressetype("M");
                 skdMeldingTrans1.setGateGaard(((Matrikkeladresse) boadresse).getGardsnr());
@@ -44,7 +48,7 @@ public class SetAdresseService {
                 skdMeldingTrans1.setGateGaard(((Gateadresse) boadresse).getGatekode());
                 addHusBrukAndBokstavFestenr(skdMeldingTrans1, (Gateadresse) boadresse);
                 String adresse = ((Gateadresse) boadresse).getAdresse();
-                if (adresse != null) {
+                if (nonNull(adresse)) {
                     int lengAdr = adresse.length() > 25 ? 25 : adresse.length();
                     skdMeldingTrans1.setAdressenavn(((Gateadresse) boadresse).getAdresse().substring(0, lengAdr));
                 }
@@ -54,20 +58,22 @@ public class SetAdresseService {
 
             skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(boadresse.getFlyttedato(),
                     hentDatoFraIdentService.extract(person.getIdent()))));
+        } else {
+            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(hentDatoFraIdentService.extract(person.getIdent())));
         }
 
         /* Postadresse */
-        if (person.getPostadresse() != null && !person.getPostadresse().isEmpty()) {
+        if (!person.getPostadresse().isEmpty()) {
             Postadresse postadresse = person.getPostadresse().get(0);
             skdMeldingTrans1.setPostadresse1(postadresse.getPostLinje1());
             skdMeldingTrans1.setPostadresse2(postadresse.getPostLinje2());
             skdMeldingTrans1.setPostadresse3(postadresse.getPostLinje3());
-            skdMeldingTrans1.setPostadresseLand(postadresse.getPostLand());
+            skdMeldingTrans1.setPostadresseLand(landkodeEncoder.encode(postadresse.getPostLand()));
         }
     }
 
     private void addHusBrukAndBokstavFestenr(SkdMeldingTrans1 skdMeldingTrans1, Gateadresse gateadresse) {
-        if (gateadresse.getHusnummer() != null) {
+        if (nonNull(gateadresse.getHusnummer())) {
             Matcher husbokstavMatcher = HUSBOKSTAV_PATTERN.matcher(gateadresse.getHusnummer());
             Matcher husnummerMatcher = HUSNUMMER_PATTERN.matcher(gateadresse.getHusnummer());
 

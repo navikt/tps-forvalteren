@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -24,63 +25,79 @@ public class ExtractOpprettKriterier {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
+    public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(singletonList(RsPersonKriterier.builder()
-                        .antall(req.getAntall() > 0 ? req.getAntall() : 1)
+                        .antall(nonNull(req.getAntall()) && req.getAntall() > 0 ? req.getAntall() : 1)
                         .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
                         .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
-                        .foedtEtter(req.getFoedtEtter())
-                        .foedtFoer(req.getFoedtFoer())
+                        .foedtEtter(nullcheckSetDefaultValue(req.getFoedtEtter(), LocalDateTime.now().minusYears(60)))
+                        .foedtFoer(nullcheckSetDefaultValue(req.getFoedtFoer(), LocalDateTime.now().minusYears(30)))
                         .build()))
                 .build();
     }
 
-    public RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
+    public static RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
 
-        RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
+        List<RsPersonKriterier> kriterier = new ArrayList();
         if (nonNull(request)) {
-            addKriterium(personRequestListe, request);
+            RsPersonKriterier kriterium = prepareKriterium(request);
+            kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(60)));
+            kriterium.setFoedtFoer(nullcheckSetDefaultValue(kriterium.getFoedtFoer(), LocalDateTime.now().minusYears(30)));
+            kriterier.add(kriterium);
         }
 
-        return personRequestListe;
+        return RsPersonKriteriumRequest.builder()
+                .personKriterierListe(kriterier)
+                .build();
     }
 
-    public RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
+    public static RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
 
-        RsPersonKriteriumRequest personRequestListe = new RsPersonKriteriumRequest();
+        List<RsPersonKriterier> kriterier = new ArrayList(request.size());
         for (RsSimplePersonRequest req : request) {
-            addKriterium(personRequestListe, req);
+            RsPersonKriterier kriterium = prepareKriterium(req);
+            kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(18)));
+            kriterier.add(kriterium);
         }
 
-        return personRequestListe;
+        return RsPersonKriteriumRequest.builder()
+                .personKriterierListe(kriterier)
+                .build();
     }
 
-    private void addKriterium(RsPersonKriteriumRequest personRequestListe, RsSimplePersonRequest req) {
-        personRequestListe.getPersonKriterierListe().add(RsPersonKriterier.builder()
+    private static RsPersonKriterier prepareKriterium(RsSimplePersonRequest req) {
+        return RsPersonKriterier.builder()
                 .antall(1)
                 .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
                 .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
                 .foedtFoer(req.getFoedtFoer())
                 .foedtEtter(req.getFoedtEtter())
-                .build());
+                .build();
     }
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
         hovedPersoner.forEach(person -> mapperFacade.map(req, person));
+
         if (nonNull(req.getRelasjoner().getPartner())) {
             partnere.forEach(partner -> {
-                        mapperFacade.map(req, partner);
-                        overrideDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
+                        req.getRelasjoner().getPartner().setBoadresse(req.getBoadresse());
+                        req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
+                        mapperFacade.map(req.getRelasjoner().getPartner(), partner);
+                        ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
+                        partner.setSivilstand(req.getSivilstand());
                     }
             );
         }
         if (!req.getRelasjoner().getBarn().isEmpty()) {
             IntStream.range(0, barn.size()).forEach(i -> {
-                mapperFacade.map(req, barn.get(i));
-                overrideDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
+                req.getRelasjoner().getBarn().get(i).setBoadresse(req.getBoadresse());
+                req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
+                mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
+                ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
+                barn.get(i).setSivilstand(null);
             });
         }
 
@@ -89,16 +106,12 @@ public class ExtractOpprettKriterier {
         return personer;
     }
 
-    private Person overrideDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
+    private Person ammendDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
 
         person.setStatsborgerskap(nullcheckSetDefaultValue(kriterier.getStatsborgerskap(), person.getStatsborgerskap()));
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriterier.getStatsborgerskapRegdato(), person.getStatsborgerskapRegdato()));
         person.setSprakKode(nullcheckSetDefaultValue(kriterier.getSprakKode(), person.getSprakKode()));
         person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
-        person.setSpesreg(nullcheckSetDefaultValue(kriterier.getSpesreg(), null));
-        person.setSpesregDato(nullcheckSetDefaultValue(kriterier.getSpesregDato(), null));
-        person.setEgenAnsattDatoFom(nullcheckSetDefaultValue(kriterier.getEgenAnsattDatoFom(), null));
-        person.setEgenAnsattDatoTom(nullcheckSetDefaultValue(kriterier.getEgenAnsattDatoTom(), null));
 
         return person;
     }

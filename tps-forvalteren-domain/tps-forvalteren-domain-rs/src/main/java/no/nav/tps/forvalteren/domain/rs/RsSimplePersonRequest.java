@@ -1,6 +1,12 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,27 +21,42 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsSimplePersonRequest {
 
-    private String identtype;
+    @NotBlank
+    @Size(min = 3, max = 3)
+    protected String identtype;
 
-    private String kjonn;
+    protected String kjonn;
 
-    private LocalDateTime foedtEtter;
+    protected LocalDateTime foedtEtter;
 
-    private LocalDateTime foedtFoer;
+    protected LocalDateTime foedtFoer;
 
-    private String sprakKode;
+    protected String sprakKode;
 
-    private LocalDateTime datoSprak;
+    protected LocalDateTime datoSprak;
 
-    private String statsborgerskap;
+    protected String statsborgerskap;
 
-    private LocalDateTime statsborgerskapRegdato;
+    protected LocalDateTime statsborgerskapRegdato;
 
-    private String spesreg;
+    protected String spesreg;
 
-    private LocalDateTime spesregDato;
+    protected LocalDateTime spesregDato;
 
-    private LocalDateTime egenAnsattDatoFom;
+    protected LocalDateTime egenAnsattDatoFom;
 
-    private LocalDateTime egenAnsattDatoTom;
+    protected LocalDateTime egenAnsattDatoTom;
+
+    protected boolean utenFastBopel;
+
+    protected RsAdresse boadresse;
+
+    protected List<RsPostadresse> postadresse;
+
+    public List<RsPostadresse> getPostadresse() {
+        if (isNull(postadresse)) {
+            postadresse = new ArrayList();
+        }
+        return postadresse;
+    }
 }

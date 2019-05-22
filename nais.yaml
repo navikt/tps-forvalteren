@@ -22,10 +22,10 @@ prometheus:
 resources:
   requests:
     cpu: 1.0
-    memory: 2048Mi
+    memory: 4096Mi
   limits:
     cpu: 2.0
-    memory: 4096Mi
+    memory: 8192Mi
 fasitResources:
   used:
     - alias: "ldap"

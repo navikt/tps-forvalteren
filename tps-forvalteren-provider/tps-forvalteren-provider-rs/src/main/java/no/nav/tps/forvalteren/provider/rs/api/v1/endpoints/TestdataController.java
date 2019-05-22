@@ -43,7 +43,7 @@ import no.nav.tps.forvalteren.service.command.testdata.OpprettVergemaal;
 import no.nav.tps.forvalteren.service.command.testdata.SaveGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
-import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenter;
+import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.StatusPaaIdenterITps;
 import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -84,7 +84,7 @@ public class TestdataController {
     private SavePersonListService savePersonListService;
 
     @Autowired
-    private SjekkIdenter sjekkIdenter;
+    private SjekkIdenterService sjekkIdenterService;
 
     @Autowired
     private SetGruppeIdOnPersons setGruppeIdOnPersons;
@@ -128,7 +128,7 @@ public class TestdataController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
-    @ApiOperation(value = "create new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
+    @ApiOperation(value = "createDummyAdresse new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
             + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
@@ -165,7 +165,7 @@ public class TestdataController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
-        return sjekkIdenter.finnGyldigeOgLedigeIdenter(personIdentListe);
+        return sjekkIdenterService.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
     @LogExceptions

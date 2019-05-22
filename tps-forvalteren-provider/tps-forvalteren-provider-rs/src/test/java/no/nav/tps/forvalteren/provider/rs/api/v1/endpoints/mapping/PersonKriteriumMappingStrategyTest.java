@@ -3,17 +3,14 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -22,8 +19,7 @@ import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@Import(DummyAdresseService.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PersonKriteriumMappingStrategyTest {
 
     private static final LocalDateTime TIMENOW = LocalDateTime.now();
@@ -34,41 +30,39 @@ public class PersonKriteriumMappingStrategyTest {
     private static final String IDENTTYPE = "FNR";
     private static final String SPESREG = "KODE6";
 
+    private MapperFacade mapper;
+
+    @Mock
+    private DummyAdresseService dummyAdresseService;
+
     @Mock
     private HentDatoFraIdentService hentDatoFraIdentService;
 
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
-
+    @InjectMocks
     private PersonKriteriumMappingStrategy personKriteriumMappingStrategy;
-
-    private MapperFacade mapper;
 
     @Before
     public void setup() {
-        personKriteriumMappingStrategy = new PersonKriteriumMappingStrategy();
         mapper = MapperTestUtils.createMapperFacadeForMappingStrategy(personKriteriumMappingStrategy);
-        ReflectionTestUtils.setField(personKriteriumMappingStrategy, "hentDatoFraIdentService", mock(HentDatoFraIdentService.class));
-        ReflectionTestUtils.setField(personKriteriumMappingStrategy, "dummyAdresseService", dummyAdresseService);
     }
 
     @Test
     public void matchVerificationOk() {
-        Person person = mapper.map(RsPersonBestillingKriteriumRequest.builder()
 
-                        .typeSikkerhetsTiltak(TYPESIKKERHET)
-                        .beskrSikkerhetsTiltak(SIKKERHETSTILTAK)
-                        .datoSprak(TIMENOW)
-                        .sprakKode(SPRAK)
-                        .statsborgerskap(STATSBORGERSKAP)
-                        .statsborgerskapRegdato(TIMENOW)
-                        .identtype(IDENTTYPE)
-                        .spesreg(SPESREG)
-                        .spesregDato(TIMENOW)
-                        .egenAnsattDatoFom(TIMENOW)
-                        .egenAnsattDatoTom(TIMENOW)
-                        .build(),
-                Person.class);
+        RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
+        bestilling.setTypeSikkerhetsTiltak(TYPESIKKERHET);
+        bestilling.setBeskrSikkerhetsTiltak(SIKKERHETSTILTAK);
+        bestilling.setDatoSprak(TIMENOW);
+        bestilling.setSprakKode(SPRAK);
+        bestilling.setStatsborgerskap(STATSBORGERSKAP);
+        bestilling.setStatsborgerskapRegdato(TIMENOW);
+        bestilling.setIdenttype(IDENTTYPE);
+        bestilling.setSpesreg(SPESREG);
+        bestilling.setSpesregDato(TIMENOW);
+        bestilling.setEgenAnsattDatoFom(TIMENOW);
+        bestilling.setEgenAnsattDatoTom(TIMENOW);
+
+        Person person = mapper.map(bestilling, Person.class);
 
         assertThat(person.getIdenttype(), is(equalTo(IDENTTYPE)));
         assertThat(person.getStatsborgerskap(), is(equalTo(STATSBORGERSKAP)));

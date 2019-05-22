@@ -28,6 +28,7 @@ public class ValidateOpprettRequestTest {
     private static final String TEKST_FOEDT_FOER = "Dato født før kan ikke være før år 1900.";
     private static final String TEKST_UGYLDIG_DATO_INTERVALL = "Ugyldig datointervall er oppgitt.";
     private static final String TEKST_UGYLDIG_KJOENN = "Ugyldig kjønn, en av U, K eller M forventet.";
+    private static final String TEKST_UGYLDIG_ANTALL = "Enten antall eller eksisterende identer må spesifieseres.";
 
     @Mock
     private MessageProvider messageProvider;
@@ -44,12 +45,14 @@ public class ValidateOpprettRequestTest {
         when(messageProvider.get("bestilling.input.validation.dato.foedt.foer")).thenReturn(TEKST_FOEDT_FOER);
         when(messageProvider.get("bestilling.input.validation.ugyldig.intervall")).thenReturn(TEKST_UGYLDIG_DATO_INTERVALL);
         when(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn")).thenReturn(TEKST_UGYLDIG_KJOENN);
+        when(messageProvider.get("bestilling.input.validation.ugyldig.antall")).thenReturn(TEKST_UGYLDIG_ANTALL);
     }
 
     @Test(expected = Test.None.class)
     public void validateEmptyRequest() {
-
-        validateOpprettRequest.validate(new RsPersonBestillingKriteriumRequest());
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -58,9 +61,11 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_ETTER);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .foedtEtter(UGYLDIG_FOEDT_ETTER_DATO)
-                .build());
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setFoedtEtter(UGYLDIG_FOEDT_ETTER_DATO);
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -69,9 +74,11 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_FOER);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .foedtFoer(UGYLDIG_FOEDT_FOER_DATO)
-                .build());
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setFoedtFoer(UGYLDIG_FOEDT_FOER_DATO);
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -80,9 +87,11 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .kjonn("P")
-                .build());
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setKjonn("P");
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -91,10 +100,12 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_DATO_INTERVALL);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
-                .foedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0))
-                .build());
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setFoedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0));
+        request.setFoedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0));
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -103,13 +114,15 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_ETTER);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .partner(RsSimplePersonRequest.builder()
-                                .foedtEtter(UGYLDIG_FOEDT_ETTER_DATO)
-                                .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .partner(RsSimplePersonRequest.builder()
+                        .foedtEtter(UGYLDIG_FOEDT_ETTER_DATO)
                         .build())
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -118,13 +131,15 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_FOER);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .partner(RsSimplePersonRequest.builder()
-                                .foedtFoer(UGYLDIG_FOEDT_FOER_DATO)
-                                .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .partner(RsSimplePersonRequest.builder()
+                        .foedtFoer(UGYLDIG_FOEDT_FOER_DATO)
                         .build())
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -133,14 +148,16 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_DATO_INTERVALL);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .partner(RsSimplePersonRequest.builder()
-                                .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
-                                .foedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0))
-                                .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .partner(RsSimplePersonRequest.builder()
+                        .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
+                        .foedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0))
                         .build())
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -149,13 +166,15 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .partner(RsSimplePersonRequest.builder()
-                                .kjonn("T")
-                                .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .partner(RsSimplePersonRequest.builder()
+                        .kjonn("T")
                         .build())
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -164,18 +183,20 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_ETTER);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .barn(asList(
-                                RsSimplePersonRequest.builder()
-                                        .foedtEtter(LocalDateTime.of(2020, 1, 1, 0, 0))
-                                        .build(),
-                                RsSimplePersonRequest.builder()
-                                        .foedtEtter(UGYLDIG_FOEDT_ETTER_DATO)
-                                        .build())
-                        )
-                        .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(asList(
+                        RsSimplePersonRequest.builder()
+                                .foedtEtter(LocalDateTime.of(2020, 1, 1, 0, 0))
+                                .build(),
+                        RsSimplePersonRequest.builder()
+                                .foedtEtter(UGYLDIG_FOEDT_ETTER_DATO)
+                                .build())
+                )
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -184,18 +205,20 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_FOER);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .barn(asList(
-                                RsSimplePersonRequest.builder()
-                                        .foedtFoer(LocalDateTime.of(2020, 1, 1, 0, 0))
-                                        .build(),
-                                RsSimplePersonRequest.builder()
-                                        .foedtFoer(UGYLDIG_FOEDT_FOER_DATO)
-                                        .build())
-                        )
-                        .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(asList(
+                        RsSimplePersonRequest.builder()
+                                .foedtFoer(LocalDateTime.of(2020, 1, 1, 0, 0))
+                                .build(),
+                        RsSimplePersonRequest.builder()
+                                .foedtFoer(UGYLDIG_FOEDT_FOER_DATO)
+                                .build())
+                )
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -204,19 +227,20 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_DATO_INTERVALL);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .barn(asList(
-                                RsSimplePersonRequest.builder()
-                                        .foedtFoer(LocalDateTime.of(1980, 1, 1, 0, 0))
-                                        .build(),
-                                RsSimplePersonRequest.builder()
-                                        .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
-                                        .foedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0))
-                                        .build())
-                        )
-                        .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(asList(
+                        RsSimplePersonRequest.builder()
+                                .foedtFoer(LocalDateTime.of(1980, 1, 1, 0, 0))
+                                .build(),
+                        RsSimplePersonRequest.builder()
+                                .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
+                                .foedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0))
+                                .build())
+                )
                 .build());
+        validateOpprettRequest.validate(request);
     }
 
     @Test
@@ -225,37 +249,49 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .barn(asList(
-                                RsSimplePersonRequest.builder()
-                                        .kjonn("L")
-                                        .build(),
-                                RsSimplePersonRequest.builder()
-                                        .kjonn("V")
-                                        .build())
-                        )
-                        .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(asList(
+                        RsSimplePersonRequest.builder()
+                                .kjonn("L")
+                                .build(),
+                        RsSimplePersonRequest.builder()
+                                .kjonn("V")
+                                .build())
+                )
                 .build());
+
+        validateOpprettRequest.validate(request);
     }
 
     @Test(expected = Test.None.class)
     public void validateBarnGyldigKjoenn() {
 
-        validateOpprettRequest.validate(RsPersonBestillingKriteriumRequest.builder()
-                .relasjoner(RsSimpleRelasjoner.builder()
-                        .barn(asList(
-                                RsSimplePersonRequest.builder()
-                                        .kjonn("U")
-                                        .build(),
-                                RsSimplePersonRequest.builder()
-                                        .kjonn("K")
-                                        .build(),
-                                RsSimplePersonRequest.builder()
-                                        .kjonn("M")
-                                        .build())
-                        )
-                        .build())
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(asList(
+                        RsSimplePersonRequest.builder()
+                                .kjonn("U")
+                                .build(),
+                        RsSimplePersonRequest.builder()
+                                .kjonn("K")
+                                .build(),
+                        RsSimplePersonRequest.builder()
+                                .kjonn("M")
+                                .build())
+                )
                 .build());
+        validateOpprettRequest.validate(request);
+    }
+
+    @Test
+    public void validateUgyldigAntall() {
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage(TEKST_UGYLDIG_ANTALL);
+
+        validateOpprettRequest.validate(new RsPersonBestillingKriteriumRequest());
     }
 }
