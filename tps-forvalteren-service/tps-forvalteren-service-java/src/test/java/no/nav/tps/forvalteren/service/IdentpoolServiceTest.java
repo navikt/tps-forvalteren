@@ -2,11 +2,14 @@ package no.nav.tps.forvalteren.service;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.util.Sets.newHashSet;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import java.util.Set;
 import org.junit.Before;
@@ -16,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
 
@@ -47,6 +51,17 @@ public class IdentpoolServiceTest {
         verify(identpoolConsumer).getWhitelistedIdent();
         assertThat(result, hasItems(IDENT_1, IDENT_2));
     }
+
+    @Test
+    public void getWhitedlistedIdents_ThrowsException() {
+
+        when(identpoolConsumer.getWhitelistedIdent()).thenThrow(new HttpClientErrorException(INTERNAL_SERVER_ERROR));
+        Set<String> result = identpoolService.getWhitedlistedIdents();
+
+        verify(identpoolConsumer).getWhitelistedIdent();
+        assertThat(result, is(empty()));
+    }
+
 
     @Test
     public void whitelistAjustmentOfIdents_OK() {

@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.log4j.Log4j;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
 
+@Log4j
 @Service
 public class IdentpoolService {
 
@@ -20,8 +22,15 @@ public class IdentpoolService {
 
     public Set<String> getWhitedlistedIdents() {
 
-        ResponseEntity<String[]> response = identpoolConsumer.getWhitelistedIdent();
-        return new HashSet<>(asList(response.getBody()));
+        try {
+            ResponseEntity<String[]> response = identpoolConsumer.getWhitelistedIdent();
+            return new HashSet<>(asList(response.getBody()));
+
+        } catch (RuntimeException e){
+
+            log.error(e.getMessage(), e);
+            return new HashSet<>();
+        }
     }
 
     public Set<String> whitelistAjustmentOfIdents(Collection<String> requestedIdenter, Set<String> availableInDB, Set<String> availableInEnvironment) {
