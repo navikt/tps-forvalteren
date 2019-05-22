@@ -10,6 +10,7 @@ import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
 @Service
@@ -35,12 +36,18 @@ public class OpprettPersonerOgSjekkMiljoeService {
     @Autowired
     private OpprettPersonerService opprettPersonerFraIdenter;
 
+    @Autowired
+    private IdentpoolService identpoolService;
+
     public List<Person> createEksisterendeIdenter(List<String> eksisterendeIdenter) {
 
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(newHashSet(eksisterendeIdenter));
+
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, Sets.newHashSet(PRODLIKE_ENV));
 
-        List<Person> personer = opprettPersonerFraIdenter.execute(newHashSet(ledigeIdenterMiljo));
+        Set<String> ledigeIdenterKorrigert = identpoolService.whitelistAjustmentOfIdents(eksisterendeIdenter, ledigeIdenterDB, ledigeIdenterMiljo);
+
+        List<Person> personer = opprettPersonerFraIdenter.execute(ledigeIdenterKorrigert);
         setNameOnPersonsService.execute(personer);
 
         return personer;

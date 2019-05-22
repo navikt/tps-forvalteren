@@ -24,7 +24,6 @@ public class SjekkIdenterForDodsmelding extends SjekkIdenterService {
     @Autowired
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
 
-
     public Set<IdentMedStatus> finnGyldigeOgLedigeIdenterForDoedsmeldinger(List<String> identer, String miljo) {
         Set<String> ukjenteIdenter = new HashSet<>(identer);
         Map<String, String> identerMedStatus = new HashMap<>();

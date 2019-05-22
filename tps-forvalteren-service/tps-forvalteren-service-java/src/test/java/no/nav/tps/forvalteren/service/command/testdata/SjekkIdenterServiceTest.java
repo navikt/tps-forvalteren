@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
@@ -32,6 +33,9 @@ public class SjekkIdenterServiceTest {
 
     @Mock
     private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligeIMiljo;
+
+    @Mock
+    private IdentpoolService identpoolService;
 
     @InjectMocks
     private SjekkIdenterService sjekkIdenterService;
@@ -175,5 +179,4 @@ public class SjekkIdenterServiceTest {
         assertThat(hasIkkeLedig, is(true));
         assertThat(hasLedigOgGyldig, is(true));
     }
-
 }

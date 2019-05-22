@@ -48,7 +48,9 @@ fasitResources:
       resourceType: webserviceendpoint
     - alias: "virksomhet:Kodeverk_v2"
       resourceType: webserviceendpoint
+    - alias: "identpool.host"
+      resourceType: baseurl
   exposed:
-   - alias: tps-forvalteren.rest-api
-     resourceType: restservice
-     path: /api
+    - alias: tps-forvalteren.rest-api
+      resourceType: restservice
+      path: /api
