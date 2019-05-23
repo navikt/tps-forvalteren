@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,6 +43,9 @@ public class OpprettPersonerOgSjekkMiljoeServiceTest {
 
     @Mock
     private OpprettPersonerService opprettPersonerFraIdenter;
+
+    @Mock
+    private IdentpoolService identpoolService;
 
     @InjectMocks
     private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;

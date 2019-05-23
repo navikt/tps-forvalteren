@@ -12,6 +12,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
@@ -27,6 +28,9 @@ public class SjekkIdenterService {
 
     @Autowired
     private SjekkOmGyldigeIdenter sjekkOmGyldigeIdenter;
+
+    @Autowired
+    private IdentpoolService identpoolService;
 
     @Autowired
     private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
@@ -59,9 +63,11 @@ public class SjekkIdenterService {
         setStatusOnDifference(gyldigeIdenter, ledigeIdenterDB, identerMedStatus, "Ikke ledig -- ident finnes allerede i database");
 
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, newHashSet(PRODLIKE_ENV));
-        insertIntoMap(identerMedStatus, ledigeIdenterMiljo, GYLDIG_OG_LEDIG);
+        Set<String> koorigerteLedigeIdenterIMiljo = identpoolService.whitelistAjustmentOfIdents(gyldigeIdenter, ledigeIdenterDB, ledigeIdenterMiljo);
 
-        setStatusOnDifference(ledigeIdenterDB, ledigeIdenterMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod.likt miljø (Q0)");
+        insertIntoMap(identerMedStatus, koorigerteLedigeIdenterIMiljo, GYLDIG_OG_LEDIG);
+
+        setStatusOnDifference(ledigeIdenterDB, koorigerteLedigeIdenterIMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod.likt miljø (Q0)");
 
         return CheckIdentResponse.builder()
                 .statuser(setAvailibility(mapToIdentMedStatusSet(identerMedStatus)))
@@ -113,5 +119,4 @@ public class SjekkIdenterService {
             identer.put(ident, status);
         }
     }
-
 }
