@@ -56,11 +56,11 @@ angular.module('tps-forvalteren.service')
         }
 
         function prepareBufferParam(request) {
-            return request.buffersize ? '&buffer=' + request.buffersize + '$' + request.buffernumber : '';
+            return request.buffersize ? '&buffer=' + request.buffernumber + '$' + request.buffersize : '';
         }
 
         function date2String(dato) {
-            return dato ? dato.getFullYear().toString() + '-' + padWithZero(dato.getMonth() + 1) + '-' + padWithZero(dato.getDay()) : null;
+            return dato ? dato.getFullYear().toString() + '-' + padWithZero(dato.getMonth() + 1) + '-' + padWithZero(dato.getDate()) + 'T00:00:00' : null;
         }
 
         function padWithZero(nummer) {

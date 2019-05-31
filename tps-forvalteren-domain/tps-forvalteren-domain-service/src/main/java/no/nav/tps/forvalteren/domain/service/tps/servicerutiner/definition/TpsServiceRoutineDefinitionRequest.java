@@ -2,15 +2,15 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition;
 
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder.REQUIRED;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameter;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Transformer;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

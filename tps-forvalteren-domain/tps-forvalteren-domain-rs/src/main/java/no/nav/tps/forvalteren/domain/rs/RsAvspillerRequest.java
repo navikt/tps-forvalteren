@@ -27,6 +27,8 @@ public class RsAvspillerRequest {
     private List<String> typer;
     private List<String> kilder;
     private List<String> identer;
+    private Integer pageNumer;
+    private Integer bufferSize;
     private String miljoeTil;
     private String queue;
     private String queueManger;

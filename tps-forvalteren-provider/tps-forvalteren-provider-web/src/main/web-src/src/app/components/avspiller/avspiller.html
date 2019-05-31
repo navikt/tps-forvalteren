@@ -130,18 +130,18 @@
                 <div flex="5"></div>
                 <div flex="20">Tidspunkt</div>
                 <div flex="25">Hendelse</div>
-                <div flex="10">Kilde</div>
-                <div flex="15">Ident</div>
+                <div flex="5">Kilde</div>
+                <div flex="10">Ident</div>
             </h3>
             <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
 
                 <div flex="10" align="end">{{message.index}}</div>
                 <div flex="15" align="end">{{message.meldingNummer}}</div>
                 <div flex="5"></div>
-                <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss'}}</div>
-                <div flex="25">{{message.meldingsType }}</div>
-                <div flex="10">{{message.systemkilde }}</div>
-                <div flex="15">{{message.ident}}</div>
+                <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss.sss'}}</div>
+                <div flex="25">{{message.hendelseType }}</div>
+                <div flex="5">{{message.systemkilde }}</div>
+                <div flex="10">{{message.ident}}</div>
             </div>
         </form>
 

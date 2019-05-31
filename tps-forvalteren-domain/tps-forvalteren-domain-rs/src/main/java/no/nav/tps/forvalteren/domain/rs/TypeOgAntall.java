@@ -14,5 +14,5 @@ import lombok.Setter;
 public class TypeOgAntall {
 
     private String type;
-    private String antall;
+    private Long antall;
 }

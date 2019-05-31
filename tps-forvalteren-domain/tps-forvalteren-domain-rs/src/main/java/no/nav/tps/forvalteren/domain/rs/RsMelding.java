@@ -16,8 +16,8 @@ import lombok.Setter;
 public class RsMelding {
 
     private Long index;
-    private Long meldingNummer;
-    private String meldingsType;
+    private String meldingNummer;
+    private String hendelseType;
     private String systemkilde;
     private LocalDateTime tidspunkt;
     private String ident;
