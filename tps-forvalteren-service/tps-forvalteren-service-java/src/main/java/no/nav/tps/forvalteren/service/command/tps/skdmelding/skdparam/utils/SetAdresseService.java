@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
+import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
@@ -38,10 +39,10 @@ public class SetAdresseService {
         if (nonNull(person.getBoadresse())) {
             if (boadresse instanceof Matrikkeladresse) {
                 skdMeldingTrans1.setAdressetype("M");
-                skdMeldingTrans1.setGateGaard(((Matrikkeladresse) boadresse).getGardsnr());
-                skdMeldingTrans1.setHusBruk(((Matrikkeladresse) boadresse).getBruksnr());
-                skdMeldingTrans1.setBokstavFestenr(((Matrikkeladresse) boadresse).getFestenr());
-                skdMeldingTrans1.setUndernr(((Matrikkeladresse) boadresse).getUndernr());
+                skdMeldingTrans1.setGateGaard(prepad(((Matrikkeladresse) boadresse).getGardsnr(), 5));
+                skdMeldingTrans1.setHusBruk(prepad(((Matrikkeladresse) boadresse).getBruksnr(), 4));
+                skdMeldingTrans1.setBokstavFestenr(prepad(((Matrikkeladresse) boadresse).getFestenr(), 4));
+                skdMeldingTrans1.setUndernr(prepad(((Matrikkeladresse) boadresse).getUndernr(), 3));
                 skdMeldingTrans1.setAdressenavn(((Matrikkeladresse) boadresse).getMellomnavn());
             } else {
                 skdMeldingTrans1.setAdressetype("O");
@@ -70,6 +71,11 @@ public class SetAdresseService {
             skdMeldingTrans1.setPostadresse3(postadresse.getPostLinje3());
             skdMeldingTrans1.setPostadresseLand(landkodeEncoder.encode(postadresse.getPostLand()));
         }
+    }
+
+    private static String prepad(String value, int length) {
+        String formatter = new StringBuilder().append("%1$").append(length).append('s').toString();
+        return format(formatter, value).replace(' ', '0');
     }
 
     private void addHusBrukAndBokstavFestenr(SkdMeldingTrans1 skdMeldingTrans1, Gateadresse gateadresse) {

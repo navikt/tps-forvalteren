@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
@@ -60,6 +61,9 @@ public class AdresseOgSpesregService {
         }
 
         person.getPostadresse().forEach(adresse -> adresse.setPerson(person));
+        if (nonNull(person.getBoadresse())) {
+            person.getBoadresse().setPerson(person);
+        }
 
         person.setGtVerdi(null); // Triggers reload of TKNR
 
