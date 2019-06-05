@@ -6,4 +6,5 @@ applicationPipeline {
     hasPerformanceTest = false
     hasSmoketests = false
     isTestApplication = true
+    nodeJsVersion = "8"
 }
