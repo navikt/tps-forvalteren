@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +56,9 @@ public class LagreTilTpsService {
     }
 
     private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, Set<String> environments) {
-        for (Person person : personerIGruppen) {
-            uppercaseDataInPerson.execute(person);
-        }
+
+        environments = environments.stream().map(String::toLowerCase).collect(toSet());
+        personerIGruppen.forEach(person -> uppercaseDataInPerson.execute(person));
 
         Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();
         Map<String, SendSkdMeldingTilTpsResponse> innvandringUpdateResponse = newHashMap();
