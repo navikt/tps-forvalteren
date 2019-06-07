@@ -20,7 +20,7 @@ angular.module('tps-forvalteren.service')
 
         self.sendMeldinger = function (request, target) {
             return $http.post(url + '/meldinger', {
-                miljoeFra: target.miljoe,
+                miljoeFra: request.miljoe,
                 datoFra: date2String(request.periodeFra),
                 datoTil: date2String(request.periodeTil),
                 format: target.format,

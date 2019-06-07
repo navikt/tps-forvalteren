@@ -1,9 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +18,6 @@ import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitQueue;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
 import no.nav.tps.forvalteren.domain.rs.Meldingskoe;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsMelding;
 import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.RsAvspillerProgress;
@@ -64,19 +59,7 @@ public class AvspillerController {
     @PostMapping("/meldinger")
     public void sendTilTps(@RequestBody RsAvspillerRequest request) {
 
-        System.out.println("SendTilTps: miljoFra=" + request.getMiljoeFra() +
-                ", datoFra=" + request.getDatoFra() +
-                (isNotBlank(request.getTidFra()) ? ", tidFra=" + request.getTidFra() : "") +
-                ", datoTil=" + request.getDatoTil() +
-                (isNotBlank(request.getTidTil()) ? ", tidTil=" + request.getTidTil() : "") +
-                ", format=" + request.getFormat() +
-                ", meldingstyper=" + request.getTyper() +
-                ", kilder=" + request.getKilder() +
-                ", identer=" + request.getIdenter() +
-                ", miljoeTil=" + request.getMiljoeTil() +
-                ", queue=" + request.getQueue() +
-                ", queueManager=" + request.getQueueManger()
-        );
+        avspillerService.sendTilTps(request);
     }
 
     @GetMapping("/meldingskoer")
@@ -95,21 +78,5 @@ public class AvspillerController {
     public List<RsAvspillerProgress> getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
 
         return avspillerService.getStatuser(bestillingId);
-    }
-
-    private List<RsMelding> buildMeldinger(Long buffersize, Long buffernumber, Long total) {
-
-        String[] meldingstyper = { "foedselsmelding", "innvandringsmelding", "relasjonsmelding" };
-        String[] kilder = { "TPSF", "SKD" };
-
-        List<RsMelding> meldinger = new ArrayList<>();
-
-        for (int i = 0; i < buffersize && (buffernumber * buffersize) + i + 1 <= total; i++) {
-            meldinger.add(RsMelding.builder().index((buffernumber * buffersize) + i + 1)
-                    .meldingNummer(Long.toString(999L * ((buffernumber * buffersize) + i + 1)))
-                    .hendelseType(meldingstyper[i % meldingstyper.length]).systemkilde(kilder[i % kilder.length]).tidspunkt(LocalDateTime.now()).ident(
-                            format("123456%05d", ((buffersize * buffernumber) + i + 1) % 100000)).build());
-        }
-        return meldinger;
     }
 }
