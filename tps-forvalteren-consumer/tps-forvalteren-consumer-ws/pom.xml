@@ -101,7 +101,6 @@
         <dependency>
             <groupId>no.nav.aura.fasit</groupId>
             <artifactId>fasit-client-api</artifactId>
-            <version>5.8.9</version>
         </dependency>
 
         <!--LANGUAGE EXTENSIONS-->

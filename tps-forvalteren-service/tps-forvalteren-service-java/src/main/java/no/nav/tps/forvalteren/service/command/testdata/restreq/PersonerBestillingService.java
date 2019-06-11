@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
@@ -35,6 +36,7 @@ public class PersonerBestillingService {
 
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
         validateOpprettRequest.validate(personKriteriumRequest);
+        personKriteriumRequest.setEnvironments(personKriteriumRequest.getEnvironments().stream().map(String::toLowerCase).collect(toSet()));
 
         List<Person> hovedPersoner;
         List<Person> partnere = new ArrayList<>();
