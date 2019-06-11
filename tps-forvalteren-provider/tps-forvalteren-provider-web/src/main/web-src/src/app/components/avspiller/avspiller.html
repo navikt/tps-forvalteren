@@ -48,8 +48,8 @@
                 <div flex="10" style="margin-right: -45px; margin-top:30px; font-size: smaller">Format:</div>
                 <div class="avspiller-radio-gruppe" flex style="margin-top: 28px;">
                     <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()">
-                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Fag</md-radio-button>
-                        <md-radio-button value="{{tps}}">Tps</md-radio-button>
+                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Distribusjon</md-radio-button>
+                        <md-radio-button value="{{tps}}">Ajourhold</md-radio-button>
                     </md-radio-group>
                 </div>
                 <md-button style="height: 20px; margin-top: 60px;"
@@ -105,7 +105,7 @@
         <form name="responseForm" class="top transparent response-form">
 
             <div layout="row" layout-align="end end" class="pagination">
-                <span style="margin-right: 15px; margin-bottom: 6px;">Viser {{pager.viser.display}} av {{pager.totalt}}</span>
+                <span style="margin-right: 15px; margin-bottom: 6px;">Viser linjenr {{pager.viser.display}} av {{pager.totalt}}</span>
                 <li ng-class="{disabled:pager.currentPage === 1 || disable}">
                     <a ng-click="setPage(1)">&lt;&lt;</a>
                 </li>
@@ -121,12 +121,12 @@
                 <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
                     <a ng-click="setPage(pager.totalPages)">&gt;&gt;</a>
                 </li>
-                <div flex="5"></div>
+                <div flex="10"></div>
             </div>
 
             <h3 layout="row" class="flexbox-parent">
-                <div flex="10" align="end">Index#</div>
-                <div flex="15" align="end">Melding#</div>
+                <div flex="10" align="end">Linjenr</div>
+                <div flex="15" align="end">Meldingsnr</div>
                 <div flex="5"></div>
                 <div flex="20">Tidspunkt</div>
                 <div flex="25">Hendelse</div>
@@ -153,7 +153,7 @@
                         <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                     </md-select>
                 </md-input-container>
-                <md-input-container flex="30" aria-label="Velg kønavn">
+                <md-input-container flex="35" aria-label="Velg kønavn">
                     <label>Meldingskø</label>
                     <md-select ng-model="target.meldingskoe" required ng-disabled="!koer">
                         <md-option ng-repeat="koe in koer" value="{{koe}}">{{ koe.koenavn }}</md-option>

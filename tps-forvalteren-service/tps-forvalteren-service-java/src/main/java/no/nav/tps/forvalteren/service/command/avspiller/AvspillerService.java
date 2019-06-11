@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
 import no.nav.tps.forvalteren.domain.rs.TypeOgAntall;
 import no.nav.tps.forvalteren.domain.rs.TypeOppslag;
+import no.nav.tps.forvalteren.domain.rs.skd.RsAvspillerProgress;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsDistribusjonsmeldingService;
 import no.nav.tps.xjc.ctg.domain.s302.HendelsedataFraTpsS302;
 import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
@@ -109,7 +110,9 @@ public class AvspillerService {
 
                 TpsPersonData detaljertMelding = getDetaljertMelding(request, melding.getMNr());
 
-                System.out.println(detaljertMelding);
+                tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
+                        detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
+                        request.getMiljoeTil(), request.getFasitAlias());
             });
         }
         while ("S302006I".equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()));
@@ -199,5 +202,9 @@ public class AvspillerService {
 
     private static String extractBuffersize(String buffer) {
         return nonNull(buffer) && buffer.split("\\$").length > 1 ? (buffer.split("\\$")[1]) : "300";
+    }
+
+    public List<RsAvspillerProgress> getStatuser(Long bestillingId) {
+        return null;
     }
 }

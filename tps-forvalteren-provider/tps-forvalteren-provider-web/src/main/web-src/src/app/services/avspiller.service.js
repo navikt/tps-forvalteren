@@ -29,7 +29,7 @@ angular.module('tps-forvalteren.service')
                 identer: request.identer ? request.identer.split(/[\W\s]+/) : undefined,
                 miljoeTil: target.miljoe,
                 queue: JSON.parse(target.meldingskoe).koenavn,
-                queueManger: JSON.parse(target.meldingskoe).koemanager
+                fasitAlias: JSON.parse(target.meldingskoe).fasitAlias
             })
                 .then(function (response) {
                     return response.data;

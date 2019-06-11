@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Ajourholdsmelding;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +67,34 @@ public class AvspillerController {
     @GetMapping("/meldingskoer")
     public List<Meldingskoe> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 
-        List<FasitResource> ressurser = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment("TPSDISTRIBUSJON", FasitPropertyTypes.QUEUE, miljoe);
+        String queueAlias = format == Ajourholdsmelding ? "SFE_ENDRINGSMELDING" : "TPSDISTRIBUSJON";
+        List<FasitResource> resources = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(queueAlias, FasitPropertyTypes.QUEUE, miljoe);
+        List<Meldingskoe> queues = new ArrayList<>();
+        resources.forEach(resource -> {
+            if (!resource.getAlias().contains("REPLY")) {
+                queues.add(Meldingskoe.builder()
+                        .koenavn(((FasitQueue) resource.getProperties()).getQueueName())
+                        .koemanager(((FasitQueue) resource.getProperties()).getQueueManager())
+                        .fasitAlias(resource.getAlias())
+                        .build());
+            }
+        });
+        return queues;
+    }
+
+    @GetMapping("/koemanagere")
+    public List<Meldingskoe> getQueueMangers(@RequestParam("miljoe") String miljoe) {
+
+        List<FasitResource> ressurser = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(null, FasitPropertyTypes.QUEUE_MANAGER, miljoe);
         List<Meldingskoe> queues = new ArrayList<>();
         ressurser.forEach(ressurs -> queues.add(Meldingskoe.builder()
                 .koenavn(((FasitQueue) ressurs.getProperties()).getQueueName())
                 .koemanager(((FasitQueue) ressurs.getProperties()).getQueueManager())
+                .fasitAlias(ressurs.getAlias())
                 .build()));
         return queues;
     }
+
 
     @GetMapping("/statuser")
     public List<RsAvspillerProgress> getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {

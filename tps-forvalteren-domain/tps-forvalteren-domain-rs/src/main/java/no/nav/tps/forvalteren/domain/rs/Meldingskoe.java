@@ -15,4 +15,5 @@ public class Meldingskoe {
 
     private String koenavn;
     private String koemanager;
+    private String fasitAlias;
 }

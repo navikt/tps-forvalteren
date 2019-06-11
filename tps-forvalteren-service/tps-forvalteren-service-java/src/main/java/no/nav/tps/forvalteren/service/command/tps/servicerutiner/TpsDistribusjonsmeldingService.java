@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
+import no.nav.tps.forvalteren.service.command.testdata.skd.impl.DefaultSkdGetHeaderForSkdMelding;
 import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 
 @Slf4j
@@ -33,6 +34,9 @@ public class TpsDistribusjonsmeldingService {
     @Autowired
     private Unmarshaller tpsDataS302Unmarshaller;
 
+    @Autowired
+    private DefaultSkdGetHeaderForSkdMelding skdGetHeaderForSkdMelding;
+
     public TpsPersonData getDistribusjonsmeldinger(TpsPersonData tpsPersonData, String environment) {
 
         setServiceRoutineMeta(tpsPersonData);
@@ -45,6 +49,21 @@ public class TpsDistribusjonsmeldingService {
             log.error(e.getMessage(), e);
             throw new TpsfTechnicalException(format("Feil ved konvertering av XML-melding fra TPS. %s", e.getMessage()));
         }
+    }
+
+    public TpsPersonData sendDetailedMessageToTps(String message, String env, String fasitAlias) {
+
+        try {
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, fasitAlias);
+
+            String result = messageQueueConsumer.sendMessage(skdGetHeaderForSkdMelding.prependHeader(message), 1000);
+            System.out.println(result);
+
+        } catch (JMSException e) {
+            log.error(e.getMessage(), e);
+            throw new TpsfTechnicalException(format("Feil ved sending til TPS %s, se logg!", e.getMessage()), e);
+        }
+        return null;
     }
 
     private String sendTpsRequest(TpsPersonData tpsRequest, String env) {
