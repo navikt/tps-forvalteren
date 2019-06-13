@@ -47,7 +47,7 @@ public class TpsDistribusjonsmeldingServiceTest {
     public void getDistribusjonsmeldinger_OK() throws Exception {
 
         TpsPersonData tpsPersonData = buildPersondata();
-        when(messageQueueServiceFactory.createMessageQueueConsumer(ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS)).thenReturn(messageQueueConsumer);
+        when(messageQueueServiceFactory.createMessageQueueConsumer(ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false)).thenReturn(messageQueueConsumer);
         when(messageQueueConsumer.sendMessage(anyString(), anyLong())).thenReturn("<xml />");
 
         tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, ENV);

@@ -1,25 +1,5 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
-import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.domain.service.user.User;
-import no.nav.tps.forvalteren.domain.service.tps.Request;
-import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
-import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
-import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.eq;
@@ -28,6 +8,27 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import com.fasterxml.jackson.xml.XmlMapper;
+
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.domain.service.tps.Request;
+import no.nav.tps.forvalteren.domain.service.tps.Response;
+import no.nav.tps.forvalteren.domain.service.tps.config.TpsRequestConfig;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
+import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
+import no.nav.tps.forvalteren.service.command.tps.transformation.TransformationService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TpsRequestServiceTest {
@@ -62,7 +63,8 @@ public class TpsRequestServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        when(messageQueueServiceFactoryMock.createMessageQueueConsumer(eq(ENVIRONMENT), eq(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS))).thenReturn(messageQueueConsumerMock);
+        when(messageQueueServiceFactoryMock.createMessageQueueConsumer(eq(ENVIRONMENT), eq(REQUEST_QUEUE_SERVICE_RUTINE_ALIAS), eq(false)))
+                .thenReturn(messageQueueConsumerMock);
     }
 
 

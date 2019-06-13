@@ -120,12 +120,14 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
 
             function meldingskoerOk(data) {
                 $scope.koer = data;
-                $scope.target.meldingskoe = undefined;
+                $scope.target = $scope.target || {};
+                $scope.target.meldingskoe = data.length === 1 ? data[0] : undefined;
                 $scope.loading = false;
             }
 
             function error(disrupt) {
                 utilsService.showAlertError(disrupt);
+                $scope.loading = false;
             }
 
             $scope.checkOversikt = function () {

@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Ajourholdsmelding;
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Distribusjonsmelding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ import no.nav.tps.forvalteren.service.command.avspiller.AvspillerService;
 @RequestMapping("api/v1/avspiller")
 public class AvspillerController {
 
+    private static final String SKD_MELDING = "TPS.ENDRINGS.MELDING";
+    private static final String DISTRIBUSJON_MELDING = "TPSDISTRIBUSJON";
+
     @Autowired
     private FasitApiConsumer fasitApiConsumer;
 
@@ -55,7 +59,7 @@ public class AvspillerController {
             @ApiParam("bufferNumber $ bufferSize")
             @RequestParam(value = "buffer", required = false) String buffer) {
 
-        return avspillerService.getMeldinger(miljoe, periode, format, meldingstyper, kilder,  identer, buffer);
+        return avspillerService.getMeldinger(miljoe, periode, format, meldingstyper, kilder, identer, buffer);
     }
 
     @PostMapping("/meldinger")
@@ -67,11 +71,12 @@ public class AvspillerController {
     @GetMapping("/meldingskoer")
     public List<Meldingskoe> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 
-        String queueAlias = format == Ajourholdsmelding ? "SFE_ENDRINGSMELDING" : "TPSDISTRIBUSJON";
-        List<FasitResource> resources = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(queueAlias, FasitPropertyTypes.QUEUE, miljoe);
+        String queueAlias = format == Ajourholdsmelding ? SKD_MELDING : DISTRIBUSJON_MELDING;
+        String environment = format == Ajourholdsmelding && miljoe.contains("u") ? "u" : miljoe;
+        List<FasitResource> resources = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(queueAlias, FasitPropertyTypes.QUEUE, environment);
         List<Meldingskoe> queues = new ArrayList<>();
         resources.forEach(resource -> {
-            if (!resource.getAlias().contains("REPLY")) {
+            if (!((FasitQueue) resource.getProperties()).getQueueName().toUpperCase().contains("REPLY")) {
                 queues.add(Meldingskoe.builder()
                         .koenavn(((FasitQueue) resource.getProperties()).getQueueName())
                         .koemanager(((FasitQueue) resource.getProperties()).getQueueManager())
@@ -79,22 +84,15 @@ public class AvspillerController {
                         .build());
             }
         });
+
+        if (format == Distribusjonsmelding) {
+            queues.add(Meldingskoe.builder()
+                    .koenavn(String.format("QA.%s_412.TPSDISTRIBUSJON_FS03", miljoe.contains("u") ? "D8" : miljoe.toUpperCase()))
+                    .build());
+        }
+
         return queues;
     }
-
-    @GetMapping("/koemanagere")
-    public List<Meldingskoe> getQueueMangers(@RequestParam("miljoe") String miljoe) {
-
-        List<FasitResource> ressurser = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(null, FasitPropertyTypes.QUEUE_MANAGER, miljoe);
-        List<Meldingskoe> queues = new ArrayList<>();
-        ressurser.forEach(ressurs -> queues.add(Meldingskoe.builder()
-                .koenavn(((FasitQueue) ressurs.getProperties()).getQueueName())
-                .koemanager(((FasitQueue) ressurs.getProperties()).getQueueManager())
-                .fasitAlias(ressurs.getAlias())
-                .build()));
-        return queues;
-    }
-
 
     @GetMapping("/statuser")
     public List<RsAvspillerProgress> getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {

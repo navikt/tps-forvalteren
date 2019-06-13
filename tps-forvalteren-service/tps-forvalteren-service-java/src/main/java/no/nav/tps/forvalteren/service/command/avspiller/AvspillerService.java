@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
@@ -25,15 +26,18 @@ import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
 import no.nav.tps.forvalteren.domain.rs.TypeOgAntall;
 import no.nav.tps.forvalteren.domain.rs.TypeOppslag;
 import no.nav.tps.forvalteren.domain.rs.skd.RsAvspillerProgress;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsDistribusjonsmeldingService;
 import no.nav.tps.xjc.ctg.domain.s302.HendelsedataFraTpsS302;
 import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 import no.nav.tps.xjc.ctg.domain.s302.TpsServiceRutineType;
 
+@Slf4j
 @Service
 public class AvspillerService {
 
     private static final String TIME_PATTERN = "HH:mm:ss";
+    private static final String NO_DATA = "Ingen data for miljø %s i periode fra %s ble funnet";
 
     @Autowired
     private TpsDistribusjonsmeldingService tpsDistribusjonsmeldingService;
@@ -45,74 +49,97 @@ public class AvspillerService {
 
         TpsPersonData fraTps = getHendelsedataFraTps(miljoe, periode, format, null, null, null, null);
 
-        HendelsedataFraTpsS302 response = fraTps.getTpsSvar().getHendelseDataS302().getRespons();
+        if (nonNull(fraTps.getTpsSvar().getHendelseDataS302())) {
+            HendelsedataFraTpsS302 response = fraTps.getTpsSvar().getHendelseDataS302().getRespons();
 
-        RsTyperOgKilderResponse typerOgKilderResponse = new RsTyperOgKilderResponse();
-        if (nonNull(response.getOversiktKilde())) {
-            response.getOversiktHendelse().getEnoversiktHendelse().forEach(hendelseType ->
-                    typerOgKilderResponse.getTyper().add(TypeOgAntall.builder()
-                            .antall(Long.valueOf(hendelseType.getOversiktMeldingTypeAntall()))
-                            .type(hendelseType.getOversiktMeldingType())
-                            .build())
-            );
-        }
-        if (nonNull(response.getOversiktKilde())) {
-            response.getOversiktKilde().getEnoversiktKilde().forEach(kildeType ->
-                    typerOgKilderResponse.getKilder().add(TypeOgAntall.builder()
-                            .antall(Long.valueOf(kildeType.getOversiktKildeSystemAntall()))
-                            .type(kildeType.getOversiktKildeSystem())
-                            .build())
-            );
-        }
+            RsTyperOgKilderResponse typerOgKilderResponse = new RsTyperOgKilderResponse();
+            if (nonNull(response.getOversiktKilde())) {
+                response.getOversiktHendelse().getEnoversiktHendelse().forEach(hendelseType ->
+                        typerOgKilderResponse.getTyper().add(TypeOgAntall.builder()
+                                .antall(Long.valueOf(hendelseType.getOversiktMeldingTypeAntall()))
+                                .type(hendelseType.getOversiktMeldingType())
+                                .build())
+                );
+            }
+            if (nonNull(response.getOversiktKilde())) {
+                response.getOversiktKilde().getEnoversiktKilde().forEach(kildeType ->
+                        typerOgKilderResponse.getKilder().add(TypeOgAntall.builder()
+                                .antall(Long.valueOf(kildeType.getOversiktKildeSystemAntall()))
+                                .type(kildeType.getOversiktKildeSystem())
+                                .build())
+                );
+            }
 
-        return typerOgKilderResponse;
+            return typerOgKilderResponse;
+
+        } else {
+
+            throw new NotFoundException(String.format(NO_DATA, miljoe, unpackPeriode(periode)));
+        }
     }
 
     public RsMeldingerResponse getMeldinger(String miljoe, String periode, Meldingsformat format, String meldingstyper, String kilder, String identer, String buffer) {
 
         TpsPersonData fraTps = getHendelsedataFraTps(miljoe, periode, format, meldingstyper, kilder, identer, buffer);
 
-        HendelsedataFraTpsS302 response = fraTps.getTpsSvar().getHendelseDataS302().getRespons();
+        if (nonNull(fraTps.getTpsSvar().getHendelseDataS302())) {
+            HendelsedataFraTpsS302 response = fraTps.getTpsSvar().getHendelseDataS302().getRespons();
 
-        AtomicLong index = new AtomicLong(Long.valueOf(extractBuffersize(buffer)) *
-                (isNotBlank(response.getMeldingNummer()) ? Long.valueOf(response.getMeldingNummer()) - 1 : 0));
-        return RsMeldingerResponse.builder()
-                .antallTotalt(isNotBlank(response.getMeldingerTotalt()) ? Long.valueOf(response.getMeldingerTotalt()) : 0)
-                .buffernumber(isNotBlank(response.getMeldingNummer()) ? Long.valueOf(response.getMeldingNummer()) : null)
-                .buffersize(Long.valueOf(extractBuffersize(buffer)))
-                .meldinger(response.getMelding().getEnmelding()
-                        .stream()
-                        .map(type -> RsMelding.builder()
-                                .index(index.getAndIncrement() + 1)
-                                .meldingNummer(type.getMNr())
-                                .tidspunkt(nonNull(type.getMTd()) ? convertToTimestamp(type.getMTd()) : null)
-                                .hendelseType(type.getMTp())
-                                .systemkilde(type.getMKs())
-                                .ident(type.getMFnr())
-                                .build())
-                        .collect(Collectors.toList()))
-                .build();
+            AtomicLong index = new AtomicLong(Long.valueOf(extractBuffersize(buffer)) *
+                    (isNotBlank(response.getMeldingNummer()) ? Long.valueOf(response.getMeldingNummer()) - 1 : 0));
+            return RsMeldingerResponse.builder()
+                    .antallTotalt(isNotBlank(response.getMeldingerTotalt()) ? Long.valueOf(response.getMeldingerTotalt()) : 0)
+                    .buffernumber(isNotBlank(response.getMeldingNummer()) ? Long.valueOf(response.getMeldingNummer()) : null)
+                    .buffersize(Long.valueOf(extractBuffersize(buffer)))
+                    .meldinger(response.getMelding().getEnmelding()
+                            .stream()
+                            .map(type -> RsMelding.builder()
+                                    .index(index.getAndIncrement() + 1)
+                                    .meldingNummer(type.getMNr())
+                                    .tidspunkt(nonNull(type.getMTd()) ? convertToTimestamp(type.getMTd()) : null)
+                                    .hendelseType(type.getMTp())
+                                    .systemkilde(type.getMKs())
+                                    .ident(type.getMFnr())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .build();
+
+        } else {
+
+            throw new NotFoundException(String.format(NO_DATA, miljoe, unpackPeriode(periode)));
+        }
     }
 
+    private String unpackPeriode(String periode) {
+        return nonNull(periode) ? periode.replaceAll("\\$", " til ") : "";
+    }
 
     @Async
     public void sendTilTps(RsAvspillerRequest request) {
 
         TpsPersonData tpsPersonData = mapperFacade.map(request, TpsPersonData.class);
         tpsPersonData.getTpsServiceRutine().setTypeOppslag(TypeOppslag.L.name());
-        Long pageNumber = 1L;
+        Long pageNumber = 0L;
 
         TpsPersonData personListe = null;
         do {
-            tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(pageNumber++));
+            tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(++pageNumber));
             personListe = tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, request.getMiljoeFra());
             personListe.getTpsSvar().getHendelseDataS302().getRespons().getMelding().getEnmelding().forEach(melding -> {
 
                 TpsPersonData detaljertMelding = getDetaljertMelding(request, melding.getMNr());
 
-                tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
-                        detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
-                        request.getMiljoeTil(), request.getFasitAlias());
+                String status;
+                if (request.getFormat() == Meldingsformat.Ajourholdsmelding) {
+                    status = tpsDistribusjonsmeldingService.sendDetailedSkdMessageToTps(
+                            detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
+                            request.getMiljoeTil(), request.getQueue());
+                } else {
+                    status = tpsDistribusjonsmeldingService.sendDetailedDistribusjonMessage(
+                            detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
+                            request.getMiljoeTil(), request.getQueue());
+                }
+                log.info(status);
             });
         }
         while ("S302006I".equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()));

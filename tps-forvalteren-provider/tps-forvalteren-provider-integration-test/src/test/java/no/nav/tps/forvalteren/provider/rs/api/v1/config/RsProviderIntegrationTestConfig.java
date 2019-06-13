@@ -80,7 +80,7 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     @Primary
     public MessageQueueServiceFactory defaultMessageQueueServiceFactory() {
-        return (environment, requestQueueAlias) -> defaultMessageQueueConsumer();
+        return (environment, requestQueueAlias, isQueName) -> defaultMessageQueueConsumer();
     }
 
     @Bean

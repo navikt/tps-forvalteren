@@ -97,7 +97,8 @@ public class FasitApiConsumer {
 
     @Cacheable(CACHE_FASIT)
     public List<FasitResource> getResourcesByAliasAndTypeAndEnvironment(String alias, FasitPropertyTypes propertyTypes, String environment) {
-        String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type", "environment");
+        String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type", "environment" +
+                (environment.length() == 1 ? "class" : ""));
         String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName(), environment);
 
         ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);

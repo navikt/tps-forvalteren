@@ -35,7 +35,7 @@ public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactor
     private ConnectionFactoryFactory connectionFactoryFactory;
 
     @Override
-    public MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias) throws JMSException {
+    public MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias, boolean isQueueName) throws JMSException {
         QueueManager queueManager = new QueueManager(queueManagerAlias, hostname, port, (environment).toUpperCase() + CHANNEL_POSTFIX);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,

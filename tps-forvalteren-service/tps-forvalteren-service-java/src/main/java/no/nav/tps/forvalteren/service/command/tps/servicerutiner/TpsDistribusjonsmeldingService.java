@@ -51,24 +51,35 @@ public class TpsDistribusjonsmeldingService {
         }
     }
 
-    public TpsPersonData sendDetailedMessageToTps(String message, String env, String fasitAlias) {
+    public String sendDetailedSkdMessageToTps(String message, String env, String queueName) {
 
         try {
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, fasitAlias);
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, queueName, true);
 
-            String result = messageQueueConsumer.sendMessage(skdGetHeaderForSkdMelding.prependHeader(message), 1000);
-            System.out.println(result);
+            return messageQueueConsumer.sendMessage(skdGetHeaderForSkdMelding.prependHeader(message), 100);
 
         } catch (JMSException e) {
             log.error(e.getMessage(), e);
             throw new TpsfTechnicalException(format("Feil ved sending til TPS %s, se logg!", e.getMessage()), e);
         }
-        return null;
+    }
+
+    public String sendDetailedDistribusjonMessage(String message, String env, String queueName) {
+
+        try {
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, queueName, true);
+
+            return messageQueueConsumer.sendMessage(message, 100);
+
+        } catch (JMSException e) {
+            log.error(e.getMessage(), e);
+            throw new TpsfTechnicalException(format("Feil ved sending til TPS %s, se logg!", e.getMessage()), e);
+        }
     }
 
     private String sendTpsRequest(TpsPersonData tpsRequest, String env) {
         try {
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false);
 
             Writer xmlWriter = new StringWriter();
             tpsDataS302Marshaller.marshal(tpsRequest, xmlWriter);

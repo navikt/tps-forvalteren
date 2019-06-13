@@ -1,16 +1,16 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.verify;
+
+import javax.jms.JMSException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.JMSException;
-
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.verify;
+import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProdMessageQueueServiceFactoryTest {
@@ -27,7 +27,7 @@ public class ProdMessageQueueServiceFactoryTest {
 
     @Test
     public void retrievesAConnectionFactoryFromTheConnectionFactoryFactory() throws JMSException {
-        serviceFactory.createMessageQueueConsumer(ENVIRONMENT, SERVICE_RUTINE);
+        serviceFactory.createMessageQueueConsumer(ENVIRONMENT, SERVICE_RUTINE, false);
         verify(connectionFactoryFactoryMock).createConnectionFactory(isA(ConnectionFactoryFactoryStrategy.class));
     }
 

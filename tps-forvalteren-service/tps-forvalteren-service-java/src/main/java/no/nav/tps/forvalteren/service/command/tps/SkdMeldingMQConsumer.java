@@ -27,7 +27,7 @@ public class SkdMeldingMQConsumer {
             forbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
         }
 
-        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue());
+        MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue(), false);
 
        return messageQueueConsumer.sendMessage(skdMelding);
         

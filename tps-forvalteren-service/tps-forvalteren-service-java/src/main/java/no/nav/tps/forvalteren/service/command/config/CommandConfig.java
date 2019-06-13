@@ -63,7 +63,7 @@ public class CommandConfig {
 
     @Bean
     MessageQueueConsumer defaultMessageQueueService() throws JMSException {
-        return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS);
+        return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false);
     }
 
     @Bean
