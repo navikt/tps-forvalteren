@@ -1,14 +1,21 @@
 package no.nav.tps.forvalteren.service.command.avspiller;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertIdenter;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertKildeSystem;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertMeldingType;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertToTimestamp;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractBuffernumber;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractBuffersize;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractDateFrom;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractDateTo;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractList;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractTimeFrom;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractTimeeTo;
+import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.unpackPeriode;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.assertj.core.util.Lists.newArrayList;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -36,7 +43,7 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsServiceRutineType;
 @Service
 public class AvspillerService {
 
-    private static final String TIME_PATTERN = "HH:mm:ss";
+
     private static final String NO_DATA = "Ingen data for miljø %s i periode fra %s ble funnet";
 
     @Autowired
@@ -110,10 +117,6 @@ public class AvspillerService {
         }
     }
 
-    private String unpackPeriode(String periode) {
-        return nonNull(periode) ? periode.replaceAll("\\$", " til ") : "";
-    }
-
     @Async
     public void sendTilTps(RsAvspillerRequest request) {
 
@@ -129,20 +132,20 @@ public class AvspillerService {
 
                 TpsPersonData detaljertMelding = getDetaljertMelding(request, melding.getMNr());
 
-                String status;
-                if (request.getFormat() == Meldingsformat.Ajourholdsmelding) {
-                    status = tpsDistribusjonsmeldingService.sendDetailedSkdMessageToTps(
-                            detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
-                            request.getMiljoeTil(), request.getQueue());
-                } else {
-                    status = tpsDistribusjonsmeldingService.sendDetailedDistribusjonMessage(
-                            detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
-                            request.getMiljoeTil(), request.getQueue());
-                }
+                String status = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
+                        detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
+                        request.getMiljoeTil(),
+                        request.getQueue(),
+                        request.getFormat() == Meldingsformat.Ajourholdsmelding);
+
                 log.info(status);
             });
         }
         while ("S302006I".equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()));
+    }
+
+    public List<RsAvspillerProgress> getStatuser(Long bestillingId) {
+        return null;
     }
 
     private TpsPersonData getDetaljertMelding(RsAvspillerRequest request, String meldingNummer) {
@@ -173,65 +176,5 @@ public class AvspillerService {
         TpsPersonData tpsPersonData = new TpsPersonData();
         tpsPersonData.setTpsServiceRutine(tpsServiceRutineType);
         return tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, miljoe);
-    }
-
-    private static TpsServiceRutineType.MeldingType convertMeldingType(List<String> meldingstyper) {
-        TpsServiceRutineType.MeldingType meldingType = new TpsServiceRutineType.MeldingType();
-        meldingType.getEnMeldingType().addAll(meldingstyper);
-        return meldingType;
-    }
-
-    private static TpsServiceRutineType.KildeSystem convertKildeSystem(List<String> kilder) {
-        TpsServiceRutineType.KildeSystem kildeSystem = new TpsServiceRutineType.KildeSystem();
-        kildeSystem.getEtKildeSystem().addAll(kilder);
-        return kildeSystem;
-    }
-
-    private static TpsServiceRutineType.Fnr convertIdenter(List<String> identer) {
-        TpsServiceRutineType.Fnr fnr = new TpsServiceRutineType.Fnr();
-        fnr.getEtFnr().addAll(identer);
-        return fnr;
-    }
-
-    private static LocalDateTime convertToTimestamp(String timestamp) {
-        return nonNull(timestamp) ?
-                timestamp.length() > 10 ?
-                        LocalDateTime.parse(timestamp) :
-                        LocalDate.parse(timestamp).atStartOfDay() :
-                null;
-    }
-
-    private static String extractDateFrom(String periode) {
-        return nonNull(periode) ? LocalDateTime.parse(periode.split("\\$")[0]).toLocalDate().toString() : null;
-    }
-
-    private static String extractDateTo(String periode) {
-        return nonNull(periode) && periode.split("\\$").length > 1 ?
-                LocalDateTime.parse(periode.split("\\$")[1]).toLocalDate().toString() : null;
-    }
-
-    private static String extractTimeFrom(String periode) {
-        return nonNull(periode) ? LocalDateTime.parse(periode.split("\\$")[0]).format(ofPattern(TIME_PATTERN)) : null;
-    }
-
-    private static String extractTimeeTo(String periode) {
-        return nonNull(periode) && periode.split("\\$").length > 1 ?
-                LocalDateTime.parse(periode.split("\\$")[1]).format(ofPattern(TIME_PATTERN)) : null;
-    }
-
-    private static List extractList(String commaSeparatedList) {
-        return nonNull(commaSeparatedList) ? newArrayList(commaSeparatedList.split(",")) : new ArrayList();
-    }
-
-    private static String extractBuffernumber(String buffer) {
-        return nonNull(buffer) ? Integer.toString(Integer.valueOf(buffer.split("\\$")[0]) + 1) : "1";
-    }
-
-    private static String extractBuffersize(String buffer) {
-        return nonNull(buffer) && buffer.split("\\$").length > 1 ? (buffer.split("\\$")[1]) : "300";
-    }
-
-    public List<RsAvspillerProgress> getStatuser(Long bestillingId) {
-        return null;
     }
 }

@@ -51,25 +51,12 @@ public class TpsDistribusjonsmeldingService {
         }
     }
 
-    public String sendDetailedSkdMessageToTps(String message, String env, String queueName) {
+    public String sendDetailedMessageToTps(String message, String env, String queueName, boolean includeHeader) {
 
         try {
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, queueName, true);
 
-            return messageQueueConsumer.sendMessage(skdGetHeaderForSkdMelding.prependHeader(message), 100);
-
-        } catch (JMSException e) {
-            log.error(e.getMessage(), e);
-            throw new TpsfTechnicalException(format("Feil ved sending til TPS %s, se logg!", e.getMessage()), e);
-        }
-    }
-
-    public String sendDetailedDistribusjonMessage(String message, String env, String queueName) {
-
-        try {
-            MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, queueName, true);
-
-            return messageQueueConsumer.sendMessage(message, 100);
+            return messageQueueConsumer.sendMessage(includeHeader ? skdGetHeaderForSkdMelding.prependHeader(message) : message, 100);
 
         } catch (JMSException e) {
             log.error(e.getMessage(), e);
