@@ -43,6 +43,13 @@ angular.module('tps-forvalteren.service')
                 })
         };
 
+        self.getStatus = function (bestillingId) {
+            return $http.get(url + '/statuser?bestilling=' + bestillingId)
+                .then(function (response) {
+                    return response.data;
+                })
+        };
+
         function prepareBasicParams(request) {
             return '?miljoe=' + request.miljoe +
                 '&format=' + request.format +

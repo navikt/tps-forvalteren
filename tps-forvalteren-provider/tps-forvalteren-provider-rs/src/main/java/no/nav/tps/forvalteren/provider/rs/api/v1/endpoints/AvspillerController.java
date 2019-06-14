@@ -18,12 +18,13 @@ import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitQueue;
+import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
 import no.nav.tps.forvalteren.domain.rs.Meldingskoe;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
-import no.nav.tps.forvalteren.domain.rs.skd.RsAvspillerProgress;
+import no.nav.tps.forvalteren.service.command.avspiller.AvspillerDaoService;
 import no.nav.tps.forvalteren.service.command.avspiller.AvspillerService;
 
 @RestController
@@ -38,6 +39,9 @@ public class AvspillerController {
 
     @Autowired
     private AvspillerService avspillerService;
+
+    @Autowired
+    private AvspillerDaoService avspillerDaoService;
 
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
@@ -63,9 +67,11 @@ public class AvspillerController {
     }
 
     @PostMapping("/meldinger")
-    public void sendTilTps(@RequestBody RsAvspillerRequest request) {
+    public TpsAvspiller sendTilTps(@RequestBody RsAvspillerRequest request) {
 
-        avspillerService.sendTilTps(request);
+        TpsAvspiller avspillerStatus = avspillerDaoService.save(request);
+        avspillerService.sendTilTps(request, avspillerStatus);
+        return avspillerStatus;
     }
 
     @GetMapping("/meldingskoer")
@@ -95,8 +101,8 @@ public class AvspillerController {
     }
 
     @GetMapping("/statuser")
-    public List<RsAvspillerProgress> getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
+    public TpsAvspiller getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
 
-        return avspillerService.getStatuser(bestillingId);
+        return avspillerDaoService.getStatus(bestillingId);
     }
 }

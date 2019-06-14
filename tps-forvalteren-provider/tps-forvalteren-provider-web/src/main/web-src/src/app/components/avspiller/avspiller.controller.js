@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
-    .controller('AvspillerCtrl', ['$scope', 'utilsService', 'environmentsPromise', 'avspillerService', 'headerService',
-        function ($scope, utilsService, environmentsPromise, avspillerService, headerService) {
+    .controller('AvspillerCtrl', ['$scope', '$interval', '$mdDialog', 'utilsService', 'environmentsPromise', 'avspillerService', 'headerService',
+        function ($scope, $interval, $mdDialog, utilsService, environmentsPromise, avspillerService, headerService) {
 
             headerService.setHeader('TPS avspiller for hendelsesmeldinger');
 
@@ -9,6 +9,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
 
             var pagesize = 25;
             var buffersize = 300;
+            var stopTime;
 
             $scope.tpsmeldinger = {};
             $scope.pager = {};
@@ -150,7 +151,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.pager.request = angular.copy($scope.request);
                 avspillerService.getMeldinger($scope.request)
                     .then(meldingerOk, error);
-                $scope.requestForm.$dirty=false;
+                $scope.requestForm.$dirty = false;
             };
 
             $scope.checkMeldingskoer = function () {
@@ -162,8 +163,29 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.sendTilTps = function () {
                 avspillerService.sendMeldinger($scope.request, $scope.target)
                     .then(function (data) {
+                        $scope.completeProgress = 0;
                         $scope.progress = true;
+                        $scope.status = data;
+                        stopTime = $interval(checkStatus, 1000);
                     }, error);
+            };
+
+            function checkStatus() {
+                avspillerService.getStatus($scope.status.bestillingId)
+                    .then(function (data) {
+                        $scope.status = data;
+                        $scope.completeProgress = Math.floor($scope.status.progressList.length / $scope.status.antall * 100);
+                        if ($scope.status.antall === $scope.status.progressList.length) {
+                            $interval.cancel(stopTime);
+                            $scope.progress = false;
+                            $mdDialog.show($mdDialog.confirm()
+                                .title('Bekreftelse')
+                                .textContent("Meldinger er sendt til valgt kø")
+                                .ariaLabel('Meldingsending bekreftelse')
+                                .ok('OK')
+                            );
+                        }
+                    })
             };
 
             function sortEnvironmentsForDisplay(environments) {
