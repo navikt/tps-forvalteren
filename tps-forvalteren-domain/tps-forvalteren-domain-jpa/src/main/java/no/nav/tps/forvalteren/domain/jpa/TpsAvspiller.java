@@ -35,17 +35,11 @@ public class TpsAvspiller {
     @Column(name = "PERIODE_TIL", nullable = false)
     private LocalDateTime periodeTil;
 
-    @Column(name = "MILJOE_FRA", nullable = false)
-    private String miljoeFra;
+    @Column(name = "KILDE_KOE", nullable = false)
+    private String kildeKoe;
 
-    @Column(name = "MILJOE_TIL", nullable = false)
-    private String miljoeTil;
-
-    @Column(name = "MELDING_KOE", nullable = false)
-    private String meldingKoe;
-
-    @Column(name = "KOE_MANAGER", nullable = false)
-    private String koeManager;
+    @Column(name = "UTLOEP_KOE", nullable = false)
+    private String utloepKoe;
 
     @Column(name = "format", nullable = false)
     private String format;
@@ -54,7 +48,7 @@ public class TpsAvspiller {
     private String request;
 
     @Column(name="ANTALL", nullable = false)
-    private String antall;
+    private Long antall;
 
     @Column(name = "TIDSPUNKT", nullable = false)
     private LocalDateTime tidspunkt;

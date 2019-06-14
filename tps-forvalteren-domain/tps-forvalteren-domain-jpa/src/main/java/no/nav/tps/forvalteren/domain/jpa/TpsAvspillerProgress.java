@@ -27,14 +27,14 @@ public class TpsAvspillerProgress {
     @Column(name="PROGRESS_ID", nullable = false)
     private Long progressId;
 
-    @Column(name="INDEKS", nullable = false)
-    private Long indeks;
+    @Column(name="BESTILLING_ID", nullable = false)
+    private Long bestillingId;
 
-    @Column(name="MILJOE", nullable = false)
-    private String miljoe;
+    @Column(name="INDEKS_NR", nullable = false)
+    private Long indeksNr;
 
     @Column(name="MELDING_NR", nullable = false)
-    private String meldingNr;
+    private Long meldingNr;
 
     @Column(name = "TIDSPUNKT", nullable = false)
     private LocalDateTime tidspunkt;
