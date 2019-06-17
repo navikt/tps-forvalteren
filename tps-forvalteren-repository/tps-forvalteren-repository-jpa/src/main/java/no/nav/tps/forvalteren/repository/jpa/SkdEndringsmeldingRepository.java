@@ -28,10 +28,10 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
     @Query("SELECT s.id FROM SkdEndringsmelding s where s.gruppe=:gruppe")
     List<Long> findAllIdsBy(@Param("gruppe") SkdEndringsmeldingGruppe gruppe);
 
-    @Query("SELECT s.id FROM SkdEndringsmelding s where s.gruppe=:gruppe AND s.foedselsnummer=:foedselsnummer")
+    @Query("SELECT s.id FROM SkdEndringsmelding s where s.gruppe=:gruppe AND s.foedselsnummer IN :foedselsnummer")
     List<Long> findAllIdsBy(
             @Param("gruppe") SkdEndringsmeldingGruppe gruppe,
-            @Param("foedselsnummer") String foedselsnummer);
+            @Param("foedselsnummer") List<String> foedselsnummer);
 
     @Query("SELECT foedselsnummer FROM SkdEndringsmelding "
             + "WHERE aarsakskode in :aarsakskoder AND transaksjonstype=:transaksjonstype AND gruppe=:gruppe")

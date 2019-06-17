@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -155,11 +156,11 @@ public class SkdEndringsmeldingServiceTest {
         skdEndringsmeldinger.get(1).setFoedselsnummer(foedselsnummer2);
         List<String> identer = Lists.newArrayList(foedselsnummer1);
 
-        when(skdEndringsmeldingRepository.findAllIdsBy(any(), eq(foedselsnummer1))).thenReturn(Lists.newArrayList(skdEndringsmeldinger.get(0).getId()));
+        when(skdEndringsmeldingRepository.findAllIdsBy(any(), any())).thenReturn(Lists.newArrayList(skdEndringsmeldinger.get(0).getId()));
 
         List<Long> result = skdEndringsmeldingService.finnAlleMeldingIderMedFoedselsnummer(gruppeId, identer);
 
-        verify(skdEndringsmeldingRepository).findAllIdsBy(any(), eq(foedselsnummer1));
+        verify(skdEndringsmeldingRepository).findAllIdsBy(any(), any());
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(MELDINGS_ID_1));
     }
