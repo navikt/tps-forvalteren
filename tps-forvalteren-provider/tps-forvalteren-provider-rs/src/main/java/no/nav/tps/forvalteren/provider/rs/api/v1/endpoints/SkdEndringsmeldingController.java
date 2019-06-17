@@ -217,6 +217,13 @@ public class SkdEndringsmeldingController {
         return skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
     }
 
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
+    @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.POST)
+    public List<Long> getMeldingIderMedFnr(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> identer) {
+        return skdEndringsmeldingService.finnAlleMeldingIderMedFoedselsnummer(gruppeId, identer);
+    }
+
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")
     @LogExceptions
     @PostMapping("save/{gruppeId}")

@@ -79,4 +79,13 @@ public class SkdEndringsmeldingService {
          SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = gruppeRepository.findById(gruppeId);
          return skdEndringsmeldingRepository.findAllIdsBy(skdEndringsmeldingGruppe);
     }
+
+    public List<Long> finnAlleMeldingIderMedFoedselsnummer(Long gruppeId, List<String> identer) {
+        SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = gruppeRepository.findById(gruppeId);
+        List<Long> meldingIds = new ArrayList<>();
+        for(String ident : identer) {
+            meldingIds.addAll(skdEndringsmeldingRepository.findAllIdsBy(skdEndringsmeldingGruppe, ident));
+        }
+        return meldingIds;
+    }
 }

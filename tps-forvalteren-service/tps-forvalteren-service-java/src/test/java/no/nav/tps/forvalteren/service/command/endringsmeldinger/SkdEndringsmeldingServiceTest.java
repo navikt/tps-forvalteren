@@ -2,10 +2,13 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -140,6 +143,25 @@ public class SkdEndringsmeldingServiceTest {
 
         verify(skdEndringsmeldingRepository).findAllIdsBy(any());
         assertThat(result, containsInAnyOrder(MELDINGS_ID_1, MELDINGS_ID_2));
+    }
+
+    @Test
+    public void hentMeldingIderMedFnrOk() {
+        long gruppeId = 123L;
+        String foedselsnummer1 = "11111111111";
+        String foedselsnummer2 = "22222222222";
+        List<SkdEndringsmelding> skdEndringsmeldinger = createSkdMeldinger();
+        skdEndringsmeldinger.get(0).setFoedselsnummer(foedselsnummer1);
+        skdEndringsmeldinger.get(1).setFoedselsnummer(foedselsnummer2);
+        List<String> identer = Lists.newArrayList(foedselsnummer1);
+
+        when(skdEndringsmeldingRepository.findAllIdsBy(any(), eq(foedselsnummer1))).thenReturn(Lists.newArrayList(skdEndringsmeldinger.get(0).getId()));
+
+        List<Long> result = skdEndringsmeldingService.finnAlleMeldingIderMedFoedselsnummer(gruppeId, identer);
+
+        verify(skdEndringsmeldingRepository).findAllIdsBy(any(), eq(foedselsnummer1));
+        assertThat(result, hasSize(1));
+        assertThat(result, hasItem(MELDINGS_ID_1));
     }
 
     private List<SkdEndringsmelding> createSkdMeldinger() {
