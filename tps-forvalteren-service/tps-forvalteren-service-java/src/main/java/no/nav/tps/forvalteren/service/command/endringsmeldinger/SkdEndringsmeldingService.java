@@ -25,6 +25,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 public class SkdEndringsmeldingService {
 
     private static final int ANTALL_MELDINGER_PER_PAGE = 10;
+    private static final int PARTITION_SIZE = 1000;
 
     @Autowired
     private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
@@ -66,7 +67,7 @@ public class SkdEndringsmeldingService {
 
     public void deleteById(List<Long> ids) {
         if (ids.size() > ORACLE_MAX_IN_SET_ELEMENTS) {
-            List<List<Long>> partitionsIds = Lists.partition(ids, 1000);
+            List<List<Long>> partitionsIds = Lists.partition(ids, PARTITION_SIZE);
             for (List<Long> partition : partitionsIds) {
                 skdEndringsmeldingRepository.deleteByIdIn(partition);
             }
@@ -82,6 +83,10 @@ public class SkdEndringsmeldingService {
 
     public List<Long> finnAlleMeldingIderMedFoedselsnummer(Long gruppeId, List<String> identer) {
         SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = gruppeRepository.findById(gruppeId);
-        return new ArrayList<>(skdEndringsmeldingRepository.findAllIdsBy(skdEndringsmeldingGruppe, identer));
+        List<Long> meldingIder = new ArrayList<>(identer.size());
+        for (List<String> partisjonerteIdenter : Lists.partition(identer, PARTITION_SIZE)) {
+            meldingIder.addAll(skdEndringsmeldingRepository.findAllIdsBy(skdEndringsmeldingGruppe, partisjonerteIdenter));
+        }
+        return meldingIder;
     }
 }
