@@ -2,19 +2,7 @@ package no.nav.tps.forvalteren.service.command.avspiller;
 
 import static java.lang.Long.valueOf;
 import static java.time.LocalDateTime.now;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertIdenter;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertKildeSystem;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.convertMeldingType;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractBuffernumber;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractBuffersize;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractDateFrom;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractDateTo;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractList;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractTimeFrom;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.extractTimeeTo;
-import static no.nav.tps.forvalteren.service.command.avspiller.AvspillerConvertUtils.unpackPeriode;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspillerProgress;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
@@ -33,6 +22,7 @@ import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
 import no.nav.tps.forvalteren.domain.rs.TypeOgAntall;
 import no.nav.tps.forvalteren.domain.rs.TypeOppslag;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsDistribusjonsmeldingService;
 import no.nav.tps.xjc.ctg.domain.s302.EnkeltMeldingType;
 import no.nav.tps.xjc.ctg.domain.s302.HendelsedataFraTpsS302;
@@ -44,7 +34,8 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsServiceRutineType;
 @EnableAsync
 public class AvspillerService {
 
-    private static final String NO_DATA = "Ingen data for miljø %s i periode fra %s ble funnet";
+    private static final String NO_DATA_KEY = "avspiller.request.nodata";
+    private static final String MORE_MSG_AVAIL = "S302006I";
 
     @Autowired
     private TpsDistribusjonsmeldingService tpsDistribusjonsmeldingService;
@@ -55,49 +46,59 @@ public class AvspillerService {
     @Autowired
     private AvspillerDaoService avspillerDaoService;
 
-    public RsTyperOgKilderResponse getTyperOgKilder(Meldingsformat format, String periode, String miljoe) {
+    @Autowired
+    private MessageProvider messageProvider;
 
-        TpsPersonData fraTps = getHendelsedataFraTps(miljoe, periode, format, null, null, null, null);
+    public RsTyperOgKilderResponse getTyperOgKilder(RsAvspillerRequest request) {
 
-        if (nonNull(fraTps.getTpsSvar().getHendelseDataS302())) {
-            HendelsedataFraTpsS302 response = fraTps.getTpsSvar().getHendelseDataS302().getRespons();
+        RsTyperOgKilderResponse typerOgKilderResponse = new RsTyperOgKilderResponse();
 
-            RsTyperOgKilderResponse typerOgKilderResponse = new RsTyperOgKilderResponse();
-            if (nonNull(response.getOversiktKilde())) {
-                response.getOversiktHendelse().getEnoversiktHendelse().forEach(hendelseType ->
-                        typerOgKilderResponse.getTyper().add(TypeOgAntall.builder()
-                                .antall(valueOf(hendelseType.getOversiktMeldingTypeAntall()))
-                                .type(hendelseType.getOversiktMeldingType())
-                                .build())
-                );
+        request.setBufferSize(60L);
+        Long pageNumber = 0L;
+        TpsPersonData fraTps;
+        do {
+            request.setPageNumber(++pageNumber);
+            fraTps = getHendelsedataFraTps(request, TypeOppslag.O);
+
+            if (nonNull(fraTps.getTpsSvar().getHendelseDataS302())) {
+                HendelsedataFraTpsS302 response = fraTps.getTpsSvar().getHendelseDataS302().getRespons();
+
+                if (nonNull(response.getOversiktKilde())) {
+                    response.getOversiktHendelse().getEnoversiktHendelse().forEach(hendelseType ->
+                            typerOgKilderResponse.getTyper().add(TypeOgAntall.builder()
+                                    .antall(valueOf(hendelseType.getOversiktMeldingTypeAntall()))
+                                    .type(hendelseType.getOversiktMeldingType())
+                                    .build())
+                    );
+                }
+                if (nonNull(response.getOversiktKilde())) {
+                    response.getOversiktKilde().getEnoversiktKilde().forEach(kildeType ->
+                            typerOgKilderResponse.getKilder().add(TypeOgAntall.builder()
+                                    .antall(valueOf(kildeType.getOversiktKildeSystemAntall()))
+                                    .type(kildeType.getOversiktKildeSystem())
+                                    .build())
+                    );
+                }
+            } else {
+                throw new NotFoundException(messageProvider.get(NO_DATA_KEY, request.getMiljoeFra(), request.getDatoFra(), request.getDatoTil()));
             }
-            if (nonNull(response.getOversiktKilde())) {
-                response.getOversiktKilde().getEnoversiktKilde().forEach(kildeType ->
-                        typerOgKilderResponse.getKilder().add(TypeOgAntall.builder()
-                                .antall(valueOf(kildeType.getOversiktKildeSystemAntall()))
-                                .type(kildeType.getOversiktKildeSystem())
-                                .build())
-                );
-            }
-
-            return typerOgKilderResponse;
-
-        } else {
-
-            throw new NotFoundException(String.format(NO_DATA, miljoe, unpackPeriode(periode)));
         }
+        while (MORE_MSG_AVAIL.equals(fraTps.getTpsSvar().getSvarStatus().getReturMelding()));
+
+        return typerOgKilderResponse;
     }
 
-    public RsMeldingerResponse getMeldinger(String miljoe, String periode, Meldingsformat format, String meldingstyper, String kilder, String identer, String buffer) {
+    public RsMeldingerResponse getMeldinger(RsAvspillerRequest request) {
 
-        TpsPersonData fraTps = getHendelsedataFraTps(miljoe, periode, format, meldingstyper, kilder, identer, buffer);
+        TpsPersonData fraTps = getHendelsedataFraTps(request, TypeOppslag.L);
 
-        if (nonNull(fraTps.getTpsSvar().getHendelseDataS302())) {
+        if (nonNull(fraTps.getTpsSvar().getHendelseDataS302()) &&
+                valueOf(fraTps.getTpsSvar().getHendelseDataS302().getRespons().getMeldingerTotalt()) > 0) {
             return mapperFacade.map(fraTps.getTpsSvar().getHendelseDataS302().getRespons(), RsMeldingerResponse.class);
 
         } else {
 
-            throw new NotFoundException(String.format(NO_DATA, miljoe, unpackPeriode(periode)));
+            throw new NotFoundException(messageProvider.get(NO_DATA_KEY, request.getMiljoeFra(), request.getDatoFra(), request.getDatoTil()));
         }
     }
 
@@ -131,12 +132,12 @@ public class AvspillerService {
                         (valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getSideNummer()) - 1) *
                                 valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getAntallRaderprSide()) + i + 1,
                         enkeltMeldingType,
-                        status);
+                        decodeStatus(status));
 
-                log.info(status);
+                log.info(decodeStatus(status));
             }
         }
-        while ("S302006I".equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()));
+        while (MORE_MSG_AVAIL.equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()));
 
         avspillerStatus.setFerdig(true);
         logProgress(avspillerStatus, personListe);
@@ -151,14 +152,28 @@ public class AvspillerService {
     }
 
     private TpsAvspillerProgress logProgress(TpsAvspiller avspillerStatus, Long indeksNr, EnkeltMeldingType enkeltMelding, String sendStatus) {
+
         return avspillerDaoService.save(
                 TpsAvspillerProgress.builder()
                         .indeksNr(indeksNr)
                         .meldingNr(valueOf(enkeltMelding.getMNr()))
                         .bestillingId(avspillerStatus.getBestillingId())
                         .tidspunkt(now())
-                        .sendStatus(isBlank(sendStatus) ? "Sending OK, ukjent mottakstatus" : sendStatus)
+                        .sendStatus(sendStatus)
                         .build());
+    }
+
+    private static String decodeStatus(String status) {
+
+        if (isBlank(status)) {
+            return "Sending OK, ukjent mottakstatus";
+        } else if (status.contains("00;") || (status.contains("04;"))) {
+            return "OK";
+        } else if (status.contains("08;") || (status.contains("12;"))) {
+            return "FEIL: " + status.substring(3).trim();
+        } else {
+            return "FEIL: " + status.trim();
+        }
     }
 
     private TpsPersonData getDetaljertMelding(RsAvspillerRequest request, String meldingNummer) {
@@ -170,24 +185,28 @@ public class AvspillerService {
         return tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, request.getMiljoeFra());
     }
 
-    private TpsPersonData getHendelsedataFraTps(
-            String miljoe, String periode, Meldingsformat format, String meldingstyper, String kilder, String identer, String buffer) {
+    private TpsPersonData getHendelsedataFraTps(RsAvspillerRequest request, TypeOppslag typeOppslag) {
 
-        TpsServiceRutineType tpsServiceRutineType = new TpsServiceRutineType();
-        tpsServiceRutineType.setTypeOppslag(isNull(buffer) ? TypeOppslag.O.name() : TypeOppslag.L.name());
-        tpsServiceRutineType.setMeldingFormat(format.getMeldingFormat());
-        tpsServiceRutineType.setFraDato(extractDateFrom(periode));
-        tpsServiceRutineType.setFraTid(extractTimeFrom(periode));
-        tpsServiceRutineType.setTilDato(extractDateTo(periode));
-        tpsServiceRutineType.setTilTid(extractTimeeTo(periode));
-        tpsServiceRutineType.setSideNummer(extractBuffernumber(buffer));
-        tpsServiceRutineType.setAntallRaderprSide(extractBuffersize(buffer));
-        tpsServiceRutineType.setMeldingType(convertMeldingType(extractList(meldingstyper)));
-        tpsServiceRutineType.setKildeSystem(convertKildeSystem(extractList(kilder)));
-        tpsServiceRutineType.setFnr(convertIdenter(extractList(identer)));
+        TpsPersonData tpsPersonData = mapperFacade.map(request, TpsPersonData.class);
+        tpsPersonData.getTpsServiceRutine().setTypeOppslag(typeOppslag.name());
+
+        return tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, request.getMiljoeFra());
+    }
+
+    public String showRequest(String miljoe, Meldingsformat format, String meldingnr) {
 
         TpsPersonData tpsPersonData = new TpsPersonData();
+        TpsServiceRutineType tpsServiceRutineType = new TpsServiceRutineType();
+        tpsServiceRutineType.setMeldingFormat(format.getMeldingFormat());
+        tpsServiceRutineType.setTypeOppslag(TypeOppslag.H.name());
+        tpsServiceRutineType.setMeldingNummer(meldingnr);
         tpsPersonData.setTpsServiceRutine(tpsServiceRutineType);
-        return tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, miljoe);
+
+        try {
+            TpsPersonData response = tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, miljoe);
+            return response.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj();
+        } catch (TpsfFunctionalException e) {
+            return e.getMessage();
+        }
     }
 }

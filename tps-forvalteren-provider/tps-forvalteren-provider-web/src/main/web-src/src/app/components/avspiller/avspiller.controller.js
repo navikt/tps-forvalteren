@@ -8,7 +8,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.tps = 'Ajourholdsmelding';
 
             var pagesize = 25;
-            var buffersize = 300;
+            var buffersize = 150;
             var stopTime;
 
             $scope.tpsmeldinger = {};
@@ -91,7 +91,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.pager.pages.push({pagenum: pagenum + offset + 2, display: display(pagenum, offset + 2)});
                 $scope.pager.pages.push({pagenum: pagenum + offset + 3, display: display(pagenum, offset + 3)});
                 $scope.pager.pages.push({pagenum: pagenum + offset + 4, display: display(pagenum, offset + 4)});
-                $scope.pager.viser = $scope.pager.pages[0];
+                $scope.pager.viser = $scope.pager.pages[-offset];
 
                 $scope.pager.currentPage = pagenum;
                 $scope.meldinger = [];
@@ -129,11 +129,14 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             function error(disrupt) {
                 utilsService.showAlertError(disrupt);
                 $scope.loading = false;
+                $scope.meldinger = undefined;
             }
 
             $scope.checkOversikt = function () {
                 $scope.periodeFra = $scope.request.periodeFra || $scope.startOfEra;
                 $scope.periodeTil = $scope.request.periodeTil || $scope.today;
+                $scope.meldinger = undefined;
+                $scope.identer = [];
                 if ($scope.request.miljoe && ((!$scope.request.periodeFra && !$scope.request.periodeTil) || ($scope.request.periodeFra && $scope.request.periodeTil))) {
                     $scope.loading = true;
                     avspillerService.getTyperOgKilder($scope.request)
@@ -146,6 +149,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             $scope.submit = function () {
+                $scope.status = undefined;
                 $scope.request.buffersize = buffersize;
                 $scope.request.buffernumber = 0;
                 $scope.pager.request = angular.copy($scope.request);
@@ -161,6 +165,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             $scope.sendTilTps = function () {
+                $scope.status = undefined;
                 avspillerService.sendMeldinger($scope.request, $scope.target)
                     .then(function (data) {
                         $scope.completeProgress = 0;
@@ -170,12 +175,43 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     }, error);
             };
 
+            $scope.getMelding = function (meldingNr) {
+                if (meldingNr) {
+                    avspillerService.getMelding({miljoe: $scope.request.miljoe, format: $scope.request.format, meldingnr: meldingNr})
+                        .then(function (data) {
+                            $mdDialog.show($mdDialog.confirm()
+                                .title('Detaljert melding')
+                                .textContent(atob(data.data))
+                                .ariaLabel('Detaljert melding fra TPS')
+                                .clickOutsideToClose(true)
+                                .ok('OK')
+                            );
+                        });
+                }
+            };
+
+            $scope.addIdent = function (ident) {
+
+                if ($scope.identer.indexOf(ident) === -1) {
+                    $scope.identer.push(ident);
+                } else {
+                    $scope.identer.splice($scope.identer.indexOf(ident), 1);
+                }
+                $scope.request.identer = $scope.identer.join(',');
+                $scope.requestForm.$dirty = true;
+            };
+
+            $scope.changeIdenter = function() {
+
+                $scope.identer = $scope.request.identer ? $scope.request.identer.split(',') : [];
+            };
+
             function checkStatus() {
                 avspillerService.getStatus($scope.status.bestillingId)
                     .then(function (data) {
                         $scope.status = data;
-                        $scope.completeProgress = Math.floor($scope.status.progressList.length / $scope.status.antall * 100);
-                        if ($scope.status.antall === $scope.status.progressList.length) {
+                        $scope.completeProgress = Math.floor($scope.status.progressAntall / $scope.status.antall * 100);
+                        if ($scope.status.antall === $scope.status.progressAntall) {
                             $interval.cancel(stopTime);
                             $scope.progress = false;
                             $mdDialog.show($mdDialog.confirm()
@@ -186,7 +222,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                             );
                         }
                     })
-            };
+            }
 
             function sortEnvironmentsForDisplay(environments) {
                 var filteredEnvironments = {};

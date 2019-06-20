@@ -50,6 +50,13 @@ angular.module('tps-forvalteren.service')
                 })
         };
 
+        self.getMelding = function(request) {
+            return $http.get(url + '/melding?miljoe=' + request.miljoe + '&format=' + request.format + '&meldingnr=' + request.meldingnr)
+                .then(function (response) {
+                    return response.data;
+                })
+        };
+
         function prepareBasicParams(request) {
             return '?miljoe=' + request.miljoe +
                 '&format=' + request.format +

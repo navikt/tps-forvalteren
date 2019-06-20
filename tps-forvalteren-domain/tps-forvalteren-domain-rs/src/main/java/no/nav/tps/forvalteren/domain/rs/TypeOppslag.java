@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum TypeOppslag {
     O("Oversikt hendelsestyper og Kilder (Aggregert)"),
-    L("Hent liste med tilgjengelige hendelsesmeldinger"),
-    H("Hent en enkelt hendelsesmelding som skal spilles av");
+    L("Liste med tilgjengelige hendelsesmeldinger"),
+    H("Hendelsesmelding som skal spilles av");
 
     TypeOppslag(String description) {
         this.description = description;

@@ -7,7 +7,7 @@
             <div layout="row" class="avspiller-row">
                 <md-input-container flex="10" class="md-no-flex">
                     <label>Miljø</label>
-                    <md-select ng-model="request.miljoe" required ng-change="checkOversikt()">
+                    <md-select ng-model="request.miljoe" required ng-change="checkOversikt()" ng-disabled="progress">
                         <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                     </md-select>
                 </md-input-container>
@@ -19,7 +19,8 @@
                                    md-current-view="year"
                                    md-min-date="startOfEra"
                                    md-max-date="periodeTil"
-                                   ng-change="checkOversikt()">
+                                   ng-change="checkOversikt()"
+                                   ng-disabled="progress">
                     </md-datepicker>
                     <div ng-messages="requestForm.periodeFra.$error">
                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
@@ -35,7 +36,8 @@
                                    md-current-view="year"
                                    md-min-date="periodeFra"
                                    md-max-date="today"
-                                   ng-change="checkOversikt()">
+                                   ng-change="checkOversikt()"
+                                   ng-disabled="progress">
                     </md-datepicker>
                     <div ng-messages="requestForm.periodeTil.$error">
                         <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
@@ -47,14 +49,14 @@
                 <div flex="5"></div>
                 <div flex="10" style="margin-right: -45px; margin-top:30px; font-size: smaller">Format:</div>
                 <div class="avspiller-radio-gruppe" flex style="margin-top: 28px;">
-                    <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()">
+                    <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()" ng-disabled="progress">
                         <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Distribusjon</md-radio-button>
                         <md-radio-button value="{{tps}}">Ajourhold</md-radio-button>
                     </md-radio-group>
                 </div>
                 <md-button style="height: 20px; margin-top: 60px;"
                            type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                           ng-disabled="requestForm.$invalid">
+                           ng-disabled="requestForm.$invalid || progress">
                     Hent
                 </md-button>
                 <div flex="5"></div>
@@ -63,7 +65,8 @@
                 <md-input-container class="tps-vk-input-container" flex="20"
                                     aria-label="Hendelse(r)">
                     <label>Meldingstype(r)</label>
-                    <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)" multiple="true" ng-disabled="disableTyperOgKilder">
+                    <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)"
+                               multiple="true" ng-change="submit()" ng-disabled="disableTyperOgKilder">
                         <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -71,7 +74,8 @@
                 <md-input-container class="tps-vk-input-container" flex="20"
                                     aria-label="Kilde(r)">
                     <label>Kilde(r)</label>
-                    <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true" ng-disabled="disableTyperOgKilder">
+                    <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true"
+                               ng-change="submit()" ng-disabled="disableTyperOgKilder">
                         <md-option ng-value="kilde.type" ng-repeat="kilde in kilder">{{kilde.type + getAntall(kilde.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -81,7 +85,8 @@
                     <label>Liste av identer</label>
                     <input name="identer" ng-model="request.identer" class="testdata-ident-liste"
                            placeholder="Kopier inn liste av identer"
-                           ng-pattern="/^(\d{11}[\W\s]*)+$/"></input>
+                           ng-pattern="/^(\d{11}[\W\s]*)+$/"
+                           ng-change="changeIdenter()"></input>
                     <div ng-messages="requestForm.identer.$error"
                          ng-show="requestForm.identer.$dirty">
                         <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
@@ -103,9 +108,8 @@
     <!-- Resulting Response -->
     <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger">
         <form name="responseForm" class="top transparent response-form">
-
             <div layout="row" layout-align="end end" class="pagination">
-                <span style="margin-right: 15px; margin-bottom: 6px;">Viser linjenr {{pager.viser.display}} av {{pager.totalt}}</span>
+                <span style="margin-right: 15px; margin-bottom: 6px;">Viser {{pager.viser.display}} av {{pager.totalt}}</span>
                 <li ng-class="{disabled:pager.currentPage === 1 || disable}">
                     <a ng-click="setPage(1)">&lt;&lt;</a>
                 </li>
@@ -133,16 +137,28 @@
                 <div flex="5">Kilde</div>
                 <div flex="10">Ident</div>
             </h3>
-            <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe">
-
+            <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe"
+                 ng-class="{'ident-included': identer.length > 0 && identer.indexOf(message.ident) !== -1,
+                  'ident-excluded': identer.length > 0 && identer.indexOf(message.ident) === -1}">
                 <div flex="10" align="end">{{message.index}}</div>
-                <div flex="15" align="end">{{message.meldingNummer}}</div>
+                <div flex="15" align="end" class="animate-selection"
+                     title="Klikk for å vise meldingsinnhold"
+                     ng-click="getMelding(message.meldingNummer)">{{message.meldingNummer}}
+                </div>
                 <div flex="5"></div>
                 <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss.sss'}}</div>
                 <div flex="25">{{message.hendelseType }}</div>
                 <div flex="5">{{message.systemkilde }}</div>
-                <div flex="10">{{message.ident}}</div>
-                <div flex="5">{{message.sendtStatus}}</div>
+                <div flex="10" class="animate-selection" ng-click="addIdent(message.ident)"
+                     title="Klikk for å legge til eller ta bort fødselsnr">{{message.ident}}</div>
+                <div flex="5" align="end" title="{{status.progressMap[message.index].sendStatus}}">
+                    <a> <img ng-show="status.progressMap[message.index].sendStatus === 'OK'"
+                             src="assets/icons/baseline-done-24px.svg" class="status-icon"></a>
+                    <a ng-show="status.progressMap[message.index].sendStatus.includes('Sending OK')">
+                        <img src="assets/icons/baseline-done-24px.svg" class="status-icon">-</a>
+                    <a> <img ng-show="status.progressMap[message.index].sendStatus.includes('FEIL')"
+                             src="assets/icons/baseline-error_outline-24px.svg" class="status-icon"></a>
+                </div>
             </div>
         </form>
 
@@ -169,7 +185,7 @@
         </form>
 
         <div layout="row">
-            <md-progress-linear md-mode="determinate" class="avspiller-progress" value="{{completeProgress}}" ng-show="progress"></md-progress-linear>
+            <md-progress-linear md-mode="determinate" class="avspiller-progress" value="{{completeProgress}}" ng-show="true"></md-progress-linear>
         </div>
     </md-content>
 </div>

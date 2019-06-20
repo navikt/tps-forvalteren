@@ -28,7 +28,8 @@ public class RsAvspillerRequest {
     private List<String> identer;
     private String miljoeTil;
     private String queue;
-    private String fasitAlias;
+    private Long pageNumber;
+    private Long bufferSize;
 
     public List<String> getTyper() {
         if (isNull(typer)) {

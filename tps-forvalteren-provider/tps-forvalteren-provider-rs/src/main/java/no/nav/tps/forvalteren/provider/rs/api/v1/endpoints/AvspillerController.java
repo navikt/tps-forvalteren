@@ -1,11 +1,18 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static java.lang.String.format;
+import static java.time.LocalDateTime.parse;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Ajourholdsmelding;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Distribusjonsmelding;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.assertj.core.util.Lists.newArrayList;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
@@ -24,11 +32,13 @@ import no.nav.tps.forvalteren.domain.rs.Meldingskoe;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
+import no.nav.tps.forvalteren.domain.rs.skd.RsTpsAvspiller;
 import no.nav.tps.forvalteren.service.command.avspiller.AvspillerDaoService;
 import no.nav.tps.forvalteren.service.command.avspiller.AvspillerService;
 
 @RestController
 @RequestMapping("api/v1/avspiller")
+@ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class AvspillerController {
 
     private static final String SKD_MELDING = "TPS.ENDRINGS.MELDING";
@@ -43,18 +53,27 @@ public class AvspillerController {
     @Autowired
     private AvspillerDaoService avspillerDaoService;
 
+    @Autowired
+    private MapperFacade mapperFacade;
+
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
-            @ApiParam("YYYY-MM-DD HH:MM $ YYYY-MM-DD HH:MM")
+            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss")
             @RequestParam(value = "periode", required = false) String periode,
             @RequestParam(value = "format") Meldingsformat format) {
 
-        return avspillerService.getTyperOgKilder(format, periode, miljoe);
+        String[] startStop = isNotBlank(periode) ? periode.split("\\$") : null;
+        return avspillerService.getTyperOgKilder(RsAvspillerRequest.builder()
+                .miljoeFra(miljoe)
+                .datoFra(nonNull(startStop) ? parse(startStop[0]) : null)
+                .datoTil(nonNull(startStop) && startStop.length > 1 ? parse(startStop[1]) : null)
+                .format(format)
+                .build());
     }
 
     @GetMapping("/meldinger")
     public RsMeldingerResponse getMeldinger(@RequestParam("miljoe") String miljoe,
-            @ApiParam("YYYY-MM-DD HH:MM $ YYYY-MM-DD HH:MM")
+            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss")
             @RequestParam(value = "periode", required = false) String periode,
             @RequestParam(value = "format") Meldingsformat format,
             @RequestParam(value = "typer", required = false) String meldingstyper,
@@ -63,7 +82,19 @@ public class AvspillerController {
             @ApiParam("bufferNumber $ bufferSize")
             @RequestParam(value = "buffer", required = false) String buffer) {
 
-        return avspillerService.getMeldinger(miljoe, periode, format, meldingstyper, kilder, identer, buffer);
+        String[] startStop = isNotBlank(periode) ? periode.split("\\$") : null;
+        String[] bufferParams = isNotBlank(buffer) ? buffer.split("\\$") : null;
+        return avspillerService.getMeldinger(RsAvspillerRequest.builder()
+                .miljoeFra(miljoe)
+                .datoFra(nonNull(startStop) ? parse(startStop[0]) : null)
+                .datoTil(nonNull(startStop) && startStop.length > 1 ? parse(startStop[1]) : null)
+                .format(format)
+                .typer(isNotBlank(meldingstyper) ? newArrayList(meldingstyper.split(",")) : null)
+                .kilder(isNotBlank(kilder) ? newArrayList(kilder.split(",")) : null)
+                .identer(isNotBlank(identer) ? newArrayList(identer.split(",")) : null)
+                .pageNumber(nonNull(bufferParams) ? Long.valueOf(bufferParams[0]) : null)
+                .bufferSize(nonNull(bufferParams) && bufferParams.length > 1 ? Long.valueOf(bufferParams[1]) : null)
+                .build());
     }
 
     @PostMapping("/meldinger")
@@ -93,7 +124,7 @@ public class AvspillerController {
 
         if (format == Distribusjonsmelding) {
             queues.add(Meldingskoe.builder()
-                    .koenavn(String.format("QA.%s_412.TPSDISTRIBUSJON_FS03", miljoe.contains("u") ? "D8" : miljoe.toUpperCase()))
+                    .koenavn(format("QA.%s_412.TPSDISTRIBUSJON_FS03", miljoe.contains("u") ? "D8" : miljoe.toUpperCase()))
                     .build());
         }
 
@@ -101,8 +132,17 @@ public class AvspillerController {
     }
 
     @GetMapping("/statuser")
-    public TpsAvspiller getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
+    public RsTpsAvspiller getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
 
-        return avspillerDaoService.getStatus(bestillingId);
+        TpsAvspiller avspiller = avspillerDaoService.getStatus(bestillingId);
+        return mapperFacade.map(avspiller, RsTpsAvspiller.class);
+    }
+
+    @GetMapping("/melding")
+    public String showRequest(@RequestParam(value = "miljoe") String miljoe,
+            @RequestParam(value = "format", required = false) Meldingsformat format,
+            @RequestParam(value = "meldingnr", required = false) String meldingnr) {
+
+        return format("{\"data\": \"%s\"}", Base64.getEncoder().encodeToString(avspillerService.showRequest(miljoe, format, meldingnr).getBytes()));
     }
 }

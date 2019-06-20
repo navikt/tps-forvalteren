@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 import static java.lang.String.format;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.xjc.ctg.domain.s302.SRnavnType.FS_04_HENDELSE_OVERSIKT_O;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -15,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.DefaultSkdGetHeaderForSkdMelding;
 import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
@@ -24,6 +27,9 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 @Slf4j
 @Service
 public class TpsDistribusjonsmeldingService {
+
+    private static final long REQUEST_TIMEOUT = 30_000;
+    private static final String REQUEST_TIMEOUT_KEY = "avspiller.request.timeout";
 
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
@@ -37,11 +43,19 @@ public class TpsDistribusjonsmeldingService {
     @Autowired
     private DefaultSkdGetHeaderForSkdMelding skdGetHeaderForSkdMelding;
 
+    @Autowired
+    private MessageProvider messageProvider;
+
     public TpsPersonData getDistribusjonsmeldinger(TpsPersonData tpsPersonData, String environment) {
 
         setServiceRoutineMeta(tpsPersonData);
 
         String xmlResponse = sendTpsRequest(tpsPersonData, environment);
+
+        if (isBlank(xmlResponse)) {
+            throw new NotFoundException(messageProvider.get(REQUEST_TIMEOUT_KEY, environment,
+                    tpsPersonData.getTpsServiceRutine().getFraDato(), tpsPersonData.getTpsServiceRutine().getTilDato()));
+        }
 
         try {
             return (TpsPersonData) tpsDataS302Unmarshaller.unmarshal(new StringReader(xmlResponse));
@@ -58,9 +72,9 @@ public class TpsDistribusjonsmeldingService {
 
             return messageQueueConsumer.sendMessage(includeHeader ? skdGetHeaderForSkdMelding.prependHeader(message) : message, 100);
 
-        } catch (JMSException e) {
+        } catch (JMSException | RuntimeException e) {
             log.error(e.getMessage(), e);
-            throw new TpsfTechnicalException(format("Feil ved sending til TPS %s, se logg!", e.getMessage()), e);
+            return (format("Feil ved sending til TPS %s, se logg!", e.getMessage()));
         }
     }
 
@@ -71,7 +85,7 @@ public class TpsDistribusjonsmeldingService {
             Writer xmlWriter = new StringWriter();
             tpsDataS302Marshaller.marshal(tpsRequest, xmlWriter);
 
-            return messageQueueConsumer.sendMessage(xmlWriter.toString(), 30_000);
+            return messageQueueConsumer.sendMessage(xmlWriter.toString(), REQUEST_TIMEOUT);
 
         } catch (JMSException | JAXBException e) {
             log.error(e.getMessage(), e);
