@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
-import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.xjc.ctg.domain.s302.SRnavnType.FS_04_HENDELSE_OVERSIKT_O;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -30,6 +30,8 @@ public class TpsDistribusjonsmeldingService {
 
     private static final long REQUEST_TIMEOUT = 30_000;
     private static final String REQUEST_TIMEOUT_KEY = "avspiller.request.timeout";
+    private static final String XML_CONVERSION_ERROR = "avspiller.response.xml.conversion";
+    private static final String TPS_SEND_ERROR = "avspiller.request.tps.sending";
 
     @Autowired
     private MessageQueueServiceFactory messageQueueServiceFactory;
@@ -46,11 +48,11 @@ public class TpsDistribusjonsmeldingService {
     @Autowired
     private MessageProvider messageProvider;
 
-    public TpsPersonData getDistribusjonsmeldinger(TpsPersonData tpsPersonData, String environment) {
+    public TpsPersonData getDistribusjonsmeldinger(TpsPersonData tpsPersonData, String environment, Long timeout) {
 
         setServiceRoutineMeta(tpsPersonData);
 
-        String xmlResponse = sendTpsRequest(tpsPersonData, environment);
+        String xmlResponse = sendTpsRequest(tpsPersonData, environment, timeout);
 
         if (isBlank(xmlResponse)) {
             throw new NotFoundException(messageProvider.get(REQUEST_TIMEOUT_KEY, environment,
@@ -61,7 +63,7 @@ public class TpsDistribusjonsmeldingService {
             return (TpsPersonData) tpsDataS302Unmarshaller.unmarshal(new StringReader(xmlResponse));
         } catch (JAXBException e) {
             log.error(e.getMessage(), e);
-            throw new TpsfTechnicalException(format("Feil ved konvertering av XML-melding fra TPS. %s", e.getMessage()));
+            throw new TpsfTechnicalException(messageProvider.get(XML_CONVERSION_ERROR, e.getMessage()));
         }
     }
 
@@ -74,22 +76,22 @@ public class TpsDistribusjonsmeldingService {
 
         } catch (JMSException | RuntimeException e) {
             log.error(e.getMessage(), e);
-            return (format("Feil ved sending til TPS %s, se logg!", e.getMessage()));
+            return (messageProvider.get(TPS_SEND_ERROR, e.getMessage()));
         }
     }
 
-    private String sendTpsRequest(TpsPersonData tpsRequest, String env) {
+    private String sendTpsRequest(TpsPersonData tpsRequest, String env, Long timeout) {
         try {
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false);
 
             Writer xmlWriter = new StringWriter();
             tpsDataS302Marshaller.marshal(tpsRequest, xmlWriter);
 
-            return messageQueueConsumer.sendMessage(xmlWriter.toString(), REQUEST_TIMEOUT);
+            return messageQueueConsumer.sendMessage(xmlWriter.toString(), nonNull(timeout) ? timeout * 1000 : REQUEST_TIMEOUT);
 
         } catch (JMSException | JAXBException e) {
             log.error(e.getMessage(), e);
-            throw new TpsfTechnicalException(format("Feil ved sending til TPS %s, se logg!", e.getMessage()), e);
+            throw new TpsfTechnicalException(messageProvider.get(TPS_SEND_ERROR, e.getMessage()), e);
         }
     }
 

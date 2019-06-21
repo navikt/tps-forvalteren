@@ -50,7 +50,7 @@ public class TpsDistribusjonsmeldingServiceTest {
         when(messageQueueServiceFactory.createMessageQueueConsumer(ENV, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false)).thenReturn(messageQueueConsumer);
         when(messageQueueConsumer.sendMessage(anyString(), anyLong())).thenReturn("<xml />");
 
-        tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, ENV);
+        tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, ENV, 1L);
 
         verify(tpsDataS302Marshaller).marshal(eq(tpsPersonData), any(StringWriter.class));
         verify(tpsDataS302Unmarshaller).unmarshal(any(StringReader.class));

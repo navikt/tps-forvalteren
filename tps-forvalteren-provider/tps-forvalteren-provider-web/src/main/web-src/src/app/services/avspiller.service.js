@@ -66,7 +66,8 @@ angular.module('tps-forvalteren.service')
         function prepareBasicParams(request) {
             return '?miljoe=' + request.miljoe +
                 '&format=' + request.format +
-                (request.periodeFra ? '&periode=' + date2String(request.periodeFra) + '$' + date2String(request.periodeTil) : '');
+                (request.periodeFra ? '&periode=' + date2String(request.periodeFra) + '$' + date2String(request.periodeTil) : '$') +
+                (request.timeout ? '$' + request.timeout : '');
         }
 
         function prepareOptionalParams(request) {

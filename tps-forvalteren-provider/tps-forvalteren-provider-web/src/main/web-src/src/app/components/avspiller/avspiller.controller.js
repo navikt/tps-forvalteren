@@ -116,7 +116,6 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.pager.viser = $scope.pager.pages[-offset];
 
                 $scope.pager.currentPage = pagenum;
-                $scope.meldinger = [];
 
                 var buffernumber = determineTpsBuffer($scope.pager.request.buffersize, pagenum);
                 if (buffernumber != $scope.pager.request.buffernumber) {
@@ -125,10 +124,12 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     avspillerService.getMeldinger($scope.pager.request)
                         .then(function (data) {
                             lagreMeldinger(data);
+                            $scope.meldinger = [];
                             kopierPage(pagenum);
                             $scope.loading2 = false;
                         }, error);
                 } else {
+                    $scope.meldinger = [];
                     kopierPage(pagenum);
                 }
             }
@@ -167,6 +168,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.identer = [];
                 if ($scope.request.miljoe && ((!$scope.request.periodeFra && !$scope.request.periodeTil) || ($scope.request.periodeFra && $scope.request.periodeTil))) {
                     $scope.loading = true;
+                    $scope.request.timeout = $scope.timeout;
                     avspillerService.getTyperOgKilder($scope.request)
                         .then(oversiktOk, error);
                 }
@@ -194,6 +196,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.status = undefined;
                 $scope.request.buffersize = buffersize;
                 $scope.request.buffernumber = 0;
+                $scope.request.timeout = $scope.timeout;
                 $scope.pager.request = angular.copy($scope.request);
                 avspillerService.getMeldinger($scope.request)
                     .then(meldingerOk, error);
@@ -252,14 +255,16 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 avspillerService.cancelSendMeldinger($scope.status.bestillingId)
                     .then(function (data) {
                         $scope.status = data;
-                        $interval.cancel(stopTime);
                         $scope.progress = false;
+                        $interval.cancel(stopTime);
                         $mdDialog.show($mdDialog.confirm()
                             .title('Avbrudd Bekreftelse')
                             .textContent("Sending til Tps ble avbrutt av bruker")
                             .ariaLabel('Avbrudd bekreftelse')
                             .ok('OK')
-                        );
+                        ).then(function () {
+                            checkStatus()
+                        });
                     });
             };
 
@@ -268,7 +273,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     .then(function (data) {
                         $scope.status = data;
                         $scope.completeProgress = Math.floor($scope.status.progressAntall / $scope.status.antall * 100);
-                        if ($scope.status.ferdig) {
+                        if ($scope.status.progressAntall === $scope.status.antall) {
                             $interval.cancel(stopTime);
                             $scope.progress = false;
                             $mdDialog.show($mdDialog.confirm()

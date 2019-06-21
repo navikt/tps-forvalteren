@@ -30,6 +30,7 @@ public class RsAvspillerRequest {
     private String queue;
     private Long pageNumber;
     private Long bufferSize;
+    private Long timeout;
 
     public List<String> getTyper() {
         if (isNull(typer)) {

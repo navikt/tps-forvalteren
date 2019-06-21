@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.parse;
 import static java.util.Objects.nonNull;
@@ -67,6 +68,7 @@ public class AvspillerController {
                 .miljoeFra(miljoe)
                 .datoFra(nonNull(startStop) ? parse(startStop[0]) : null)
                 .datoTil(nonNull(startStop) && startStop.length > 1 ? parse(startStop[1]) : null)
+                .timeout(nonNull(startStop) && startStop.length > 2 ? valueOf(startStop[2]) : null)
                 .format(format)
                 .build());
     }
@@ -88,12 +90,13 @@ public class AvspillerController {
                 .miljoeFra(miljoe)
                 .datoFra(nonNull(startStop) ? parse(startStop[0]) : null)
                 .datoTil(nonNull(startStop) && startStop.length > 1 ? parse(startStop[1]) : null)
+                .timeout(nonNull(startStop) && startStop.length > 2 ? valueOf(startStop[2]) : null)
                 .format(format)
                 .typer(isNotBlank(meldingstyper) ? newArrayList(meldingstyper.split(",")) : null)
                 .kilder(isNotBlank(kilder) ? newArrayList(kilder.split(",")) : null)
                 .identer(isNotBlank(identer) ? newArrayList(identer.split(",")) : null)
-                .pageNumber(nonNull(bufferParams) ? Long.valueOf(bufferParams[0]) : null)
-                .bufferSize(nonNull(bufferParams) && bufferParams.length > 1 ? Long.valueOf(bufferParams[1]) : null)
+                .pageNumber(nonNull(bufferParams) ? valueOf(bufferParams[0]) : null)
+                .bufferSize(nonNull(bufferParams) && bufferParams.length > 1 ? valueOf(bufferParams[1]) : null)
                 .build());
     }
 

@@ -44,6 +44,7 @@ public class AvspillerServiceTest {
     private static final String OVERSIKT_KILDE_1 = "Kilde 1";
     private static final String ANTALL_MELDING_1 = "50";
     private static final String ANTALL_KILDE_1 = "100";
+    private static final Long TIMEOUT = 1L;
 
     @Mock
     private TpsDistribusjonsmeldingService tpsDistribusjonsmeldingService;
@@ -63,14 +64,15 @@ public class AvspillerServiceTest {
         ArgumentCaptor<TpsPersonData> argumentCaptor = ArgumentCaptor.forClass(TpsPersonData.class);
 
         when(mapperFacade.map(any(RsAvspillerRequest.class), eq(TpsPersonData.class))).thenReturn(buildTpsPersonData());
-        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT))).thenReturn(buildTpsPersonData());
+        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT), eq(TIMEOUT))).thenReturn(buildTpsPersonData());
 
         RsTyperOgKilderResponse typerOgKilderResponse = avspillerService.getTyperOgKilder(RsAvspillerRequest.builder()
                 .miljoeFra(ENVIRONMENT)
+                .timeout(TIMEOUT)
                 .build());
 
         verify(mapperFacade).map(any(RsAvspillerRequest.class), eq(TpsPersonData.class));
-        verify(tpsDistribusjonsmeldingService).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT));
+        verify(tpsDistribusjonsmeldingService).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT), eq(TIMEOUT));
 
         assertThat(argumentCaptor.getValue().getTpsServiceRutine().getTypeOppslag(), is(equalTo(TypeOppslag.O.name())));
         assertThat(typerOgKilderResponse.getKilder().get(0).getType(), is(equalTo(OVERSIKT_KILDE_1)));
@@ -85,14 +87,15 @@ public class AvspillerServiceTest {
         ArgumentCaptor<TpsPersonData> argumentCaptor = ArgumentCaptor.forClass(TpsPersonData.class);
 
         when(mapperFacade.map(any(RsAvspillerRequest.class), eq(TpsPersonData.class))).thenReturn(buildTpsPersonData());
-        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT))).thenReturn(buildTpsPersonData());
+        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT), eq(TIMEOUT))).thenReturn(buildTpsPersonData());
 
         avspillerService.getMeldinger(RsAvspillerRequest.builder()
                 .miljoeFra(ENVIRONMENT)
+                .timeout(TIMEOUT)
                 .build());
 
         verify(mapperFacade).map(any(RsAvspillerRequest.class), eq(TpsPersonData.class));
-        verify(tpsDistribusjonsmeldingService).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT));
+        verify(tpsDistribusjonsmeldingService).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT), eq(TIMEOUT));
 
         assertThat(argumentCaptor.getValue().getTpsServiceRutine().getTypeOppslag(), is(equalTo(TypeOppslag.L.name())));
     }
@@ -103,17 +106,18 @@ public class AvspillerServiceTest {
         ArgumentCaptor<TpsPersonData> argumentCaptor = ArgumentCaptor.forClass(TpsPersonData.class);
         RsAvspillerRequest request = RsAvspillerRequest.builder()
                 .miljoeFra(ENVIRONMENT)
+                .timeout(TIMEOUT)
                 .build();
         TpsAvspiller tpsAvspiller = new TpsAvspiller();
 
         when(mapperFacade.map(any(RsAvspillerRequest.class), eq(TpsPersonData.class))).thenReturn(buildTpsPersonData());
-        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT))).thenReturn(buildTpsPersonData());
+        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT), eq(TIMEOUT))).thenReturn(buildTpsPersonData());
         when(avspillerDaoService.save(any(TpsAvspiller.class))).thenReturn(tpsAvspiller);
 
         avspillerService.sendTilTps(request, tpsAvspiller);
 
         verify(mapperFacade, times(2)).map(any(RsAvspillerRequest.class), eq(TpsPersonData.class));
-        verify(tpsDistribusjonsmeldingService, times(2)).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT));
+        verify(tpsDistribusjonsmeldingService, times(2)).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT), eq(TIMEOUT));
         verify(avspillerDaoService, times(2)).save(any(TpsAvspiller.class));
 
         assertThat(argumentCaptor.getAllValues().get(1).getTpsServiceRutine().getTypeOppslag(), is(equalTo(TypeOppslag.H.name())));
@@ -124,11 +128,11 @@ public class AvspillerServiceTest {
     public void showRequest_OK() {
 
         ArgumentCaptor<TpsPersonData> argumentCaptor = ArgumentCaptor.forClass(TpsPersonData.class);
-        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT))).thenReturn(buildTpsPersonData());
+        when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT), eq(TIMEOUT))).thenReturn(buildTpsPersonData());
 
         avspillerService.showRequest(ENVIRONMENT, MELDING_FORMAT, MELDING_NR);
 
-        verify(tpsDistribusjonsmeldingService).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT));
+        verify(tpsDistribusjonsmeldingService).getDistribusjonsmeldinger(argumentCaptor.capture(), eq(ENVIRONMENT), eq(TIMEOUT));
 
         assertThat(argumentCaptor.getValue().getTpsServiceRutine().getMeldingFormat(), is(equalTo(MELDING_FORMAT.getMeldingFormat())));
         assertThat(argumentCaptor.getValue().getTpsServiceRutine().getMeldingNummer(), is(equalTo(MELDING_NR)));
