@@ -258,8 +258,8 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                         $scope.progress = false;
                         $interval.cancel(stopTime);
                         $mdDialog.show($mdDialog.confirm()
-                            .title('Avbrudd Bekreftelse')
-                            .textContent("Sending til Tps ble avbrutt av bruker")
+                            .title('Avbrutt Sending')
+                            .textContent("Sending til TPS ble avbrutt av bruker")
                             .ariaLabel('Avbrudd bekreftelse')
                             .ok('OK')
                         ).then(function () {

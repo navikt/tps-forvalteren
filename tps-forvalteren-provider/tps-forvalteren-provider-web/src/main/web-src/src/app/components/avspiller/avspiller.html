@@ -155,6 +155,7 @@
                 <div flex="25">Hendelse</div>
                 <div flex="5">Kilde</div>
                 <div flex="10">Ident</div>
+                <div flex="5">Sendt</div>
             </h3>
             <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe"
                  ng-class="{'ident-included': requestForm.$dirty && identer.length > 0 && identer.indexOf(message.ident) !== -1,
@@ -171,11 +172,12 @@
                 <div flex="10" class="animate-selection" ng-click="addIdent(message.ident)"
                      title="Klikk for å legge til eller ta bort fødselsnr">{{message.ident}}
                 </div>
-                <div flex="5" align="start" title="{{status.progressMap[message.index].sendStatus}}">
+                <div flex="5" align="center" title="{{status.progressMap[message.index].sendStatus}}"
+                     class="animate-selection" ng-show="status.progressMap[message.index]">
                     <a> <img ng-show="status.progressMap[message.index].sendStatus === 'OK'"
                              src="assets/icons/baseline-done-24px.svg" class="status-icon"></a>
                     <a ng-show="status.progressMap[message.index].sendStatus.includes('Sending OK')">
-                        <img src="assets/icons/baseline-done-24px.svg" class="status-icon">-</a>
+                        <img src="assets/icons/baseline-done-24px.svg" class="status-icon">*</a>
                     <a> <img ng-show="status.progressMap[message.index].sendStatus.includes('FEIL')"
                              src="assets/icons/baseline-error_outline-24px.svg" class="status-icon"></a>
                 </div>

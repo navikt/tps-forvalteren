@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -113,6 +114,7 @@ public class AvspillerServiceTest {
         when(mapperFacade.map(any(RsAvspillerRequest.class), eq(TpsPersonData.class))).thenReturn(buildTpsPersonData());
         when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT), eq(TIMEOUT))).thenReturn(buildTpsPersonData());
         when(avspillerDaoService.save(any(TpsAvspiller.class))).thenReturn(tpsAvspiller);
+        when(avspillerDaoService.getStatus(anyLong())).thenReturn(tpsAvspiller);
 
         avspillerService.sendTilTps(request, tpsAvspiller);
 
