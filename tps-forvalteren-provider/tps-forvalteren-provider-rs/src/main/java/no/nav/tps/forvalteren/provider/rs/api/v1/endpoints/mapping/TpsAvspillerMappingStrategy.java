@@ -1,9 +1,11 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.lang.Long.valueOf;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,7 +25,7 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 import no.nav.tps.xjc.ctg.domain.s302.TpsServiceRutineType;
 
 @Component
-public class TpsAvspillerRequestMappingStrategy implements MappingStrategy {
+public class TpsAvspillerMappingStrategy implements MappingStrategy {
 
     private static final String TIME_PATTERN = "HH:mm:ss";
 
@@ -35,19 +37,18 @@ public class TpsAvspillerRequestMappingStrategy implements MappingStrategy {
                             @Override
                             public void mapAtoB(RsAvspillerRequest request, TpsPersonData tpsPersonData, MappingContext context) {
 
-                                TpsServiceRutineType tpsServiceRutineType = new TpsServiceRutineType();
-                                tpsServiceRutineType.setMeldingFormat(request.getFormat().getMeldingFormat());
-                                tpsServiceRutineType.setFraDato(xtractDate(request.getDatoFra()));
-                                tpsServiceRutineType.setFraTid(xtractTime(request.getDatoFra()));
-                                tpsServiceRutineType.setTilDato(xtractDate(request.getDatoTil()));
-                                tpsServiceRutineType.setTilTid(xtractTime(request.getDatoTil()));
-                                tpsServiceRutineType.setMeldingType(convertMeldingType(request.getTyper()));
-                                tpsServiceRutineType.setKildeSystem(convertKildeSystem(request.getKilder()));
-                                tpsServiceRutineType.setFnr(convertIdenter(request.getIdenter()));
-                                tpsServiceRutineType.setSideNummer(request.getPageNumber().toString());
-                                tpsServiceRutineType.setAntallRaderprSide(request.getBufferSize().toString());
+                                tpsPersonData.setTpsServiceRutine(new TpsServiceRutineType());
 
-                                tpsPersonData.setTpsServiceRutine(tpsServiceRutineType);
+                                tpsPersonData.getTpsServiceRutine().setMeldingFormat(request.getFormat().getMeldingFormat());
+                                tpsPersonData.getTpsServiceRutine().setFraDato(xtractDate(request.getDatoFra()));
+                                tpsPersonData.getTpsServiceRutine().setFraTid(xtractTime(request.getDatoFra()));
+                                tpsPersonData.getTpsServiceRutine().setTilDato(xtractDate(request.getDatoTil()));
+                                tpsPersonData.getTpsServiceRutine().setTilTid(xtractTime(request.getDatoTil()));
+                                tpsPersonData.getTpsServiceRutine().setMeldingType(convertMeldingType(request.getTyper()));
+                                tpsPersonData.getTpsServiceRutine().setKildeSystem(convertKildeSystem(request.getKilder()));
+                                tpsPersonData.getTpsServiceRutine().setFnr(convertIdenter(request.getIdenter()));
+                                tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(request.getPageNumber() + 1));
+                                tpsPersonData.getTpsServiceRutine().setAntallRaderprSide(request.getBufferSize().toString());
                             }
                         })
 
@@ -81,12 +82,17 @@ public class TpsAvspillerRequestMappingStrategy implements MappingStrategy {
                                             .collect(Collectors.toList()));
                                 }
                             }
-
-                            private LocalDateTime convertToTimestamp(String timestamp) {
-                                return nonNull(timestamp) ? LocalDateTime.parse(timestamp) : null;
-                            }
                         })
                 .register();
+    }
+
+    private LocalDateTime convertToTimestamp(String timestamp) {
+        if (isNull(timestamp)) {
+            return null;
+        }
+        return timestamp.length() > 10 ?
+                LocalDateTime.parse(timestamp) :
+                LocalDate.parse(timestamp).atStartOfDay();
     }
 
     private static String xtractDate(LocalDateTime localDateTime) {

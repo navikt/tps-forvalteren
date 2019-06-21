@@ -3,9 +3,8 @@
     <div class="tps-vk-top md-whiteframe-z1" flex="20" layout="column">
 
         <form flex="100" name="requestForm" ng-submit="requestForm.$valid && submit()" layout-align="start start">
-
             <div layout="row" class="avspiller-row">
-                <md-input-container flex="10" class="md-no-flex">
+                <md-input-container flex="10">
                     <label>Miljø</label>
                     <md-select ng-model="request.miljoe" required ng-change="checkOversikt()" ng-disabled="progress">
                         <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
@@ -46,19 +45,38 @@
                     </div>
                 </md-input-container>
 
-                <div flex="5"></div>
                 <div flex="10" style="margin-right: -45px; margin-top:30px; font-size: smaller">Format:</div>
-                <div class="avspiller-radio-gruppe" flex style="margin-top: 28px;">
-                    <md-radio-group layout="row" ng-model="request.format" ng-change="checkOversikt()" ng-disabled="progress">
-                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">Distribusjon</md-radio-button>
-                        <md-radio-button value="{{tps}}">Ajourhold</md-radio-button>
+                <div class="avspiller-radio-gruppe">
+                    <md-radio-group layout="column" ng-model="request.format" ng-change="checkOversikt()" ng-disabled="progress">
+                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true">XML</md-radio-button>
+                        <md-radio-button value="{{tps}}">SKD</md-radio-button>
                     </md-radio-group>
                 </div>
-                <md-button style="height: 20px; margin-top: 60px;"
-                           type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                           ng-disabled="requestForm.$invalid || progress">
-                    Hent
-                </md-button>
+
+                <div flex="5"></div>
+
+                <md-input-container flex="10" aria-label="Timeout">
+                    <md-tooltip>Maksimum antall sekunder for TPS forespørsel</md-tooltip>
+                    <input name="timeout" ng-model="request.timeout" class="testdata-ident-liste"
+                           placeholder="Timeout (sek)"
+                           ng-pattern="/^\d{1,3}$/" maxlength="3"></input>
+                    <div ng-messages="requestForm.timeout.$error"
+                         ng-show="requestForm.timeout.$dirty">
+                        <div ng-message="pattern">Kun sifre opp til 999 er forventet</div>
+                    </div>
+                </md-input-container>
+
+                <div flex></div>
+                <div flex="10" layout="column">
+                    <div class="avspiller-checkbox">
+                        <md-checkbox ng-model="autoload" ng-click="autoloadToggle()">Autoload</md-checkbox>
+                    </div>
+
+                    <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                               ng-disabled="!requestForm.$dirty || progress">
+                        Hent
+                    </md-button>
+                </div>
                 <div flex="5"></div>
             </div>
             <div layout="row" class="avspiller-row">
@@ -66,7 +84,7 @@
                                     aria-label="Hendelse(r)">
                     <label>Meldingstype(r)</label>
                     <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)"
-                               multiple="true" ng-change="submit()" ng-disabled="disableTyperOgKilder">
+                               multiple="true" ng-change="paramUpdate()" ng-disabled="disableTyperOgKilder">
                         <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -75,7 +93,7 @@
                                     aria-label="Kilde(r)">
                     <label>Kilde(r)</label>
                     <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true"
-                               ng-change="submit()" ng-disabled="disableTyperOgKilder">
+                               ng-change="paramUpdate()" ng-disabled="disableTyperOgKilder">
                         <md-option ng-value="kilde.type" ng-repeat="kilde in kilder">{{kilde.type + getAntall(kilde.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -106,10 +124,11 @@
 
 
     <!-- Resulting Response -->
-    <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger">
+    <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger || loading2">
         <form name="responseForm" class="top transparent response-form">
-            <div layout="row" layout-align="end end" class="pagination">
-                <span style="margin-right: 15px; margin-bottom: 6px;">Viser {{pager.viser.display}} av {{pager.totalt}}</span>
+            <div layout="row" layout-align="end end" class="pagination" ng-show="pager.totalt > pagesize">
+                <span style="margin-right: 15px; margin-bottom: 6px;">
+                    Viser {{pager.currentPage === pager.totalPages ?  '1-' + pager.totalt : pager.viser.display}} av {{pager.totalt}}</span>
                 <li ng-class="{disabled:pager.currentPage === 1 || disable}">
                     <a ng-click="setPage(1)">&lt;&lt;</a>
                 </li>
@@ -138,8 +157,8 @@
                 <div flex="10">Ident</div>
             </h3>
             <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe"
-                 ng-class="{'ident-included': identer.length > 0 && identer.indexOf(message.ident) !== -1,
-                  'ident-excluded': identer.length > 0 && identer.indexOf(message.ident) === -1}">
+                 ng-class="{'ident-included': requestForm.$dirty && identer.length > 0 && identer.indexOf(message.ident) !== -1,
+                  'ident-excluded': requestForm.$dirty && identer.length > 0 && identer.indexOf(message.ident) === -1}">
                 <div flex="10" align="end">{{message.index}}</div>
                 <div flex="15" align="end" class="animate-selection"
                      title="Klikk for å vise meldingsinnhold"
@@ -150,7 +169,8 @@
                 <div flex="25">{{message.hendelseType }}</div>
                 <div flex="5">{{message.systemkilde }}</div>
                 <div flex="10" class="animate-selection" ng-click="addIdent(message.ident)"
-                     title="Klikk for å legge til eller ta bort fødselsnr">{{message.ident}}</div>
+                     title="Klikk for å legge til eller ta bort fødselsnr">{{message.ident}}
+                </div>
                 <div flex="5" align="end" title="{{status.progressMap[message.index].sendStatus}}">
                     <a> <img ng-show="status.progressMap[message.index].sendStatus === 'OK'"
                              src="assets/icons/baseline-done-24px.svg" class="status-icon"></a>
@@ -162,30 +182,58 @@
             </div>
         </form>
 
-        <form flex="95" name="requestForm2" ng-submit="requestForm.$valid && submit()" ng-show="meldinger" style="margin-top: 40px;">
+        <div layout="row">
+            <md-progress-linear flex="90" class="avspiller-progress" md-mode="indeterminate" ng-show="loading2"></md-progress-linear>
+        </div>
+
+        <form flex="95" name="requestForm2" ng-submit="requestForm.$valid && submit()"
+              ng-show="meldinger" class="avspiller-requestform2">
             <div layout-align="end end" layout="row" class="btn-group">
-                <md-input-container flex="10" aria-label="Velg miljø">
-                    <label>Miljø</label>
-                    <md-select ng-model="target.miljoe" required ng-change="checkMeldingskoer()">
-                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
-                    </md-select>
+
+                <div flex="5"></div>
+                <div class="avspiller-checkbox" style="margin-bottom: 7px;">
+                    <md-checkbox ng-model="privatKoe">Egen kø</md-checkbox>
+                </div>
+                <div flex></div>
+                <md-input-container flex="45" style="margin-bottom: -6px;" aria-label="Timeout" ng-show="privatKoe">
+                    <md-tooltip>Egendefinert mottakskø</md-tooltip>
+                    <input name="timeout" ng-model="target.meldingskoe"
+                           placeholder="QA.miljø_xxx.beskrivelse egendefinert kø">
                 </md-input-container>
-                <md-input-container flex="35" aria-label="Velg kønavn">
-                    <label>Meldingskø</label>
-                    <md-select ng-model="target.meldingskoe" required ng-disabled="!koer">
-                        <md-option ng-repeat="koe in koer" value="{{koe}}">{{ koe.koenavn }}</md-option>
-                    </md-select>
+
+                <div flex="10" ng-show="!privatKoe">
+                    <md-input-container aria-label="Velg miljø">
+                        <label>Miljø</label>
+                        <md-select ng-model="target.miljoe" required ng-change="checkMeldingskoer()">
+                            <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="35" ng-show="!privatKoe">
+                    <md-input-container aria-label="Velg kønavn">
+                        <label>Meldingskø</label>
+                        <md-select ng-model="target.meldingskoe" required ng-disabled="!koer">
+                            <md-option ng-repeat="koe in koer" value="{{koe}}">{{koe}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
+                    <md-button class="md-button md-raised md-accent"
+                               ng-click="avbrytSendTilTps()"
+                               ng-disabled="!progress">Avbryt
+                    </md-button>
                 </md-input-container>
                 <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
-                    <md-button class="md-button md-raised md-accent" ng-disabled="requestForm2.$invalid || requestForm.$dirty"
+                    <md-button class="md-button md-raised md-accent"
+                               ng-disabled="requestForm2.$invalid || !target.meldingskoe ||requestForm.$dirty"
                                ng-click="sendTilTps()">Send
                     </md-button>
                 </md-input-container>
             </div>
         </form>
-
+{{status}}
         <div layout="row">
-            <md-progress-linear md-mode="determinate" class="avspiller-progress" value="{{completeProgress}}" ng-show="true"></md-progress-linear>
+            <md-progress-linear md-mode="determinate" class="avspiller-progress" value="{{completeProgress}}" ng-show="progress"></md-progress-linear>
         </div>
     </md-content>
 </div>

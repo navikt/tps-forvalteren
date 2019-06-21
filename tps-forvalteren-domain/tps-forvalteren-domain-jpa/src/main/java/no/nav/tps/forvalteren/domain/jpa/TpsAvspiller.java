@@ -61,6 +61,9 @@ public class TpsAvspiller {
     @Column(name = "FERDIG", nullable = false)
     private boolean ferdig;
 
+    @Column(name = "AVBRUTT", nullable = false)
+    private boolean avbrutt;
+
     @OneToMany(mappedBy = "bestillingId", fetch = FetchType.LAZY)
     private List<TpsAvspillerProgress> progressList;
 }

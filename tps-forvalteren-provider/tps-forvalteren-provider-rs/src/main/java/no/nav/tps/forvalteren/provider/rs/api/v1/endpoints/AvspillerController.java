@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,6 @@ import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitProper
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitQueue;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
-import no.nav.tps.forvalteren.domain.rs.Meldingskoe;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsMeldingerResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
@@ -106,26 +106,20 @@ public class AvspillerController {
     }
 
     @GetMapping("/meldingskoer")
-    public List<Meldingskoe> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
+    public List<String> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 
         String queueAlias = format == Ajourholdsmelding ? SKD_MELDING : DISTRIBUSJON_MELDING;
         String environment = format == Ajourholdsmelding && miljoe.contains("u") ? "u" : miljoe;
         List<FasitResource> resources = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(queueAlias, FasitPropertyTypes.QUEUE, environment);
-        List<Meldingskoe> queues = new ArrayList<>();
+        List<String> queues = new ArrayList<>();
         resources.forEach(resource -> {
             if (!((FasitQueue) resource.getProperties()).getQueueName().toUpperCase().contains("REPLY")) {
-                queues.add(Meldingskoe.builder()
-                        .koenavn(((FasitQueue) resource.getProperties()).getQueueName())
-                        .koemanager(((FasitQueue) resource.getProperties()).getQueueManager())
-                        .fasitAlias(resource.getAlias())
-                        .build());
+                queues.add(((FasitQueue) resource.getProperties()).getQueueName());
             }
         });
 
         if (format == Distribusjonsmelding) {
-            queues.add(Meldingskoe.builder()
-                    .koenavn(format("QA.%s_412.TPSDISTRIBUSJON_FS03", miljoe.contains("u") ? "D8" : miljoe.toUpperCase()))
-                    .build());
+            queues.add(format("QA.%s_412.TPSDISTRIBUSJON_FS03", miljoe.contains("u") ? "D8" : miljoe.toUpperCase()));
         }
 
         return queues;
@@ -144,5 +138,12 @@ public class AvspillerController {
             @RequestParam(value = "meldingnr", required = false) String meldingnr) {
 
         return format("{\"data\": \"%s\"}", Base64.getEncoder().encodeToString(avspillerService.showRequest(miljoe, format, meldingnr).getBytes()));
+    }
+
+    @DeleteMapping("/meldinger")
+    public RsTpsAvspiller cancelSendTilTps(@RequestParam(value = "bestillingId") Long bestillingId) {
+
+        TpsAvspiller avspiller = avspillerDaoService.cancelRequest(bestillingId);
+        return mapperFacade.map(avspiller, RsTpsAvspiller.class);
     }
 }

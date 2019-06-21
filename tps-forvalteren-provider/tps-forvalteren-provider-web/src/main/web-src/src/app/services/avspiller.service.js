@@ -28,8 +28,7 @@ angular.module('tps-forvalteren.service')
                 kilder: request.kilder,
                 identer: request.identer ? request.identer.split(/[\W\s]+/) : undefined,
                 miljoeTil: target.miljoe,
-                queue: JSON.parse(target.meldingskoe).koenavn,
-                fasitAlias: JSON.parse(target.meldingskoe).fasitAlias
+                queue: target.meldingskoe
             })
                 .then(function (response) {
                     return response.data;
@@ -50,8 +49,15 @@ angular.module('tps-forvalteren.service')
                 })
         };
 
-        self.getMelding = function(request) {
+        self.getMelding = function (request) {
             return $http.get(url + '/melding?miljoe=' + request.miljoe + '&format=' + request.format + '&meldingnr=' + request.meldingnr)
+                .then(function (response) {
+                    return response.data;
+                })
+        };
+
+        self.cancelSendMeldinger = function (request) {
+            return $http.delete(url + '/meldinger?bestillingId=' + request)
                 .then(function (response) {
                     return response.data;
                 })

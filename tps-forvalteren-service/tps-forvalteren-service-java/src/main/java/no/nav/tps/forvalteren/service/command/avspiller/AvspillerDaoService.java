@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.avspiller;
 
 import static java.time.LocalDateTime.now;
 
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class AvspillerDaoService {
 
         return save(TpsAvspiller.builder()
                 .ferdig(false)
+                .avbrutt(false)
                 .format(request.getFormat().getMeldingFormat())
                 .kildeKoe(request.getMiljoeFra())
                 .periodeFra(request.getDatoFra())
@@ -59,6 +61,14 @@ public class AvspillerDaoService {
     public TpsAvspiller getStatus(Long avspillerId) {
 
         return avspillerRepository.findOne(avspillerId);
+    }
+
+    public TpsAvspiller cancelRequest(Long avspillerId) {
+
+        TpsAvspiller avspiller = avspillerRepository.findOne(avspillerId);
+        avspiller.setAvbrutt(true);
+        avspiller.setTidspunkt(LocalDateTime.now());
+        return avspillerRepository.save(avspiller);
     }
 
     private String toJson(Object object) {

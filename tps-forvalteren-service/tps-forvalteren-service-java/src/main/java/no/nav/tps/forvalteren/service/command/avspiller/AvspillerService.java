@@ -57,7 +57,7 @@ public class AvspillerService {
         Long pageNumber = 0L;
         TpsPersonData fraTps;
         do {
-            request.setPageNumber(++pageNumber);
+            request.setPageNumber(pageNumber++);
             fraTps = getHendelsedataFraTps(request, TypeOppslag.O);
 
             if (nonNull(fraTps.getTpsSvar().getHendelseDataS302())) {
@@ -108,11 +108,13 @@ public class AvspillerService {
         TpsPersonData personListe;
         Long pageNumber = 0L;
 
+        request.setPageNumber(pageNumber++);
+        request.setBufferSize(150L);
         TpsPersonData tpsPersonData = mapperFacade.map(request, TpsPersonData.class);
         tpsPersonData.getTpsServiceRutine().setTypeOppslag(TypeOppslag.L.name());
 
         do {
-            tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(++pageNumber));
+            tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(pageNumber++));
             personListe = tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, request.getMiljoeFra());
 
             avspillerStatus = logProgress(avspillerStatus, personListe);
@@ -135,9 +137,12 @@ public class AvspillerService {
                         decodeStatus(status));
 
                 log.info(decodeStatus(status));
+                if (avspillerStatus.isAvbrutt()) {
+                    break;
+                }
             }
         }
-        while (MORE_MSG_AVAIL.equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()));
+        while (MORE_MSG_AVAIL.equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()) && !avspillerStatus.isAvbrutt());
 
         avspillerStatus.setFerdig(true);
         logProgress(avspillerStatus, personListe);
