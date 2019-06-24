@@ -35,6 +35,7 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsServiceRutineType;
 public class AvspillerService {
 
     private static final String NO_DATA_KEY = "avspiller.request.nodata";
+    private static final String PING_TEST = "avspiller.queue.ping.test";
     private static final String MORE_MSG_AVAIL = "S302006I";
 
     @Autowired
@@ -145,6 +146,11 @@ public class AvspillerService {
         while (MORE_MSG_AVAIL.equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()) && !avspillerStatus.isAvbrutt());
 
         logProgress(avspillerStatus.getBestillingId(), personListe, true);
+    }
+
+    public boolean isValid(String environment, String queueName) {
+        String result = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(messageProvider.get(PING_TEST), environment, queueName, false);
+        return !result.contains(queueName);
     }
 
     private TpsAvspiller logProgress(Long bestillingId, TpsPersonData personData, boolean isFerdig) {

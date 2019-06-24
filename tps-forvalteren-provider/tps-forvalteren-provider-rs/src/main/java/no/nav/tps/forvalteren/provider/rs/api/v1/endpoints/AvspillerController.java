@@ -9,9 +9,11 @@ import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Distribusjonsmeldi
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.assertj.core.util.Lists.newArrayList;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import javax.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
@@ -44,6 +47,7 @@ public class AvspillerController {
 
     private static final String SKD_MELDING = "TPS.ENDRINGS.MELDING";
     private static final String DISTRIBUSJON_MELDING = "TPSDISTRIBUSJON";
+    private static final String QUEUE_NOT_FOUND = "avspiller.request.queue.check";
 
     @Autowired
     private FasitApiConsumer fasitApiConsumer;
@@ -57,6 +61,9 @@ public class AvspillerController {
     @Autowired
     private MapperFacade mapperFacade;
 
+    @Autowired
+    private MessageProvider messageProvider;
+
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss")
@@ -66,9 +73,9 @@ public class AvspillerController {
         String[] startStop = isNotBlank(periode) ? periode.split("\\$") : null;
         return avspillerService.getTyperOgKilder(RsAvspillerRequest.builder()
                 .miljoeFra(miljoe)
-                .datoFra(nonNull(startStop) ? parse(startStop[0]) : null)
-                .datoTil(nonNull(startStop) && startStop.length > 1 ? parse(startStop[1]) : null)
-                .timeout(nonNull(startStop) && startStop.length > 2 ? valueOf(startStop[2]) : null)
+                .datoFra(nonNull(startStop) ? parseDate(startStop[0]) : null)
+                .datoTil(nonNull(startStop) && startStop.length > 1 ? parseDate(startStop[1]) : null)
+                .timeout(nonNull(startStop) && startStop.length > 2 ? parseLong(startStop[2]) : null)
                 .format(format)
                 .build());
     }
@@ -88,9 +95,9 @@ public class AvspillerController {
         String[] bufferParams = isNotBlank(buffer) ? buffer.split("\\$") : null;
         return avspillerService.getMeldinger(RsAvspillerRequest.builder()
                 .miljoeFra(miljoe)
-                .datoFra(nonNull(startStop) ? parse(startStop[0]) : null)
-                .datoTil(nonNull(startStop) && startStop.length > 1 ? parse(startStop[1]) : null)
-                .timeout(nonNull(startStop) && startStop.length > 2 ? valueOf(startStop[2]) : null)
+                .datoFra(nonNull(startStop) ? parseDate(startStop[0]) : null)
+                .datoTil(nonNull(startStop) && startStop.length > 1 ? parseDate(startStop[1]) : null)
+                .timeout(nonNull(startStop) && startStop.length > 2 ? parseLong(startStop[2]) : null)
                 .format(format)
                 .typer(isNotBlank(meldingstyper) ? newArrayList(meldingstyper.split(",")) : null)
                 .kilder(isNotBlank(kilder) ? newArrayList(kilder.split(",")) : null)
@@ -104,6 +111,9 @@ public class AvspillerController {
     public TpsAvspiller sendTilTps(@RequestBody RsAvspillerRequest request) {
 
         TpsAvspiller avspillerStatus = avspillerDaoService.save(request);
+        if (request.isOwnQueue() && !avspillerService.isValid(request.getMiljoeTil(), request.getQueue())) {
+            throw new NotFoundException(messageProvider.get(QUEUE_NOT_FOUND, request.getQueue(), request.getMiljoeTil()));
+        }
         avspillerService.sendTilTps(request, avspillerStatus);
         return avspillerStatus;
     }
@@ -148,5 +158,13 @@ public class AvspillerController {
 
         TpsAvspiller avspiller = avspillerDaoService.cancelRequest(bestillingId);
         return mapperFacade.map(avspiller, RsTpsAvspiller.class);
+    }
+
+    private static LocalDateTime parseDate(String date) {
+        return isNotBlank(date) ? parse(date) : null;
+    }
+
+    private static Long parseLong(String value) {
+        return isNotBlank(value)? valueOf(value) : null;
     }
 }

@@ -28,7 +28,8 @@ angular.module('tps-forvalteren.service')
                 kilder: request.kilder,
                 identer: request.identer ? request.identer.split(/[\W\s]+/) : undefined,
                 miljoeTil: target.miljoe,
-                queue: target.meldingskoe
+                queue: target.messageQueue ? target.messageQueue : target.privateQueue,
+                ownQueue: !!target.privateQueue
             })
                 .then(function (response) {
                     return response.data;
@@ -66,8 +67,9 @@ angular.module('tps-forvalteren.service')
         function prepareBasicParams(request) {
             return '?miljoe=' + request.miljoe +
                 '&format=' + request.format +
-                (request.periodeFra ? '&periode=' + date2String(request.periodeFra) + '$' + date2String(request.periodeTil) : '$') +
-                (request.timeout ? '$' + request.timeout : '');
+                '&periode=' + (request.periodeFra ? date2String(request.periodeFra) : '') +
+                '$' + (request.periodeTil ? date2String(request.periodeTil) : '') +
+                '$' + request.timeout;
         }
 
         function prepareOptionalParams(request) {
@@ -81,7 +83,8 @@ angular.module('tps-forvalteren.service')
         }
 
         function date2String(dato) {
-            return dato ? dato.getFullYear().toString() + '-' + padWithZero(dato.getMonth() + 1) + '-' + padWithZero(dato.getDate()) + 'T00:00:00' : null;
+            return dato ? (dato.getFullYear().toString() + '-' + padWithZero(dato.getMonth() + 1) + '-' + padWithZero(dato.getDate()) + 'T' +
+                padWithZero(dato.getHours()) + ':' + padWithZero(dato.getMinutes()) + ':' + padWithZero(dato.getSeconds())) : null;
         }
 
         function padWithZero(nummer) {

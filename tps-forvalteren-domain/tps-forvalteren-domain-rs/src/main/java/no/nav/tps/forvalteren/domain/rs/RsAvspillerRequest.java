@@ -31,6 +31,7 @@ public class RsAvspillerRequest {
     private Long pageNumber;
     private Long bufferSize;
     private Long timeout;
+    private boolean ownQueue;
 
     public List<String> getTyper() {
         if (isNull(typer)) {

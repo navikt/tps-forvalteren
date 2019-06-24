@@ -20,7 +20,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.periodeFra = $scope.startOfEra;
             $scope.periodeTil = $scope.today;
             $scope.autoload = true;
-            $scope.privatKoe = false;
+            $scope.ownQueue = false;
 
             function computeDefaultPeriode(days) {
                 var defaultPeriode = new Date();
@@ -40,8 +40,17 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.disableTyperOgKilder = false;
                 $scope.loading = false;
                 if ($scope.autoload) {
-                    $scope.loading2 = true;
-                    $scope.submit();
+                    if ($scope.request.periodeFra && $scope.request.periodeTil) {
+                        $scope.loading2 = true;
+                        $scope.submit();
+                    } else {
+                        $mdDialog.show($mdDialog.confirm()
+                            .title('Detaljert melding')
+                            .textContent('Tidsperiode er ikke angitt og kun oversikt på hendelser og kilder er hentet fra TPS.')
+                            .ariaLabel('Detaljert melding fra TPS')
+                            .clickOutsideToClose(true)
+                            .ok('OK'));
+                    }
                 }
             }
 
@@ -147,7 +156,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             function meldingskoerOk(data) {
                 $scope.koer = data;
                 $scope.target = $scope.target || {};
-                $scope.target.meldingskoe = data.length === 1 ? data[0] : undefined;
+                $scope.target.messageQueue = data.length === 1 ? data[0] : undefined;
                 $scope.loading = false;
             }
 
@@ -159,13 +168,15 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             }
 
             $scope.checkOversikt = function () {
-                $scope.periodeFra = $scope.request.periodeFra || $scope.startOfEra;
-                $scope.periodeTil = $scope.request.periodeTil || $scope.today;
+                $scope.periodeFra = atStartOfDay($scope.request.periodeFra);
+                $scope.periodeTil = atEndOfDay($scope.request.periodeTil);
                 $scope.meldinger = undefined;
+                $scope.target = undefined;
                 $scope.request.typer = undefined;
                 $scope.request.kilder = undefined;
                 $scope.request.identer = undefined;
                 $scope.identer = [];
+                $scope.ownQueue = false;
                 if ($scope.request.miljoe && ((!$scope.request.periodeFra && !$scope.request.periodeTil) || ($scope.request.periodeFra && $scope.request.periodeTil))) {
                     $scope.loading = true;
                     $scope.request.timeout = $scope.timeout;
@@ -181,26 +192,44 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.paramUpdate = function () {
                 $scope.requestForm.$dirty = true;
                 if ($scope.autoload) {
-                    $scope.submit();
+                    conditionalLoad();
                 }
             };
 
             $scope.autoloadToggle = function () {
-                if ($scope.requestForm.$dirty) {
-                    $scope.submit();
+                conditionalLoad();
+            };
+
+            $scope.toggleOwnQueue = function() {
+                if ($scope.ownQueue) {
+                    $scope.target.privateQueue = $scope.target.messageQueue;
+                    $scope.target.messageQueue = undefined;
+                } else {
+                    $scope.target.privateQueue = undefined;
                 }
             };
 
             $scope.submit = function () {
-                $scope.loading2 = true;
-                $scope.status = undefined;
-                $scope.request.buffersize = buffersize;
-                $scope.request.buffernumber = 0;
-                $scope.request.timeout = $scope.timeout;
-                $scope.pager.request = angular.copy($scope.request);
-                avspillerService.getMeldinger($scope.request)
-                    .then(meldingerOk, error);
-                $scope.requestForm.$dirty = false;
+                if (!$scope.request.periodeFra || !$scope.request.periodeTil) {
+                    $mdDialog.show($mdDialog.confirm()
+                        .title('Periode mangler')
+                        .textContent('Tidsperiode er ikke angitt og detaljer kan ikke hentes.')
+                        .ariaLabel('Detaljert melding fra TPS')
+                        .clickOutsideToClose(true)
+                        .ok('OK'));
+                } else {
+                    $scope.loading2 = true;
+                    $scope.status = undefined;
+                    $scope.request.buffersize = buffersize;
+                    $scope.request.buffernumber = 0;
+                    $scope.request.timeout = $scope.timeout;
+                    atStartOfDay($scope.request.periodeFra);
+                    atEndOfDay($scope.request.periodeTil);
+                    $scope.pager.request = angular.copy($scope.request);
+                    avspillerService.getMeldinger($scope.request)
+                        .then(meldingerOk, error);
+                    $scope.requestForm.$dirty = false;
+                }
             };
 
             $scope.checkMeldingskoer = function () {
@@ -217,7 +246,12 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                         $scope.completeProgress = 0;
                         $scope.status = data;
                         stopTime = $interval(checkStatus, 1000);
-                    }, error);
+                    }, function(disrupt) {
+                        utilsService.showAlertError(disrupt);
+                        $scope.loading = false;
+                        $scope.loading2 = false;
+                        $scope.progress = false;
+                    });
             };
 
             $scope.getMelding = function (meldingNr) {
@@ -268,6 +302,31 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     });
             };
 
+            function conditionalLoad() {
+                if ($scope.requestForm.$dirty && $scope.request.miljoe && $scope.request.periodeFra && $scope.request.periodeTil) {
+                    $scope.loading2 = true;
+                    $scope.submit();
+                }
+            }
+
+            function atStartOfDay(starttime) {
+                if (starttime) {
+                    starttime.setHours(0);
+                    starttime.setMinutes(0);
+                    starttime.setSeconds(0);
+                }
+                return starttime;
+            }
+
+            function atEndOfDay(endtime) {
+                if (endtime) {
+                    endtime.setHours(23);
+                    endtime.setMinutes(59);
+                    endtime.setSeconds(59);
+                }
+                return endtime;
+            }
+
             function checkStatus() {
                 avspillerService.getStatus($scope.status.bestillingId)
                     .then(function (data) {
@@ -278,7 +337,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                             $scope.progress = false;
                             $mdDialog.show($mdDialog.confirm()
                                 .title('Sending Bekreftelse')
-                                .textContent("Meldinger er sendt til valgt kø")
+                                .htmlContent('Meldinger er sendt til valgt kø.<br>Sjekk detaljert status for resultat.<br>')
                                 .ariaLabel('Meldingsending bekreftelse')
                                 .ok('OK')
                             );
