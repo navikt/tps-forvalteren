@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import javax.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +39,7 @@ import no.nav.tps.forvalteren.domain.rs.RsTyperOgKilderResponse;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsAvspiller;
 import no.nav.tps.forvalteren.service.command.avspiller.AvspillerDaoService;
 import no.nav.tps.forvalteren.service.command.avspiller.AvspillerService;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("api/v1/avspiller")
@@ -119,9 +119,10 @@ public class AvspillerController {
     @GetMapping("/meldingskoer")
     public List<String> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 
-        String queueAlias = format == AJOURHOLDSMELDING ? SKD_MELDING : DISTRIBUSJON_MELDING;
-        String environment = format == AJOURHOLDSMELDING && miljoe.contains("u") ? "u" : miljoe;
-        List<FasitResource> resources = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(queueAlias, FasitPropertyTypes.QUEUE, environment);
+        List<FasitResource> resources =
+                fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(decideQueueAlias(format),
+                        FasitPropertyTypes.QUEUE,
+                        decideEnvironment(format, miljoe));
         List<String> queues = new ArrayList<>();
         resources.forEach(resource -> {
             if (!((FasitQueue) resource.getProperties()).getQueueName().toUpperCase().contains("REPLY")) {
@@ -183,6 +184,14 @@ public class AvspillerController {
     private static Long parseBufferSize(String bufferParams) {
         return nonNull(bufferParams) && bufferParams.split("\\$").length > 1 ?
                 valueOf(bufferParams.split("\\$")[1]) : null;
+    }
+
+    private static String decideQueueAlias(Meldingsformat meldingsformat) {
+        return meldingsformat == AJOURHOLDSMELDING ? SKD_MELDING : DISTRIBUSJON_MELDING;
+    }
+
+    private static String decideEnvironment(Meldingsformat meldingsformat, String environment) {
+        return meldingsformat == AJOURHOLDSMELDING && environment.contains("u") ? "u" : environment;
     }
 }
 
