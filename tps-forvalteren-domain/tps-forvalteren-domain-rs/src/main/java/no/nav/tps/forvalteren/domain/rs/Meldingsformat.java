@@ -4,15 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum Meldingsformat {
-    Ajourholdsmelding("A", "Tps format"),
-    Distribusjonsmelding("D", "Fagsystem format");
+    AJOURHOLDSMELDING("A", "SkdFormat"),
+    DISTRIBUSJONSMELDING("D", "FagsystemFormat");
+
+    private String meldingFormat;
+    private String system;
 
     Meldingsformat(String meldingFormat, String system) {
         this.meldingFormat = meldingFormat;
         this.system = system;
     }
-
-    private String meldingFormat;
-
-    private String system;
 }

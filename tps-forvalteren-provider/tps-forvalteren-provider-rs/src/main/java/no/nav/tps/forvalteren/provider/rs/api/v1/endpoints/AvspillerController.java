@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.common.base.Charsets;
 
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -66,44 +67,41 @@ public class AvspillerController {
 
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
-            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss")
+            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
             @RequestParam(value = "periode", required = false) String periode,
             @RequestParam(value = "format") Meldingsformat format) {
 
-        String[] startStop = isNotBlank(periode) ? periode.split("\\$") : null;
         return avspillerService.getTyperOgKilder(RsAvspillerRequest.builder()
                 .miljoeFra(miljoe)
-                .datoFra(nonNull(startStop) ? parseDate(startStop[0]) : null)
-                .datoTil(nonNull(startStop) && startStop.length > 1 ? parseDate(startStop[1]) : null)
-                .timeout(nonNull(startStop) && startStop.length > 2 ? parseLong(startStop[2]) : null)
+                .datoFra(parseDateFrom(periode))
+                .datoTil(parseDateTo(periode))
+                .timeout(parseTimeout(periode))
                 .format(format)
                 .build());
     }
 
     @GetMapping("/meldinger")
     public RsMeldingerResponse getMeldinger(@RequestParam("miljoe") String miljoe,
-            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss")
+            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
             @RequestParam(value = "periode", required = false) String periode,
             @RequestParam(value = "format") Meldingsformat format,
             @RequestParam(value = "typer", required = false) String meldingstyper,
             @RequestParam(value = "kilder", required = false) String kilder,
             @RequestParam(value = "identer", required = false) String identer,
             @ApiParam("bufferNumber $ bufferSize")
-            @RequestParam(value = "buffer", required = false) String buffer) {
+            @RequestParam(value = "buffer", required = false) String bufferParams) {
 
-        String[] startStop = isNotBlank(periode) ? periode.split("\\$") : null;
-        String[] bufferParams = isNotBlank(buffer) ? buffer.split("\\$") : null;
         return avspillerService.getMeldinger(RsAvspillerRequest.builder()
                 .miljoeFra(miljoe)
-                .datoFra(nonNull(startStop) ? parseDate(startStop[0]) : null)
-                .datoTil(nonNull(startStop) && startStop.length > 1 ? parseDate(startStop[1]) : null)
-                .timeout(nonNull(startStop) && startStop.length > 2 ? parseLong(startStop[2]) : null)
+                .datoFra(parseDateFrom(periode))
+                .datoTil(parseDateTo(periode))
+                .timeout(parseTimeout(periode))
                 .format(format)
-                .typer(isNotBlank(meldingstyper) ? newArrayList(meldingstyper.split(",")) : null)
-                .kilder(isNotBlank(kilder) ? newArrayList(kilder.split(",")) : null)
-                .identer(isNotBlank(identer) ? newArrayList(identer.split(",")) : null)
-                .pageNumber(nonNull(bufferParams) ? valueOf(bufferParams[0]) : null)
-                .bufferSize(nonNull(bufferParams) && bufferParams.length > 1 ? valueOf(bufferParams[1]) : null)
+                .typer(strToList(meldingstyper))
+                .kilder(strToList(kilder))
+                .identer(strToList(identer))
+                .pageNumber(parsePageNumber(bufferParams))
+                .bufferSize(parseBufferSize(bufferParams))
                 .build());
     }
 
@@ -150,7 +148,7 @@ public class AvspillerController {
             @RequestParam(value = "format", required = false) Meldingsformat format,
             @RequestParam(value = "meldingnr", required = false) String meldingnr) {
 
-        return format("{\"data\": \"%s\"}", Base64.getEncoder().encodeToString(avspillerService.showRequest(miljoe, format, meldingnr).getBytes()));
+        return format("{\"data\": \"%s\"}", Base64.getEncoder().encodeToString(avspillerService.showRequest(miljoe, format, meldingnr).getBytes(Charsets.UTF_8)));
     }
 
     @DeleteMapping("/meldinger")
@@ -160,11 +158,31 @@ public class AvspillerController {
         return mapperFacade.map(avspiller, RsTpsAvspiller.class);
     }
 
-    private static LocalDateTime parseDate(String date) {
-        return isNotBlank(date) ? parse(date) : null;
+    private static LocalDateTime parseDateFrom(String periode) {
+        return isNotBlank(periode) ? parse(periode.split("\\$")[0]) : null;
     }
 
-    private static Long parseLong(String value) {
-        return isNotBlank(value)? valueOf(value) : null;
+    private static LocalDateTime parseDateTo(String periode) {
+        return isNotBlank(periode) && periode.split("\\$").length > 1 ?
+                parse(periode.split("\\$")[1]) : null;
+    }
+
+    private static Long parseTimeout(String periode) {
+        return isNotBlank(periode) && periode.split("\\$").length > 2 ?
+                valueOf(periode.split("\\$")[2]) : null;
+    }
+
+    private static List strToList(String item) {
+        return isNotBlank(item) ? newArrayList(item.split(",")) : null;
+    }
+
+    private static Long parsePageNumber(String bufferParams) {
+        return nonNull(bufferParams) ? valueOf(bufferParams.split("\\$")[0]) : null;
+    }
+
+    private static Long parseBufferSize(String bufferParams) {
+        return nonNull(bufferParams) && bufferParams.split("\\$").length > 1 ?
+                valueOf(bufferParams.split("\\$")[1]) : null;
     }
 }
+

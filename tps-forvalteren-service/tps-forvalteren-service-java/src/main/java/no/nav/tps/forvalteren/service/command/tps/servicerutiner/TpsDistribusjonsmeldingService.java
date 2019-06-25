@@ -63,7 +63,7 @@ public class TpsDistribusjonsmeldingService {
             return (TpsPersonData) tpsDataS302Unmarshaller.unmarshal(new StringReader(xmlResponse));
         } catch (JAXBException e) {
             log.error(e.getMessage(), e);
-            throw new TpsfTechnicalException(messageProvider.get(XML_CONVERSION_ERROR, e.getMessage()));
+            throw new TpsfTechnicalException(messageProvider.get(XML_CONVERSION_ERROR, e.getMessage()), e);
         }
     }
 

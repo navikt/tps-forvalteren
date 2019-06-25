@@ -4,8 +4,8 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
 
             headerService.setHeader('TPS avspiller for hendelsesmeldinger');
 
-            $scope.fagsystem = 'Distribusjonsmelding';
-            $scope.tps = 'Ajourholdsmelding';
+            $scope.fagsystem = 'DISTRIBUSJONSMELDING';
+            $scope.tps = 'AJOURHOLDSMELDING';
 
             $scope.pagesize = 25;
             var buffersize = 150;

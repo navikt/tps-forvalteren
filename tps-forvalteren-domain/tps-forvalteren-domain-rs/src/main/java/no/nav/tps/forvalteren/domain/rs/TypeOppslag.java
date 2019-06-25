@@ -8,9 +8,9 @@ public enum TypeOppslag {
     L("Liste med tilgjengelige hendelsesmeldinger"),
     H("Hendelsesmelding som skal spilles av");
 
+    private String description;
+
     TypeOppslag(String description) {
         this.description = description;
     }
-
-    private String description;
 }
