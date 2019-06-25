@@ -4,8 +4,8 @@ import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.parse;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Ajourholdsmelding;
-import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.Distribusjonsmelding;
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.DISTRIBUSJONSMELDING;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.assertj.core.util.Lists.newArrayList;
 
@@ -119,8 +119,8 @@ public class AvspillerController {
     @GetMapping("/meldingskoer")
     public List<String> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 
-        String queueAlias = format == Ajourholdsmelding ? SKD_MELDING : DISTRIBUSJON_MELDING;
-        String environment = format == Ajourholdsmelding && miljoe.contains("u") ? "u" : miljoe;
+        String queueAlias = format == AJOURHOLDSMELDING ? SKD_MELDING : DISTRIBUSJON_MELDING;
+        String environment = format == AJOURHOLDSMELDING && miljoe.contains("u") ? "u" : miljoe;
         List<FasitResource> resources = fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(queueAlias, FasitPropertyTypes.QUEUE, environment);
         List<String> queues = new ArrayList<>();
         resources.forEach(resource -> {
@@ -129,7 +129,7 @@ public class AvspillerController {
             }
         });
 
-        if (format == Distribusjonsmelding) {
+        if (format == DISTRIBUSJONSMELDING) {
             queues.add(format("QA.%s_412.TPSDISTRIBUSJON_FS03", miljoe.contains("u") ? "D8" : miljoe.toUpperCase()));
         }
 

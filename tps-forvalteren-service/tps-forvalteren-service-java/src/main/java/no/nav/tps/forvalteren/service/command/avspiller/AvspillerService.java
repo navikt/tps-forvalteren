@@ -129,7 +129,7 @@ public class AvspillerService {
                         detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
                         request.getMiljoeTil(),
                         request.getQueue(),
-                        request.getFormat() == Meldingsformat.Ajourholdsmelding);
+                        request.getFormat() == Meldingsformat.AJOURHOLDSMELDING);
 
                 avspillerStatus = logProgress(avspillerStatus.getBestillingId(),
                         (valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getSideNummer()) - 1) *

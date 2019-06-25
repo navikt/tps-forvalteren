@@ -39,7 +39,7 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsSvarType;
 public class AvspillerServiceTest {
 
     private static final String ENVIRONMENT = "u2";
-    private static final Meldingsformat MELDING_FORMAT = Meldingsformat.Ajourholdsmelding;
+    private static final Meldingsformat MELDING_FORMAT = Meldingsformat.AJOURHOLDSMELDING;
     private static final String MELDING_NR = "123456789";
     private static final String OVERSIKT_MELDING_1 = "Melding 1";
     private static final String OVERSIKT_KILDE_1 = "Kilde 1";
