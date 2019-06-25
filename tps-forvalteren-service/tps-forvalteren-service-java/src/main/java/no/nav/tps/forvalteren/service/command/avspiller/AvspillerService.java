@@ -106,46 +106,51 @@ public class AvspillerService {
     @Async
     public void sendTilTps(RsAvspillerRequest request, TpsAvspiller avspillerStatus) {
 
-        TpsPersonData personListe;
-        Long pageNumber = 0L;
+        TpsPersonData personListe = null;
 
-        request.setPageNumber(pageNumber++);
-        request.setBufferSize(150L);
-        TpsPersonData tpsPersonData = mapperFacade.map(request, TpsPersonData.class);
-        tpsPersonData.getTpsServiceRutine().setTypeOppslag(TypeOppslag.L.name());
+        try {
+            Long pageNumber = 0L;
+            request.setPageNumber(pageNumber++);
+            request.setBufferSize(150L);
+            TpsPersonData tpsPersonData = mapperFacade.map(request, TpsPersonData.class);
+            tpsPersonData.getTpsServiceRutine().setTypeOppslag(TypeOppslag.L.name());
 
-        do {
-            tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(pageNumber++));
-            personListe = tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, request.getMiljoeFra(), request.getTimeout());
+            do {
+                tpsPersonData.getTpsServiceRutine().setSideNummer(Long.toString(pageNumber++));
+                personListe = tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(tpsPersonData, request.getMiljoeFra(), request.getTimeout());
 
-            avspillerStatus = logProgress(avspillerStatus.getBestillingId(), personListe, false);
+                avspillerStatus = logProgress(avspillerStatus.getBestillingId(), personListe, false, null);
 
-            for (int i = 0; i < personListe.getTpsSvar().getHendelseDataS302().getRespons().getMelding().getEnmelding().size(); i++) {
+                for (int i = 0; i < personListe.getTpsSvar().getHendelseDataS302().getRespons().getMelding().getEnmelding().size(); i++) {
 
-                EnkeltMeldingType enkeltMeldingType = personListe.getTpsSvar().getHendelseDataS302().getRespons().getMelding().getEnmelding().get(i);
-                TpsPersonData detaljertMelding = getDetaljertMelding(request, enkeltMeldingType.getMNr());
+                    EnkeltMeldingType enkeltMeldingType = personListe.getTpsSvar().getHendelseDataS302().getRespons().getMelding().getEnmelding().get(i);
+                    TpsPersonData detaljertMelding = getDetaljertMelding(request, enkeltMeldingType.getMNr());
 
-                String status = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
-                        detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
-                        request.getMiljoeTil(),
-                        request.getQueue(),
-                        request.getFormat() == Meldingsformat.AJOURHOLDSMELDING);
+                    String status = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
+                            detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
+                            request.getMiljoeTil(),
+                            request.getQueue(),
+                            request.getFormat() == Meldingsformat.AJOURHOLDSMELDING);
 
-                avspillerStatus = logProgress(avspillerStatus.getBestillingId(),
-                        (valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getSideNummer()) - 1) *
-                                valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getAntallRaderprSide()) + i + 1,
-                        enkeltMeldingType,
-                        decodeStatus(status));
+                    avspillerStatus = logProgress(avspillerStatus.getBestillingId(),
+                            (valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getSideNummer()) - 1) *
+                                    valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getAntallRaderprSide()) + i + 1,
+                            enkeltMeldingType,
+                            decodeStatus(status));
 
-                log.debug(decodeStatus(status));
-                if (avspillerStatus.isAvbrutt()) {
-                    break;
+                    log.debug(decodeStatus(status));
+                    if (avspillerStatus.isAvbrutt()) {
+                        break;
+                    }
                 }
             }
-        }
-        while (MORE_MSG_AVAIL.equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()) && !avspillerStatus.isAvbrutt());
+            while (MORE_MSG_AVAIL.equals(personListe.getTpsSvar().getSvarStatus().getReturMelding()) && !avspillerStatus.isAvbrutt());
 
-        logProgress(avspillerStatus.getBestillingId(), personListe, true);
+            logProgress(avspillerStatus.getBestillingId(), personListe, true, null);
+
+        } catch (RuntimeException e) {
+            logProgress(avspillerStatus.getBestillingId(), personListe, true, e.getMessage());
+        }
     }
 
     public boolean isValid(String environment, String queueName) {
@@ -153,12 +158,13 @@ public class AvspillerService {
         return !result.contains(queueName);
     }
 
-    private TpsAvspiller logProgress(Long bestillingId, TpsPersonData personData, boolean isFerdig) {
+    private TpsAvspiller logProgress(Long bestillingId, TpsPersonData personData, boolean isFerdig, String error) {
 
         TpsAvspiller status = avspillerDaoService.getStatus(bestillingId);
         status.setTidspunkt(now());
         status.setFerdig(isFerdig);
         status.setAntall(valueOf(personData.getTpsSvar().getHendelseDataS302().getRespons().getMeldingerTotalt()));
+        status.setFeil(error);
 
         return avspillerDaoService.save(status);
     }

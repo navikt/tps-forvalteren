@@ -9,9 +9,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import javax.jms.JMSException;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +36,7 @@ public class TpsDistribusjonsmeldingService {
     private MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Autowired
-    private Marshaller tpsDataS302Marshaller;
-
-    @Autowired
-    private Unmarshaller tpsDataS302Unmarshaller;
+    private JAXBContext tpsDataS302Context;
 
     @Autowired
     private DefaultSkdGetHeaderForSkdMelding skdGetHeaderForSkdMelding;
@@ -60,7 +56,7 @@ public class TpsDistribusjonsmeldingService {
         }
 
         try {
-            return (TpsPersonData) tpsDataS302Unmarshaller.unmarshal(new StringReader(xmlResponse));
+            return (TpsPersonData) tpsDataS302Context.createUnmarshaller().unmarshal(new StringReader(xmlResponse));
         } catch (JAXBException e) {
             log.error(e.getMessage(), e);
             throw new TpsfTechnicalException(messageProvider.get(XML_CONVERSION_ERROR, e.getMessage()), e);
@@ -85,7 +81,7 @@ public class TpsDistribusjonsmeldingService {
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false);
 
             Writer xmlWriter = new StringWriter();
-            tpsDataS302Marshaller.marshal(tpsRequest, xmlWriter);
+            tpsDataS302Context.createMarshaller().marshal(tpsRequest, xmlWriter);
 
             return messageQueueConsumer.sendMessage(xmlWriter.toString(), nonNull(timeout) ? timeout * 1000 : REQUEST_TIMEOUT);
 

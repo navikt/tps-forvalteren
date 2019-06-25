@@ -33,6 +33,7 @@ public class RsTpsAvspiller {
     private boolean avbrutt;
     private Integer progressAntall;
     private Map<Long, TpsAvspillerProgress> progressMap;
+    private String error;
 
     public Map<Long, TpsAvspillerProgress> getProgressMap() {
         if (isNull(progressMap)) {

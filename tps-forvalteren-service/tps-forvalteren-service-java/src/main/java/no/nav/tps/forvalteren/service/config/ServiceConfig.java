@@ -2,8 +2,6 @@ package no.nav.tps.forvalteren.service.config;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,16 +30,8 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 public class ServiceConfig {
 
     @Bean
-    public Unmarshaller tpsDataS302Unmarshaller() throws JAXBException {
+    public JAXBContext tpsDataS302Context() throws JAXBException {
 
-        JAXBContext jc = JAXBContext.newInstance(TpsPersonData.class);
-        return jc.createUnmarshaller();
-    }
-
-    @Bean
-    public Marshaller tpsDataS302Marshaller() throws JAXBException {
-
-        JAXBContext jc = JAXBContext.newInstance(TpsPersonData.class);
-        return jc.createMarshaller();
+        return JAXBContext.newInstance(TpsPersonData.class);
     }
 }

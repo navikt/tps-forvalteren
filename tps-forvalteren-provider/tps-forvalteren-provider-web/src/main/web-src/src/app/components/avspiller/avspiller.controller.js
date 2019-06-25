@@ -330,11 +330,12 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     .then(function (data) {
                         $scope.status = data;
                         $scope.completeProgress = Math.floor($scope.status.progressAntall / $scope.status.antall * 100);
-                        if ($scope.status.progressAntall === $scope.status.antall) {
+                        if ($scope.status.ferdig) {
                             $scope.progress = false;
                             $mdDialog.show($mdDialog.confirm()
-                                .title('Sending Bekreftelse')
-                                .htmlContent('Meldinger er sendt til valgt kø.<br>Sjekk detaljert status for resultat.<br>')
+                                .title(!$scope.status.error ? 'Sending Bekreftelse' : 'Feilmelding')
+                                .htmlContent(!$scope.status.error ?
+                                    'Meldinger er sendt til valgt kø.<br>Sjekk detaljert status for resultat.' : $scope.status.error)
                                 .ariaLabel('Meldingsending bekreftelse')
                                 .ok('OK')
                             );

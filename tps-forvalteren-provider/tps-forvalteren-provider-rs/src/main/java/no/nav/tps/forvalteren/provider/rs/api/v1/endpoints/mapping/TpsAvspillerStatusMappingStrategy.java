@@ -22,6 +22,7 @@ public class TpsAvspillerStatusMappingStrategy implements MappingStrategy {
                                 avspiller.getProgressList().forEach(progress ->
                                         status.getProgressMap().put(progress.getIndeksNr(), progress));
                                 status.setProgressAntall(avspiller.getProgressList().size());
+                                status.setError(avspiller.getFeil());
                             }
                         })
                 .byDefault()
