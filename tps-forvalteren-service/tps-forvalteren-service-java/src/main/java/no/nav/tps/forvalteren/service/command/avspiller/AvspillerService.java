@@ -137,7 +137,7 @@ public class AvspillerService {
                         enkeltMeldingType,
                         decodeStatus(status));
 
-                log.info(decodeStatus(status));
+                log.debug(decodeStatus(status));
                 if (avspillerStatus.isAvbrutt()) {
                     break;
                 }

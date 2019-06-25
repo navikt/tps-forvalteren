@@ -1,6 +1,6 @@
 angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
-    .controller('AvspillerCtrl', ['$scope', '$interval', '$mdDialog', 'utilsService', 'environmentsPromise', 'avspillerService', 'headerService',
-        function ($scope, $interval, $mdDialog, utilsService, environmentsPromise, avspillerService, headerService) {
+    .controller('AvspillerCtrl', ['$scope', '$timeout', '$mdDialog', 'utilsService', 'environmentsPromise', 'avspillerService', 'headerService',
+        function ($scope, $timeout, $mdDialog, utilsService, environmentsPromise, avspillerService, headerService) {
 
             headerService.setHeader('TPS avspiller for hendelsesmeldinger');
 
@@ -9,7 +9,6 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
 
             $scope.pagesize = 25;
             var buffersize = 150;
-            var stopTime;
             $scope.timeout = 30;
 
             $scope.tpsmeldinger = {};
@@ -245,7 +244,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     .then(function (data) {
                         $scope.completeProgress = 0;
                         $scope.status = data;
-                        stopTime = $interval(checkStatus, 1000);
+                        $timeout(checkStatus, 1000);
                     }, function(disrupt) {
                         utilsService.showAlertError(disrupt);
                         $scope.loading = false;
@@ -290,7 +289,6 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     .then(function (data) {
                         $scope.status = data;
                         $scope.progress = false;
-                        $interval.cancel(stopTime);
                         $mdDialog.show($mdDialog.confirm()
                             .title('Avbrutt Sending')
                             .textContent("Sending til TPS ble avbrutt av bruker")
@@ -333,7 +331,6 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                         $scope.status = data;
                         $scope.completeProgress = Math.floor($scope.status.progressAntall / $scope.status.antall * 100);
                         if ($scope.status.progressAntall === $scope.status.antall) {
-                            $interval.cancel(stopTime);
                             $scope.progress = false;
                             $mdDialog.show($mdDialog.confirm()
                                 .title('Sending Bekreftelse')
@@ -341,6 +338,8 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                                 .ariaLabel('Meldingsending bekreftelse')
                                 .ok('OK')
                             );
+                        } else if (!$scope.status.avbrutt) {
+                            $timeout(checkStatus, 1000);
                         }
                     })
             }

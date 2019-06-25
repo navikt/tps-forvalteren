@@ -30,6 +30,7 @@ public class RsTpsAvspiller {
     private Long antall;
     private LocalDateTime tidspunkt;
     private boolean ferdig;
+    private boolean avbrutt;
     private Integer progressAntall;
     private Map<Long, TpsAvspillerProgress> progressMap;
 
