@@ -295,7 +295,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                             .ariaLabel('Avbrudd bekreftelse')
                             .ok('OK')
                         ).then(function () {
-                            checkStatus()
+                            checkStatus();
                         });
                     });
             };
@@ -330,16 +330,17 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     .then(function (data) {
                         $scope.status = data;
                         $scope.completeProgress = Math.floor($scope.status.progressAntall / $scope.status.antall * 100);
-                        if ($scope.status.ferdig) {
-                            $scope.progress = false;
-                            $mdDialog.show($mdDialog.confirm()
-                                .title(!$scope.status.error ? 'Sending Bekreftelse' : 'Feilmelding')
-                                .htmlContent(!$scope.status.error ?
-                                    'Meldinger er sendt til valgt kø.<br>Sjekk detaljert status for resultat.' : $scope.status.error)
-                                .ariaLabel('Meldingsending bekreftelse')
-                                .ok('OK')
-                            );
-                        } else if (!$scope.status.avbrutt) {
+                        if (!$scope.status.avbrutt) {
+                            if ($scope.status.ferdig) {
+                                $scope.progress = false;
+                                $mdDialog.show($mdDialog.confirm()
+                                    .title(!$scope.status.error ? 'Sending Bekreftelse' : 'Feilmelding')
+                                    .htmlContent(!$scope.status.error ?
+                                        'Meldinger er sendt til valgt kø.<br>Sjekk detaljert status for resultat.' : $scope.status.error)
+                                    .ariaLabel('Meldingsending bekreftelse')
+                                    .ok('OK')
+                                );
+                            }
                             $timeout(checkStatus, 1000);
                         }
                     })

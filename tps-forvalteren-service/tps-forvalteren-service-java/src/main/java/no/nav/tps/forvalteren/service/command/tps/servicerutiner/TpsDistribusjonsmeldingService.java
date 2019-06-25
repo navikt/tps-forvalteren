@@ -68,7 +68,7 @@ public class TpsDistribusjonsmeldingService {
         try {
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, queueName, true);
 
-            return messageQueueConsumer.sendMessage(includeHeader ? skdGetHeaderForSkdMelding.prependHeader(message) : message, 100);
+            return messageQueueConsumer.sendMessage(includeHeader ? skdGetHeaderForSkdMelding.prependHeader(message) : message, 300);
 
         } catch (JMSException | RuntimeException e) {
             log.error(e.getMessage(), e);
