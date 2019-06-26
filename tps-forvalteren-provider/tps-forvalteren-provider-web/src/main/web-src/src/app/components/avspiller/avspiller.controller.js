@@ -340,8 +340,9 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                                     .ariaLabel('Meldingsending bekreftelse')
                                     .ok('OK')
                                 );
+                            } else {
+                                $timeout(checkStatus, 1000);
                             }
-                            $timeout(checkStatus, 1000);
                         }
                     })
             }
