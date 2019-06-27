@@ -13,7 +13,7 @@
                     <label>Brukernavn</label>
                     <input ng-model="credentials.username" name="username" type="text" ng-required="true" >
                     <ng-messages for="loginForm.username.$error" >
-                        <ng-message when="required" ng-show="loginForm.password.$touched">
+                        <ng-message when="required" ng-show="loginForm.username.$touched">
                             Brukernavn er tomt
                         </ng-message>
                     </ng-messages>
