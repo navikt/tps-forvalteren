@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.naming.AuthenticationException;
@@ -112,7 +113,9 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
         String[] groups = userData.getStringAttributes("memberOf");
 
         if (groups == null) {
-            logger.debug("No values for 'memberOf' attribute.");
+            if (logger.isDebugEnabled()) {
+                logger.debug("No values for 'memberOf' attribute.");
+            }
 
             return AuthorityUtils.NO_AUTHORITIES;
         }
@@ -121,8 +124,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
             logger.debug("'memberOf' attribute values: " + Arrays.asList(groups));
         }
 
-        ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(
-                groups.length);
+        List<GrantedAuthority> authorities = new ArrayList(groups.length);
 
         for (String group : groups) {
             authorities.add(new SimpleGrantedAuthority(new DistinguishedName(group)
@@ -136,7 +138,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
         // TODO. add DNS lookup based on domain
         final String bindUrl = url;
 
-        Hashtable<String, String> env = new Hashtable<String, String>();
+        Hashtable<String, String> env = new Hashtable();
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         String bindPrincipal = createBindPrincipal(username);
         env.put(Context.SECURITY_PRINCIPAL, bindPrincipal);
@@ -147,14 +149,11 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
 
         try {
             return contextFactory.createContext(env);
+        } catch (AuthenticationException | OperationNotSupportedException e) {
+            handleBindException(bindPrincipal, e);
+            throw badCredentials(e);
         } catch (NamingException e) {
-            if ((e instanceof AuthenticationException)
-                    || (e instanceof OperationNotSupportedException)) {
-                handleBindException(bindPrincipal, e);
-                throw badCredentials(e);
-            } else {
-                throw LdapUtils.convertLdapException(e);
-            }
+            throw LdapUtils.convertLdapException(e);
         }
     }
 
@@ -166,12 +165,16 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
         int subErrorCode = parseSubErrorCode(exception.getMessage());
 
         if (subErrorCode <= 0) {
-            logger.debug("Failed to locate AD-specific sub-error code in message");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Failed to locate AD-specific sub-error code in message");
+            }
             return;
         }
 
-        logger.info("Active Directory authentication failed: "
-                + subCodeToLogMessage(subErrorCode));
+        if (logger.isInfoEnabled()) {
+            logger.info("Active Directory authentication failed: "
+                    + subCodeToLogMessage(subErrorCode));
+        }
 
         if (convertSubErrorCodesToExceptions) {
             raiseExceptionForErrorCode(subErrorCode, exception);
@@ -230,9 +233,9 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
             return "User must reset password";
         case ACCOUNT_LOCKED:
             return "Account locked";
+        default:
+            return "Unknown (error code " + Integer.toHexString(code) + ")";
         }
-
-        return "Unknown (error code " + Integer.toHexString(code) + ")";
     }
 
     private BadCredentialsException badCredentials() {
@@ -273,8 +276,10 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
         int atChar = bindPrincipal.lastIndexOf('@');
 
         if (atChar < 0) {
-            logger.debug("User principal '" + bindPrincipal
-                    + "' does not contain the domain, and no domain has been configured");
+            if (logger.isDebugEnabled()) {
+                logger.debug("User principal '" + bindPrincipal
+                        + "' does not contain the domain, and no domain has been configured");
+            }
             throw badCredentials();
         }
 
