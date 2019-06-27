@@ -54,15 +54,14 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
     private final String domain;
     private final String rootDn;
     private final String url;
+    // Only used to allow tests to substitute a mock LdapContext
+    TpsfLdapAuthenticationProvider.ContextFactory contextFactory = new TpsfLdapAuthenticationProvider.ContextFactory();
     private boolean convertSubErrorCodesToExceptions;
     private String searchFilter = "(&(objectClass=user)(sAMAccountName={0}))";
 
-    // Only used to allow tests to substitute a mock LdapContext
-    TpsfLdapAuthenticationProvider.ContextFactory contextFactory = new TpsfLdapAuthenticationProvider.ContextFactory();
-
     /**
      * @param domain the domain name (may be null or empty)
-     * @param url an LDAP url (or multiple URLs)
+     * @param url    an LDAP url (or multiple URLs)
      * @param rootDn the root DN (may be null or empty)
      */
     public TpsfLdapAuthenticationProvider(String domain, String url,
@@ -75,7 +74,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
 
     /**
      * @param domain the domain name (may be null or empty)
-     * @param url an LDAP url (or multiple URLs)
+     * @param url    an LDAP url (or multiple URLs)
      */
     public TpsfLdapAuthenticationProvider(String domain, String url) {
         Assert.isTrue(StringUtils.hasText(url), "Url cannot be empty");
@@ -94,13 +93,11 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
 
         try {
             return searchForUser(ctx, username);
-        }
-        catch (NamingException e) {
+        } catch (NamingException e) {
             logger.error("Failed to locate directory entry for authenticated user: "
                     + username, e);
             throw badCredentials(e);
-        }
-        finally {
+        } finally {
             LdapUtils.closeContext(ctx);
         }
     }
@@ -150,14 +147,12 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
 
         try {
             return contextFactory.createContext(env);
-        }
-        catch (NamingException e) {
+        } catch (NamingException e) {
             if ((e instanceof AuthenticationException)
                     || (e instanceof OperationNotSupportedException)) {
                 handleBindException(bindPrincipal, e);
                 throw badCredentials(e);
-            }
-            else {
+            } else {
                 throw LdapUtils.convertLdapException(e);
             }
         }
@@ -261,8 +256,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
             return SpringSecurityLdapTemplate.searchForSingleEntryInternal(context,
                     searchControls, searchRoot, searchFilter,
                     new Object[] { username });
-        }
-        catch (IncorrectResultSizeDataAccessException incorrectResults) {
+        } catch (IncorrectResultSizeDataAccessException incorrectResults) {
             // Search should never return multiple results if properly configured - just
             // rethrow
             if (incorrectResults.getActualSize() != 0) {
@@ -321,7 +315,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
      * {@code BadCredentialsException}.
      *
      * @param convertSubErrorCodesToExceptions {@code true} to raise an exception based on
-     * the AD error code.
+     *                                         the AD error code.
      */
     public void setConvertSubErrorCodesToExceptions(
             boolean convertSubErrorCodesToExceptions) {
@@ -336,7 +330,6 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
      * </p>
      *
      * @param searchFilter the filter string
-     *
      * @since 3.2.6
      */
     public void setSearchFilter(String searchFilter) {
@@ -345,6 +338,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
     }
 
     static class ContextFactory {
+
         DirContext createContext(Hashtable<?, ?> env) throws NamingException {
             return new InitialLdapContext(env, null);
         }
