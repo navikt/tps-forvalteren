@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.security.authentication;
 
+import static java.lang.String.format;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -170,7 +172,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
         }
 
         if (logger.isInfoEnabled()) {
-            logger.info("Active Directory authentication failed: " + subCodeToLogMessage(subErrorCode));
+            logger.info(format("Active Directory authentication failed: %s", subCodeToLogMessage(subErrorCode)));
         }
 
         if (convertSubErrorCodesToExceptions) {
@@ -274,8 +276,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
 
         if (atChar < 0) {
             if (logger.isDebugEnabled()) {
-                logger.debug("User principal '" + bindPrincipal
-                        + "' does not contain the domain, and no domain has been configured");
+                logger.debug(format("User principal '%s' does not contain the domain, and no domain has been configured", bindPrincipal));
             }
             throw badCredentials();
         }
