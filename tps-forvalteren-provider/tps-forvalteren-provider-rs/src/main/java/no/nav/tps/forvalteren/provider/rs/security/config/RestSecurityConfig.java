@@ -1,8 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.security.config;
 
-import no.nav.tps.forvalteren.provider.rs.security.PackageMarker;
-import no.nav.tps.forvalteren.provider.rs.security.mapping.RestAuthoritiesMapper;
-import no.nav.tps.forvalteren.provider.rs.security.mapping.RestUserDetailsMapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,14 +10,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.List;
+import no.nav.tps.forvalteren.provider.rs.security.PackageMarker;
+import no.nav.tps.forvalteren.provider.rs.security.authentication.TpsfLdapAuthenticationProvider;
+import no.nav.tps.forvalteren.provider.rs.security.mapping.RestAuthoritiesMapper;
+import no.nav.tps.forvalteren.provider.rs.security.mapping.RestUserDetailsMapper;
 
 /**
  * Created by Tobias Hansen (Visma Consulting AS)
@@ -50,8 +47,8 @@ public class RestSecurityConfig {
     }
 
     @Bean
-    ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
-        ActiveDirectoryLdapAuthenticationProvider provider = new ActiveDirectoryLdapAuthenticationProvider(ldapDomain, ldapUrl);
+    TpsfLdapAuthenticationProvider authenticationProvider() {
+        TpsfLdapAuthenticationProvider provider = new TpsfLdapAuthenticationProvider(ldapDomain, ldapUrl);
 
         provider.setAuthoritiesMapper(authoritiesMapper());
         provider.setUserDetailsContextMapper(userDetailsMapper());
