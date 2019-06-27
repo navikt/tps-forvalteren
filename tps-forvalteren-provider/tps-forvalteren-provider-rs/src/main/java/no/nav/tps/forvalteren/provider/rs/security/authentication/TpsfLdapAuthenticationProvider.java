@@ -135,14 +135,12 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
     }
 
     private DirContext bindAsUser(String username, String password) {
-        // TODO. add DNS lookup based on domain
-        final String bindUrl = url;
 
         Hashtable<String, String> env = new Hashtable();
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         String bindPrincipal = createBindPrincipal(username);
         env.put(Context.SECURITY_PRINCIPAL, bindPrincipal);
-        env.put(Context.PROVIDER_URL, bindUrl);
+        env.put(Context.PROVIDER_URL, url);
         env.put(Context.SECURITY_CREDENTIALS, password);
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.OBJECT_FACTORIES, DefaultDirObjectFactory.class.getName());
@@ -172,8 +170,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
         }
 
         if (logger.isInfoEnabled()) {
-            logger.info("Active Directory authentication failed: "
-                    + subCodeToLogMessage(subErrorCode));
+            logger.info("Active Directory authentication failed: " + subCodeToLogMessage(subErrorCode));
         }
 
         if (convertSubErrorCodesToExceptions) {
