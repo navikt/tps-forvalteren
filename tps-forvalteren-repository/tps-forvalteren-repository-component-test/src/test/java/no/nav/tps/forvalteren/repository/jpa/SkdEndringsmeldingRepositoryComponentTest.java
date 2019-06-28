@@ -11,6 +11,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsNull.nullValue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -113,5 +114,20 @@ public class SkdEndringsmeldingRepositoryComponentTest {
         assertThat(resultFoedselsnumre, hasSize(2));
         assertThat(resultFoedselsnumre, hasItems(foedselsnummer2, foedselsnummer3));
         assertThat(resultFoedselsnumre, not(hasItems(storedSkdEndringsmelding1_shouldNotBeFound1.getFoedselsnummer()))); // Skal ikke hente fnr fra en annen gruppe
+    }
+
+    @Test
+    @Rollback
+    public void findAllIdsByFoedselsnummer() {
+        String foedselsnummer1 = "22222222222";
+        String foedselsnummer2 = "33333333333";
+        List<String> foedselsnummer = Collections.singletonList(foedselsnummer2);
+        testRepository.save(aSkdEndringsmelding().foedselsnummer(foedselsnummer1).gruppe(gruppe).aarsakskode("02").build());
+        testRepository.save(aSkdEndringsmelding().foedselsnummer(foedselsnummer2).gruppe(gruppe).aarsakskode("02").build());
+        testRepository.save(aSkdEndringsmelding().foedselsnummer(foedselsnummer2).gruppe(gruppe).aarsakskode("26").build());
+
+        List<Long> allIdsByFoedselsnummer = repository.findAllIdsBy(gruppe, foedselsnummer);
+
+        assertThat(allIdsByFoedselsnummer, hasSize(2));
     }
 }

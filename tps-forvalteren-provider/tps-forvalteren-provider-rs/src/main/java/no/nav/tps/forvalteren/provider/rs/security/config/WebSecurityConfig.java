@@ -11,11 +11,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import no.nav.tps.forvalteren.provider.rs.security.authentication.TpsfLdapAuthenticationProvider;
 
 @Component
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -25,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String[] allowedOrigins;
 
     @Autowired
-    private ActiveDirectoryLdapAuthenticationProvider authenticationProvider;
+    private TpsfLdapAuthenticationProvider authenticationProvider;
 
     @Autowired
     private RestAuthenticationEntryPoint authentificationEntryPoint;
