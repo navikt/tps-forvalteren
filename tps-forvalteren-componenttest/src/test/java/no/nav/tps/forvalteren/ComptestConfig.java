@@ -75,7 +75,7 @@ public class ComptestConfig {
     @Bean
     @Primary
     public MessageQueueServiceFactory defaultMessageQueueServiceFactory() {
-        return (environment, requestQueueAlias) -> {
+        return (environment, requestQueueAlias, isQueueName) -> {
             actualConnectedToEnvironments.add(Pair.of(environment,requestQueueAlias));
             return defaultMessageQueueConsumer();
         };

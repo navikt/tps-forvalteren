@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,13 +27,13 @@ public class SkdMeldingMQConsumerTest {
     private String REQUEST_QUEUE_TEST = "testQ";
 
     @Mock
-    private MessageQueueServiceFactory messageQueueServiceFactoryMock;
+    private MessageQueueServiceFactory messageQueueServiceFactory;
 
     @Mock
-    private MessageQueueConsumer messageQueueConsumerMock;
+    private MessageQueueConsumer messageQueueConsumer;
 
     @Mock
-    private ForbiddenCallHandlerService ForbiddenCallHandlerServiceMock;
+    private ForbiddenCallHandlerService forbiddenCallHandlerService;
     
     @InjectMocks
     private SkdMeldingMQConsumer skdMeldingMQConsumer;
@@ -42,13 +43,13 @@ public class SkdMeldingMQConsumerTest {
         config.setRequestQueue(REQUEST_QUEUE_TEST);
         skdMeldingDefinition.setConfig(config);
 
-        when(messageQueueServiceFactoryMock.createMessageQueueConsumer(any(), any())).thenReturn(messageQueueConsumerMock);
+        when(messageQueueServiceFactory.createMessageQueueConsumer(any(), any(), eq(false))).thenReturn(messageQueueConsumer);
     }
 
     @Test
     public void callsAuthorisationService() throws Exception {
         skdMeldingMQConsumer.sendMessage("test", skdMeldingDefinition, "test");
 
-        verify(ForbiddenCallHandlerServiceMock, never()).authoriseRestCall(skdMeldingDefinition);
+        verify(forbiddenCallHandlerService, never()).authoriseRestCall(skdMeldingDefinition);
     }
 }

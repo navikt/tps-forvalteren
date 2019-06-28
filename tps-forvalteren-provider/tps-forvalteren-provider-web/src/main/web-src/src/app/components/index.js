@@ -19,3 +19,4 @@ require('./endringsmelding/skd/sendtiltps/send-til-tps.controller');
 require('./doedsmeldinger/doedsmeldinger.controller');
 require('./doedsmeldinger/endremelding/endre-melding.controller');
 require('./rawxml-melding/xml-melding.controller');
+require('./avspiller/avspiller.controller');

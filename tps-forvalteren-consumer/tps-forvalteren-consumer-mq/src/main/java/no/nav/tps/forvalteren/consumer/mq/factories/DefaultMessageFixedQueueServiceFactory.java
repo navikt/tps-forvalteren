@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.consumer.rs.fasit.queues.FasitMessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 /**
@@ -22,7 +22,7 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueueServiceFactory {
 
     @Autowired
-    private FasitMessageQueueConsumer fasitMessageQueueConsumer;
+    private FasitClient fasitClient;
 
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;
@@ -42,7 +42,7 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
             environment = "u6";
         }
 
-        QueueManager queueManager = fasitMessageQueueConsumer.getQueueManager(environment);
+        QueueManager queueManager = fasitClient.getQueueManager(environment);
 
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,
                 (environment).toUpperCase() + CHANNEL_POSTFIX);

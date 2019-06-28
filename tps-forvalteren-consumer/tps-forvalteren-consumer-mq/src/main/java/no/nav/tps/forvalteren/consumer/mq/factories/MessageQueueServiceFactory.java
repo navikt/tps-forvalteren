@@ -1,10 +1,10 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-
 import javax.jms.JMSException;
+
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 
 @FunctionalInterface
 public interface MessageQueueServiceFactory {
-    MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias) throws JMSException;
+    MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias, boolean isQueueName) throws JMSException;
 }

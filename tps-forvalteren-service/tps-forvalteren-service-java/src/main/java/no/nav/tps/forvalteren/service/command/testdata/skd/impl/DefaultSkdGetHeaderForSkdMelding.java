@@ -1,8 +1,11 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd.impl;
 
+import static java.util.Objects.isNull;
+
+import org.springframework.stereotype.Service;
+
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdGetHeaderForSkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
-import org.springframework.stereotype.Service;
 
 @Service
 public class DefaultSkdGetHeaderForSkdMelding implements SkdGetHeaderForSkdMelding {
@@ -15,15 +18,27 @@ public class DefaultSkdGetHeaderForSkdMelding implements SkdGetHeaderForSkdMeldi
     private static final String SKD_REFERANSE = WHITESPACE_20_STK;
 
     public String execute(SkdMeldingTrans1 skdMelding) {
-        StringBuilder headerSkdMelding = new StringBuilder();
-        headerSkdMelding.append(MQ_HANDLE)
+        return new StringBuilder()
+                .append(MQ_HANDLE)
                 .append(KODE_SYSTEM)
                 .append(KJORE_NUMMER)
                 .append(skdMelding.getAarsakskode())
                 .append(skdMelding.getTranstype())
-                .append(skdMelding.getTildelingskode() == null ? "0" : skdMelding.getTildelingskode())
-                .append(SKD_REFERANSE);
+                .append(isNull(skdMelding.getTildelingskode()) ? '0' : skdMelding.getTildelingskode())
+                .append(SKD_REFERANSE)
+                .toString();
+    }
 
-        return headerSkdMelding.toString();
+    public String prependHeader(String skdMelding) {
+        return new StringBuilder()
+                .append(MQ_HANDLE)
+                .append(KODE_SYSTEM)
+                .append(KJORE_NUMMER)
+                .append(skdMelding.substring(26, 28))
+                .append(skdMelding.substring(25, 26))
+                .append(" ".equals(skdMelding.substring(873, 874)) ? '0' : skdMelding.subSequence(873, 874))
+                .append(SKD_REFERANSE)
+                .append(skdMelding)
+                .toString();
     }
 }

@@ -51,11 +51,15 @@ angular.module('tps-forvalteren.service')
 
         self.redirectToSendDoedsmeldinger = function(){
             $state.go("send-doedsmeldinger");
-        }
+        };
 
         self.redirectToRawXmlMelding = function(){
             $state.go("xml-melding");
-        }
+        };
+
+        self.redirectToAvspiller = function(){
+            $state.go("avspiller");
+        };
 
         self.redirectUrl = function(url, param) {
             if (url.indexOf('/:') !== -1) {
