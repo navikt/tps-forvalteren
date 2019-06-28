@@ -7,10 +7,12 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 
 public class IdentpoolConsumer {
 
-    private static final String IDENT_WHITELIST_URL = "/api/v1/identifikator/whitelist";
+    private static final String IDENTPOOL_ROOT_URL = "/api/v1/identifikator";
+    private static final String IDENT_WHITELIST_URL = IDENTPOOL_ROOT_URL + "/whitelist";
 
     @Value("${identpool.host.url}")
     private String identpoolHost;
@@ -23,5 +25,12 @@ public class IdentpoolConsumer {
         return restTemplate.exchange(RequestEntity.get(
                 URI.create(identpoolHost + IDENT_WHITELIST_URL))
                 .build(), String[].class);
+    }
+
+    public ResponseEntity requestRandomIdents(IdentpoolNewIdentsRequest request) {
+
+        return restTemplate.exchange(RequestEntity.post(
+                URI.create(identpoolHost + IDENTPOOL_ROOT_URL))
+                .body(request), String[].class);
     }
 }

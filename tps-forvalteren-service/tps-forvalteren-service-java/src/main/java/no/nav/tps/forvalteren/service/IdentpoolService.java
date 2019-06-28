@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static org.assertj.core.util.Sets.newHashSet;
 
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.log4j.Log4j;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
+import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 
 @Log4j
 @Service
@@ -44,4 +47,18 @@ public class IdentpoolService {
         });
         return adjustedIdents;
     }
-}
+
+    public Set<String> getAvailableIdents(IdentpoolNewIdentsRequest request) {
+
+        try {
+            ResponseEntity<String[]> availIdents = identpoolConsumer.requestRandomIdents(request);
+
+            return new HashSet(asList(availIdents.hasBody() ? availIdents.getBody() : new String[]{}));
+
+        } catch (RuntimeException e) {
+
+            log.error(e.getMessage(), e);
+            throw new TpsfTechnicalException(format("Oppslag mot identpool feilet %s", e.getMessage()), e);
+        }
+    }
+ }

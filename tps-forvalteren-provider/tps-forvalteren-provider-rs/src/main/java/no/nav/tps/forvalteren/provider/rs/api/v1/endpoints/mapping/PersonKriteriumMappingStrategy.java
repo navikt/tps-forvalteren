@@ -2,12 +2,15 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,9 +20,12 @@ import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn;
+import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
@@ -27,6 +33,8 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
 
 @Component
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
+
+    private static final String KJOENN = "kjoenn";
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -51,7 +59,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
-                .exclude("kjonn")
+                .exclude(KJOENN)
                 .exclude("relasjoner")
                 .byDefault()
                 .register();
@@ -70,7 +78,24 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
-                .exclude("kjonn")
+                .exclude(KJOENN)
+                .byDefault()
+                .register();
+
+        factory.classMap(RsPersonKriterier.class, IdentpoolNewIdentsRequest.class)
+                .customize(
+                        new CustomMapper<RsPersonKriterier, IdentpoolNewIdentsRequest>() {
+                            @Override public void mapAtoB(RsPersonKriterier personKriterier, IdentpoolNewIdentsRequest newIdentsRequest, MappingContext context) {
+
+                                newIdentsRequest.setFoedtEtter(convertDate(personKriterier.getFoedtEtter()));
+                                newIdentsRequest.setFoedtFoer(convertDate(personKriterier.getFoedtFoer()));
+                                newIdentsRequest.setKjoenn(extractKjoenn(personKriterier.getKjonn()));
+                                newIdentsRequest.setRekvirertAv("TPSF");
+                            }
+                        })
+                .exclude("foedtEtter")
+                .exclude("foedtFoer")
+                .exclude(KJOENN)
                 .byDefault()
                 .register();
     }
@@ -127,7 +152,24 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         }
     }
 
-    private boolean isUtenFastBopel(RsSimplePersonRequest kriteriumRequest) {
+    private static boolean isUtenFastBopel(RsSimplePersonRequest kriteriumRequest) {
         return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && !SPSF.name().equals(kriteriumRequest.getSpesreg());
+    }
+
+    private static IdentpoolKjoenn extractKjoenn(String kjoenn) {
+
+        switch (kjoenn) {
+        case "K":
+            return KVINNE;
+        case "M":
+            return MANN;
+        case "U":
+        default:
+            return null;
+        }
+    }
+
+    private static LocalDate convertDate(LocalDateTime dateTime) {
+        return nonNull(dateTime) ? dateTime.toLocalDate() : null;
     }
 }

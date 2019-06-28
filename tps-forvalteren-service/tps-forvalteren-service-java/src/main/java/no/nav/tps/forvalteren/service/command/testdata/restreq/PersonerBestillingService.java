@@ -46,13 +46,13 @@ public class PersonerBestillingService {
             RsPersonKriteriumRequest kriteriePartner = extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
             RsPersonKriteriumRequest kriterieBarn = extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
 
-            hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier, personKriteriumRequest.getEnvironments()));
+            hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
             if (harPartner(personKriteriumRequest)) {
-                partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner, personKriteriumRequest.getEnvironments()));
+                partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
             }
             if (harBarn(personKriteriumRequest)) {
-                barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn, personKriteriumRequest.getEnvironments()));
+                barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
             }
 
             setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
