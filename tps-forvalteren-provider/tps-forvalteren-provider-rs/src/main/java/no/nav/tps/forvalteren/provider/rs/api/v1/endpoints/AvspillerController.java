@@ -160,17 +160,18 @@ public class AvspillerController {
     }
 
     private static LocalDateTime parseDateFrom(String periode) {
-        return isNotBlank(periode) ? parse(periode.split("\\$")[0]) : null;
+        String[] times = periode.split("\\$");
+        return isNotBlank(periode) && isNotBlank(times[0]) ? parse(times[0]) : null;
     }
 
     private static LocalDateTime parseDateTo(String periode) {
-        return isNotBlank(periode) && periode.split("\\$").length > 1 ?
-                parse(periode.split("\\$")[1]) : null;
+        String[] times = periode.split("\\$");
+        return isNotBlank(periode) && times.length > 1 && isNotBlank(times[1]) ? parse(times[1]) : null;
     }
 
     private static Long parseTimeout(String periode) {
-        return isNotBlank(periode) && periode.split("\\$").length > 2 ?
-                valueOf(periode.split("\\$")[2]) : null;
+        String[] times = periode.split("\\$");
+        return isNotBlank(periode) && times.length > 2 && isNotBlank(times[2]) ? valueOf(times[2]) : null;
     }
 
     private static List strToList(String item) {
