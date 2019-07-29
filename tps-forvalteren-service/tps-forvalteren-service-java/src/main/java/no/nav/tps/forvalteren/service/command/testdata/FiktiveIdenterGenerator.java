@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Character.getNumericValue;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
@@ -10,6 +9,7 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,10 +35,20 @@ public class FiktiveIdenterGenerator {
     private static final int CATEGORY1_TIME_PERIOD_START = 1900;
     private static final int CATEGORY1_TIME_PERIOD_END = 1999;
 
-    private static final int CATEGORY_2_NUMBER_RANGE_START = 500;
-    private static final int CATEGORY_2_NUMBER_RANGE_END = 999;
-    private static final int CATEGORY_2_TIME_PERIOD_START = 2000;
-    private static final int CATEGORY_2_TIME_PERIOD_END = 2039;
+    private static final int CATEGORY2_NUMBER_RANGE_START = 500;
+    private static final int CATEGORY2_NUMBER_RANGE_END = 749;
+    private static final int CATEGORY2_TIME_PERIOD_START = 1854;
+    private static final int CATEGORY2_TIME_PERIOD_END = 1899;
+
+    private static final int CATEGORY_3_NUMBER_RANGE_START = 500;
+    private static final int CATEGORY_3_NUMBER_RANGE_END = 999;
+    private static final int CATEGORY_3_TIME_PERIOD_START = 2000;
+    private static final int CATEGORY_3_TIME_PERIOD_END = 2039;
+
+    private static final int CATEGORY4_NUMBER_RANGE_START = 900;
+    private static final int CATEGORY4_NUMBER_RANGE_END = 999;
+    private static final int CATEGORY4_TIME_PERIOD_START = 1949;
+    private static final int CATEGORY4_TIME_PERIOD_END = 1999;
 
     private static final int[] KONTROLL_SIFFER_1 = { 3, 7, 6, 1, 8, 9, 4, 5, 2 };
     private static final int[] KONTROLL_SIFFER_2 = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
@@ -91,9 +101,13 @@ public class FiktiveIdenterGenerator {
     private static List<Integer> hentKategoriIntervallForDato(LocalDateTime date) {
 
         if (isInYearRange(date, CATEGORY1_TIME_PERIOD_START, CATEGORY1_TIME_PERIOD_END)) {
-            return newArrayList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END);
-        } else if (isInYearRange(date, CATEGORY_2_TIME_PERIOD_START, CATEGORY_2_TIME_PERIOD_END)) {
-            return newArrayList(CATEGORY_2_NUMBER_RANGE_START, CATEGORY_2_NUMBER_RANGE_END);
+            return Arrays.asList(CATEGORY1_NUMBER_RANGE_START, CATEGORY1_NUMBER_RANGE_END);
+        } else if (isInYearRange(date, CATEGORY2_TIME_PERIOD_START, CATEGORY2_TIME_PERIOD_END)) {
+            return Arrays.asList(CATEGORY2_NUMBER_RANGE_START, CATEGORY2_NUMBER_RANGE_END);
+        } else if (isInYearRange(date, CATEGORY_3_TIME_PERIOD_START, CATEGORY_3_TIME_PERIOD_END)) {
+            return Arrays.asList(CATEGORY_3_NUMBER_RANGE_START, CATEGORY_3_NUMBER_RANGE_END);
+        } else if (isInYearRange(date, CATEGORY4_TIME_PERIOD_START, CATEGORY4_TIME_PERIOD_END)) {
+            return Arrays.asList(CATEGORY4_NUMBER_RANGE_START, CATEGORY4_NUMBER_RANGE_END);
         }
         return emptyList();
     }
