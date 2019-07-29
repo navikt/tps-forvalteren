@@ -149,7 +149,7 @@ public class AvspillerService {
             logProgress(avspillerStatus.getBestillingId(), personListe, true, null);
 
         } catch (RuntimeException e) {
-            logProgress(avspillerStatus.getBestillingId(), personListe, true, e.getMessage());
+            logProgress(avspillerStatus.getBestillingId(), personListe, true, nonNull(e) ? e.getMessage() : null);
         }
     }
 
