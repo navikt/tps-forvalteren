@@ -34,7 +34,7 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
 @Component
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
-    private static final String KJOENN = "kjoenn";
+    private static final String KJONN = "kjonn";
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -59,7 +59,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
-                .exclude(KJOENN)
+                .exclude(KJONN)
                 .exclude("relasjoner")
                 .byDefault()
                 .register();
@@ -78,7 +78,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
-                .exclude(KJOENN)
+                .exclude(KJONN)
                 .byDefault()
                 .register();
 
@@ -95,7 +95,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         })
                 .exclude("foedtEtter")
                 .exclude("foedtFoer")
-                .exclude(KJOENN)
+                .exclude(KJONN)
                 .byDefault()
                 .register();
     }
@@ -127,11 +127,13 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private void mapAdresser(RsSimplePersonRequest kriteriumRequest, Person person, MapperFacade mapperFacade) {
         if (!kriteriumRequest.getPostadresse().isEmpty()) {
             person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
+            person.getPostadresse().clear();
             person.getPostadresse().forEach(adr -> adr.setPerson(person));
         }
 
         if (DNR.name().equals(person.getIdenttype())) {
             person.setBoadresse(null);
+            person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
 
         } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
