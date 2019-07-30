@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static java.lang.Math.min;
+
 import java.lang.reflect.InvocationTargetException;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -208,7 +210,8 @@ public class SkdMeldingTrans1 implements SkdMelding {
 	
 	private String addDefaultValueToEndOfString(String parameterverdien, SkdFeltDefinisjonerTrans1 skdFeltDefinisjon) {
 		if (!skdFeltDefinisjon.isValueLastInSkdField()) {
-			return parameterverdien + skdFeltDefinisjon.getDefaultVerdi().substring(parameterverdien.length());
+            return parameterverdien.substring(0, min(parameterverdien.length(), skdFeltDefinisjon.getAntallBytesAvsatt())) +
+                    skdFeltDefinisjon.getDefaultVerdi().substring(min(skdFeltDefinisjon.getAntallBytesAvsatt(), parameterverdien.length()));
 		} else {
 			return skdFeltDefinisjon.getDefaultVerdi().substring(0,
 					(skdFeltDefinisjon.getDefaultVerdi().length() - parameterverdien.length())) + parameterverdien;
