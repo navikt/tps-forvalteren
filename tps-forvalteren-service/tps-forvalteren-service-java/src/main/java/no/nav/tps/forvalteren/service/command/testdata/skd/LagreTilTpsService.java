@@ -76,7 +76,6 @@ public class LagreTilTpsService {
             amendStatus(innvandringCreateResponse, skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, singleton(environment)));
             amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(environment)));
             amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(personerSomSkalFoedes, singleton(environment)));
-            amendStatus(utvandringMldResponse, skdMeldingSender.sendUtvandringsmeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(environment)));
 
             tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(personerIGruppen, environment);
         }
@@ -90,6 +89,7 @@ public class LagreTilTpsService {
         skdMldResponse.addAll(skdMeldingSender.sendRelasjonsmeldinger(personerIGruppen, environments));
         skdMldResponse.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, environments));
         skdMldResponse.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, environments));
+        skdMldResponse.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerIGruppen, environments));
 
         List<ServiceRoutineResponseStatus> serviceRoutineResponser = sendNavEndringsmeldinger.execute(personerIGruppen, environments);
 

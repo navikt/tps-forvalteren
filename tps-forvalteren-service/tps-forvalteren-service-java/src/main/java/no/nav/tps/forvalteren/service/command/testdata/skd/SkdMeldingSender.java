@@ -91,9 +91,9 @@ public class SkdMeldingSender {
         return listTpsResponsene;
     }
 
-    public List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerSomAlleredeEksistererITps, Set<String> environmentsSet) {
+    public List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerIGruppen, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerSomAlleredeEksistererITps, true);
+        List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerIGruppen, true);
         utvandringsMeldinger.forEach(skdMelding -> {
             SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Utvandring", skdMelding, environmentsSet);
             listTpsResponsene.add(tpsResponse);

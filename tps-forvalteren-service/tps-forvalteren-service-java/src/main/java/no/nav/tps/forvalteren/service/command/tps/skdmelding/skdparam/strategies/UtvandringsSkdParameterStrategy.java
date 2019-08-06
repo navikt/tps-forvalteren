@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -9,7 +12,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Utvandrin
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
-import org.springframework.stereotype.Service;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Service
 public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
@@ -17,6 +20,9 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
     private static final String AARSAK_KO_DE_FOR_UTVANDRING = "32";
     private static final String TRANSTYPE_FOR_UTVANDRING = "1";
     private static final String STATUS_KO_DE_FOR_UTVANDRING = "3";
+
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
 
     @Override
     public String hentTildelingskode() {
@@ -44,14 +50,11 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(person.getRegdato()));
         skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(person.getRegdato()));
 
-        LocalDateTime utvandretRegdato = person.getUtvandretTilLandRegdato() != null ? person.getUtvandretTilLandRegdato() : person.getRegdato();
-        LocalDateTime utvandretFlyttedato = person.getUtvandretTilLandFlyttedato() != null ? person.getUtvandretTilLandFlyttedato() : person.getRegdato();
+        skdMeldingTrans1.setUtvandretTilLand(landkodeEncoder.encode(person.getUtvandretTilLand()));
+        skdMeldingTrans1.setTilLandFlyttedato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandFlyttedato(), now())));
+        skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getRegdato(), now())));
 
-        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(utvandretRegdato));
-
-        skdMeldingTrans1.setUtvandretTilLand(person.getUtvandretTilLand());
-        skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(utvandretRegdato));
-        skdMeldingTrans1.setTilLandFlyttedato(ConvertDateToString.yyyyMMdd(utvandretFlyttedato));
+        skdMeldingTrans1.setRegDato(skdMeldingTrans1.getTilLandRegdato());
     }
 
     private void addDefaultParams(SkdMeldingTrans1 skdMeldingTrans1) {
