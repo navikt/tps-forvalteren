@@ -24,7 +24,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
     private LandkodeEncoder landkodeEncoder;
 
     @Autowired
-    private SetAdresseService setAdresse;
+    private SetAdresseService setAdresseService;
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
@@ -68,7 +68,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
                         hentDatoFraIdentService.extract(person.getIdent()))));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
-        setAdresse.execute(skdMeldingTrans1, person);
+        setAdresseService.execute(skdMeldingTrans1, person);
 
         skdMeldingTrans1.setSpesRegType(person.getSpesreg() != null ? DiskresjonskoderType.valueOf(person.getSpesreg()).getKodeverdi() : null);
         skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(person.getSpesregDato()));

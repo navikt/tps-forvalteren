@@ -13,6 +13,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @Service
 public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
@@ -23,6 +24,9 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
 
     @Autowired
     private LandkodeEncoder landkodeEncoder;
+
+    @Autowired
+    private SetAdresseService setAdresseService;
 
     @Override
     public String hentTildelingskode() {
@@ -55,6 +59,8 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandRegdato(), now())));
 
         skdMeldingTrans1.setRegDato(skdMeldingTrans1.getTilLandRegdato());
+
+        setAdresseService.execute(skdMeldingTrans1, person);
     }
 
     private void addDefaultParams(SkdMeldingTrans1 skdMeldingTrans1) {

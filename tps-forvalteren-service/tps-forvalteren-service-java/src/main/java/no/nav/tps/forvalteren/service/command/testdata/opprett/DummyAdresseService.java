@@ -75,6 +75,26 @@ public class DummyAdresseService {
                 .build();
     }
 
+    public Postadresse createPostAdresseUtvandret(Person person) {
+
+        if (person.getPostadresse().isEmpty()) {
+            return Postadresse.builder()
+                    .postLinje1(ADRESSE_1_UTLAND)
+                    .postLinje2(ADRESSE_2_UTLAND)
+                    .postLand(person.getUtvandretTilLand())
+                    .person(person)
+                    .build();
+        } else {
+            return Postadresse.builder()
+                    .postLinje1(person.getPostadresse().get(0).getPostLinje1())
+                    .postLinje2(person.getPostadresse().get(0).getPostLinje2())
+                    .postLinje3(person.getPostadresse().get(0).getPostLinje3())
+                    .postLand(person.getPostadresse().get(0).getPostLand())
+                    .person(person)
+                    .build();
+        }
+    }
+
     public Adresse createAdresseUfb(Person person, Adresse adresse) {
 
         Gateadresse gateadresse = Gateadresse.builder()

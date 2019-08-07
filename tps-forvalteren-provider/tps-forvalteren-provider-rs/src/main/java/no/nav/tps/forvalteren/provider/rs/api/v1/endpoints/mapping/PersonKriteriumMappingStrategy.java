@@ -9,6 +9,7 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -138,6 +139,11 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.setBoadresse(null);
             person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
+
+        } else if (isNotBlank(person.getUtvandretTilLand())) {
+            person.setBoadresse(null);
+            person.getPostadresse().clear();
+            person.getPostadresse().add(dummyAdresseService.createPostAdresseUtvandret(person));
 
         } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
             person.setBoadresse(null);
