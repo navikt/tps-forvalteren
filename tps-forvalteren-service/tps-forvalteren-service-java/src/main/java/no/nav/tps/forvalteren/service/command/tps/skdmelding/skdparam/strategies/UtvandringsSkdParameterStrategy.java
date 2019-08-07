@@ -52,7 +52,7 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
 
         skdMeldingTrans1.setUtvandretTilLand(landkodeEncoder.encode(person.getUtvandretTilLand()));
         skdMeldingTrans1.setTilLandFlyttedato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandFlyttedato(), now())));
-        skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getRegdato(), now())));
+        skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandRegdato(), now())));
 
         skdMeldingTrans1.setRegDato(skdMeldingTrans1.getTilLandRegdato());
     }
