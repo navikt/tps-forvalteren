@@ -19,12 +19,16 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.UtvandringSkdParametere;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UtvandringsSkdParameterStrategyTest {
 
     @Mock
     private LandkodeEncoder landkodeEncoder;
+
+    @Mock
+    private SetAdresseService setAdresseService;
 
     @InjectMocks
     private UtvandringsSkdParameterStrategy utvandringsSkdParameterStrategy;

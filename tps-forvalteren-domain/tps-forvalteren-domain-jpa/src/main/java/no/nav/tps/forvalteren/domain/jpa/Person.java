@@ -158,6 +158,9 @@ public class Person extends ChangeStamp {
     @Column(name = "UTEN_FAST_BOPEL")
     private Boolean utenFastBopel;
 
+    @Column(name = "PERSON_STATUS")
+    private String personStatus;
+
     public List<Postadresse> getPostadresse() {
         if (postadresse == null) {
             postadresse = new ArrayList<>();

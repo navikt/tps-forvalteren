@@ -71,7 +71,7 @@ public class LagreTilTpsServiceTest {
     private UppercaseDataInPerson uppercaseDataInPerson;
 
     @Mock
-    private TknrOgGtFraMiljoService tknrOgGtFraMiljoService;
+    private PersonStatusFraMiljoService personStatusFraMiljoService;
 
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;

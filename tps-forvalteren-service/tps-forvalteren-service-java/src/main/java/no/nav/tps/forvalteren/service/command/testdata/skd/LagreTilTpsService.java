@@ -43,7 +43,7 @@ public class LagreTilTpsService {
     private SkdMeldingSender skdMeldingSender;
 
     @Autowired
-    private TknrOgGtFraMiljoService tknrOgGtFraMiljoService;
+    private PersonStatusFraMiljoService personStatusFraMiljoService;
 
     public RsSkdMeldingResponse execute(Long gruppeId, Set<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
@@ -77,7 +77,6 @@ public class LagreTilTpsService {
             amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(environment)));
             amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(personerSomSkalFoedes, singleton(environment)));
 
-            tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(personerIGruppen, environment);
         }
 
         List skdMldResponse = new ArrayList();
@@ -90,6 +89,8 @@ public class LagreTilTpsService {
         skdMldResponse.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, environments));
         skdMldResponse.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, environments));
         skdMldResponse.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerIGruppen, environments));
+
+        personStatusFraMiljoService.hentStatusOgSettPaaPerson(personerIGruppen, environments);
 
         List<ServiceRoutineResponseStatus> serviceRoutineResponser = sendNavEndringsmeldinger.execute(personerIGruppen, environments);
 

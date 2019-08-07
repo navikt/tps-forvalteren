@@ -117,4 +117,6 @@ public class RsPerson {
     private String gtRegel;
 
     private Boolean utenFastBopel;
+
+    private String personStatus;
 }
