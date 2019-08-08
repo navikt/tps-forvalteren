@@ -64,7 +64,6 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
         skdMeldingTrans1.setFoedested("Sykehus");
 
         skdMeldingTrans1.setFornavn(barn.getFornavn());
-        skdMeldingTrans1.setMellomnavn(barn.getMellomnavn());
         skdMeldingTrans1.setSlektsnavn(barn.getEtternavn());
         skdMeldingTrans1.setKjoenn(hentKjoennFraIdentService.execute(barn.getIdent()));
 
