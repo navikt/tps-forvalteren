@@ -1,7 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,13 +14,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonNameServiceTest {
@@ -46,6 +46,18 @@ public class PersonNameServiceTest {
 
         verify(personMock1).setFornavn(stringCaptor.capture());
         verify(personMock2).setFornavn(stringCaptor.capture());
+
+        assertThat(stringCaptor.getAllValues().get(0), not(isEmptyOrNullString()));
+        assertThat(stringCaptor.getAllValues().get(1), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void mellomnavnTest() {
+        command.execute(personMock1, true);
+        command.execute(personMock2, true);
+
+        verify(personMock1).setMellomnavn(stringCaptor.capture());
+        verify(personMock2).setMellomnavn(stringCaptor.capture());
 
         assertThat(stringCaptor.getAllValues().get(0), not(isEmptyOrNullString()));
         assertThat(stringCaptor.getAllValues().get(1), not(isEmptyOrNullString()));

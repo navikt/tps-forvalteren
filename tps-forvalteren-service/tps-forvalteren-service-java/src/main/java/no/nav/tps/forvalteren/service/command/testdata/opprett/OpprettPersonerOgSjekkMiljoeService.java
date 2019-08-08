@@ -13,6 +13,7 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
@@ -40,16 +41,19 @@ public class OpprettPersonerOgSjekkMiljoeService {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public List<Person> createEksisterendeIdenter(List<String> eksisterendeIdenter) {
+    public List<Person> createEksisterendeIdenter(RsPersonBestillingKriteriumRequest request) {
 
-        Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(newHashSet(eksisterendeIdenter));
+        Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(newHashSet(request.getOpprettFraIdenter()));
 
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, Sets.newHashSet(PRODLIKE_ENV));
 
-        Set<String> ledigeIdenterKorrigert = identpoolService.whitelistAjustmentOfIdents(eksisterendeIdenter, ledigeIdenterDB, ledigeIdenterMiljo);
+        Set<String> ledigeIdenterKorrigert = identpoolService.whitelistAjustmentOfIdents(request.getOpprettFraIdenter(), ledigeIdenterDB, ledigeIdenterMiljo);
 
         List<Person> personer = opprettPersonerFraIdenter.execute(ledigeIdenterKorrigert);
-        setNameOnPersonsService.execute(personer);
+
+        personer.forEach(person ->
+                setNameOnPersonsService.execute(person, request.getHarMellomnavn())
+        );
 
         return personer;
     }
@@ -74,7 +78,12 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
         List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(nyeIdenter);
 
-        setNameOnPersonsService.execute(personerSomSkalPersisteres);
+        for (int i = 0; i < personerSomSkalPersisteres.size(); i++) {
+
+            setNameOnPersonsService.execute(personerSomSkalPersisteres.get(i),
+                    personKriterierListe.getPersonKriterierListe().size() >= i+1 ?
+                            personKriterierListe.getPersonKriterierListe().get(i).getHarMellomnavn() : null);
+        }
 
         return personerSomSkalPersisteres;
     }

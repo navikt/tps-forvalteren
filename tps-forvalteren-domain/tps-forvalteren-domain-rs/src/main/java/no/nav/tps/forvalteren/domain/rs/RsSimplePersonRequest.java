@@ -53,6 +53,8 @@ public class RsSimplePersonRequest {
 
     protected List<RsPostadresse> postadresse;
 
+    protected Boolean harMellomnavn;
+
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();
