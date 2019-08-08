@@ -34,17 +34,19 @@ public class ExtractOpprettKriterier {
                         .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
                         .foedtEtter(nullcheckSetDefaultValue(req.getFoedtEtter(), LocalDateTime.now().minusYears(60)))
                         .foedtFoer(nullcheckSetDefaultValue(req.getFoedtFoer(), LocalDateTime.now().minusYears(30)))
+                        .harMellomnavn(req.getHarMellomnavn())
                         .build()))
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
+    public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest hovedPersonRequest) {
 
         List<RsPersonKriterier> kriterier = new ArrayList();
-        if (nonNull(request)) {
-            RsPersonKriterier kriterium = prepareKriterium(request);
+        if (nonNull(hovedPersonRequest.getRelasjoner().getPartner())) {
+            RsPersonKriterier kriterium = prepareKriterium(hovedPersonRequest.getRelasjoner().getPartner());
             kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(60)));
             kriterium.setFoedtFoer(nullcheckSetDefaultValue(kriterium.getFoedtFoer(), LocalDateTime.now().minusYears(30)));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(hovedPersonRequest.getRelasjoner().getPartner().getHarMellomnavn(), hovedPersonRequest.getHarMellomnavn()));
             kriterier.add(kriterium);
         }
 
@@ -53,12 +55,13 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
+    public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest hovedpersonRequest) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList(request.size());
-        for (RsSimplePersonRequest req : request) {
-            RsPersonKriterier kriterium = prepareKriterium(req);
+        List<RsPersonKriterier> kriterier = new ArrayList(hovedpersonRequest.getRelasjoner().getBarn().size());
+        for (RsSimplePersonRequest barnRequest : hovedpersonRequest.getRelasjoner().getBarn()) {
+            RsPersonKriterier kriterium = prepareKriterium(barnRequest);
             kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(18)));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnRequest.getHarMellomnavn(), hovedpersonRequest.getHarMellomnavn()));
             kriterier.add(kriterium);
         }
 
