@@ -18,9 +18,9 @@ public class DefaultBestillingDatoer {
         if (isNull(foedtEtter) && isNull(foedtFoer)) {
             if (isBarn) {
                 return now().minusYears(18);
-            } else
+            } else {
                 return now().minusYears(60);
-
+            }
         } else if (isNull(foedtEtter)) {
             return START_OF_ERA;
 
@@ -34,9 +34,9 @@ public class DefaultBestillingDatoer {
         if (isNull(foedtEtter) && isNull(foedtFoer)) {
             if (isBarn) {
                 return now();
-            } else
+            } else {
                 return now().minusYears(30);
-
+            }
         } else {
             if (isNull(foedtFoer)) {
                 return now();
