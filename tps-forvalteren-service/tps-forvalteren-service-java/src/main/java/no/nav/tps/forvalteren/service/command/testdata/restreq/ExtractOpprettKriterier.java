@@ -94,6 +94,7 @@ public class ExtractOpprettKriterier {
                         mapperFacade.map(req.getRelasjoner().getPartner(), partner);
                         ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
                         partner.setSivilstand(req.getSivilstand());
+                        partner.setInnvandretFraLand(nullcheckSetDefaultValue(partner.getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
                     }
             );
         }
@@ -104,6 +105,7 @@ public class ExtractOpprettKriterier {
                 mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
+                barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
             });
         }
 
