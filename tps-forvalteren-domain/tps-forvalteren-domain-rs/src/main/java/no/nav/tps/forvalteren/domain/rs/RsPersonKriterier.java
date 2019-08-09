@@ -36,4 +36,5 @@ public class RsPersonKriterier {
     @Max(99)
     private Integer antall;
 
+    private Boolean harMellomnavn;
 }

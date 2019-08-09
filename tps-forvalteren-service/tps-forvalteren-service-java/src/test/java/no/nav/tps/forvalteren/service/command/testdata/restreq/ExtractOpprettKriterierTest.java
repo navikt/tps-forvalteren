@@ -4,7 +4,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -21,6 +21,7 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,12 +74,17 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractPartnerAllParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(RsSimplePersonRequest.builder()
-                .kjonn(KJOENN)
-                .foedtEtter(FOEDT_ETTER)
-                .foedtFoer(FOEDT_FOER)
-                .identtype(IDENTTYPE)
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+            .partner(RsSimplePersonRequest.builder()
+                    .kjonn(KJOENN)
+                    .foedtEtter(FOEDT_ETTER)
+                    .foedtFoer(FOEDT_FOER)
+                    .identtype(IDENTTYPE)
+                    .build())
                 .build());
+
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
@@ -90,8 +96,13 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractPartnerNoParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(RsSimplePersonRequest.builder()
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+            .partner(RsSimplePersonRequest.builder()
+                    .build())
                 .build());
+
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
@@ -105,12 +116,17 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractBarnAllParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(singletonList(RsSimplePersonRequest.builder()
-                .kjonn(KJOENN)
-                .foedtEtter(FOEDT_ETTER)
-                .foedtFoer(FOEDT_FOER)
-                .identtype(IDENTTYPE)
-                .build()));
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(singletonList(RsSimplePersonRequest.builder()
+                        .kjonn(KJOENN)
+                        .foedtEtter(FOEDT_ETTER)
+                        .foedtFoer(FOEDT_FOER)
+                        .identtype(IDENTTYPE)
+                        .build()))
+                .build());
+
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
@@ -122,13 +138,17 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractBarnNoParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(singletonList(RsSimplePersonRequest.builder()
-                .build()));
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+            .barn(singletonList(RsSimplePersonRequest.builder().build()))
+                .build());
+
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
-        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(nullValue()));
+        assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(notNullValue()));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
                 greaterThanOrEqualTo(LocalDateTime.now().minusYears(60).format(ISO_LOCAL_DATE)));
     }

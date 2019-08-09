@@ -1,17 +1,24 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.anySet;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.Collection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
@@ -42,20 +49,26 @@ public class OpprettPersonerOgSjekkMiljoeServiceTest {
     @Test
     public void createEksisterendeIdenter() {
 
-        opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(newArrayList(IDENT_1, IDENT_2));
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setOpprettFraIdenter(newArrayList(IDENT_1, IDENT_2));
+        when(opprettPersonerFraIdenter.execute(any(Collection.class))).thenReturn(singletonList(new Person()));
+
+        opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
 
         verify(findIdenterNotUsedInDB).filtrer(anySet());
         verify(filtrerPaaIdenterTilgjengeligIMiljo).filtrer(anyList(), anySet());
         verify(opprettPersonerFraIdenter).execute(anySet());
-        verify(setNameOnPersonsService).execute(anyList());
+        verify(setNameOnPersonsService).execute(any(Person.class), eq(null));
     }
 
     @Test
     public void createNyeIdenter() {
 
+        when(opprettPersonerFraIdenter.execute(anyList())).thenReturn(singletonList(new Person()));
+
         opprettPersonerOgSjekkMiljoeService.createNyeIdenter(RsPersonKriteriumRequest.builder().build());
 
         verify(opprettPersonerFraIdenter).execute(anyList());
-        verify(setNameOnPersonsService).execute(anyList());
+        verify(setNameOnPersonsService).execute(any(Person.class), eq(null));
     }
 }

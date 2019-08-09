@@ -61,15 +61,17 @@ public class OpprettPersonMedEksisterendeForeldreService {
 
     private Person createPerson(RsTpsFoedselsmeldingRequest request) {
 
-        RsPersonKriteriumRequest kriteriumRequest = new RsPersonKriteriumRequest(
-                newArrayList(RsPersonKriterier.builder()
-                        .antall(1)
-                        .identtype(request.getIdenttype() != null ? request.getIdenttype().name() : FNR.name())
-                        .kjonn(request.getKjonn() != null ? request.getKjonn().name() : null)
-                        .foedtEtter(request.getFoedselsdato())
-                        .foedtFoer(request.getFoedselsdato())
-                        .build()),
-                null);
+        RsPersonKriteriumRequest kriteriumRequest = RsPersonKriteriumRequest.builder()
+                .personKriterierListe(
+                        newArrayList(RsPersonKriterier.builder()
+                                .antall(1)
+                                .identtype(request.getIdenttype() != null ? request.getIdenttype().name() : FNR.name())
+                                .kjonn(request.getKjonn() != null ? request.getKjonn().name() : null)
+                                .foedtEtter(request.getFoedselsdato())
+                                .foedtFoer(request.getFoedselsdato())
+                                .build()))
+                .adresseNrInfo(null)
+                .build();
 
         List<TestdataRequest> testdataRequests = testdataIdenterFetcher.getTestdataRequestsInnholdeneTilgjengeligeIdenterFlereMiljoer(kriteriumRequest, request.getMiljoer());
         List<String> identer = ekstraherIdenterFraTestdataRequests.execute(testdataRequests);

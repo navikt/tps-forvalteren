@@ -1,10 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.NavneEndringsmeldingAarsakskode06.NAVN_ENDRING_MLD;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,9 @@ public class SkdMeldingSender {
 
     @Autowired
     private CreateFoedselsmeldinger createFoedselsmeldinger;
+
+    @Autowired
+    private CreateNavnEndringsmeldinger createNavnEndringsmeldinger;
 
     @Autowired
     private CreateVergemaal createVergemaal;
@@ -116,10 +122,15 @@ public class SkdMeldingSender {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
         List<SkdMeldingTrans1> foedselsmeldinger = createFoedselsmeldinger.executeFromPersons(personerSomSkalFoedes, true);
-        foedselsmeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer(FOEDSEL_MLD_NAVN, skdMelding, environmentsSet);
-            listTpsResponsene.add(tpsResponse);
-        });
+        foedselsmeldinger.forEach(skdMelding ->
+            listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(FOEDSEL_MLD_NAVN, skdMelding, environmentsSet))
+        );
+
+        List<SkdMeldingTrans1> navnEndringsmeldinger = createNavnEndringsmeldinger.executeFromPersons(
+                personerSomSkalFoedes.stream().filter(person -> isNotBlank(person.getMellomnavn())).collect(toList()), true);
+        navnEndringsmeldinger.forEach(skdMelding ->
+            listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(NAVN_ENDRING_MLD, skdMelding, environmentsSet))
+        );
 
         return listTpsResponsene;
     }

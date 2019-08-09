@@ -41,8 +41,8 @@ public class PersonerBestillingService {
         List<Person> barn = new ArrayList<>();
         if (personKriteriumRequest.getOpprettFraIdenter().isEmpty()) {
             RsPersonKriteriumRequest personKriterier = extractMainPerson(personKriteriumRequest);
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(personKriteriumRequest.getRelasjoner().getPartner());
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(personKriteriumRequest.getRelasjoner().getBarn());
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(personKriteriumRequest);
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(personKriteriumRequest);
 
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
@@ -55,7 +55,7 @@ public class PersonerBestillingService {
 
             setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
         } else {
-            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest.getOpprettFraIdenter());
+            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest);
         }
 
         List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(personKriteriumRequest, hovedPersoner, partnere, barn);

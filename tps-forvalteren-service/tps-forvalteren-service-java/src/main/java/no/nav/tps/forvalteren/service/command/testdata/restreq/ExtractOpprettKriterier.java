@@ -2,9 +2,10 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -32,19 +33,22 @@ public class ExtractOpprettKriterier {
                         .antall(nonNull(req.getAntall()) && req.getAntall() > 0 ? req.getAntall() : 1)
                         .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
                         .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
-                        .foedtEtter(nullcheckSetDefaultValue(req.getFoedtEtter(), LocalDateTime.now().minusYears(60)))
-                        .foedtFoer(nullcheckSetDefaultValue(req.getFoedtFoer(), LocalDateTime.now().minusYears(30)))
+                        .foedtEtter(getProcessedFoedtEtter(req.getFoedtEtter(), req.getFoedtFoer(), false))
+                        .foedtFoer(getProcessedFoedtFoer(req.getFoedtEtter(), req.getFoedtFoer(), false))
+                        .harMellomnavn(req.getHarMellomnavn())
                         .build()))
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractPartner(RsSimplePersonRequest request) {
+    public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest hovedPersonRequest) {
 
         List<RsPersonKriterier> kriterier = new ArrayList();
-        if (nonNull(request)) {
-            RsPersonKriterier kriterium = prepareKriterium(request);
-            kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(60)));
-            kriterium.setFoedtFoer(nullcheckSetDefaultValue(kriterium.getFoedtFoer(), LocalDateTime.now().minusYears(30)));
+        if (nonNull(hovedPersonRequest.getRelasjoner().getPartner())) {
+            RsSimplePersonRequest partnerReq = hovedPersonRequest.getRelasjoner().getPartner();
+            RsPersonKriterier kriterium = prepareKriterium(hovedPersonRequest.getRelasjoner().getPartner());
+            kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
+            kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(hovedPersonRequest.getRelasjoner().getPartner().getHarMellomnavn(), hovedPersonRequest.getHarMellomnavn()));
             kriterier.add(kriterium);
         }
 
@@ -53,12 +57,14 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractBarn(List<RsSimplePersonRequest> request) {
+    public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest hovedpersonRequest) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList(request.size());
-        for (RsSimplePersonRequest req : request) {
-            RsPersonKriterier kriterium = prepareKriterium(req);
-            kriterium.setFoedtEtter(nullcheckSetDefaultValue(kriterium.getFoedtEtter(), LocalDateTime.now().minusYears(18)));
+        List<RsPersonKriterier> kriterier = new ArrayList(hovedpersonRequest.getRelasjoner().getBarn().size());
+        for (RsSimplePersonRequest barnRequest : hovedpersonRequest.getRelasjoner().getBarn()) {
+            RsPersonKriterier kriterium = prepareKriterium(barnRequest);
+            kriterium.setFoedtEtter(getProcessedFoedtEtter(barnRequest.getFoedtEtter(), barnRequest.getFoedtFoer(), true));
+            kriterium.setFoedtFoer(getProcessedFoedtFoer(barnRequest.getFoedtEtter(), barnRequest.getFoedtFoer(), true));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnRequest.getHarMellomnavn(), hovedpersonRequest.getHarMellomnavn()));
             kriterier.add(kriterium);
         }
 
