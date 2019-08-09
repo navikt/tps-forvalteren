@@ -75,7 +75,7 @@ public class SetAdresseService {
 
     private static String prepad(String value, int length) {
         String formatter = new StringBuilder().append("%1$").append(length).append('s').toString();
-        return format(formatter, value).replace(' ', '0');
+        return format(formatter, nonNull(value) ? value : '0').replace(' ', '0');
     }
 
     private void addHusBrukAndBokstavFestenr(SkdMeldingTrans1 skdMeldingTrans1, Gateadresse gateadresse) {
