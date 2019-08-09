@@ -71,7 +71,7 @@ public class LagreTilTpsServiceTest {
     private UppercaseDataInPerson uppercaseDataInPerson;
 
     @Mock
-    private TknrOgGtFraMiljoService tknrOgGtFraMiljoService;
+    private PersonStatusFraMiljoService personStatusFraMiljoService;
 
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;
@@ -119,7 +119,7 @@ public class LagreTilTpsServiceTest {
         verify(skdMeldingSender, times(3)).sendInnvandringsMeldinger(any(), anySet());
         verify(skdMeldingSender, times(3)).sendUpdateInnvandringsMeldinger(anyList(), anySet());
         verify(skdMeldingSender, times(3)).sendFoedselsMeldinger(anyList(), anySet());
-        verify(skdMeldingSender, times(3)).sendUtvandringsmeldinger(anyList(), anySet());
+        verify(skdMeldingSender).sendUtvandringsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendRelasjonsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendDoedsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendVergemaalsmeldinger(anyList(), anySet());
@@ -149,11 +149,11 @@ public class LagreTilTpsServiceTest {
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().size(), is(4));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getPersonId(), is("1"));
         assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(1).getPersonId(), is("2"));
-        assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(2).getPersonId(), is("3"));
-        assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(3).getPersonId(), is("4"));
+        assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(2).getPersonId(), is("4"));
+        assertThat(actualResponse.getSendSkdMeldingTilTpsResponsene().get(3).getPersonId(), is("3"));
 
         assertThat(status, is(actualResponse.getSendSkdMeldingTilTpsResponsene().get(0).getStatus()));
-        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, UTVANDRING_MLD, RELASJON_MLD),
+        assertThat(asList(INNVANDRING_MLD, FOEDSELS_MLD, RELASJON_MLD, UTVANDRING_MLD),
                 is(actualResponse.getSendSkdMeldingTilTpsResponsene()
                         .stream()
                         .map(SendSkdMeldingTilTpsResponse::getSkdmeldingstype)

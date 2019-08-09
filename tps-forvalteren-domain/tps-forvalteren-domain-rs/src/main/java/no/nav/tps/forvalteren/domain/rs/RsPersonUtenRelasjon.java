@@ -113,4 +113,8 @@ public class RsPersonUtenRelasjon {
     private String gtVerdi;
 
     private String gtRegel;
+
+    private Boolean utenFastBopel;
+
+    private String personStatus;
 }

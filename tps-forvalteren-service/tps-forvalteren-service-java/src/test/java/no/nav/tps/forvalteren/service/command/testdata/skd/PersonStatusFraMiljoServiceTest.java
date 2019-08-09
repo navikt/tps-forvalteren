@@ -13,7 +13,9 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,13 +30,15 @@ import no.nav.tps.forvalteren.service.command.testdata.TpsServiceroutineFnrReque
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TknrOgGtFraMiljoServiceTest {
+public class PersonStatusFraMiljoServiceTest {
 
     private static final String TKNR = "1234";
     private static final String LANDKODE = "0123";
     private static final String KOMMUNENR = "0234";
     private static final String BYDEL = "312142";
     private static final String GT_REGEL = "A";
+    private static final String PERSON_STATUS = "UTVA";
+    private static final Set<String> ENVIRONMENTS = new HashSet(singletonList("u2"));
 
     @Mock
     private PersonRepository personRepository;
@@ -46,7 +50,7 @@ public class TknrOgGtFraMiljoServiceTest {
     private TpsServiceroutineFnrRequest tpsFnrRequest;
 
     @InjectMocks
-    private TknrOgGtFraMiljoService tknrOgGtFraMiljoService;
+    private PersonStatusFraMiljoService personStatusFraMiljoService;
 
     @Mock
     private TpsServiceRoutineResponse response;
@@ -64,7 +68,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, null, null, TKNR));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getTknr(), is(equalTo(TKNR)));
     }
@@ -73,7 +77,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonResponseNull() {
         when(response.getResponse()).thenReturn(null);
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getTknr(), is(nullValue()));
     }
@@ -82,7 +86,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonDataNull() {
         when(response.getResponse()).thenReturn(newHashMap("data1", null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getTknr(), is(nullValue()));
     }
@@ -91,7 +95,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentTknrOgSettPaPersonDataBrukerNull() {
         when(response.getResponse()).thenReturn(newHashMap("data1", newHashMap("bruker", null)));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getTknr(), is(nullValue()));
     }
@@ -100,7 +104,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtLandOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(LANDKODE, null, null, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()),  "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getGtType(), is(equalTo("LAND")));
         assertThat(resultat.getGtVerdi(), is(equalTo(LANDKODE)));
@@ -110,7 +114,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtKommuneOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, KOMMUNENR, null, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getGtType(), is(equalTo("KNR")));
         assertThat(resultat.getGtVerdi(), is(equalTo(KOMMUNENR)));
@@ -120,7 +124,7 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtBydelOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, null, BYDEL, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getGtType(), is(equalTo("BYDEL")));
         assertThat(resultat.getGtVerdi(), is(equalTo(BYDEL)));
@@ -130,9 +134,18 @@ public class TknrOgGtFraMiljoServiceTest {
     public void hentGtRegelOgSettPaPersonOk() {
         when(response.getResponse()).thenReturn(buildResponseObject(null, null, BYDEL, null));
 
-        Person resultat = tknrOgGtFraMiljoService.hentTknrOgGtPaPerson(singletonList(Person.builder().build()), "u2").get(0);
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
 
         assertThat(resultat.getGtRegel(), is(equalTo(GT_REGEL)));
+    }
+
+    @Test
+    public void hentPersonstatusOgSettPaPersonOk() {
+        when(response.getResponse()).thenReturn(buildResponseObject(null, null, null, null));
+
+        Person resultat = personStatusFraMiljoService.hentStatusOgSettPaaPerson(singletonList(Person.builder().build()), ENVIRONMENTS).get(0);
+
+        assertThat(resultat.getPersonStatus(), is(equalTo(PERSON_STATUS)));
     }
 
     private Map buildResponseObject(String landkode, String kommuneNr, String bydel, String tknr) {
@@ -151,9 +164,14 @@ public class TknrOgGtFraMiljoServiceTest {
         Map bostedsAdresse = new HashMap();
         bostedsAdresse.put("fullBostedsAdresse", fullBostedsAdresse);
 
+        Map personstatusDetalj = new HashMap();
+        personstatusDetalj.put("kodePersonstatus", PERSON_STATUS);
+
         Map data = new HashMap();
         data.put("bostedsAdresse", bostedsAdresse);
         data.put("bruker", bruker);
+        data.put("personstatusDetalj", personstatusDetalj);
+
         Map response = new HashMap();
         response.put("data1", data);
         return response;

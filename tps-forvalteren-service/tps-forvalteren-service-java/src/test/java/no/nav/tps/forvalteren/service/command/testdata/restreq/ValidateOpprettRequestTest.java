@@ -1,6 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.BOST;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -29,6 +33,7 @@ public class ValidateOpprettRequestTest {
     private static final String TEKST_UGYLDIG_DATO_INTERVALL = "Ugyldig datointervall er oppgitt.";
     private static final String TEKST_UGYLDIG_KJOENN = "Ugyldig kjønn, en av U, K eller M forventet.";
     private static final String TEKST_UGYLDIG_ANTALL = "Enten antall eller eksisterende identer må spesifieseres.";
+    private static final String TEKST_UGYLDIG_IDENTTYPE = "Ugyldig identtype for utvandring. Kun personer med FNR kan utvandre.";
 
     @Mock
     private MessageProvider messageProvider;
@@ -46,6 +51,7 @@ public class ValidateOpprettRequestTest {
         when(messageProvider.get("bestilling.input.validation.ugyldig.intervall")).thenReturn(TEKST_UGYLDIG_DATO_INTERVALL);
         when(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn")).thenReturn(TEKST_UGYLDIG_KJOENN);
         when(messageProvider.get("bestilling.input.validation.ugyldig.antall")).thenReturn(TEKST_UGYLDIG_ANTALL);
+        when(messageProvider.get("bestilling.input.validation.ugyldig.identtype")).thenReturn(TEKST_UGYLDIG_IDENTTYPE);
     }
 
     @Test(expected = Test.None.class)
@@ -293,5 +299,72 @@ public class ValidateOpprettRequestTest {
         expectedException.expectMessage(TEKST_UGYLDIG_ANTALL);
 
         validateOpprettRequest.validate(new RsPersonBestillingKriteriumRequest());
+    }
+
+    @Test
+    public void validateUgyldigIdenttypeWithUtvandretTilLand_BOST() {
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage(TEKST_UGYLDIG_IDENTTYPE);
+
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setIdenttype(BOST.name());
+        request.setUtvandretTilLand("AUS");
+
+        validateOpprettRequest.validate(request);
+    }
+
+    @Test
+    public void validateUgyldigIdenttypeWithUtvandretTilLand_DNR() {
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage(TEKST_UGYLDIG_IDENTTYPE);
+
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setIdenttype(DNR.name());
+        request.setUtvandretTilLand("GER");
+
+        validateOpprettRequest.validate(request);
+    }
+
+    @Test
+    public void validateUgyldigIdenttypeWithUtvandretTilLand_Barn_BOST() {
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage(TEKST_UGYLDIG_IDENTTYPE);
+
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setIdenttype(FNR.name());
+        request.setUtvandretTilLand("FIN");
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .barn(singletonList(RsSimplePersonRequest.builder()
+                        .identtype("BOST")
+                        .utvandretTilLand("BUL")
+                        .build()
+                )).build());
+
+        validateOpprettRequest.validate(request);
+    }
+
+    @Test
+    public void validateUgyldigIdenttypeWithUtvandretTilLand_Partner_DNR() {
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage(TEKST_UGYLDIG_IDENTTYPE);
+
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setAntall(1);
+        request.setUtvandretTilLand("CAN");
+        request.setRelasjoner(RsSimpleRelasjoner.builder()
+                .partner(RsSimplePersonRequest.builder()
+                        .identtype("DNR")
+                        .utvandretTilLand("AUS")
+                        .build()
+                ).build());
+
+        validateOpprettRequest.validate(request);
     }
 }

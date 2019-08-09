@@ -1,12 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import no.nav.tps.forvalteren.service.command.testdata.TpsServiceroutineFnrReque
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 
 @Service
-public class TknrOgGtFraMiljoService {
+public class PersonStatusFraMiljoService {
 
     private static final String DATA = "data1";
     private static final String KOMMUNE = "kommunenr";
@@ -29,6 +30,8 @@ public class TknrOgGtFraMiljoService {
     private static final String BRUKER = "bruker";
     private static final String GEO_TILKNYT = "geografiskTilknytning";
     private static final String REGEL_FOR_GEO_TILKNYTNING = "regelForGeografiskTilknytning";
+    private static final String PERSONSTATUS_DETALJ = "personstatusDetalj";
+    private static final String KODE_PERSONSTATUS = "kodePersonstatus";
 
     @Autowired
     private PersonRepository personRepository;
@@ -39,21 +42,30 @@ public class TknrOgGtFraMiljoService {
     @Autowired
     private TpsServiceroutineFnrRequest tpsFnrRequest;
 
-    public List<Person> hentTknrOgGtPaPerson(List<Person> personer, String environment) {
+    public List<Person> hentStatusOgSettPaaPerson(List<Person> personer, Set<String> environments) {
 
-        personer.forEach(person -> {
-            if (isNull(person.getGtVerdi())) {
-                TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
-                        tpsFnrRequest.buildRequest(person, environment), true);
-                person.setTknr(getTknr(response));
-                person.setGtRegel(getGtRegel(response));
-                person.setGtVerdi(getGtVerdi(response));
-                person.setGtType(getGtType(response));
-                personRepository.save(person);
-            }
-        });
+        environments.forEach(environment ->
+                personer.forEach(person -> {
+                    if (isBlank(person.getGtVerdi())) {
+                        TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
+                                tpsFnrRequest.buildRequest(person, environment), true);
+                        person.setTknr(getTknr(response));
+                        person.setGtRegel(getGtRegel(response));
+                        person.setGtVerdi(getGtVerdi(response));
+                        person.setGtType(getGtType(response));
+                        person.setPersonStatus(getPersonStatus(response));
+                        personRepository.save(person);
+                    }
+                })
+        );
 
         return personer;
+    }
+
+    private String getPersonStatus(TpsServiceRoutineResponse response) {
+        Map data = getData(response);
+        Map personstatusDetalj = nonNull(data) ? (Map) data.get(PERSONSTATUS_DETALJ) : null;
+        return nonNull(personstatusDetalj) ? (String) personstatusDetalj.get(KODE_PERSONSTATUS) : null;
     }
 
     private String getGtRegel(TpsServiceRoutineResponse response) {

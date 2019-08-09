@@ -4,6 +4,7 @@ import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
@@ -30,6 +32,7 @@ public class ValidateOpprettRequest {
         validateDatoFoedtFoer(request.getFoedtFoer());
         validateDatoIntervall(request.getFoedtEtter(), request.getFoedtFoer());
         validateKjoenn(request.getKjonn());
+        validateUtvandret(request);
 
         if (nonNull(request.getRelasjoner().getPartner())) {
             validateDatoFoedtEtter(request.getRelasjoner().getPartner().getFoedtEtter());
@@ -43,6 +46,26 @@ public class ValidateOpprettRequest {
             request.getRelasjoner().getBarn().forEach(barn -> validateDatoFoedtFoer(barn.getFoedtFoer()));
             request.getRelasjoner().getBarn().forEach(barn -> validateDatoIntervall(barn.getFoedtEtter(), barn.getFoedtFoer()));
             request.getRelasjoner().getBarn().forEach(barn -> validateKjoenn(barn.getKjonn()));
+        }
+    }
+
+    private void validateUtvandret(RsPersonBestillingKriteriumRequest request) {
+        if (nonNull(request.getUtvandretTilLand()) && nonNull(request.getIdenttype()) && !FNR.name().equals(request.getIdenttype())) {
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.identtype"));
+        }
+        if (nonNull(request.getRelasjoner())) {
+            for (RsSimplePersonRequest relasjon : request.getRelasjoner().getBarn()) {
+                if (nonNull(relasjon.getUtvandretTilLand()) && nonNull(relasjon.getIdenttype()) && !FNR.name().equals(relasjon.getIdenttype())) {
+                    throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.identtype"));
+                }
+            }
+            if (nonNull(request.getRelasjoner().getPartner())) {
+                RsSimplePersonRequest simplePersonRequest = request.getRelasjoner().getPartner();
+                if (nonNull(simplePersonRequest.getUtvandretTilLand()) && nonNull(simplePersonRequest.getIdenttype()) &&
+                        !FNR.name().equals(simplePersonRequest.getIdenttype())) {
+                    throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.identtype"));
+                }
+            }
         }
     }
 
