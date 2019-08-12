@@ -50,12 +50,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
                             @Override public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
 
-                                mapBasicProperties(kriteriumRequest, person);
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(kriteriumRequest.getSikkerhetsTiltakDatoFom(), now()));
-                                mapAdresser(kriteriumRequest, person, mapperFacade);
-                                if (nonNull(person.getUtvandretTilLand())) {
-                                    person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
-                                }
                             }
                         })
                 .exclude("spesreg")
