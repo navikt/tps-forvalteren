@@ -18,6 +18,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonKriteriumMappingStrategyTest {
@@ -37,6 +38,9 @@ public class PersonKriteriumMappingStrategyTest {
 
     @Mock
     private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Mock
+    private LandkodeEncoder landkodeEncoder;
 
     @InjectMocks
     private PersonKriteriumMappingStrategy personKriteriumMappingStrategy;

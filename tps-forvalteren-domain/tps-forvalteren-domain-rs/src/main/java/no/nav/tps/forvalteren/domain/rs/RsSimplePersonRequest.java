@@ -59,6 +59,10 @@ public class RsSimplePersonRequest {
 
     protected Boolean harMellomnavn;
 
+    private String innvandretFraLand;
+
+    private LocalDateTime innvandretFraLandFlyttedato;
+
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();

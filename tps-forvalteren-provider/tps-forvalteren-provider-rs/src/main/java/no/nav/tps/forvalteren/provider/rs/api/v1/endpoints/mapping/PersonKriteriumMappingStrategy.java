@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
@@ -9,6 +10,7 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
@@ -31,6 +33,7 @@ import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Component
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
@@ -43,6 +46,9 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     @Autowired
     private DummyAdresseService dummyAdresseService;
 
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
+
     @Override
     public void register(MapperFactory factory) {
         factory.classMap(RsPersonBestillingKriteriumRequest.class, Person.class)
@@ -53,8 +59,14 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 mapBasicProperties(kriteriumRequest, person);
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(kriteriumRequest.getSikkerhetsTiltakDatoFom(), now()));
                                 mapAdresser(kriteriumRequest, person, mapperFacade);
-                                if (nonNull(person.getUtvandretTilLand())) {
+                                if (isNotBlank(person.getUtvandretTilLand())) {
                                     person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
+                                }
+                                if (isBlank(person.getInnvandretFraLand())) {
+                                    person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+                                }
+                                if (isNull(person.getInnvandretFraLandFlyttedato())) {
+                                    person.setInnvandretFraLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), now()));
                                 }
                             }
                         })
@@ -75,8 +87,11 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 mapBasicProperties(kriteriumRequest, person);
                                 mapAdresser(kriteriumRequest, person, mapperFacade);
-                                if (nonNull(person.getUtvandretTilLand())) {
+                                if (isNotBlank(person.getUtvandretTilLand())) {
                                     person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
+                                }
+                                if (isNull(person.getInnvandretFraLandFlyttedato())) {
+                                    person.setInnvandretFraLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), now()));
                                 }
                             }
                         })
