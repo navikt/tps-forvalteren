@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Collections.singletonList;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
@@ -14,17 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 
 @Service
 public class ExtractOpprettKriterier {
 
     @Autowired
     private MapperFacade mapperFacade;
+
+    @Autowired
+    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
 
     public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
 
@@ -87,11 +93,15 @@ public class ExtractOpprettKriterier {
 
         hovedPersoner.forEach(person -> mapperFacade.map(req, person));
 
+        if (isNull(req.getBoadresse())) {
+            setRandomAdresseOnPersons.execute(hovedPersoner, req.getAdresseNrInfo());
+        }
+
         if (nonNull(req.getRelasjoner().getPartner())) {
             partnere.forEach(partner -> {
-                        req.getRelasjoner().getPartner().setBoadresse(req.getBoadresse());
                         req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
                         mapperFacade.map(req.getRelasjoner().getPartner(), partner);
+                        mapBoadresse(partner, hovedPersoner.get(0).getBoadresse());
                         ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
                         partner.setSivilstand(req.getSivilstand());
                         partner.setInnvandretFraLand(nullcheckSetDefaultValue(partner.getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
@@ -100,9 +110,9 @@ public class ExtractOpprettKriterier {
         }
         if (!req.getRelasjoner().getBarn().isEmpty()) {
             IntStream.range(0, barn.size()).forEach(i -> {
-                req.getRelasjoner().getBarn().get(i).setBoadresse(req.getBoadresse());
                 req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
+                mapBoadresse(barn.get(i), hovedPersoner.get(0).getBoadresse());
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
                 barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
@@ -114,7 +124,7 @@ public class ExtractOpprettKriterier {
         return personer;
     }
 
-    private Person ammendDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
+    private static Person ammendDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
 
         person.setStatsborgerskap(nullcheckSetDefaultValue(kriterier.getStatsborgerskap(), person.getStatsborgerskap()));
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriterier.getStatsborgerskapRegdato(), person.getStatsborgerskapRegdato()));
@@ -122,5 +132,14 @@ public class ExtractOpprettKriterier {
         person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
 
         return person;
+    }
+
+    private void mapBoadresse(Person targetPerson, Adresse hovedpersonAdresse) {
+
+        Person person = hovedpersonAdresse.getPerson();
+        hovedpersonAdresse.setPerson(null);
+        targetPerson.setBoadresse(mapperFacade.map(hovedpersonAdresse, Adresse.class));
+        hovedpersonAdresse.setPerson(person);
+        targetPerson.getBoadresse().setPerson(targetPerson);
     }
 }

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 
@@ -48,6 +49,8 @@ public class RsPersonBestillingKriteriumRequest extends RsSimplePersonRequest {
 
     @Size(min = 1, max = 50)
     private String beskrSikkerhetsTiltak;
+
+    private AdresseNrInfo adresseNrInfo;
 
     public List<String> getOpprettFraIdenter() {
         if (isNull(opprettFraIdenter)) {
