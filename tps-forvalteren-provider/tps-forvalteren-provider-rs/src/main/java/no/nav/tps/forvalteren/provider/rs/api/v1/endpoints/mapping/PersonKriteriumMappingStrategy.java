@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -145,7 +146,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
         }
 
-        if (kriteriumRequest.getErForsvunnet() && isNull(kriteriumRequest.getForsvunnetDato())) {
+        if (TRUE.equals(kriteriumRequest.getErForsvunnet()) && isNull(kriteriumRequest.getForsvunnetDato())) {
             person.setForsvunnetDato(now());
         }
     }
