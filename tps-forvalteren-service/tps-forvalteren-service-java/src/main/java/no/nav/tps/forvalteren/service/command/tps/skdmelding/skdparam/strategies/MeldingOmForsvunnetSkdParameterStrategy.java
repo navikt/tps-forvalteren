@@ -13,7 +13,7 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Conv
 public class MeldingOmForsvunnetSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKS_KO_DE_FOR_FORSVINNING_MELDING = "82";
-    private static final String TILDELING_KO_DE_FOR_ENDRING_AV_NAVN = "0";
+    private static final String TILDELING_KO_DE_PA_FORSVUNNET_MELDING = "0";
 
     @Override
     public SkdMeldingTrans1 execute(Person barn) {
@@ -29,7 +29,7 @@ public class MeldingOmForsvunnetSkdParameterStrategy implements SkdParametersStr
 
     @Override
     public String hentTildelingskode() {
-        return TILDELING_KO_DE_FOR_ENDRING_AV_NAVN;
+        return TILDELING_KO_DE_PA_FORSVUNNET_MELDING;
     }
 
     @Override
