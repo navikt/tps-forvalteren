@@ -119,4 +119,6 @@ public class RsPerson {
     private Boolean utenFastBopel;
 
     private String personStatus;
+
+    private String forsvunnetDato;
 }

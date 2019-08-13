@@ -125,7 +125,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private void mapBasicProperties(RsSimplePersonRequest kriteriumRequest, Person person) {
         person.setIdenttype(nullcheckSetDefaultValue(person.getIdenttype(), "FNR"));
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
-        person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), LocalDateTime.now()));
+        person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
         person.setStatsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), "NOR"));
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
@@ -143,6 +143,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (nonNull(person.getSpesreg())) {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
+        }
+
+        if (kriteriumRequest.getErForsvunnet() && isNull(kriteriumRequest.getForsvunnetDato())) {
+            person.setForsvunnetDato(now());
         }
     }
 

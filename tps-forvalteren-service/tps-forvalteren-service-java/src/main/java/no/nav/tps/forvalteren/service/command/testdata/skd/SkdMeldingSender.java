@@ -10,6 +10,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +46,9 @@ public class SkdMeldingSender {
 
     @Autowired
     private CreateUtvandring createUtvandring;
+
+    @Autowired
+    private CreateMeldingerOmForsvunnet createMeldingerOmForsvunnet;
 
     @Autowired
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
@@ -96,7 +100,17 @@ public class SkdMeldingSender {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerIGruppen, true);
         utvandringsMeldinger.forEach(skdMelding -> {
-            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Utvandring", skdMelding, environmentsSet);
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("Utvandringsmelding", skdMelding, environmentsSet);
+            listTpsResponsene.add(tpsResponse);
+        });
+        return listTpsResponsene;
+    }
+
+    public Collection sendMeldingerOmForsvunnet(List<Person> personerIGruppen, Set<String> environments) {
+        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+        List<SkdMeldingTrans1> meldingerOmForsvunnet = createMeldingerOmForsvunnet.filterForsvunnet(personerIGruppen, true);
+        meldingerOmForsvunnet.forEach(skdMelding -> {
+            SendSkdMeldingTilTpsResponse tpsResponse = sendSkdMeldingTilGitteMiljoer("MeldingOmForsvunnet", skdMelding, environments);
             listTpsResponsene.add(tpsResponse);
         });
         return listTpsResponsene;
