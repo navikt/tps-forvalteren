@@ -63,6 +63,10 @@ public class RsSimplePersonRequest {
 
     private LocalDateTime innvandretFraLandFlyttedato;
 
+    private Boolean erForsvunnet;
+
+    private LocalDateTime forsvunnetDato;
+
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();

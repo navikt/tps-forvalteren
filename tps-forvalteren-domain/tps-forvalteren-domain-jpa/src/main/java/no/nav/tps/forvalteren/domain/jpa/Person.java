@@ -161,6 +161,9 @@ public class Person extends ChangeStamp {
     @Column(name = "PERSON_STATUS")
     private String personStatus;
 
+    @Column(name = "FORSVUNNET_DATO")
+    private LocalDateTime forsvunnetDato;
+
     public List<Postadresse> getPostadresse() {
         if (postadresse == null) {
             postadresse = new ArrayList<>();

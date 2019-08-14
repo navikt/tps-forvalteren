@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -125,7 +126,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private void mapBasicProperties(RsSimplePersonRequest kriteriumRequest, Person person) {
         person.setIdenttype(nullcheckSetDefaultValue(person.getIdenttype(), "FNR"));
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
-        person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), LocalDateTime.now()));
+        person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
         person.setStatsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), "NOR"));
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
@@ -143,6 +144,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (nonNull(person.getSpesreg())) {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
+        }
+
+        if (TRUE.equals(kriteriumRequest.getErForsvunnet()) && isNull(kriteriumRequest.getForsvunnetDato())) {
+            person.setForsvunnetDato(now());
         }
     }
 
