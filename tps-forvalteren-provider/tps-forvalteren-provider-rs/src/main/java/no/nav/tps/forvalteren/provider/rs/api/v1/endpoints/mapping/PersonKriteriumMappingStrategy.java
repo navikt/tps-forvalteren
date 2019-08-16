@@ -80,18 +80,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             @Override public void mapAtoB(RsSimplePersonRequest kriteriumRequest, Person person, MappingContext context) {
 
                                 mapBasicProperties(kriteriumRequest, person);
-
                                 mapAdresser(kriteriumRequest, person, mapperFacade);
-                                if (isNotBlank(person.getUtvandretTilLand())) {
-                                    person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
-                                }
-                                if (nonNull(person.getInnvandretFraLandFlyttedato())) {
-                                    person.setInnvandretFraLandFlyttedato(person.getInnvandretFraLandFlyttedato());
-                                } else if (nonNull(person.getBoadresse()) && nonNull(person.getBoadresse().getFlyttedato())) {
-                                    person.setInnvandretFraLandFlyttedato(person.getBoadresse().getFlyttedato());
-                                } else {
-                                    person.setInnvandretFraLandFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
-                                }
+                                person.setInnvandretFraLandFlyttedato(getInnvandretFraLandFlyttedato(person));
                             }
                         })
                 .exclude("spesreg")
@@ -165,6 +155,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.setBoadresse(null);
             person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createPostAdresseUtvandret(person));
+            person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
 
         } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
             person.setBoadresse(null);
@@ -203,5 +194,16 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private static LocalDate convertDate(LocalDateTime dateTime) {
         return nonNull(dateTime) ? dateTime.toLocalDate() : null;
+    }
+
+    private LocalDateTime getInnvandretFraLandFlyttedato(Person person) {
+
+        if (nonNull(person.getInnvandretFraLandFlyttedato())) {
+            return person.getInnvandretFraLandFlyttedato();
+        } else if (nonNull(person.getBoadresse()) && nonNull(person.getBoadresse().getFlyttedato())) {
+            return person.getBoadresse().getFlyttedato();
+        } else {
+            return hentDatoFraIdentService.extract(person.getIdent());
+        }
     }
 }
