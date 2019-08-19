@@ -1,18 +1,17 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation;
+import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation;
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
+
+import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsSokPersonServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
-import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
-
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataListTransformer.extractDataListFromXml;
-import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation;
-import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation;
 
 public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements ServiceRoutineResolver { //NOSONAR
 
@@ -80,13 +79,13 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .and()
 
                 .parameter()
-                .name("fodselsdatofra")
+                .name("fodselsDatofra")
                 .optional()
                 .type(TpsParameterType.DATE)
                 .and()
 
                 .parameter()
-                .name("fodselsdatotil")
+                .name("fodselsDatotil")
                 .optional()
                 .type(TpsParameterType.DATE)
                 .and()
@@ -208,7 +207,7 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .parameter()
                 .name("sortering")
                 .required()
-                .values("Navn", "Adresse", "Fnr")
+                .values("Adresse", "Fnr", "Navn")
                 .type(TpsParameterType.STRING)
                 .and()
 
@@ -216,7 +215,7 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("stigAvt")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("S","A")
+                .values("A", "S")
                 .and()
 
                 .parameter()

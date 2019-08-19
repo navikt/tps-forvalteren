@@ -1,17 +1,17 @@
 <md-input-container  class="tps-vk-input-container" flex>
-    <label for="fodselsdatoFra">Fødseldato Fra</label>
-    <input name="fodselsdatoFra"
-           id="fodselsdatoFra"
+    <label for="fodselsDatoFra">Fødseldato Fra</label>
+    <input name="fodselsDatoFra"
+           id="fodselsDatoFra"
            type="text"
-           pikaday="fodselsdatoFra"
+           pikaday="fodselsDatoFra"
            set-default-date="false"
            autocomplete="off"
-           ng-model="formData.fodselsdatoFra"
-           on-open="repositionDatePicker(fodselsdatoFra)"
+           ng-model="formData.fodselsDatoFra"
+           on-open="repositionDatePicker(fodselsDatoFra)"
            ng-pattern="/^\d{4}-\d{2}-\d{2}$/"
            fdate>
-    <ng-messages for="requestForm.fodselsdatoFra.$error">
-        <ng-message when="isRequired('fodselsdatoFra')" ng-show="requestForm.fodselsdatoFra.$touched">
+    <ng-messages for="requestForm.fodselsDatoFra.$error">
+        <ng-message when="isRequired('fodselsDatoFra')" ng-show="requestForm.fodselsDatoFra.$touched">
             Gyldig dato er påkrevd
         </ng-message>
         <ng-message when="pattern">

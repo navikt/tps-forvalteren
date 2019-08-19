@@ -14,7 +14,7 @@
             <!-- Form to submit to TPS.  -->
             <form name="requestForm" ng-submit="requestForm.$valid && submit()">
                 <!-- Input fields rows -->
-                <legend class="tpsf-sr-inputform-legend">Select ogd inputfelt for {{serviceRutineName}}</legend>
+                <legend class="tpsf-sr-inputform-legend">Fyll i ønskede felter for {{serviceRutineName}}</legend>
                 <div ng-repeat="field in fields" ng-init="parentIndex = $index" >
                     <div layout-gt-xs="row" layout="column" ng-if="(parentIndex%5)==0"  >
 

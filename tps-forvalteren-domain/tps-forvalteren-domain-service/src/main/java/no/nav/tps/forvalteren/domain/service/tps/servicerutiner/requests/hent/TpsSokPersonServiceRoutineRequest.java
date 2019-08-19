@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,8 +31,8 @@ public class TpsSokPersonServiceRoutineRequest extends TpsServiceRoutineHentRequ
     private String bokstavTil;
     private String knr;
     private String landKode;
-    private String fodselsdatoFra;
-    private String fodselsdatoTil;
+    private String fodselsDatoFra;
+    private String fodselsDatoTil;
     private String alderFra;
     private String alderTil;
     private String identType;
