@@ -7,8 +7,10 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             $scope.fagsystem = 'DISTRIBUSJONSMELDING';
             $scope.tps = 'AJOURHOLDSMELDING';
 
-            $scope.pagesize = 25;
-            var buffersize = 150;
+            $scope.ajourholdFmt = false;
+
+            $scope.pagesize = 20;
+            var buffersize = 160;
             $scope.timeout = 30;
 
             $scope.tpsmeldinger = {};
@@ -157,9 +159,71 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.meldinger = undefined;
             }
 
+            $scope.meldFmtClick = function() {
+
+                if ($scope.ajourholdFmt) {
+                    $scope.request.format = $scope.fagsystem;
+                } else {
+                    $scope.request.format = $scope.tps;
+                }
+                $scope.checkOversikt();
+            };
+
+            $scope.checkOversiktPeriodeFra = function () {
+
+                var pattern = /^\d{2}-\d{2}-\d{4} \d{2}.\d{2}$/;
+
+                if (!$scope.requestForm.periodeFra.$viewValue ||
+                    $scope.requestForm.periodeFra.$viewValue === '') {
+                    $scope.requestForm.periodeFra.$invalid = false;
+                    $scope.requestForm.periodeFra.$valid = true;
+                    $scope.requestForm.periodeFra.$error = {};
+                } else if (!pattern.test($scope.requestForm.periodeFra.$viewValue) ||
+                    (new Date($scope.request.periodeFra).toString() === 'Invalid Date')) {
+                    $scope.requestForm.periodeFra.$error = {pattern: true};
+                    return;
+                } else if ($scope.request.periodeFra > $scope.request.periodeTil) {
+                    $scope.requestForm.periodeFra.$error = {maxDate: true};
+                    return;
+                } else if ($scope.request.periodeFra < $scope.startOfEra) {
+                    $scope.requestForm.periodeFra.$error = {minDate: true};
+                    return;
+                } else {
+                    $scope.requestForm.periodeFra.$invalid = false;
+                    $scope.requestForm.periodeFra.$valid = true;
+                    $scope.requestForm.periodeFra.$error = {};
+                }
+                $scope.checkOversikt();
+            };
+
+            $scope.checkOversiktPeriodeTil = function () {
+
+                var pattern = /^\d{2}-\d{2}-\d{4} \d{2}.\d{2}$/;
+                if (!$scope.requestForm.periodeTil.$viewValue ||
+                    $scope.requestForm.periodeTil.$viewValue === '') {
+                    $scope.requestForm.periodeTil.$invalid = false;
+                    $scope.requestForm.periodeTil.$valid = true;
+                    $scope.requestForm.periodeFra.$error = {};
+                } else if (!pattern.test($scope.requestForm.periodeTil.$viewValue) ||
+                    (new Date($scope.request.periodeTil).toString() === 'Invalid Date')) {
+                    $scope.requestForm.periodeTil.$error = {pattern: true};
+                } else if ($scope.request.periodeTil > new Date()) {
+                    $scope.requestForm.periodeTil.$error = {maxDate: true};
+                } else if ($scope.request.periodeTil < $scope.request.periodeFra) {
+                    $scope.requestForm.periodeTil.$error = {minDate: true};
+                } else {
+                    $scope.requestForm.periodeTil.$invalid = false;
+                    $scope.requestForm.periodeTil.$valid = true;
+                    $scope.requestForm.periodeTil.$error = {};
+                    $scope.checkOversikt();
+                }
+            };
+
             $scope.checkOversikt = function () {
-                $scope.periodeFra = atStartOfDay($scope.request.periodeFra);
-                $scope.periodeTil = atEndOfDay($scope.request.periodeTil);
+
+                $scope.today = new Date();
+                $scope.periodeFra = $scope.request.periodeFra;
+                $scope.periodeTil = $scope.request.periodeTil;
                 $scope.meldinger = undefined;
                 $scope.target = undefined;
                 $scope.request.typer = undefined;
@@ -205,8 +269,6 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 $scope.request.buffersize = buffersize;
                 $scope.request.buffernumber = 0;
                 $scope.request.timeout = $scope.timeout;
-                atStartOfDay($scope.request.periodeFra);
-                atEndOfDay($scope.request.periodeTil);
                 $scope.pager.request = angular.copy($scope.request);
                 avspillerService.getMeldinger($scope.request)
                     .then(meldingerOk, error);
@@ -287,24 +349,6 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     $scope.loading2 = true;
                     $scope.submit();
                 }
-            }
-
-            function atStartOfDay(starttime) {
-                if (starttime) {
-                    starttime.setHours(0);
-                    starttime.setMinutes(0);
-                    starttime.setSeconds(0);
-                }
-                return starttime;
-            }
-
-            function atEndOfDay(endtime) {
-                if (endtime) {
-                    endtime.setHours(23);
-                    endtime.setMinutes(59);
-                    endtime.setSeconds(59);
-                }
-                return endtime;
             }
 
             function checkStatus() {

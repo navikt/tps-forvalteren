@@ -1,12 +1,11 @@
 package no.nav.tps.forvalteren.consumer.mq.consumers;
 
-import no.nav.freg.common.autoconfigure.selftest.spi.SelftestCheck;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import javax.jms.JMSException;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Component
+import no.nav.freg.common.autoconfigure.selftest.spi.SelftestCheck;
+
+// @Component
 public class DefaultMessageQueueConsumerSelftestCheck implements SelftestCheck {
 
     @Autowired

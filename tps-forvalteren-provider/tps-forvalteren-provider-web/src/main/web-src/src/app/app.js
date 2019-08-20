@@ -11,6 +11,8 @@ require('angular-sanitize');
 require('pikaday');
 require('pikaday-angular');
 require('lodash');
+require('moment');
+require('ng-material-datetimepicker');
 
 require('./components/index');
 require('./services/service.module');
@@ -27,7 +29,7 @@ var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessa
     'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding',
     'tps-forvalteren.providers', 'tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', 'tps-forvalteren.service-rutine',
     'tps-forvalteren.service-rutine.velg-service-rutine', 'tps-forvalteren.doedsmeldinger', 'tps-forvalteren.doedsmeldinger.endremelding',
-    'tps-forvalteren.rawxml-melding','tps-forvalteren.avspiller']);
+    'tps-forvalteren.rawxml-melding','tps-forvalteren.avspiller', 'ngMaterialDatePicker']);
 
 
 require('./shared/index');

@@ -13,48 +13,51 @@
                     </md-select>
                 </md-input-container>
 
-                <md-input-container flex="20">
+                <md-input-container flex="25">
                     <label>Periode fra</label>
-                    <md-datepicker name="periodeFra" class="md-calendar-date"
-                                   ng-model="request.periodeFra"
-                                   md-current-view="year"
-                                   md-min-date="startOfEra"
-                                   md-max-date="periodeTil"
-                                   ng-change="checkOversikt()"
-                                   ng-disabled="progress"
-                                   title="Velg periode, dato fra (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)">
-                    </md-datepicker>
-                    <div ng-messages="requestForm.periodeFra.$error">
-                        <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                        <div ng-message="mindate">Dato kan ikke være før {{startOfEra| date: 'dd-MM-yyyy'}}</div>
-                        <div ng-message="maxdate">Dato kan ikke være større enn "Periode til"</div>
+                    <input mdc-datetime-picker date="true" time="true" type="text"
+                           id="periodeFra" name="periodeFra"
+                           click-outside-to-close="true"
+                           placeholder="Velg periode fra" auto-ok="true" week-start="1"
+                           min-date="startOfEra" max-date="periodeTil" minute-steps="1"
+                           format="DD-MM-YYYY HH.mm" edit-input="true"
+                           title="Velg periode, dato fra (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)"
+                           ng-change="checkOversiktPeriodeFra()" today-btn="false" cancel-text="Avbryt" show-icon="true"
+                           ng-model="request.periodeFra">
+
+                    <div ng-messages="requestForm.periodeFra.$error" class="validation-messages">
+                        <div ng-message="pattern">Gyldig format er DD-MM-ÅÅÅÅ tt.mm</div>
+                        <div ng-message="minDate">Dato kan ikke være før {{startOfEra| date: 'dd-MM-yyyy'}}</div>
+                        <div ng-message="maxDate">Periode-fra må være lavere enn Periode-til</div>
                     </div>
                 </md-input-container>
 
-                <md-input-container flex="20">
+                <md-input-container flex="25">
                     <label>Periode til</label>
-                    <md-datepicker name="periodeTil" class="md-calendar-date"
-                                   ng-model="request.periodeTil"
-                                   md-current-view="year"
-                                   md-min-date="periodeFra"
-                                   md-max-date="today"
-                                   ng-change="checkOversikt()"
-                                   ng-disabled="progress"
-                                   title="Velg periode, dato til (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)">
-                    </md-datepicker>
-                    <div ng-messages="requestForm.periodeTil.$error">
-                        <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
-                        <div ng-message="mindate">Dato kan ikke være før "Periode fra"</div>
-                        <div ng-message="maxdate">Dato kan ikke settes frem i tid</div>
+                    <input mdc-datetime-picker date="true" time="true" type="text"
+                           id="periodeTil" name="periodeTil"
+                           click-outside-to-close="true" ng-pattern="/^\d{2}-\d{2}-\d{4} \d{2}.\d{2}$/"
+                           placeholder="Velg periode til" auto-ok="true" week-start="1"
+                           min-date="periodeFra" max-date="today" minute-steps="1"
+                           format="DD-MM-YYYY HH.mm" edit-input="true"
+                           title="Velg periode, dato til (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)"
+                           ng-change="checkOversiktPeriodeTil()" today-btn="false" cancel-text="Avbryt" show-icon="true"
+                           ng-model="request.periodeTil">
+
+                    <div ng-messages="requestForm.periodeTil.$error" class="validation-messages" ng-show="true">
+                        <div ng-message="pattern">Gyldig format er DD-MM-ÅÅÅÅ tt.mm</div>
+                        <div ng-message="minDate">Periode-til må være høyere enn Periode-fra</div>
+                        <div ng-message="maxDate">Dato kan ikke settes frem i tid</div>
                     </div>
                 </md-input-container>
 
-                <div flex="10" style="margin-right: -45px; margin-top:30px; font-size: smaller">Type:</div>
-                <div class="avspiller-radio-gruppe">
-                    <md-radio-group layout="column" ng-model="request.format" ng-change="checkOversikt()" ng-disabled="progress">
-                        <md-radio-button value="{{fagsystem}}" class="md-primary" selected="true" title="Distribusjonsmeldinger til fagsystem">Fag</md-radio-button>
-                        <md-radio-button value="{{tps}}" title="Ajourholdsmeldinger til TPS">Tps</md-radio-button>
-                    </md-radio-group>
+                <div flex="5"></div>
+
+                <div class="avspiller-checkbox">
+                    <md-checkbox ng-model="ajourholdFmt" ng-click="meldFmtClick()"
+                                 title="Type av meldinger valgt er {{request.format}}"
+                                 ng-disabled="progress">Tps
+                    </md-checkbox>
                 </div>
 
                 <div flex="5"></div>
@@ -80,7 +83,8 @@
                     </div>
 
                     <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                               ng-disabled="!requestForm.$dirty || progress"
+                               ng-disabled="!(requestForm.periodeFra.$valid && requestForm.periodeTil.$valid &&
+                                            requestForm.identer.$valid && requestForm.timeout.$valid) || progress"
                                title="Hent meldinger basert på valgte filtere. Automatisk hentig virker ikke sammen med identfiltere.">
                         Hent
                     </md-button>
@@ -93,7 +97,7 @@
                     <label>Meldingstype(r)</label>
                     <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)"
                                multiple="true" ng-change="paramUpdate()" ng-disabled="disableTyperOgKilder"
-                               title="Filtrer på meldingsnavn (hendelser)">
+                               title="Filtrer på meldingsnavn (hendelser) {{request.typer}}">
                         <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -103,7 +107,7 @@
                     <label>Kilde(r)</label>
                     <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true"
                                ng-change="paramUpdate()" ng-disabled="disableTyperOgKilder"
-                               title="Filterer på kilder">
+                               title="Filtrer på kilder {{request.kilder}}">
                         <md-option ng-value="kilde.type" ng-repeat="kilde in kilder">{{kilde.type + getAntall(kilde.antall)}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -114,7 +118,7 @@
                            placeholder="Kopier inn liste av identer"
                            ng-pattern="/^(\d{11}[\W\s]*)+$/"
                            ng-change="changeIdenter()"
-                           title="Filterer på fødselsnummer"></input>
+                           title="Filtrer på fødselsnummere {{request.identer}}"></input>
                     <div ng-messages="requestForm.identer.$error"
                          ng-show="requestForm.identer.$dirty">
                         <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
@@ -131,7 +135,6 @@
         <md-progress-linear style="margin-top: 30px;" md-mode="indeterminate" ng-show="loading"></md-progress-linear>
 
     </div>
-
 
     <!-- Resulting Response -->
     <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger || loading2">
@@ -177,10 +180,10 @@
                 </div>
                 <div flex="5"></div>
                 <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss.sss'}}</div>
-                <div flex="25">{{message.hendelseType }}</div>
+                <div flex="25" title="{{message.hendelseType}}">{{message.hendelseType | hendelse}}</div>
                 <div flex="5">{{message.systemkilde }}</div>
                 <div flex="10" class="animate-selection" ng-click="addIdent(message.ident)"
-                     title="Klikk for å legge til eller ta bort fødselsnr">{{message.ident}}
+                     title="Klikk for å legge til eller ta bort fra liste av identer">{{message.ident}}
                 </div>
                 <div flex="5" align="center" title="{{status.progressMap[message.index].sendStatus}}"
                      class="animate-selection" ng-show="status.progressMap[message.index]">
