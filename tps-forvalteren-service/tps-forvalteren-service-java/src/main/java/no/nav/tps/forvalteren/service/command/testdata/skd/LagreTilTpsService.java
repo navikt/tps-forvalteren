@@ -94,7 +94,7 @@ public class LagreTilTpsService {
                     envNotFoundMap.put(environment, "Miljø finnes ikke");
                 } else {
                     envNotFoundMap.put(environment, e.getMessage());
-                    log.error(e);
+                    log.error("Lagring til miljø feilet, " + e.getMessage(), e);
                 }
                 it.remove();
             }
