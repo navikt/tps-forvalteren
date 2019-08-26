@@ -4,6 +4,7 @@ import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.parse;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.DISTRIBUSJONSMELDING;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -15,6 +16,7 @@ import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +67,7 @@ public class AvspillerController {
     @Autowired
     private MessageProvider messageProvider;
 
+ //   @Cacheable(CACHE_AVSPILLER)
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
@@ -80,6 +83,7 @@ public class AvspillerController {
                 .build());
     }
 
+ //   @Cacheable(CACHE_AVSPILLER)
     @GetMapping("/meldinger")
     public RsMeldingerResponse getMeldinger(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
@@ -105,6 +109,7 @@ public class AvspillerController {
                 .build());
     }
 
+  //  @Cacheable(CACHE_AVSPILLER)
     @PostMapping("/meldinger")
     public TpsAvspiller sendTilTps(@RequestBody RsAvspillerRequest request) {
 
@@ -116,6 +121,7 @@ public class AvspillerController {
         return avspillerStatus;
     }
 
+    @Cacheable(CACHE_FASIT)
     @GetMapping("/meldingskoer")
     public List<String> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 

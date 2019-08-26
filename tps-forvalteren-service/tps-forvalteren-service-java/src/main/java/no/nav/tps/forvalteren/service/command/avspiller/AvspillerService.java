@@ -99,7 +99,7 @@ public class AvspillerService {
 
         } else {
 
-            throw new NotFoundException(messageProvider.get(NO_DATA_KEY, request.getMiljoeFra(), request.getDatoFra(), request.getDatoTil()));
+            throw new NotFoundException(messageProvider.get(NO_DATA_KEY, request.getMiljoeFra()));
         }
     }
 

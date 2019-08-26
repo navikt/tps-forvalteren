@@ -59,11 +59,6 @@ public class CommandConfig {
     @Value("${fasit.environment.name}")
     private String deployedEnvironment;
 
-//    @Bean
-//    MessageQueueConsumer defaultMessageQueueService() throws JMSException {
-//        return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false);
-//    }
-
     @Bean
     XmlMapper xmlMapper() {
         XmlMapper xmlMapper = new XmlMapper();

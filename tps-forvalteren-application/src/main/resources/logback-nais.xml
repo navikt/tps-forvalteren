@@ -5,7 +5,7 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
-    <root level="info">
+    <root level="WARN">
         <appender-ref ref="stdout_json"/>
     </root>
 </included>
