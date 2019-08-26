@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
+import lombok.extern.log4j.Log4j;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
@@ -24,6 +25,7 @@ import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSk
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
 
+@Log4j
 @Service
 public class LagreTilTpsService {
 
@@ -90,8 +92,11 @@ public class LagreTilTpsService {
             } catch (RuntimeException e) {
                 if (e.getMessage().contains("Unable to find environment")) {
                     envNotFoundMap.put(environment, "Miljø finnes ikke");
-                    it.remove();
+                } else {
+                    envNotFoundMap.put(environment, e.getMessage());
+                    log.error(e);
                 }
+                it.remove();
             }
         }
 
