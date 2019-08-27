@@ -8,19 +8,17 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Map;
-
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants;
+import no.nav.tps.forvalteren.domain.rs.skd.IdentType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringCreateSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DoedsmeldingSkdParameterStrategyTest {
@@ -32,10 +30,6 @@ public class DoedsmeldingSkdParameterStrategyTest {
     private static final String REGDATO_DATE_STRING = "20170929";
     private static final String REGDATO_TIME_STRING = "153800";
     private static final String DOEDSDATO_DATE_STRING = "20171002";
-
-    private static final String AARSAKSKODE_KEY = "aarsakskode";
-    private static final String TRANSTYPE_KEY = "transtype";
-    private static final String STATUSKODE_KEY = "statuskode";
 
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "43";
     private static final String TRANSTYPE_FOR_DOEDSMELDING = "1";
@@ -52,6 +46,7 @@ public class DoedsmeldingSkdParameterStrategyTest {
         aPerson = mock(Person.class);
 
         when(aPerson.getIdent()).thenReturn(FNR);
+        when(aPerson.getIdenttype()).thenReturn(IdentType.FNR.name());
         when(aPerson.getRegdato()).thenReturn(REGDATO);
         when(aPerson.getDoedsdato()).thenReturn(DOEDSDATO.atTime(12, 00));
     }

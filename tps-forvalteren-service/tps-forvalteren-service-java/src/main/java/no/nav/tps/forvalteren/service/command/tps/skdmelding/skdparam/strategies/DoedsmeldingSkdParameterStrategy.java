@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.skd.IdentType;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.DoedsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
@@ -13,13 +14,14 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Conv
 @Service
 public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String AARSAK_KO_DE_FOR_DOEDSMELDING = "43";
+    private static final String AARSAKSKODE_FOR_DOEDSMELDING = "43";
     private static final String TRANSTYPE_FOR_DOEDSMELDING = "1";
-    private static final String STATUS_KO_DE_FOR_DOEDSMELDING = "5";
-    private static final String TILDELING_KO_DE_DOEDSMELDING = "0";
+    private static final String STATUSKODE_FNR = "5";
+    private static final String STATUSKODE_DNR = "2";
+    private static final String TILDELINGSKODE_DOEDSMELDING = "0";
 
     @Override public String hentTildelingskode() {
-        return TILDELING_KO_DE_DOEDSMELDING;
+        return TILDELINGSKODE_DOEDSMELDING;
     }
 
     @Override
@@ -52,12 +54,8 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setRegDato(doedsdatoStringVersion);
         skdMeldingTrans1.setDatoDoed(doedsdatoStringVersion);
 
-        addDefaultParam(skdMeldingTrans1);
-    }
-
-    private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
-        skdMeldingTrans1.setAarsakskode(AARSAK_KO_DE_FOR_DOEDSMELDING);
+        skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_DOEDSMELDING);
+        skdMeldingTrans1.setStatuskode(IdentType.FNR.name().equals(person.getIdenttype()) ? STATUSKODE_FNR : STATUSKODE_DNR);
         skdMeldingTrans1.setTranstype(TRANSTYPE_FOR_DOEDSMELDING);
-        skdMeldingTrans1.setStatuskode(STATUS_KO_DE_FOR_DOEDSMELDING);
     }
 }
