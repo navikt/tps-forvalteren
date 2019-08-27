@@ -33,6 +33,7 @@ import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.Send
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonstatusService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
@@ -61,6 +62,9 @@ public class SendTpsDoedsmeldingServiceTest {
 
     @Mock
     private PersonAdresseService personAdresseService;
+
+    @Mock
+    private HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
 
     @InjectMocks
     private SendTpsDoedsmeldingService sendTpsDoedsmeldingService;
