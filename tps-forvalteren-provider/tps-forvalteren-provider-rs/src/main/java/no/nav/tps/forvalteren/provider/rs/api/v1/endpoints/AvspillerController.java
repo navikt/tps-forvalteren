@@ -4,6 +4,7 @@ import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.parse;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_AVSPILLER;
 import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.DISTRIBUSJONSMELDING;
@@ -17,6 +18,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +48,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 @RestController
 @RequestMapping("api/v1/avspiller")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
+@PreAuthorize("hasRole('ROLE_TPSF_AVSPILLER')")
 public class AvspillerController {
 
     private static final String SKD_MELDING = "TPS.ENDRINGS.MELDING";
@@ -67,7 +70,7 @@ public class AvspillerController {
     @Autowired
     private MessageProvider messageProvider;
 
- //   @Cacheable(CACHE_AVSPILLER)
+    @Cacheable(CACHE_AVSPILLER)
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
@@ -83,7 +86,7 @@ public class AvspillerController {
                 .build());
     }
 
- //   @Cacheable(CACHE_AVSPILLER)
+    @Cacheable(CACHE_AVSPILLER)
     @GetMapping("/meldinger")
     public RsMeldingerResponse getMeldinger(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
@@ -109,7 +112,7 @@ public class AvspillerController {
                 .build());
     }
 
-  //  @Cacheable(CACHE_AVSPILLER)
+    @Cacheable(CACHE_AVSPILLER)
     @PostMapping("/meldinger")
     public TpsAvspiller sendTilTps(@RequestBody RsAvspillerRequest request) {
 

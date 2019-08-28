@@ -17,9 +17,9 @@
                     <label>Periode fra</label>
                     <input mdc-datetime-picker date="true" time="true" type="text"
                            id="periodeFra" name="periodeFra"
-                           click-outside-to-close="true"
+                           click-outside-to-close="true" ng-disabled="progress"
                            placeholder="Velg periode fra" auto-ok="true" week-start="1"
-                           min-date="startOfEra" max-date="periodeTil" minute-steps="1"
+                           min-date="startOfEra" max-date="request.periodeTil" minute-steps="1"
                            format="DD-MM-YYYY HH.mm" edit-input="true"
                            title="Velg periode, dato fra (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)"
                            ng-change="checkOversiktPeriodeFra()" today-btn="false" cancel-text="Avbryt" show-icon="true"
@@ -36,10 +36,10 @@
                 <md-input-container flex="25">
                     <label>Periode til</label>
                     <input mdc-datetime-picker date="true" time="true" type="text"
-                           id="periodeTil" name="periodeTil"
+                           id="periodeTil" name="periodeTil" ng-disabled="progress"
                            click-outside-to-close="true" ng-pattern="/^\d{2}-\d{2}-\d{4} \d{2}.\d{2}$/"
                            placeholder="Velg periode til" auto-ok="true" week-start="1"
-                           min-date="periodeFra" max-date="today" minute-steps="1"
+                           min-date="request.periodeFra" max-date="today" minute-steps="1"
                            format="DD-MM-YYYY HH.mm" edit-input="true"
                            title="Velg periode, dato til (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)"
                            ng-change="checkOversiktPeriodeTil()" today-btn="false" cancel-text="Avbryt" show-icon="true"
@@ -54,7 +54,7 @@
 
                 <div flex="5"></div>
 
-                <div class="avspiller-checkbox">
+                <div class="avspiller-checkbox" ng-show="showTpsBtn">
                     <md-checkbox ng-model="ajourholdFmt" ng-click="meldFmtClick()"
                                  title="Type av meldinger valgt er {{request.format}}"
                                  ng-disabled="progress">Tps
@@ -96,7 +96,7 @@
                                     aria-label="Hendelse(r)">
                     <label>Meldingstype(r)</label>
                     <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)"
-                               multiple="true" ng-change="paramUpdate()" ng-disabled="disableTyperOgKilder"
+                               multiple="true" ng-change="paramUpdate()" ng-disabled="progress"
                                title="Filtrer på meldingsnavn (hendelser) {{request.typer}}">
                         <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
                     </md-select>
@@ -106,7 +106,7 @@
                                     aria-label="Kilde(r)">
                     <label>Kilde(r)</label>
                     <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true"
-                               ng-change="paramUpdate()" ng-disabled="disableTyperOgKilder"
+                               ng-change="paramUpdate()" ng-disabled="progress"
                                title="Filtrer på kilder {{request.kilder}}">
                         <md-option ng-value="kilde.type" ng-repeat="kilde in kilder">{{kilde.type + getAntall(kilde.antall)}}</md-option>
                     </md-select>
@@ -115,7 +115,7 @@
                 <md-input-container class="tps-vk-input-container" flex>
                     <label>Liste av identer</label>
                     <input name="identer" ng-model="request.identer" class="testdata-ident-liste"
-                           placeholder="Kopier inn liste av identer"
+                           placeholder="Kopier inn liste av identer" ng-disabled="progress"
                            ng-pattern="/^(\d{11}[\W\s]*)+$/"
                            ng-change="changeIdenter()" ng-blur="enforceFocus(requestForm.identer)"
                            title="Filtrer på fødselsnummere {{request.identer}}"></input>
@@ -139,8 +139,8 @@
     <!-- Resulting Response -->
     <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger || loading2">
         <form name="responseForm" class="top transparent response-form" ng-cloak>
-            <div layout="row" layout-align="end end" class="pagination" ng-show="pager.totalt > pagesize">
-                <span style="margin-right: 15px; margin-bottom: 6px;">
+            <div layout="row" layout-align="end center" class="pagination" ng-show="pager.totalt > pagesize" style="white-space: nowrap; cursor: pointer;">
+                <span style="margin-right: 15px; marigin-bottom: 6px;">
                     Viser {{pager.currentPage === pager.totalPages ?  '1-' + pager.totalt : pager.viser.display}} av {{pager.totalt}}</span>
                 <li ng-class="{disabled:pager.currentPage === 1 || disable}">
                     <a ng-click="setPage(1)">&lt;&lt;</a>
@@ -185,10 +185,12 @@
                 <div flex="25" title="{{message.hendelseType}}">{{message.hendelseType | hendelse}}</div>
                 <div flex="5">{{message.systemkilde }}</div>
                 <div flex="10" class="animate-selection" ng-click="addIdent(message.ident)"
-                     title="Klikk for å legge til eller ta bort fra liste av identer">{{message.ident}}
+                     title="{{progress ? 'Liste av identer kan ikke endres når sending pågår' :
+                     'Klikk for å legge til eller ta bort fra liste av identer'}}">{{message.ident}}
                 </div>
                 <div flex="5" align="center" title="{{status.progressMap[message.index].sendStatus}}"
-                     class="animate-selection" ng-show="status.progressMap[message.index]">
+                     class="animate-selection" ng-show="status.progressMap[message.index]"
+                     ng-click="sendtDialog(message.index)">
                     <a> <img ng-show="status.progressMap[message.index].sendStatus === 'OK'"
                              src="assets/icons/baseline-done-24px.svg" class="status-icon"></a>
                     <a ng-show="status.progressMap[message.index].sendStatus.includes('Sending OK')">
@@ -262,6 +264,11 @@
                 </md-input-container>
             </div>
         </form>
+        <div layout="row" style="margin-top: -10px;" ng-show="status.antall">
+            <div flex></div>
+            Sendt {{status.progressAntall}} (av {{status.antall}})
+            <div flex="10"></div>
+        </div>
         <div layout="row">
             <md-progress-linear md-mode="determinate" class="avspiller-progress" value="{{completeProgress}}" ng-show="progress"></md-progress-linear>
         </div>

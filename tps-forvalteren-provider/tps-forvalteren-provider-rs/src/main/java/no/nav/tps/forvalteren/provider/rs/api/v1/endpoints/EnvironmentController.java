@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_AVSPILLER;
+import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_AVSPILLER_TEAM_REG;
 import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_LES;
 import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SERVICERUTINER;
 import static no.nav.tps.forvalteren.service.user.UserRole.ROLE_TPSF_SKDMELDING;
@@ -33,6 +33,8 @@ public class EnvironmentController {
     private static final String HAS_TST = "hasTST";
     private static final String HAS_MLD = "hasMLD";
     private static final String HAS_SRV = "hasSRV";
+    private static final String HAS_AVS = "hasAVS";
+    private static final String HAS_AVSTR = "hasAVSTR";
     private static final String REST_SERVICE_NAME = "environments";
 
     @Autowired
@@ -63,18 +65,21 @@ public class EnvironmentController {
         environment.setProductionMode(currentEnvironmentIsProd);
 
         Map<String, Boolean> roller = new HashMap<>();
+        Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
+
         if(currentEnvironmentIsProd) {
-            Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
             roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
             roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
-            roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
-            roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+
         } else {
             roller.put(HAS_GT, true);
             roller.put(HAS_TST, true);
-            roller.put(HAS_MLD, true);
-            roller.put(HAS_SRV, true);
         }
+
+        roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
+        roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+        roller.put(HAS_AVS, roles.contains(ROLE_TPSF_AVSPILLER.toString()));
+        roller.put(HAS_AVSTR, roles.contains(ROLE_TPSF_AVSPILLER_TEAM_REG.toString()));
 
         environment.setRoles(roller);
 
