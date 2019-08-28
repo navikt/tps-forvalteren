@@ -184,7 +184,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
 
     private void opprettPersonerSomTriggerDoedsmeldinger() {
-        Person doedPerson = Person.builder().gruppe(testgruppe).ident("11031250155").identtype("DNR")
+        Person doedPerson = Person.builder().gruppe(testgruppe).ident("11031250155").identtype("FNR")
                 .doedsdato(LocalDateTime.of(2018, 05, 15, 14, 10, 44))
                 .kjonn("M")
                 .fornavn("Døende").etternavn("Person")
