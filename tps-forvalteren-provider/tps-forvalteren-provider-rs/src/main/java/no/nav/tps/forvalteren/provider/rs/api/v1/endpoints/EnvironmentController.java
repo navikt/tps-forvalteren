@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import no.nav.tps.forvalteren.service.user.UserRole;
 
 @RestController
 @RequestMapping(value = "api/v1")
@@ -64,24 +65,27 @@ public class EnvironmentController {
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
         environment.setProductionMode(currentEnvironmentIsProd);
 
-        Map<String, Boolean> roller = new HashMap<>();
-        Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
+        if (userContextHolder.getRoles().iterator().hasNext() && userContextHolder.getRoles().iterator().next() instanceof UserRole) {
 
-        if(currentEnvironmentIsProd) {
-            roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
-            roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
+            Map<String, Boolean> roller = new HashMap<>();
+            Set<String> roles = userContextHolder.getRoles().stream().map(Enum::toString).collect(Collectors.toSet());
 
-        } else {
-            roller.put(HAS_GT, true);
-            roller.put(HAS_TST, true);
+            if (currentEnvironmentIsProd) {
+                roller.put(HAS_GT, roles.contains(ROLE_TPSF_LES.toString()));
+                roller.put(HAS_TST, roles.contains(ROLE_TPSF_SKRIV.toString()));
+
+            } else {
+                roller.put(HAS_GT, true);
+                roller.put(HAS_TST, true);
+            }
+
+            roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
+            roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
+            roller.put(HAS_AVS, roles.contains(ROLE_TPSF_AVSPILLER.toString()));
+            roller.put(HAS_AVSTR, roles.contains(ROLE_TPSF_AVSPILLER_TEAM_REG.toString()));
+
+            environment.setRoles(roller);
         }
-
-        roller.put(HAS_MLD, roles.contains(ROLE_TPSF_SKDMELDING.toString()));
-        roller.put(HAS_SRV, roles.contains(ROLE_TPSF_SERVICERUTINER.toString()));
-        roller.put(HAS_AVS, roles.contains(ROLE_TPSF_AVSPILLER.toString()));
-        roller.put(HAS_AVSTR, roles.contains(ROLE_TPSF_AVSPILLER_TEAM_REG.toString()));
-
-        environment.setRoles(roller);
 
         return environment;
     }

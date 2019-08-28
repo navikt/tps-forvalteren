@@ -112,7 +112,6 @@ public class AvspillerController {
                 .build());
     }
 
-    @Cacheable(CACHE_AVSPILLER)
     @PostMapping("/meldinger")
     public TpsAvspiller sendTilTps(@RequestBody RsAvspillerRequest request) {
 

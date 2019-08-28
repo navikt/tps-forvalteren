@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.xjc.ctg.domain.s302.SRnavnType.FS_04_HENDELSE_OVERSIKT_O;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.DefaultSkdGetHeaderForSkdMelding;
@@ -63,12 +65,12 @@ public class TpsDistribusjonsmeldingService {
         }
     }
 
-    public String sendDetailedMessageToTps(String message, String env, String queueName, boolean includeHeader) {
+    public String sendDetailedMessageToTps(Meldingsformat format, String message, String env, String queueName, boolean includeHeader) {
 
         try {
             MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(env, queueName, true);
 
-            return messageQueueConsumer.sendMessage(includeHeader ? skdGetHeaderForSkdMelding.prependHeader(message) : message, 300);
+            return messageQueueConsumer.sendMessage(includeHeader ? skdGetHeaderForSkdMelding.prependHeader(message) : message, AJOURHOLDSMELDING == format ? 500 : 1);
 
         } catch (JMSException | RuntimeException e) {
             log.error(e.getMessage(), e);
