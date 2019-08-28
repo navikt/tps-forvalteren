@@ -6,3 +6,4 @@ require('./titlecase.filter');
 require('./doedshandling.filter');
 require('./identtype.filter');
 require('./miljoe.filter');
+require('./hendelse.filter');

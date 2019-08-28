@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.service.command.config;
 
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
-
-import javax.jms.JMSException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.xml.XmlMapper;
 
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
@@ -62,11 +58,6 @@ public class CommandConfig {
 
     @Value("${fasit.environment.name}")
     private String deployedEnvironment;
-
-    @Bean
-    MessageQueueConsumer defaultMessageQueueService() throws JMSException {
-        return messageQueueServiceFactory.createMessageQueueConsumer(deployedEnvironment, REQUEST_QUEUE_SERVICE_RUTINE_ALIAS, false);
-    }
 
     @Bean
     XmlMapper xmlMapper() {

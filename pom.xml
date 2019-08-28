@@ -81,7 +81,7 @@
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
         <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
         <h2.database.version>1.4.197</h2.database.version>
-        <fasit.client.version>5.8.9</fasit.client.version>
+        <fasit.client.version>5.8.57</fasit.client.version>
 
         <!--Plugin versions-->
         <aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>

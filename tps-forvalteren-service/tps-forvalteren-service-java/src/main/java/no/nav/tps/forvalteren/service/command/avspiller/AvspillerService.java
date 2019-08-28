@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.avspiller;
 import static java.lang.Long.valueOf;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,7 @@ public class AvspillerService {
 
         } else {
 
-            throw new NotFoundException(messageProvider.get(NO_DATA_KEY, request.getMiljoeFra(), request.getDatoFra(), request.getDatoTil()));
+            throw new NotFoundException(messageProvider.get(NO_DATA_KEY, request.getMiljoeFra()));
         }
     }
 
@@ -127,10 +128,11 @@ public class AvspillerService {
                     TpsPersonData detaljertMelding = getDetaljertMelding(request, enkeltMeldingType.getMNr());
 
                     String status = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
+                            request.getFormat(),
                             detaljertMelding.getTpsSvar().getHendelseDataS302().getRespons().getMeldingDetalj(),
                             request.getMiljoeTil(),
                             request.getQueue(),
-                            request.getFormat() == Meldingsformat.AJOURHOLDSMELDING);
+                            request.getFormat() == AJOURHOLDSMELDING);
 
                     avspillerStatus = logProgress(avspillerStatus.getBestillingId(),
                             (valueOf(personListe.getTpsSvar().getHendelseDataS302().getRespons().getSideNummer()) - 1) *
@@ -154,7 +156,8 @@ public class AvspillerService {
     }
 
     public boolean isValid(String environment, String queueName) {
-        String result = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(messageProvider.get(PING_TEST), environment, queueName, false);
+        String result = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(
+                AJOURHOLDSMELDING, messageProvider.get(PING_TEST), environment, queueName, false);
         return !result.contains(queueName);
     }
 

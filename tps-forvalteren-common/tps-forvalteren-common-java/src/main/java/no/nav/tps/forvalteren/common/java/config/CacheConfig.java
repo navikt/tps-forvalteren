@@ -13,11 +13,19 @@ import com.google.common.cache.CacheBuilder;
 public class CacheConfig {
 
     public static final String CACHE_FASIT = "Fasit";
+    public static final String CACHE_AVSPILLER = "Avspiller";
 
     @Bean
     public Cache cacheFasit() {
         return new GuavaCache(CACHE_FASIT, CacheBuilder.newBuilder()
                 .expireAfterWrite(4, TimeUnit.HOURS)
+                .build());
+    }
+
+    @Bean
+    public Cache cacheAvspiller() {
+        return new GuavaCache(CACHE_AVSPILLER, CacheBuilder.newBuilder()
+                .expireAfterWrite(24, TimeUnit.HOURS)
                 .build());
     }
 }

@@ -51,6 +51,7 @@
     "moment": "^2.20.1",
     "native": "^0.3.3",
     "natives": "^1.1.5",
+    "ng-material-datetimepicker": "^1.18.5",
     "pikaday": "^1.7.0",
     "pikaday-angular": "^2.0.0"
   }

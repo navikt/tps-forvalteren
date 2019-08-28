@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
+import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.DISTRIBUSJONSMELDING;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -81,7 +83,7 @@ public class TpsDistribusjonsmeldingServiceTest {
 
         when(messageQueueServiceFactory.createMessageQueueConsumer(ENV, QUEUE_NAME, true)).thenReturn(messageQueueConsumer);
 
-        tpsDistribusjonsmeldingService.sendDetailedMessageToTps(MESSAGE, ENV, QUEUE_NAME, false);
+        tpsDistribusjonsmeldingService.sendDetailedMessageToTps(AJOURHOLDSMELDING, MESSAGE, ENV, QUEUE_NAME, false);
 
         verify(messageQueueServiceFactory).createMessageQueueConsumer(ENV, QUEUE_NAME, true);
     }
@@ -92,7 +94,7 @@ public class TpsDistribusjonsmeldingServiceTest {
         when(messageQueueServiceFactory.createMessageQueueConsumer(ENV, QUEUE_NAME, true)).thenThrow(JMSException.class);
         when(messageProvider.get(TPS_SEND_ERROR, null)).thenReturn(SEND_ERROR);
 
-        String result = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(MESSAGE, ENV, QUEUE_NAME, false);
+        String result = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(DISTRIBUSJONSMELDING, MESSAGE, ENV, QUEUE_NAME, false);
 
         verify(messageQueueServiceFactory).createMessageQueueConsumer(ENV, QUEUE_NAME, true);
         verify(messageProvider).get(TPS_SEND_ERROR, null);
