@@ -1,9 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SjekkOmGyldigeIdenter {
@@ -14,20 +13,20 @@ public class SjekkOmGyldigeIdenter {
     public Set<String> execute(Set<String> identListe) {
         Set<String> gyldigeIdenter = new HashSet<>();
         for (String ident : identListe) {
-            if (ident.length() == 11 &&  isValidFnrDnrOrBnr(ident) && isKontrollsifferValid(ident)) {
+            if (ident.length() == 11 &&  isValidFnrDnrOrBost(ident) && isKontrollsifferValid(ident)) {
                 gyldigeIdenter.add(ident);
             }
         }
         return gyldigeIdenter;
     }
 
-    private boolean isValidFnrDnrOrBnr(String ident) {
+    private boolean isValidFnrDnrOrBost(String ident) {
         int day = Integer.parseInt(ident.substring(0, 2));
         int month = Integer.parseInt(ident.substring(2, 4));
-        return isFnr(day, month) || isDnr(day, month) || isBnr(day, month);
+        return isFnr(day, month) || isDnr(day, month) || isBost(day, month);
     }
 
-    private boolean isBnr(int day, int month) {
+    private boolean isBost(int day, int month) {
         return day > 0 && day < 32 && month > 20 && month < 33;
     }
 

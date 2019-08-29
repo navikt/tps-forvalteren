@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.foedselsmelding;
 import static com.google.common.collect.Sets.newHashSet;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.BNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.BOST;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static org.hamcrest.CoreMatchers.is;
@@ -141,7 +141,7 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .foedselsdato(LocalDateTime.now())
                 .identMor(IDENT_MOR)
                 .adresseFra(FAR)
-                .identtype(BNR)
+                .identtype(BOST)
                 .miljoer(newHashSet("u5"))
                 .build();
 
