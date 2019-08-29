@@ -1,15 +1,17 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.repository.Repository;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import org.springframework.data.repository.Repository;
 
 public interface PersonRepository extends Repository<Person, Long> {
 
     List<Person> findAllByOrderByIdAsc();
 
-    void deleteByIdIn(List<Long> ids);
+    @Modifying
+    int deleteByIdIn(List<Long> ids);
 
     List<Person> save(Iterable<Person> personer);
 
@@ -28,4 +30,7 @@ public interface PersonRepository extends Repository<Person, Long> {
     void deleteByGruppeId(Long gruppeId);
 
     void deleteAll();
+
+    @Modifying
+    int deleteByIdentIn(List<String> idents);
 }

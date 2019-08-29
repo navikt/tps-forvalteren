@@ -39,6 +39,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
@@ -74,6 +75,9 @@ public class TestdataBestillingsController {
 
     @Autowired
     private ExcelService excelService;
+
+    @Autowired
+    private PersonService personService;
 
     @Transactional
     @LogExceptions
@@ -138,5 +142,13 @@ public class TestdataBestillingsController {
             log.error(EXCEL_FEILMELDING, e);
             throw new TpsfFunctionalException(EXCEL_FEILMELDING, e);
         }
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "slettpersoner") })
+    @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void slettPersoner(@RequestParam List<String> identer) {
+        personService.slettPersoner(identer);
     }
 }
