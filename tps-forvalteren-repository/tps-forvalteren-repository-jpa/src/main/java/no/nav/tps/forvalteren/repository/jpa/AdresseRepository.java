@@ -16,7 +16,7 @@ public interface AdresseRepository extends CrudRepository<Adresse, Long> {
     @Modifying
     void deleteAll();
 
-    Optional<List<Adresse>> findAdresseByPersonIdentIn(List<String> idents);
+    Optional<List<Adresse>> findAdresseByPersonIdIn(List<Long> personIds);
 
     @Modifying
     int deleteByIdIn(List<Long> idents);
