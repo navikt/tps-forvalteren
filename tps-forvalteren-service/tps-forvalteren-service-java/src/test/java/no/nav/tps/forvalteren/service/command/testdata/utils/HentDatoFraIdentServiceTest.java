@@ -57,7 +57,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromBnr1900Century() throws Exception {
+    public void extractDateFromBost1900Century() throws Exception {
 
         LocalDateTime target = hentDatoFraIdentService.extract("21250546234");
 
@@ -67,7 +67,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromBnr2000Century() throws Exception {
+    public void extractDateFromBost2000Century() throws Exception {
 
         LocalDateTime target = hentDatoFraIdentService.extract("21250556234");
 

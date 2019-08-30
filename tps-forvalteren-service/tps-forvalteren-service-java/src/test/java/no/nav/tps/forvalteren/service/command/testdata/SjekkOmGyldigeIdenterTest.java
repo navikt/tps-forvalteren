@@ -1,15 +1,14 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SjekkOmGyldigeIdenterTest {
@@ -42,7 +41,7 @@ public class SjekkOmGyldigeIdenterTest {
     }
 
     @Test
-    public void sjekkOmGyldigeBnrErGyldige() {
+    public void sjekkOmGyldigeBostErGyldige() {
         Set<String> identer = new HashSet<>();
         identer.add("01210123977");
         identer.add("01210120668");

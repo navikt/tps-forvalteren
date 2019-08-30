@@ -31,7 +31,7 @@ public class FiktiveIdenterGeneratorTest {
 
     private static final String DNR = "DNR";
     private static final String FNR = "FNR";
-    private static final String BNR = "BNR";
+    private static final String BOST = "BOST";
 
     @Before
     public void setup() {
@@ -179,7 +179,7 @@ public class FiktiveIdenterGeneratorTest {
     /* Ved B-nummer legges 20 til maened nummeret*/
     @Test
     public void genererBNummerMedRiktigMonthNummer() throws Exception {
-        testpersonKriterier.setIdenttype(BNR);
+        testpersonKriterier.setIdenttype(BOST);
         testpersonKriterier.setKjonn("K");
         LocalDateTime date = LocalDate.of(1992, Month.JANUARY, 15).atStartOfDay();
         testpersonKriterier.setFoedtEtter(date);

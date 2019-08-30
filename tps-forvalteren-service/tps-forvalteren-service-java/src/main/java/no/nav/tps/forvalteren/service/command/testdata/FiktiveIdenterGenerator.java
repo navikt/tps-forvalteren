@@ -24,7 +24,7 @@ public class FiktiveIdenterGenerator {
 
     private static final String DNR = "DNR";
     private static final String FNR = "FNR";
-    private static final String BNR = "BNR";
+    private static final String BOST = "BOST";
     private static final int MULTIPLY_ANT_IDENTER = 2;
     private static final LocalDateTime DEFAULT_FODT_FOER_DATE = LocalDate.now().atStartOfDay();
     private static final LocalDateTime DEFAULT_FODT_ETTER_DATE = DEFAULT_FODT_FOER_DATE.minusYears(100);
@@ -61,7 +61,7 @@ public class FiktiveIdenterGenerator {
         while (identSet.size() != (kriteria.getAntall() * MULTIPLY_ANT_IDENTER)) {
             StringBuilder identitetBuilder = new StringBuilder();
             LocalDateTime fodselsdatoDate = genererFodsselsdatoBasertPaaKriterie(kriteria);
-            String fodselsdato = genererFnrDnrBnrStringified(kriteria.getIdenttype(), fodselsdatoDate);
+            String fodselsdato = genererFnrDnrBostStringified(kriteria.getIdenttype(), fodselsdatoDate);
             List<Integer> rangeList = hentKategoriIntervallForDato(fodselsdatoDate);
             identitetBuilder.append(fodselsdato).append(genererIndividnummer(rangeList.get(0), rangeList.get(1), kriteria.getKjonn()));
             int forsteKontrollSiffer = genererKontrollsiffer(identitetBuilder, KONTROLL_SIFFER_1);
@@ -77,13 +77,13 @@ public class FiktiveIdenterGenerator {
         return identSet;
     }
 
-    private static String genererFnrDnrBnrStringified(String identtype, LocalDateTime date) {
+    private static String genererFnrDnrBostStringified(String identtype, LocalDateTime date) {
         String foedselsdato = date.format(DateTimeFormatter.ofPattern("ddMMyy"));
 
         switch (identtype) {
         case DNR:
             return Integer.toString(getNumericValue(foedselsdato.charAt(0)) + 4) + foedselsdato.substring(1);
-        case BNR:
+        case BOST:
             return foedselsdato.substring(0, 2) + Integer.toString(getNumericValue(foedselsdato.charAt(2)) + 2) + foedselsdato.substring(3);
         case FNR:
         default:

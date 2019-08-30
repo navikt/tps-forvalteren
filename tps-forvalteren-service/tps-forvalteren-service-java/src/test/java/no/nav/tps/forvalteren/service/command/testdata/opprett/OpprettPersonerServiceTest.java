@@ -19,7 +19,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpprettPersonerServiceTest {
@@ -28,7 +27,7 @@ public class OpprettPersonerServiceTest {
 
     private String identDummy1 = "111111111111";
     private String identDummyDNR = "411111111111";
-    private String identDummyBNR = "11311111111";
+    private String identDummyBOST = "11311111111";
 
     @Mock
     private HentKjoennFraIdentService hentKjoennFraIdentServiceMock;
@@ -49,7 +48,7 @@ public class OpprettPersonerServiceTest {
 
     @Test
     public void opprettPersonerOppretterRiktigAntall(){
-        identerInput.addAll(Arrays.asList(identDummy1,identDummyDNR,identDummyBNR));
+        identerInput.addAll(Arrays.asList(identDummy1,identDummyDNR, identDummyBOST));
         List<Person> personer = opprettPersonerService.execute(identerInput);
 
         assertThat(personer.size() == 3, is(true));
@@ -86,11 +85,11 @@ public class OpprettPersonerServiceTest {
     }
 
     @Test
-    public void hvisIdentErBNRSaaHarPersonBNR(){
-        identerInput.add(identDummyBNR);
-        when(hentIdenttypeFraIdentService.execute(anyString())).thenReturn("BNR");
+    public void hvisIdentErBostSaaHarPersonBost(){
+        identerInput.add(identDummyBOST);
+        when(hentIdenttypeFraIdentService.execute(anyString())).thenReturn("BOST");
         List<Person> personer = opprettPersonerService.execute(identerInput);
-        assertThat(personer.get(0).getIdenttype(), is("BNR"));
+        assertThat(personer.get(0).getIdenttype(), is("BOST"));
     }
 
     @Test
