@@ -5,6 +5,7 @@ import static org.assertj.core.util.Sets.newHashSet;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +52,12 @@ public class IdentpoolService {
         ResponseEntity<String[]> availIdents = identpoolConsumer.requestRandomIdents(request);
 
         return new HashSet(asList(availIdents.hasBody() ? availIdents.getBody() : new String[] {}));
+    }
+
+    public Set<String> recycleIdents(List<String> request) {
+
+        ResponseEntity<String[]> availIdents = identpoolConsumer.recycleIdents(request);
+
+        return new HashSet<>(asList(availIdents.hasBody() ? availIdents.getBody() : new String[] {}));
     }
 }

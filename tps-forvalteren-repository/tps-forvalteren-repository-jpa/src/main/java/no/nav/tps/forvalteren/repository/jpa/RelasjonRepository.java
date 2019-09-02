@@ -1,13 +1,15 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.repository.CrudRepository;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
-public interface RelasjonRepository extends Repository<Relasjon, Long> {
+public interface RelasjonRepository extends CrudRepository<Relasjon, Long> {
 
     Relasjon findById(long id);
 
@@ -15,11 +17,11 @@ public interface RelasjonRepository extends Repository<Relasjon, Long> {
 
     List<Relasjon> findByPersonAndRelasjonTypeNavn(Person person, String relasjonTypeNavn);
 
+    Optional<List<Relasjon>> findByPersonRelasjonMedIdIn(List<Long> personIds);
+
+    @Modifying
     void deleteByIdIn(Set<Long> ids);
 
+    @Modifying
     void deleteByPersonRelasjonMedIdIn(List<Long> personIds);
-    
-    void save(Relasjon relasjon);
-
-    void deleteAll();
 }

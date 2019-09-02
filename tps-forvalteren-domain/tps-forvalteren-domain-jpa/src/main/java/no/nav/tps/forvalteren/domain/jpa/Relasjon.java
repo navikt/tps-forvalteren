@@ -36,7 +36,7 @@ public class Relasjon {
     private Long id;
 
     @JoinColumn(name = "person_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Person person;
 
     @JoinColumn(name = "person_relasjon_id", nullable = false)

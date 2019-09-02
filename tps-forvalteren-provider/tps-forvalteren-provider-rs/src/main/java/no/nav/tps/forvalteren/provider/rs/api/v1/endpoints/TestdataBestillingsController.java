@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.partition;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -39,6 +41,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
@@ -74,6 +77,9 @@ public class TestdataBestillingsController {
 
     @Autowired
     private ExcelService excelService;
+
+    @Autowired
+    private PersonService personService;
 
     @Transactional
     @LogExceptions
@@ -138,5 +144,14 @@ public class TestdataBestillingsController {
             log.error(EXCEL_FEILMELDING, e);
             throw new TpsfFunctionalException(EXCEL_FEILMELDING, e);
         }
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "slettpersoner") })
+    @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "slettPersoner", notes = "kommaseparert liste med identer")
+    public void slettPersoner(@RequestParam String identer) {
+        personService.slettPersoner(newArrayList(identer.split(",")));
     }
 }

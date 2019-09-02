@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.consumer.rs.identpool;
 
 import java.net.URI;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
@@ -13,6 +14,7 @@ public class IdentpoolConsumer {
 
     private static final String IDENTPOOL_ROOT_URL = "/api/v1/identifikator";
     private static final String IDENT_WHITELIST_URL = IDENTPOOL_ROOT_URL + "/whitelist";
+    private static final String IDENT_RELEASE_URL = IDENTPOOL_ROOT_URL + "/frigjoer";
 
     @Value("${identpool.host.url}")
     private String identpoolHost;
@@ -31,6 +33,13 @@ public class IdentpoolConsumer {
 
         return restTemplate.exchange(RequestEntity.post(
                 URI.create(identpoolHost + IDENTPOOL_ROOT_URL))
+                .body(request), String[].class);
+    }
+
+    public ResponseEntity<String[]> recycleIdents(List<String> request) {
+
+        return restTemplate.exchange(RequestEntity.post(
+                URI.create(identpoolHost + IDENT_RELEASE_URL))
                 .body(request), String[].class);
     }
 }
