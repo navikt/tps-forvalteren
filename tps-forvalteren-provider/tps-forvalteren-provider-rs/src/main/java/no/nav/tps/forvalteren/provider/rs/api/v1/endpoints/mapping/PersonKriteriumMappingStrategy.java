@@ -141,21 +141,25 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private void mapAdresser(RsSimplePersonRequest kriteriumRequest, Person person, MapperFacade mapperFacade) {
         if (!kriteriumRequest.getPostadresse().isEmpty()) {
-            person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
             person.getPostadresse().clear();
+            person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
             person.getPostadresse().forEach(adr -> adr.setPerson(person));
         }
 
         if (DNR.name().equals(person.getIdenttype())) {
             person.setBoadresse(null);
-            person.getPostadresse().clear();
-            person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
+            if (kriteriumRequest.getPostadresse().isEmpty()) {
+                person.getPostadresse().clear();
+                person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
+            }
 
         } else if (isNotBlank(person.getUtvandretTilLand())) {
             person.setBoadresse(null);
-            person.getPostadresse().clear();
-            person.getPostadresse().add(dummyAdresseService.createPostAdresseUtvandret(person));
-            person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
+            if (kriteriumRequest.getPostadresse().isEmpty() || "NOR".equals(kriteriumRequest.getPostadresse().get(0).getPostLand())) {
+                person.getPostadresse().clear();
+                person.getPostadresse().add(dummyAdresseService.createPostAdresseUtvandret(person));
+                person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
+            }
 
         } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
             person.setBoadresse(null);

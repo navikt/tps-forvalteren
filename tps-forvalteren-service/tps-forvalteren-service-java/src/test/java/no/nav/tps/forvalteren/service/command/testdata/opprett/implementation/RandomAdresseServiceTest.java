@@ -20,7 +20,7 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 
 @RunWith(Parameterized.class)
-public class SetRandomAdresseOnPersonsTest extends AbstractSetRandomAdresseOnPersonsTest{
+public class RandomAdresseServiceTest extends AbstractRandomAdresseServiceTest {
 
     @Parameterized.Parameter
     public String resource;
@@ -45,7 +45,7 @@ public class SetRandomAdresseOnPersonsTest extends AbstractSetRandomAdresseOnPer
      */
     @Test
     public void shouldHentTilfeldigAdresse() {
-        setRandomAdresseOnPersons.execute(toPersoner, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR,KOMMUNENR));
+        randomAdresseService.execute(toPersoner, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR,KOMMUNENR));
         
         assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse());
         assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse());
@@ -53,7 +53,7 @@ public class SetRandomAdresseOnPersonsTest extends AbstractSetRandomAdresseOnPer
 
     @Test
     public void setRandomAdresseUtenKommuneEllerPostnummer() {
-        setRandomAdresseOnPersons.execute(toPersoner);
+        randomAdresseService.execute(toPersoner);
 
         assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse());
         assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse());

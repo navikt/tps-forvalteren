@@ -14,14 +14,14 @@ import org.junit.runners.Parameterized;
 
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.xjc.ctg.domain.s051.StatusFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.SvarFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.TpsAdresseData;
 
 @RunWith(Parameterized.class)
-public class SetRandomAdresseOnPersonsHandleStatusmeldingTest extends AbstractSetRandomAdresseOnPersonsTest {
+public class RandomAdresseServiceHandleStatusmeldingTest extends AbstractRandomAdresseServiceTest {
     
     @Parameterized.Parameter
     public String utfyllendeMelding;
@@ -32,7 +32,7 @@ public class SetRandomAdresseOnPersonsHandleStatusmeldingTest extends AbstractSe
     public StatusFraTPS statusFraTPS = new StatusFraTPS();
     
     private TpsServiceRutineS051Unmarshaller unmarshallerMock = mock(TpsServiceRutineS051Unmarshaller.class);
-    private SetRandomAdresseOnPersons setRandomAdresseOnPersons_AllMocks = new SetRandomAdresseOnPersons(unmarshallerMock, hentGyldigeAdresserServiceMock);
+    private RandomAdresseService randomAdresseService_AllMocks = new RandomAdresseService(unmarshallerMock, hentGyldigeAdresserServiceMock);
     
     @Parameterized.Parameters
     public static Collection testparameters() {
@@ -64,6 +64,6 @@ public class SetRandomAdresseOnPersonsHandleStatusmeldingTest extends AbstractSe
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(utfyllendeMelding);
         
-        setRandomAdresseOnPersons_AllMocks.execute(enPerson, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR, KOMMUNENR));
+        randomAdresseService_AllMocks.execute(enPerson, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR, KOMMUNENR));
     }
 }

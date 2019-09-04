@@ -38,8 +38,8 @@ import no.nav.tps.forvalteren.service.command.testdata.TestdataGruppeToSkdEndrin
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.SetGruppeIdOnPersons;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
@@ -96,7 +96,7 @@ public class TestdataControllerTest {
     private SetGruppeIdAndSavePersonBulkTx setGruppeIdAndSavePersonBulkTx;
 
     @Mock
-    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
+    private RandomAdresseService randomAdresseService;
 
     @InjectMocks
     private TestdataController testdataController;
