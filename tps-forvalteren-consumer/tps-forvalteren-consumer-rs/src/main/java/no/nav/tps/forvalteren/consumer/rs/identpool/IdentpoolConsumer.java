@@ -12,9 +12,11 @@ import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsReques
 
 public class IdentpoolConsumer {
 
+    private static final String REKVIRERT_AV = "rekvirertAv";
+    private static final String CONSUMER = "TPSF";
     private static final String IDENTPOOL_ROOT_URL = "/api/v1/identifikator";
     private static final String IDENT_WHITELIST_URL = IDENTPOOL_ROOT_URL + "/whitelist";
-    private static final String IDENT_RELEASE_URL = IDENTPOOL_ROOT_URL + "/frigjoer";
+    private static final String IDENT_RELEASE_URL = IDENTPOOL_ROOT_URL + "/frigjoer"+ '?' + REKVIRERT_AV + '=' + CONSUMER;
 
     @Value("${identpool.host.url}")
     private String identpoolHost;
