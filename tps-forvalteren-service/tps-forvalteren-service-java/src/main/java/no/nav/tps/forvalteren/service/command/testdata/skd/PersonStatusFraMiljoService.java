@@ -25,6 +25,7 @@ public class PersonStatusFraMiljoService {
     private static final String LAND = "landKode";
     private static final String BYDEL = "bydel";
     private static final String TKNR = "tknr";
+    private static final String TKNAVN = "tkNavn";
     private static final String FULL_BOSTED_ADR = "fullBostedsAdresse";
     private static final String BOSTED_ADR = "bostedsAdresse";
     private static final String BRUKER = "bruker";
@@ -50,6 +51,7 @@ public class PersonStatusFraMiljoService {
                         TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
                                 tpsFnrRequest.buildRequest(person, environment), true);
                         person.setTknr(getTknr(response));
+                        person.setTknavn(getTknavn(response));
                         person.setGtRegel(getGtRegel(response));
                         person.setGtVerdi(getGtVerdi(response));
                         person.setGtType(getGtType(response));
@@ -102,6 +104,11 @@ public class PersonStatusFraMiljoService {
             return ((Integer) fullbostedAdr.get(TKNR)).toString();
         }
         return null;
+    }
+
+    private String getTknavn(TpsServiceRoutineResponse response) {
+        Map fullbostedAdr = getFullBostedAdr(response);
+        return nonNull(fullbostedAdr) ? (String) fullbostedAdr.get(TKNAVN) : null;
     }
 
     private Map getGeoTilknytning(TpsServiceRoutineResponse response) {
