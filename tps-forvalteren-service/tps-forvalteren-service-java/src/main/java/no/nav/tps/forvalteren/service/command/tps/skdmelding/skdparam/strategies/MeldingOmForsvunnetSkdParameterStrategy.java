@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
+
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -42,10 +44,10 @@ public class MeldingOmForsvunnetSkdParameterStrategy implements SkdParametersStr
         skdMeldingTrans1.setFodselsdato(getDato(forsvunnetPerson));
         skdMeldingTrans1.setPersonnummer(getPersonnr(forsvunnetPerson));
 
-        skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(forsvunnetPerson.getRegdato()));
+        skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(forsvunnetPerson.getRegdato())));
         skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(forsvunnetPerson.getRegdato()));
 
-        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(forsvunnetPerson.getForsvunnetDato()));
+        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(forsvunnetPerson.getForsvunnetDato())));
     }
 
     private static void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
