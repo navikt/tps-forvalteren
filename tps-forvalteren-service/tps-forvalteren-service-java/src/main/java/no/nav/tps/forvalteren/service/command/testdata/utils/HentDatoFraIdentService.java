@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.utils;
 
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDateTime.of;
+import static java.util.Objects.isNull;
 
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,11 @@ public class HentDatoFraIdentService {
     }
 
     public static LocalDateTime enforceValidTpsDate(LocalDateTime date) {
-        return date.isBefore(TPS_MIN_REG_DATE) ? TPS_MIN_REG_DATE : date;
+        if (isNull(date)) {
+            return null;
+        } else {
+            return date.isBefore(TPS_MIN_REG_DATE) ? TPS_MIN_REG_DATE : date;
+        }
     }
 
     private int getDay(String ident) {
