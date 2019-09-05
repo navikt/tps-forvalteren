@@ -14,6 +14,7 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
+import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
@@ -30,6 +31,9 @@ public class PersonService {
 
     @Autowired
     private RelasjonRepository relasjonRepository;
+
+    @Autowired
+    private DoedsmeldingRepository doedsmeldingRepository;
 
     @Autowired
     private IdentpoolService identpoolService;
@@ -60,6 +64,7 @@ public class PersonService {
             adresseRepository.deleteByIdIn(adresser.get().stream().map(Adresse::getId).collect(Collectors.toList()));
         }
 
+        doedsmeldingRepository.deleteByPersonIdIn(personIds);
         personRepository.deleteByIdIn(personIds);
 
         identpoolService.recycleIdents(alleIdenter);
