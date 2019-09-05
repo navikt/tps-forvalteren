@@ -1,28 +1,38 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
+import no.nav.tps.forvalteren.domain.rs.RsAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
+@Slf4j
 @Service
 public class ExtractOpprettKriterier {
 
@@ -30,7 +40,13 @@ public class ExtractOpprettKriterier {
     private MapperFacade mapperFacade;
 
     @Autowired
-    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
+    private RandomAdresseService randomAdresseService;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Autowired
+    private DummyAdresseService dummyAdresseService;
 
     public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
 
@@ -91,37 +107,59 @@ public class ExtractOpprettKriterier {
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
+        List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size(), req.getAdresseNrInfo()) : new ArrayList();
+
         hovedPersoner.forEach(person -> mapperFacade.map(req, person));
 
         if (isNull(req.getBoadresse())) {
-            setRandomAdresseOnPersons.execute(hovedPersoner, req.getAdresseNrInfo());
+            for (int i = 0; i < hovedPersoner.size(); i++) {
+                mapBoadresse(hovedPersoner.get(i), null, !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(req.getBoadresse()));
+            }
         }
 
         if (nonNull(req.getRelasjoner().getPartner())) {
-            partnere.forEach(partner -> {
-                        req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
-                        mapperFacade.map(req.getRelasjoner().getPartner(), partner);
-                        mapBoadresse(partner, hovedPersoner.get(0).getBoadresse());
-                        ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partner);
-                        partner.setSivilstand(req.getSivilstand());
-                        partner.setInnvandretFraLand(nullcheckSetDefaultValue(partner.getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
-                    }
-            );
+            for (int i = 0; i < partnere.size(); i++) {
+                req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
+                mapperFacade.map(req.getRelasjoner().getPartner(), partnere.get(i));
+                mapBoadresse(partnere.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(partnere.get(i).getBoadresse()));
+                ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partnere.get(i));
+                partnere.get(i).setSivilstand(req.getSivilstand());
+                partnere.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
+            }
         }
         if (!req.getRelasjoner().getBarn().isEmpty()) {
-            IntStream.range(0, barn.size()).forEach(i -> {
+            for (int i = 0; i < barn.size(); i++) {
                 req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
-                mapBoadresse(barn.get(i), hovedPersoner.get(0).getBoadresse());
+                mapBoadresse(barn.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(barn.get(i).getBoadresse()));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
                 barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
-            });
+            }
         }
 
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
         return personer;
+    }
+
+    private List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
+
+        try {
+            return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
+        } catch (TpsfFunctionalException e) {
+            log.warn("Adresseoppslag med type {} og verdi {} feilet {}", adresseNrInfo.getNummertype(), adresseNrInfo.getNummer(), e.getMessage());
+        }
+        return emptyList();
+    }
+
+
+    private static LocalDateTime extractFlyttedato(Adresse adresse) {
+        return nonNull(adresse) ? adresse.getFlyttedato() : null;
+    }
+
+    private static LocalDateTime extractFlyttedato(RsAdresse adresse) {
+        return nonNull(adresse) ? adresse.getFlyttedato() : null;
     }
 
     private static Person ammendDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
@@ -134,12 +172,17 @@ public class ExtractOpprettKriterier {
         return person;
     }
 
-    private void mapBoadresse(Person targetPerson, Adresse hovedpersonAdresse) {
+    private void mapBoadresse(Person person, RsAdresse rsAdresse, Adresse adresse, LocalDateTime flyttedato) {
 
-        Person person = hovedpersonAdresse.getPerson();
-        hovedpersonAdresse.setPerson(null);
-        targetPerson.setBoadresse(mapperFacade.map(hovedpersonAdresse, Adresse.class));
-        hovedpersonAdresse.setPerson(person);
-        targetPerson.getBoadresse().setPerson(targetPerson);
+        if (!DNR.name().equals(person.getIdenttype()) && !SPSF.name().equals(person.getSpesreg()) && !nonNull(person.getUtvandretTilLand())) {
+            if (nonNull(rsAdresse) || nonNull(adresse)) {
+                person.setBoadresse(mapperFacade.map(nonNull(rsAdresse) ? rsAdresse : adresse, Adresse.class));
+                person.getBoadresse().setPerson(person);
+                person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(flyttedato,
+                        hentDatoFraIdentService.extract(person.getIdent())));
+            } else {
+                dummyAdresseService.createDummyBoAdresse(person);
+            }
+        }
     }
 }

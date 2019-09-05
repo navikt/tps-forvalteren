@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 
@@ -44,7 +44,7 @@ public class OpprettPersonMedEksisterendeForeldreServiceTest {
     private PersonNameService personNameService;
 
     @Mock
-    private SetRandomAdresseOnPersons randomAdresseOnPerson;
+    private RandomAdresseService randomAdresseOnPerson;
 
     @Mock
     private HentIdenttypeFraIdentService hentIdenttypeFraIdentService;

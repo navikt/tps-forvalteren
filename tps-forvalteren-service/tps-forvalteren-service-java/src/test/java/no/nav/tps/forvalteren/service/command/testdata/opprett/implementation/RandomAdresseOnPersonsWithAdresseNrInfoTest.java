@@ -11,7 +11,7 @@ import org.junit.runners.Parameterized;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 
 @RunWith(Parameterized.class)
-public class SetRandomAdresseOnPersonsWithAdresseNrInfoTest extends AbstractSetRandomAdresseOnPersonsTest {
+public class RandomAdresseOnPersonsWithAdresseNrInfoTest extends AbstractRandomAdresseServiceTest {
 
     @Parameterized.Parameter
     public AdresseNrInfo adresseNrInfo;
@@ -33,7 +33,7 @@ public class SetRandomAdresseOnPersonsWithAdresseNrInfoTest extends AbstractSetR
      */
     @Test
     public void shouldSetCorrectAdresseNr() {
-        setRandomAdresseOnPersons.execute(enPerson, adresseNrInfo);
+        randomAdresseService.execute(enPerson, adresseNrInfo);
         verify(hentGyldigeAdresserServiceMock).hentTilfeldigAdresse(enPerson.size(), expectedKommunenummer, expectedPostnummer);
     }
 }

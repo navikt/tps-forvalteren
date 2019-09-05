@@ -23,7 +23,8 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExtractOpprettKriterierTest {
@@ -38,7 +39,10 @@ public class ExtractOpprettKriterierTest {
     private MapperFacade mapperFacade;
 
     @Mock
-    private SetRandomAdresseOnPersons setRandomAdresseOnPersons;
+    private RandomAdresseService randomAdresseService;
+
+    @Mock
+    private DummyAdresseService dummyAdresseService;
 
     @InjectMocks
     private ExtractOpprettKriterier extractOpprettKriterier;

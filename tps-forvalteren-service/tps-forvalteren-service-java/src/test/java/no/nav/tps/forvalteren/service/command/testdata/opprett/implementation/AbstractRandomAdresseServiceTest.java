@@ -18,12 +18,12 @@ import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 
-public abstract class AbstractSetRandomAdresseOnPersonsTest {
+public abstract class AbstractRandomAdresseServiceTest {
     
     protected static final String GATEADRESSE = "HAUGASKARSVEGEN";
     protected static final Integer HUSNR_MIN = 0001;
@@ -41,7 +41,7 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
     List<Person> toPersoner;
     TpsServiceRoutineResponse tpsServiceRoutineResponse;
     HentGyldigeAdresserService hentGyldigeAdresserServiceMock = mock(HentGyldigeAdresserService.class);
-    SetRandomAdresseOnPersons setRandomAdresseOnPersons = new SetRandomAdresseOnPersons(unmarshaller, hentGyldigeAdresserServiceMock);
+    RandomAdresseService randomAdresseService = new RandomAdresseService(unmarshaller, hentGyldigeAdresserServiceMock);
     
     TpsServiceRoutineResponse createServiceRutineTpsResponse(URL tpsResponsUrl) throws IOException {
         TpsServiceRoutineResponse tpsServiceRoutineResponse = new TpsServiceRoutineResponse();
@@ -55,7 +55,7 @@ public abstract class AbstractSetRandomAdresseOnPersonsTest {
         toPersoner = Arrays.asList(aMalePerson().build(), aMalePerson().build());
         tpsServiceRoutineResponse = createServiceRutineTpsResponse(tpsResponsUrl);
         when(hentGyldigeAdresserServiceMock.hentTilfeldigAdresse(eq(1), any(), any())).thenReturn(tpsServiceRoutineResponse);
-        setRandomAdresseOnPersons.setHentDatoFraIdentService(mock(HentDatoFraIdentService.class));
+        randomAdresseService.setHentDatoFraIdentService(mock(HentDatoFraIdentService.class));
     }
     
 }

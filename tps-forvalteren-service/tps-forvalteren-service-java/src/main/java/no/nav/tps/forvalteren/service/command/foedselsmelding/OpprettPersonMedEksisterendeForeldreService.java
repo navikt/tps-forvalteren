@@ -20,7 +20,7 @@ import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.SetRandomAdresseOnPersons;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataIdenterFetcher;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.TestdataRequest;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
@@ -41,7 +41,7 @@ public class OpprettPersonMedEksisterendeForeldreService {
     private PersonNameService personNameService;
 
     @Autowired
-    private SetRandomAdresseOnPersons randomAdresseOnPerson;
+    private RandomAdresseService randomAdresseOnPerson;
 
     @Autowired
     private HentIdenttypeFraIdentService hentIdenttypeFraIdentService;
