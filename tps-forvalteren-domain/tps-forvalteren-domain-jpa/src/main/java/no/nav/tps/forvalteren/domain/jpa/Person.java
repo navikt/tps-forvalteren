@@ -146,6 +146,9 @@ public class Person extends ChangeStamp {
     @Column(name = "TKNR")
     private String tknr;
 
+    @Column(name = "TKNAVN")
+    private String tknavn;
+
     @Column(name = "GT_TYPE")
     private String gtType;
 
