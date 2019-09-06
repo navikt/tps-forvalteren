@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Service
-public class LandkodeEncoder {
+public class LandkodeEncoder { //NOSONAR
 
     private static final LocalDateTime START_OF_ERA = of(1800, 1, 1, 0, 0);
     private static final LocalDateTime FORESEEABLE_FUTURE = of(9999, 12, 31, 0, 0);
