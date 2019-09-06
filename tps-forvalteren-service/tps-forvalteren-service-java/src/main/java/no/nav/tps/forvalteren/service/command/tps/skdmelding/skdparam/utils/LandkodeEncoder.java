@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Service
-public class LandkodeEncoder { //NOSONAR
+public class LandkodeEncoder {
 
     private static final LocalDateTime START_OF_ERA = of(1800, 1, 1, 0, 0);
     private static final LocalDateTime FORESEEABLE_FUTURE = of(9999, 12, 31, 0, 0);
@@ -25,7 +25,7 @@ public class LandkodeEncoder { //NOSONAR
 
     private static final LandDetails DEFAULT = new LandDetails("990", START_OF_ERA, FORESEEABLE_FUTURE);
 
-    static {
+    static { //NOSONAR
         landkoderMap.put("???", DEFAULT);
         landkoderMap.put("ABW", new LandDetails("657", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("AFG", new LandDetails("404", START_OF_ERA, FORESEEABLE_FUTURE));
