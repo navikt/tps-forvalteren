@@ -54,7 +54,7 @@ public class IdentpoolService {
         return new HashSet(asList(availIdents.hasBody() ? availIdents.getBody() : new String[] {}));
     }
 
-    public Set<String> getRequestedIdents(List<String> idents) {
+    public Set<String> getSpecificIdents(List<String> idents) {
 
         ResponseEntity<String[]> availIdents = identpoolConsumer.requestSpecificIdents(idents);
 
