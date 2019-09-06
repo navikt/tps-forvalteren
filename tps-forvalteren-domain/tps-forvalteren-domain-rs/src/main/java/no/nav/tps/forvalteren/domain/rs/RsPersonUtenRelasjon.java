@@ -117,4 +117,6 @@ public class RsPersonUtenRelasjon {
     private Boolean utenFastBopel;
 
     private String personStatus;
+
+    private String forsvunnetDato;
 }
