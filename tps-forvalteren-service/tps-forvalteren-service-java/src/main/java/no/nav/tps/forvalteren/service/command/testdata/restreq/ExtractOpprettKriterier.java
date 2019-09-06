@@ -115,8 +115,8 @@ public class ExtractOpprettKriterier {
         List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size(), req.getAdresseNrInfo()) : new ArrayList();
 
         hovedPersoner.forEach(person -> {
-            if (isBlank(person.getInnvandretFraLand())) {
-                person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+            if (isBlank(req.getInnvandretFraLand())) {
+                req.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
             }
             mapperFacade.map(req, person);
         });
