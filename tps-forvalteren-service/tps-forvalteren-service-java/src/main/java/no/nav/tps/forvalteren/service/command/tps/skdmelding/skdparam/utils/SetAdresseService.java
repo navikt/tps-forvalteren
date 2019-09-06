@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.util.regex.Matcher;
@@ -57,10 +58,10 @@ public class SetAdresseService {
             skdMeldingTrans1.setKommunenummer(boadresse.getKommunenr());
             skdMeldingTrans1.setPostnummer(boadresse.getPostnr());
 
-            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(boadresse.getFlyttedato(),
-                    hentDatoFraIdentService.extract(person.getIdent()))));
+            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(
+                    enforceValidTpsDate(nullcheckSetDefaultValue(boadresse.getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())))));
         } else {
-            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(hentDatoFraIdentService.extract(person.getIdent())));
+            skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(hentDatoFraIdentService.extract(person.getIdent()))));
         }
 
         /* Postadresse */

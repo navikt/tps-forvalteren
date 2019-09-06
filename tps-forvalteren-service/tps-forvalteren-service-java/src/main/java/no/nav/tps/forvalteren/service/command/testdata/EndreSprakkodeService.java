@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode.ENDRE_SPRAKKODE;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class EndreSprakkodeService {
                         .serviceRutinenavn(ENDRE_SPRAKKODE)
                         .offentligIdent(person.getIdent())
                         .sprakKode(person.getSprakKode())
-                        .datoSprak(ConvertDateToString.yyyysMMsdd(nullcheckSetDefaultValue(person.getDatoSprak(), now())))
+                        .datoSprak(ConvertDateToString.yyyysMMsdd(enforceValidTpsDate(nullcheckSetDefaultValue(person.getDatoSprak(), now()))))
                         .build(), environment))
             );
         }

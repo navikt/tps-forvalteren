@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +47,14 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setMellomnavn(person.getMellomnavn());
         skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
         skdMeldingTrans1.setStatsborgerskap(landkodeEncoder.encode(person.getStatsborgerskap()));
-        skdMeldingTrans1.setRegdatoStatsb(ConvertDateToString.yyyyMMdd(person.getStatsborgerskapRegdato()));
+        skdMeldingTrans1.setRegdatoStatsb(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(person.getStatsborgerskapRegdato())));
         skdMeldingTrans1.setFamilienummer(person.getIdent());
 
         skdMeldingTrans1.setSivilstand(Sivilstand.lookup(person.getSivilstand()).getRelasjonTypeKode());
         skdMeldingTrans1.setInnvandretFraLand(landkodeEncoder.encode(
                 nullcheckSetDefaultValue(person.getInnvandretFraLand(), "???")));
 
-        String yyyyMMdd = ConvertDateToString.yyyyMMdd(person.getRegdato());
+        String yyyyMMdd = ConvertDateToString.yyyyMMdd(enforceValidTpsDate(person.getRegdato()));
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
         skdMeldingTrans1.setMaskintid(hhMMss);
@@ -63,8 +64,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
 
         skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
         skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(
-                nullcheckSetDefaultValue(person.getInnvandretFraLandFlyttedato(),
-                        hentDatoFraIdentService.extract(person.getIdent()))));
+                enforceValidTpsDate(nullcheckSetDefaultValue(person.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())))));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
         setAdresseService.execute(skdMeldingTrans1, person);
