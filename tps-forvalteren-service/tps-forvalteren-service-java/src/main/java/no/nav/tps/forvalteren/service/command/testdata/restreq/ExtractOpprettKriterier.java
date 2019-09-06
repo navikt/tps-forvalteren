@@ -9,6 +9,7 @@ import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Slf4j
 @Service
@@ -44,6 +46,9 @@ public class ExtractOpprettKriterier {
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
 
     @Autowired
     private DummyAdresseService dummyAdresseService;
@@ -109,7 +114,12 @@ public class ExtractOpprettKriterier {
 
         List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size(), req.getAdresseNrInfo()) : new ArrayList();
 
-        hovedPersoner.forEach(person -> mapperFacade.map(req, person));
+        hovedPersoner.forEach(person -> {
+            if (isBlank(person.getInnvandretFraLand())) {
+                person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+            }
+            mapperFacade.map(req, person);
+        });
 
         if (isNull(req.getBoadresse())) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
