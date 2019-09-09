@@ -9,6 +9,7 @@ import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Slf4j
 @Service
@@ -44,6 +46,9 @@ public class ExtractOpprettKriterier {
 
     @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
 
     @Autowired
     private DummyAdresseService dummyAdresseService;
@@ -109,7 +114,12 @@ public class ExtractOpprettKriterier {
 
         List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size(), req.getAdresseNrInfo()) : new ArrayList();
 
-        hovedPersoner.forEach(person -> mapperFacade.map(req, person));
+        hovedPersoner.forEach(person -> {
+            if (isBlank(req.getInnvandretFraLand())) {
+                req.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+            }
+            mapperFacade.map(req, person);
+        });
 
         if (isNull(req.getBoadresse())) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
@@ -117,6 +127,15 @@ public class ExtractOpprettKriterier {
             }
         }
 
+        mapPartner(req, hovedPersoner, partnere, adresser);
+        mapBarn(req, hovedPersoner, barn, adresser);
+
+        List<Person> personer = new ArrayList<>();
+        Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
+        return personer;
+    }
+
+    private void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
         if (nonNull(req.getRelasjoner().getPartner())) {
             for (int i = 0; i < partnere.size(); i++) {
                 req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
@@ -127,6 +146,9 @@ public class ExtractOpprettKriterier {
                 partnere.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
             }
         }
+    }
+
+    private void mapBarn(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> barn, List<Adresse> adresser) {
         if (!req.getRelasjoner().getBarn().isEmpty()) {
             for (int i = 0; i < barn.size(); i++) {
                 req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
@@ -134,13 +156,11 @@ public class ExtractOpprettKriterier {
                 mapBoadresse(barn.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(barn.get(i).getBoadresse()));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
-                barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
+                if(DNR.name().equals(barn.get(i).getIdenttype())) {
+                    barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
+                }
             }
         }
-
-        List<Person> personer = new ArrayList<>();
-        Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
-        return personer;
     }
 
     private List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {

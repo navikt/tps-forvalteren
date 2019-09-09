@@ -33,8 +33,8 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyLanguageService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Component
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
@@ -48,7 +48,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private DummyAdresseService dummyAdresseService;
 
     @Autowired
-    private LandkodeEncoder landkodeEncoder;
+    private DummyLanguageService dummyLanguageService;
 
     @Override
     public void register(MapperFactory factory) {
@@ -57,11 +57,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
                             @Override public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
 
-                                mapBasicProperties(kriteriumRequest, person);
                                 person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(kriteriumRequest.getSikkerhetsTiltakDatoFom(), now()));
-                                if (isBlank(person.getInnvandretFraLand())) {
-                                    person.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
-                                }
                             }
                         })
                 .exclude("spesreg")
@@ -116,11 +112,17 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
-        person.setStatsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), "NOR"));
+        if (isBlank(person.getStatsborgerskap())) {
+            if (DNR.name().equals(person.getIdenttype())) {
+                person.setStatsborgerskap(person.getInnvandretFraLand());
+            }else{
+                person.setStatsborgerskap("NOR");
+            }
+        }
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
                 hentDatoFraIdentService.extract(person.getIdent())));
 
-        person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), "NB"));
+        person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), DNR.name().equals(person.getIdenttype()) ? dummyLanguageService.getRandomLanguage() : "NB"));
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                 hentDatoFraIdentService.extract(person.getIdent())));
 

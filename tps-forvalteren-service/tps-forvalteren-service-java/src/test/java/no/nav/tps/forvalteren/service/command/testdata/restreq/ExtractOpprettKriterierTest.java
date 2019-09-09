@@ -25,6 +25,7 @@ import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExtractOpprettKriterierTest {
@@ -43,6 +44,9 @@ public class ExtractOpprettKriterierTest {
 
     @Mock
     private DummyAdresseService dummyAdresseService;
+
+    @Mock
+    private LandkodeEncoder landkodeEncoder;
 
     @InjectMocks
     private ExtractOpprettKriterier extractOpprettKriterier;
