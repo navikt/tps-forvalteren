@@ -13,7 +13,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetsTiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphoerEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphørSikkerhetsTiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersonerTestdata;
@@ -41,6 +41,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resol
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmDubletter;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmForsvunnetAarsakskode82;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.NavneEndringsmeldingAarsakskode06;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
@@ -194,7 +195,7 @@ public class CommandConfig {
 
     @Bean
     ServiceRoutineResolver opphosEgenAnsatt() {
-        return new OpphørEgenAnsatt();
+        return new OpphoerEgenAnsatt();
     }
 
     @Bean
@@ -240,6 +241,11 @@ public class CommandConfig {
     @Bean
     SkdMeldingResolver meldingOmForsvunnet() {
         return new MeldingOmForsvunnetAarsakskode82();
+    }
+
+    @Bean
+    SkdMeldingResolver meldingOmDubletter() {
+        return new MeldingOmDubletter();
     }
 
     @Bean

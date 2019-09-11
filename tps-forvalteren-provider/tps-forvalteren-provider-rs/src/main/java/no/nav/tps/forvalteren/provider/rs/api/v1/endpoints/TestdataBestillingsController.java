@@ -30,6 +30,8 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
+import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -41,6 +43,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonAliasService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
@@ -80,6 +83,9 @@ public class TestdataBestillingsController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private PersonAliasService personAliasService;
 
     @Transactional
     @LogExceptions
@@ -153,5 +159,14 @@ public class TestdataBestillingsController {
     @ApiOperation(value = "slettPersoner", notes = "kommaseparert liste med identer")
     public void slettPersoner(@RequestParam String identer) {
         personService.slettPersoner(newArrayList(identer.split(",")));
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "opprettaliaser") })
+    @RequestMapping(value = "/aliaser", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public RsAliasResponse opprettAliaser(@RequestBody RsAliasRequest request) {
+
+        return personAliasService.prepareAliases(request);
     }
 }
