@@ -123,7 +123,7 @@ public class ExtractOpprettKriterier {
 
         if (isNull(req.getBoadresse())) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
-                mapBoadresse(hovedPersoner.get(i), null, !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(req.getBoadresse()));
+                mapBoadresse(hovedPersoner.get(i), null, !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(req.getBoadresse()));
             }
         }
 
@@ -140,7 +140,7 @@ public class ExtractOpprettKriterier {
             for (int i = 0; i < partnere.size(); i++) {
                 req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getPartner(), partnere.get(i));
-                mapBoadresse(partnere.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(partnere.get(i).getBoadresse()));
+                mapBoadresse(partnere.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(partnere.get(i).getBoadresse()));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partnere.get(i));
                 partnere.get(i).setSivilstand(req.getSivilstand());
                 partnere.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
@@ -153,10 +153,10 @@ public class ExtractOpprettKriterier {
             for (int i = 0; i < barn.size(); i++) {
                 req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
-                mapBoadresse(barn.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i) : null, extractFlyttedato(barn.get(i).getBoadresse()));
+                mapBoadresse(barn.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(barn.get(i).getBoadresse()));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
-                if(DNR.name().equals(barn.get(i).getIdenttype())) {
+                if (DNR.name().equals(barn.get(i).getIdenttype())) {
                     barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
                 }
             }
@@ -172,7 +172,6 @@ public class ExtractOpprettKriterier {
         }
         return emptyList();
     }
-
 
     private static LocalDateTime extractFlyttedato(Adresse adresse) {
         return nonNull(adresse) ? adresse.getFlyttedato() : null;
