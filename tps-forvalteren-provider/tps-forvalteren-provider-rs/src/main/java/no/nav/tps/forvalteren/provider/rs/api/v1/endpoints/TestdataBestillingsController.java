@@ -43,7 +43,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
-import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonAliasService;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonIdenthistorikkService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
@@ -85,7 +85,7 @@ public class TestdataBestillingsController {
     private PersonService personService;
 
     @Autowired
-    private PersonAliasService personAliasService;
+    private PersonIdenthistorikkService personIdenthistorikkService;
 
     @Transactional
     @LogExceptions
@@ -156,9 +156,9 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "slettpersoner") })
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "slettPersoner", notes = "kommaseparert liste med identer")
+    @ApiOperation(value = "deletePersons", notes = "kommaseparert liste med identer")
     public void slettPersoner(@RequestParam String identer) {
-        personService.slettPersoner(newArrayList(identer.split(",")));
+        personService.deletePersons(newArrayList(identer.split(",")));
     }
 
     @LogExceptions
@@ -167,6 +167,6 @@ public class TestdataBestillingsController {
     @ResponseStatus(HttpStatus.OK)
     public RsAliasResponse opprettAliaser(@RequestBody RsAliasRequest request) {
 
-        return personAliasService.prepareAliases(request);
+        return personIdenthistorikkService.prepareAliases(request);
     }
 }

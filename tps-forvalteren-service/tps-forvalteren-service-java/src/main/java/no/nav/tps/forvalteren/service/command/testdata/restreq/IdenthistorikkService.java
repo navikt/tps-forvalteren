@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Collections.singletonList;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.transaction.Transactional;
@@ -16,12 +18,17 @@ public class IdenthistorikkService {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private PersonService personService;
+
     @Transactional
     public Person save(String ident, List<Person> duplicatedPersons) {
 
         Person mainPerson = personRepository.findByIdent(ident);
 
-        AtomicInteger order = new AtomicInteger(mainPerson.getIdentHistorikk().size());
+        personService.deleteIdenthistorikk(singletonList(mainPerson));
+
+        AtomicInteger order = new AtomicInteger(0);
         duplicatedPersons.forEach(aliasPerson -> {
             mainPerson.getIdentHistorikk().add(IdentHistorikk.builder()
                     .person(mainPerson)
@@ -29,8 +36,8 @@ public class IdenthistorikkService {
                     .historicIdentOrder(order.addAndGet(1))
                     .build());
             aliasPerson.getIdentHistorikk().add(IdentHistorikk.builder()
-                    .person(aliasPerson.toBuilder().build())
-                    .aliasPerson(mainPerson.toBuilder().build())
+                    .person(aliasPerson)
+                    .aliasPerson(mainPerson)
                     .historicIdentOrder(1)
                     .build());
         });

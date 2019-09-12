@@ -143,8 +143,8 @@ public class SkdMeldingSender {
 
     public Collection sendMeldingerOmDubletter(List<Person> personerIGruppen, Set<String> environments) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> meldingerOmForsvunnet = createMeldingerOmDubletter.filterDubletter(personerIGruppen, true);
-        meldingerOmForsvunnet.forEach(skdMelding ->
+        List<SkdMeldingTrans1> meldingerOmDubletter = createMeldingerOmDubletter.filterDubletter(personerIGruppen, true);
+        meldingerOmDubletter.forEach(skdMelding ->
                 listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(MELDING_OM_DUBLETTER, skdMelding, environments))
         );
         return listTpsResponsene;

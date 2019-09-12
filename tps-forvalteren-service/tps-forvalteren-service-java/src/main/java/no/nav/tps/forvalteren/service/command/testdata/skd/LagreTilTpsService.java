@@ -79,6 +79,7 @@ public class LagreTilTpsService {
             String environment = it.next();
             try {
                 List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, singleton(environment));
+                personerSomIkkeEksitererITpsMiljoe.forEach(person -> uppercaseDataInPerson.execute(person));
                 List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
                 List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 

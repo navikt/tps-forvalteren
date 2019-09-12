@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,7 +17,7 @@ public interface AdresseRepository extends CrudRepository<Adresse, Long> {
     @Modifying
     void deleteAll();
 
-    Optional<List<Adresse>> findAdresseByPersonIdIn(List<Long> personIds);
+    Optional<List<Adresse>> findAdresseByPersonIdIn(Collection<Long> personIds);
 
     @Modifying
     int deleteByIdIn(List<Long> idents);

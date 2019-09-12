@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.Repository;
@@ -11,13 +12,13 @@ public interface PersonRepository extends Repository<Person, Long> {
     List<Person> findAllByOrderByIdAsc();
 
     @Modifying
-    int deleteByIdIn(List<Long> ids);
+    int deleteByIdIn(Collection<Long> ids);
 
     List<Person> save(Iterable<Person> personer);
 
     Person save(Person person);
 
-    List<Person> findByIdentIn(List<String> identListe);
+    List<Person> findByIdentIn(Collection<String> identListe);
 
     List<Person> findByIdIn(List<Long> ids);
 

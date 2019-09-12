@@ -1,8 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.lang.Boolean.TRUE;
+import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.util.Collections.singletonList;
+import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +17,14 @@ import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 
 @Service
-public class PersonAliasService {
+public class PersonIdenthistorikkService {
 
     @Autowired
     private PersonRepository personRepository;
@@ -50,6 +53,10 @@ public class PersonAliasService {
     public RsAliasResponse prepareAliases(RsAliasRequest request) {
 
         Person mainPerson = personRepository.findByIdent(request.getIdent());
+        if (isNull(mainPerson)) {
+            throw new NotFoundException(format("Person med ident '%s' ble ikke funnet", request.getIdent()));
+        }
+
         RsAliasResponse response = RsAliasResponse.builder()
                 .hovedperson(RsAliasResponse.Persondata.builder()
                         .ident(mainPerson.getIdent())
@@ -98,6 +105,7 @@ public class PersonAliasService {
         request.setFoedtFoer(hentDatoFraIdentService.extract(ident));
         request.setFoedtEtter(hentDatoFraIdentService.extract(ident));
         request.setKjonn(hentKjoennFraIdentService.execute(ident));
+        request.setHarMellomnavn(true);
         request.setRegdato(now());
 
         return request;

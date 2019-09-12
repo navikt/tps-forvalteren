@@ -28,11 +28,14 @@ public class MeldingOmDubletterSkdParameterStrategy implements SkdParametersStra
         return SkdMeldingTrans1.builder()
                 .aarsakskode(FNR.name().equals(duplicatePerson.getIdenttype()) ? AARSAKSKODE_FOR_DUBLETT_FNR : AARSAKSKODE_FOR_DUBLETT_DNR)
                 .tildelingskode(hentTildelingskode())
-                .fodselsdato(getDato(duplicatePerson.getIdentHistorikk().get(0).getPerson()))
-                .personnummer(getPersonnr(duplicatePerson.getIdentHistorikk().get(0).getPerson()))
+                .fodselsdato(getDato(duplicatePerson.getIdentHistorikk().get(0).getAliasPerson()))
+                .personnummer(getPersonnr(duplicatePerson.getIdentHistorikk().get(0).getAliasPerson()))
                 .maskindato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(duplicatePerson.getRegdato())))
                 .maskintid(ConvertDateToString.hhMMss(duplicatePerson.getRegdato()))
                 .tidligereFnrDnr(duplicatePerson.getIdent())
+                .regDato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(duplicatePerson.getRegdato())))
+                .transtype("1")
+                .statuskode("4")
                 .build();
     }
 

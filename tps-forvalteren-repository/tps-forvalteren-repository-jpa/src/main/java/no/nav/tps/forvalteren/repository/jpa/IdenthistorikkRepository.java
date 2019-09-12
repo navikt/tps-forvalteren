@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import java.util.List;
+import java.util.Collection;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.Repository;
 
 import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
@@ -12,7 +13,9 @@ public interface IdenthistorikkRepository extends Repository<IdentHistorikk, Lon
 
     Iterable<Doedsmelding> save(Iterable<Doedsmelding> doedsmeldinger);
 
-    void deleteByPersonIn(List<Long> personIds);
+    @Modifying
+    int deleteByIdIn(Collection<Long> ids);
 
+    @Modifying
     void deleteAll();
 }

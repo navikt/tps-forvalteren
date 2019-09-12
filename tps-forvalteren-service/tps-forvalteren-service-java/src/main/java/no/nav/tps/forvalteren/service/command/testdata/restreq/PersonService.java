@@ -1,10 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Objects.isNull;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +42,16 @@ public class PersonService {
     private IdentpoolService identpoolService;
 
     @Transactional
-    public void slettPersoner(List<String> identer) {
+    public void deletePersons(List<String> identer) {
 
-        List<String> alleIdenter = new ArrayList(identer);
+        Set<String> alleIdenter = new HashSet<>(identer);
 
-        List<Long> personIds = personRepository.findByIdentIn(identer).stream().map(Person::getId).collect(Collectors.toList());
-        if (isNull(personIds) || personIds.isEmpty()) {
+        List<Person> persons = personRepository.findByIdentIn(identer);
+
+        Set<Long> orignalPersonId = persons.stream().map(Person::getId).collect(Collectors.toSet());
+        Set<Long> personIds = new HashSet(orignalPersonId);
+
+        if (personIds.isEmpty()) {
             throw new NotFoundException("Ingen personer funnet");
         }
 
@@ -68,10 +71,38 @@ public class PersonService {
             adresseRepository.deleteByIdIn(adresser.get().stream().map(Adresse::getId).collect(Collectors.toList()));
         }
 
- //       identhistorikkRepository.deleteByPersonIn(personIds);
+        deleteIdenthistorikk(persons);
+
         doedsmeldingRepository.deleteByPersonIdIn(personIds);
+
         personRepository.deleteByIdIn(personIds);
 
         identpoolService.recycleIdents(alleIdenter);
+    }
+
+    @Transactional
+    public void deleteIdenthistorikk(List<Person> persons) {
+
+        Set<Long> identhistorikkIds = new HashSet();
+        Set<Long> personIds = new HashSet();
+        Set<String> idents = new HashSet();
+
+        persons.forEach(person -> {
+            person.getIdentHistorikk().forEach(identHistorikk -> {
+                identhistorikkIds.add(identHistorikk.getId());
+                identHistorikk.getAliasPerson().getIdentHistorikk().forEach(identHistorikk2 ->
+                        identhistorikkIds.add(identHistorikk2.getId()));
+                personIds.add(identHistorikk.getAliasPerson().getId());
+                idents.add(identHistorikk.getAliasPerson().getIdent());
+                identHistorikk.getAliasPerson().getIdentHistorikk().clear();
+            });
+            person.getIdentHistorikk().clear();
+        });
+
+        if (!identhistorikkIds.isEmpty()) {
+            identhistorikkRepository.deleteByIdIn(identhistorikkIds);
+            personRepository.deleteByIdIn(personIds);
+            identpoolService.recycleIdents(idents);
+        }
     }
 }

@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.consumer.rs.identpool;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
@@ -46,7 +47,7 @@ public class IdentpoolConsumer {
                 .body(idents.toArray()), String[].class);
     }
 
-    public ResponseEntity<String[]> recycleIdents(List<String> request) {
+    public ResponseEntity<String[]> recycleIdents(Set<String> request) {
 
         return restTemplate.exchange(RequestEntity.post(
                 URI.create(identpoolHost + IDENT_RELEASE_URL))
