@@ -22,6 +22,13 @@ public class RsAliasResponse {
     private Persondata hovedperson;
     private List<Persondata> aliaser;
 
+    public List<Persondata> getAliaser() {
+        if (isNull(aliaser)) {
+            aliaser = new ArrayList();
+        }
+        return aliaser;
+    }
+
     @Getter
     @Setter
     @Builder
@@ -44,12 +51,5 @@ public class RsAliasResponse {
         private String fornavn;
         private String mellomnavn;
         private String etternavn;
-    }
-
-    public List<Persondata> getAliaser() {
-        if (isNull(aliaser)) {
-            aliaser = new ArrayList();
-        }
-        return aliaser;
     }
 }

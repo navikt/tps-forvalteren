@@ -24,16 +24,6 @@ public class RsAliasRequest {
     private String ident;
     private List<AliasSpesification> aliaser;
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class AliasSpesification {
-
-        private Boolean nyIdent;
-        private IdentType identtype;
-    }
-
     public Set<String> getEnvironments() {
         if (isNull(environments)) {
             environments = new HashSet();
@@ -46,5 +36,15 @@ public class RsAliasRequest {
             aliaser = new ArrayList();
         }
         return aliaser;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AliasSpesification {
+
+        private Boolean nyIdent;
+        private IdentType identtype;
     }
 }
