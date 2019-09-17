@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -170,6 +171,9 @@ public class Person extends ChangeStamp {
 
     @Column(name = "FORSVUNNET_DATO")
     private LocalDateTime forsvunnetDato;
+
+    @Transient
+    private String replacedByIdent;
 
     public List<Postadresse> getPostadresse() {
         if (isNull(postadresse)) {

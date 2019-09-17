@@ -28,8 +28,8 @@ public class MeldingOmDubletterSkdParameterStrategy implements SkdParametersStra
         return SkdMeldingTrans1.builder()
                 .aarsakskode(FNR.name().equals(duplicatePerson.getIdenttype()) ? AARSAKSKODE_FOR_DUBLETT_FNR : AARSAKSKODE_FOR_DUBLETT_DNR)
                 .tildelingskode(hentTildelingskode())
-                .fodselsdato(getDato(duplicatePerson.getIdentHistorikk().get(0).getAliasPerson()))
-                .personnummer(getPersonnr(duplicatePerson.getIdentHistorikk().get(0).getAliasPerson()))
+                .fodselsdato(getDato(duplicatePerson.getReplacedByIdent()))
+                .personnummer(getPersonnr(duplicatePerson.getReplacedByIdent()))
                 .maskindato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(duplicatePerson.getRegdato())))
                 .maskintid(ConvertDateToString.hhMMss(duplicatePerson.getRegdato()))
                 .tidligereFnrDnr(duplicatePerson.getIdent())
@@ -49,11 +49,11 @@ public class MeldingOmDubletterSkdParameterStrategy implements SkdParametersStra
         return creator instanceof MeldingOmDubletterSkdParametere;
     }
 
-    private static String getPersonnr(Person person) {
-        return person.getIdent().substring(6, 11);
+    private static String getPersonnr(String ident) {
+        return ident.substring(6, 11);
     }
 
-    private static String getDato(Person person) {
-        return person.getIdent().substring(0, 6);
+    private static String getDato(String ident) {
+        return ident.substring(0, 6);
     }
 }
