@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -44,9 +45,9 @@ public class ExcelService {
         //Begrenser maks antall identer i SQL spørring
         List<List<String>> identLists = partition(identer, 1000);
         List<Person> resultat = new ArrayList<>(identer.size());
-        for (List<String> subset : identLists) {
-            resultat.addAll(personRepository.findByIdentIn(subset));
-        }
+
+        identLists.forEach(subset ->
+            resultat.addAll(personRepository.findByIdentIn(subset)));
 
         try {
             File excelFile = File.createTempFile("Excel-", ".csv");
@@ -95,7 +96,7 @@ public class ExcelService {
                 .append(isEgenAnsatt(person)).append(SEP)
                 .append(person.getEtternavn()).append(SEP)
                 .append(person.getFornavn()).append(SEP)
-                .append(getBoaresse(person)).append(SEP)
+                .append(getBoadresse(person)).append(SEP)
                 .append(getPostadresse(person)).append(SEP)
                 .append(person.getInnvandretFraLand())
                 .append(SEP_STRING_START)
@@ -132,15 +133,37 @@ public class ExcelService {
         return TRUE.equals(nonNull(person.getEgenAnsattDatoFom())) && TRUE.equals(isNull(person.getEgenAnsattDatoTom()));
     }
 
-    private static String getBoaresse(Person person) {
+    private static String getBoadresse(Person person) {
+
+        return person.getBoadresse() instanceof Gateadresse ?
+                getGateadresse(person) : getMatrikkeladresse(person);
+    }
+
+    private static String getGateadresse(Person person) {
+        return new StringBuilder()
+                .append(((Gateadresse) person.getBoadresse()).getAdresse())
+                .append(SEP)
+                .append(((Gateadresse) person.getBoadresse()).getHusnummer())
+                .append(SEP_STRING_START)
+                .append(((Gateadresse) person.getBoadresse()).getGatekode())
+                .append(SEP_STRING_DUAL)
+                .append(person.getBoadresse().getPostnr())
+                .append(SEP_STRING_DUAL)
+                .append(person.getBoadresse().getKommunenr())
+                .append(SEP_STRING_END)
+                .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
+                .toString();
+    }
+
+    private static String getMatrikkeladresse(Person person) {
         return nonNull(person.getBoadresse()) ?
                 new StringBuilder()
-                        .append(((Gateadresse) person.getBoadresse()).getAdresse())
-                        .append(SEP)
-                        .append(((Gateadresse) person.getBoadresse()).getHusnummer())
+                        .append(((Matrikkeladresse) person.getBoadresse()).getMellomnavn())
+                        .append(";GNR: ")
+                        .append(((Matrikkeladresse) person.getBoadresse()).getGardsnr())
+                        .append(";BNR: ")
+                        .append(((Matrikkeladresse) person.getBoadresse()).getBruksnr())
                         .append(SEP_STRING_START)
-                        .append(((Gateadresse) person.getBoadresse()).getGatekode())
-                        .append(SEP_STRING_DUAL)
                         .append(person.getBoadresse().getPostnr())
                         .append(SEP_STRING_DUAL)
                         .append(person.getBoadresse().getKommunenr())
