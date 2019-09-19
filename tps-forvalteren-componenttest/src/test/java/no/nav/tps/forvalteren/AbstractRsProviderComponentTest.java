@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Rule;
@@ -73,9 +72,6 @@ public abstract class AbstractRsProviderComponentTest {
     protected String removeWhitespaceBetweenTags(String text) {
         return text.replaceAll(">\\s+<", "><");
     }
-    protected static String convertObjectToJson(Object object) throws IOException {
-        return MAPPER.writeValueAsString(object);
-    }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {
         return MAPPER.readValue(mvcResult.getResponse().getContentAsString(), resultClass);
@@ -84,19 +80,5 @@ public abstract class AbstractRsProviderComponentTest {
     protected static <T> List<T> convertMvcResultToList(MvcResult mvcResult, Class<T> resultClass) throws IOException {
         JavaType type = MAPPER.getTypeFactory().constructCollectionType(List.class, resultClass);
         return MAPPER.readValue(mvcResult.getResponse().getContentAsString(), type);
-    }
-
-    protected static String getErrorMessage(MvcResult mvcResult) throws IOException {
-        JavaType type = MAPPER.getTypeFactory().constructMapType(Map.class, String.class, String.class);
-        Map<String, String> json = MAPPER.readValue(mvcResult.getResponse().getContentAsString(), type);
-        return json.get("message");
-    }
-
-    protected static Map<String, String> getErrorMessageAtIndex(MvcResult mvcResult, int index) throws IOException {
-        JavaType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, String.class, String.class);
-        JavaType listOfMapType = MAPPER.getTypeFactory().constructCollectionLikeType(List.class, mapType);
-
-        List<Map<String, String>> listOfMap = MAPPER.readValue(mvcResult.getResponse().getContentAsString(), listOfMapType);
-        return listOfMap.get(index);
     }
 }

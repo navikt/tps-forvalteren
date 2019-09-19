@@ -27,18 +27,21 @@ public class PersonNameService {
 
     private static SecureRandom randGenerator = new SecureRandom();
 
-    public void execute(Person person, Boolean harMellomnavn) {
+    public Person execute(Person person, Boolean harMellomnavn) {
 
         person.setFornavn(randomFornavn());
         person.setMellomnavn(TRUE.equals(harMellomnavn) ? randomMellomnavn() : null);
         person.setEtternavn(randomEtternavn());
+
+        return person;
     }
 
-    public void execute(List<Person> personer) {
+    public List<Person> execute(List<Person> personer) {
 
         for (Person person : personer) {
             execute(person, null);
         }
+        return personer;
     }
 
     private static String randomFornavn() {

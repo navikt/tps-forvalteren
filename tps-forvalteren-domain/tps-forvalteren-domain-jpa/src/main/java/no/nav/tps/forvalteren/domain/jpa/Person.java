@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import static java.util.Objects.isNull;
 import static javax.persistence.CascadeType.ALL;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -131,6 +133,9 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = ALL)
+    private List<IdentHistorikk> identHistorikk;
+
     @Column(name = "OPPRETTET_DATO")
     private LocalDateTime opprettetDato;
 
@@ -167,17 +172,27 @@ public class Person extends ChangeStamp {
     @Column(name = "FORSVUNNET_DATO")
     private LocalDateTime forsvunnetDato;
 
+    @Transient
+    private String replacedByIdent;
+
     public List<Postadresse> getPostadresse() {
-        if (postadresse == null) {
-            postadresse = new ArrayList<>();
+        if (isNull(postadresse)) {
+            postadresse = new ArrayList();
         }
         return postadresse;
     }
 
     public List<Relasjon> getRelasjoner() {
-        if (relasjoner == null) {
-            relasjoner = new ArrayList<>();
+        if (isNull(relasjoner)) {
+            relasjoner = new ArrayList();
         }
         return relasjoner;
+    }
+
+    public List<IdentHistorikk> getIdentHistorikk() {
+        if (isNull(identHistorikk)) {
+            identHistorikk = new ArrayList();
+        }
+        return identHistorikk;
     }
 }

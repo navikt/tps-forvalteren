@@ -291,7 +291,15 @@ public class LandkodeEncoder {
     }
 
     public String getRandomLandTla() {
-        return (String) landkoderMap.keySet().toArray()[1 + random.nextInt(landkoderMap.size() - 2)];
+
+        String landkode;
+        do {
+            landkode = (String) landkoderMap.keySet().toArray()[1 + random.nextInt(landkoderMap.size() - 2)];
+
+        } while (landkoderMap.get(landkode).fom.isAfter(START_OF_ERA) ||
+                landkoderMap.get(landkode).tom.isBefore(FORESEEABLE_FUTURE));
+
+        return landkode;
     }
 
     public String encode(String statsborgerskap) {
