@@ -14,7 +14,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.req
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 public class EndreSpraakkode implements ServiceRoutineResolver {
-    public static final String ENDRE_SPRAKKODE = "endre_sprakkode";
+    public static final String ENDRE_SPRAKKODE = "SpråkkodeEndringsmelding";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {

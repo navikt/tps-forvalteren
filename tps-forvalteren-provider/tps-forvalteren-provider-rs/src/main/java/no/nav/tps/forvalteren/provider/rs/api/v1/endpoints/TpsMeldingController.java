@@ -40,7 +40,7 @@ public class TpsMeldingController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendFoedselsmelding") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendDoedsmelding") })
     @RequestMapping(value = "/doedsmelding", method = RequestMethod.POST)
     public SendSkdMeldingTilTpsResponse sendDoedsmelding(@RequestBody RsTpsDoedsmeldingRequest tpsDoedsmeldinpsRequest) {
 

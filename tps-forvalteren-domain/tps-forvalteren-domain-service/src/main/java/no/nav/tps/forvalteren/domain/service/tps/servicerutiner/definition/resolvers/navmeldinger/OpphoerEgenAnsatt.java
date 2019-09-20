@@ -15,10 +15,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.res
 
 public class OpphoerEgenAnsatt implements ServiceRoutineResolver {
 
+    public static final String EGEN_ANSATT_OPPHOERSMELDING = "EgenAnsattOpphørsmelding";
+
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name("opphor_egen_ansatt")
+                .name(EGEN_ANSATT_OPPHOERSMELDING)
                 .internalName("Opphør Egen Ansatt")
                 .javaClass(TpsOpphorEgenAnsattRequest.class)
                 .config()

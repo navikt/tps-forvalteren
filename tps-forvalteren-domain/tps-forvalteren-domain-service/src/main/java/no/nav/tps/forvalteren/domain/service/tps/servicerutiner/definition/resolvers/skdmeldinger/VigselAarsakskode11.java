@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapS
 
 public class VigselAarsakskode11 implements SkdMeldingResolver {
 
-    public static final String VIGSEL_MLD_NAVN = "Vigsel";
+    public static final String VIGSEL_MLD_NAVN = "Vigselsmelding";
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {

@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,6 @@ import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 
 @Service
 public class CreateDoedsmeldinger {
-
-    private static final String NAVN_DOEDSMELDING = "Doedsmelding";
 
     @Autowired
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
@@ -35,7 +35,7 @@ public class CreateDoedsmeldinger {
         List<Person> doedePersonerWithoutDoedsmelding = findDoedePersonerWithoutDoedsmelding(personerIGruppen);
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
         if (!doedePersonerWithoutDoedsmelding.isEmpty()) {
-            skdMeldinger.addAll(skdMessageCreatorTrans1.execute(NAVN_DOEDSMELDING, doedePersonerWithoutDoedsmelding, addHeader));
+            skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, doedePersonerWithoutDoedsmelding, addHeader));
             saveDoedsmeldingToDB.execute(doedePersonerWithoutDoedsmelding);
         }
         return skdMeldinger;

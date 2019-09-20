@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyListOf;
@@ -10,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class CreateRelasjonerTest {
     private Person person = aMalePerson().id(1L).build();
     private Person person2 = aMalePerson().id(2L).build();
     private Person person3 = aMalePerson().id(3L).build();
-    private List<Person> personerSomIkkeEksitererITpsMiljoe = new ArrayList<>(Arrays.asList(person, person2, person3));
+    private List<Person> personerSomIkkeEksitererITpsMiljoe = new ArrayList<>(asList(person, person2, person3));
 
     private Relasjon relasjonFar = new Relasjon(1L, person, person2, "FAR");
     private Relasjon relasjonBarn = new Relasjon(2L, person2, person, "BARN");
@@ -51,38 +51,38 @@ public class CreateRelasjonerTest {
 
     @Test
     public void checkThatAllServicesGetsCalled() {
-        when(relasjonRepository.findByPersonId(person.getId())).thenReturn(Arrays.asList(relasjonFar));
-        when(relasjonRepository.findByPersonId(person2.getId())).thenReturn(Arrays.asList(relasjonBarn, relasjonEktefelle));
-        when(relasjonRepository.findByPersonId(person3.getId())).thenReturn(Arrays.asList(relasjonEktefelle2));
+        when(relasjonRepository.findByPersonId(person.getId())).thenReturn(asList(relasjonFar));
+        when(relasjonRepository.findByPersonId(person2.getId())).thenReturn(asList(relasjonBarn, relasjonEktefelle));
+        when(relasjonRepository.findByPersonId(person3.getId())).thenReturn(asList(relasjonEktefelle2));
 
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
         verify(relasjonRepository, times(2)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person2), ADD_HEADER);
-        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person3), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person2), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person3), ADD_HEADER);
         verify(persistBarnTransRecordsToTps).execute(person2, ADD_HEADER);
     }
 
     @Test
     public void checkThatOnlyVigelseGetsCalled() {
-        when(relasjonRepository.findByPersonId(person2.getId())).thenReturn(Arrays.asList(relasjonEktefelle));
-        when(relasjonRepository.findByPersonId(person3.getId())).thenReturn(Arrays.asList(relasjonEktefelle2));
+        when(relasjonRepository.findByPersonId(person2.getId())).thenReturn(asList(relasjonEktefelle));
+        when(relasjonRepository.findByPersonId(person3.getId())).thenReturn(asList(relasjonEktefelle2));
 
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
         verify(relasjonRepository, times(1)).findByPersonId(person.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
         verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
-        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person2), ADD_HEADER);
-        verify(skdMessageCreatorTrans1).execute("Vigsel", Arrays.asList(person3), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person2), ADD_HEADER);
+        verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person3), ADD_HEADER);
     }
 
     @Test
     public void checkThatOnlyFamilieendringGetsCalled() {
-        when(relasjonRepository.findByPersonId(person.getId())).thenReturn(Arrays.asList(relasjonFar));
-        when(relasjonRepository.findByPersonId(person2.getId())).thenReturn(Arrays.asList(relasjonBarn));
+        when(relasjonRepository.findByPersonId(person.getId())).thenReturn(asList(relasjonFar));
+        when(relasjonRepository.findByPersonId(person2.getId())).thenReturn(asList(relasjonBarn));
 
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 

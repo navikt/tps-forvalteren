@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
+
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
@@ -11,10 +13,8 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
-
 public class EndreRelasjon implements ServiceRoutineResolver {
-    public static final String ENDRE_RELASJON = "ENDRE_RELASJON";
+    public static final String ENDRE_RELASJON = "RelasjonEndringsmelding";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {

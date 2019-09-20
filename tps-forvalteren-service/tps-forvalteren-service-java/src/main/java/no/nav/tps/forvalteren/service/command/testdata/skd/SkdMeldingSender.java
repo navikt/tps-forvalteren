@@ -9,6 +9,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmDubletter.MELDING_OM_DUBLETTER;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmForsvunnetAarsakskode82.MELDING_OM_FORSVUNNET;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.NavneEndringsmeldingAarsakskode06.NAVN_ENDRING_MLD;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32.UTVANDRING_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class SkdMeldingSender {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerIGruppen, true);
         utvandringsMeldinger.forEach(skdMelding ->
-                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer("Utvandringsmelding", skdMelding, environmentsSet))
+                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(UTVANDRING_MLD_NAVN, skdMelding, environmentsSet))
         );
         return listTpsResponsene;
     }

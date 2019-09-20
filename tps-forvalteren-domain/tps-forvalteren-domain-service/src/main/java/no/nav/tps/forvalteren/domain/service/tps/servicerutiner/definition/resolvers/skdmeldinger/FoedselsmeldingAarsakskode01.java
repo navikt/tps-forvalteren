@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Foedselsm
 
 public class FoedselsmeldingAarsakskode01 implements SkdMeldingResolver {
 
-    public static final String FOEDSEL_MLD_NAVN = "Foedselsmelding" ;
+    public static final String FOEDSEL_MLD_NAVN = "Fødselsmelding" ;
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {

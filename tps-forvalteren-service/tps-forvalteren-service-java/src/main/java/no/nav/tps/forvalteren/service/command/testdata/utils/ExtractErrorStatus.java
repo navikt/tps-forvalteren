@@ -15,7 +15,7 @@ public final class ExtractErrorStatus {
         } else if (nonNull(status) && status.length() > 3) {
             return format("FEIL: %s", status.substring(3).replaceAll("\\d*%[A-Z]\\d*%","").replaceAll("%; *", ""));
         } else {
-            return "STATUS: UKJENT";
+            return "STATUS: TIDSAVBRUDD";
         }
     }
 }
