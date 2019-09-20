@@ -15,7 +15,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.res
 
 public class OpphoerEgenAnsatt implements ServiceRoutineResolver {
 
-    public static final String EGEN_ANSATT_OPPHOERSMELDING = "EgenAnsattOpphørsmelding";
+    public static final String EGEN_ANSATT_OPPHOERSMELDING = "EgenansattOpphørsmelding";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
