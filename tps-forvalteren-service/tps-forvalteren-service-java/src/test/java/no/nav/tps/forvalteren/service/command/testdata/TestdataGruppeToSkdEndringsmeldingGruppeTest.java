@@ -41,7 +41,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTran
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     
-    private static final String NAVN_INNVANDRINGSMELDING = "InnvandringCreate";
+    private static final String NAVN_INNVANDRINGSMELDING = "InnvandringOpprettingsmelding";
     private static final Long GRUPPE_ID = 1337L;
     private static final boolean ADD_HEADER = false;
     private static final String melding1 = "1", melding2 = "2", melding3 = "3", melding4 = "4";

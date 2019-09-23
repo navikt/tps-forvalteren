@@ -47,7 +47,7 @@ public class OpprettEgenAnsattMeldingTest {
         TpsEndreEgenansattRequest melding = (TpsEndreEgenansattRequest) result.get(0).getMelding();
         assertThat(melding.getFom(), is(ConvertDateToString.yyyysMMsdd(DATE_FOM)));
         assertThat(melding.getTom(), is(ConvertDateToString.yyyysMMsdd(DATE_TOM)));
-        assertThat(melding.getServiceRutinenavn(), is("endre_egen_ansatt"));
+        assertThat(melding.getServiceRutinenavn(), is("EgenansattEndringsmelding"));
         assertThat(melding.getOffentligIdent(), is(IDENT));
     }
 }

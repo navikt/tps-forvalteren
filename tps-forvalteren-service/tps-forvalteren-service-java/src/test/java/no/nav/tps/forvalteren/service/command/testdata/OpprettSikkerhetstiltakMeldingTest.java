@@ -48,6 +48,6 @@ public class OpprettSikkerhetstiltakMeldingTest {
         assertThat(melding.getTom(), is(ConvertDateToString.yyyysMMsdd(DATE_TOM)));
         assertThat(melding.getOffentligIdent(), is("11111100000"));
         assertThat(melding.getTypeSikkerhetsTiltak(), is("ABCD"));
-        assertThat(melding.getServiceRutinenavn(), is("endre_sikkerhetstiltak"));
+        assertThat(melding.getServiceRutinenavn(), is("SikkerhetstiltakEndringsmelding"));
     }
 }

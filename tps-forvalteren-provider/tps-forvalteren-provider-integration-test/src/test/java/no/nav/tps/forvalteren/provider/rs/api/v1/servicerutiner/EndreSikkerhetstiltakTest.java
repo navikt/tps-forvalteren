@@ -16,41 +16,11 @@ import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 
 public class EndreSikkerhetstiltakTest extends AbstractServiceroutineControllerIntegrationTest {
     
-    private static final String serviceRutineNavn = "endre_sikkerhetstiltak";
+    private static final String serviceRutineNavn = "SikkerhetstiltakEndringsmelding";
     
     @Override
     protected String getServiceName() {
         return serviceRutineNavn;
-    }
-    
-    /**
-     * HVIS alle påkrevde verdier i request resolveren er fylt inn (i queryParam) SÅ skal xml opprettes og legges på kø til TPS.
-     *
-     * @throws Exception
-     */
-    @Test
-    @WithUserDetails(TestUserDetails.USERNAME)
-    public void shouldsendeServiceRutineMeldingTilTps() throws Exception {
-        
-//        setResponseQueueMessage(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_response.xml"));
-//
-//        addRequestParam("offentligIdent", "1234538826");
-//        addRequestParam("typeSikkerhetsTiltak", "USKK");
-//        addRequestParam("fom", "2014-10-29");
-//        addRequestParam("tom", "2014-10-30");
-//        addRequestParam("beskrSikkerhetsTiltak", "Usedvanlig sterk kvinne");
-//        addRequestParam("environment", "t9");
-//
-//        MvcResult result = mvc.perform(get(getUrl()))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        verify(messageQueueConsumer).sendMessage(removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_request.xml")), DEFAULT_TIMEOUT);
-//
-//        TpsServiceRoutineResponse response = convertMvcResultToObject(result, TpsServiceRoutineResponse.class);
-//        String expectedResponse = removeNewLineAndTab(getResourceFileContent("testdata/servicerutiner/endre_sikkerhetstiltak_tps_response.xml"));
-//        assertEquals(expectedResponse, removeNewLineAndTab(response.getXml()));
-//
     }
     
     /**

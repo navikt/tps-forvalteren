@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Innvandri
 
 public class InnvandringAarsakskode02 implements SkdMeldingResolver {
 
-    public static final String INNVANDRING_CREATE_MLD_NAVN = "InnvandringCreate" ;
+    public static final String INNVANDRING_CREATE_MLD_NAVN = "InnvandringOpprettingsmelding" ;
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
