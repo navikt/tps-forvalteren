@@ -44,7 +44,7 @@ import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
 @RunWith(MockitoJUnitRunner.class)
 public class SendTpsFoedselsmeldingServiceTest {
 
-    private static final String NAVN_FOEDSELSMELDING = "Foedselsmelding";
+    private static final String NAVN_FOEDSELSMELDING = "Fødselsmelding";
     private static final String IDENT_MOR = "12129012345";
     private static final String IDENT_FAR = "13118912345";
 

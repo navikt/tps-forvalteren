@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.time.LocalDateTime;
@@ -34,8 +35,6 @@ import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
 
 @Service
 public class SendTpsFoedselsmeldingService {
-
-    private static final String NAVN_FOEDSELSMELDING = "Foedselsmelding";
 
     @Autowired
     private PersonhistorikkService personhistorikkService;
@@ -130,7 +129,7 @@ public class SendTpsFoedselsmeldingService {
 
     private Map sendMeldingToTps(Person personSomSkalFoedes, String miljoe) {
 
-        SkdMeldingTrans1 melding = skdMessageCreatorTrans1.execute(NAVN_FOEDSELSMELDING, personSomSkalFoedes, true);
+        SkdMeldingTrans1 melding = skdMessageCreatorTrans1.execute(FOEDSEL_MLD_NAVN, personSomSkalFoedes, true);
         return sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), Sets.newHashSet(miljoe));
     }
 
@@ -138,7 +137,7 @@ public class SendTpsFoedselsmeldingService {
         sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : ExtractErrorStatus.extract(status));
         return SendSkdMeldingTilTpsResponse.builder()
                 .personId(ident)
-                .skdmeldingstype(NAVN_FOEDSELSMELDING)
+                .skdmeldingstype(FOEDSEL_MLD_NAVN)
                 .status(sentStatus)
                 .build();
     }
