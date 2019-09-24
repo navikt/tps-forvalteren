@@ -123,4 +123,6 @@ public class RsPerson {
     private String personStatus;
 
     private String forsvunnetDato;
+
+    private List<RsIdenthistorikk> identHistorikk;
 }

@@ -15,7 +15,7 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
-import no.nav.tps.forvalteren.domain.rs.RsIdenthistorikk;
+import no.nav.tps.forvalteren.domain.rs.RsIdenthistorikkKriterium;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -92,7 +92,7 @@ public class PersonIdenthistorikkService {
         return response;
     }
 
-    public void prepareIdenthistorikk(String ident, List<RsIdenthistorikk> identhistorikk) {
+    public void prepareIdenthistorikk(String ident, List<RsIdenthistorikkKriterium> identhistorikk) {
 
         List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(ident, identhistorikk));
         personRepository.save(dubletter);
@@ -107,7 +107,7 @@ public class PersonIdenthistorikkService {
                 .build());
     }
 
-    private RsPersonKriteriumRequest prepareRequest(String ident, List<RsIdenthistorikk> identhistorikk) {
+    private RsPersonKriteriumRequest prepareRequest(String ident, List<RsIdenthistorikkKriterium> identhistorikk) {
 
         List<RsPersonKriterier> personkriterier = new ArrayList();
 

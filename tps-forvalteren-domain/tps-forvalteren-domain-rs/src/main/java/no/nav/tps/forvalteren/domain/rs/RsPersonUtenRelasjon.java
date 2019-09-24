@@ -108,6 +108,8 @@ public class RsPersonUtenRelasjon {
 
     private String tknr;
 
+    private String tknavn;
+
     private String gtType;
 
     private String gtVerdi;
