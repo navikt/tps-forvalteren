@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
@@ -33,6 +34,12 @@ public class PersonerBestillingService {
     @Autowired
     private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
 
+    @Autowired
+    private PersonIdenthistorikkService personIdenthistorikkService;
+
+    @Autowired
+    private MapperFacade mapperFacade;
+
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
         validateOpprettRequest.validate(personKriteriumRequest);
 
@@ -53,6 +60,7 @@ public class PersonerBestillingService {
                 barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
             }
 
+            setIdenthistorikkPaaPersoner(personKriteriumRequest, hovedPersoner, partnere, barn);
             setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
         } else {
             hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest);
@@ -66,6 +74,17 @@ public class PersonerBestillingService {
             return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent());
         } else {
             throw new TpsfFunctionalException("Ingen ledige identer funnet i miljø.");
+        }
+    }
+
+    private void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
+
+        hovedPersoner.forEach(hovedperson ->
+                personIdenthistorikkService.prepareIdenthistorikk(hovedperson.getIdent(), request.getIdenthistorikk()));
+        partnere.forEach(partner ->
+                personIdenthistorikkService.prepareIdenthistorikk(partner.getIdent(), request.getRelasjoner().getPartner().getIdenthistorikk()));
+        for (int i = 0; i <barna.size(); i++) {
+            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i).getIdent(), request.getRelasjoner().getBarn().get(i).getIdenthistorikk());
         }
     }
 

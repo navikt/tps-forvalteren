@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
-import static java.time.LocalDateTime.now;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,12 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
-import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsIdenthistorikk;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
@@ -39,7 +42,7 @@ public class PersonIdenthistorikkService {
     private PersonNameService personNameService;
 
     @Autowired
-    private PersonerBestillingService personerBestillingService;
+    private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
 
     @Autowired
     private IdenthistorikkService identhistorikkService;
@@ -70,7 +73,8 @@ public class PersonIdenthistorikkService {
         request.getAliaser().forEach(alias -> {
 
             if (TRUE.equals(alias.getNyIdent())) {
-                Person person = (personerBestillingService.createTpsfPersonFromRestRequest(prepareRequest(alias.getIdenttype(), request.getIdent()))).get(0);
+                Person person = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(request.getIdent(), alias.getIdenttype())).get(0);
+                personRepository.save(person);
                 addToResponse(response, person, person.getIdent());
                 identHistorikk.add(person);
 
@@ -88,6 +92,13 @@ public class PersonIdenthistorikkService {
         return response;
     }
 
+    public void prepareIdenthistorikk(String ident, List<RsIdenthistorikk> identhistorikk) {
+
+        List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(ident, identhistorikk));
+        personRepository.save(dubletter);
+        identhistorikkService.save(ident, dubletter);
+    }
+
     private void addToResponse(RsAliasResponse response, Person aliasPerson, String ident) {
         response.getAliaser().add(RsAliasResponse.Persondata.builder()
                 .ident(ident)
@@ -96,18 +107,38 @@ public class PersonIdenthistorikkService {
                 .build());
     }
 
-    private RsPersonBestillingKriteriumRequest prepareRequest(RsAliasRequest.IdentType identtype, String ident) {
+    private RsPersonKriteriumRequest prepareRequest(String ident, List<RsIdenthistorikk> identhistorikk) {
 
-        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        List<RsPersonKriterier> personkriterier = new ArrayList();
 
-        request.setAntall(1);
-        request.setIdenttype(identtype.name());
-        request.setFoedtFoer(hentDatoFraIdentService.extract(ident));
-        request.setFoedtEtter(hentDatoFraIdentService.extract(ident));
-        request.setKjonn(hentKjoennFraIdentService.execute(ident));
-        request.setHarMellomnavn(true);
-        request.setRegdato(now());
+        identhistorikk.forEach(
+                historikk -> personkriterier.add(RsPersonKriterier.builder()
+                        .antall(1)
+                        .identtype(historikk.getIdenttype())
+                        .foedtEtter(nullcheckSetDefaultValue(historikk.getFoedtEtter(), hentDatoFraIdentService.extract(ident)))
+                        .foedtFoer(nullcheckSetDefaultValue(historikk.getFoedtFoer(), hentDatoFraIdentService.extract(ident)))
+                        .kjonn(nullcheckSetDefaultValue(historikk.getKjonn(), hentKjoennFraIdentService.execute(ident)))
+                        .harMellomnavn(true)
+                        .build()
+                ));
 
-        return request;
+        return RsPersonKriteriumRequest.builder()
+                .personKriterierListe(personkriterier)
+                .build();
+    }
+
+    private RsPersonKriteriumRequest prepareRequest(String ident, RsAliasRequest.IdentType identtype) {
+
+        return RsPersonKriteriumRequest.builder()
+                .personKriterierListe(
+                        singletonList(RsPersonKriterier.builder()
+                                .antall(1)
+                                .identtype(identtype.name())
+                                .foedtFoer(hentDatoFraIdentService.extract(ident))
+                                .foedtEtter(hentDatoFraIdentService.extract(ident))
+                                .kjonn(hentKjoennFraIdentService.execute(ident))
+                                .harMellomnavn(true)
+                                .build()))
+                .build();
     }
 }
