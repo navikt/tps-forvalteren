@@ -99,7 +99,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(null);
         when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.C)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
-        when(skdCreator.execute(eq("Doedsmelding"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
+        when(skdCreator.execute(eq("Dødsmelding"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
         when(doedsmelding.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
 
@@ -125,7 +125,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(DOEDSDATO));
         when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.D)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
-        when(skdCreator.execute(eq("DoedsmeldingAnnullering"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
+        when(skdCreator.execute(eq("DødsmeldingAnnullering"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
         when(doedsmeldingAnnuller.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
 
@@ -154,8 +154,8 @@ public class SendDodsmeldingTilTpsServiceTest {
         when(persondataFraTpsS004.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(DOEDSDATO));
         when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.U)));
         when(personstatusService.hentPersonstatus(anyString(), anyString())).thenReturn(persondataFraTpsS004);
-        when(skdCreator.execute(eq("DoedsmeldingAnnullering"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
-        when(skdCreator.execute(eq("Doedsmelding"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
+        when(skdCreator.execute(eq("DødsmeldingAnnullering"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
+        when(skdCreator.execute(eq("Dødsmelding"), any(Person.class), eq(true))).thenReturn(skdMeldingTrans1);
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
         when(doedsmeldingAnnuller.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
         when(doedsmelding.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
@@ -163,7 +163,7 @@ public class SendDodsmeldingTilTpsServiceTest {
 
         sendDodsmeldingTilTpsService.execute();
 
-        verify(skdCreator).execute(eq("DoedsmeldingAnnullering"), personCaptor.capture(), eq(true));
+        verify(skdCreator).execute(eq("DødsmeldingAnnullering"), personCaptor.capture(), eq(true));
         verify(sendSkdMeldingTilMiljoe, times(2)).execute(eq(SKDMLD), eq(tpsSkdRequestMeldingDefinition), anySet());
         verify(deathRowRepository).save(any(DeathRow.class));
         assertThat(personCaptor.getValue().getIdent(), is(equalTo(IDENT)));

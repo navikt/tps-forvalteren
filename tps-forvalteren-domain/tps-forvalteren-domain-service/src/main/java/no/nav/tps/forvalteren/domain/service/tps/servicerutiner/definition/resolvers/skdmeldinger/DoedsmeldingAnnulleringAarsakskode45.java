@@ -9,7 +9,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Doedsmeld
 
 public class DoedsmeldingAnnulleringAarsakskode45 implements SkdMeldingResolver {
 
-    public static final String DOEDSMELDINGANNULLERING_MLD_NAVN = "DoedsmeldingAnnullering";
+    public static final String DOEDSMELDINGANNULLERING_MLD_NAVN = "DødsmeldingAnnullering";
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {

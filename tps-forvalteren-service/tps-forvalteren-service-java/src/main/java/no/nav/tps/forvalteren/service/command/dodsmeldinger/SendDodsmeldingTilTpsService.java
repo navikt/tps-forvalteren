@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.C;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.D;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.U;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAnnulleringAarsakskode45.DOEDSMELDINGANNULLERING_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.time.LocalDateTime;
@@ -95,7 +97,7 @@ public class SendDodsmeldingTilTpsService {
 
             person.setDoedsdato(doedsdato);
 
-            return sendMelding(person, "Doedsmelding", doedsmelding, miljoe);
+            return sendMelding(person, DOEDSMELDING_MLD_NAVN, doedsmelding, miljoe);
         }
         return Collections.emptyMap();
     }
@@ -110,7 +112,7 @@ public class SendDodsmeldingTilTpsService {
 
             findLastAddress(person, doedsdato, miljoe);
 
-            return sendMelding(person, "DoedsmeldingAnnullering", doedsmeldingAnnuller, miljoe);
+            return sendMelding(person, DOEDSMELDINGANNULLERING_MLD_NAVN, doedsmeldingAnnuller, miljoe);
         }
         return Collections.emptyMap();
     }

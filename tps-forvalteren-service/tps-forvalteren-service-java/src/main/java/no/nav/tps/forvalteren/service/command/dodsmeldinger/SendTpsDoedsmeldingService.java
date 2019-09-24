@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
 import static java.lang.String.format;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class SendTpsDoedsmeldingService extends SendDodsmeldingTilTpsService {
         sentStatus.replaceAll((env, status) -> status.matches("^00.*") ? "OK" : ExtractErrorStatus.extract(status));
         return SendSkdMeldingTilTpsResponse.builder()
                 .personId(ident)
-                .skdmeldingstype("Doedsmelding")
+                .skdmeldingstype(DOEDSMELDING_MLD_NAVN)
                 .status(sentStatus)
                 .build();
     }
