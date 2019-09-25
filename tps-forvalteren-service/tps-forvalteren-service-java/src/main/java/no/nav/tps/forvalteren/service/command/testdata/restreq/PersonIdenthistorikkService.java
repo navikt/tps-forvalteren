@@ -92,12 +92,12 @@ public class PersonIdenthistorikkService {
         return response;
     }
 
-    public void prepareIdenthistorikk(String ident, List<RsIdenthistorikkKriterium> identhistorikk) {
+    public void prepareIdenthistorikk(Person person, List<RsIdenthistorikkKriterium> identhistorikk) {
 
-        List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(ident, identhistorikk));
+        List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(person, identhistorikk));
 
         personRepository.save(dubletter);
-        identhistorikkService.save(ident, dubletter);
+        identhistorikkService.save(person.getIdent(), dubletter);
     }
 
     private void addToResponse(RsAliasResponse response, Person aliasPerson, String ident) {
@@ -108,17 +108,17 @@ public class PersonIdenthistorikkService {
                 .build());
     }
 
-    private RsPersonKriteriumRequest prepareRequest(String ident, List<RsIdenthistorikkKriterium> identhistorikk) {
+    private RsPersonKriteriumRequest prepareRequest(Person person, List<RsIdenthistorikkKriterium> identhistorikk) {
 
         List<RsPersonKriterier> personkriterier = new ArrayList();
 
         identhistorikk.forEach(
                 historikk -> personkriterier.add(RsPersonKriterier.builder()
                         .antall(1)
-                        .identtype(historikk.getIdenttype())
-                        .foedtEtter(nullcheckSetDefaultValue(historikk.getFoedtEtter(), hentDatoFraIdentService.extract(ident)))
-                        .foedtFoer(nullcheckSetDefaultValue(historikk.getFoedtFoer(), hentDatoFraIdentService.extract(ident)))
-                        .kjonn(nullcheckSetDefaultValue(historikk.getKjonn(), hentKjoennFraIdentService.execute(ident)))
+                        .identtype(nullcheckSetDefaultValue(historikk.getIdenttype(), person.getIdenttype()))
+                        .foedtEtter(nullcheckSetDefaultValue(historikk.getFoedtEtter(), hentDatoFraIdentService.extract(person.getIdent())))
+                        .foedtFoer(nullcheckSetDefaultValue(historikk.getFoedtFoer(), hentDatoFraIdentService.extract(person.getIdent())))
+                        .kjonn(nullcheckSetDefaultValue(historikk.getKjonn(), hentKjoennFraIdentService.execute(person.getIdent())))
                         .harMellomnavn(true)
                         .build()
                 ));

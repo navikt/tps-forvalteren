@@ -80,11 +80,11 @@ public class PersonerBestillingService {
     private void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
 
         hovedPersoner.forEach(hovedperson ->
-                personIdenthistorikkService.prepareIdenthistorikk(hovedperson.getIdent(), request.getIdentHistorikk()));
+                personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
         partnere.forEach(partner ->
-                personIdenthistorikkService.prepareIdenthistorikk(partner.getIdent(), request.getRelasjoner().getPartner().getIdentHistorikk()));
+                personIdenthistorikkService.prepareIdenthistorikk(partner, request.getRelasjoner().getPartner().getIdentHistorikk()));
         for (int i = 0; i <barna.size(); i++) {
-            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i).getIdent(), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
+            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
         }
     }
 
