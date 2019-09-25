@@ -85,6 +85,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
                 .exclude("identtype")
+                .exclude("identHistorikk")
                 .exclude(KJONN)
                 .byDefault()
                 .register();

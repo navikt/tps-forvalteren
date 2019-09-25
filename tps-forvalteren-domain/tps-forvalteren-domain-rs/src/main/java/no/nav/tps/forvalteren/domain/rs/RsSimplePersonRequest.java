@@ -69,7 +69,7 @@ public class RsSimplePersonRequest {
 
     private LocalDateTime doedsdato;
 
-    private List<RsIdenthistorikkKriterium> identhistorikk;
+    private List<RsIdenthistorikkKriterium> identHistorikk;
 
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
@@ -78,10 +78,10 @@ public class RsSimplePersonRequest {
         return postadresse;
     }
 
-    public List<RsIdenthistorikkKriterium> getIdenthistorikk() {
-        if (isNull(identhistorikk)) {
-            identhistorikk = new ArrayList();
+    public List<RsIdenthistorikkKriterium> getIdentHistorikk() {
+        if (isNull(identHistorikk)) {
+            identHistorikk = new ArrayList();
         }
-        return identhistorikk;
+        return identHistorikk;
     }
 }

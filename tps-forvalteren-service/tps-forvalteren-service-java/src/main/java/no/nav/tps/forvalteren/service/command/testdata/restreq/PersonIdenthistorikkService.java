@@ -95,6 +95,7 @@ public class PersonIdenthistorikkService {
     public void prepareIdenthistorikk(String ident, List<RsIdenthistorikkKriterium> identhistorikk) {
 
         List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(ident, identhistorikk));
+
         personRepository.save(dubletter);
         identhistorikkService.save(ident, dubletter);
     }
