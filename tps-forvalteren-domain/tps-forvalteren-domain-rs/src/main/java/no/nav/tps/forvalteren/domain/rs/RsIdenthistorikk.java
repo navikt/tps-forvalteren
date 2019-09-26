@@ -20,7 +20,7 @@ public class RsIdenthistorikk {
     private RsSimplePerson person;
 
     @NotNull
-    private RsPersonUtenRelasjon aliasPerson;
+    private RsPersonUtenIdenthistorikk aliasPerson;
 
     @NotNull
     private Integer historicIdentOrder;

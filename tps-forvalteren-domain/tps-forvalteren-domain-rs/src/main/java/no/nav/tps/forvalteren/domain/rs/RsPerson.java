@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -125,4 +128,18 @@ public class RsPerson {
     private String forsvunnetDato;
 
     private List<RsIdenthistorikk> identHistorikk;
+
+    public List<RsRelasjon> getRelasjoner() {
+        if (isNull(relasjoner)) {
+            relasjoner = new ArrayList();
+        }
+        return relasjoner;
+    }
+
+    public List<RsIdenthistorikk> getIdentHistorikk() {
+        if (isNull(identHistorikk)) {
+            identHistorikk = new ArrayList();
+        }
+        return identHistorikk;
+    }
 }

@@ -40,7 +40,7 @@ public class IdentHistorikk extends ChangeStamp {
     private Person person;
 
     @JoinColumn(name="HISTORIC_PERSON_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Person aliasPerson;
 
     @Column (name = "HISTORIC_IDENT_ORDER", nullable = false)
