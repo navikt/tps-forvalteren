@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Collections.singletonList;
+import static java.util.Objects.nonNull;
 
 import java.util.List;
 import javax.transaction.Transactional;
@@ -33,13 +34,13 @@ public class IdenthistorikkService {
                     .person(mainPerson)
                     .aliasPerson(duplicatedPersons.get(i))
                     .historicIdentOrder(i + 1)
-                    .regdato(identhistorikk.get(i).getRegdato())
+                    .regdato(nonNull(identhistorikk) ? identhistorikk.get(i).getRegdato() : null)
                     .build());
             duplicatedPersons.get(i).getIdentHistorikk().add(IdentHistorikk.builder()
                     .person(duplicatedPersons.get(0))
                     .aliasPerson(mainPerson)
                     .historicIdentOrder(1)
-                    .regdato(identhistorikk.get(i).getRegdato())
+                    .regdato(nonNull(identhistorikk) ? identhistorikk.get(i).getRegdato() : null)
                     .build());
         }
 
