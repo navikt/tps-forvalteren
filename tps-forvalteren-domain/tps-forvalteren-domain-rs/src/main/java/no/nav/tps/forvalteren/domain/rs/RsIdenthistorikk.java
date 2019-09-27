@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -24,4 +25,7 @@ public class RsIdenthistorikk {
 
     @NotNull
     private Integer historicIdentOrder;
+
+    @NotNull
+    private LocalDateTime regdato;
 }

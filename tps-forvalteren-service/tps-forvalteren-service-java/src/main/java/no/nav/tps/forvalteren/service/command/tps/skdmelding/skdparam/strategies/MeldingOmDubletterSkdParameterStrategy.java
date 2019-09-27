@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class MeldingOmDubletterSkdParameterStrategy implements SkdParametersStra
                 .maskindato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(duplicatePerson.getRegdato())))
                 .maskintid(ConvertDateToString.hhMMss(duplicatePerson.getRegdato()))
                 .tidligereFnrDnr(duplicatePerson.getIdent())
-                .regDato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(duplicatePerson.getRegdato())))
+                .regDato(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(nullcheckSetDefaultValue(duplicatePerson.getAliasRegdato(), duplicatePerson.getRegdato()))))
                 .transtype("1")
                 .statuskode("4")
                 .build();

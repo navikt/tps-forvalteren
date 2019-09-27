@@ -4,10 +4,13 @@ import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +88,7 @@ public class PersonIdenthistorikkService {
         });
 
         if (!identHistorikk.isEmpty()) {
-            Person person = identhistorikkService.save(request.getIdent(), identHistorikk);
+            Person person = identhistorikkService.save(request.getIdent(), identHistorikk, null);
             lagreTilTpsService.execute(singletonList(person), request.getEnvironments());
         }
 
@@ -97,7 +100,7 @@ public class PersonIdenthistorikkService {
         List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(person, identhistorikk));
 
         personRepository.save(dubletter);
-        identhistorikkService.save(person.getIdent(), dubletter);
+        identhistorikkService.save(person.getIdent(), dubletter, identhistorikk);
     }
 
     private void addToResponse(RsAliasResponse response, Person aliasPerson, String ident) {
@@ -113,15 +116,22 @@ public class PersonIdenthistorikkService {
         List<RsPersonKriterier> personkriterier = new ArrayList();
 
         identhistorikk.forEach(
-                historikk -> personkriterier.add(RsPersonKriterier.builder()
-                        .antall(1)
-                        .identtype(nullcheckSetDefaultValue(historikk.getIdenttype(), person.getIdenttype()))
-                        .foedtEtter(nullcheckSetDefaultValue(historikk.getFoedtEtter(), hentDatoFraIdentService.extract(person.getIdent())))
-                        .foedtFoer(nullcheckSetDefaultValue(historikk.getFoedtFoer(), hentDatoFraIdentService.extract(person.getIdent())))
-                        .kjonn(nullcheckSetDefaultValue(historikk.getKjonn(), hentKjoennFraIdentService.execute(person.getIdent())))
-                        .harMellomnavn(true)
-                        .build()
-                ));
+                historikk -> {
+
+                    LocalDateTime foedtFoer = nullcheckSetDefaultValue(historikk.getFoedtEtter(), hentDatoFraIdentService.extract(person.getIdent()));
+                    foedtFoer = nonNull(historikk.getRegdato()) ? Stream.of(historikk.getRegdato(), foedtFoer).min(LocalDateTime::compareTo).get() : foedtFoer;
+                    LocalDateTime foedtEtter = nullcheckSetDefaultValue(historikk.getFoedtEtter(), hentDatoFraIdentService.extract(person.getIdent()));
+                    foedtEtter = foedtEtter.isAfter(foedtFoer) ? foedtFoer : foedtEtter;
+
+                    personkriterier.add(RsPersonKriterier.builder()
+                            .antall(1)
+                            .identtype(nullcheckSetDefaultValue(historikk.getIdenttype(), person.getIdenttype()))
+                            .foedtEtter(foedtEtter)
+                            .foedtFoer(foedtFoer)
+                            .kjonn(nullcheckSetDefaultValue(historikk.getKjonn(), hentKjoennFraIdentService.execute(person.getIdent())))
+                            .harMellomnavn(true)
+                            .build());
+                });
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(personkriterier)
