@@ -1,19 +1,18 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsRelasjon {
+public class RsIdenthistorikk {
 
     @NotNull
     private Long id;
@@ -22,8 +21,11 @@ public class RsRelasjon {
     private RsSimplePerson person;
 
     @NotNull
-    private RsPersonUtenRelasjon personRelasjonMed;
+    private RsPersonUtenIdenthistorikk aliasPerson;
 
     @NotNull
-    private String relasjonTypeNavn;
+    private Integer historicIdentOrder;
+
+    @NotNull
+    private LocalDateTime regdato;
 }

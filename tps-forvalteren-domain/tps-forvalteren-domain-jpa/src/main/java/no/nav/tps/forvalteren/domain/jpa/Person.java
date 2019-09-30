@@ -175,6 +175,9 @@ public class Person extends ChangeStamp {
     @Transient
     private String replacedByIdent;
 
+    @Transient
+    private LocalDateTime aliasRegdato;
+
     public List<Postadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();

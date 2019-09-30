@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,9 +41,12 @@ public class IdentHistorikk extends ChangeStamp {
     private Person person;
 
     @JoinColumn(name="HISTORIC_PERSON_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Person aliasPerson;
 
     @Column (name = "HISTORIC_IDENT_ORDER", nullable = false)
     private Integer historicIdentOrder;
+
+    @Column (name="REGDATO")
+    private LocalDateTime regdato;
 }
