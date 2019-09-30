@@ -37,6 +37,7 @@ public class CreateMeldingerOmDubletter {
                                 person.getIdentHistorikk().get(i).getAliasPerson().setReplacedByIdent(
                                         person.getIdentHistorikk().get(i + 1).getAliasPerson().getIdent());
                             }
+                            person.getIdentHistorikk().get(i).getAliasPerson().setAliasRegdato(person.getIdentHistorikk().get(i).getRegdato());
 
                             personerSomErDubletter.add(person.getIdentHistorikk().get(i).getAliasPerson());
                         }

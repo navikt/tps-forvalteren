@@ -69,10 +69,19 @@ public class RsSimplePersonRequest {
 
     private LocalDateTime doedsdato;
 
+    private List<RsIdenthistorikkKriterium> identHistorikk;
+
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();
         }
         return postadresse;
+    }
+
+    public List<RsIdenthistorikkKriterium> getIdentHistorikk() {
+        if (isNull(identHistorikk)) {
+            identHistorikk = new ArrayList();
+        }
+        return identHistorikk;
     }
 }
