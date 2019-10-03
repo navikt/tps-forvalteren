@@ -121,7 +121,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             }
         }
         person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
-                hentDatoFraIdentService.extract(person.getIdent())));
+                nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))));
 
         person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), DNR.name().equals(person.getIdenttype()) ? dummyLanguageService.getRandomLanguage() : "NB"));
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
