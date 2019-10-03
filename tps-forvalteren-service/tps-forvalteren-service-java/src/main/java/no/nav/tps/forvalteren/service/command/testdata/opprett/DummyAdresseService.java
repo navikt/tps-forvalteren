@@ -20,7 +20,7 @@ public class DummyAdresseService {
     public static final String SPSF_ADR = "SOT6";
 
     private static final String GATEADRESSE = "SANNERGATA";
-    private static final String HUSNR = "2";
+    private static final String HUSNR = "6";
     private static final String POSTNR = "0557";
     private static final String GATEKODE = "16188";
     private static final String KOMMUNENR = "0301";
@@ -49,7 +49,7 @@ public class DummyAdresseService {
         gateadresse.setPostnr(POSTNR);
         gateadresse.setKommunenr(KOMMUNENR);
         gateadresse.setPerson(person);
-        gateadresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
+        gateadresse.setFlyttedato(nonNull(person) ? hentDatoFraIdentService.extract(person.getIdent()) : null);
 
         return gateadresse;
     }
