@@ -23,6 +23,7 @@ public class SkdMeldingMQConsumer {
     private boolean currentEnvironmentIsProd;
 
     public String sendMessage(String skdMelding, TpsSkdRequestMeldingDefinition skdMeldingDefinition, String environment) throws JMSException {
+
         if(currentEnvironmentIsProd){
             forbiddenCallHandlerService.authoriseRestCall(skdMeldingDefinition);
         }
@@ -30,7 +31,5 @@ public class SkdMeldingMQConsumer {
         MessageQueueConsumer messageQueueConsumer = messageQueueServiceFactory.createMessageQueueConsumer(environment, skdMeldingDefinition.getConfig().getRequestQueue(), false);
 
        return messageQueueConsumer.sendMessage(skdMelding);
-        
     }
-
 }

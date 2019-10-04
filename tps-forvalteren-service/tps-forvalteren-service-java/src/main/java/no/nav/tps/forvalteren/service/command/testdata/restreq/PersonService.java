@@ -19,6 +19,7 @@ import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @Service
 public class PersonService {
@@ -40,6 +41,9 @@ public class PersonService {
 
     @Autowired
     private IdentpoolService identpoolService;
+
+    @Autowired
+    private TpsPersonService tpsPersonService;
 
     @Transactional
     public void deletePersons(List<String> identer) {
@@ -76,6 +80,9 @@ public class PersonService {
         doedsmeldingRepository.deleteByPersonIdIn(personIds);
 
         personRepository.deleteByIdIn(personIds);
+
+        //Wipe persons in TPS
+        tpsPersonService.sendDeletePersonMeldinger(alleIdenter);
 
         identpoolService.recycleIdents(alleIdenter);
     }
