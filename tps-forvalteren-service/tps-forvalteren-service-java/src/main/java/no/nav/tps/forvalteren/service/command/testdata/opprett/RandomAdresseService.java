@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
 
@@ -10,7 +11,7 @@ import javax.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -24,6 +25,7 @@ import no.nav.tps.xjc.ctg.domain.s051.AdresseData;
 import no.nav.tps.xjc.ctg.domain.s051.StatusFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.TpsAdresseData;
 
+@Slf4j
 @Service
 public class RandomAdresseService {
 
@@ -31,8 +33,10 @@ public class RandomAdresseService {
     private HentGyldigeAdresserService hentGyldigeAdresserService;
 
     @Autowired
-    @Setter
     private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Autowired
+    private DummyAdresseService dummyAdresseService;
 
     @Autowired
     public RandomAdresseService(TpsServiceRutineS051Unmarshaller unmarshaller, HentGyldigeAdresserService hentGyldigeAdresserService) {
@@ -68,17 +72,23 @@ public class RandomAdresseService {
             }
         }
 
-        TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(total, kommuneNr, postNr);
-        TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
-        throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
+        try {
+            TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(total, kommuneNr, postNr);
+            TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
+            throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
 
-        List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
+            List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
 
-        List<Adresse> adresser = new ArrayList(adresseDataList.size());
-        for (int i = 0; i < total; i++) {
-            adresser.add(createGateAdresse(adresseDataList.get(i % adresseDataList.size())));
+            List<Adresse> adresser = new ArrayList(adresseDataList.size());
+            for (int i = 0; i < total; i++) {
+                adresser.add(createGateAdresse(adresseDataList.get(i % adresseDataList.size())));
+            }
+            return adresser;
+
+        } catch (RuntimeException e) {
+            log.error("Adresseoppslag med kommunenr {} alt postnr {} feilet: {}", kommuneNr, postNr, e.getMessage());
+            return singletonList(dummyAdresseService.createDummyBoAdresse(null));
         }
-        return adresser;
     }
 
     public List<Person> execute(List<Person> persons) {

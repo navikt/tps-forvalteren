@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -28,7 +27,6 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
@@ -165,12 +163,7 @@ public class ExtractOpprettKriterier {
 
     private List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
 
-        try {
-            return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
-        } catch (TpsfFunctionalException e) {
-            log.warn("Adresseoppslag med type {} og verdi {} feilet {}", adresseNrInfo.getNummertype(), adresseNrInfo.getNummer(), e.getMessage());
-        }
-        return emptyList();
+        return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
     }
 
     private static LocalDateTime extractFlyttedato(Adresse adresse) {
