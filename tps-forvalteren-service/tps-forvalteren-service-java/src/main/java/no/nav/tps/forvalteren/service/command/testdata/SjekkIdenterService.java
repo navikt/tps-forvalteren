@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
+import static no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService.PROD_ENV;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +21,6 @@ import no.nav.tps.forvalteren.service.command.testdata.response.IdentStatusExten
 
 @Service
 public class SjekkIdenterService {
-
-    private static final String PRODLIKE_ENV = "q0";
 
     @Autowired
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -62,7 +61,7 @@ public class SjekkIdenterService {
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
         setStatusOnDifference(gyldigeIdenter, ledigeIdenterDB, identerMedStatus, "Ikke ledig -- ident finnes allerede i database");
 
-        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, newHashSet(PRODLIKE_ENV));
+        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, newHashSet(PROD_ENV));
         Set<String> koorigerteLedigeIdenterIMiljo = identpoolService.whitelistAjustmentOfIdents(gyldigeIdenter, ledigeIdenterDB, ledigeIdenterMiljo);
 
         insertIntoMap(identerMedStatus, koorigerteLedigeIdenterIMiljo, GYLDIG_OG_LEDIG);
@@ -93,7 +92,7 @@ public class SjekkIdenterService {
     private Set<String> finnLedigeIdenterDBOgMiljoOgSetStatus(Map<String, String> identerMedStatus, Set<String> gyldigeIdenter) {
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(gyldigeIdenter);
         // Environment PRODLIKE only verified for existence
-        Set<String> environments = newHashSet(PRODLIKE_ENV);
+        Set<String> environments = newHashSet(PROD_ENV);
         Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(gyldigeIdenter, environments);
 
         Set<String> ledigeIdenterDBOgMiljo = new HashSet<>();

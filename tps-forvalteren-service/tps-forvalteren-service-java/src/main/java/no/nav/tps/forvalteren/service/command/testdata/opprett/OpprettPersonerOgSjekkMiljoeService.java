@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjeng
 @Service
 public class OpprettPersonerOgSjekkMiljoeService {
 
-    private static final String PRODLIKE_ENV = "q0";
+    public static final String PROD_ENV = "p";
 
     @Autowired
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -45,7 +45,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(newHashSet(request.getOpprettFraIdenter()));
 
-        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, Sets.newHashSet(PRODLIKE_ENV));
+        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, Sets.newHashSet(PROD_ENV));
 
         Set<String> ledigeIdenterKorrigert = identpoolService.whitelistAjustmentOfIdents(request.getOpprettFraIdenter(), ledigeIdenterDB, ledigeIdenterMiljo);
 
