@@ -45,11 +45,11 @@ public class TpsPersonService {
 
         Map<String, String> status = new HashMap();
         annenAvgangMeldinger.forEach(skdMelding ->
-                status.putAll(sendSkdMeldingTilGitteMiljoer.execute(annenAvgangMeldinger.toString(), meldingOmAnnenAvgang.resolve(), environments))
+                status.putAll(sendSkdMeldingTilGitteMiljoer.execute(skdMelding.toString(), meldingOmAnnenAvgang.resolve(), environments))
         );
 
         status.forEach((env, msg) -> {
-            if (!msg.matches(OK_MSG)) {
+            if (!msg.matches(OK_MSG) && !msg.contains("Person ikke funnet i TPS")) {
                 log.error("Feilet å slette personer i TPS-miljø {} feilmelding: {}", env, msg);
             }
         });

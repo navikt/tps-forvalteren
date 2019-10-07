@@ -29,10 +29,9 @@ public class AnnenAvgangSkdParameterStrategy implements SkdParametersStrategy {
 
     @Override
     public SkdMeldingTrans1 execute(Person person) {
-        SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-        skdMeldingTrans1.setTildelingskode(hentTildelingskode());
-        addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
+        SkdMeldingTrans1 skdMeldingTrans1 = SkdMeldingTrans1.builder().tildelingskode(hentTildelingskode()).build();
         addDefaultParams(skdMeldingTrans1);
+        addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
         return skdMeldingTrans1;
     }
 
