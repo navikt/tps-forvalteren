@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService.PROD_ENV;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusIkkeFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
 import static org.assertj.core.util.Sets.newHashSet;
@@ -66,13 +67,17 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
 
     private Set<String> filtrerPaaIdenter(Collection<String> identer, Set<String> environments) {
 
-        Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
+        Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, environments.contains(PROD_ENV) ? "A2" : "A0");
 
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
 
         Set<String> tilgjengeligeIdenterAlleMiljoer = newHashSet((Collection<String>) tpsRequestParameters.get("fnr"));
 
+        if (environments.contains(PROD_ENV)) {
+            environments.remove(PROD_ENV);
+            environments.add("q2");
+        }
         for (String miljoe : environments) {
             context.setEnvironment(miljoe);
 
