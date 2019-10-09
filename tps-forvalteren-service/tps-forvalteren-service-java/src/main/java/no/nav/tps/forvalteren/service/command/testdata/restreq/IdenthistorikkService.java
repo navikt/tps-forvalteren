@@ -42,6 +42,7 @@ public class IdenthistorikkService {
                     .historicIdentOrder(1)
                     .regdato(nonNull(identhistorikk) ? identhistorikk.get(i).getRegdato() : null)
                     .build());
+            duplicatedPersons.get(i).setRegdato(nonNull(identhistorikk) ? identhistorikk.get(i).getRegdato() : null);
         }
 
         return personRepository.save(mainPerson);
