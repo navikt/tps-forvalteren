@@ -41,7 +41,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
 
     private TpsServiceRoutineRequest tpsServiceRoutineRequestTom;
     private TpsServiceRoutineResponse tpsResponse2Identer, tpsResponse3Identer;
-    private LinkedHashMap data1, data2, data3,data4;
+    private LinkedHashMap data1, data2, data3, data4;
     private JsonNode jsonNodeTom;
     private ResponseStatus responseStatusDummy;
 
@@ -109,7 +109,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
                 .thenReturn(tpsResponse2Identer);
 
         filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(100), env);
-        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING*2)).sendTpsRequest(any(),any());
+        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING * 2)).sendTpsRequest(any(), any());
     }
 
     @Test
@@ -122,19 +122,19 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         when(tpsRequestSender.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer);
 
-        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(80),env);
-        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING)).sendTpsRequest(any(),any());
+        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(80), env);
+        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING)).sendTpsRequest(any(), any());
 
-        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(81),env);
-        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING + ANTALL_LOOP_I_EN_KJOERING*2)).sendTpsRequest(any(),any());
+        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(81), env);
+        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING + ANTALL_LOOP_I_EN_KJOERING * 2)).sendTpsRequest(any(), any());
 
-        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(160),env);
-        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING*3 + ANTALL_LOOP_I_EN_KJOERING*2)).sendTpsRequest(any(),any());
+        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(160), env);
+        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING * 3 + ANTALL_LOOP_I_EN_KJOERING * 2)).sendTpsRequest(any(), any());
 
-        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(161),env);
-        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING*5 + ANTALL_LOOP_I_EN_KJOERING*3)).sendTpsRequest(any(),any());
+        filtrerPaaIdenterTilgjengeligIMiljo.filtrer(lagIdenterListe(161), env);
+        verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING * 5 + ANTALL_LOOP_I_EN_KJOERING * 3)).sendTpsRequest(any(), any());
     }
-    
+
     private LinkedHashMap createTpsResponseMap2Identer() {
         LinkedHashMap responseMapT1 = new LinkedHashMap();
         responseMapT1.put("status", responseStatusDummy);
@@ -143,7 +143,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         responseMapT1.put("data2", data2);
         return responseMapT1;
     }
-    
+
     @Test
     public void returnererKunIdenterSomErDelAvAlleTpsResponsene() throws Exception {
         env.add("q2");
@@ -171,7 +171,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         when(tpsRequestSender.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2,FNR_3,FNR_4), env);
+        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1, FNR_2, FNR_3, FNR_4), env);
 
         assertThat(filtrerteIdenter, hasItem(FNR_1));
 
@@ -203,7 +203,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         when(tpsRequestSender.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2),env);
+        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1, FNR_2), env);
 
         assertTrue(filtrerteIdenter.isEmpty());
     }
@@ -231,9 +231,9 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         when(tpsRequestSender.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2),env);
+        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1, FNR_2), env);
 
-        assertThat(filtrerteIdenter, hasItems(FNR_1,FNR_2));
+        assertThat(filtrerteIdenter, hasItems(FNR_1, FNR_2));
     }
 
     @Test
@@ -255,14 +255,14 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         when(tpsRequestSender.sendTpsRequest(any(TpsServiceRoutineRequest.class), any(TpsRequestContext.class)))
                 .thenReturn(tpsResponse2Identer, tpsResponse3Identer);
 
-        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1,FNR_2),env);
+        Set<String> filtrerteIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(Arrays.asList(FNR_1, FNR_2), env);
 
         assertTrue(filtrerteIdenter.isEmpty());
     }
 
-    private List<String> lagIdenterListe(int antallIdenter){
+    private List<String> lagIdenterListe(int antallIdenter) {
         List<String> identer = new ArrayList<>();
-        for(int i = 0; i<antallIdenter; i++){
+        for (int i = 0; i < antallIdenter; i++) {
             identer.add(String.valueOf(i));
         }
         return identer;
