@@ -20,7 +20,6 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSender;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsRequestMappingUtils;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
@@ -109,12 +108,12 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
         if (response.getXml().isEmpty()) {
             log.error("Request mot TPS i miljoe {} fikk timeout.  Sjekk av tilgjengelighet på ident i miljoe feilet.", miljoe);
         }
-        LinkedHashMap rep = (LinkedHashMap) response.getResponse();
-        ResponseStatus status = (ResponseStatus) rep.get("status");
+
+        ResponseStatus status = (ResponseStatus) ((LinkedHashMap) response.getResponse()).get("status");
 
         if (TPS_SYSTEM_ERROR_CODE.equals(status.getKode())) {
-            log.error("TPS returnerte SYSTEM ERROR");
-            throw new TpsfTechnicalException("TPS returnerte SYSTEM ERROR");
+            log.error("TPS returnerte SYSTEM ERROR (kode=12) i miljø={}, melding={}, utfyllende melding={}",
+                    miljoe, status.getMelding(), status.getUtfyllendeMelding());
         }
     }
 }
