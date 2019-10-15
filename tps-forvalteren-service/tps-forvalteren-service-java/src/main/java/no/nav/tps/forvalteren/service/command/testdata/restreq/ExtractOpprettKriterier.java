@@ -136,7 +136,7 @@ public class ExtractOpprettKriterier {
         if (!req.getRelasjoner().getPartner().isEmpty()) {
             for (int i = 0; i < partnere.size(); i++) {
                 req.getRelasjoner().getPartner().get(i).setPostadresse(req.getPostadresse());
-                mapperFacade.map(req.getRelasjoner().getPartner(), partnere.get(i));
+                mapperFacade.map(req.getRelasjoner().getPartner().get(i), partnere.get(i));
                 mapBoadresse(partnere.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(partnere.get(i).getBoadresse()));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getPartner().get(i), partnere.get(i));
                 partnere.get(i).setSivilstand(req.getSivilstand());
