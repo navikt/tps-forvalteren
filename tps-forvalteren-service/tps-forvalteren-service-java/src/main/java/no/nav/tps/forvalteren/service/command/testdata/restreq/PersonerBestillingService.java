@@ -81,9 +81,10 @@ public class PersonerBestillingService {
 
         hovedPersoner.forEach(hovedperson ->
                 personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
-        partnere.forEach(partner ->
-                personIdenthistorikkService.prepareIdenthistorikk(partner, request.getRelasjoner().getPartner().getIdentHistorikk()));
-        for (int i = 0; i <barna.size(); i++) {
+        for (int i = 0; i < partnere.size(); i++) {
+            personIdenthistorikkService.prepareIdenthistorikk(partnere.get(i), request.getRelasjoner().getPartner().get(i).getIdentHistorikk());
+        }
+        for (int i = 0; i < barna.size(); i++) {
             personIdenthistorikkService.prepareIdenthistorikk(barna.get(i), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
         }
     }

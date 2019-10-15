@@ -19,6 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
@@ -86,14 +87,15 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractPartnerAllParamsSet() {
 
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setKjonn(KJOENN);
+        partnerRequest.setFoedtEtter(FOEDT_ETTER);
+        partnerRequest.setFoedtFoer(FOEDT_FOER);
+        partnerRequest.setIdenttype(IDENTTYPE);
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-            .partner(RsSimplePersonRequest.builder()
-                    .kjonn(KJOENN)
-                    .foedtEtter(FOEDT_ETTER)
-                    .foedtFoer(FOEDT_FOER)
-                    .identtype(IDENTTYPE)
-                    .build())
+                .partner(singletonList(partnerRequest))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);
@@ -110,8 +112,7 @@ public class ExtractOpprettKriterierTest {
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-            .partner(RsSimplePersonRequest.builder()
-                    .build())
+                .partner(singletonList(new RsPartnerRequest()))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);
@@ -152,7 +153,7 @@ public class ExtractOpprettKriterierTest {
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-            .barn(singletonList(RsSimplePersonRequest.builder().build()))
+                .barn(singletonList(RsSimplePersonRequest.builder().build()))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request);

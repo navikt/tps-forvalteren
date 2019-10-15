@@ -67,15 +67,14 @@ public class ExtractOpprettKriterier {
 
     public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest hovedPersonRequest) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList();
-        if (nonNull(hovedPersonRequest.getRelasjoner().getPartner())) {
-            RsSimplePersonRequest partnerReq = hovedPersonRequest.getRelasjoner().getPartner();
-            RsPersonKriterier kriterium = prepareKriterium(hovedPersonRequest.getRelasjoner().getPartner());
+        List<RsPersonKriterier> kriterier = new ArrayList(hovedPersonRequest.getRelasjoner().getPartner().size());
+        hovedPersonRequest.getRelasjoner().getPartner().forEach(partnerReq -> {
+            RsPersonKriterier kriterium = prepareKriterium(partnerReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(hovedPersonRequest.getRelasjoner().getPartner().getHarMellomnavn(), hovedPersonRequest.getHarMellomnavn()));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), hovedPersonRequest.getHarMellomnavn()));
             kriterier.add(kriterium);
-        }
+        });
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(kriterier)
@@ -85,13 +84,13 @@ public class ExtractOpprettKriterier {
     public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest hovedpersonRequest) {
 
         List<RsPersonKriterier> kriterier = new ArrayList(hovedpersonRequest.getRelasjoner().getBarn().size());
-        for (RsSimplePersonRequest barnRequest : hovedpersonRequest.getRelasjoner().getBarn()) {
-            RsPersonKriterier kriterium = prepareKriterium(barnRequest);
-            kriterium.setFoedtEtter(getProcessedFoedtEtter(barnRequest.getFoedtEtter(), barnRequest.getFoedtFoer(), true));
-            kriterium.setFoedtFoer(getProcessedFoedtFoer(barnRequest.getFoedtEtter(), barnRequest.getFoedtFoer(), true));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnRequest.getHarMellomnavn(), hovedpersonRequest.getHarMellomnavn()));
+        hovedpersonRequest.getRelasjoner().getBarn().forEach(barnReq -> {
+            RsPersonKriterier kriterium = prepareKriterium(barnReq);
+            kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
+            kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), hovedpersonRequest.getHarMellomnavn()));
             kriterier.add(kriterium);
-        }
+        });
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(kriterier)
@@ -134,12 +133,12 @@ public class ExtractOpprettKriterier {
     }
 
     private void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
-        if (nonNull(req.getRelasjoner().getPartner())) {
+        if (!req.getRelasjoner().getPartner().isEmpty()) {
             for (int i = 0; i < partnere.size(); i++) {
-                req.getRelasjoner().getPartner().setPostadresse(req.getPostadresse());
+                req.getRelasjoner().getPartner().get(i).setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getPartner(), partnere.get(i));
                 mapBoadresse(partnere.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(partnere.get(i).getBoadresse()));
-                ammendDetailedPersonAttributes(req.getRelasjoner().getPartner(), partnere.get(i));
+                ammendDetailedPersonAttributes(req.getRelasjoner().getPartner().get(i), partnere.get(i));
                 partnere.get(i).setSivilstand(req.getSivilstand());
                 partnere.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
             }

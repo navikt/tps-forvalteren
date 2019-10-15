@@ -1,7 +1,11 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
+import static org.hamcrest.CoreMatchers.both;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +14,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.both;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.Assert.assertThat;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonerBestillingServiceTest {
@@ -256,5 +256,4 @@ public class PersonerBestillingServiceTest {
                 hasProperty("relasjonTypeNavn", equalTo(RelasjonType.FAR.getName())))
         ));
     }
-
 }
