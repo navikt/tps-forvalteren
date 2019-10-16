@@ -95,7 +95,7 @@ public class ExtractOpprettKriterierTest {
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(partnerRequest))
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);
@@ -112,7 +112,7 @@ public class ExtractOpprettKriterierTest {
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(new RsPartnerRequest()))
+                .partnere(singletonList(new RsPartnerRequest()))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);

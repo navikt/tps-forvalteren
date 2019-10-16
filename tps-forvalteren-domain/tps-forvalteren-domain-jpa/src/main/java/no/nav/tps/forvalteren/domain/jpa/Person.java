@@ -80,6 +80,9 @@ public class Person extends ChangeStamp {
     @Column(name = "SIVILSTAND", length = 4)
     private String sivilstand;
 
+    @Column(name ="SIVILSTAND_REGDATO")
+    private LocalDateTime sivilstandRegdato;
+
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
     private String innvandretFraLand;
 

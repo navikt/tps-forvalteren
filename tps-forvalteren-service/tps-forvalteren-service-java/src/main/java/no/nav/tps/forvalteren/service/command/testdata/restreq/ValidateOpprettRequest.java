@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
@@ -25,6 +26,9 @@ public class ValidateOpprettRequest {
     @Autowired
     private MessageProvider messageProvider;
 
+    @Autowired
+    private ValidateSivilstandService validateSivilstandService;
+
     public void validate(RsPersonBestillingKriteriumRequest request) {
 
         validate(request.getAntall(), request.getOpprettFraIdenter());
@@ -34,22 +38,26 @@ public class ValidateOpprettRequest {
         validateKjoenn(request.getKjonn());
         validateUtvandret(request);
 
-        if (!request.getRelasjoner().getPartner().isEmpty()) {
-            request.getRelasjoner().getPartner().forEach(partner -> {
-                validateDatoFoedtEtter(partner.getFoedtEtter());
-                validateDatoFoedtFoer(partner.getFoedtFoer());
-                validateDatoIntervall(partner.getFoedtEtter(), partner.getFoedtFoer());
-                validateKjoenn(partner.getKjonn());
-            });
-        }
+        validatePartner(request.getRelasjoner().getPartner());
+        request.getRelasjoner().getPartnere().forEach(partner ->
+                validatePartner(partner));
 
-        if (!request.getRelasjoner().getBarn().isEmpty()) {
-            request.getRelasjoner().getBarn().forEach(barn -> {
-                validateDatoFoedtEtter(barn.getFoedtEtter());
-                validateDatoFoedtFoer(barn.getFoedtFoer());
-                validateDatoIntervall(barn.getFoedtEtter(), barn.getFoedtFoer());
-                validateKjoenn(barn.getKjonn());
-            });
+        request.getRelasjoner().getBarn().forEach(barn -> {
+            validateDatoFoedtEtter(barn.getFoedtEtter());
+            validateDatoFoedtFoer(barn.getFoedtFoer());
+            validateDatoIntervall(barn.getFoedtEtter(), barn.getFoedtFoer());
+            validateKjoenn(barn.getKjonn());
+        });
+
+        validateSivilstandService.validateStatus(request);
+    }
+
+    private void validatePartner(RsPartnerRequest partner) {
+        if (nonNull(partner)) {
+            validateDatoFoedtEtter(partner.getFoedtEtter());
+            validateDatoFoedtFoer(partner.getFoedtFoer());
+            validateDatoIntervall(partner.getFoedtEtter(), partner.getFoedtFoer());
+            validateKjoenn(partner.getKjonn());
         }
     }
 
@@ -63,7 +71,7 @@ public class ValidateOpprettRequest {
                 throw new TpsfFunctionalException(messageProvider.get(UGYLDIG_IDENTTYPE));
             }
         });
-        request.getRelasjoner().getPartner().forEach(partner -> {
+        request.getRelasjoner().getPartnere().forEach(partner -> {
             if (nonNull(partner.getUtvandretTilLand()) && nonNull(partner.getIdenttype()) &&
                     !FNR.name().equals(partner.getIdenttype())) {
                 throw new TpsfFunctionalException(messageProvider.get(UGYLDIG_IDENTTYPE));

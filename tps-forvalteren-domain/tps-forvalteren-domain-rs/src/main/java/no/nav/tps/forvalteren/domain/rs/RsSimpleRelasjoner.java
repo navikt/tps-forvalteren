@@ -18,15 +18,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsSimpleRelasjoner {
 
-    private List<RsPartnerRequest> partner;
+    private RsPartnerRequest partner;
+    private List<RsPartnerRequest> partnere;
 
     private List<RsSimplePersonRequest> barn;
 
-    public List<RsPartnerRequest> getPartner() {
-        if (isNull(partner)) {
-            partner = new ArrayList();
+    public List<RsPartnerRequest> getPartnere() {
+        if (isNull(partnere)) {
+            partnere = new ArrayList();
         }
-        return partner;
+        return partnere;
     }
 
     public List<RsSimplePersonRequest> getBarn() {

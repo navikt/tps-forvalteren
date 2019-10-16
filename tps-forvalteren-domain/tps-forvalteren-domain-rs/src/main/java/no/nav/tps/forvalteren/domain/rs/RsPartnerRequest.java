@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import java.time.LocalDateTime;
+import static java.util.Objects.isNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +16,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsPartnerRequest extends RsSimplePersonRequest{
 
-    private String sivilstand;
-    private LocalDateTime sivilstandDato;
+    private List<RsSivilstand> sivilstander;
+
+    public List<RsSivilstand> getSivilstander() {
+        if (isNull(sivilstander)) {
+            sivilstander = new ArrayList();
+        }
+        return sivilstander;
+    }
 }

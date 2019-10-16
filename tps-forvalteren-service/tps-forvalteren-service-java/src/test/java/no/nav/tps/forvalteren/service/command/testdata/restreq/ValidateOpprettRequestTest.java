@@ -39,6 +39,9 @@ public class ValidateOpprettRequestTest {
     @Mock
     private MessageProvider messageProvider;
 
+    @Mock
+    private ValidateSivilstandService validateSivilstandService;
+
     @InjectMocks
     private ValidateOpprettRequest validateOpprettRequest;
 
@@ -127,7 +130,7 @@ public class ValidateOpprettRequestTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(partnerRequest))
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -145,7 +148,7 @@ public class ValidateOpprettRequestTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(partnerRequest))
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -164,7 +167,7 @@ public class ValidateOpprettRequestTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(partnerRequest))
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -182,7 +185,7 @@ public class ValidateOpprettRequestTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(partnerRequest))
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -368,7 +371,7 @@ public class ValidateOpprettRequestTest {
         request.setAntall(1);
         request.setUtvandretTilLand("CAN");
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(singletonList(partnerRequest)
+                .partnere(singletonList(partnerRequest)
                 ).build());
 
         validateOpprettRequest.validate(request);

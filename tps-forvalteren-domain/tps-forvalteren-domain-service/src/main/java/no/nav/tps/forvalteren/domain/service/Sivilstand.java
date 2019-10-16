@@ -35,7 +35,15 @@ public enum  Sivilstand {
         return kode;
     }
 
+    public String getKodeverkskode() {
+        return kodeverkskode;
+    }
+
     public static Sivilstand lookup(String kode) {
         return map.getOrDefault(kode, UGIFT);
+    }
+
+    public static boolean exists(String kode) {
+        return map.containsKey(kode);
     }
 }
