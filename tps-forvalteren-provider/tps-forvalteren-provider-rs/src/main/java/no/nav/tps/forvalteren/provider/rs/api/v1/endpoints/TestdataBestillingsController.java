@@ -157,8 +157,8 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "deletePersons", notes = "kommaseparert liste med identer")
-    public void slettPersoner(@RequestParam String identer) {
-        personService.deletePersons(newArrayList(identer.split(",")));
+    public void slettPersoner(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam String identer) {
+        personService.deletePersons(miljoer, newArrayList(identer.split(",")));
     }
 
     @LogExceptions

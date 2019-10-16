@@ -7,6 +7,7 @@ import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +61,7 @@ public class PersonServiceTest {
     @Test(expected = NotFoundException.class)
     public void deletePersons_NotFound() {
 
-        personService.deletePersons(newArrayList(IDENT1));
+        personService.deletePersons(new ArrayList<>(), newArrayList(IDENT1));
     }
 
     @Test
@@ -75,13 +76,13 @@ public class PersonServiceTest {
         gateadresse.setId(ID);
         when(adresseRepository.findAdresseByPersonIdIn(anyList())).thenReturn(Optional.of(newArrayList(gateadresse)));
 
-        personService.deletePersons(newArrayList(IDENT1));
+        personService.deletePersons(new ArrayList<>(), newArrayList(IDENT1));
 
         verify(relasjonRepository).deleteByIdIn(anySet());
         verify(adresseRepository).deleteByIdIn(anyList());
         verify(doedsmeldingRepository).deleteByPersonIdIn(anyList());
         verify(personRepository).deleteByIdIn(anyList());
-        verify(tpsPersonService).sendDeletePersonMeldinger(anySet());
+        verify(tpsPersonService).sendDeletePersonMeldinger(anyList() ,anySet());
         verify(identpoolService).recycleIdents(anySet());
     }
 
