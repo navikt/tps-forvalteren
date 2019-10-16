@@ -46,7 +46,7 @@ public class PersonService {
     private TpsPersonService tpsPersonService;
 
     @Transactional
-    public void deletePersons(List<String> identer) {
+    public void deletePersons(List<String> miljoer, List<String> identer) {
 
         Set<String> alleIdenter = new HashSet<>(identer);
 
@@ -82,7 +82,7 @@ public class PersonService {
         personRepository.deleteByIdIn(personIds);
 
         //Wipe persons in TPS
-        tpsPersonService.sendDeletePersonMeldinger(alleIdenter);
+        tpsPersonService.sendDeletePersonMeldinger(miljoer, alleIdenter);
 
         identpoolService.recycleIdents(alleIdenter);
     }
