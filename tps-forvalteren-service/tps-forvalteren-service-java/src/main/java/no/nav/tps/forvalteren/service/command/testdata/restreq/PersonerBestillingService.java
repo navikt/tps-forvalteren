@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Objects.isNull;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
@@ -103,33 +104,29 @@ public class PersonerBestillingService {
         return sorted;
     }
 
-    protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnerListe, List<Person> barn) {
-        int antallbarn = (barn == null || barn.isEmpty()) ? 0 : barn.size() / personer.size();
+    protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnere, List<Person> barn) {
+
+        int antallBarn = barn.isEmpty() ? 0 : barn.size() / personer.size();
+        int antallPartnere = partnere.isEmpty() ? 0 : partnere.size() / personer.size();
 
         for (int i = 0; i < personer.size(); i++) {
-            Person person = personer.get(i);
-            person.setRelasjoner(new ArrayList<>());
-            Person partner = null;
 
-            if (!partnerListe.isEmpty()) {
-                partner = partnerListe.get(i);
-                partner.setRelasjoner(new ArrayList<>());
-
-                lagPartnerRelasjon(person, partner);
+            for (int j = 0; j < antallPartnere; j++) {
+                int startIndexPartner = i * antallPartnere;
+                lagPartnerRelasjon(personer.get(i), partnere.get(startIndexPartner + j));
             }
 
-            for (int j = 0; j < antallbarn; j++) {
-                int startIndexBarn = i * antallbarn;
-                Person barnet = barn.get(startIndexBarn + j);
-                setBarnRelasjon(person, partner, barnet);
+            for (int j = 0; j < antallBarn; j++) {
+                int startIndexBarn = i * antallBarn;
+                int startIndexPartner = i * antallPartnere;
+                setBarnRelasjon(personer.get(i),
+                        antallPartnere != 0 ? partnere.get(startIndexPartner + (j % antallPartnere)) : null,
+                        barn.get(startIndexBarn + j));
             }
         }
     }
 
     private static void setBarnRelasjon(Person forelder, Person barn) {
-        if (forelder == null || barn == null) {
-            return;
-        }
 
         if (isMann(forelder)) {
             setFarBarnRelasjonMedInnvadring(forelder, barn);
@@ -141,7 +138,8 @@ public class PersonerBestillingService {
     }
 
     private static void setBarnRelasjon(Person person, Person partner, Person barn) {
-        if (partner == null) {
+
+        if (isNull(partner)) {
             setBarnRelasjon(person, barn);
             return;
         }
@@ -195,7 +193,7 @@ public class PersonerBestillingService {
     }
 
     private static void lagPartnerRelasjon(Person person, Person partner) {
-        person.getRelasjoner().add(new Relasjon(person, partner, RelasjonType.EKTEFELLE.getName()));
-        partner.getRelasjoner().add(new Relasjon(partner, person, RelasjonType.EKTEFELLE.getName()));
+        person.getRelasjoner().add(new Relasjon(person, partner, RelasjonType.PARTNER.getName()));
+        partner.getRelasjoner().add(new Relasjon(partner, person, RelasjonType.PARTNER.getName()));
     }
 }
