@@ -63,6 +63,7 @@ public class PersonerBestillingService {
 
             setIdenthistorikkPaaPersoner(personKriteriumRequest, hovedPersoner, partnere, barn);
             setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
+            setSivilstandHistorikkPaaPersoner(personKriteriumRequest, hovedPersoner, partnere, barn);
         } else {
             hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest);
         }
@@ -78,6 +79,11 @@ public class PersonerBestillingService {
         }
     }
 
+    private void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest personKriteriumRequest, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
+
+
+    }
+
     private void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
 
         hovedPersoner.forEach(hovedperson ->
@@ -91,6 +97,7 @@ public class PersonerBestillingService {
     }
 
     private static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
+
         List<Person> sorted = new ArrayList<>();
         if (!personer.isEmpty()) {
             for (Person person : personer) {

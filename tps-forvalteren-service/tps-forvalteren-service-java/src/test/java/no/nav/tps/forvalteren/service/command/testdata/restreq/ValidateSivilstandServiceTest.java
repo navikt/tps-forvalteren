@@ -67,7 +67,7 @@ public class ValidateSivilstandServiceTest {
         when(messageProvider.get("bestilling.input.validation.sivilstand.ugyldig-kode", UGYLDIG))
                 .thenReturn("Sivilstand '" + UGYLDIG + "' er ugyldig.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.datoer"))
-                .thenReturn(("Dato-sivilstand kan ikke overlappe forrige dato-sivilstand -- må minst være to dager i mellom."));
+                .thenReturn("Dato-sivilstand kan ikke overlappe forrige dato-sivilstand -- må minst være to dager i mellom.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.regdato.required.multiple"))
                 .thenReturn("Ved flere partnere må sivilstand regdato oppgis per partner.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.regdato.multiple"))
@@ -121,12 +121,12 @@ public class ValidateSivilstandServiceTest {
         expectedException.expectMessage("Sivilstand kan ikke være UGIFT etter annen sivilstand.");
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(newArrayList(RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
+        partnerRequest.setSivilstander(newArrayList(RsSivilstand.builder().sivilstand(UGIFT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build(),
                 RsSivilstand.builder()
-                        .sivilstand(UGIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
+                        .sivilstand(GIFT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build()
         ));
 
@@ -144,15 +144,15 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2014, 1, 1, 0, 0))
-                        .build(),
-                RsSivilstand.builder()
-                        .sivilstand(SKILT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2017, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build(),
                 RsSivilstand.builder()
                         .sivilstand(SEPARERT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2017, 1, 1, 0, 0))
+                        .build(),
+                RsSivilstand.builder()
+                        .sivilstand(SKILT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2014, 1, 1, 0, 0))
                         .build()
         ));
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
@@ -227,10 +227,10 @@ public class ValidateSivilstandServiceTest {
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
                 RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build(),
                 RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build()
         ));
 
@@ -280,6 +280,41 @@ public class ValidateSivilstandServiceTest {
 
         validateSivilstandService.validateStatus(request);
     }
+
+    @Test
+    public void validate_throwErrorWhenDatesOverlapMultiplePartners() {
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage("Dato-sivilstand kan ikke overlappe forrige dato-sivilstand -- må minst være to dager i mellom.");
+
+        RsPartnerRequest partner1Request = new RsPartnerRequest();
+        partner1Request.setSivilstander(newArrayList(
+                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
+                        .build(),
+                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2019, 1, 2, 0, 0))
+                        .build()
+        ));
+
+        RsPartnerRequest partner2Request = new RsPartnerRequest();
+        partner2Request.setSivilstander(newArrayList(
+                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2017, 1, 1, 0, 0))
+                        .build(),
+                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                        .sivilstandRegdato(LocalDateTime.of(2019, 1, 2, 0, 0))
+                        .build()
+        ));
+
+
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.getRelasjoner().getPartnere().addAll(newArrayList(partner1Request, partner2Request));
+
+        validateSivilstandService.validateStatus(request);
+    }
+
+
 
     @Test
     public void validate_throwErrorWhenDateIsMisssingSamePartner() {
