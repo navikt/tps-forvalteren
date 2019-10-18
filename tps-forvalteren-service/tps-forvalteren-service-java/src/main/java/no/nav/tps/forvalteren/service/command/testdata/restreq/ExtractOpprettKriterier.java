@@ -51,28 +51,28 @@ public class ExtractOpprettKriterier {
     @Autowired
     private DummyAdresseService dummyAdresseService;
 
-    public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest req) {
+    public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest request) {
 
         return RsPersonKriteriumRequest.builder()
                 .personKriterierListe(singletonList(RsPersonKriterier.builder()
-                        .antall(nonNull(req.getAntall()) && req.getAntall() > 0 ? req.getAntall() : 1)
-                        .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
-                        .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
-                        .foedtEtter(getProcessedFoedtEtter(req.getFoedtEtter(), req.getFoedtFoer(), false))
-                        .foedtFoer(getProcessedFoedtFoer(req.getFoedtEtter(), req.getFoedtFoer(), false))
-                        .harMellomnavn(req.getHarMellomnavn())
+                        .antall(nonNull(request.getAntall()) && request.getAntall() > 0 ? request.getAntall() : 1)
+                        .identtype(nullcheckSetDefaultValue(request.getIdenttype(), "FNR"))
+                        .kjonn(nullcheckSetDefaultValue(request.getKjonn(), "U"))
+                        .foedtEtter(getProcessedFoedtEtter(request.getFoedtEtter(), request.getFoedtFoer(), false))
+                        .foedtFoer(getProcessedFoedtFoer(request.getFoedtEtter(), request.getFoedtFoer(), false))
+                        .harMellomnavn(request.getHarMellomnavn())
                         .build()))
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest hovedPersonRequest) {
+    public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList(hovedPersonRequest.getRelasjoner().getPartnere().size());
-        hovedPersonRequest.getRelasjoner().getPartnere().forEach(partnerReq -> {
+        List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getPartnere().size());
+        request.getRelasjoner().getPartnere().forEach(partnerReq -> {
             RsPersonKriterier kriterium = prepareKriterium(partnerReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), hovedPersonRequest.getHarMellomnavn()));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), request.getHarMellomnavn()));
             kriterier.add(kriterium);
         });
 
@@ -81,14 +81,14 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest hovedpersonRequest) {
+    public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList(hovedpersonRequest.getRelasjoner().getBarn().size());
-        hovedpersonRequest.getRelasjoner().getBarn().forEach(barnReq -> {
+        List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getBarn().size());
+        request.getRelasjoner().getBarn().forEach(barnReq -> {
             RsPersonKriterier kriterium = prepareKriterium(barnReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), hovedpersonRequest.getHarMellomnavn()));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), request.getHarMellomnavn()));
             kriterier.add(kriterium);
         });
 

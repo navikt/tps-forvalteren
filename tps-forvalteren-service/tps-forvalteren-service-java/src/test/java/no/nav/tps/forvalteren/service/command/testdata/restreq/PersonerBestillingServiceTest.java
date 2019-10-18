@@ -7,6 +7,8 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
+import static no.nav.tps.forvalteren.domain.service.Sivilstand.GIFT;
+import static no.nav.tps.forvalteren.domain.service.Sivilstand.SKILT;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -14,6 +16,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,10 +24,18 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstand;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonerBestillingServiceTest {
+
+    private static final LocalDateTime DATO_1 = LocalDateTime.of(2000, 1, 1, 0, 0);
+    private static final LocalDateTime DATO_2 = LocalDateTime.of(2005, 1, 1, 0, 0);
+    private static final LocalDateTime DATO_3 = LocalDateTime.of(2010, 1, 1, 0, 0);
+    private static final LocalDateTime DATO_4 = LocalDateTime.of(2015, 1, 1, 0, 0);
 
     @InjectMocks
     PersonerBestillingService service;
@@ -223,6 +234,116 @@ public class PersonerBestillingServiceTest {
 
         assertRelasjon(barn6, kvinne, MOR);
         assertRelasjon(barn6, partner3, FAR);
+    }
+
+    @Test
+    public void setIdenthistorikkPaaPersonOgPartner() {
+
+        Person person = Person.builder().kjonn("M").build();
+        Person partner = Person.builder().kjonn("K").build();
+        Person barn = Person.builder().kjonn("M").build();
+
+        service.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn));
+
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setSivilstander(asList(RsSivilstand.builder()
+                        .sivilstand(SKILT.getKodeverkskode())
+                        .sivilstandRegdato(DATO_3)
+                        .build(),
+                RsSivilstand.builder()
+                        .sivilstand(GIFT.getKodeverkskode())
+                        .sivilstandRegdato(DATO_2)
+                        .build()
+        ));
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.getRelasjoner().getPartnere().add(partnerRequest);
+
+        service.setSivilstandHistorikkPaaPersoner(request, asList(person));
+
+        assertThat(person.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(partner)));
+        assertThat(person.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
+        assertThat(person.getSivilstander().get(0).getSivilstandRegdato(), is(equalTo(DATO_3)));
+
+        assertThat(person.getSivilstander().get(1).getPersonRelasjonMed(), is(equalTo(partner)));
+        assertThat(person.getSivilstander().get(1).getSivilstand(), is(equalTo(GIFT.getKodeverkskode())));
+        assertThat(person.getSivilstander().get(1).getSivilstandRegdato(), is(equalTo(DATO_2)));
+
+        assertThat(partner.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(person)));
+        assertThat(partner.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
+        assertThat(partner.getSivilstander().get(0).getSivilstandRegdato(), is(equalTo(DATO_3)));
+
+        assertThat(partner.getSivilstander().get(1).getPersonRelasjonMed(), is(equalTo(person)));
+        assertThat(partner.getSivilstander().get(1).getSivilstand(), is(equalTo(GIFT.getKodeverkskode())));
+        assertThat(partner.getSivilstander().get(1).getSivilstandRegdato(), is(equalTo(DATO_2)));
+    }
+
+    @Test
+    public void setIdenthistorikkPaaPersonSomHarFlerePartnere() {
+
+        Person person = Person.builder().kjonn("M").build();
+        Person partner1 = Person.builder().kjonn("K").build();
+        Person partner2 = Person.builder().kjonn("K").build();
+        Person barn1 = Person.builder().kjonn("M").build();
+        Person barn2 = Person.builder().kjonn("M").build();
+
+        service.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2));
+
+        RsPartnerRequest partner1Request = new RsPartnerRequest();
+        partner1Request.setSivilstander(asList(RsSivilstand.builder()
+                        .sivilstand(SKILT.getKodeverkskode())
+                        .sivilstandRegdato(DATO_4)
+                        .build(),
+                RsSivilstand.builder()
+                        .sivilstand(GIFT.getKodeverkskode())
+                        .sivilstandRegdato(DATO_3)
+                        .build()
+        ));
+        RsPartnerRequest partner2Request = new RsPartnerRequest();
+        partner2Request.setSivilstander(asList(RsSivilstand.builder()
+                        .sivilstand(SKILT.getKodeverkskode())
+                        .sivilstandRegdato(DATO_2)
+                        .build(),
+                RsSivilstand.builder()
+                        .sivilstand(GIFT.getKodeverkskode())
+                        .sivilstandRegdato(DATO_1)
+                        .build()
+        ));
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.getRelasjoner().getPartnere().addAll(asList(partner1Request, partner2Request));
+
+        service.setSivilstandHistorikkPaaPersoner(request, asList(person));
+
+        assertThat(person.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(partner1)));
+        assertThat(person.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
+        assertThat(person.getSivilstander().get(0).getSivilstandRegdato(), is(equalTo(DATO_4)));
+
+        assertThat(person.getSivilstander().get(1).getPersonRelasjonMed(), is(equalTo(partner1)));
+        assertThat(person.getSivilstander().get(1).getSivilstand(), is(equalTo(GIFT.getKodeverkskode())));
+        assertThat(person.getSivilstander().get(1).getSivilstandRegdato(), is(equalTo(DATO_3)));
+
+        assertThat(person.getSivilstander().get(2).getPersonRelasjonMed(), is(equalTo(partner2)));
+        assertThat(person.getSivilstander().get(2).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
+        assertThat(person.getSivilstander().get(2).getSivilstandRegdato(), is(equalTo(DATO_2)));
+
+        assertThat(person.getSivilstander().get(3).getPersonRelasjonMed(), is(equalTo(partner2)));
+        assertThat(person.getSivilstander().get(3).getSivilstand(), is(equalTo(GIFT.getKodeverkskode())));
+        assertThat(person.getSivilstander().get(3).getSivilstandRegdato(), is(equalTo(DATO_1)));
+
+        assertThat(partner1.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(person)));
+        assertThat(partner1.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
+        assertThat(partner1.getSivilstander().get(0).getSivilstandRegdato(), is(equalTo(DATO_4)));
+
+        assertThat(partner1.getSivilstander().get(1).getPersonRelasjonMed(), is(equalTo(person)));
+        assertThat(partner1.getSivilstander().get(1).getSivilstand(), is(equalTo(GIFT.getKodeverkskode())));
+        assertThat(partner1.getSivilstander().get(1).getSivilstandRegdato(), is(equalTo(DATO_3)));
+
+        assertThat(partner2.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(person)));
+        assertThat(partner2.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
+        assertThat(partner2.getSivilstander().get(0).getSivilstandRegdato(), is(equalTo(DATO_2)));
+
+        assertThat(partner2.getSivilstander().get(1).getPersonRelasjonMed(), is(equalTo(person)));
+        assertThat(partner2.getSivilstander().get(1).getSivilstand(), is(equalTo(GIFT.getKodeverkskode())));
+        assertThat(partner2.getSivilstander().get(1).getSivilstandRegdato(), is(equalTo(DATO_1)));
     }
 
     private static void assertRelasjon(Person relasjon1, Person relasjon2, RelasjonType type) {

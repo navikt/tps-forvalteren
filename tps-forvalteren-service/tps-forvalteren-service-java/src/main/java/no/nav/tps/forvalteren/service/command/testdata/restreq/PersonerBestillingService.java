@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
@@ -41,34 +43,37 @@ public class PersonerBestillingService {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
-        validateOpprettRequest.validate(personKriteriumRequest);
+    public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest request) {
+        validateOpprettRequest.validate(request);
 
         List<Person> hovedPersoner;
         List<Person> partnere = new ArrayList<>();
         List<Person> barn = new ArrayList<>();
-        if (personKriteriumRequest.getOpprettFraIdenter().isEmpty()) {
-            RsPersonKriteriumRequest personKriterier = extractMainPerson(personKriteriumRequest);
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(personKriteriumRequest);
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(personKriteriumRequest);
+        if (request.getOpprettFraIdenter().isEmpty()) {
+            RsPersonKriteriumRequest personKriterier = extractMainPerson(request);
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
 
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
-            if (!personKriteriumRequest.getRelasjoner().getPartnere().isEmpty()) {
+            if (nonNull(request.getRelasjoner().getPartner()) || !request.getRelasjoner().getPartnere().isEmpty()) {
+                if (nonNull(request.getRelasjoner().getPartner())) {
+                    request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
+                }
                 partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
             }
-            if (!personKriteriumRequest.getRelasjoner().getBarn().isEmpty()) {
+            if (!request.getRelasjoner().getBarn().isEmpty()) {
                 barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
             }
 
-            setIdenthistorikkPaaPersoner(personKriteriumRequest, hovedPersoner, partnere, barn);
+            setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
             setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
-            setSivilstandHistorikkPaaPersoner(personKriteriumRequest, hovedPersoner, partnere, barn);
+            setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
         } else {
-            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest);
+            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
         }
 
-        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(personKriteriumRequest, hovedPersoner, partnere, barn);
+        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
@@ -79,9 +84,35 @@ public class PersonerBestillingService {
         }
     }
 
-    private void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest personKriteriumRequest, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
+    protected void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> personer) {
 
+        personer.forEach(person -> {
+            int partnerNumber = 0;
+            for (int i = 0; i < person.getRelasjoner().size(); i++) {
 
+                if (RelasjonType.PARTNER.name().equals(person.getRelasjoner().get(i).getRelasjonTypeNavn())) {
+                    for (int j = 0; j < request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().size(); j++) {
+
+                        person.getSivilstander().add(Sivilstand.builder()
+                                .person(person)
+                                .personRelasjonMed(person.getRelasjoner().get(i).getPersonRelasjonMed())
+                                .sivilstand(request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstand())
+                                .sivilstandRegdato(request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstandRegdato())
+                                .build());
+
+                        person.getRelasjoner().get(i).getPersonRelasjonMed().getSivilstander()
+                                .add(Sivilstand.builder()
+                                        .person(person.getRelasjoner().get(i).getPersonRelasjonMed())
+                                        .personRelasjonMed(person)
+                                        .sivilstand(request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstand())
+                                        .sivilstandRegdato(request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstandRegdato())
+                                        .build());
+                    }
+
+                    partnerNumber++;
+                }
+            }
+        });
     }
 
     private void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
