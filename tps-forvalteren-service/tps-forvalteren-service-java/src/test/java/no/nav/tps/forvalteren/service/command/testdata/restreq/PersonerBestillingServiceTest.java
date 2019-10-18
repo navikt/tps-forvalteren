@@ -25,7 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSivilstand;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
 
@@ -246,11 +246,11 @@ public class PersonerBestillingServiceTest {
         service.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn));
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(asList(RsSivilstand.builder()
+        partnerRequest.setSivilstander(asList(RsSivilstandRequest.builder()
                         .sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(DATO_3)
                         .build(),
-                RsSivilstand.builder()
+                RsSivilstandRequest.builder()
                         .sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(DATO_2)
                         .build()
@@ -289,21 +289,21 @@ public class PersonerBestillingServiceTest {
         service.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2));
 
         RsPartnerRequest partner1Request = new RsPartnerRequest();
-        partner1Request.setSivilstander(asList(RsSivilstand.builder()
+        partner1Request.setSivilstander(asList(RsSivilstandRequest.builder()
                         .sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(DATO_4)
                         .build(),
-                RsSivilstand.builder()
+                RsSivilstandRequest.builder()
                         .sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(DATO_3)
                         .build()
         ));
         RsPartnerRequest partner2Request = new RsPartnerRequest();
-        partner2Request.setSivilstander(asList(RsSivilstand.builder()
+        partner2Request.setSivilstander(asList(RsSivilstandRequest.builder()
                         .sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(DATO_2)
                         .build(),
-                RsSivilstand.builder()
+                RsSivilstandRequest.builder()
                         .sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(DATO_1)
                         .build()

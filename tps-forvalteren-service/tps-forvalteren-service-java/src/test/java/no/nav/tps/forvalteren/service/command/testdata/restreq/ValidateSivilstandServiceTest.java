@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSivilstand;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.ValidateSivilstandService;
@@ -81,12 +81,12 @@ public class ValidateSivilstandServiceTest {
         expectedException.expectMessage("Kun EN av relasjonene \"partner\" eller \"partnere\" benyttes ved bestilling");
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(singletonList(RsSivilstand.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
+        partnerRequest.setSivilstander(singletonList(RsSivilstandRequest.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
                 .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                 .build()));
 
         RsPartnerRequest partnerRequest1 = new RsPartnerRequest();
-        partnerRequest1.setSivilstander(singletonList(RsSivilstand.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
+        partnerRequest1.setSivilstander(singletonList(RsSivilstandRequest.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
                 .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                 .build()));
 
@@ -104,7 +104,7 @@ public class ValidateSivilstandServiceTest {
         expectedException.expectMessage("Partner er ikke støttet etter 1. januar 2009.");
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(singletonList(RsSivilstand.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
+        partnerRequest.setSivilstander(singletonList(RsSivilstandRequest.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
                 .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                 .build()));
 
@@ -121,10 +121,10 @@ public class ValidateSivilstandServiceTest {
         expectedException.expectMessage("Sivilstand kan ikke være UGIFT etter annen sivilstand.");
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(newArrayList(RsSivilstand.builder().sivilstand(UGIFT.getKodeverkskode())
+        partnerRequest.setSivilstander(newArrayList(RsSivilstandRequest.builder().sivilstand(UGIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder()
+                RsSivilstandRequest.builder()
                         .sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build()
@@ -143,14 +143,14 @@ public class ValidateSivilstandServiceTest {
         expectedException.expectMessage("Sivilstand SEPARERT kan ikke komme etter SKILT.");
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(newArrayList(RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+        partnerRequest.setSivilstander(newArrayList(RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder()
+                RsSivilstandRequest.builder()
                         .sivilstand(SEPARERT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2017, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder()
+                RsSivilstandRequest.builder()
                         .sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2014, 1, 1, 0, 0))
                         .build()
@@ -169,7 +169,7 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(ENKE_ELLER_ENKEMANN.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(ENKE_ELLER_ENKEMANN.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build()
         ));
@@ -188,7 +188,7 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build()
         ));
@@ -207,7 +207,7 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(SEPARERT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(SEPARERT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build()
         ));
@@ -226,10 +226,10 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build()
         ));
@@ -248,7 +248,7 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(UGYLDIG)
+                RsSivilstandRequest.builder().sivilstand(UGYLDIG)
                         .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build()
         ));
@@ -267,10 +267,10 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 2, 0, 0))
                         .build()
         ));
@@ -289,20 +289,20 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partner1Request = new RsPartnerRequest();
         partner1Request.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 2, 0, 0))
                         .build()
         ));
 
         RsPartnerRequest partner2Request = new RsPartnerRequest();
         partner2Request.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2017, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 2, 0, 0))
                         .build()
         ));
@@ -324,10 +324,10 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build(),
-                RsSivilstand.builder().sivilstand(SKILT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(SKILT.getKodeverkskode())
                         .build()
         ));
 
@@ -345,13 +345,13 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(singletonList(
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build()
         ));
         RsPartnerRequest partner2Request = new RsPartnerRequest();
         partner2Request.setSivilstander(singletonList(
-                RsSivilstand.builder().sivilstand(GIFT.getKodeverkskode())
+                RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .build()
         ));
 

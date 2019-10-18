@@ -16,5 +16,8 @@ import lombok.Setter;
 public class RsSivilstand {
 
     private String sivilstand;
+
     private LocalDateTime sivilstandRegdato;
+
+    private RsSimplePerson personRelasjonMed;
 }

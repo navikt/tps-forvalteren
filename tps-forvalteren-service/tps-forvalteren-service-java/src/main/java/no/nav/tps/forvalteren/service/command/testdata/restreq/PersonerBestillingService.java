@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
@@ -56,10 +55,7 @@ public class PersonerBestillingService {
 
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
-            if (nonNull(request.getRelasjoner().getPartner()) || !request.getRelasjoner().getPartnere().isEmpty()) {
-                if (nonNull(request.getRelasjoner().getPartner())) {
-                    request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
-                }
+            if (!request.getRelasjoner().getPartnere().isEmpty()) {
                 partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
             }
             if (!request.getRelasjoner().getBarn().isEmpty()) {

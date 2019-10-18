@@ -16,9 +16,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsPartnerRequest extends RsSimplePersonRequest{
 
-    private List<RsSivilstand> sivilstander;
+    private List<RsSivilstandRequest> sivilstander;
 
-    public List<RsSivilstand> getSivilstander() {
+    public List<RsSivilstandRequest> getSivilstander() {
         if (isNull(sivilstander)) {
             sivilstander = new ArrayList();
         }

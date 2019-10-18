@@ -129,6 +129,8 @@ public class RsPerson {
 
     private List<RsIdenthistorikk> identHistorikk;
 
+    private List<RsSivilstand> sivilstander;
+
     public List<RsRelasjon> getRelasjoner() {
         if (isNull(relasjoner)) {
             relasjoner = new ArrayList();

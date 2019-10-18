@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSivilstand;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -64,15 +64,11 @@ public class ValidateSivilstandService {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.ugyldig-kode",
                             request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstand()));
                 }
-                if (i > 0) {
-                    if (isNull(request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstandRegdato())) {
-                        throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.regdato.required.multiple"));
-                    }
+                if (i > 0 && isNull(request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstandRegdato())) {
+                    throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.regdato.required.multiple"));
                 }
-                if (j > 0) {
-                    if (isNull(request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstandRegdato())) {
-                        throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.regdato.multiple"));
-                    }
+                if (j > 0 && isNull(request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstandRegdato())) {
+                    throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.regdato.multiple"));
                 }
             }
         }
@@ -98,20 +94,19 @@ public class ValidateSivilstandService {
 
         partnereRequest.forEach(partnerRequest ->
                 partnerRequest.getSivilstander().forEach(sivilstand -> {
-                    if (nonNull(sivilstand.getSivilstandRegdato()) && sivilstand.getSivilstandRegdato().isAfter(PARTNERSKAP_SKD)) {
-                        if (isRegistertOrSeparertPartner(sivilstand) || isGjenlevendeOrSkiltPartner(sivilstand)) {
-                            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.partner"));
-                        }
+                    if ((nonNull(sivilstand.getSivilstandRegdato()) && sivilstand.getSivilstandRegdato().isAfter(PARTNERSKAP_SKD)) &&
+                            (isRegistertOrSeparertPartner(sivilstand) || isGjenlevendeOrSkiltPartner(sivilstand))) {
+                        throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.partner"));
                     }
                 }));
     }
 
-    private boolean isGjenlevendeOrSkiltPartner(RsSivilstand sivilstand) {
+    private boolean isGjenlevendeOrSkiltPartner(RsSivilstandRequest sivilstand) {
         return GJENLEVENDE_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
                 SKILT_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand());
     }
 
-    private boolean isRegistertOrSeparertPartner(RsSivilstand sivilstand) {
+    private boolean isRegistertOrSeparertPartner(RsSivilstandRequest sivilstand) {
         return REGISTRERT_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
                 SEPARERT_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand());
     }
@@ -139,14 +134,14 @@ public class ValidateSivilstandService {
         }
     }
 
-    private void validateUgiftAndSivilstandHistorikk(RsSivilstand sivilstand, boolean harVaertGift) {
+    private void validateUgiftAndSivilstandHistorikk(RsSivilstandRequest sivilstand, boolean harVaertGift) {
 
         validateUgiftAndSivilstandHistorikk(harVaertGift, sivilstand, SEPARERT, SEPARERT_PARTNER, "bestilling.input.validation.sivilstand.separert.ugift");
         validateUgiftAndSivilstandHistorikk(harVaertGift, sivilstand, SKILT, SKILT_PARTNER, "bestilling.input.validation.sivilstand.skilt.ugift");
         validateUgiftAndSivilstandHistorikk(harVaertGift, sivilstand, ENKE_ELLER_ENKEMANN, GJENLEVENDE_PARTNER, "bestilling.input.validation.sivilstand.enke.ugift");
     }
 
-    private void validateUgiftAndSivilstandHistorikk(boolean harVaertGift, RsSivilstand sivilstand, Sivilstand gift, Sivilstand partner, String error) {
+    private void validateUgiftAndSivilstandHistorikk(boolean harVaertGift, RsSivilstandRequest sivilstand, Sivilstand gift, Sivilstand partner, String error) {
         if (!harVaertGift && gift.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
                 partner.getKodeverkskode().equals(sivilstand.getSivilstand())) {
             throw new TpsfFunctionalException(messageProvider.get(error));
