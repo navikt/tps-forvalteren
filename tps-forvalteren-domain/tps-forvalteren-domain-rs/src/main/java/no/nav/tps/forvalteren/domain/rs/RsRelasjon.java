@@ -19,6 +19,9 @@ public class RsRelasjon {
     private Long id;
 
     @NotNull
+    private RsSimplePerson person;
+
+    @NotNull
     private RsPersonUtenRelasjon personRelasjonMed;
 
     @NotNull

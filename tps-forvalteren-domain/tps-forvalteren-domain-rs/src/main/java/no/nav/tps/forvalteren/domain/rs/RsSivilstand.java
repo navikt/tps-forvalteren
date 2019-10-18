@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.rs;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +16,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsSivilstand {
 
+    @NotNull
+    private Long id;
+
     private String sivilstand;
 
     private LocalDateTime sivilstandRegdato;
+
+    private RsSimplePerson person;
 
     private RsSimplePerson personRelasjonMed;
 }
