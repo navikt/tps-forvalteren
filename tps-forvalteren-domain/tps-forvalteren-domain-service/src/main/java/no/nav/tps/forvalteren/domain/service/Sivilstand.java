@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.domain.service;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum  Sivilstand {
+public enum Sivilstand {
 
     UGIFT("1", "UGIF"),
     GIFT("2", "GIFT"),
@@ -22,11 +22,12 @@ public enum  Sivilstand {
             map.put(sivilstand.kodeverkskode, sivilstand);
         }
     }
+
     private final String kode;
 
     private final String kodeverkskode;
 
-    Sivilstand(final String sivilstandKode, String kodeverkkode){
+    Sivilstand(final String sivilstandKode, String kodeverkkode) {
         kode = sivilstandKode;
         this.kodeverkskode = kodeverkkode;
     }
@@ -39,11 +40,15 @@ public enum  Sivilstand {
         return kodeverkskode;
     }
 
-    public static Sivilstand lookup(String kode) {
-        return map.getOrDefault(kode, UGIFT);
+    public static Sivilstand fetchSivilstand(String sivilstandKode) {
+        return values()[Integer.valueOf(sivilstandKode) - 1];
     }
 
-    public static boolean exists(String kode) {
-        return map.containsKey(kode);
+    public static Sivilstand lookup(String kodeverkkode) {
+        return map.getOrDefault(kodeverkkode, UGIFT);
+    }
+
+    public static boolean exists(String kodeverkkode) {
+        return map.containsKey(kodeverkkode);
     }
 }

@@ -119,6 +119,7 @@ public class LagreTilTpsService {
         skdMldResponse.addAll(utvandringMldResponse.values());
 
         skdMldResponse.addAll(skdMeldingSender.sendRelasjonsmeldinger(personerIGruppen, safeEnvironments));
+        skdMldResponse.addAll(skdMeldingSender.sendSivilstand(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerIGruppen, safeEnvironments));
