@@ -50,6 +50,7 @@ public class SavePersonListService {
             Person personDb = personRepository.findById(person.getId());
             if (nonNull(personDb)) {
                 oppdaterRelasjonReferanser.execute(person, personDb);
+                person.getSivilstander().forEach(sivilstand -> sivilstand.setPerson(person));
                 utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
                 adresseRepository.deleteAllByPerson(personDb);
                 personDb.getPostadresse().forEach(adresse -> postadresseRepository.deletePostadresseById(adresse.getId()));

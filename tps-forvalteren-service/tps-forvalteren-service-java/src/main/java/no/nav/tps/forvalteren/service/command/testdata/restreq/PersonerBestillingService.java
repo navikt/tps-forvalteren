@@ -10,7 +10,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
@@ -38,9 +37,6 @@ public class PersonerBestillingService {
 
     @Autowired
     private PersonIdenthistorikkService personIdenthistorikkService;
-
-    @Autowired
-    private MapperFacade mapperFacade;
 
     public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
@@ -196,18 +192,18 @@ public class PersonerBestillingService {
     }
 
     private static void setFarBarnRelasjonMedInnvadring(Person far, Person barn) {
-        far.getRelasjoner().add(new Relasjon(far, barn, RelasjonType.BARN.getName()));
-        barn.getRelasjoner().add(new Relasjon(barn, far, RelasjonType.FAR.getName()));
+        far.getRelasjoner().add(Relasjon.builder().person(far).personRelasjonMed(barn).relasjonTypeNavn(RelasjonType.BARN.getName()).build());
+        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(far).relasjonTypeNavn(RelasjonType.FAR.getName()).build());
     }
 
     private static void setMorBarnRelasjonMedFodsel(Person mor, Person barn) {
-        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getName()));
-        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.MOR.getName()));
+        mor.getRelasjoner().add(Relasjon.builder().person(mor).personRelasjonMed(barn).relasjonTypeNavn(RelasjonType.FOEDSEL.getName()).build());
+        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(mor).relasjonTypeNavn(RelasjonType.MOR.getName()).build());
     }
 
     private static void setFarBarnRelasjonMedFodsel(Person mor, Person barn) {
-        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getName()));
-        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.FAR.getName()));
+        mor.getRelasjoner().add(Relasjon.builder().person(mor).personRelasjonMed(barn).relasjonTypeNavn(RelasjonType.FOEDSEL.getName()).build());
+        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(mor).relasjonTypeNavn(RelasjonType.FAR.getName()).build());
     }
 
     private static boolean isMotsattKjonn(Person person, Person partner) {
@@ -227,7 +223,7 @@ public class PersonerBestillingService {
     }
 
     private static void lagPartnerRelasjon(Person person, Person partner) {
-        person.getRelasjoner().add(new Relasjon(person, partner, RelasjonType.PARTNER.getName()));
-        partner.getRelasjoner().add(new Relasjon(partner, person, RelasjonType.PARTNER.getName()));
+        person.getRelasjoner().add(Relasjon.builder().person(person).personRelasjonMed(partner).relasjonTypeNavn(RelasjonType.PARTNER.getName()).build());
+        partner.getRelasjoner().add(Relasjon.builder().person(partner).personRelasjonMed(person).relasjonTypeNavn(RelasjonType.PARTNER.getName()).build());
     }
 }

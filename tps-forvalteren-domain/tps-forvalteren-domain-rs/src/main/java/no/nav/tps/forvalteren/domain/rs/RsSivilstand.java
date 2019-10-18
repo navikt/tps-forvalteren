@@ -23,7 +23,5 @@ public class RsSivilstand {
 
     private LocalDateTime sivilstandRegdato;
 
-    private RsSimplePerson person;
-
     private RsSimplePerson personRelasjonMed;
 }

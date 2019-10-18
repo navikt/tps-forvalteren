@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Objects.nonNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +14,13 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
@@ -38,6 +42,9 @@ public class PersonService {
 
     @Autowired
     private IdenthistorikkRepository identhistorikkRepository;
+
+    @Autowired
+    private SivilstandRepository sivilstandRepository;
 
     @Autowired
     private IdentpoolService identpoolService;
@@ -68,6 +75,14 @@ public class PersonService {
             if (alleRelasjoner.isPresent()) {
                 relasjonRepository.deleteByIdIn(alleRelasjoner.get().stream().map(Relasjon::getId).collect(Collectors.toSet()));
             }
+
+            Set<Long> sivilstandIds = alleRelasjoner.get().stream().filter(relasjon -> nonNull(relasjon.getPersonRelasjonMed()))
+                    .map(Relasjon::getPersonRelasjonMed)
+                    .flatMap(person -> person.getSivilstander().stream())
+                    .map(Sivilstand::getId)
+                    .collect(Collectors.toSet());
+
+            sivilstandRepository.deleteByIdIn(sivilstandIds);
         }
 
         Optional<List<Adresse>> adresser = adresseRepository.findAdresseByPersonIdIn(personIds);
