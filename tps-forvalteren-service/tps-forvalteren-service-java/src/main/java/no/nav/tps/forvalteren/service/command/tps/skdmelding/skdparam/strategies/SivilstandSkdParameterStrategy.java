@@ -4,6 +4,8 @@ import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
 import static no.nav.tps.forvalteren.domain.service.Sivilstand.lookup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class SivilstandSkdParameterStrategy {
     public List<SkdMeldingTrans1> execute(Person person) {
 
         List<SkdMeldingTrans1> skdMeldingstranser = new ArrayList(person.getSivilstander().size());
+        Collections.sort(person.getSivilstander(), Comparator.comparing(no.nav.tps.forvalteren.domain.jpa.Sivilstand::getSivilstand));
         person.getSivilstander().forEach(sivilstand -> {
 
             if (!UGIFT.getKodeverkskode().equals(sivilstand.getSivilstand()) &&
