@@ -59,6 +59,8 @@ public class RsPersonUtenRelasjon {
 
     private String sivilstand;
 
+    private LocalDateTime sivilstandRegdato;
+
     @Size(max = 3)
     private String innvandretFraLand;
 
