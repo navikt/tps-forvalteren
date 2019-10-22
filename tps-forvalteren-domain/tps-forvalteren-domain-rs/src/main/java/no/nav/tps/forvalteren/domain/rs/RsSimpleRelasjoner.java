@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +18,21 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RsSimpleRelasjoner {
 
-    private RsSimplePersonRequest partner;
+    private RsPartnerRequest partner;
+    private List<RsPartnerRequest> partnere;
 
     private List<RsSimplePersonRequest> barn;
 
+    public List<RsPartnerRequest> getPartnere() {
+        if (isNull(partnere)) {
+            partnere = new ArrayList();
+        }
+        return partnere;
+    }
+
     public List<RsSimplePersonRequest> getBarn() {
-        if (barn == null) {
-            barn = new ArrayList<>();
+        if (isNull(barn)) {
+            barn = new ArrayList();
         }
         return barn;
     }

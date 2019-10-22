@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -37,6 +38,9 @@ public class ValidateOpprettRequestTest {
 
     @Mock
     private MessageProvider messageProvider;
+
+    @Mock
+    private ValidateSivilstandService validateSivilstandService;
 
     @InjectMocks
     private ValidateOpprettRequest validateOpprettRequest;
@@ -120,12 +124,13 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_ETTER);
 
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setFoedtEtter(UGYLDIG_FOEDT_ETTER_DATO);
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(RsSimplePersonRequest.builder()
-                        .foedtEtter(UGYLDIG_FOEDT_ETTER_DATO)
-                        .build())
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -137,12 +142,13 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_FOEDT_FOER);
 
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setFoedtFoer(UGYLDIG_FOEDT_FOER_DATO);
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(RsSimplePersonRequest.builder()
-                        .foedtFoer(UGYLDIG_FOEDT_FOER_DATO)
-                        .build())
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -154,13 +160,14 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_DATO_INTERVALL);
 
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setFoedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0));
+        partnerRequest.setFoedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0));
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(RsSimplePersonRequest.builder()
-                        .foedtEtter(LocalDateTime.of(2000, 1, 1, 0, 0))
-                        .foedtFoer(LocalDateTime.of(1990, 1, 1, 0, 0))
-                        .build())
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -172,12 +179,13 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
 
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setKjonn("T");
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(RsSimplePersonRequest.builder()
-                        .kjonn("T")
-                        .build())
+                .partnere(singletonList(partnerRequest))
                 .build());
 
         validateOpprettRequest.validate(request);
@@ -355,14 +363,15 @@ public class ValidateOpprettRequestTest {
         expectedException.expect(TpsfFunctionalException.class);
         expectedException.expectMessage(TEKST_UGYLDIG_IDENTTYPE);
 
+        RsPartnerRequest partnerRequest = new RsPartnerRequest();
+        partnerRequest.setIdenttype("DNR");
+        partnerRequest.setUtvandretTilLand("AUS");
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setUtvandretTilLand("CAN");
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partner(RsSimplePersonRequest.builder()
-                        .identtype("DNR")
-                        .utvandretTilLand("AUS")
-                        .build()
+                .partnere(singletonList(partnerRequest)
                 ).build());
 
         validateOpprettRequest.validate(request);

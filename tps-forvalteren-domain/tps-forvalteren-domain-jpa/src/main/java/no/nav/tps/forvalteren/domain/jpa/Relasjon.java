@@ -45,10 +45,4 @@ public class Relasjon {
 
     @Column(name = "RELASJON_TYPE_NAVN", nullable = false)
     private String relasjonTypeNavn;
-
-    public Relasjon (Person person, Person persponRelasjonMed, String relasjonTypeNavn){
-        this.person = person;
-        this.personRelasjonMed = persponRelasjonMed;
-        this.relasjonTypeNavn = relasjonTypeNavn;
-    }
 }

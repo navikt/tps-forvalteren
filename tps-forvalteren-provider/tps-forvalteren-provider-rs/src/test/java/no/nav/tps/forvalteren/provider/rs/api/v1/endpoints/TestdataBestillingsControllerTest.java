@@ -63,7 +63,7 @@ public class TestdataBestillingsControllerTest {
 
         RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
 
-        when(personerBestillingService.createTpsfPersonFromRestRequest(bestilling))
+        when(personerBestillingService.createTpsfPersonFromRequest(bestilling))
                 .thenReturn(newArrayList(
                         Person.builder().ident(IDENT_1).build(),
                         Person.builder().ident(IDENT_2).build()
@@ -71,7 +71,7 @@ public class TestdataBestillingsControllerTest {
 
         List<String> identer = testdataBestillingsController.createPersonerFraBestillingskriterier(bestilling);
 
-        verify(personerBestillingService).createTpsfPersonFromRestRequest(bestilling);
+        verify(personerBestillingService).createTpsfPersonFromRequest(bestilling);
         assertThat(identer, containsInAnyOrder(IDENT_1, IDENT_2));
     }
 

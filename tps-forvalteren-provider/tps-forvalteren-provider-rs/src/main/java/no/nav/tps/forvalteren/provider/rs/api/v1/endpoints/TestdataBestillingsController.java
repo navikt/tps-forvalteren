@@ -93,7 +93,7 @@ public class TestdataBestillingsController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
     public List<String> createPersonerFraBestillingskriterier(@RequestBody RsPersonBestillingKriteriumRequest personKriteriumRequest) {
-        List<Person> personer = personerBestillingService.createTpsfPersonFromRestRequest(personKriteriumRequest);
+        List<Person> personer = personerBestillingService.createTpsfPersonFromRequest(personKriteriumRequest);
         return personer.stream().map(Person::getIdent).collect(toList());
     }
 
@@ -115,6 +115,7 @@ public class TestdataBestillingsController {
         return mapper.mapAsList(personList, RsPerson.class);
     }
 
+    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentpersoner") })
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)

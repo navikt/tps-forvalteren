@@ -1,20 +1,33 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.BARN;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.EKTEFELLE;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
+import static no.nav.tps.forvalteren.domain.service.Sivilstand.GIFT;
+import static no.nav.tps.forvalteren.domain.service.Sivilstand.SAMBOER;
+import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
@@ -37,36 +50,34 @@ public class PersonerBestillingService {
     @Autowired
     private PersonIdenthistorikkService personIdenthistorikkService;
 
-    @Autowired
-    private MapperFacade mapperFacade;
-
-    public List<Person> createTpsfPersonFromRestRequest(RsPersonBestillingKriteriumRequest personKriteriumRequest) {
-        validateOpprettRequest.validate(personKriteriumRequest);
+    public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
+        validateOpprettRequest.validate(request);
 
         List<Person> hovedPersoner;
         List<Person> partnere = new ArrayList<>();
         List<Person> barn = new ArrayList<>();
-        if (personKriteriumRequest.getOpprettFraIdenter().isEmpty()) {
-            RsPersonKriteriumRequest personKriterier = extractMainPerson(personKriteriumRequest);
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(personKriteriumRequest);
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(personKriteriumRequest);
+        if (request.getOpprettFraIdenter().isEmpty()) {
+            RsPersonKriteriumRequest personKriterier = extractMainPerson(request);
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
 
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
-            if (harPartner(personKriteriumRequest)) {
+            if (!request.getRelasjoner().getPartnere().isEmpty()) {
                 partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
             }
-            if (harBarn(personKriteriumRequest)) {
+            if (!request.getRelasjoner().getBarn().isEmpty()) {
                 barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
             }
 
-            setIdenthistorikkPaaPersoner(personKriteriumRequest, hovedPersoner, partnere, barn);
-            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn);
+            setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
+            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, isEkteskapsRelasjon(request));
+            setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
         } else {
-            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(personKriteriumRequest);
+            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
         }
 
-        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(personKriteriumRequest, hovedPersoner, partnere, barn);
+        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
@@ -77,18 +88,80 @@ public class PersonerBestillingService {
         }
     }
 
+    private static boolean isEkteskapsRelasjon(RsPersonBestillingKriteriumRequest request) {
+        return request.getRelasjoner().getPartnere().size() == 1 && request.getRelasjoner().getPartnere().get(0).getSivilstander().isEmpty()
+                && isBlank(request.getSivilstand());
+    }
+
+    protected static void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> personer) {
+
+        personer.forEach(person -> {
+            int partnerNumber = 0;
+            for (int i = 0; i < person.getRelasjoner().size(); i++) {
+
+                if (PARTNER.name().equals(person.getRelasjoner().get(i).getRelasjonTypeNavn())) {
+                    for (int j = 0; j < request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().size(); j++) {
+
+                        setSivilstandHistory(person, person.getRelasjoner().get(i),
+                                request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstand(),
+                                request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstandRegdato());
+                    }
+
+                    if (isNotUgiftAndNotSamboer(request.getSivilstand()) && partnerNumber == 0) {
+
+                        if (person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().isEmpty()) {
+
+                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), GIFT.name(), now().minusYears(3));
+                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(), now().minusYears(1));
+
+                        } else if (!request.getSivilstand().equals(person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().get(0).getSivilstand())) {
+
+                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(), now());
+                        }
+                    }
+                    partnerNumber++;
+                }
+            }
+        });
+    }
+
+    private static boolean isNotUgiftAndNotSamboer(String sivilstand) {
+
+        return isNotBlank(sivilstand) && !UGIFT.getKodeverkskode().equals(sivilstand) && !SAMBOER.getKodeverkskode().equals(sivilstand);
+    }
+
+    private static void setSivilstandHistory(Person person, Relasjon relasjon, String sivilstand, LocalDateTime regdato) {
+
+        person.getSivilstander().add(Sivilstand.builder()
+                .person(person)
+                .personRelasjonMed(relasjon.getPersonRelasjonMed())
+                .sivilstand(sivilstand)
+                .sivilstandRegdato(regdato)
+                .build());
+
+        relasjon.getPersonRelasjonMed().getSivilstander()
+                .add(Sivilstand.builder()
+                        .person(relasjon.getPersonRelasjonMed())
+                        .personRelasjonMed(person)
+                        .sivilstand(sivilstand)
+                        .sivilstandRegdato(regdato)
+                        .build());
+    }
+
     private void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
 
         hovedPersoner.forEach(hovedperson ->
                 personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
-        partnere.forEach(partner ->
-                personIdenthistorikkService.prepareIdenthistorikk(partner, request.getRelasjoner().getPartner().getIdentHistorikk()));
-        for (int i = 0; i <barna.size(); i++) {
+        for (int i = 0; i < partnere.size(); i++) {
+            personIdenthistorikkService.prepareIdenthistorikk(partnere.get(i), request.getRelasjoner().getPartnere().get(i).getIdentHistorikk());
+        }
+        for (int i = 0; i < barna.size(); i++) {
             personIdenthistorikkService.prepareIdenthistorikk(barna.get(i), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
         }
     }
 
     private static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
+
         List<Person> sorted = new ArrayList<>();
         if (!personer.isEmpty()) {
             for (Person person : personer) {
@@ -102,33 +175,29 @@ public class PersonerBestillingService {
         return sorted;
     }
 
-    protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnerListe, List<Person> barn) {
-        int antallbarn = (barn == null || barn.isEmpty()) ? 0 : barn.size() / personer.size();
+    protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnere, List<Person> barn, boolean useEktefelleRelasjon) {
+
+        int antallBarn = barn.isEmpty() ? 0 : barn.size() / personer.size();
+        int antallPartnere = partnere.isEmpty() ? 0 : partnere.size() / personer.size();
 
         for (int i = 0; i < personer.size(); i++) {
-            Person person = personer.get(i);
-            person.setRelasjoner(new ArrayList<>());
-            Person partner = null;
 
-            if (partnerListe != null && !partnerListe.isEmpty()) {
-                partner = partnerListe.get(i);
-                partner.setRelasjoner(new ArrayList<>());
-
-                lagPartnerRelasjon(person, partner);
+            for (int j = 0; j < antallPartnere; j++) {
+                int startIndexPartner = i * antallPartnere;
+                lagPartnerRelasjon(personer.get(i), partnere.get(startIndexPartner + j), useEktefelleRelasjon);
             }
 
-            for (int j = 0; j < antallbarn; j++) {
-                int startIndexBarn = i * antallbarn;
-                Person barnet = barn.get(startIndexBarn + j);
-                setBarnRelasjon(person, partner, barnet);
+            for (int j = 0; j < antallBarn; j++) {
+                int startIndexBarn = i * antallBarn;
+                int startIndexPartner = i * antallPartnere;
+                setBarnRelasjon(personer.get(i),
+                        antallPartnere != 0 ? partnere.get(startIndexPartner + (j % antallPartnere)) : null,
+                        barn.get(startIndexBarn + j));
             }
         }
     }
 
     private static void setBarnRelasjon(Person forelder, Person barn) {
-        if (forelder == null || barn == null) {
-            return;
-        }
 
         if (isMann(forelder)) {
             setFarBarnRelasjonMedInnvadring(forelder, barn);
@@ -140,7 +209,8 @@ public class PersonerBestillingService {
     }
 
     private static void setBarnRelasjon(Person person, Person partner, Person barn) {
-        if (partner == null) {
+
+        if (isNull(partner)) {
             setBarnRelasjon(person, barn);
             return;
         }
@@ -163,26 +233,18 @@ public class PersonerBestillingService {
     }
 
     private static void setFarBarnRelasjonMedInnvadring(Person far, Person barn) {
-        far.getRelasjoner().add(new Relasjon(far, barn, RelasjonType.BARN.getName()));
-        barn.getRelasjoner().add(new Relasjon(barn, far, RelasjonType.FAR.getName()));
+        far.getRelasjoner().add(Relasjon.builder().person(far).personRelasjonMed(barn).relasjonTypeNavn(BARN.getName()).build());
+        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(far).relasjonTypeNavn(FAR.getName()).build());
     }
 
     private static void setMorBarnRelasjonMedFodsel(Person mor, Person barn) {
-        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getName()));
-        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.MOR.getName()));
+        mor.getRelasjoner().add(Relasjon.builder().person(mor).personRelasjonMed(barn).relasjonTypeNavn(FOEDSEL.getName()).build());
+        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(mor).relasjonTypeNavn(MOR.getName()).build());
     }
 
     private static void setFarBarnRelasjonMedFodsel(Person mor, Person barn) {
-        mor.getRelasjoner().add(new Relasjon(mor, barn, RelasjonType.FOEDSEL.getName()));
-        barn.getRelasjoner().add(new Relasjon(barn, mor, RelasjonType.FAR.getName()));
-    }
-
-    private static boolean harPartner(RsPersonBestillingKriteriumRequest request) {
-        return request.getRelasjoner() != null && request.getRelasjoner().getPartner() != null;
-    }
-
-    private static boolean harBarn(RsPersonBestillingKriteriumRequest request) {
-        return request.getRelasjoner() != null && request.getRelasjoner().getBarn() != null && !request.getRelasjoner().getBarn().isEmpty();
+        mor.getRelasjoner().add(Relasjon.builder().person(mor).personRelasjonMed(barn).relasjonTypeNavn(FOEDSEL.getName()).build());
+        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(mor).relasjonTypeNavn(FAR.getName()).build());
     }
 
     private static boolean isMotsattKjonn(Person person, Person partner) {
@@ -201,8 +263,8 @@ public class PersonerBestillingService {
         return "M".equals(person.getKjonn());
     }
 
-    private static void lagPartnerRelasjon(Person person, Person partner) {
-        person.getRelasjoner().add(new Relasjon(person, partner, RelasjonType.EKTEFELLE.getName()));
-        partner.getRelasjoner().add(new Relasjon(partner, person, RelasjonType.EKTEFELLE.getName()));
+    private static void lagPartnerRelasjon(Person person, Person partner, Boolean useEktefelle) {
+        person.getRelasjoner().add(Relasjon.builder().person(person).personRelasjonMed(partner).relasjonTypeNavn(useEktefelle ? EKTEFELLE.getName() : PARTNER.getName()).build());
+        partner.getRelasjoner().add(Relasjon.builder().person(partner).personRelasjonMed(person).relasjonTypeNavn(useEktefelle ? EKTEFELLE.getName() : PARTNER.getName()).build());
     }
 }
