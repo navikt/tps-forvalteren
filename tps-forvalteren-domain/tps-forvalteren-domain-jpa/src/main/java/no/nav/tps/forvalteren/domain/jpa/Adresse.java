@@ -11,6 +11,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,4 +45,6 @@ public abstract class Adresse {
     @Column(name = "POSTNR", length = 4)
     private String postnr;
 
+    @Transient
+    private String bolignr;
 }
