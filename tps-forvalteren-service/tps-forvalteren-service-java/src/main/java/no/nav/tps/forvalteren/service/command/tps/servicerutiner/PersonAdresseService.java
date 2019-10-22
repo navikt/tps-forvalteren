@@ -56,7 +56,7 @@ public class PersonAdresseService {
                 adresse.setKommunenr(boadresse.getKommunenr());
                 adresse.setPostnr(boadresse.getPostnr());
                 adresse.setFlyttedato(ConvertStringToDate.yyyysMMsdd(boadresse.getDatoFom()));
-
+                adresse.setBolignr(boadresse.getBolignr());
                 break;
             }
         }

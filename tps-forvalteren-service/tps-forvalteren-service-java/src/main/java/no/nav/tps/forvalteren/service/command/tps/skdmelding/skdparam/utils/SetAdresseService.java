@@ -55,6 +55,7 @@ public class SetAdresseService {
                     skdMeldingTrans1.setAdressenavn(((Gateadresse) boadresse).getAdresse().substring(0, lengAdr));
                 }
             }
+            skdMeldingTrans1.setBolignr(boadresse.getBolignr());
             skdMeldingTrans1.setKommunenummer(boadresse.getKommunenr());
             skdMeldingTrans1.setPostnummer(boadresse.getPostnr());
 
