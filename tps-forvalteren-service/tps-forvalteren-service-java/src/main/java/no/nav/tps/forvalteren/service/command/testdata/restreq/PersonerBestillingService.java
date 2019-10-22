@@ -114,7 +114,7 @@ public class PersonerBestillingService {
                             setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), GIFT.name(), now().minusYears(3));
                             setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(), now().minusYears(1));
 
-                        } else if (!request.getSivilstand().equals(person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().get(0))) {
+                        } else if (!request.getSivilstand().equals(person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().get(0).getSivilstand())) {
 
                             setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(), now());
                         }

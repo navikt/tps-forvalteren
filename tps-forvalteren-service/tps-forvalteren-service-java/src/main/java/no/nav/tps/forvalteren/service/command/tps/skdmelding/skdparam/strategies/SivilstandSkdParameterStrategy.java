@@ -32,7 +32,7 @@ public class SivilstandSkdParameterStrategy {
     public List<SkdMeldingTrans1> execute(Person person) {
 
         List<SkdMeldingTrans1> skdMeldingstranser = new ArrayList(person.getSivilstander().size());
-        Collections.sort(person.getSivilstander(), Comparator.comparing(no.nav.tps.forvalteren.domain.jpa.Sivilstand::getSivilstand));
+        Collections.sort(person.getSivilstander(), Comparator.comparing(no.nav.tps.forvalteren.domain.jpa.Sivilstand::getSivilstandRegdato));
         person.getSivilstander().forEach(sivilstand -> {
 
             if (!UGIFT.getKodeverkskode().equals(sivilstand.getSivilstand()) &&

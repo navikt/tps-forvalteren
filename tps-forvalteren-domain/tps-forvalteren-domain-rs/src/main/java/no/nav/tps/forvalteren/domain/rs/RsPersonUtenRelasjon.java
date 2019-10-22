@@ -127,4 +127,6 @@ public class RsPersonUtenRelasjon {
     private String forsvunnetDato;
 
     private List<RsIdenthistorikk> identHistorikk;
+
+    private List<RsSivilstand> sivilstander;
 }
