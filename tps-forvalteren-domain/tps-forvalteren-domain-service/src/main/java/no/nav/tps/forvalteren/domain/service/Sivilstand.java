@@ -13,7 +13,8 @@ public enum Sivilstand {
     REGISTRERT_PARTNER("6", "REPA"),
     SEPARERT_PARTNER("7", "SEPA"),
     SKILT_PARTNER("8", "SKPA"),
-    GJENLEVENDE_PARTNER("9", "GJPA");
+    GJENLEVENDE_PARTNER("9", "GJPA"),
+    SAMBOER("1", "SAMB");
 
     private static Map<String, Sivilstand> map = new HashMap<>();
 

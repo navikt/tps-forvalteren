@@ -33,7 +33,7 @@ public class CreateRelasjoner {
             boolean hasBarn = false;
             for (Relasjon relasjon : personRelasjoner) {
                 String skdMeldingNavn = getSkdMeldingNavn(relasjon);
-                if (VIGSEL_MLD_NAVN.equals(skdMeldingNavn)) {
+                if (VIGSEL_MLD_NAVN.equals(skdMeldingNavn) && relasjon.getPersonRelasjonMed().getSivilstander().isEmpty()) {
                     skdMeldinger.addAll(skdMessageCreatorTrans1.execute(skdMeldingNavn, newArrayList(person), addHeader));
                 } else if (FAMILIEENDRING_MLD_NAVN.equals(skdMeldingNavn)) {
                     hasBarn = true;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies.SivilstandSkdParameterStrategy;
@@ -21,6 +22,7 @@ public class SivilstandMeldinger {
 
         List<SkdMelding> result = new ArrayList();
 
+        Lists.reverse(personer); // Oldest partener to be sent first
         personer.forEach(person -> {
 
             if (!person.getSivilstander().isEmpty()) {
