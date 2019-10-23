@@ -18,12 +18,14 @@ import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -40,13 +42,25 @@ public class PersonerBestillingServiceTest {
     @InjectMocks
     PersonerBestillingService service;
 
+    private RsPersonBestillingKriteriumRequest personBestillingKriteriumRequest;
+
+    @Before
+    public void setup() {
+
+        personBestillingKriteriumRequest = new RsPersonBestillingKriteriumRequest();
+        personBestillingKriteriumRequest.getRelasjoner().getPartnere().addAll(
+                asList(new RsPartnerRequest(), new RsPartnerRequest(), new RsPartnerRequest(), new RsPartnerRequest()));
+        personBestillingKriteriumRequest.getRelasjoner().getBarn().addAll(
+                asList(new RsBarnRequest(), new RsBarnRequest(), new RsBarnRequest(), new RsBarnRequest(), new RsBarnRequest(), new RsBarnRequest()));
+    }
+
     @Test
     public void setRelasjonerPaaPersoner_MannOgMannNullBarn() {
 
         Person mann1 = Person.builder().kjonn("M").build();
         Person mann2 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), emptyList(), false);
+        service.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), emptyList(), personBestillingKriteriumRequest);
 
         assertThat(mann1.getRelasjoner().size(), is(1));
         assertThat(mann2.getRelasjoner().size(), is(1));
@@ -64,7 +78,7 @@ public class PersonerBestillingServiceTest {
         Person mann = Person.builder().kjonn("M").build();
         Person barn = Person.builder().kjonn("K").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann), new ArrayList<>(), asList(barn), false);
+        service.setRelasjonerPaaPersoner(asList(mann), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(1));
         assertThat(barn.getRelasjoner().size(), is(1));
@@ -79,7 +93,7 @@ public class PersonerBestillingServiceTest {
         Person kvinne = Person.builder().kjonn("K").build();
         Person barn = Person.builder().kjonn("K").build();
 
-        service.setRelasjonerPaaPersoner(asList(kvinne), new ArrayList<>(), asList(barn), false);
+        service.setRelasjonerPaaPersoner(asList(kvinne), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(kvinne.getRelasjoner().size(), is(1));
         assertThat(barn.getRelasjoner().size(), is(1));
@@ -95,7 +109,7 @@ public class PersonerBestillingServiceTest {
         Person kvinne = Person.builder().kjonn("K").build();
         Person barn = Person.builder().kjonn("K").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn), false);
+        service.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(2));
         assertThat(kvinne.getRelasjoner().size(), is(2));
@@ -119,7 +133,7 @@ public class PersonerBestillingServiceTest {
         Person barn1 = Person.builder().kjonn("K").build();
         Person barn2 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn1, barn2), false);
+        service.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn1, barn2), personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(3));
         assertThat(kvinne.getRelasjoner().size(), is(3));
@@ -150,7 +164,7 @@ public class PersonerBestillingServiceTest {
         mann2.setKjonn("M");
         barn.setKjonn("K");
 
-        service.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), asList(barn), false);
+        service.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(mann1.getRelasjoner().size(), is(2));
         assertThat(mann2.getRelasjoner().size(), is(2));
@@ -187,7 +201,7 @@ public class PersonerBestillingServiceTest {
                 asList(mann, kvinne),
                 asList(partner1, partner2, partner3, partner4),
                 asList(barn1, barn2, barn3, barn4, barn5, barn6),
-                false);
+                personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(5));
         assertThat(kvinne.getRelasjoner().size(), is(5));
@@ -244,7 +258,7 @@ public class PersonerBestillingServiceTest {
         Person partner = Person.builder().kjonn("K").build();
         Person barn = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn), false);
+        service.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn), personBestillingKriteriumRequest);
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(asList(RsSivilstandRequest.builder()
@@ -287,7 +301,7 @@ public class PersonerBestillingServiceTest {
         Person barn1 = Person.builder().kjonn("M").build();
         Person barn2 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2), false);
+        service.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2), personBestillingKriteriumRequest);
 
         RsPartnerRequest partner1Request = new RsPartnerRequest();
         partner1Request.setSivilstander(asList(RsSivilstandRequest.builder()
