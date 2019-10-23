@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
+import no.nav.tps.forvalteren.service.command.foedselsmelding.AdresserResponse;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.xjc.ctg.domain.s018.BoAdresseType;
 import no.nav.tps.xjc.ctg.domain.s018.LMatrAdrType;
@@ -40,7 +41,7 @@ public class PersonAdresseServiceTest {
 
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(new S018PersonType());
 
-        Gateadresse adresse = (Gateadresse) personAdresseService.hentAdresserForDato(IDENT, BODATO, MILJOE).getBoadresse();
+        AdresserResponse adresse = personAdresseService.hentAdresserForDato(IDENT, BODATO, MILJOE);
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
         assertThat(adresse, is(nullValue()));
