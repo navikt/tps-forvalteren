@@ -111,6 +111,8 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
+        when(personAdresseService.hentAdresserForDato(any(S018PersonType.class), any(LocalDateTime.class))).thenReturn(new AdresserResponse());
+
         sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
 
         verify(personhistorikkService).hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString());
@@ -129,6 +131,8 @@ public class SendTpsFoedselsmeldingServiceTest {
                 .build();
 
         when(opprettPersonMedEksisterendeForeldreService.execute(rsTpsFoedselsmeldingRequest)).thenReturn(new Person());
+        when(personAdresseService.hentAdresserForDato(any(S018PersonType.class), any(LocalDateTime.class))).thenReturn(new AdresserResponse());
+
         sendTpsFoedselsmeldingService.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
 
         verify(personhistorikkService, times(2)).hentPersonhistorikk(anyString(), any(LocalDateTime.class), anyString());
