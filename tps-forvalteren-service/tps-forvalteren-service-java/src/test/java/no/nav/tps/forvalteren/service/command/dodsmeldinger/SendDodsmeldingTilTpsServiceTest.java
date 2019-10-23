@@ -22,7 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -31,6 +30,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSk
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.foedselsmelding.AdresserResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
@@ -149,7 +149,7 @@ public class SendDodsmeldingTilTpsServiceTest {
     @Test
     public void sendEndreDoedsdatoPersonOk() {
         ArgumentCaptor<Person> personCaptor = ArgumentCaptor.forClass(Person.class);
-        Adresse adresse = Gateadresse.builder().build();
+        AdresserResponse adresse = AdresserResponse.builder().boadresse(new Gateadresse()).build();
 
         when(persondataFraTpsS004.getDatoDo()).thenReturn(ConvertDateToString.yyyysMMsdd(DOEDSDATO));
         when(deathRowRepository.findAllByStatus("Ikke sendt")).thenReturn(Collections.singletonList(buildDoedsmelding(DoedsmeldingHandlingType.U)));
@@ -159,7 +159,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         when(skdMeldingTrans1.toString()).thenReturn(SKDMLD);
         when(doedsmeldingAnnuller.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
         when(doedsmelding.resolve()).thenReturn(tpsSkdRequestMeldingDefinition);
-        when(personAdresseService.hentBoadresseForDato(eq(IDENT), eq(DOEDSDATO.minusDays(1)), eq(MILJOE))).thenReturn(adresse);
+        when(personAdresseService.hentAdresserForDato(eq(IDENT), eq(DOEDSDATO.minusDays(1)), eq(MILJOE))).thenReturn(adresse);
 
         sendDodsmeldingTilTpsService.execute();
 
@@ -167,7 +167,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         verify(sendSkdMeldingTilMiljoe, times(2)).execute(eq(SKDMLD), eq(tpsSkdRequestMeldingDefinition), anySet());
         verify(deathRowRepository).save(any(DeathRow.class));
         assertThat(personCaptor.getValue().getIdent(), is(equalTo(IDENT)));
-        assertThat(personCaptor.getValue().getBoadresse(), is(equalTo(adresse)));
+        assertThat(personCaptor.getValue().getBoadresse(), is(equalTo(adresse.getBoadresse())));
     }
 
     private DeathRow buildDoedsmelding(DoedsmeldingHandlingType action) {

@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
@@ -17,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
@@ -84,7 +86,9 @@ public class SendTpsFoedselsmeldingService {
         if (!request.getMiljoer().isEmpty()) {
             person = opprettPersonMedEksisterendeForeldreService.execute(request);
             if (LAGNY != request.getAdresseFra()) {
-                person.setBoadresse(findAdresse(request, persondataMor, persondataFar));
+                AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
+                person.setBoadresse(adresser.getBoadresse());
+                person.setPostadresse(asList(adresser.getPostadresse()));
             }
             uppercaseDataInPerson.execute(person);
 
@@ -109,13 +113,15 @@ public class SendTpsFoedselsmeldingService {
         }
     }
 
-    private Adresse findAdresse(RsTpsFoedselsmeldingRequest request, S018PersonType persondataMor, S018PersonType persondataFar) {
+    private AdresserResponse findAdresse(RsTpsFoedselsmeldingRequest request, S018PersonType persondataMor, S018PersonType persondataFar) {
 
-        if (request.getAdresseFra() == null || request.getAdresseFra() == MOR) {
-            return personAdresseService.getBoAdresse(persondataMor.getBostedsAdresse(), request.getFoedselsdato());
-        } else if (request.getAdresseFra() == FAR && persondataFar != null) {
-            return personAdresseService.getBoAdresse(persondataFar.getBostedsAdresse(), request.getFoedselsdato());
+        if (isNull(request.getAdresseFra()) || request.getAdresseFra() == MOR) {
+            return personAdresseService.hentAdresserForDato(persondataMor, request.getFoedselsdato());
+
+        } else if (request.getAdresseFra() == FAR && nonNull(persondataFar)) {
+            return personAdresseService.hentAdresserForDato(persondataFar, request.getFoedselsdato());
         }
+
         return null;
     }
 

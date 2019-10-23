@@ -40,7 +40,7 @@ public class PersonAdresseServiceTest {
 
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(new S018PersonType());
 
-        Gateadresse adresse = (Gateadresse) personAdresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
+        Gateadresse adresse = (Gateadresse) personAdresseService.hentAdresserForDato(IDENT, BODATO, MILJOE).getBoadresse();
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
         assertThat(adresse, is(nullValue()));
@@ -52,7 +52,7 @@ public class PersonAdresseServiceTest {
         S018PersonType gateadresse = createGateadresse();
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(gateadresse);
 
-        Gateadresse adresse = (Gateadresse) personAdresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
+        Gateadresse adresse = (Gateadresse) personAdresseService.hentAdresserForDato(IDENT, BODATO, MILJOE).getBoadresse();
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
 
@@ -73,7 +73,7 @@ public class PersonAdresseServiceTest {
         S018PersonType gateadresse = createMatrikkeladresse();
         when(personhistorikkService.hentPersonhistorikk(IDENT, BODATO, MILJOE)).thenReturn(gateadresse);
 
-        Matrikkeladresse adresse = (Matrikkeladresse) personAdresseService.hentBoadresseForDato(IDENT, BODATO, MILJOE);
+        Matrikkeladresse adresse = (Matrikkeladresse) personAdresseService.hentAdresserForDato(IDENT, BODATO, MILJOE).getBoadresse();
 
         verify(personhistorikkService).hentPersonhistorikk(IDENT, BODATO, MILJOE);
 

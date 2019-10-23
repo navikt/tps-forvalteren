@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.service.command.foedselsmelding.AdresserResponse;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertStringToDate;
 import no.nav.tps.xjc.ctg.domain.s018.BoAdresseType;
+import no.nav.tps.xjc.ctg.domain.s018.PostAdresseType;
 import no.nav.tps.xjc.ctg.domain.s018.S018PersonType;
 
 @Service
@@ -19,17 +22,26 @@ public class PersonAdresseService {
     @Autowired
     private PersonhistorikkService personhistorikkService;
 
-    public Adresse hentBoadresseForDato(String ident, LocalDateTime bodato, String miljoe) {
+    public AdresserResponse hentAdresserForDato(String ident, LocalDateTime bodato, String miljoe) {
 
         S018PersonType s018PersonType = personhistorikkService.hentPersonhistorikk(ident, bodato, miljoe);
         if (s018PersonType.getBostedsAdresse().isEmpty()) {
             return null;
         }
 
-        return getBoAdresse(s018PersonType.getBostedsAdresse(), bodato);
+        return hentAdresserForDato(s018PersonType, bodato);
     }
 
-    public Adresse getBoAdresse(List<BoAdresseType> boadresser, LocalDateTime bodato) {
+    public AdresserResponse hentAdresserForDato(S018PersonType personType, LocalDateTime bodato) {
+
+        return AdresserResponse.builder()
+                .boadresse(getBoAdresse(personType.getBostedsAdresse(), bodato))
+                .postadresse(getPostAdresse(personType.getPostAdresse(), bodato))
+                .build();
+    }
+
+    private Adresse getBoAdresse(List<BoAdresseType> boadresser, LocalDateTime bodato) {
+
         Adresse adresse = null;
         for (BoAdresseType boadresse : boadresser) {
 
@@ -60,7 +72,25 @@ public class PersonAdresseService {
                 break;
             }
         }
+
         return adresse;
+    }
+
+    private Postadresse getPostAdresse(List<PostAdresseType> postadresser, LocalDateTime bodato) {
+
+        for (PostAdresseType postadresse : postadresser) {
+
+            if (isAddressDate(postadresse, bodato)) {
+
+                return Postadresse.builder()
+                        .postLinje1(postadresse.getAdresse1())
+                        .postLinje2(postadresse.getAdresse2())
+                        .postLinje3(postadresse.getAdresse3())
+                        .postLand(postadresse.getLandKode())
+                        .build();
+            }
+        }
+        return null;
     }
 
     private boolean isAddressDate(BoAdresseType boadresse, LocalDateTime bodato) {
@@ -68,5 +98,12 @@ public class PersonAdresseService {
         return bodato.compareTo(ConvertStringToDate.yyyysMMsdd(boadresse.getDatoFom())) >= 0 &&
                 (StringUtils.isBlank(boadresse.getDatoTom()) ||
                         bodato.compareTo(ConvertStringToDate.yyyysMMsdd(boadresse.getDatoTom())) <= 0);
+    }
+
+    private boolean isAddressDate(PostAdresseType postadresse, LocalDateTime bodato) {
+
+        return bodato.compareTo(ConvertStringToDate.yyyysMMsdd(postadresse.getDatoFom())) >= 0 &&
+                (StringUtils.isBlank(postadresse.getDatoTom()) ||
+                        bodato.compareTo(ConvertStringToDate.yyyysMMsdd(postadresse.getDatoTom())) <= 0);
     }
 }
