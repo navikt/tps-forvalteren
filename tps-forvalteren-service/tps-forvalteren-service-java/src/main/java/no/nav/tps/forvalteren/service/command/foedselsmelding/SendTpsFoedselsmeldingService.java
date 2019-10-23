@@ -87,8 +87,10 @@ public class SendTpsFoedselsmeldingService {
             person = opprettPersonMedEksisterendeForeldreService.execute(request);
             if (LAGNY != request.getAdresseFra()) {
                 AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
-                person.setBoadresse(adresser.getBoadresse());
-                person.setPostadresse(asList(adresser.getPostadresse()));
+                if (nonNull(adresser)) {
+                    person.setBoadresse(adresser.getBoadresse());
+                    person.setPostadresse(asList(adresser.getPostadresse()));
+                }
             }
             uppercaseDataInPerson.execute(person);
 
