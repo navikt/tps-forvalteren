@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static java.util.Arrays.asList;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.C;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.D;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.U;
@@ -16,13 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.repository.jpa.DeathRowRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
+import no.nav.tps.forvalteren.service.command.foedselsmelding.AdresserResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
@@ -125,12 +127,18 @@ public class SendDodsmeldingTilTpsService {
 
     private void findLastAddress(Person person, String doedsdato, String miljoe) {
 
-        Adresse adresse = personAdresseService.hentBoadresseForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
+        AdresserResponse adresser = personAdresseService.hentAdresserForDato(person.getIdent(), ConvertStringToDate.yyyysMMsdd(doedsdato).minusDays(1), miljoe);
 
-        if (adresse != null) {
-            adresse.setId(person.getId());
-            adresse.setPerson(person);
-            person.setBoadresse(adresse);
+        if (nonNull(adresser)) {
+            if (nonNull(adresser.getBoadresse())) {
+                adresser.getBoadresse().setPerson(person);
+                person.setBoadresse(adresser.getBoadresse());
+            }
+
+            if (nonNull(adresser.getPostadresse())) {
+                adresser.getPostadresse().setPerson(person);
+                person.setPostadresse(asList(adresser.getPostadresse()));
+            }
         }
     }
 }

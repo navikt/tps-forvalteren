@@ -60,6 +60,8 @@ public class EnvironmentController {
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Environment getEnvironments() {
         Set<String> env = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
+        env.remove("t8");
+        env.remove("t13");
 
         Environment environment = new Environment();
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
