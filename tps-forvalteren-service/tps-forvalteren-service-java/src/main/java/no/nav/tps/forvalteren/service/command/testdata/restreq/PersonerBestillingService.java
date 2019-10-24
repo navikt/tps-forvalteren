@@ -185,7 +185,7 @@ public class PersonerBestillingService {
         for (int i = 0; i < personer.size(); i++) {
 
             Person hovedPerson = personer.get(i);
-            Map<Integer, Person> minePartnere = new HashMap<>();
+            Map<Integer, Person> minePartnere = new HashMap(antallPartnere);
             for (int j = 0; j < antallPartnere; j++) {
 
                 int startIndexPartner = i * antallPartnere;

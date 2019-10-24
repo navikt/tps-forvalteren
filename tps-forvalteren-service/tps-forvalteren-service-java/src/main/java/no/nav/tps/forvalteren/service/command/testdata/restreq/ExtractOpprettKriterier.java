@@ -25,6 +25,7 @@ import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
@@ -112,7 +113,7 @@ public class ExtractOpprettKriterier {
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
-        List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size(), req.getAdresseNrInfo()) : new ArrayList();
+        List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
 
         hovedPersoner.forEach(person -> {
             if (isBlank(req.getInnvandretFraLand())) {
@@ -123,7 +124,7 @@ public class ExtractOpprettKriterier {
 
         if (isNull(req.getBoadresse())) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
-                mapBoadresse(hovedPersoner.get(i), null, !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(req.getBoadresse()));
+                mapPartnerBoadresse(hovedPersoner.get(i), null, !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(req.getBoadresse()));
             }
         }
 
@@ -136,24 +137,32 @@ public class ExtractOpprettKriterier {
     }
 
     private void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
+
         if (!req.getRelasjoner().getPartnere().isEmpty()) {
-            for (int i = 0; i < partnere.size(); i++) {
-                req.getRelasjoner().getPartnere().get(i).setPostadresse(req.getPostadresse());
-                mapperFacade.map(req.getRelasjoner().getPartnere().get(i), partnere.get(i));
-                mapBoadresse(partnere.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(partnere.get(i).getBoadresse()));
-                ammendDetailedPersonAttributes(req.getRelasjoner().getPartnere().get(i), partnere.get(i));
-                partnere.get(i).setSivilstand(req.getSivilstand());
-                partnere.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
+            int antallPartnere = hovedPersoner.size() / partnere.size();
+
+            for (int i = 0; i < hovedPersoner.size(); i++) {
+                int partnerStartIndex = antallPartnere * i;
+
+                for (int j = partnerStartIndex; j < partnerStartIndex + antallPartnere; j++) {
+                    req.getRelasjoner().getPartnere().get(j).setPostadresse(
+                            mapperFacade.mapAsList(nullcheckSetDefaultValue(req.getRelasjoner().getPartnere().get(j).getPostadresse(), req.getPostadresse()), RsPostadresse.class));
+                    mapperFacade.map(req.getRelasjoner().getPartnere().get(j - partnerStartIndex), partnere.get(j));
+                    mapPartnerBoadresse(partnere.get(j), hovedPersoner.get(i), adresser.get(hovedPersoner.size() + j), req, j - partnerStartIndex);
+                    ammendDetailedPersonAttributes(req.getRelasjoner().getPartnere().get(i - partnerStartIndex), partnere.get(j));
+                    partnere.get(j).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(j).getInnvandretFraLand(), hovedPersoner.get(i).getInnvandretFraLand()));
+                }
             }
         }
     }
 
     private void mapBarn(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> barn, List<Adresse> adresser) {
+
         if (!req.getRelasjoner().getBarn().isEmpty()) {
             for (int i = 0; i < barn.size(); i++) {
                 req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
                 mapperFacade.map(req.getRelasjoner().getBarn().get(i), barn.get(i));
-                mapBoadresse(barn.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(barn.get(i).getBoadresse()));
+                mapPartnerBoadresse(barn.get(i), req.getBoadresse(), !adresser.isEmpty() ? adresser.get(i % adresser.size()) : null, extractFlyttedato(barn.get(i).getBoadresse()));
                 ammendDetailedPersonAttributes(req.getRelasjoner().getBarn().get(i), barn.get(i));
                 barn.get(i).setSivilstand(null);
                 if (DNR.name().equals(barn.get(i).getIdenttype())) {
@@ -185,7 +194,28 @@ public class ExtractOpprettKriterier {
         return person;
     }
 
-    private void mapBoadresse(Person person, RsAdresse rsAdresse, Adresse adresse, LocalDateTime flyttedato) {
+    private void mapPartnerBoadresse(Person person, Person hovedPerson, Adresse adresse, RsPersonBestillingKriteriumRequest request, int index) {
+
+        if (!DNR.name().equals(person.getIdenttype()) && !SPSF.name().equals(person.getSpesreg()) && !nonNull(person.getUtvandretTilLand())) {
+
+            if (Boolean.TRUE.equals(request.getRelasjoner().getPartnere().get(index).getHarFellesAdresse()) ||
+                    (isNull(request.getRelasjoner().getPartnere().get(index).getHarFellesAdresse() && index == 0))) {
+
+                person.setBoadresse(mapperFacade.map(hovedPerson.getBoadresse(), Adresse.class));
+            } else if (nonNull(adresse)) {
+                person.setBoadresse(mapperFacade.map(adresse, Adresse.class));
+            } else {
+                dummyAdresseService.createDummyBoAdresse(person);
+            }
+
+            person.getBoadresse().setPerson(person);
+            LocalDateTime fodselsdato = hentDatoFraIdentService.extract(person.getIdent());
+            LocalDateTime flyttedato = nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(), fodselsdato);
+            person.getBoadresse().setFlyttedato(flyttedato.isBefore(fodselsdato) ? fodselsdato : flyttedato);
+        }
+    }
+
+    private void mapPartnerBoadresse(Person person, RsAdresse rsAdresse, Adresse adresse, LocalDateTime flyttedato) {
 
         if (!DNR.name().equals(person.getIdenttype()) && !SPSF.name().equals(person.getSpesreg()) && !nonNull(person.getUtvandretTilLand())) {
             if (nonNull(rsAdresse) || nonNull(adresse)) {

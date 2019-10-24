@@ -18,6 +18,7 @@ public class RsPartnerRequest extends RsSimplePersonRequest{
 
     private Integer partnerNr;
     private List<RsSivilstandRequest> sivilstander;
+    private Boolean harFellesAdresse;
 
     public List<RsSivilstandRequest> getSivilstander() {
         if (isNull(sivilstander)) {
