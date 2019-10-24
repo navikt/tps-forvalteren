@@ -399,16 +399,16 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             function isPeriodeAllowed() {
-                if ($scope.request.periodeFra && $scope.request.periodeTil &&
-                    Math.floor(($scope.request.periodeTil - $scope.request.periodeFra) / 86400000) > 7) {
-                    $mdDialog.show($mdDialog.confirm()
-                        .title('Søkeperiode for lang')
-                        .textContent('For å avgrense søket er perioder støttet opptil 7 dager.')
-                        .ariaLabel('Søkeperiode overstiger 7 dager. Det er ikke støttet.')
-                        .ok('OK')
-                    );
-                    return false;
-                }
+                // if ($scope.request.periodeFra && $scope.request.periodeTil &&
+                //     Math.floor(($scope.request.periodeTil - $scope.request.periodeFra) / 86400000) > 7) {
+                //     $mdDialog.show($mdDialog.confirm()
+                //         .title('Søkeperiode for lang')
+                //         .textContent('For å avgrense søket er perioder støttet opptil 7 dager.')
+                //         .ariaLabel('Søkeperiode overstiger 7 dager. Det er ikke støttet.')
+                //         .ok('OK')
+                //     );
+                //     return false;
+                // }
                 return true;
             }
 

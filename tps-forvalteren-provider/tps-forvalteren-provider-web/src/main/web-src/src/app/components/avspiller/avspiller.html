@@ -83,8 +83,9 @@
                         </md-checkbox>
                     </div>
 
+                    <!--   ng-disabled="requestForm.$invalid || !request.periodeFra || !request.periodeTil || progress" -->
                     <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                               ng-disabled="requestForm.$invalid || !request.periodeFra || !request.periodeTil || progress"
+                               ng-disabled="requestForm.$invalid || progress"
                                title="Hent meldinger basert på valgte filtere. Automatisk henting virker ikke sammen med identfiltere.">
                         Hent
                     </md-button>
