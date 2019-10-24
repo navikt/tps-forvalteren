@@ -199,7 +199,7 @@ public class ExtractOpprettKriterier {
         if (!DNR.name().equals(person.getIdenttype()) && !SPSF.name().equals(person.getSpesreg()) && !nonNull(person.getUtvandretTilLand())) {
 
             if (Boolean.TRUE.equals(request.getRelasjoner().getPartnere().get(index).getHarFellesAdresse()) ||
-                    (isNull(request.getRelasjoner().getPartnere().get(index).getHarFellesAdresse() && index == 0))) {
+                    (isNull(request.getRelasjoner().getPartnere().get(index).getHarFellesAdresse()) && index == 0)) {
 
                 person.setBoadresse(mapperFacade.map(hovedPerson.getBoadresse(), Adresse.class));
             } else if (nonNull(adresse)) {
