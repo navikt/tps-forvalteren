@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
@@ -89,7 +88,9 @@ public class SendTpsFoedselsmeldingService {
                 AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
                 if (nonNull(adresser)) {
                     person.setBoadresse(adresser.getBoadresse());
-                    person.setPostadresse(asList(adresser.getPostadresse()));
+                    if (nonNull(adresser.getPostadresse())) {
+                        person.getPostadresse().add(adresser.getPostadresse());
+                    }
                 }
             }
             uppercaseDataInPerson.execute(person);
