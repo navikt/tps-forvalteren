@@ -124,7 +124,7 @@ public class SkdEndringsmeldingControllerTest {
     @Test(expected = SkdEndringsmeldingGruppeTooLargeException.class)
     public void requestForTooManyMessagesShouldCauseException() {
         when(skdEndringsmeldingService.countMeldingerInGruppe(anyLong())).thenReturn(100000);
-        skdEndringsmeldingController.getGruppe(123L);
+        skdEndringsmeldingController.getLogg(123L);
     }
 
     @Test
