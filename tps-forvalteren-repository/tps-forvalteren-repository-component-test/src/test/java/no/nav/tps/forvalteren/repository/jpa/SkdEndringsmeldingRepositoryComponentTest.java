@@ -100,6 +100,18 @@ public class SkdEndringsmeldingRepositoryComponentTest {
 
     @Test
     @Rollback
+    public void countMeldingerInGruppe() {
+        testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
+        testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
+        testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
+
+        int result = repository.countMeldingerInGruppe(gruppe.getId());
+
+        assertThat(result, equalTo(3));
+    }
+
+    @Test
+    @Rollback
     public void happypathTest_findFoedselsnummerByAarsakskodeInAndTransaksjonstypeAndGruppe() {
         SkdEndringsmelding storedSkdEndringsmelding1_shouldNotBeFound1 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).aarsakskode("91").build());
         String foedselsnummer2 = "22222222222";

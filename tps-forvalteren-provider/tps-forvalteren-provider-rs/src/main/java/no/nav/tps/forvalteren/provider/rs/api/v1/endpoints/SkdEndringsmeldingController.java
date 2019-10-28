@@ -62,7 +62,7 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 public class SkdEndringsmeldingController {
 
     private static final String REST_SERVICE_NAME = "testdata";
-    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 50000;
+    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 30000;
 
     @Autowired
     private MapperFacade mapper;
@@ -112,16 +112,15 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
-
-        int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerByGruppe(gruppe);
+        int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerInGruppe(gruppeId);
         if (antallMeldingerIGruppe > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
             throw new SkdEndringsmeldingGruppeTooLargeException("Kan ikke hente gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger på " +
                     "grunn av minnebegrensninger. Denne gruppen inneholder " + antallMeldingerIGruppe + " meldinger. Vennligst bruk endepunkt " +
                     "'/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. Frontend foreløpig ikke implementert for dette endepunktet.");
+        } else {
+            SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
+            return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
         }
-
-        return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
 
     @LogExceptions
@@ -143,7 +142,7 @@ public class SkdEndringsmeldingController {
 
         skdEndringsmeldingsgruppeService.save(skdEndringsmeldingGruppe);
 
-        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe);
+        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerInGruppe(originalGruppeId);
         int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
 
         for (int i = 0; i < antallSiderIAvspillergruppe; i++) {
