@@ -37,9 +37,7 @@ public class SkdEndringsmeldingService {
     private ObjectMapper objectMapper;
 
     public int countMeldingerInGruppe(Long gruppeId) {
-        synchronized (this) {
-            return skdEndringsmeldingRepository.countMeldingerInGruppe(gruppeId);
-        }
+        return skdEndringsmeldingRepository.countMeldingerInGruppe(gruppeId);
     }
 
     public int getAntallSiderIGruppe(int antallMeldingerIGruppe) {
