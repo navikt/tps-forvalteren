@@ -209,10 +209,6 @@ public class ExtractOpprettKriterier {
         return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
     }
 
-    private static LocalDateTime extractFlyttedato(Adresse adresse) {
-        return nonNull(adresse) ? adresse.getFlyttedato() : null;
-    }
-
     private static LocalDateTime extractFlyttedato(RsAdresse adresse) {
         return nonNull(adresse) ? adresse.getFlyttedato() : null;
     }
