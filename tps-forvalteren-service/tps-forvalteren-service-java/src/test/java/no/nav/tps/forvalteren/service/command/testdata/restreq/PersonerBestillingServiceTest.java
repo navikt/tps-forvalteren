@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.BARN;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
@@ -73,7 +72,7 @@ public class PersonerBestillingServiceTest {
     }
 
     @Test
-    public void setRelasjonerPaaPersoner_MannOgBarnUtenKvinneGirIngenFoedsel() {
+    public void setRelasjonerPaaPersoner_MannOgBarnUtenKvinneGirFoedsel() {
 
         Person mann = Person.builder().kjonn("M").build();
         Person barn = Person.builder().kjonn("K").build();
@@ -83,7 +82,7 @@ public class PersonerBestillingServiceTest {
         assertThat(mann.getRelasjoner().size(), is(1));
         assertThat(barn.getRelasjoner().size(), is(1));
 
-        assertRelasjon(mann, barn, BARN);
+        assertRelasjon(mann, barn, FOEDSEL);
         assertRelasjon(barn, mann, FAR);
     }
 
@@ -156,7 +155,7 @@ public class PersonerBestillingServiceTest {
     }
 
     @Test
-    public void setRelasjonerPaaPersoner_MannMannOgBarnGirFarRelasjonPaaBeggeFedreMenIngenFodselMenBarnRelasjon() {
+    public void setRelasjonerPaaPersoner_MannMannOgBarnGirFarRelasjonPaaBeggeFedre() {
         Person mann1 = new Person();
         Person mann2 = new Person();
         Person barn = new Person();
@@ -169,10 +168,10 @@ public class PersonerBestillingServiceTest {
         assertThat(mann1.getRelasjoner().size(), is(2));
         assertThat(mann2.getRelasjoner().size(), is(2));
 
-        assertRelasjon(mann1, barn, BARN);
+        assertRelasjon(mann1, barn, FOEDSEL);
         assertRelasjon(mann1, mann2, PARTNER);
 
-        assertRelasjon(mann2, barn, BARN);
+        assertRelasjon(mann2, barn, FOEDSEL);
         assertRelasjon(mann2, mann1, PARTNER);
 
         assertRelasjon(barn, mann1, FAR);

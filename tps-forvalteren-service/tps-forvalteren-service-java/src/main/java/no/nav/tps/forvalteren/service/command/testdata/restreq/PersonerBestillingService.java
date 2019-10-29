@@ -198,7 +198,7 @@ public class PersonerBestillingService {
                 int startIndexBarn = i * antallBarn;
                 setBarnRelasjon(hovedPerson,
                         antallPartnere > 0 ?
-                                determinePartner(minePartnere, request.getRelasjoner().getBarn().get(j).getPartnerNr(), j % antallPartnere) :
+                                getPartner(minePartnere, request.getRelasjoner().getBarn().get(j).getPartnerNr(), j % antallPartnere) :
                                 null,
                         barn.get(startIndexBarn + j),
                         request.getRelasjoner().getBarn().get(j));
@@ -206,48 +206,27 @@ public class PersonerBestillingService {
         }
     }
 
-    private static Person determinePartner(Map<Integer, Person> minePartnere, Integer partnerNr, int index) {
+    private static Person getPartner(Map<Integer, Person> minePartnere, Integer partnerNr, int index) {
 
-        return nonNull(partnerNr) ? minePartnere.get(partnerNr) : minePartnere.get(index);
+        return nonNull(partnerNr) ? minePartnere.get(partnerNr - 1) : minePartnere.get(index);
     }
 
-    private static void setBarnRelasjon(Person person, Person partner, Person barn, RsBarnRequest request) {
+    private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn, RsBarnRequest request) {
 
         if (isNull(request.getBarnType()) || FELLES == request.getBarnType()) {
 
-            if (nonNull(partner) && isMotsattKjonn(person, partner)) {
-                setRelasjonForBarn(person, barn, TRUE.equals(request.getErAdoptert()));
-                setRelasjonForBarn(partner, barn, TRUE.equals(request.getErAdoptert()));
-
-            } else {
-
-                if (isKvinne(person)) {
-                    setRelasjonForBarn(person, barn, TRUE.equals(request.getErAdoptert()));
-
-                } else {
-                    setFarBarnRelasjonMedInnvadring(person, barn);
-                }
-
-                setFarBarnRelasjonMedInnvadring(partner, barn);
-            }
+            setRelasjonForBarn(hovedPerson, barn, TRUE.equals(request.getErAdoptert()));
+            setRelasjonForBarn(partner, barn, TRUE.equals(request.getErAdoptert()));
 
         } else if (MITT == request.getBarnType()) {
 
-            if (isKvinne(person)) {
-                setRelasjonForBarn(person, barn, TRUE.equals(request.getErAdoptert()));
-
-            } else {
-                setFarBarnRelasjonMedInnvadring(person, barn);
-            }
+            setRelasjonForBarn(hovedPerson, barn, TRUE.equals(request.getErAdoptert()));
+            setRelasjonForBarn(partner, barn, true);
 
         } else if (DITT == request.getBarnType()) {
 
-            if (nonNull(partner) && isKvinne(partner)) {
-                setRelasjonForBarn(partner, barn, TRUE.equals(request.getErAdoptert()));
-
-            } else {
-                setFarBarnRelasjonMedInnvadring(partner, barn);
-            }
+            setRelasjonForBarn(partner, barn, TRUE.equals(request.getErAdoptert()));
+            setRelasjonForBarn(hovedPerson, barn, true);
         }
     }
 
@@ -256,17 +235,6 @@ public class PersonerBestillingService {
             forelder.getRelasjoner().add(Relasjon.builder().person(forelder).personRelasjonMed(barn).relasjonTypeNavn((isAdopted ? BARN : FOEDSEL).name()).build());
             barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(forelder).relasjonTypeNavn((isKvinne(forelder) ? MOR : FAR).name()).build());
         }
-    }
-
-    private static void setFarBarnRelasjonMedInnvadring(Person far, Person barn) {
-        if (nonNull(far)) {
-            far.getRelasjoner().add(Relasjon.builder().person(far).personRelasjonMed(barn).relasjonTypeNavn(BARN.getName()).build());
-            barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(far).relasjonTypeNavn(FAR.getName()).build());
-        }
-    }
-
-    private static boolean isMotsattKjonn(Person person, Person partner) {
-        return !person.getKjonn().equals(partner.getKjonn());
     }
 
     private static boolean isKvinne(Person person) {

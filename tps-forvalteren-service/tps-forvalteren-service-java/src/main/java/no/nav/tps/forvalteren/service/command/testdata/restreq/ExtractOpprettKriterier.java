@@ -149,21 +149,22 @@ public class ExtractOpprettKriterier {
             for (int i = 0; i < hovedPersoner.size(); i++) {
                 int partnerStartIndex = antallPartnere * i;
 
-                for (int j = partnerStartIndex; j < partnerStartIndex + antallPartnere; j++) {
+                for (int j = 0; j < antallPartnere; j++) {
                     RsPartnerRequest partnerRequest = req.getRelasjoner().getPartnere().get(j);
-                    req.getRelasjoner().getPartnere().get(j).setPostadresse(
+                    partnerRequest.setPostadresse(
                             mapperFacade.mapAsList(nullcheckSetDefaultValue(partnerRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
-                    mapperFacade.map(partnerRequest, partnere.get(j));
+                    mapperFacade.map(partnerRequest, partnere.get(partnerStartIndex + j));
                     Adresse adresse;
                     if (nonNull(partnerRequest.getBoadresse())) {
                         adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
                     } else {
-                        adresse = TRUE.equals(partnerRequest.getHarFellesAdresse()) || (isNull(partnerRequest.getHarFellesAdresse()) && j == partnerStartIndex) ?
-                                hovedPersoner.get(i).getBoadresse() : getBoadresse(adresser, hovedPersoner.size() + j);
+                        adresse = TRUE.equals(partnerRequest.getHarFellesAdresse()) || (isNull(partnerRequest.getHarFellesAdresse()) && j == 0) ?
+                                hovedPersoner.get(i).getBoadresse() : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
-                    mapBoadresse(partnere.get(j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
-                    ammendDetailedPersonAttributes(partnerRequest, partnere.get(j));
-                    partnere.get(j).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(j).getInnvandretFraLand(), hovedPersoner.get(i).getInnvandretFraLand()));
+                    mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
+                    ammendDetailedPersonAttributes(partnerRequest, partnere.get(partnerStartIndex + j));
+                    partnere.get(partnerStartIndex + j).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(partnerStartIndex + j).getInnvandretFraLand(),
+                            hovedPersoner.get(i).getInnvandretFraLand()));
                 }
             }
         }
@@ -176,22 +177,27 @@ public class ExtractOpprettKriterier {
             int antallPartnere = partnere.isEmpty() ? 0 : partnere.size() / hovedPersoner.size();
 
             for (int i = 0; i < hovedPersoner.size(); i++) {
+                int barnStartIndex = antallBarn * i;
 
                 for (int j = 0; j < antallBarn; j++) {
                     RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
-                    req.getRelasjoner().getBarn().get(i).setPostadresse(req.getPostadresse());
-                    mapperFacade.map(barnRequest, barn.get(i));
-                    mapBoadresse(barn.get(j), OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos() ?
-                                    hovedPersoner.get(i).getBoadresse() : partnere.get(antallPartnere * i + barnRequest.getPartnerNr() - 1).getBoadresse(),
-                            extractFlyttedato(barn.get(i).getBoadresse()));
-                    ammendDetailedPersonAttributes(barnRequest, barn.get(i));
-                    barn.get(i).setSivilstand(null);
-                    if (DNR.name().equals(barn.get(i).getIdenttype())) {
-                        barn.get(i).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(i).getInnvandretFraLand(), hovedPersoner.get(0).getInnvandretFraLand()));
+                    barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
+                    mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
+                    mapBoadresse(barn.get(barnStartIndex + j), OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos() ?
+                                    hovedPersoner.get(i).getBoadresse() : getPartnerAdresse(partnere, antallPartnere * i, barnRequest, j % antallPartnere),
+                            extractFlyttedato(barnRequest.getBoadresse()));
+                    ammendDetailedPersonAttributes(barnRequest, barn.get(barnStartIndex + j));
+                    barn.get(barnStartIndex + j).setSivilstand(null);
+                    if (DNR.name().equals(barn.get(barnStartIndex + j).getIdenttype())) {
+                        barn.get(barnStartIndex + j).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(barnStartIndex + j).getInnvandretFraLand(), hovedPersoner.get(i).getInnvandretFraLand()));
                     }
                 }
             }
         }
+    }
+
+    private static Adresse getPartnerAdresse(List<Person> partnere, int partnerStartIndex, RsBarnRequest barnRequest, int partnerNr) {
+        return (nonNull(barnRequest.getPartnerNr()) ? partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) : partnere.get(partnerStartIndex + partnerNr)).getBoadresse();
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {

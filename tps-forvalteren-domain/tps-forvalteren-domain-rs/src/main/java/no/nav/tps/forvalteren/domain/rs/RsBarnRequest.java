@@ -15,7 +15,7 @@ public class RsBarnRequest extends RsSimplePersonRequest{
     public enum BorHos {MEG, OSS, DEG}
 
     private BarnType barnType;
-    private Integer partnerNr; // 1, 2, 3 Tom hvis mine, identifiser partner hvis felles eller dine
+    private Integer partnerNr; // 1, 2, 3 Kan være tom hvis felles eller mine, identifiser partner hvis dine
     private BorHos borHos;
     private Boolean erAdoptert;
 }
