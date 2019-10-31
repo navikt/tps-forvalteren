@@ -1,5 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import static org.assertj.core.util.Lists.newArrayList;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,38 +80,41 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
     }
 
     private void addSkdParametersExtractedFromForeldre(SkdMeldingTrans1 skdMeldingTrans1, Person barn) {
-        Person forelderMor = null;
-        Person forelderFar = null;
-        int countMothers = 0;
-        int countFathers = 0;
+
+        List<Person> foreldereMor = new ArrayList();
+        List<Person> foreldereFar = new ArrayList();
+
         for (Relasjon relasjon : barn.getRelasjoner()) {
 
             if (RelasjonType.MOR.getName().equals(relasjon.getRelasjonTypeNavn())) {
-                forelderMor = relasjon.getPersonRelasjonMed();
-                countMothers++;
+                foreldereMor.add(relasjon.getPersonRelasjonMed());
 
             } else if (RelasjonType.FAR.getName().equals(relasjon.getRelasjonTypeNavn())) {
-                forelderFar = relasjon.getPersonRelasjonMed();
-                countFathers++;
+                foreldereFar.add(relasjon.getPersonRelasjonMed());
+
             }
         }
-        if (forelderMor == null) {
+
+        List<Person> foreldre = newArrayList(foreldereMor);
+        foreldre.addAll(foreldereFar);
+
+        if (foreldre.isEmpty()) {
             throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " mangler en mor i fødselsmeldingen.");
         }
-        if (countMothers > 1 || countFathers > 1) {
+        if (foreldre.size() > 2) {
             throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " kan ikke ha mer enn en forelder hver av MOR og FAR i fødselsmeldingen.");
         }
 
-        skdMeldingTrans1.setMorsFodselsdato(getDato(forelderMor));
-        skdMeldingTrans1.setMorsPersonnummer(getPersonnr(forelderMor));
+        skdMeldingTrans1.setMorsFodselsdato(getDato(foreldre.get(0)));
+        skdMeldingTrans1.setMorsPersonnummer(getPersonnr(foreldre.get(0)));
         skdMeldingTrans1.setSlektsnavn(barn.getEtternavn());
-        skdMeldingTrans1.setFamilienummer(forelderMor.getIdent());
+        skdMeldingTrans1.setFamilienummer(foreldre.get(0).getIdent());
         skdMeldingTrans1.setRegdatoFamnr(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
 
-        if (forelderFar != null) {
+        if (foreldre.size() > 1) {
             skdMeldingTrans1.setForeldreansvar("D");
-            skdMeldingTrans1.setFarsFodselsdato(getDato(forelderFar));
-            skdMeldingTrans1.setFarsPersonnummer(getPersonnr(forelderFar));
+            skdMeldingTrans1.setFarsFodselsdato(getDato(foreldre.get(1)));
+            skdMeldingTrans1.setFarsPersonnummer(getPersonnr(foreldre.get(1)));
         } else {
             skdMeldingTrans1.setForeldreansvar("M");
         }

@@ -1,9 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BarnType.DITT;
+import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BarnType.FELLES;
+import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BarnType.MITT;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.BARN;
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.EKTEFELLE;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
@@ -14,18 +18,21 @@ import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
+import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -71,7 +78,7 @@ public class PersonerBestillingService {
             }
 
             setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
-            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, isEkteskapsRelasjon(request));
+            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
             setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
         } else {
             hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
@@ -86,11 +93,6 @@ public class PersonerBestillingService {
         } else {
             throw new TpsfFunctionalException("Ingen ledige identer funnet i miljø.");
         }
-    }
-
-    private static boolean isEkteskapsRelasjon(RsPersonBestillingKriteriumRequest request) {
-        return request.getRelasjoner().getPartnere().size() == 1 && request.getRelasjoner().getPartnere().get(0).getSivilstander().isEmpty()
-                && isBlank(request.getSivilstand());
     }
 
     protected static void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> personer) {
@@ -175,96 +177,72 @@ public class PersonerBestillingService {
         return sorted;
     }
 
-    protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnere, List<Person> barn, boolean useEktefelleRelasjon) {
+    protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnere, List<Person> barn, RsPersonBestillingKriteriumRequest request) {
 
         int antallBarn = barn.isEmpty() ? 0 : barn.size() / personer.size();
         int antallPartnere = partnere.isEmpty() ? 0 : partnere.size() / personer.size();
 
         for (int i = 0; i < personer.size(); i++) {
 
+            Person hovedPerson = personer.get(i);
+            Map<Integer, Person> minePartnere = new HashMap(antallPartnere);
             for (int j = 0; j < antallPartnere; j++) {
+
                 int startIndexPartner = i * antallPartnere;
-                lagPartnerRelasjon(personer.get(i), partnere.get(startIndexPartner + j), useEktefelleRelasjon);
+                minePartnere.put(nullcheckSetDefaultValue(request.getRelasjoner().getPartnere().get(j).getPartnerNr(), j),
+                        partnere.get(startIndexPartner + j));
             }
+            minePartnere.values().forEach(partner -> lagPartnerRelasjon(hovedPerson, partner));
 
             for (int j = 0; j < antallBarn; j++) {
                 int startIndexBarn = i * antallBarn;
-                int startIndexPartner = i * antallPartnere;
-                setBarnRelasjon(personer.get(i),
-                        antallPartnere != 0 ? partnere.get(startIndexPartner + (j % antallPartnere)) : null,
-                        barn.get(startIndexBarn + j));
+                setBarnRelasjon(hovedPerson,
+                        antallPartnere > 0 ?
+                                getPartner(minePartnere, request.getRelasjoner().getBarn().get(j).getPartnerNr(), j % antallPartnere) :
+                                null,
+                        barn.get(startIndexBarn + j),
+                        request.getRelasjoner().getBarn().get(j));
             }
         }
     }
 
-    private static void setBarnRelasjon(Person forelder, Person barn) {
+    private static Person getPartner(Map<Integer, Person> minePartnere, Integer partnerNr, int index) {
 
-        if (isMann(forelder)) {
-            setFarBarnRelasjonMedInnvadring(forelder, barn);
-        }
-
-        if (isKvinne(forelder)) {
-            setMorBarnRelasjonMedFodsel(forelder, barn);
-        }
+        return nonNull(partnerNr) ? minePartnere.get(partnerNr - 1) : minePartnere.get(index);
     }
 
-    private static void setBarnRelasjon(Person person, Person partner, Person barn) {
+    private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn, RsBarnRequest request) {
 
-        if (isNull(partner)) {
-            setBarnRelasjon(person, barn);
-            return;
-        }
+        if (isNull(request.getBarnType()) || FELLES == request.getBarnType()) {
 
-        if (isMotsattKjonn(person, partner)) {
-            if (isKvinne(person)) {
-                setMorBarnRelasjonMedFodsel(person, barn);
-                setFarBarnRelasjonMedFodsel(partner, barn);
-            } else {
-                setMorBarnRelasjonMedFodsel(partner, barn);
-                setFarBarnRelasjonMedFodsel(person, barn);
-            }
-        } else if (isToKvinner(person, partner)) {
-            setMorBarnRelasjonMedFodsel(person, barn);
-            setFarBarnRelasjonMedInnvadring(partner, barn);
-        } else {
-            setFarBarnRelasjonMedInnvadring(person, barn);
-            setFarBarnRelasjonMedInnvadring(partner, barn);
+            setRelasjonForBarn(hovedPerson, barn, TRUE.equals(request.getErAdoptert()));
+            setRelasjonForBarn(partner, barn, TRUE.equals(request.getErAdoptert()));
+
+        } else if (MITT == request.getBarnType()) {
+
+            setRelasjonForBarn(hovedPerson, barn, TRUE.equals(request.getErAdoptert()));
+            setRelasjonForBarn(partner, barn, true);
+
+        } else if (DITT == request.getBarnType()) {
+
+            setRelasjonForBarn(partner, barn, TRUE.equals(request.getErAdoptert()));
+            setRelasjonForBarn(hovedPerson, barn, true);
         }
     }
 
-    private static void setFarBarnRelasjonMedInnvadring(Person far, Person barn) {
-        far.getRelasjoner().add(Relasjon.builder().person(far).personRelasjonMed(barn).relasjonTypeNavn(BARN.getName()).build());
-        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(far).relasjonTypeNavn(FAR.getName()).build());
-    }
-
-    private static void setMorBarnRelasjonMedFodsel(Person mor, Person barn) {
-        mor.getRelasjoner().add(Relasjon.builder().person(mor).personRelasjonMed(barn).relasjonTypeNavn(FOEDSEL.getName()).build());
-        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(mor).relasjonTypeNavn(MOR.getName()).build());
-    }
-
-    private static void setFarBarnRelasjonMedFodsel(Person mor, Person barn) {
-        mor.getRelasjoner().add(Relasjon.builder().person(mor).personRelasjonMed(barn).relasjonTypeNavn(FOEDSEL.getName()).build());
-        barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(mor).relasjonTypeNavn(FAR.getName()).build());
-    }
-
-    private static boolean isMotsattKjonn(Person person, Person partner) {
-        return !person.getKjonn().equals(partner.getKjonn());
-    }
-
-    private static boolean isToKvinner(Person person, Person partner) {
-        return isKvinne(person) && isKvinne(partner);
+    private static void setRelasjonForBarn(Person forelder, Person barn, boolean isAdopted) {
+        if (nonNull(forelder)) {
+            forelder.getRelasjoner().add(Relasjon.builder().person(forelder).personRelasjonMed(barn).relasjonTypeNavn((isAdopted ? BARN : FOEDSEL).name()).build());
+            barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(forelder).relasjonTypeNavn((isKvinne(forelder) ? MOR : FAR).name()).build());
+        }
     }
 
     private static boolean isKvinne(Person person) {
         return "K".equals(person.getKjonn());
     }
 
-    private static boolean isMann(Person person) {
-        return "M".equals(person.getKjonn());
-    }
-
-    private static void lagPartnerRelasjon(Person person, Person partner, Boolean useEktefelle) {
-        person.getRelasjoner().add(Relasjon.builder().person(person).personRelasjonMed(partner).relasjonTypeNavn(useEktefelle ? EKTEFELLE.getName() : PARTNER.getName()).build());
-        partner.getRelasjoner().add(Relasjon.builder().person(partner).personRelasjonMed(person).relasjonTypeNavn(useEktefelle ? EKTEFELLE.getName() : PARTNER.getName()).build());
+    private static void lagPartnerRelasjon(Person person, Person partner) {
+        person.getRelasjoner().add(Relasjon.builder().person(person).personRelasjonMed(partner).relasjonTypeNavn(PARTNER.getName()).build());
+        partner.getRelasjoner().add(Relasjon.builder().person(partner).personRelasjonMed(person).relasjonTypeNavn(PARTNER.getName()).build());
     }
 }

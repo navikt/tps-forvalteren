@@ -19,9 +19,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
@@ -129,14 +129,15 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractBarnAllParamsSet() {
 
+        RsBarnRequest barnRequest = new RsBarnRequest();
+        barnRequest.setKjonn(KJOENN);
+        barnRequest.setFoedtEtter(FOEDT_ETTER);
+        barnRequest.setFoedtFoer(FOEDT_FOER);
+        barnRequest.setIdenttype(IDENTTYPE);
+
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .barn(singletonList(RsSimplePersonRequest.builder()
-                        .kjonn(KJOENN)
-                        .foedtEtter(FOEDT_ETTER)
-                        .foedtFoer(FOEDT_FOER)
-                        .identtype(IDENTTYPE)
-                        .build()))
+                .barn(singletonList(barnRequest))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request);
@@ -153,7 +154,7 @@ public class ExtractOpprettKriterierTest {
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .barn(singletonList(RsSimplePersonRequest.builder().build()))
+                .barn(singletonList(new RsBarnRequest()))
                 .build());
 
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request);

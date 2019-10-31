@@ -21,7 +21,7 @@ public class RsSimpleRelasjoner {
     private RsPartnerRequest partner;
     private List<RsPartnerRequest> partnere;
 
-    private List<RsSimplePersonRequest> barn;
+    private List<RsBarnRequest> barn;
 
     public List<RsPartnerRequest> getPartnere() {
         if (isNull(partnere)) {
@@ -30,7 +30,7 @@ public class RsSimpleRelasjoner {
         return partnere;
     }
 
-    public List<RsSimplePersonRequest> getBarn() {
+    public List<RsBarnRequest> getBarn() {
         if (isNull(barn)) {
             barn = new ArrayList();
         }
