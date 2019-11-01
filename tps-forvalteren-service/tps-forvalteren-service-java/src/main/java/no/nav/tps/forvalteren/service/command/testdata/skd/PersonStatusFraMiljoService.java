@@ -86,9 +86,8 @@ public class PersonStatusFraMiljoService {
     }
 
     private String getGtRegel(TpsServiceRoutineResponse response) {
-        Map bruker = getBruker(response);
-        return nonNull(bruker) && bruker.get(REGEL_FOR_GEO_TILKNYTNING) instanceof String ?
-                (String) bruker.get(REGEL_FOR_GEO_TILKNYTNING) : null;
+
+        return (String) getArtifact(getBruker(response), REGEL_FOR_GEO_TILKNYTNING);
     }
 
     private Map getData(TpsServiceRoutineResponse response) {
