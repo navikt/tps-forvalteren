@@ -62,6 +62,9 @@ public class Person extends ChangeStamp {
     @Column(name = "ETTERNAVN", nullable = false, length = 50)
     private String etternavn;
 
+    @Column(name = "FORKORTET_NAVN")
+    private String forkortetNavn;
+
     @Column(name = "STATSBORGERSKAP", length = 3)
     private String statsborgerskap;
 
