@@ -47,6 +47,8 @@ public class RsPerson {
     @Size(min = 1, max = 15)
     private String etternavn;
 
+    private String forkortetNavn;
+
     private String statsborgerskap;
 
     private LocalDateTime statsborgerskapRegdato;
