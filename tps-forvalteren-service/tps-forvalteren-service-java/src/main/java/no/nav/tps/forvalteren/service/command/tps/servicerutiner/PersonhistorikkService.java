@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S018PersonHistorikk.PERSON_HISTORY_SERVICE_ROUTINE;
 import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum.AKSJONSDATO;
 import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.ServiceroutineEnum.AKSJONSKODE;
@@ -44,11 +45,11 @@ public class PersonhistorikkService {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             TpsPersonData personData = (TpsPersonData) unmarshaller.unmarshal(new StringReader(response.getXml()));
 
-            if (personData.getTpsSvar() != null && !"00".equals(personData.getTpsSvar().getSvarStatus().getReturStatus())) {
+            if (nonNull(personData.getTpsSvar()) && !"00".equals(personData.getTpsSvar().getSvarStatus().getReturStatus())) {
                 throw new TpsfTechnicalException(String.format(FEILET_HENTING_PERSONHISTORIKK, ident, env, personData.getTpsSvar().getSvarStatus().getReturMelding() +
                         personData.getTpsSvar().getSvarStatus().getUtfyllendeMelding()));
             }
-            return personData.getTpsSvar() != null ? personData.getTpsSvar().getPersonDataS018() : null;
+            return nonNull(personData.getTpsSvar()) ? personData.getTpsSvar().getPersonDataS018() : null;
 
         } catch (JAXBException e) {
             throw new TpsfTechnicalException(String.format(FEILET_HENTING_PERSONHISTORIKK, ident, env, e.getMessage()), e);

@@ -49,7 +49,7 @@ public class UppercaseDataInPerson {
 
     private void postAdresseToUppercase(Person person) {
         /* Postadresse */
-        if (nonNull(person.getPostadresse()) && !person.getPostadresse().isEmpty()) {
+        if (!person.getPostadresse().isEmpty()) {
             Postadresse postadresse = person.getPostadresse().get(0);
 
             if (nonNull(postadresse.getPostLinje1())) {

@@ -4,6 +4,7 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERAT
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +12,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +41,7 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEdnringsmeldingIdListe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingIdListToTps;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingLogg;
+import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.ConvertMeldingFromJsonToText;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateAndSaveSkdEndringsmeldingerFromTextService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.CreateSkdEndringsmeldingFromTypeService;
@@ -48,6 +53,7 @@ import no.nav.tps.forvalteren.service.command.endringsmeldinger.SkdEndringsmeldi
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.UpdateSkdEndringsmeldingService;
 import no.nav.tps.forvalteren.service.command.endringsmeldinger.response.AvspillingResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGruppeTooLargeException;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @Transactional
 @RestController
@@ -56,7 +62,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingGrupp
 public class SkdEndringsmeldingController {
 
     private static final String REST_SERVICE_NAME = "testdata";
-    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 50000;
+    private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 30000;
 
     @Autowired
     private MapperFacade mapper;
@@ -88,6 +94,12 @@ public class SkdEndringsmeldingController {
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
 
+    @Autowired
+    private TpsPersonService tpsPersonService;
+
+    @Autowired
+    private IdentpoolService identpoolService;
+
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
@@ -100,16 +112,15 @@ public class SkdEndringsmeldingController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
-        SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
-
-        int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerByGruppe(gruppe);
+        int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerInGruppe(gruppeId);
         if (antallMeldingerIGruppe > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
             throw new SkdEndringsmeldingGruppeTooLargeException("Kan ikke hente gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger på " +
                     "grunn av minnebegrensninger. Denne gruppen inneholder " + antallMeldingerIGruppe + " meldinger. Vennligst bruk endepunkt " +
                     "'/gruppe/meldinger/{gruppeId}/{pageNumber}' for å hente meldinger i denne gruppen. Frontend foreløpig ikke implementert for dette endepunktet.");
+        } else {
+            SkdEndringsmeldingGruppe gruppe = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
+            return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
         }
-
-        return mapper.map(gruppe, RsSkdEndringsmeldingGruppe.class);
     }
 
     @LogExceptions
@@ -131,7 +142,7 @@ public class SkdEndringsmeldingController {
 
         skdEndringsmeldingsgruppeService.save(skdEndringsmeldingGruppe);
 
-        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe);
+        int antallMeldingerIAvspillergruppe = skdEndringsmeldingService.countMeldingerInGruppe(originalGruppeId);
         int antallSiderIAvspillergruppe = skdEndringsmeldingService.getAntallSiderIGruppe(antallMeldingerIAvspillergruppe);
 
         for (int i = 0; i < antallSiderIAvspillergruppe; i++) {
@@ -203,11 +214,26 @@ public class SkdEndringsmeldingController {
     }
 
     @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteFromTps") })
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/deleteFromTps")
+    public void deleteIdentsFromTps(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam List<String> identer) {
+        tpsPersonService.sendDeletePersonMeldinger(miljoer, new HashSet<>(identer));
+        identpoolService.recycleIdents(new HashSet<>(identer));
+    }
+
+    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
     @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
-        List<SkdEndringsmeldingLogg> log = getLoggForGruppeService.execute(gruppeId);
-        return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
+        int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerInGruppe(gruppeId);
+        if (antallMeldingerIGruppe > MAX_ANTALL_MELDINGER_UTEN_PAGINERING) {
+            throw new SkdEndringsmeldingGruppeTooLargeException("Kan ikke hente innsendingslogg på gruppe med flere enn " + MAX_ANTALL_MELDINGER_UTEN_PAGINERING + " meldinger på " +
+                    "grunn av minnebegrensninger. Denne gruppen inneholder " + antallMeldingerIGruppe + " meldinger.");
+        } else {
+            List<SkdEndringsmeldingLogg> log = getLoggForGruppeService.execute(gruppeId);
+            return mapper.mapAsList(log, RsSkdEndringsmeldingLogg.class);
+        }
     }
 
     @LogExceptions

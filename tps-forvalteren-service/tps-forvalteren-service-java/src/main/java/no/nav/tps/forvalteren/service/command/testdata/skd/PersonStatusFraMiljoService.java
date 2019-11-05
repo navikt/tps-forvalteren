@@ -38,6 +38,9 @@ public class PersonStatusFraMiljoService {
     private static final String SIVILSTAND_DETALJ = "sivilstandDetalj";
     private static final String SIVILSTAND_KODE = "kodeSivilstand";
     private static final String SIVILSTAND_DATO = "datoSivilstand";
+    private static final String PERSONNAVN = "personnavn";
+    private static final String ALLE_PERSONNAVN = "allePersonnavn";
+    private static final String FORKORTET_NAVN = "kortnavn";
 
     @Autowired
     private PersonRepository personRepository;
@@ -63,6 +66,7 @@ public class PersonStatusFraMiljoService {
                         person.setPersonStatus(getPersonStatus(response));
                         person.setSivilstand(getSivilstand(response));
                         person.setSivilstandRegdato(getSivilstandRegdato(response));
+                        person.setForkortetNavn(getForkortetNavn(response));
                         personRepository.save(person);
                     }
                 })
@@ -84,16 +88,26 @@ public class PersonStatusFraMiljoService {
         return isNotBlank(datoSivilstand) ? LocalDate.parse(datoSivilstand).atStartOfDay() : null;
     }
 
+    private String getForkortetNavn(TpsServiceRoutineResponse response) {
+
+        Map personnavn = (Map) getArtifact(getData(response), PERSONNAVN);
+        Map allePersonnavn = (Map) getArtifact(personnavn, ALLE_PERSONNAVN);
+        return (String) getArtifact(allePersonnavn, FORKORTET_NAVN);
+    }
+
+    private Object getArtifact(Map map, String key) {
+        return nonNull(map) ? map.get(key) : null;
+    }
+
     private String getPersonStatus(TpsServiceRoutineResponse response) {
-        Map data = getData(response);
-        Map personstatusDetalj = nonNull(data) ? (Map) data.get(PERSONSTATUS_DETALJ) : null;
-        return nonNull(personstatusDetalj) ? (String) personstatusDetalj.get(KODE_PERSONSTATUS) : null;
+
+        Map personstatusDetalj = (Map) getArtifact(getData(response), PERSONSTATUS_DETALJ);
+        return (String) getArtifact(personstatusDetalj, KODE_PERSONSTATUS);
     }
 
     private String getGtRegel(TpsServiceRoutineResponse response) {
-        Map bruker = getBruker(response);
-        return nonNull(bruker) && bruker.get(REGEL_FOR_GEO_TILKNYTNING) instanceof String ?
-                (String) bruker.get(REGEL_FOR_GEO_TILKNYTNING) : null;
+
+        return (String) getArtifact(getBruker(response), REGEL_FOR_GEO_TILKNYTNING);
     }
 
     private Map getData(TpsServiceRoutineResponse response) {
@@ -102,38 +116,40 @@ public class PersonStatusFraMiljoService {
     }
 
     private Map getBruker(TpsServiceRoutineResponse response) {
-        Map data = getData(response);
-        return nonNull(data) ? (Map) data.get(BRUKER) : null;
+
+        return (Map) getArtifact(getData(response), BRUKER);
     }
 
     private Map getBostedAdr(TpsServiceRoutineResponse response) {
-        Map data = getData(response);
-        return nonNull(data) ? (Map) data.get(BOSTED_ADR) : null;
+
+        return (Map) getArtifact(getData(response), BOSTED_ADR);
     }
 
     private Map getFullBostedAdr(TpsServiceRoutineResponse response) {
-        Map bostedAdr = getBostedAdr(response);
-        return nonNull(bostedAdr) ? (Map) bostedAdr.get(FULL_BOSTED_ADR) : null;
+
+        return (Map) getArtifact(getBostedAdr(response), FULL_BOSTED_ADR);
     }
 
     private String getTknr(TpsServiceRoutineResponse response) {
+
         Map fullbostedAdr = getFullBostedAdr(response);
-        if (nonNull(fullbostedAdr) && fullbostedAdr.get(TKNR) instanceof String) {
+
+        if (getArtifact(fullbostedAdr, TKNR) instanceof String) {
             return (String) fullbostedAdr.get(TKNR);
-        } else if (nonNull(fullbostedAdr) && fullbostedAdr.get(TKNR) instanceof Integer) {
+        } else if (getArtifact(fullbostedAdr, TKNR) instanceof Integer) {
             return ((Integer) fullbostedAdr.get(TKNR)).toString();
         }
         return null;
     }
 
     private String getTknavn(TpsServiceRoutineResponse response) {
-        Map fullbostedAdr = getFullBostedAdr(response);
-        return nonNull(fullbostedAdr) ? (String) fullbostedAdr.get(TKNAVN) : null;
+
+        return (String) getArtifact(getFullBostedAdr(response), TKNAVN);
     }
 
     private Map getGeoTilknytning(TpsServiceRoutineResponse response) {
-        Map bruker = getBruker(response);
-        return nonNull(bruker) ? (Map) bruker.get(GEO_TILKNYT) : null;
+
+        return (Map) getArtifact(getBruker(response), GEO_TILKNYT);
     }
 
     private String getGtVerdi(TpsServiceRoutineResponse response) {

@@ -21,7 +21,8 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     Page<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe, Pageable pageable);
 
-    int countByGruppe(SkdEndringsmeldingGruppe gruppe);
+    @Query(value = "SELECT count(*) FROM T_SKD_ENDRINGSMELDING WHERE SKD_ENDRINGSMELDING_GRUPPE_ID=:gruppeId", nativeQuery = true)
+    int countMeldingerInGruppe(@Param("gruppeId") Long gruppeId);
 
     void deleteAll();
 

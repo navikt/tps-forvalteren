@@ -6,6 +6,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -122,8 +123,8 @@ public class SkdEndringsmeldingControllerTest {
 
     @Test(expected = SkdEndringsmeldingGruppeTooLargeException.class)
     public void requestForTooManyMessagesShouldCauseException() {
-        when(skdEndringsmeldingService.countMeldingerByGruppe(any())).thenReturn(100000);
-        skdEndringsmeldingController.getGruppe(123L);
+        when(skdEndringsmeldingService.countMeldingerInGruppe(anyLong())).thenReturn(100000);
+        skdEndringsmeldingController.getLogg(123L);
     }
 
     @Test
@@ -166,7 +167,7 @@ public class SkdEndringsmeldingControllerTest {
         when(skdEndringsmeldingsgruppeService.findGruppeById(originalGruppe.getId())).thenReturn(originalGruppe);
         when(skdEndringsmeldingsgruppeService.konfigurerKlonAvGruppe(any(), any())).thenReturn(newRsSkdEndringsmeldingGruppe);
         when(mapper.map(any(), eq(SkdEndringsmeldingGruppe.class))).thenReturn(newSkdEndringsmeldingGruppe);
-        when(skdEndringsmeldingService.countMeldingerByGruppe(originalGruppe)).thenReturn(originalGruppe.getSkdEndringsmeldinger().size());
+        when(skdEndringsmeldingService.countMeldingerInGruppe(originalGruppe.getId())).thenReturn(originalGruppe.getSkdEndringsmeldinger().size());
         when(skdEndringsmeldingService.getAntallSiderIGruppe(originalGruppe.getSkdEndringsmeldinger().size())).thenReturn(1);
         when(skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(originalGruppe.getId(), 0)).thenReturn(originalSkdEndringsmeldingerPage1);
         when(skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(any())).thenReturn(originalRsMeldingstypeMeldinger);
@@ -174,7 +175,7 @@ public class SkdEndringsmeldingControllerTest {
         skdEndringsmeldingController.klonAvspillergruppe(originalGruppe.getId(), newName);
 
         verify(skdEndringsmeldingsgruppeService).findGruppeById(originalGruppe.getId());
-        verify(skdEndringsmeldingService).countMeldingerByGruppe(originalGruppe);
+        verify(skdEndringsmeldingService).countMeldingerInGruppe(originalGruppe.getId());
         verify(skdEndringsmeldingService).getAntallSiderIGruppe(originalGruppe.getSkdEndringsmeldinger().size());
         verify(skdEndringsmeldingService).findSkdEndringsmeldingerOnPage(originalGruppe.getId(), 0);
         verify(skdEndringsmeldingService).convertSkdEndringsmeldingerToRsMeldingstyper(any());

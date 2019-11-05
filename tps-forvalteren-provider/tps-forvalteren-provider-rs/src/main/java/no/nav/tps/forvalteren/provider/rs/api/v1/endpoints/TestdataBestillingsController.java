@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.partition;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
@@ -157,9 +156,9 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "slettpersoner") })
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "deletePersons", notes = "kommaseparert liste med identer")
-    public void slettPersoner(@RequestParam String identer) {
-        personService.deletePersons(newArrayList(identer.split(",")));
+    @ApiOperation(value = "deletePersons")
+    public void slettPersoner(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam List<String> identer) {
+        personService.deletePersons(miljoer, identer);
     }
 
     @LogExceptions

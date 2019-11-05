@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmAnnenAvgang.MELDING_OM_ANNEN_AVGANG;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,9 +37,14 @@ public class TpsPersonService {
     @Autowired
     private GetEnvironments getEnvironments;
 
-    public void sendDeletePersonMeldinger(Set<String> identerSomSkalSlettesFraTPS) {
+    public void sendDeletePersonMeldinger(List<String> miljoer, Set<String> identerSomSkalSlettesFraTPS) {
 
-        Set<String> environments = getEnvironments.getEnvironmentsFromFasit("tpsws");
+        Set<String> environments;
+        if (miljoer.isEmpty()) {
+            environments = getEnvironments.getEnvironmentsFromFasit("tpsws");
+        } else {
+            environments = new HashSet<>(miljoer);
+        }
 
         List<SkdMeldingTrans1> annenAvgangMeldinger = skdMessageCreatorTrans1.execute(MELDING_OM_ANNEN_AVGANG,
                 identerSomSkalSlettesFraTPS.stream().map(ident -> Person.builder().ident(ident).build()).collect(toList()), true);
