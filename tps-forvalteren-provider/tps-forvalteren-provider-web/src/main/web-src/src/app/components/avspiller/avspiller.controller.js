@@ -29,7 +29,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             }
 
             $scope.request = {};
-            $scope.request.periodeFra = computeDefaultPeriode(7);
+            $scope.request.periodeFra = $scope.startOfEra;
             $scope.request.periodeTil = $scope.today;
             $scope.request.format = $scope.fagsystem;
 
@@ -40,7 +40,7 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                 if (data.typer.length == 0) {
                     $mdDialog.show($mdDialog.confirm()
                         .title('Ingen data')
-                        .textContent("Ingen data funnet for angitt tidsrom")
+                        .textContent("Ingen data funnet.")
                         .ariaLabel('Ingen data funnet')
                         .ok('OK'));
                 } else if ($scope.autoload && $scope.request.periodeFra && $scope.request.periodeTil) {
@@ -277,13 +277,14 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
                     $scope.ownQueue = false;
                     $scope.typer = {};
                     $scope.kilder = {};
-                    if (isPeriodeAllowed() && ((!$scope.request.periodeFra && !$scope.request.periodeTil) ||
-                        ($scope.request.periodeFra && $scope.request.periodeTil))) {
-                        $scope.loading = true;
-                        $scope.request.timeout = $scope.timeout;
-                        avspillerService.getTyperOgKilder($scope.request)
-                            .then(oversiktOk, error);
-                    }
+                    $scope.loading = true;
+
+                    var oversikt = angular.copy($scope.request);
+                    oversikt.periodeFra = undefined;
+                    oversikt.periodeTil = undefined;
+                    oversikt.timeout = $scope.timeout;
+                    avspillerService.getTyperOgKilder(oversikt)
+                        .then(oversiktOk, error);
                 }
             };
 
@@ -399,19 +400,24 @@ angular.module('tps-forvalteren.avspiller', ['ngMessages', 'hljs'])
             };
 
             function isPeriodeAllowed() {
-                // if ($scope.request.periodeFra && $scope.request.periodeTil &&
-                //     Math.floor(($scope.request.periodeTil - $scope.request.periodeFra) / 86400000) > 7) {
-                //     $mdDialog.show($mdDialog.confirm()
-                //         .title('Søkeperiode for lang')
-                //         .textContent('For å avgrense søket er perioder støttet opptil 7 dager.')
-                //         .ariaLabel('Søkeperiode overstiger 7 dager. Det er ikke støttet.')
-                //         .ok('OK')
-                //     );
-                //     return false;
-                // }
+                if (isEmpty($scope.request.typer) && isEmpty($scope.request.kilder) && !$scope.request.identer &&
+                    $scope.request.periodeFra && $scope.request.periodeTil &&
+                    Math.floor(($scope.request.periodeTil - $scope.request.periodeFra) / 86400000) > 7) {
+                    $mdDialog.show($mdDialog.confirm()
+                        .title('Søkeparametere må oppgis')
+                        .htmlContent('Begrens søket ved å angi søkeparametre!<br>' +
+                            'Hvis kun periode angis må søket begrenses til 7 dager.')
+                        .ariaLabel('Angi søkeparametere eller periodesøk opptil 7 dager.')
+                        .ok('OK')
+                    );
+                    return false;
+                }
                 return true;
             }
 
+            function isEmpty(array) {
+                return !array || !array.length;
+            }
 
             function conditionalLoad() {
                 if ($scope.requestForm.$valid && $scope.request.periodeFra && $scope.request.periodeTil) {
