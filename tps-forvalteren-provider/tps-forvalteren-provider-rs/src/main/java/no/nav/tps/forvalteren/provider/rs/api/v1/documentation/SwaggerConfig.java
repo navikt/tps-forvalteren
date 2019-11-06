@@ -5,12 +5,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import springfox.documentation.annotations.ApiIgnore;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.DocExpansion;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -36,14 +40,24 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "TPS-Forvalteren",
-                "TPS-Forvalteren",
-                ""+appVersion,
-                "https://nav.no",
-                new Contact("Visma", "http://stash.devillo.no/projects/FEL/repos/tps-forvalteren/", "nav.no"),
-                "Super Strict Licence",
-                "https://opensource.org/licenses/super-strict-license"
-        );
+        return new ApiInfoBuilder()
+                .title("TPS-Forvalteren")
+                .description("TPS-Forvalteren")
+                .version(appVersion)
+                .termsOfServiceUrl("https://nav.no")
+                .contact(new Contact("Visma",
+                        "http://stash.devillo.no/projects/FEL/repos/tps-forvalteren/", "nav.no"))
+                .license("Super Strict Licence")
+                .licenseUrl("https://opensource.org/licenses/super-strict-license")
+                .build();
+    }
+
+    @Bean
+    UiConfiguration uiConfiguration() {
+        return UiConfigurationBuilder.builder()
+                .docExpansion(DocExpansion.LIST)
+                .displayRequestDuration(true)
+                .validatorUrl(null)
+                .build();
     }
 }
