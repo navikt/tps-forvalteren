@@ -183,7 +183,7 @@ public class ExtractOpprettKriterier {
                     RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
                     barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    mapBoadresse(barn.get(barnStartIndex + j), OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos() ?
+                    mapBoadresse(barn.get(barnStartIndex + j), hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0 ?
                                     hovedPersoner.get(i).getBoadresse() :
                                     getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
                             extractFlyttedato(barnRequest.getBoadresse()));
@@ -197,8 +197,12 @@ public class ExtractOpprettKriterier {
         }
     }
 
+    private boolean hasAdresseMedHovedperson(RsBarnRequest barnRequest) {
+        return isNull(barnRequest.getBorHos()) || OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos();
+    }
+
     private int getPartnerNr(int barnIndex, int totalPartners) {
-       return totalPartners != 0 ? barnIndex % totalPartners : 0;
+        return totalPartners > 0 ? barnIndex % totalPartners : 0;
     }
 
     private static Adresse getPartnerAdresse(List<Person> partnere, int partnerStartIndex, RsBarnRequest barnRequest, int partnerNr) {
