@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
@@ -48,6 +49,9 @@ public class PersonServiceTest {
 
     @Mock
     private IdenthistorikkRepository identhistorikkRepository;
+
+    @Mock
+    private SivilstandRepository sivilstandRepository;
 
     @Mock
     private IdentpoolService identpoolService;
@@ -79,6 +83,7 @@ public class PersonServiceTest {
         personService.deletePersons(new ArrayList<>(), newArrayList(IDENT1));
 
         verify(relasjonRepository).deleteByIdIn(anySet());
+        verify(sivilstandRepository).deleteByIdIn(anySet());
         verify(adresseRepository).deleteByIdIn(anyList());
         verify(doedsmeldingRepository).deleteByPersonIdIn(anyList());
         verify(personRepository).deleteByIdIn(anyList());

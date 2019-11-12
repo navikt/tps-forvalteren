@@ -5,6 +5,8 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +35,9 @@ public class PersonStatusFraMiljoService {
     private static final String REGEL_FOR_GEO_TILKNYTNING = "regelForGeografiskTilknytning";
     private static final String PERSONSTATUS_DETALJ = "personstatusDetalj";
     private static final String KODE_PERSONSTATUS = "kodePersonstatus";
+    private static final String SIVILSTAND_DETALJ = "sivilstandDetalj";
+    private static final String SIVILSTAND_KODE = "kodeSivilstand";
+    private static final String SIVILSTAND_DATO = "datoSivilstand";
     private static final String PERSONNAVN = "personnavn";
     private static final String ALLE_PERSONNAVN = "allePersonnavn";
     private static final String FORKORTET_NAVN = "kortnavn";
@@ -59,6 +64,8 @@ public class PersonStatusFraMiljoService {
                         person.setGtVerdi(getGtVerdi(response));
                         person.setGtType(getGtType(response));
                         person.setPersonStatus(getPersonStatus(response));
+                        person.setSivilstand(getSivilstand(response));
+                        person.setSivilstandRegdato(getSivilstandRegdato(response));
                         person.setForkortetNavn(getForkortetNavn(response));
                         personRepository.save(person);
                     }
@@ -66,6 +73,19 @@ public class PersonStatusFraMiljoService {
         );
 
         return personer;
+    }
+
+    private String getSivilstand(TpsServiceRoutineResponse response) {
+        Map data = getData(response);
+        Map sivilstandDetalj = nonNull(data) ? (Map) data.get(SIVILSTAND_DETALJ) : null;
+        return nonNull(sivilstandDetalj) ? (String) sivilstandDetalj.get(SIVILSTAND_KODE) : null;
+    }
+
+    private LocalDateTime getSivilstandRegdato(TpsServiceRoutineResponse response) {
+        Map data = getData(response);
+        Map sivilstandDetalj = nonNull(data) ? (Map) data.get(SIVILSTAND_DETALJ) : null;
+        String datoSivilstand = nonNull(sivilstandDetalj) ? (String) sivilstandDetalj.get(SIVILSTAND_DATO) : null;
+        return isNotBlank(datoSivilstand) ? LocalDate.parse(datoSivilstand).atStartOfDay() : null;
     }
 
     private String getForkortetNavn(TpsServiceRoutineResponse response) {

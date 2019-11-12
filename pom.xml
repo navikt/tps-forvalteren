@@ -67,15 +67,14 @@
         <javax-jms.version>2.0</javax-jms.version>
         <jmqi.version>7.1.0.0</jmqi.version>
         <jms.version>1.1</jms.version>
-        <guava.version>19.0</guava.version>
+        <guava.version>21.0</guava.version>
         <kodeverk.tjenestespesifikasjon.version>2.0.0-alpha004</kodeverk.tjenestespesifikasjon.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <ojdbc.version>12.2.0.1</ojdbc.version>
         <orika.version>1.5.1</orika.version>
         <micrometer.version>1.0.0-rc.9</micrometer.version>
         <mqjms.version>7.1</mqjms.version>
-        <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
-        <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
+        <springfox-swagger.version>2.9.2</springfox-swagger.version>
         <spring-security-ldap.version>4.0.4.RELEASE</spring-security-ldap.version>
         <spring-security-test.version>4.1.1.RELEASE</spring-security-test.version>
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
@@ -368,12 +367,12 @@
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
-                <version>${springfox-swagger2.version}</version>
+                <version>${springfox-swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox-swagger-ui.version}</version>
+                <version>${springfox-swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>ma.glasnost.orika</groupId>

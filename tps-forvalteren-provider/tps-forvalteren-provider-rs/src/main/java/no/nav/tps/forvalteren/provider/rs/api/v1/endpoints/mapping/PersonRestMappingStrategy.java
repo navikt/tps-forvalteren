@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import java.util.Collections;
+import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonUtenRelasjon;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePerson;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstand;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentAlderFraIdent;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
@@ -35,6 +38,7 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPerson rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
+                        Collections.sort(rsPerson.getSivilstander(), Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
                     }
                 })
                 .byDefault()
@@ -51,6 +55,7 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPersonUtenRelasjon rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
+                        Collections.sort(rsPerson.getSivilstander(), Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
                     }
                 })
                 .exclude(RELASJONER)

@@ -62,6 +62,8 @@ public class RsPerson {
 
     private String sivilstand;
 
+    private LocalDateTime sivilstandRegdato;
+
     @Size(max = 3)
     private String innvandretFraLand;
 
@@ -130,6 +132,8 @@ public class RsPerson {
     private String forsvunnetDato;
 
     private List<RsIdenthistorikk> identHistorikk;
+
+    private List<RsSivilstand> sivilstander;
 
     public List<RsRelasjon> getRelasjoner() {
         if (isNull(relasjoner)) {

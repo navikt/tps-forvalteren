@@ -36,6 +36,8 @@ public class RsPersonBestillingKriteriumRequest extends RsSimplePersonRequest {
 
     private String sivilstand;
 
+    private LocalDateTime sivilstandRegdato;
+
     private LocalDateTime regdato;
 
     @Size(min = 4, max = 4)
