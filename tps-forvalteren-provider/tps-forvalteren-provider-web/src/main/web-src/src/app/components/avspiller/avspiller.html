@@ -7,7 +7,7 @@
             <div layout="row" class="avspiller-row">
                 <md-input-container flex="10">
                     <label>Miljø</label>
-                    <md-select ng-model="request.miljoe" required ng-change="checkOversikt()" ng-disabled="progress"
+                    <md-select ng-model="request.miljoe" required ng-change="checkOversikt()" ng-disabled="progress || loading || loading2"
                                title="Velg miljø som meldinger (hendelser) skal avspilles fra">
                         <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
                     </md-select>
@@ -17,7 +17,7 @@
                     <label>Periode fra</label>
                     <input mdc-datetime-picker date="true" time="true" type="text"
                            id="periodeFra" name="periodeFra"
-                           click-outside-to-close="true" ng-disabled="progress"
+                           click-outside-to-close="true" ng-disabled="loading || loading2 || progress"
                            placeholder="Velg periode fra" auto-ok="true" week-start="1"
                            min-date="startOfEra" max-date="request.periodeTil" minute-steps="1"
                            format="DD-MM-YYYY HH.mm" edit-input="true"
@@ -36,7 +36,7 @@
                 <md-input-container flex="25">
                     <label>Periode til</label>
                     <input mdc-datetime-picker date="true" time="true" type="text"
-                           id="periodeTil" name="periodeTil" ng-disabled="progress"
+                           id="periodeTil" name="periodeTil" ng-disabled="loading || loading2 || progress"
                            click-outside-to-close="true" ng-pattern="/^\d{2}-\d{2}-\d{4} \d{2}.\d{2}$/"
                            placeholder="Velg periode til" auto-ok="true" week-start="1"
                            min-date="request.periodeFra" max-date="today" minute-steps="1"
@@ -57,7 +57,7 @@
                 <div class="avspiller-checkbox" ng-show="showTpsBtn">
                     <md-checkbox ng-model="ajourholdFmt" ng-click="meldFmtClick()"
                                  title="Type av meldinger valgt er {{request.format}}"
-                                 ng-disabled="progress">Tps
+                                 ng-disabled="progress || loading || loading2">Tps
                     </md-checkbox>
                 </div>
 
@@ -65,7 +65,7 @@
 
                 <md-input-container flex="10" aria-label="Timeout">
                     <input name="timeout" ng-model="timeout" style="text-align: center;"
-                           placeholder="Timeout" ng-disabled="progress"
+                           placeholder="Timeout" ng-disabled="loading || loading2 || progress"
                            ng-pattern="/^\d{1,3}$/" maxlength="999" ng-blur="enforceFocus(requestForm.timeout)"
                            title="Maksimum antall sekunder for TPS forespørsel"></input>
                     <div ng-messages="requestForm.timeout.$error"
@@ -75,17 +75,10 @@
                 </md-input-container>
 
                 <div flex></div>
-                <div flex="10" layout="column">
-                    <div class="avspiller-checkbox">
-                        <md-checkbox ng-model="autoload" ng-click="autoloadToggle()"
-                                     title="Automatisk henting hver gang filter endres. -- Slå av denne når søk tar lang tid."
-                                     ng-disabled="progress">Autoload
-                        </md-checkbox>
-                    </div>
-
+                <div flex="10" layout="column" layout-align="end end">
                     <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
-                               ng-disabled="requestForm.$invalid || progress"
-                               title="Hent meldinger basert på valgte filtere. Automatisk henting virker ikke sammen med identfiltere.">
+                               ng-disabled="requestForm.$invalid || loading || loading2 || progress || invalidRequest"
+                               title="Hent meldinger basert på valgte filtere.">
                         Hent
                     </md-button>
                 </div>
@@ -139,32 +132,38 @@
     <!-- Resulting Response -->
     <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger || loading2">
         <form name="responseForm" class="top transparent response-form" ng-cloak>
-            <div layout="row" layout-align="end center" class="pagination" ng-show="pager.totalt > pagesize" style="white-space: nowrap; cursor: pointer;">
-                <span style="margin-right: 15px; marigin-bottom: 6px;">
-                    Viser {{pager.currentPage === pager.totalPages ?  '1-' + pager.totalt : pager.viser.display}} av {{pager.totalt}}</span>
-                <li ng-class="{disabled:pager.currentPage === 1 || disable}">
-                    <a ng-click="setPage(1)">&lt;&lt;</a>
-                </li>
-                <li ng-class="{disabled:pager.currentPage === 1 || disable}">
-                    <a ng-click="setPage(pager.currentPage - 1)">&lt;</a>
-                </li>
-                <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page, disabled:disable}">
-                    <a ng-click="setPage(page.pagenum)">{{page.display}}</a>
-                </li>
-                <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
-                    <a ng-click="setPage(pager.currentPage + 1)">&gt;</a>
-                </li>
-                <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
-                    <a ng-click="setPage(pager.totalPages)">&gt;&gt;</a>
-                </li>
-                <div flex="10"></div>
+            <div layout="column" ng-show="pager.totalt > pagesize"  style="white-space: nowrap; margin-top: 20px;">
+                <div layout="row" layout-align="end end" style="margin-bottom: -15px;">
+                    <div> Viser hendelsenr {{pager.currentPage === pager.totalPages ? '1-' + pager.totalt : pager.viser.display}} av {{pager.totalt}}</div>
+                    <div flex="5"></div>
+                </div>
+                <div layout="row" layout-align="end end" class="pagination" style="cursor: pointer;">
+
+                    <li ng-class="{disabled:pager.currentPage === 1 || disable}">
+                        <a ng-click="setPage(1)">&lt;&lt;</a>
+                    </li>
+                    <li ng-class="{disabled:pager.currentPage === 1 || disable}">
+                        <a ng-click="setPage(pager.currentPage - 1)">&lt;</a>
+                    </li>
+                    <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page, disabled:disable}">
+                        <a ng-click="setPage(page.pagenum)">{{page.display}}</a>
+                    </li>
+                    <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
+                        <a ng-click="setPage(pager.currentPage + 1)">&gt;</a>
+                    </li>
+                    <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
+                        <a ng-click="setPage(pager.totalPages)">&gt;&gt;</a>
+                    </li>
+                    <div flex="5"></div>
+                </div>
             </div>
+
             <div layout="row" layout-align="end end" class="nopagination" ng-hide="pager.totalt > pagesize">
             </div>
 
             <h3 layout="row" class="flexbox-parent" ng-show="pager.totalt">
-                <div flex="10" align="end">Linjenr</div>
-                <div flex="15" align="end">Meldingsnr</div>
+                <div flex="15" style="text-align: center;">Hendelsenr</div>
+                <div flex="10" style="text-align: right;">Meldingsnr</div>
                 <div flex="5"></div>
                 <div flex="20">Tidspunkt</div>
                 <div flex="25">Hendelse</div>
