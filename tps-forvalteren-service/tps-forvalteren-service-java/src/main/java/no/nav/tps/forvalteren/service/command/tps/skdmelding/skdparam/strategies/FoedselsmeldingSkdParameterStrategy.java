@@ -15,6 +15,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Foedselsm
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalFoedselsMeldingException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
@@ -31,6 +32,9 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
     @Autowired
     private HentKjoennFraIdentService hentKjoennFraIdentService;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Override
     public SkdMeldingTrans1 execute(Person barn) {
@@ -62,7 +66,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
         skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(barn.getRegdato()));
         skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
-        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
+        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(hentDatoFraIdentService.extract(barn.getIdent())));
 
         skdMeldingTrans1.setFoedekommLand("0301");
         skdMeldingTrans1.setFoedested("Sykehus");
