@@ -22,7 +22,6 @@ public class GetEnvironments {
     @Cacheable(CACHE_FASIT)
     public Set<String> getEnvironmentsFromFasit(String application) {
         Set<String> environments = fasitApiConsumer.getEnvironments(application);
-        environments.remove("t8");
         environments.remove("t13");
 
         return filterEnvironmentsOnDeployedEnvironment.execute(environments);
