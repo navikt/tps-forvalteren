@@ -40,9 +40,6 @@ public class FoedselsmeldingSkdParameterStrategyTest {
     private SetAdresseService setAdresseService;
 
     @Autowired
-    private LandkodeEncoder landkodeEncoder;
-
-    @Autowired
     private HentDatoFraIdentService hentDatoFraIdentService;
 
     private FoedselsmeldingSkdParameterStrategy foedselsmeldingSkdParameterStrategy;
@@ -60,6 +57,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         foedselsmeldingSkdParameterStrategy = new FoedselsmeldingSkdParameterStrategy();
         ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "setAdresseService", setAdresseService);
         ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "hentKjoennFraIdentService", hentKjoennFraIdentService);
+        ReflectionTestUtils.setField(foedselsmeldingSkdParameterStrategy, "hentDatoFraIdentService", hentDatoFraIdentService);
         ReflectionTestUtils.setField(setAdresseService, "hentDatoFraIdentService", hentDatoFraIdentService);
 
         barn = new Person();
