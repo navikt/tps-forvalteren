@@ -71,7 +71,7 @@ public class StatusPaaIdenterITps {
 
         return RsTpsStatusPaaIdenterResponse.builder()
                 .statusPaaIdenter(
-                        identerPerMiljoe.entrySet().stream().map((entry) ->
+                        identerPerMiljoe.entrySet().stream().map(entry ->
                                 TpsStatusPaaIdent.builder()
                                         .ident(entry.getKey())
                                         .env(new ArrayList(entry.getValue()))

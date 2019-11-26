@@ -35,7 +35,7 @@ public final class ExtractDataFromTpsServiceRoutineResponse {
                         List<Map> eFnr = (List) getArtifact(aFnr, "EFnr");
                         eFnr.forEach( efnr -> {
                             if (isNull(getArtifact(efnr, "svarStatus"))) {
-                                identer.add(String.valueOf(((Map) efnr).get("fnr")));
+                                identer.add(String.valueOf(efnr.get("fnr")));
                             }
                         });
                     } else {
@@ -49,7 +49,7 @@ public final class ExtractDataFromTpsServiceRoutineResponse {
                 } else {
                     svarStatus = (Map) getArtifact(data, "svarStatus");
                     String returStatus = (String) getArtifact(svarStatus, "returStatus");
-                    if (!"08".equals(returStatus) && nonNull(data.get("fnr"))) {
+                    if (!"08".equals(returStatus) && nonNull(data) && nonNull(data.get("fnr"))) {
                         identer.add(String.valueOf(data.get("fnr")));
                     }
                 }
