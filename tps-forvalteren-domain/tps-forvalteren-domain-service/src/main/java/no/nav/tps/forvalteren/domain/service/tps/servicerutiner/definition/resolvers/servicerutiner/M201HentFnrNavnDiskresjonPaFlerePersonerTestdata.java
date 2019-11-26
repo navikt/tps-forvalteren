@@ -1,13 +1,13 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrHistMultiServiceRoutineRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveTakenFnrFromResponseTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataListTransformer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
@@ -38,7 +38,6 @@ public class M201HentFnrNavnDiskresjonPaFlerePersonerTestdata implements Service
                 .and()
                 .transformer()
                 .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
-                .postSend(RemoveTakenFnrFromResponseTransform.removeTakenFnrFromResponseTransform("antallFM201"))
                 .postSend(ResponseDataListTransformer.extractDataListFromXml("personDataM201", "EFnr", "antallFM201"))
                 .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()

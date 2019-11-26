@@ -1,8 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.utils;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +16,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServ
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ExtractDataFromTpsServiceRoutineResponse {
 
-    public static Set<String> trekkUtIdenterMedStatusIkkeFunnetFraResponse(TpsServiceRoutineResponse tpsResponse) {
+    public static Set<String> trekkUtIdenterMedStatusFunnetFraResponse(TpsServiceRoutineResponse tpsResponse) {
 
         Map responseMap = (Map) tpsResponse.getResponse();
         int antallIdenter = (int) responseMap.get("antallTotalt");
@@ -22,23 +24,32 @@ public final class ExtractDataFromTpsServiceRoutineResponse {
         Set<String> identer = new HashSet();
 
         ResponseStatus status = (ResponseStatus) getArtifact(responseMap, "status");
-        if (!"08".equals(status.getKode())) {
+        if (!"12".equals(status.getKode())) {
             for (int i = 1; i < antallIdenter + 1; i++) {
                 Map data = (Map) getArtifact(responseMap, "data" + i);
 
                 Map aFnr = (Map) getArtifact(data, "AFnr");
                 Map svarStatus;
                 if (nonNull(aFnr)) {
-                    Map eFnr = (Map) getArtifact(aFnr, "EFnr");
-                    svarStatus = (Map) getArtifact(data, "svarStatus");
-                    String returStatus = (String) getArtifact(svarStatus, "returStatus");
-                    if (!"08".equals(returStatus)) {
-                        identer.add(String.valueOf(eFnr.get("fnr")));
+                    if (getArtifact(aFnr, "EFnr") instanceof List) {
+                        List<Map> eFnr = (List) getArtifact(aFnr, "EFnr");
+                        eFnr.forEach( efnr -> {
+                            if (isNull(getArtifact(efnr, "svarStatus"))) {
+                                identer.add(String.valueOf(((Map) efnr).get("fnr")));
+                            }
+                        });
+                    } else {
+                        Map eFnr = (Map) getArtifact(aFnr, "EFnr");
+                        svarStatus = (Map) getArtifact(data, "svarStatus");
+                        String returStatus = (String) getArtifact(svarStatus, "returStatus");
+                        if (!"08".equals(returStatus)) {
+                            identer.add(String.valueOf(eFnr.get("fnr")));
+                        }
                     }
                 } else {
                     svarStatus = (Map) getArtifact(data, "svarStatus");
                     String returStatus = (String) getArtifact(svarStatus, "returStatus");
-                    if (!"08".equals(returStatus)) {
+                    if (!"08".equals(returStatus) && nonNull(data.get("fnr"))) {
                         identer.add(String.valueOf(data.get("fnr")));
                     }
                 }

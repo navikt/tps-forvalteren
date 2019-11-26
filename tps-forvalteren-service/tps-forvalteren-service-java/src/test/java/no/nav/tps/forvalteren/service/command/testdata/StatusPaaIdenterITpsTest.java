@@ -135,6 +135,11 @@ public class StatusPaaIdenterITpsTest {
     @Test
     public void shouldHentStatusPaaIdenterIAlleMiljoer() {
         RsTpsStatusPaaIdenterResponse actualStatus = statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(IDENTER);
-        assertThat(actualStatus.getStatusPaaIdenter().size(), is(0));
+        assertThat(actualStatus.getStatusPaaIdenter().size(), is(IDENTER.size()));
+        EXPECTED_TPS_STATUS.forEach(expectedStatusPaaIdent ->
+            assertThat("Assert ident", actualStatus.getStatusPaaIdenter().stream()
+                    .anyMatch(actualtpsStatusPaaIdent -> expectedStatusPaaIdent.getIdent()
+                            .equals(actualtpsStatusPaaIdent.getIdent())))
+        );
     }
 }

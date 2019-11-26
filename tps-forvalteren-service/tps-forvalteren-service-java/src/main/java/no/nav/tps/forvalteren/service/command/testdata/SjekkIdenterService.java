@@ -66,7 +66,7 @@ public class SjekkIdenterService {
 
         insertIntoMap(identerMedStatus, koorigerteLedigeIdenterIMiljo, GYLDIG_OG_LEDIG);
 
-        setStatusOnDifference(ledigeIdenterDB, koorigerteLedigeIdenterIMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod.likt miljø (Q0)");
+        setStatusOnDifference(ledigeIdenterDB, koorigerteLedigeIdenterIMiljo, identerMedStatus, "Ikke ledig -- ident finnes i prod");
 
         return CheckIdentResponse.builder()
                 .statuser(setAvailibility(mapToIdentMedStatusSet(identerMedStatus)))

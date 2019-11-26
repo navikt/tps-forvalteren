@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static java.lang.String.valueOf;
-import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusIkkeFunnetFraResponse;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
 
 import java.util.ArrayList;
@@ -54,14 +54,15 @@ public class StatusPaaIdenterITps {
         TpsServiceRoutineRequest tpsServiceRoutineRequest =
                 mappingUtils.convertToTpsServiceRoutineRequest(valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
 
-        Map<String, Set<String>> identerPerMiljoe = new HashMap<>();
+        Map<String, Set<String>> identerPerMiljoe = new HashMap();
+        identer.forEach(ident -> identerPerMiljoe.put(ident, new TreeSet<>()));
 
         environmentsToCheck.forEach(env -> {
 
             TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest,
                     new TpsRequestContext(userContextHolder.getUser(), env));
-            trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse).forEach(ident -> {
-                        Set miljoer = identerPerMiljoe.getOrDefault(ident, new TreeSet<>());
+            trekkUtIdenterMedStatusFunnetFraResponse(tpsResponse).forEach(ident -> {
+                        Set miljoer = identerPerMiljoe.get(ident);
                         miljoer.add(env);
                         identerPerMiljoe.put(ident, miljoer);
                     }

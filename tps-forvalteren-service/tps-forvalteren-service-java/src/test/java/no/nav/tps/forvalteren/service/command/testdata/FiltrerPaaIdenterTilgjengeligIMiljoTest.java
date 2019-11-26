@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
 
     private TpsServiceRoutineRequest tpsServiceRoutineRequestTom;
     private TpsServiceRoutineResponse tpsResponse2Identer, tpsResponse3Identer;
-    private LinkedHashMap data1, data2, data3, data4;
+    private Map data1, data2, data3, data4;
     private JsonNode jsonNodeTom;
     private ResponseStatus responseStatusDummy;
 
@@ -85,10 +86,10 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
 
         when(tpsRequestMappingUtils.convert(any(Map.class), eq(JsonNode.class))).thenReturn(jsonNodeTom);
 
-        data1 = new LinkedHashMap();
-        data2 = new LinkedHashMap();
-        data3 = new LinkedHashMap();
-        data4 = new LinkedHashMap();
+        data1 = new HashMap();
+        data2 = new HashMap();
+        data3 = new HashMap();
+        data4 = new HashMap();
         data1.put("fnr", FNR_1);
         data2.put("fnr", FNR_2);
         data3.put("fnr", FNR_3);
@@ -135,8 +136,8 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
         verify(tpsRequestSender, times(ANTALL_LOOP_I_EN_KJOERING * 5 + ANTALL_LOOP_I_EN_KJOERING * 3)).sendTpsRequest(any(), any());
     }
 
-    private LinkedHashMap createTpsResponseMap2Identer() {
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
+    private Map createTpsResponseMap2Identer() {
+        Map responseMapT1 = new HashMap();
         responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("antallTotalt", 2);
         responseMapT1.put("data1", data1);
@@ -145,24 +146,26 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
     }
 
     @Test
-    public void returnererKunIdenterSomErDelAvAlleTpsResponsene() throws Exception {
+    public void returnererKunIdenterSomErDelAvAlleTpsResponsene() {
         env.add("q2");
 
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
+        Map svarStatus = new HashMap();
+        svarStatus.put("returStatus", "08");
+        data1.put("svarStatus", svarStatus);
+
+        Map responseMapT1 = new HashMap();
 
         responseMapT1.put("data1", data1);
         responseMapT1.put("data2", data2);
-        responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("status", responseStatusDummy);
         responseMapT1.put("antallTotalt", 2);
 
         tpsResponse2Identer.setResponse(responseMapT1);
 
-        LinkedHashMap responseMapT2 = new LinkedHashMap();
+        Map responseMapT2 = new HashMap();
         responseMapT2.put("data1", data1);
         responseMapT2.put("data2", data3);
         responseMapT2.put("data3", data4);
-        responseMapT2.put("status", responseStatusDummy);
         responseMapT2.put("status", responseStatusDummy);
         responseMapT2.put("antallTotalt", 3);
 
@@ -184,7 +187,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
     public void returnererIngenIdenterHvisIngenIdenterErAaFinneIAlleMiljoerKunINoenBestemteMiljoer() throws Exception {
         env.add("q2");
 
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
+        Map responseMapT1 = new HashMap();
         responseMapT1.put("data1", data1);
         responseMapT1.put("data2", data2);
         responseMapT1.put("status", responseStatusDummy);
@@ -192,7 +195,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
 
         tpsResponse2Identer.setResponse(responseMapT1);
 
-        LinkedHashMap responseMapT2 = new LinkedHashMap();
+        Map responseMapT2 = new HashMap();
         responseMapT2.put("data1", data3);
         responseMapT2.put("data2", data4);
         responseMapT2.put("status", responseStatusDummy);
@@ -211,6 +214,11 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
     @Test
     public void returnererAlleIdenterEtterspurtHvisAlleErTilgjengeligIAlleMiljoer() throws Exception {
         env.add("q2");
+
+        Map svarStatus = new HashMap();
+        svarStatus.put("returStatus", "08");
+        data1.put("svarStatus", svarStatus);
+        data2.put("svarStatus", svarStatus);
 
         LinkedHashMap responseMapT1 = new LinkedHashMap();
         responseMapT1.put("data1", data1);
@@ -240,15 +248,17 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
     public void returnererTomListeHvisIdenteneManOnskerIkkeErTilgjengeligINoenMiljoer() throws Exception {
         env.add("q2");
 
-        LinkedHashMap responseMapT1 = new LinkedHashMap();
+        Map responseMapT1 = new HashMap();
+        responseMapT1.put("data1", data1);
         responseMapT1.put("status", responseStatusDummy);
-        responseMapT1.put("antallTotalt", 0);
+        responseMapT1.put("antallTotalt", 1);
 
         tpsResponse2Identer.setResponse(responseMapT1);
 
-        LinkedHashMap responseMapT2 = new LinkedHashMap();
+        Map responseMapT2 = new HashMap();
+        responseMapT2.put("data1", data2);
         responseMapT2.put("status", responseStatusDummy);
-        responseMapT2.put("antallTotalt", 0);
+        responseMapT2.put("antallTotalt", 1);
 
         tpsResponse3Identer.setResponse(responseMapT2);
 
