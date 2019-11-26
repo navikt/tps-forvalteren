@@ -1,16 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusIkkeFunnetFraResponse;
+import static java.lang.String.valueOf;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Lists;
 
 import no.nav.tps.forvalteren.domain.rs.RsTpsStatusPaaIdenterResponse;
 import no.nav.tps.forvalteren.domain.rs.TpsStatusPaaIdent;
@@ -34,8 +36,10 @@ public class StatusPaaIdenterITps {
 
     @Autowired
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
+
     @Autowired
     private UserContextHolder userContextHolder;
+
     @Autowired
     private TpsRequestSender tpsRequestSender;
 
@@ -43,46 +47,36 @@ public class StatusPaaIdenterITps {
     private RsTpsRequestMappingUtils mappingUtils;
 
     public RsTpsStatusPaaIdenterResponse hentStatusPaaIdenterIAlleMiljoer(List<String> identer) {
-        RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse = opprettResponse(identer);
-        settMiljoerDerIdenteneEksisterer(tpsStatusPaaIdenterResponse, identer);
-        tpsStatusPaaIdenterResponse.getStatusPaaIdenter()
-                .forEach(tpsStatusPaaIdent -> Collections.sort(tpsStatusPaaIdent.getEnv()));
-        return tpsStatusPaaIdenterResponse;
-    }
 
-    private RsTpsStatusPaaIdenterResponse opprettResponse(List<String> identer) {
-
-        List<TpsStatusPaaIdent> tpsStatusPaaIdentList = Lists.newArrayListWithExpectedSize(identer.size());
-
-        for (String ident : identer) {
-            TpsStatusPaaIdent statusPaaIdent = new TpsStatusPaaIdent();
-            statusPaaIdent.setIdent(ident);
-            tpsStatusPaaIdentList.add(statusPaaIdent);
-        }
-        return new RsTpsStatusPaaIdenterResponse(tpsStatusPaaIdentList);
-    }
-
-    private void settMiljoerDerIdenteneEksisterer(RsTpsStatusPaaIdenterResponse tpsStatusPaaIdenterResponse, List<String> identer) {
         Set<String> environmentsToCheck =
                 filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, "A0");
+        TpsServiceRoutineRequest tpsServiceRoutineRequest =
+                mappingUtils.convertToTpsServiceRoutineRequest(valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
 
-        for (String env : environmentsToCheck) {
-            List<String> identerIkkeIMiljoet = finnesIdenteneIMiljoet(env, tpsRequestParameters);
-            ArrayList<String> identerIMiljoet = new ArrayList<>(identer);
-            identerIMiljoet.removeAll(identerIkkeIMiljoet);
-            tpsStatusPaaIdenterResponse.addEnvToTheseIdents(env, identerIMiljoet);
-        }
-    }
+        Map<String, Set<String>> identerPerMiljoe = new HashMap();
+        identer.forEach(ident -> identerPerMiljoe.put(ident, new TreeSet<>()));
 
-    private List<String> finnesIdenteneIMiljoet(String env, Map<String, Object> tpsRequestParameters) {
+        environmentsToCheck.forEach(env -> {
 
-        TpsServiceRoutineRequest tpsServiceRoutineRequest = mappingUtils.convertToTpsServiceRoutineRequest(String.valueOf(tpsRequestParameters
-                .get("serviceRutinenavn")), tpsRequestParameters);
-        TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest,
-                new TpsRequestContext(userContextHolder.getUser(), env));
+            TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest,
+                    new TpsRequestContext(userContextHolder.getUser(), env));
+            trekkUtIdenterMedStatusFunnetFraResponse(tpsResponse).forEach(ident -> {
+                        Set miljoer = identerPerMiljoe.get(ident);
+                        miljoer.add(env);
+                        identerPerMiljoe.put(ident, miljoer);
+                    }
+            );
+        });
 
-        return new ArrayList<>(trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse));
+        return RsTpsStatusPaaIdenterResponse.builder()
+                .statusPaaIdenter(
+                        identerPerMiljoe.entrySet().stream().map(entry ->
+                                TpsStatusPaaIdent.builder()
+                                        .ident(entry.getKey())
+                                        .env(new ArrayList(entry.getValue()))
+                                        .build()).collect(Collectors.toList()))
+                .build();
     }
 }
 

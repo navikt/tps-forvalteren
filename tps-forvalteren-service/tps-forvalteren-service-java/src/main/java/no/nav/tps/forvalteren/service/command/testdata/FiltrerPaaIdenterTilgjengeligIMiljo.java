@@ -1,14 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService.PROD_ENV;
-import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusIkkeFunnetFraResponse;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
 import static org.assertj.core.util.Sets.newHashSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,7 +92,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
             checkForTpsSystemfeil(tpsResponse, miljoe);
 
             if (!tpsResponse.getXml().isEmpty()) {
-                tilgjengeligeIdenterAlleMiljoer.retainAll(trekkUtIdenterMedStatusIkkeFunnetFraResponse(tpsResponse));
+                tilgjengeligeIdenterAlleMiljoer.removeAll(trekkUtIdenterMedStatusFunnetFraResponse(tpsResponse));
             }
 
             if (tilgjengeligeIdenterAlleMiljoer.isEmpty()) {
@@ -109,7 +108,7 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
             log.error("Request mot TPS i miljoe {} fikk timeout.  Sjekk av tilgjengelighet på ident i miljoe feilet.", miljoe);
         }
 
-        ResponseStatus status = (ResponseStatus) ((LinkedHashMap) response.getResponse()).get("status");
+        ResponseStatus status = (ResponseStatus) ((Map) response.getResponse()).get("status");
 
         if (TPS_SYSTEM_ERROR_CODE.equals(status.getKode())) {
             log.error("TPS returnerte SYSTEM ERROR (kode=12) i miljø={}, melding={}, utfyllende melding={}",

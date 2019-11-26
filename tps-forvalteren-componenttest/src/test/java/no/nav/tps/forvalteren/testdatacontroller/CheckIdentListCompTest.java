@@ -104,8 +104,8 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
         when(messageQueueConsumer.sendMessage(any(),anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/checkidentlist/finn_identer_i_TPS_response.xml"));
     }
-    
-    public String setupTestdataInTpsfDatabase() {
+
+    private String setupTestdataInTpsfDatabase() {
         testgruppe = gruppeRepository.save(Gruppe.builder().navn("regresjonstestgruppenavn").build());
         Person personToSave = Person.builder()
                 .ident(GYLDIG_IDENT_EKSISTERER_I_TPSF)

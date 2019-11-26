@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.ResourceHandling.resourceUrlToString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -102,16 +102,16 @@ public class StatusPaaIdenterITpsTest {
     private TpsServiceRoutineResponse createResponseFromTPSInEnvT1() {
         TpsServiceRoutineResponse response1 = new TpsServiceRoutineResponse();
         response1.setXml(MQ_xmlResponse_envT1);
-        LinkedHashMap linkedHashMap_Response1 = new LinkedHashMap<>();
-        linkedHashMap_Response1.put("antallTotalt", 2);
+        LinkedHashMap responseMap1 = new LinkedHashMap<>();
+        responseMap1.put("antallTotalt", 2);
         LinkedHashMap data1 = new LinkedHashMap();
         LinkedHashMap data2 = new LinkedHashMap();
         data1.put("fnr", IDENTER.get(0));
         data2.put("fnr", IDENTER.get(1));
-        linkedHashMap_Response1.put("data1", data1);
-        linkedHashMap_Response1.put("data2", data2);
-        linkedHashMap_Response1.put("status", new ResponseStatus("08", "S201005F", "Person ikke funnet"));
-        response1.setResponse(linkedHashMap_Response1);
+        responseMap1.put("data1", data1);
+        responseMap1.put("data2", data2);
+        responseMap1.put("status", new ResponseStatus("08", "S201005F", "Person ikke funnet"));
+        response1.setResponse(responseMap1);
         return response1;
     }
     
@@ -135,14 +135,11 @@ public class StatusPaaIdenterITpsTest {
     @Test
     public void shouldHentStatusPaaIdenterIAlleMiljoer() {
         RsTpsStatusPaaIdenterResponse actualStatus = statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(IDENTER);
-        assertEquals(IDENTER.size(), actualStatus.getStatusPaaIdenter().size());
-        EXPECTED_TPS_STATUS.forEach(expectedStatusPaaIdent -> {
-            assertTrue("Assert ident", actualStatus.getStatusPaaIdenter().stream()
+        assertThat(actualStatus.getStatusPaaIdenter().size(), is(IDENTER.size()));
+        EXPECTED_TPS_STATUS.forEach(expectedStatusPaaIdent ->
+            assertThat("Assert ident", actualStatus.getStatusPaaIdenter().stream()
                     .anyMatch(actualtpsStatusPaaIdent -> expectedStatusPaaIdent.getIdent()
-                            .equals(actualtpsStatusPaaIdent.getIdent())));
-            assertTrue("Assert env", actualStatus.getStatusPaaIdenter().stream()
-                    .anyMatch(actualtpsStatusPaaIdent -> expectedStatusPaaIdent.getEnv()
-                            .equals(actualtpsStatusPaaIdent.getEnv())));
-        });
+                            .equals(actualtpsStatusPaaIdent.getIdent())))
+        );
     }
 }
