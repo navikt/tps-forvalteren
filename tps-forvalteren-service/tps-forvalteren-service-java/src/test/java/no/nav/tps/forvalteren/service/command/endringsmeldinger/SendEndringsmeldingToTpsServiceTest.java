@@ -96,7 +96,7 @@ public class SendEndringsmeldingToTpsServiceTest {
         when(innvandring.resolve()).thenReturn(new TpsSkdRequestMeldingDefinition());
         when(skdAddHeaderToSkdMelding.execute(any(StringBuilder.class))).thenReturn(new StringBuilder("lol"));
         when(skdEndringsmeldinger.stream()).thenReturn(Stream.of(skdEndringsmelding));
-        when(convertMeldingFromJsonToText.execute(rsMeldingstype1Felter)).thenReturn("skdMelding");
+        when(convertMeldingFromJsonToText.execute(rsMeldingstype1Felter)).thenReturn("aSimpleSkdMeldingMock");
     }
 
     @Test
