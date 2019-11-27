@@ -16,17 +16,31 @@ public class SendSkdMeldingerOgLeggTilResponslisteService {
     @Autowired
     private SendEnSkdMelding sendEnSkdMelding;
 
-    public void sendSkdMeldingAndAddResponseToList(AvspillingResponse avspillingResponse, String skdmelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String env) {
+    public void sendSkdMeldingAndAddResponseToList(
+            AvspillingResponse avspillingResponse,
+            String skdmelding,
+            TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition,
+            String env,
+            String foedselsnummer,
+            String sekvensnummer
+    ) {
         String status = sendEnSkdMelding.sendSkdMelding(skdmelding, skdRequestMeldingDefinition, env);
         avspillingResponse.incrementAntallSendte();
         if (status == null || status.length() < 2 || !STATUS_OK.equals(status.substring(0, 2))) {
-            rapporterFeiletMelding(status, avspillingResponse);
+            rapporterFeiletMelding(status, avspillingResponse, foedselsnummer, sekvensnummer);
         }
     }
 
-    private void rapporterFeiletMelding(String status, AvspillingResponse avspillingResponse) {
+    private void rapporterFeiletMelding(
+            String status,
+            AvspillingResponse avspillingResponse,
+            String foedselsnummer,
+            String sekvensnummer
+    ) {
         StatusPaaAvspiltSkdMelding respons = StatusPaaAvspiltSkdMelding.builder()
                 .status(status)
+                .foedselsnummer(foedselsnummer)
+                .sekvensnummer(Long.parseLong(sekvensnummer))
                 .build();
         avspillingResponse.addStatusFraFeilendeMeldinger(respons);
         avspillingResponse.incrementAntallFeilet();

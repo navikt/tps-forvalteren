@@ -81,8 +81,10 @@ public class SendEndringsmeldingToTpsService {
                 RsMeldingstype melding = rsMeldingstyper.get(i);
 
                 String skdMelding = convertMeldingFromJsonToText.execute(melding);
+                String sekvensnummer = melding.getSekvensnr();
+                String foedselsnummer = skdMelding.substring(0, 11);
                 StringBuilder skdMeldingMedHeader = skdAddHeaderToSkdMelding.execute(new StringBuilder(skdMelding));
-                sendSkdMeldinger.sendSkdMeldingAndAddResponseToList(avspillingResponse, skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, environment);
+                sendSkdMeldinger.sendSkdMeldingAndAddResponseToList(avspillingResponse, skdMeldingMedHeader.toString(), skdRequestMeldingDefinition, environment, foedselsnummer, sekvensnummer);
                 saveLogg(skdMelding, melding, skdMeldingsGruppeId, environment);
 
                 tpsPacemaker.iteration(i);
