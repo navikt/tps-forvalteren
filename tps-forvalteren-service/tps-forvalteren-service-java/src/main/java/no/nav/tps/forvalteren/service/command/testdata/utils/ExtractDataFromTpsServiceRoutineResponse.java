@@ -42,7 +42,7 @@ public final class ExtractDataFromTpsServiceRoutineResponse {
                         Map eFnr = (Map) getArtifact(aFnr, "EFnr");
                         svarStatus = (Map) getArtifact(eFnr, "svarStatus");
                         String returStatus = (String) getArtifact(svarStatus, "returStatus");
-                        if (!"08".equals(returStatus)) {
+                        if (!"08".equals(returStatus) && nonNull(eFnr)) {
                             identer.add(String.valueOf(eFnr.get("fnr")));
                         }
                     }
