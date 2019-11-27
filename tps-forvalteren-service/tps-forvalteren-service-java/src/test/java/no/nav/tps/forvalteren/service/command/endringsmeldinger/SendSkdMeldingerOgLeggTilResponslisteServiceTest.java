@@ -20,6 +20,9 @@ public class SendSkdMeldingerOgLeggTilResponslisteServiceTest {
     
     private final String miljoe = "u5";
     private final String skdmeldingen = "skdmeldingen";
+    private final String fnr = "01010101010";
+    private final String sekvensnummer = "01";
+
     @Mock
     private SendEnSkdMelding SendEnSkdMelding;
     
@@ -39,8 +42,8 @@ public class SendSkdMeldingerOgLeggTilResponslisteServiceTest {
         when(SendEnSkdMelding.sendSkdMelding(eq(skdmeldingen), any(), eq(miljoe))).thenReturn(feilmelding);
         
         AvspillingResponse response = new AvspillingResponse();
-        sendToTps.sendSkdMeldingAndAddResponseToList(response, skdmeldingen, new TpsSkdRequestMeldingDefinition(), "annet");
-        sendToTps.sendSkdMeldingAndAddResponseToList(response, skdmeldingen, new TpsSkdRequestMeldingDefinition(), miljoe);
+        sendToTps.sendSkdMeldingAndAddResponseToList(response, skdmeldingen, new TpsSkdRequestMeldingDefinition(), "annet", fnr, sekvensnummer);
+        sendToTps.sendSkdMeldingAndAddResponseToList(response, skdmeldingen, new TpsSkdRequestMeldingDefinition(), miljoe, fnr, sekvensnummer);
         
         assertEquals(2, response.getAntallSendte());
         assertEquals(1, response.getAntallFeilet());

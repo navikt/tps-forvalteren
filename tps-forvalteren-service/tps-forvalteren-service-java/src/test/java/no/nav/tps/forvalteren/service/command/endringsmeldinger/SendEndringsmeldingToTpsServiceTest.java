@@ -96,7 +96,7 @@ public class SendEndringsmeldingToTpsServiceTest {
         when(innvandring.resolve()).thenReturn(new TpsSkdRequestMeldingDefinition());
         when(skdAddHeaderToSkdMelding.execute(any(StringBuilder.class))).thenReturn(new StringBuilder("lol"));
         when(skdEndringsmeldinger.stream()).thenReturn(Stream.of(skdEndringsmelding));
-        when(convertMeldingFromJsonToText.execute(rsMeldingstype1Felter)).thenReturn("skdMelding");
+        when(convertMeldingFromJsonToText.execute(rsMeldingstype1Felter)).thenReturn("aSimpleSkdMeldingMock");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class SendEndringsmeldingToTpsServiceTest {
 
         verify(convertMeldingFromJsonToText, times(3)).execute(rsMeldingstype1Felter);
         verify(skdAddHeaderToSkdMelding, times(3)).execute(any(StringBuilder.class));
-        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(), anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString());
+        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(), anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString(), anyString(), anyString());
 
         verify(skdEndringsmeldingLoggRepository, times(3)).save(any(SkdEndringsmeldingLogg.class));
     }
