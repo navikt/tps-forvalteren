@@ -159,7 +159,7 @@ public class ExtractOpprettKriterier {
                         adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
                     } else {
                         adresse = TRUE.equals(partnerRequest.getHarFellesAdresse()) || (isNull(partnerRequest.getHarFellesAdresse()) && j == 0) ?
-                                hovedPersoner.get(i).getBoadresse() : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
+                                hovedPersoner.get(i).getBoadresse().iterator().next() : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
                     mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
                     ammendDetailedPersonAttributes(partnerRequest, partnere.get(partnerStartIndex + j));
@@ -184,7 +184,7 @@ public class ExtractOpprettKriterier {
                     barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
                     mapBoadresse(barn.get(barnStartIndex + j), hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0 ?
-                                    hovedPersoner.get(i).getBoadresse() :
+                                    hovedPersoner.get(i).getBoadresse().iterator().next() :
                                     getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
                             extractFlyttedato(barnRequest.getBoadresse()));
                     ammendDetailedPersonAttributes(barnRequest, barn.get(barnStartIndex + j));
@@ -206,7 +206,8 @@ public class ExtractOpprettKriterier {
     }
 
     private static Adresse getPartnerAdresse(List<Person> partnere, int partnerStartIndex, RsBarnRequest barnRequest, int partnerNr) {
-        return (nonNull(barnRequest.getPartnerNr()) ? partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) : partnere.get(partnerStartIndex + partnerNr)).getBoadresse();
+        return (nonNull(barnRequest.getPartnerNr()) ? partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
+                partnere.get(partnerStartIndex + partnerNr)).getBoadresse().iterator().next();
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
@@ -239,13 +240,12 @@ public class ExtractOpprettKriterier {
             adresse.setPerson(null);
 
             // avoid Orika cyclic mapping overflow
-            person.setBoadresse(mapperFacade.map(adresse, Adresse.class));
-
-            adresse.setPerson(tempPerson);
-
-            person.getBoadresse().setPerson(person);
-            person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(flyttedato,
+            Adresse adresse1 = mapperFacade.map(adresse, Adresse.class);
+            adresse1.setPerson(tempPerson);
+            adresse1.setFlyttedato(nullcheckSetDefaultValue(flyttedato,
                     hentDatoFraIdentService.extract(person.getIdent())));
+
+            person.getBoadresse().add(adresse1);
         } else {
             dummyAdresseService.createDummyBoAdresse(person);
         }

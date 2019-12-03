@@ -5,7 +5,10 @@ import static javax.persistence.CascadeType.ALL;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -86,7 +88,7 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Sivilstand> sivilstander;
 
-    @Column(name ="SIVILSTAND_REGDATO")
+    @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
@@ -125,9 +127,8 @@ public class Person extends ChangeStamp {
     @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
     private String beskrSikkerhetsTiltak;
 
-    @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private Adresse boadresse;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private Set<Adresse> boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
@@ -213,5 +214,12 @@ public class Person extends ChangeStamp {
             sivilstander = new ArrayList();
         }
         return sivilstander;
+    }
+
+    public Set<Adresse> getBoadresse() {
+        if (isNull(boadresse)) {
+            boadresse = new TreeSet(Comparator.comparing(Adresse::getFlyttedato));
+        }
+        return boadresse;
     }
 }

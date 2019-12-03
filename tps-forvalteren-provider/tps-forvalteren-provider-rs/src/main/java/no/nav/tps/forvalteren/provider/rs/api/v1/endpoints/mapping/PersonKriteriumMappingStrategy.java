@@ -170,15 +170,16 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
 
         } else if (isUtenFastBopel(kriteriumRequest)) {
-            person.setBoadresse(dummyAdresseService.createAdresseUfb(person, mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class)));
+            person.getBoadresse().add(dummyAdresseService.createAdresseUfb(person, mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class)));
 
         } else if (nonNull(kriteriumRequest.getBoadresse())) {
-            person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));
-            person.getBoadresse().setPerson(person);
-            person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())));
+            Adresse adresse = mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class);
+            adresse.setPerson(person);
+            adresse.setFlyttedato(nullcheckSetDefaultValue(adresse.getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())));
+            person.getBoadresse().add(adresse);
 
         } else {
-            person.setBoadresse(dummyAdresseService.createDummyBoAdresse(person));
+            person.getBoadresse().add(dummyAdresseService.createDummyBoAdresse(person));
         }
     }
 
@@ -207,8 +208,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (nonNull(person.getInnvandretFraLandFlyttedato())) {
             return person.getInnvandretFraLandFlyttedato();
-        } else if (nonNull(person.getBoadresse()) && nonNull(person.getBoadresse().getFlyttedato())) {
-            return person.getBoadresse().getFlyttedato();
+        } else if (nonNull(person.getBoadresse()) && nonNull(person.getBoadresse().iterator().next().getFlyttedato())) {
+            return person.getBoadresse().iterator().next().getFlyttedato();
         } else {
             return hentDatoFraIdentService.extract(person.getIdent());
         }

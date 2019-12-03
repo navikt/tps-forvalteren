@@ -4,6 +4,7 @@ import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,8 @@ public class DummyAdresseService {
         gateadresse.setPostnr(POSTNR);
         gateadresse.setKommunenr(KOMMUNENR);
         gateadresse.setPerson(person);
-        gateadresse.setFlyttedato(nonNull(person) ? hentDatoFraIdentService.extract(person.getIdent()) : null);
+        gateadresse.setFlyttedato(nonNull(person) && isNotBlank(person.getIdent()) ?
+                hentDatoFraIdentService.extract(person.getIdent()) : LocalDateTime.now());
 
         return gateadresse;
     }

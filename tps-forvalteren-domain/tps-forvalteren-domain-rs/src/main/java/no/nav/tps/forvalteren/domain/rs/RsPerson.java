@@ -78,7 +78,7 @@ public class RsPerson {
 
     private LocalDateTime utvandretTilLandRegdato;
 
-    private RsAdresse boadresse;
+    private List<RsAdresse> boadresse;
 
     private List<RsPostadresse> postadresse;
 

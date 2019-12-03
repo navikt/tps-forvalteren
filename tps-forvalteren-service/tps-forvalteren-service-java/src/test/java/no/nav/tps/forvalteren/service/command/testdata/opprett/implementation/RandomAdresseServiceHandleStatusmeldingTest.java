@@ -82,6 +82,6 @@ public class RandomAdresseServiceHandleStatusmeldingTest extends AbstractRandomA
         
         List<Person> result = randomAdresseService_AllMocks.execute(enPerson, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR, KOMMUNENR));
 
-        Assert.assertTrue(result.get(0).getBoadresse() instanceof Gateadresse);
+        Assert.assertTrue(result.get(0).getBoadresse().iterator().next() instanceof Gateadresse);
     }
 }

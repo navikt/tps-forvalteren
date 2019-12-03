@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.domain.jpa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +30,29 @@ public class Gateadresse extends Adresse {
     @Column(name = "GATEKODE", length = 5)
     private String gatekode;
 
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Gateadresse))
+            return false;
+
+        Gateadresse that = (Gateadresse) o;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(getAdresse(), that.getAdresse())
+                .append(getHusnummer(), that.getHusnummer())
+                .append(getGatekode(), that.getGatekode())
+                .isEquals();
+    }
+
+    @Override public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(getAdresse())
+                .append(getHusnummer())
+                .append(getGatekode())
+                .toHashCode();
+    }
 }

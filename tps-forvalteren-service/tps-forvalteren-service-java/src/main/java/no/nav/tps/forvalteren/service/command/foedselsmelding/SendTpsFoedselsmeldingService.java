@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -17,7 +18,6 @@ import java.util.Map;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -87,7 +87,7 @@ public class SendTpsFoedselsmeldingService {
             if (LAGNY != request.getAdresseFra()) {
                 AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
                 if (nonNull(adresser)) {
-                    person.setBoadresse(adresser.getBoadresse());
+                    person.setBoadresse(newHashSet(adresser.getBoadresse()));
                     if (nonNull(adresser.getPostadresse())) {
                         person.getPostadresse().add(adresser.getPostadresse());
                     }
@@ -139,7 +139,7 @@ public class SendTpsFoedselsmeldingService {
     private Map sendMeldingToTps(Person personSomSkalFoedes, String miljoe) {
 
         SkdMeldingTrans1 melding = skdMessageCreatorTrans1.execute(FOEDSEL_MLD_NAVN, personSomSkalFoedes, true);
-        return sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), Sets.newHashSet(miljoe));
+        return sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), newHashSet(miljoe));
     }
 
     private SendSkdMeldingTilTpsResponse prepareStatus(Map<String, String> sentStatus, String ident) {

@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -64,7 +65,7 @@ public class SavePersonListServiceTest {
 
     private Person person = aMalePerson()
             .postadresse(Arrays.asList(postadresse))
-            .boadresse(boadresse).build();
+            .boadresse(newHashSet(boadresse)).build();
 
     @Before
     public void setup() {

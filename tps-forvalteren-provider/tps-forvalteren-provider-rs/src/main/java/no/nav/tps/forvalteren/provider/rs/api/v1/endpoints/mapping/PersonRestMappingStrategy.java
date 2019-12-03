@@ -44,6 +44,16 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                 .byDefault()
                 .register();
 
+        factory.classMap(RsPerson.class, Person.class)
+                .field(PERSON_ID, ID)
+                .customize(new CustomMapper<RsPerson, Person>() {
+                    @Override public void mapAtoB(RsPerson rsPerson, Person person, MappingContext context) {
+
+                    }
+                })
+                .byDefault()
+                .register();
+
         factory.classMap(Person.class, RsSimplePerson.class)
                 .field(ID, PERSON_ID)
                 .byDefault()

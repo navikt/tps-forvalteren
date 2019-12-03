@@ -47,7 +47,7 @@ public class ExcelService {
         List<Person> resultat = new ArrayList<>(identer.size());
 
         identLists.forEach(subset ->
-            resultat.addAll(personRepository.findByIdentIn(subset)));
+                resultat.addAll(personRepository.findByIdentIn(subset)));
 
         try {
             File excelFile = File.createTempFile("Excel-", ".csv");
@@ -135,41 +135,32 @@ public class ExcelService {
 
     private static String getBoadresse(Person person) {
 
-        return person.getBoadresse() instanceof Gateadresse ?
+        return person.getBoadresse().iterator().next() instanceof Gateadresse ?
                 getGateadresse(person) : getMatrikkeladresse(person);
     }
 
     private static String getGateadresse(Person person) {
         return new StringBuilder()
-                .append(((Gateadresse) person.getBoadresse()).getAdresse())
+                .append(((Gateadresse) person.getBoadresse().iterator().next()).getAdresse())
                 .append(SEP)
-                .append(((Gateadresse) person.getBoadresse()).getHusnummer())
+                .append(((Gateadresse) person.getBoadresse().iterator().next()).getHusnummer())
                 .append(SEP_STRING_START)
-                .append(((Gateadresse) person.getBoadresse()).getGatekode())
-                .append(SEP_STRING_DUAL)
-                .append(person.getBoadresse().getPostnr())
-                .append(SEP_STRING_DUAL)
-                .append(person.getBoadresse().getKommunenr())
-                .append(SEP_STRING_END)
-                .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
-                .toString();
+                .append(((Gateadresse) person.getBoadresse().iterator().next()).getGatekode())
+                .toString()
+                .concat(commonAdresse(person));
     }
 
     private static String getMatrikkeladresse(Person person) {
         return nonNull(person.getBoadresse()) ?
                 new StringBuilder()
-                        .append(((Matrikkeladresse) person.getBoadresse()).getMellomnavn())
+                        .append(((Matrikkeladresse) person.getBoadresse().iterator().next()).getMellomnavn())
                         .append(";GNR: ")
-                        .append(((Matrikkeladresse) person.getBoadresse()).getGardsnr())
+                        .append(((Matrikkeladresse) person.getBoadresse().iterator().next()).getGardsnr())
                         .append(";BNR: ")
-                        .append(((Matrikkeladresse) person.getBoadresse()).getBruksnr())
-                        .append(SEP_STRING_START)
-                        .append(person.getBoadresse().getPostnr())
-                        .append(SEP_STRING_DUAL)
-                        .append(person.getBoadresse().getKommunenr())
-                        .append(SEP_STRING_END)
-                        .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
+                        .append(((Matrikkeladresse) person.getBoadresse().iterator().next()).getBruksnr())
                         .toString()
+                        .concat(commonAdresse(person))
+
                 : format("%s%s%s%s%s", SEP, SEP, SEP, SEP, SEP);
     }
 
@@ -185,5 +176,15 @@ public class ExcelService {
                         .append(person.getPostadresse().get(0).getPostLand())
                         .toString()
                 : format("%s%s%s", SEP, SEP, SEP);
+    }
+
+    private static String commonAdresse(Person person) {
+        return new StringBuilder().append(SEP_STRING_DUAL)
+                .append(person.getBoadresse().iterator().next().getPostnr())
+                .append(SEP_STRING_DUAL)
+                .append(person.getBoadresse().iterator().next().getKommunenr())
+                .append(SEP_STRING_END)
+                .append(person.getBoadresse().iterator().next().getFlyttedato().format(ISO_LOCAL_DATE))
+                .toString();
     }
 }

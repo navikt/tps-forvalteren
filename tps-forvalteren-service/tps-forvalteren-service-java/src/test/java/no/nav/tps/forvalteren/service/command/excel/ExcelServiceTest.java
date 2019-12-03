@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.excel;
 
 import static com.google.common.base.Charsets.UTF_8;
+import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static org.hamcrest.CoreMatchers.is;
@@ -76,7 +77,7 @@ public class ExcelServiceTest {
                 .gtRegel("A")
                 .sprakKode("NB")
                 .sivilstand("GIFT")
-                .boadresse(adresse)
+                .boadresse(newHashSet(adresse))
                 .build();
     }
 }

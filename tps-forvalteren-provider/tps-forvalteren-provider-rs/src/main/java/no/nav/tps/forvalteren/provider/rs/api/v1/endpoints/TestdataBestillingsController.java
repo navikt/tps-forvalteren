@@ -42,6 +42,7 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
 import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.EndrePersonBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonIdenthistorikkService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
@@ -85,6 +86,12 @@ public class TestdataBestillingsController {
 
     @Autowired
     private PersonIdenthistorikkService personIdenthistorikkService;
+
+    @Autowired
+    private EndrePersonBestillingService endrePersonBestillingService;
+
+    @Autowired
+    private MapperFacade mapperFacade;
 
     @Transactional
     @LogExceptions
@@ -168,5 +175,14 @@ public class TestdataBestillingsController {
     public RsAliasResponse opprettAliaser(@RequestBody RsAliasRequest request) {
 
         return personIdenthistorikkService.prepareAliases(request);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "opprettaliaser") })
+    @RequestMapping(value = "/oppdaterperson", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public RsPerson OppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
+
+        return mapperFacade.map(endrePersonBestillingService.execute(ident, request), RsPerson.class);
     }
 }
