@@ -40,11 +40,13 @@ public class Matrikkeladresse extends Adresse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
+        }
 
-        if (!(o instanceof Matrikkeladresse))
+        if (getClass() != Matrikkeladresse.class) {
             return false;
+        }
 
         Matrikkeladresse that = (Matrikkeladresse) o;
 
@@ -71,8 +73,9 @@ public class Matrikkeladresse extends Adresse {
     }
 
     @Override public Adresse toUppercase() {
-        setMellomnavn(isNotBlank(getMellomnavn()) ? getMellomnavn().toUpperCase() : "");
+        if (isNotBlank(getMellomnavn())) {
+            setMellomnavn(getMellomnavn().toUpperCase());
+        }
         return this;
     }
-
 }

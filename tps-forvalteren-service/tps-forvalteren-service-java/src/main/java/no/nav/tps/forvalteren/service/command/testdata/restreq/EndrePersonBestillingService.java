@@ -3,23 +3,24 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static java.util.Objects.nonNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonListService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class EndrePersonBestillingService {
 
     private final PersonRepository personRepository;
-    private final SavePersonListService savePersonListService;
     private final RandomAdresseService randomAdresseService;
     private final MapperFacade mapperFacade;
 
@@ -28,11 +29,11 @@ public class EndrePersonBestillingService {
         Person person = personRepository.findByIdent(ident);
 
         updateAdresse(person, request);
-        return person;
+
+        return personRepository.save(person);
     }
 
     private void updateAdresse(Person person, RsPersonBestillingKriteriumRequest request) {
-
 
         if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
 
@@ -47,6 +48,25 @@ public class EndrePersonBestillingService {
             });
             if (!found.get()) {
                 person.getBoadresse().add(adresse);
+            }
+        }
+
+        if (!request.getPostadresse().isEmpty()) {
+
+            for (int i = 0; i < request.getPostadresse().size(); i++) {
+                for (int j = 0; j < person.getPostadresse().size(); j++) {
+
+                    Postadresse postadresse = mapperFacade.map(request.getPostadresse().get(i), Postadresse.class).toUppercase();
+                    boolean found = false;
+
+                    if (postadresse.equals(person.getPostadresse().get(j))) {
+                        found = true;
+                    }
+
+                    if (!found) {
+                        person.getPostadresse().add(postadresse);
+                    }
+                }
             }
         }
     }

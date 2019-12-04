@@ -34,11 +34,13 @@ public class Gateadresse extends Adresse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
+        }
 
-        if (!(o instanceof Gateadresse))
+        if (getClass() != Gateadresse.class) {
             return false;
+        }
 
         Gateadresse that = (Gateadresse) o;
 
@@ -61,8 +63,12 @@ public class Gateadresse extends Adresse {
     }
 
     @Override public Adresse toUppercase() {
-        setAdresse(isNotBlank(getAdresse()) ? getAdresse().toUpperCase() : "");
-        setHusnummer(isNotBlank(getHusnummer()) ? getHusnummer().toUpperCase() : "");
+        if (isNotBlank(getAdresse())) {
+            setAdresse(getAdresse().toUpperCase());
+        }
+        if (isNotBlank(getHusnummer())) {
+            setHusnummer(getHusnummer().toUpperCase());
+        }
         return this;
     }
 }
