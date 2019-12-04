@@ -30,8 +30,8 @@ public class UppercaseDataInPerson {
 
     private void gateadresseToUppercase(Person person) {
         /* Gateadresse og Matrikkeladresse */
-        Adresse boadresse = person.getBoadresse().iterator().next();
-        if (nonNull(person.getBoadresse())) {
+        if (!person.getBoadresse().isEmpty()) {
+            Adresse boadresse = person.getBoadresse().iterator().next();
             if (boadresse instanceof Matrikkeladresse) {
                 if (nonNull(((Matrikkeladresse) boadresse).getMellomnavn())) {
                     ((Matrikkeladresse) boadresse).setMellomnavn(((Matrikkeladresse) boadresse).getMellomnavn().toUpperCase());

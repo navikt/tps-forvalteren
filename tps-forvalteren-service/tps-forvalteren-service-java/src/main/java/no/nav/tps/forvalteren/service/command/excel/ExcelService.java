@@ -151,7 +151,7 @@ public class ExcelService {
     }
 
     private static String getMatrikkeladresse(Person person) {
-        return nonNull(person.getBoadresse()) ?
+        return !person.getBoadresse().isEmpty() ?
                 new StringBuilder()
                         .append(((Matrikkeladresse) person.getBoadresse().iterator().next()).getMellomnavn())
                         .append(";GNR: ")

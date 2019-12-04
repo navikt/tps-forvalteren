@@ -208,7 +208,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (nonNull(person.getInnvandretFraLandFlyttedato())) {
             return person.getInnvandretFraLandFlyttedato();
-        } else if (nonNull(person.getBoadresse()) && nonNull(person.getBoadresse().iterator().next().getFlyttedato())) {
+        } else if (!person.getBoadresse().isEmpty() && nonNull(person.getBoadresse().iterator().next().getFlyttedato())) {
             return person.getBoadresse().iterator().next().getFlyttedato();
         } else {
             return hentDatoFraIdentService.extract(person.getIdent());
