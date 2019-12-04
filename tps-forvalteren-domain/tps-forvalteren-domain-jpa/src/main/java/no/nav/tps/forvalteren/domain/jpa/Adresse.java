@@ -52,11 +52,13 @@ public abstract class Adresse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
+        }
 
-        if (!(o instanceof Adresse))
+        if (getClass() != Adresse.class) {
             return false;
+        }
 
         Adresse adresse = (Adresse) o;
 
