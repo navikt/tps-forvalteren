@@ -55,18 +55,18 @@ public class EndrePersonBestillingService {
         if (!request.getPostadresse().isEmpty()) {
 
             for (RsPostadresse postadresseRequest : request.getPostadresse()) {
+
+                boolean found = false;
+                Postadresse postadresse = mapperFacade.map(postadresseRequest, Postadresse.class).toUppercase();
+
                 for (Postadresse postadressePerson : person.getPostadresse()) {
-
-                    Postadresse postadresse = mapperFacade.map(postadresseRequest, Postadresse.class).toUppercase();
-                    boolean found = false;
-
                     if (postadresse.equals(postadressePerson)) {
                         found = true;
                     }
+                }
 
-                    if (!found) {
-                        person.getPostadresse().add(postadresse);
-                    }
+                if (!found) {
+                    person.getPostadresse().add(postadresse);
                 }
             }
         }
