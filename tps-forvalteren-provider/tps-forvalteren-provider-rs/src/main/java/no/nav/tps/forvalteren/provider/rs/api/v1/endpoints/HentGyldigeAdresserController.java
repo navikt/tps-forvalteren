@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserResponse;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping.MapFinnGyldigeAdresserToTpsServiceRutine;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.request.param.FinnGyldigeAdresserRequestParam;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
@@ -36,7 +36,7 @@ public class HentGyldigeAdresserController {
             + "     * Man kan også legge ved kriterier/spesifikasjoner i spørringen, på hva adressen må inneholde:\n\r"
             + "     * kommunenummer, gatenavn (minst 3 tegn), postnummer.")
     @GetMapping("/tilfeldig")
-    public TpsServiceRoutineResponse hentTilfeldigAdresse(@RequestParam(required = false, defaultValue = "1") Integer maxAntall,
+    public TpsFinnGyldigeAdresserResponse hentTilfeldigAdresse(@RequestParam(required = false, defaultValue = "1") Integer maxAntall,
             @RequestParam(required = false) String kommuneNr,
             @RequestParam(required = false) String postNr) {
         return hentGyldigeAdresserService.hentTilfeldigAdresse(maxAntall, kommuneNr, postNr);
@@ -47,7 +47,7 @@ public class HentGyldigeAdresserController {
             + "Gyldige adresser er default sortert på adressenavn(N). Typesøket er Fonetisk(F).\n\r \n\r"
             + " Hvis alleSkrivevarianter=J og visPostNr=J, så returneres KUN adresser som har postnr.")
     @GetMapping("/autocomplete")
-    public TpsServiceRoutineResponse finnGyldigAdresse(
+    public TpsFinnGyldigeAdresserResponse finnGyldigAdresse(
             @ModelAttribute FinnGyldigeAdresserRequestParam finnGyldigeAdresserRequestParam) {
         TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest = TpsFinnGyldigeAdresserRequest.builder().typesok(F).visPostnr(J).alleSkrivevarianter(N).alltidRetur(J).maxRetur(5).build();
         tpsServiceRoutineRequest = finnGyldigeAdresserMapper.map(finnGyldigeAdresserRequestParam, tpsServiceRoutineRequest);
