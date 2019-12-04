@@ -20,7 +20,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
-import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
@@ -42,9 +41,6 @@ public class LagreTilTpsService {
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;
 
     @Autowired
-    private UppercaseDataInPerson uppercaseDataInPerson;
-
-    @Autowired
     private SkdMeldingSender skdMeldingSender;
 
     @Autowired
@@ -63,7 +59,7 @@ public class LagreTilTpsService {
     private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, Set<String> environments) {
 
         environments = environments.stream().map(String::toLowerCase).collect(toSet());
-        personerIGruppen.forEach(person -> uppercaseDataInPerson.execute(person));
+        personerIGruppen.forEach(Person::toUppercase);
 
         Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();
         Map<String, SendSkdMeldingTilTpsResponse> innvandringUpdateResponse = newHashMap();
@@ -79,7 +75,7 @@ public class LagreTilTpsService {
             String environment = it.next();
             try {
                 List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, singleton(environment));
-                personerSomIkkeEksitererITpsMiljoe.forEach(person -> uppercaseDataInPerson.execute(person));
+                personerSomIkkeEksitererITpsMiljoe.forEach(Person::toUppercase);
                 List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
                 List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 

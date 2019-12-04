@@ -24,7 +24,6 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
-import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -51,9 +50,6 @@ public class SendTpsFoedselsmeldingService {
 
     @Autowired
     private OpprettPersonMedEksisterendeForeldreService opprettPersonMedEksisterendeForeldreService;
-
-    @Autowired
-    private UppercaseDataInPerson uppercaseDataInPerson;
 
     @Autowired
     private SkdMeldingResolver foedselsmelding;
@@ -93,7 +89,7 @@ public class SendTpsFoedselsmeldingService {
                     }
                 }
             }
-            uppercaseDataInPerson.execute(person);
+            person.toUppercase();
 
             for (String miljoe : request.getMiljoer()) {
                 try {

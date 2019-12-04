@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.domain.jpa;
 
 import static java.util.Objects.isNull;
 import static javax.persistence.CascadeType.ALL;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -221,5 +222,28 @@ public class Person extends ChangeStamp {
             boadresse = new TreeSet(Comparator.comparing(Adresse::getFlyttedato));
         }
         return boadresse;
+    }
+
+    public Person toUppercase() {
+        if (isNotBlank(getFornavn())) {
+            setFornavn(getFornavn().toUpperCase());
+        }
+        if (isNotBlank(getMellomnavn())) {
+            setMellomnavn(getMellomnavn().toUpperCase());
+        }
+        if (isNotBlank(getEtternavn())) {
+            setEtternavn(getEtternavn().toUpperCase());
+        }
+        if (isNotBlank(getForkortetNavn())) {
+            setForkortetNavn(getForkortetNavn().toUpperCase());
+        }
+        if (isNotBlank(getIdenttype())) {
+            setIdenttype(getIdenttype().toUpperCase());
+        }
+
+        getBoadresse().forEach(Adresse::toUppercase);
+        getPostadresse().forEach(Postadresse::toUppercase);
+
+        return this;
     }
 }
