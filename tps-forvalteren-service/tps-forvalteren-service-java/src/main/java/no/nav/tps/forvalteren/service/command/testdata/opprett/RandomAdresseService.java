@@ -20,13 +20,11 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.Tp
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 
 @Slf4j
 @Service
 public class RandomAdresseService {
 
-    private TpsServiceRutineS051Unmarshaller unmarshaller;
     private HentGyldigeAdresserService hentGyldigeAdresserService;
 
     @Autowired
@@ -36,8 +34,7 @@ public class RandomAdresseService {
     private DummyAdresseService dummyAdresseService;
 
     @Autowired
-    public RandomAdresseService(TpsServiceRutineS051Unmarshaller unmarshaller, HentGyldigeAdresserService hentGyldigeAdresserService) {
-        this.unmarshaller = unmarshaller;
+    public RandomAdresseService(HentGyldigeAdresserService hentGyldigeAdresserService) {
         this.hentGyldigeAdresserService = hentGyldigeAdresserService;
     }
 

@@ -24,7 +24,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.Tp
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 
 public abstract class AbstractRandomAdresseServiceTest {
 
@@ -35,13 +34,12 @@ public abstract class AbstractRandomAdresseServiceTest {
     protected static final String GATEKODE = "01037";
     protected static final String KOMMUNENR = "1571";
 
-    protected TpsServiceRutineS051Unmarshaller unmarshaller = new TpsServiceRutineS051Unmarshaller();
     protected URL tpsResponsUrl = Resources.getResource("serviceRutine/response/tilfeldigGyldigAdresse_statusFlereAdresserFinnes.xml");
     protected List<Person> enPerson;
     protected List<Person> toPersoner;
     protected TpsFinnGyldigeAdresserResponse tpsServiceRoutineResponse;
     protected HentGyldigeAdresserService hentGyldigeAdresserServiceMock = mock(HentGyldigeAdresserService.class);
-    protected RandomAdresseService randomAdresseService = new RandomAdresseService(unmarshaller, hentGyldigeAdresserServiceMock);
+    protected RandomAdresseService randomAdresseService = new RandomAdresseService(hentGyldigeAdresserServiceMock);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
