@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import javax.xml.bind.JAXBException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +21,6 @@ import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
 import no.nav.tps.xjc.ctg.domain.s051.StatusFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.SvarFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.TpsAdresseData;
@@ -40,9 +37,8 @@ public class RandomAdresseServiceHandleStatusmeldingTest extends AbstractRandomA
     @Parameterized.Parameter(2)
     public String statusmelding;
     public StatusFraTPS statusFraTPS = new StatusFraTPS();
-    
-    private TpsServiceRutineS051Unmarshaller unmarshallerMock = mock(TpsServiceRutineS051Unmarshaller.class);
-    private RandomAdresseService randomAdresseService_AllMocks = new RandomAdresseService(unmarshallerMock, hentGyldigeAdresserServiceMock);
+
+    private RandomAdresseService randomAdresseService_AllMocks = new RandomAdresseService(hentGyldigeAdresserServiceMock);
     private DummyAdresseService dummyAdresseService = mock(DummyAdresseService.class);
     private HentDatoFraIdentService hentDatoFraIdentService = mock(HentDatoFraIdentService.class);
     
@@ -55,7 +51,7 @@ public class RandomAdresseServiceHandleStatusmeldingTest extends AbstractRandomA
     }
     
     @Before
-    public void setupTestdata() throws JAXBException {
+    public void setupTestdata() {
         statusFraTPS.setReturMelding(statusmelding);
         statusFraTPS.setReturStatus(statuskode);
         statusFraTPS.setUtfyllendeMelding(utfyllendeMelding);
@@ -67,7 +63,6 @@ public class RandomAdresseServiceHandleStatusmeldingTest extends AbstractRandomA
         ReflectionTestUtils.setField(randomAdresseService_AllMocks, "dummyAdresseService", dummyAdresseService);
         ReflectionTestUtils.setField(randomAdresseService_AllMocks, "hentDatoFraIdentService", hentDatoFraIdentService);
 
-        when(unmarshallerMock.unmarshal(any())).thenReturn(tpsAdresseData);
         when(dummyAdresseService.createDummyBoAdresse(null)).thenReturn(Gateadresse.builder().build());
 
         when(hentDatoFraIdentService.extract(anyString())).thenReturn(FODSELSDAG);
