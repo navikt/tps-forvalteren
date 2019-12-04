@@ -50,7 +50,8 @@ public abstract class Adresse {
     @Transient
     private String bolignr;
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o)
             return true;
 
@@ -60,21 +61,18 @@ public abstract class Adresse {
         Adresse adresse = (Adresse) o;
 
         return new EqualsBuilder()
-                .append(getId(), adresse.getId())
-                .append(getPerson(), adresse.getPerson())
                 .append(getKommunenr(), adresse.getKommunenr())
-                .append(getFlyttedato(), adresse.getFlyttedato())
                 .append(getPostnr(), adresse.getPostnr())
                 .isEquals();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(getId())
-                .append(getPerson())
                 .append(getKommunenr())
-                .append(getFlyttedato())
                 .append(getPostnr())
                 .toHashCode();
     }
+
+    public abstract Adresse toUppercase();
 }

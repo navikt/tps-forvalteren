@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -36,7 +38,8 @@ public class Matrikkeladresse extends Adresse {
     @Column(name = "UNDERNR", length = 3)
     private String undernr;
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o)
             return true;
 
@@ -55,7 +58,8 @@ public class Matrikkeladresse extends Adresse {
                 .isEquals();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(getMellomnavn())
@@ -65,4 +69,10 @@ public class Matrikkeladresse extends Adresse {
                 .append(getUndernr())
                 .toHashCode();
     }
+
+    @Override public Adresse toUppercase() {
+        setMellomnavn(isNotBlank(getMellomnavn()) ? getMellomnavn().toUpperCase() : "");
+        return this;
+    }
+
 }

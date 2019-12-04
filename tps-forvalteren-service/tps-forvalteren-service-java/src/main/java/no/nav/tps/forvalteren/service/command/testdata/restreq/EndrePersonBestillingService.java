@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Objects.nonNull;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,18 @@ public class EndrePersonBestillingService {
 
         if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
 
-            Adresse adresse = nonNull(request.getAdresseNrInfo()) ?
-                    randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0) : mapperFacade.map(request.getBoadresse(), Adresse.class);
+            Adresse adresse = (nonNull(request.getAdresseNrInfo()) ?
+                    randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0) : mapperFacade.map(request.getBoadresse(), Adresse.class)).toUppercase();
 
-            person.getBoadresse().add(adresse);
+            AtomicBoolean found = new AtomicBoolean(false);
+            person.getBoadresse().forEach(boadresse -> {
+                if (adresse.equals(boadresse)) {
+                    found.set(true);
+                }
+            });
+            if (!found.get()) {
+                person.getBoadresse().add(adresse);
+            }
         }
     }
 }

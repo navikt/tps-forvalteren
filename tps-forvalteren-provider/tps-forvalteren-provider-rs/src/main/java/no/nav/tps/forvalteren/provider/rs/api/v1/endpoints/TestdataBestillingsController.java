@@ -181,7 +181,7 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "opprettaliaser") })
     @RequestMapping(value = "/oppdaterperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public RsPerson OppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
+    public RsPerson oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
 
         return mapperFacade.map(endrePersonBestillingService.execute(ident, request), RsPerson.class);
     }

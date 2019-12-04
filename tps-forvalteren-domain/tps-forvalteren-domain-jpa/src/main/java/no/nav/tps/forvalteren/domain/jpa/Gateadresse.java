@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -30,7 +32,8 @@ public class Gateadresse extends Adresse {
     @Column(name = "GATEKODE", length = 5)
     private String gatekode;
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o)
             return true;
 
@@ -47,12 +50,19 @@ public class Gateadresse extends Adresse {
                 .isEquals();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(getAdresse())
                 .append(getHusnummer())
                 .append(getGatekode())
                 .toHashCode();
+    }
+
+    @Override public Adresse toUppercase() {
+        setAdresse(isNotBlank(getAdresse()) ? getAdresse().toUpperCase() : "");
+        setHusnummer(isNotBlank(getHusnummer()) ? getHusnummer().toUpperCase() : "");
+        return this;
     }
 }

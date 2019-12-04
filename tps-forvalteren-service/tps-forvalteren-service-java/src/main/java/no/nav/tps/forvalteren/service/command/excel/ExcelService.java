@@ -146,6 +146,7 @@ public class ExcelService {
                 .append(((Gateadresse) person.getBoadresse().iterator().next()).getHusnummer())
                 .append(SEP_STRING_START)
                 .append(((Gateadresse) person.getBoadresse().iterator().next()).getGatekode())
+                .append(SEP_STRING_DUAL)
                 .toString()
                 .concat(commonAdresse(person));
     }
@@ -158,6 +159,7 @@ public class ExcelService {
                         .append(((Matrikkeladresse) person.getBoadresse().iterator().next()).getGardsnr())
                         .append(";BNR: ")
                         .append(((Matrikkeladresse) person.getBoadresse().iterator().next()).getBruksnr())
+                        .append(SEP_STRING_START)
                         .toString()
                         .concat(commonAdresse(person))
 
@@ -179,7 +181,7 @@ public class ExcelService {
     }
 
     private static String commonAdresse(Person person) {
-        return new StringBuilder().append(SEP_STRING_DUAL)
+        return new StringBuilder()
                 .append(person.getBoadresse().iterator().next().getPostnr())
                 .append(SEP_STRING_DUAL)
                 .append(person.getBoadresse().iterator().next().getKommunenr())
