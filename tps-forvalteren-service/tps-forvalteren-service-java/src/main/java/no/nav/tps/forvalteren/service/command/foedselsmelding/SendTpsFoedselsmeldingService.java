@@ -9,13 +9,13 @@ import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.codehaus.plexus.util.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +68,7 @@ public class SendTpsFoedselsmeldingService {
             try {
                 persondataMor = getPersonhistorikk(request.getIdentMor(), request.getFoedselsdato(), miljoe);
 
-                if (StringUtils.isNotBlank(request.getIdentFar())) {
+                if (isNotBlank(request.getIdentFar())) {
                     persondataFar = getPersonhistorikk(request.getIdentFar(), request.getFoedselsdato(), miljoe);
                 }
             } catch (TpsfTechnicalException | TpsfFunctionalException e) {
@@ -80,15 +80,7 @@ public class SendTpsFoedselsmeldingService {
         Person person = null;
         if (!request.getMiljoer().isEmpty()) {
             person = opprettPersonMedEksisterendeForeldreService.execute(request);
-            if (LAGNY != request.getAdresseFra()) {
-                AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
-                if (nonNull(adresser)) {
-                    person.setBoadresse(newHashSet(adresser.getBoadresse()));
-                    if (nonNull(adresser.getPostadresse())) {
-                        person.getPostadresse().add(adresser.getPostadresse());
-                    }
-                }
-            }
+            prepNyAdresse(request, persondataMor, persondataFar, person);
             person.toUppercase();
 
             for (String miljoe : request.getMiljoer()) {
@@ -99,8 +91,22 @@ public class SendTpsFoedselsmeldingService {
                 }
             }
         }
-        return prepareStatus(sentStatus, person != null ? person.getIdent() :
+        return prepareStatus(sentStatus, nonNull(person) ? person.getIdent() :
                 request.getFoedselsdato().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+    }
+
+    private void prepNyAdresse(RsTpsFoedselsmeldingRequest request, S018PersonType persondataMor, S018PersonType persondataFar, Person person) {
+        if (LAGNY != request.getAdresseFra()) {
+            AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
+            if (nonNull(adresser)) {
+                if (nonNull(adresser.getBoadresse())) {
+                    person.setBoadresse(newHashSet(adresser.getBoadresse()));
+                }
+                if (nonNull(adresser.getPostadresse())) {
+                    person.getPostadresse().add(adresser.getPostadresse());
+                }
+            }
+        }
     }
 
     private void validate(RsTpsFoedselsmeldingRequest request) {
