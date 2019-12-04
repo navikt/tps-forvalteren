@@ -56,7 +56,7 @@ public abstract class Adresse {
             return true;
         }
 
-        if (getClass() != Adresse.class) {
+        if (!(o instanceof Adresse)) {
             return false;
         }
 

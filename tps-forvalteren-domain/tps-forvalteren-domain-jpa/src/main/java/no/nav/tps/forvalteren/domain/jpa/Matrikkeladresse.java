@@ -44,7 +44,7 @@ public class Matrikkeladresse extends Adresse {
             return true;
         }
 
-        if (getClass() != Matrikkeladresse.class) {
+        if (!(o instanceof Matrikkeladresse)) {
             return false;
         }
 

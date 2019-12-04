@@ -38,7 +38,7 @@ public class Gateadresse extends Adresse {
             return true;
         }
 
-        if (getClass() != Gateadresse.class) {
+        if (!(o instanceof Gateadresse)) {
             return false;
         }
 

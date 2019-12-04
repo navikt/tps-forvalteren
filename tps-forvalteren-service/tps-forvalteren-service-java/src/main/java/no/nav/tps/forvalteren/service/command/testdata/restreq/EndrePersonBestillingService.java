@@ -11,6 +11,7 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
@@ -53,13 +54,13 @@ public class EndrePersonBestillingService {
 
         if (!request.getPostadresse().isEmpty()) {
 
-            for (int i = 0; i < request.getPostadresse().size(); i++) {
-                for (int j = 0; j < person.getPostadresse().size(); j++) {
+            for (RsPostadresse postadresseRequest : request.getPostadresse()) {
+                for (Postadresse postadressePerson : person.getPostadresse()) {
 
-                    Postadresse postadresse = mapperFacade.map(request.getPostadresse().get(i), Postadresse.class).toUppercase();
+                    Postadresse postadresse = mapperFacade.map(postadresseRequest, Postadresse.class).toUppercase();
                     boolean found = false;
 
-                    if (postadresse.equals(person.getPostadresse().get(j))) {
+                    if (postadresse.equals(postadressePerson)) {
                         found = true;
                     }
 
