@@ -6,27 +6,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.JaEllerNei;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.Typesok;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsTimeoutException;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
+@Slf4j
 @Service
 public class HentGyldigeAdresserService {
     @Value("${fasit.environment.name}")
     private String env;
-    
+
     @Autowired
     private UserContextHolder userContextHolder;
-    
+
     @Autowired
     private TpsRequestSender tpsRequestSender;
-    
-    public TpsServiceRoutineResponse hentTilfeldigAdresse(Integer maxantall, String kommuneNr, String postNr) {
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    public TpsFinnGyldigeAdresserResponse hentTilfeldigAdresse(Integer maxantall, String kommuneNr, String postNr) {
         TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest = TpsFinnGyldigeAdresserRequest.builder()
                 .typesok(Typesok.T)
                 .maxRetur(maxantall)
@@ -37,16 +44,21 @@ public class HentGyldigeAdresserService {
                 .visPostnr(JaEllerNei.J)
                 .build();
         setServiceRoutineMeta(tpsServiceRoutineRequest);
-        
-        return sendTpsRequest(tpsServiceRoutineRequest);
+
+        TpsServiceRoutineResponse response = sendTpsRequest(tpsServiceRoutineRequest);
+
+        return objectMapper.convertValue(response, TpsFinnGyldigeAdresserResponse.class);
     }
-    
-    public TpsServiceRoutineResponse finnGyldigAdresse(@ModelAttribute TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
-        
+
+    public TpsFinnGyldigeAdresserResponse finnGyldigAdresse(@ModelAttribute TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
+
         setServiceRoutineMeta(tpsServiceRoutineRequest);
-        return sendTpsRequest(tpsServiceRoutineRequest);
+        TpsServiceRoutineResponse response = sendTpsRequest(tpsServiceRoutineRequest);
+
+        return objectMapper.convertValue(response, TpsFinnGyldigeAdresserResponse.class);
+
     }
-    
+
     private TpsServiceRoutineResponse sendTpsRequest(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
         TpsServiceRoutineResponse tpsServiceRoutineResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest, createContext(), 2_000);
         if (tpsServiceRoutineResponse.getXml().isEmpty()) {
@@ -54,17 +66,17 @@ public class HentGyldigeAdresserService {
         }
         return tpsServiceRoutineResponse;
     }
-    
+
     private void setServiceRoutineMeta(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
         tpsServiceRoutineRequest.setServiceRutinenavn(FINN_GYLDIGE_ADRESSER_SERVICERUTINE_NAVN);
         tpsServiceRoutineRequest.setAksjonsKode("A");
         tpsServiceRoutineRequest.setAksjonsKode2("0");
     }
-    
+
     private TpsRequestContext createContext() {
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        if(env.toLowerCase().contains("u")){
+        if (env.toLowerCase().contains("u")) {
             context.setEnvironment("t0");
         } else {
             context.setEnvironment(env);

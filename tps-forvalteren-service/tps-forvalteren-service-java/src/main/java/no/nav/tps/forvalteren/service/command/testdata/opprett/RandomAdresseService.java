@@ -16,13 +16,13 @@ import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
+import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserResponse;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.response.unmarshaller.TpsServiceRutineS051Unmarshaller;
-import no.nav.tps.xjc.ctg.domain.s051.AdresseData;
-import no.nav.tps.xjc.ctg.domain.s051.StatusFraTPS;
 import no.nav.tps.xjc.ctg.domain.s051.TpsAdresseData;
 
 @Slf4j
@@ -73,11 +73,10 @@ public class RandomAdresseService {
         }
 
         try {
-            TpsServiceRoutineResponse tpsServiceRoutineResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(total, kommuneNr, postNr);
-            TpsAdresseData tpsAdresseData = unmarshalTpsAdresseData(tpsServiceRoutineResponse);
-            throwExceptionUnlessFlereAdresserFinnes(tpsAdresseData.getTpsSvar().getSvarStatus());
+            TpsFinnGyldigeAdresserResponse addrResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(total, kommuneNr, postNr);
+            throwExceptionUnlessFlereAdresserFinnes(addrResponse.getResponse().getStatus());
 
-            List<AdresseData> adresseDataList = tpsAdresseData.getTpsSvar().getAdresseDataS051().getAdrData();
+            List<TpsFinnGyldigeAdresserResponse.Adressedata> adresseDataList = addrResponse.getResponse().getData1().getAdrData();
 
             List<Adresse> adresser = new ArrayList(adresseDataList.size());
             for (int i = 0; i < total; i++) {
@@ -96,8 +95,8 @@ public class RandomAdresseService {
         return execute(persons, null);
     }
 
-    private void throwExceptionUnlessFlereAdresserFinnes(StatusFraTPS svarStatus) {
-        if (!"00".equals(svarStatus.getReturStatus()) && !newArrayList("S051002I", "S051003I").contains(svarStatus.getReturMelding())) {
+    private void throwExceptionUnlessFlereAdresserFinnes(ResponseStatus svarStatus) {
+        if (!"00".equals(svarStatus.getKode()) && !newArrayList("S051002I", "S051003I").contains(svarStatus.getMelding())) {
             throw new TpsfFunctionalException(svarStatus.getUtfyllendeMelding());
         }
     }
@@ -110,7 +109,7 @@ public class RandomAdresseService {
         }
     }
 
-    private Gateadresse createGateAdresse(AdresseData adresseData) {
+    private Gateadresse createGateAdresse(TpsFinnGyldigeAdresserResponse.Adressedata adresseData) {
         Gateadresse adresse = new Gateadresse();
         adresse.setHusnummer(tilfeldigTall(adresseData.getHusnrfra(), adresseData.getHusnrtil()));
         adresse.setGatekode(adresseData.getGkode());

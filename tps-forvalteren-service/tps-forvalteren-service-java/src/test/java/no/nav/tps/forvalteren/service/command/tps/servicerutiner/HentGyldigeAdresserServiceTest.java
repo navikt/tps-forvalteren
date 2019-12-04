@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.attributter.finngyldigeadresser.Typesok;
@@ -37,7 +38,10 @@ public class HentGyldigeAdresserServiceTest {
     
     @Mock
     private TpsRequestSender tpsRequestSender;
-    
+
+    @Mock
+    private ObjectMapper objectMapper;
+
     @InjectMocks
     private HentGyldigeAdresserService hentGyldigeAdresserService;
     
