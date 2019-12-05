@@ -180,13 +180,13 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             // Datofix kjøres etter denne
             function etablerAdressetype(person) {
                 if (person.boadresse) {
-                    if (person.boadresse.adressetype === 'GATE') {
+                    if (person.boadresse[0].adressetype === 'GATE') {
                         person.gateadresse = angular.copy(person.boadresse);
-                        person.gateadresse.gateadresse = $filter('titlecase')(person.gateadresse.gateadresse);
-                        person.gateadresse.husnummer = $filter('uppercase')(person.gateadresse.husnummer);
-                    } else if (person.boadresse.adressetype === 'MATR') {
+                        person.gateadresse[0].gateadresse = $filter('titlecase')(person.gateadresse[0].gateadresse);
+                        person.gateadresse[0].husnummer = $filter('uppercase')(person.gateadresse[0].husnummer);
+                    } else if (person.boadresse[0].adressetype === 'MATR') {
                         person.matrikkeladresse = angular.copy(person.boadresse);
-                        person.matrikkeladresse.mellomnavn = $filter('titlecase')(person.matrikkeladresse.mellomnavn);
+                        person.matrikkeladresse[0].mellomnavn = $filter('titlecase')(person.matrikkeladresse[0].mellomnavn);
                     }
                 } else {
                     person.boadresse = {};
@@ -302,7 +302,7 @@ angular.module('tps-forvalteren.vis-testdata', ['ngMessages'])
             };
 
             function prepLagrePerson(person) {
-                var adressetype = person.boadresse.adressetype;
+                var adressetype = person.boadresse[0].adressetype;
                 if (adressetype === 'GATE') {
                     person.boadresse = angular.copy(person.gateadresse);
                     person.matrikkeladresse = undefined;

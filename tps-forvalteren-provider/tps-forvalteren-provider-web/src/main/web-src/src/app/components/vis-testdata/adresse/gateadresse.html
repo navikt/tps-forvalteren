@@ -1,9 +1,9 @@
-<div layout="row" ng-if="person.boadresse.adressetype == 'GATE'">
+<div layout="row" ng-if="person.boadresse[0].adressetype == 'GATE'">
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Gatenavn</md-tooltip>
         <label>Gatenavn</label>
         <input name="gateadresse" ng-required="false" md-maxlength="25"
-               ng-model="person.gateadresse.gateadresse"
+               ng-model="person.gateadresse[0].gateadresse"
                ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gateadresse.$error"
              ng-show="requestForm.gateadresse.$error">
@@ -14,8 +14,8 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Husnummer</md-tooltip>
         <label>Husnummer</label>
-        <input name="husnummer" pattern="\d{1,4}[a-zA-ZæÆøØåÅáÁ]{0,1}" ng-required="person.gateadresse.gateadresse" md-maxlength="5"
-               ng-model="person.gateadresse.husnummer"
+        <input name="husnummer" pattern="\d{1,4}[a-zA-ZæÆøØåÅáÁ]{0,1}" ng-required="person.gateadresse[0].gateadresse" md-maxlength="5"
+               ng-model="person.gateadresse[0].husnummer"
                ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.husnummer.$error"
              ng-show="requestForm.husnummer.$error">
@@ -28,8 +28,8 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Gatekode</md-tooltip>
         <label>Gatekode</label>
-        <input name="gatekode" pattern="\d{5}" ng-required="person.gateadresse.gateadresse" md-maxlength="5"
-               ng-model="person.gateadresse.gatekode"
+        <input name="gatekode" pattern="\d{5}" ng-required="person.gateadresse[0].gateadresse" md-maxlength="5"
+               ng-model="person.gateadresse[0].gatekode"
                ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gatekode.$error"
              ng-show="requestForm.gatekode.$error">
@@ -39,12 +39,12 @@
         </div>
     </md-input-container>
 
-    <postnummer postnummer="person.gateadresse.postnr" endret-fn="endret" class="autocomplete"
-                index="$index + pager.startIndex" paakrevet="person.gateadresse.gateadresse">
+    <postnummer postnummer="person.gateadresse[0].postnr" endret-fn="endret" class="autocomplete"
+                index="$index + pager.startIndex" paakrevet="person.gateadresse[0].gateadresse">
     </postnummer>
 
-    <kommunenr kommunenr="person.gateadresse.kommunenr" endret-fn="endret" class="autocomplete"
-               index="$index + pager.startIndex" paakrevet="person.gateadresse.gateadresse">
+    <kommunenr kommunenr="person.gateadresse[0].kommunenr" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" paakrevet="person.gateadresse[0].gateadresse">
     </kommunenr>
 
     <md-input-container class="tps-vk-input-container" flex="20">
@@ -52,8 +52,8 @@
         <label>Flyttedato</label>
         <md-datepicker name="gtFlytteDato"
                        md-current-view="year"
-                       ng-required="person.gateadresse.gateadresse"
-                       ng-model="person.gateadresse.flyttedato"
+                       ng-required="person.gateadresse[0].gateadresse"
+                       ng-model="person.gateadresse[0].flyttedato"
                        ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.gtFlytteDato.$error"
@@ -72,7 +72,7 @@
     </md-input-container>
     <md-input-container class="tps-vk-input-container">
         <md-tooltip>Søk etter gyldige adresser. Gatenavn må være minst 3 tegn og kommunenummeret må være satt.</md-tooltip>
-        <md-button class="md-raised md-accent" ng-disabled="person.gateadresse.gateadresse.length<3 && person.gateadresse.kommunenr.length<4"
+        <md-button class="md-raised md-accent" ng-disabled="person.gateadresse[0].gateadresse.length<3 && person.gateadresse[0].kommunenr.length<4"
                    aria-label="Finn gyldig adresse" ng-click="hentgyldigeAdresser(person)">Finn gyldig adresse
         </md-button>
     </md-input-container>
