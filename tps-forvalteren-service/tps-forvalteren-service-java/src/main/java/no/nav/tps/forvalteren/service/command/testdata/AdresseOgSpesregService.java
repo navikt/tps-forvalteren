@@ -46,7 +46,7 @@ public class AdresseOgSpesregService {
 
         } else if (isUtenFastBobel(person)) {
 
-            Adresse adresse = dummyAdresseService.createAdresseUfb(person, person.getBoadresse().iterator().next());
+            Adresse adresse = dummyAdresseService.createAdresseUfb(person, person.getBoadresse().get(0));
             person.getBoadresse().iterator().remove();
             person.getBoadresse().add(adresse);
             person.setSpesreg(nullcheckSetDefaultValue(person.getSpesreg(), UFB.name()));
@@ -63,7 +63,7 @@ public class AdresseOgSpesregService {
 
         person.getPostadresse().forEach(adresse -> adresse.setPerson(person));
         if (!person.getBoadresse().isEmpty()) {
-            person.getBoadresse().iterator().next().setPerson(person);
+            person.getBoadresse().get(0).setPerson(person);
         }
 
         person.setGtVerdi(null); // Triggers reload of TKNR

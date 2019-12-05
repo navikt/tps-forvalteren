@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
@@ -100,10 +101,10 @@ public class SendTpsFoedselsmeldingService {
             AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
             if (nonNull(adresser)) {
                 if (nonNull(adresser.getBoadresse())) {
-                    person.setBoadresse(newHashSet(adresser.getBoadresse()));
+                    person.setBoadresse(asList(adresser.getBoadresse()));
                 }
                 if (nonNull(adresser.getPostadresse())) {
-                    person.getPostadresse().add(adresser.getPostadresse());
+                    person.setPostadresse(asList(adresser.getPostadresse()));
                 }
             }
         }

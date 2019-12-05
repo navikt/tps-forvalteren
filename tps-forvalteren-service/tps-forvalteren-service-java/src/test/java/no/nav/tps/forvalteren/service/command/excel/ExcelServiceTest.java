@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.excel;
 
 import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.collect.Sets.newHashSet;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,7 +21,7 @@ import org.springframework.core.io.Resource;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExcelServiceTest {
@@ -29,7 +29,7 @@ public class ExcelServiceTest {
     private static final String IDENT = "111111111111";
 
     @Mock
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @InjectMocks
     private ExcelService excelService;
@@ -37,7 +37,7 @@ public class ExcelServiceTest {
     @Test
     public void getPersonFile_OK() throws Exception {
 
-        when(personRepository.findByIdentIn(singletonList(IDENT))).thenReturn(singletonList(buildPerson()));
+        when(personService.getPersonerByIdenter(singletonList(IDENT))).thenReturn(singletonList(buildPerson()));
         Resource resultat = excelService.getPersonFile(singletonList(IDENT));
 
         StringBuilder builder = new StringBuilder();
@@ -77,7 +77,7 @@ public class ExcelServiceTest {
                 .gtRegel("A")
                 .sprakKode("NB")
                 .sivilstand("GIFT")
-                .boadresse(newHashSet(adresse))
+                .boadresse(asList(adresse))
                 .build();
     }
 }

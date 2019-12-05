@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static org.junit.Assert.assertEquals;
@@ -134,7 +133,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .opprettetDato(LocalDateTime.now())
                 .opprettetAv("A123456")
-                .boadresse(newHashSet(adressenTilPerson3)).build();
+                .boadresse(asList(adressenTilPerson3)).build();
         adressenTilPerson3.setPerson(person3);
 
         personRepository.save(person3);
@@ -162,7 +161,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .opprettetDato(LocalDateTime.now())
                 .opprettetAv("A123456")
-                .boadresse(newHashSet(adressenTilEktemann)).build();
+                .boadresse(asList(adressenTilEktemann)).build();
         adressenTilEktemann.setPerson(ektemann);
         final Person lagretEktemann = personRepository.save(ektemann);
 
@@ -176,7 +175,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .opprettetDato(LocalDateTime.now())
                 .opprettetAv("A123456")
-                .boadresse(newHashSet(adressenTilKone)).build();
+                .boadresse(asList(adressenTilKone)).build();
         adressenTilKone.setPerson(kone);
         final Person lagretKone = personRepository.save(kone);
 

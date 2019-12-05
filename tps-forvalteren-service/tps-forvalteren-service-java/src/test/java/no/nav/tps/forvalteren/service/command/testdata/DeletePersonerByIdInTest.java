@@ -1,7 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
-import no.nav.tps.forvalteren.service.command.testdata.utils.FindVergemaalIdsFromPersonIds;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.times;
@@ -19,6 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
+import no.nav.tps.forvalteren.service.command.testdata.utils.FindVergemaalIdsFromPersonIds;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeletePersonerByIdInTest {
@@ -54,10 +54,10 @@ public class DeletePersonerByIdInTest {
     public void verifyAllServices() {
         deletePersonerByIdIn.execute(personIds);
 
-        verify(doedsmeldingRepository).deleteByPersonIdIn(personIds);
-        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(personIds);
-        verify(vergemaalRepository).deleteByIdIn(personIds);
-        verify(personRepository).deleteByIdIn(personIds);
+        verify(doedsmeldingRepository).deleteByPersonIdIn(anyListOf(Long.class));
+        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
+        verify(vergemaalRepository).deleteByIdIn(anyListOf(Long.class));
+        verify(personRepository).deleteByIdIn(anyListOf(Long.class));
     }
 
     @Test

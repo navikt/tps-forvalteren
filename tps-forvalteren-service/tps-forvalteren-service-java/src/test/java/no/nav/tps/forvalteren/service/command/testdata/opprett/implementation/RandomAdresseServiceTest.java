@@ -47,16 +47,16 @@ public class RandomAdresseServiceTest extends AbstractRandomAdresseServiceTest {
     public void shouldHentTilfeldigAdresse() {
         randomAdresseService.execute(toPersoner, new AdresseNrInfo(AdresseNrInfo.AdresseNr.KOMMUNENR,KOMMUNENR));
         
-        assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse().iterator().next());
-        assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse().iterator().next());
+        assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse().get(0));
+        assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse().get(0));
     }
 
     @Test
     public void setRandomAdresseUtenKommuneEllerPostnummer() {
         randomAdresseService.execute(toPersoner);
 
-        assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse().iterator().next());
-        assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse().iterator().next());
+        assertAdresse((Gateadresse) toPersoner.get(0).getBoadresse().get(0));
+        assertAdresse((Gateadresse) toPersoner.get(1).getBoadresse().get(0));
     }
     
     private void assertAdresse(Gateadresse adresse) {

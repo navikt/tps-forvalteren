@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -48,7 +50,12 @@ public class EndrePersonBestillingService {
                 }
             });
             if (!found.get()) {
+                adresse.setPerson(person);
+                if (isNull(adresse.getFlyttedato())) {
+                    adresse.setFlyttedato(now().minusYears(1));
+                }
                 person.getBoadresse().add(adresse);
+                person.setGtVerdi(null); // Triggers reload of TKNR
             }
         }
 
@@ -66,6 +73,7 @@ public class EndrePersonBestillingService {
                 }
 
                 if (!found) {
+                    postadresse.setPerson(person);
                     person.getPostadresse().add(postadresse);
                 }
             }

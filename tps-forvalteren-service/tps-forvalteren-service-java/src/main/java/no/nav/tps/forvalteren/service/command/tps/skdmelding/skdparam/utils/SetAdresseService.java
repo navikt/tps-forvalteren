@@ -37,7 +37,7 @@ public class SetAdresseService {
 
         /* Boadresse */
         if (!person.getBoadresse().isEmpty()) {
-            Adresse boadresse = person.getBoadresse().iterator().next();
+            Adresse boadresse = person.getBoadresse().get(0);
             if (boadresse instanceof Matrikkeladresse) {
                 skdMeldingTrans1.setAdressetype("M");
                 skdMeldingTrans1.setGateGaard(prepad(((Matrikkeladresse) boadresse).getGardsnr(), 5));

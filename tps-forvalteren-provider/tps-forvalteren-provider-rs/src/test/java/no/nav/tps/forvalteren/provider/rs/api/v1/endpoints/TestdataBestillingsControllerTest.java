@@ -24,8 +24,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
@@ -41,7 +40,7 @@ public class TestdataBestillingsControllerTest {
     private PersonerBestillingService personerBestillingService;
 
     @Mock
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @Mock
     private MapperFacade mapper;
@@ -51,9 +50,6 @@ public class TestdataBestillingsControllerTest {
 
     @Mock
     private ListExtractorKommaSeperated listExtractorKommaSeperated;
-
-    @Mock
-    private FindPersonerByIdIn findPersonerByIdIn;
 
     @InjectMocks
     private TestdataBestillingsController testdataBestillingsController;
@@ -83,7 +79,7 @@ public class TestdataBestillingsControllerTest {
                 .identer(newArrayList(IDENT_1, IDENT_2))
                 .build());
 
-        verify(findPersonerByIdIn).execute(anyList());
+        verify(personService).getPersonerByIdenter(anyList());
         verify(lagreTilTps).execute(anyList(), anySet());
     }
 
@@ -93,7 +89,7 @@ public class TestdataBestillingsControllerTest {
         testdataBestillingsController.getPersons(format("%s,%s", IDENT_1, IDENT_2));
 
         verify(listExtractorKommaSeperated).extractIdenter(anyString());
-        verify(personRepository).findByIdentIn(anyList());
+        verify(personService).getPersonerByIdenter(anyList());
         verify(mapper).mapAsList(anyList(), eq(RsPerson.class));
     }
 
@@ -102,7 +98,7 @@ public class TestdataBestillingsControllerTest {
 
         testdataBestillingsController.hentPersoner(newArrayList(IDENT_1, IDENT_2));
 
-        verify(personRepository).findByIdentIn(anyList());
+        verify(personService).getPersonerByIdenter(anyList());
         verify(mapper).mapAsList(anyList(), eq(RsPerson.class));
     }
 }

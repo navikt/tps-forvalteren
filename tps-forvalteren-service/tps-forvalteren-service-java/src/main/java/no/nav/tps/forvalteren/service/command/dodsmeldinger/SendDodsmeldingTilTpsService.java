@@ -132,7 +132,7 @@ public class SendDodsmeldingTilTpsService {
         if (nonNull(adresser)) {
             if (nonNull(adresser.getBoadresse())) {
                 adresser.getBoadresse().setPerson(person);
-                person.setBoadresse(newHashSet(adresser.getBoadresse()));
+                person.setBoadresse(asList(adresser.getBoadresse()));
             }
 
             if (nonNull(adresser.getPostadresse())) {

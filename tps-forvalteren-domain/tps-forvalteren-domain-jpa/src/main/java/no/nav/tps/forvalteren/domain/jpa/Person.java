@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -129,7 +127,7 @@ public class Person extends ChangeStamp {
     private String beskrSikkerhetsTiltak;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private Set<Adresse> boadresse;
+    private List<Adresse> boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
@@ -217,9 +215,9 @@ public class Person extends ChangeStamp {
         return sivilstander;
     }
 
-    public Set<Adresse> getBoadresse() {
+    public List<Adresse> getBoadresse() {
         if (isNull(boadresse)) {
-            boadresse = new TreeSet(Comparator.comparing(Adresse::getFlyttedato));
+            boadresse = new ArrayList<>();
         }
         return boadresse;
     }
@@ -244,6 +242,14 @@ public class Person extends ChangeStamp {
         getBoadresse().forEach(Adresse::toUppercase);
         getPostadresse().forEach(Postadresse::toUppercase);
 
+        return this;
+    }
+
+    public Person sorterPersondetaljer() {
+        getIdentHistorikk().sort(Comparator.comparing(IdentHistorikk::getRegdato).reversed());
+        getSivilstander().sort(Comparator.comparing(Sivilstand::getSivilstandRegdato).reversed());
+        getBoadresse().sort(Comparator.comparing(Adresse::getFlyttedato).reversed());
+        getPostadresse().sort(Comparator.comparing(Postadresse::getId).reversed());
         return this;
     }
 }

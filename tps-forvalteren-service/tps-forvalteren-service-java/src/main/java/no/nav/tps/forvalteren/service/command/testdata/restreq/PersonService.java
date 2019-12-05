@@ -1,16 +1,20 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static com.google.common.collect.Lists.partition;
 import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
@@ -26,31 +30,49 @@ import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @Service
+@RequiredArgsConstructor
 public class PersonService {
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+    private final AdresseRepository adresseRepository;
+    private final RelasjonRepository relasjonRepository;
+    private final DoedsmeldingRepository doedsmeldingRepository;
+    private final IdenthistorikkRepository identhistorikkRepository;
+    private final SivilstandRepository sivilstandRepository;
+    private final IdentpoolService identpoolService;
+    private final TpsPersonService tpsPersonService;
 
-    @Autowired
-    private AdresseRepository adresseRepository;
+    public Person getPerson(Long id) {
+        Person person = personRepository.findById(id);
+        return nonNull(person) ? person.sorterPersondetaljer() : null;
+    }
 
-    @Autowired
-    private RelasjonRepository relasjonRepository;
+    public Person getPerson(String ident) {
+        Person person = personRepository.findByIdent(ident);
+        return nonNull(person) ? person.sorterPersondetaljer() : null;
+    }
 
-    @Autowired
-    private DoedsmeldingRepository doedsmeldingRepository;
+    public List<Person> getPersonerFraIds(List<Long> ids) {
 
-    @Autowired
-    private IdenthistorikkRepository identhistorikkRepository;
+        //Begrenser maks antall identer i SQL spørring
+        List<List<Long>> identLists = partition(ids, ORACLE_MAX_IN_SET_ELEMENTS);
+        List<Person> resultat = new ArrayList<>(ids.size());
+        for (List<Long> subset : identLists) {
+            resultat.addAll(personRepository.findByIdIn(subset));
+        }
+        return resultat.stream().map(Person::sorterPersondetaljer).collect(toList());
+    }
 
-    @Autowired
-    private SivilstandRepository sivilstandRepository;
+    public List<Person> getPersonerByIdenter(List<String> identer) {
 
-    @Autowired
-    private IdentpoolService identpoolService;
-
-    @Autowired
-    private TpsPersonService tpsPersonService;
+        //Begrenser maks antall identer i SQL spørring
+        List<List<String>> identLists = partition(identer, ORACLE_MAX_IN_SET_ELEMENTS);
+        List<Person> resultat = new ArrayList<>(identer.size());
+        for (List<String> subset : identLists) {
+            resultat.addAll(personRepository.findByIdentIn(subset));
+        }
+        return resultat.stream().map(Person::sorterPersondetaljer).collect(toList());
+    }
 
     @Transactional
     public void deletePersons(List<String> miljoer, List<String> identer) {
@@ -59,7 +81,7 @@ public class PersonService {
 
         List<Person> persons = personRepository.findByIdentIn(identer);
 
-        Set<Long> orignalPersonId = persons.stream().map(Person::getId).collect(Collectors.toSet());
+        Set<Long> orignalPersonId = persons.stream().map(Person::getId).collect(toSet());
         Set<Long> personIds = new HashSet(orignalPersonId);
 
         if (personIds.isEmpty()) {
@@ -68,26 +90,26 @@ public class PersonService {
 
         Optional<List<Relasjon>> relasjoner = relasjonRepository.findByPersonRelasjonMedIdIn(personIds);
         if (relasjoner.isPresent()) {
-            alleIdenter.addAll(relasjoner.get().stream().map(Relasjon::getPerson).map(Person::getIdent).collect(Collectors.toList()));
-            personIds.addAll(relasjoner.get().stream().map(Relasjon::getPerson).map(Person::getId).collect(Collectors.toList()));
+            alleIdenter.addAll(relasjoner.get().stream().map(Relasjon::getPerson).map(Person::getIdent).collect(toList()));
+            personIds.addAll(relasjoner.get().stream().map(Relasjon::getPerson).map(Person::getId).collect(toList()));
 
             Optional<List<Relasjon>> alleRelasjoner = relasjonRepository.findByPersonRelasjonMedIdIn(personIds);
             if (alleRelasjoner.isPresent()) {
-                relasjonRepository.deleteByIdIn(alleRelasjoner.get().stream().map(Relasjon::getId).collect(Collectors.toSet()));
+                relasjonRepository.deleteByIdIn(alleRelasjoner.get().stream().map(Relasjon::getId).collect(toSet()));
             }
 
             Set<Long> sivilstandIds = alleRelasjoner.get().stream().filter(relasjon -> nonNull(relasjon.getPersonRelasjonMed()))
                     .map(Relasjon::getPersonRelasjonMed)
                     .flatMap(person -> person.getSivilstander().stream())
                     .map(Sivilstand::getId)
-                    .collect(Collectors.toSet());
+                    .collect(toSet());
 
             sivilstandRepository.deleteByIdIn(sivilstandIds);
         }
 
         Optional<List<Adresse>> adresser = adresseRepository.findAdresseByPersonIdIn(personIds);
         if (adresser.isPresent()) {
-            adresseRepository.deleteByIdIn(adresser.get().stream().map(Adresse::getId).collect(Collectors.toList()));
+            adresseRepository.deleteByIdIn(adresser.get().stream().map(Adresse::getId).collect(toList()));
         }
 
         deleteIdenthistorikk(persons);

@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,11 +60,11 @@ public class SavePersonListServiceTest {
     private Postadresse postadresse = new Postadresse();
     private Adresse boadresse = new Gateadresse();
     private Long utdatertRelasjonId = 1337L;
-    private Set<Long> utdaterteRelasjonIder = new HashSet<>(Arrays.asList(utdatertRelasjonId));
+    private Set<Long> utdaterteRelasjonIder = new HashSet<>(asList(utdatertRelasjonId));
 
     private Person person = aMalePerson()
-            .postadresse(Arrays.asList(postadresse))
-            .boadresse(newHashSet(boadresse)).build();
+            .postadresse(asList(postadresse))
+            .boadresse(asList(boadresse)).build();
 
     @Before
     public void setup() {

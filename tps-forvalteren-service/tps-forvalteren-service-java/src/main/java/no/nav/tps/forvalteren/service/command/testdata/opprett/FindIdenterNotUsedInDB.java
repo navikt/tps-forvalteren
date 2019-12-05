@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @Service
 public class FindIdenterNotUsedInDB {
 
     @Autowired
-    private FindPersonerByIdIn findPersonerByIdIn;
+    private PersonService personService;
 
     public Set<String> filtrer(Set<String> identer) {
         List<String> identListe = new ArrayList<>(identer);
-        List<Person> personerSomFinnes = findPersonerByIdIn.execute(identListe);
+        List<Person> personerSomFinnes = personService.getPersonerByIdenter(identListe);
         List<String> opptatteIdenter = personerSomFinnes.stream()
                 .map(Person::getIdent)
                 .collect(Collectors.toList());

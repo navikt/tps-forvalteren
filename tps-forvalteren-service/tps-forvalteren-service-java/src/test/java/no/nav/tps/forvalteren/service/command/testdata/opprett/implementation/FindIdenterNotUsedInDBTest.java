@@ -12,8 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +20,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindIdenterNotUsedInDBTest {
 
     @Mock
-    private FindPersonerByIdIn findPersonerByIdIn;
+    private PersonService personService;
 
     @InjectMocks
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -40,14 +39,14 @@ public class FindIdenterNotUsedInDBTest {
     
     @Before
     public void setup() {
-        when(findPersonerByIdIn.execute(anyListOf(String.class))).thenReturn(persistedPersons);
+        when(personService.getPersonerByIdenter(anyListOf(String.class))).thenReturn(persistedPersons);
     }
     
     @Test
     public void asd() {
         Set<String> result = findIdenterNotUsedInDB.filtrer(identer);
         
-        verify(findPersonerByIdIn).execute(anyListOf(String.class));
+        verify(personService).getPersonerByIdenter(anyListOf(String.class));
         
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(IDENT_AVAILABLE));
