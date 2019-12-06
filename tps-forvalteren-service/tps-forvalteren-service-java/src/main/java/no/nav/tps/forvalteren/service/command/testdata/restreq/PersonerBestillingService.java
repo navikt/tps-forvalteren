@@ -113,8 +113,13 @@ public class PersonerBestillingService {
 
                         if (person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().isEmpty()) {
 
-                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), GIFT.name(), now().minusYears(3));
-                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(), now().minusYears(1));
+                            // Hvis sivilstand på hovedperson er annet enn gift preppes gift først da separert/skilt/enke må foranledes med gift
+                            if (!GIFT.name().equals(request.getSivilstand())) {
+                                setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), GIFT.name(),
+                                        nullcheckSetDefaultValue(request.getSivilstandRegdato(), now()).minusYears(3));
+                            }
+                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(),
+                                    nullcheckSetDefaultValue(request.getSivilstandRegdato(), now().minusYears(1)));
 
                         } else if (!request.getSivilstand().equals(person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().get(0).getSivilstand())) {
 
