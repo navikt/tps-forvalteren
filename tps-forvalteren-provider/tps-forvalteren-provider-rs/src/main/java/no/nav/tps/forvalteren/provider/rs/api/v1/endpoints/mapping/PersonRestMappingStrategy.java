@@ -1,7 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import java.util.Collections;
-import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +9,9 @@ import ma.glasnost.orika.MappingContext;
 import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.RsPersonUtenIdenthistorikk;
 import no.nav.tps.forvalteren.domain.rs.RsPersonUtenRelasjon;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePerson;
-import no.nav.tps.forvalteren.domain.rs.RsSivilstand;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentAlderFraIdent;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
@@ -38,7 +36,7 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPerson rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
-                        Collections.sort(rsPerson.getSivilstander(), Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
+                        rsPerson.sorterPersondetaljer();
                     }
                 })
                 .byDefault()
@@ -46,9 +44,16 @@ public class PersonRestMappingStrategy implements MappingStrategy {
 
         factory.classMap(RsPerson.class, Person.class)
                 .field(PERSON_ID, ID)
-                .customize(new CustomMapper<RsPerson, Person>() {
-                    @Override public void mapAtoB(RsPerson rsPerson, Person person, MappingContext context) {
+                .byDefault()
+                .register();
 
+        factory.classMap(Person.class, RsPersonUtenIdenthistorikk.class)
+                .field(ID, PERSON_ID)
+                .customize(new CustomMapper<Person, RsPersonUtenIdenthistorikk>() {
+                    @Override public void mapAtoB(Person person, RsPersonUtenIdenthistorikk rsPerson, MappingContext context) {
+                        rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
+                        rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
+                        rsPerson.sorterPersondetaljer();
                     }
                 })
                 .byDefault()
@@ -65,7 +70,7 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPersonUtenRelasjon rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
-                        Collections.sort(rsPerson.getSivilstander(), Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
+                        rsPerson.sorterPersondetaljer();
                     }
                 })
                 .exclude(RELASJONER)

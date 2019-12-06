@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.rs;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -129,4 +130,12 @@ public class RsPersonUtenRelasjon {
     private List<RsIdenthistorikk> identHistorikk;
 
     private List<RsSivilstand> sivilstander;
+
+    public RsPersonUtenRelasjon sorterPersondetaljer() {
+        getIdentHistorikk().sort(Comparator.comparing(RsIdenthistorikk::getHistoricIdentOrder).reversed());
+        getSivilstander().sort(Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
+        getBoadresse().sort(Comparator.comparing(RsAdresse::getAdresseId).reversed());
+        getPostadresse().sort(Comparator.comparing(RsPostadresse::getId).reversed());
+        return this;
+    }
 }
