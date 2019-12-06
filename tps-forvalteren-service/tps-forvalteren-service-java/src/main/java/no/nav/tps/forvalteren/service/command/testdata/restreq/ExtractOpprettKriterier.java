@@ -27,6 +27,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
+import no.nav.tps.forvalteren.domain.rs.RsGateadresse;
+import no.nav.tps.forvalteren.domain.rs.RsMatrikkeladresse;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
@@ -118,7 +120,8 @@ public class ExtractOpprettKriterier {
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
-        List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
+        List<Adresse> adresser = isNull(req.getBoadresse()) || isInvalidGateadresse(req.getBoadresse()) || isInvalidMatrikkeladresse(req.getBoadresse()) ?
+                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
 
         hovedPersoner.forEach(person -> {
             if (isBlank(req.getInnvandretFraLand())) {
@@ -127,7 +130,7 @@ public class ExtractOpprettKriterier {
             mapperFacade.map(req, person);
         });
 
-        if (isNull(req.getBoadresse())) {
+        if (isNull(req.getBoadresse()) || isInvalidGateadresse(req.getBoadresse()) || isInvalidMatrikkeladresse(req.getBoadresse())) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
                 mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()));
             }
@@ -139,6 +142,14 @@ public class ExtractOpprettKriterier {
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
         return personer;
+    }
+
+    private boolean isInvalidGateadresse(RsAdresse adresse) {
+        return adresse instanceof RsGateadresse && isNull(((RsGateadresse) adresse).getGatekode());
+    }
+
+    private boolean isInvalidMatrikkeladresse(RsAdresse adresse) {
+        return adresse instanceof RsMatrikkeladresse && isNull(((RsMatrikkeladresse) adresse).getBruksnr());
     }
 
     private void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
