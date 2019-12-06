@@ -118,7 +118,8 @@ public class ExtractOpprettKriterier {
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
-        List<Adresse> adresser = isNull(req.getBoadresse()) ? getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
+        List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
+                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
 
         hovedPersoner.forEach(person -> {
             if (isBlank(req.getInnvandretFraLand())) {
@@ -127,7 +128,7 @@ public class ExtractOpprettKriterier {
             mapperFacade.map(req, person);
         });
 
-        if (isNull(req.getBoadresse())) {
+        if (isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse()) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
                 mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()));
             }
@@ -241,9 +242,11 @@ public class ExtractOpprettKriterier {
 
             // avoid Orika cyclic mapping overflow
             Adresse adresse1 = mapperFacade.map(adresse, Adresse.class);
-            adresse1.setPerson(tempPerson);
+            adresse.setPerson(tempPerson);
+
             adresse1.setFlyttedato(nullcheckSetDefaultValue(flyttedato,
                     hentDatoFraIdentService.extract(person.getIdent())));
+            adresse1.setPerson(person);
 
             person.getBoadresse().add(adresse1);
         } else {

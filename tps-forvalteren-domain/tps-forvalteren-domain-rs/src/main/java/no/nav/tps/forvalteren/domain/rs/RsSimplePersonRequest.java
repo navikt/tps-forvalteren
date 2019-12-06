@@ -84,4 +84,8 @@ public class RsSimplePersonRequest {
         }
         return identHistorikk;
     }
+
+    public boolean isKode6() {
+        return "SPSF".equals(getSpesreg());
+    }
 }

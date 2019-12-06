@@ -1,12 +1,14 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import static java.util.Objects.nonNull;
+
+import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -30,4 +32,8 @@ public class RsMatrikkeladresse extends RsAdresse {
     @Size(min = 1, max = 3)
     private String undernr;
 
+    @Override
+    public boolean isValidAdresse() {
+        return nonNull(getBruksnr());
+    }
 }

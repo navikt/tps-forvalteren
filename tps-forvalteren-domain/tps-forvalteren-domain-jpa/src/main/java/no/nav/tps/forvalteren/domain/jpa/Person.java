@@ -248,7 +248,7 @@ public class Person extends ChangeStamp {
     public Person sorterPersondetaljer() {
         getIdentHistorikk().sort(Comparator.comparing(IdentHistorikk::getRegdato).reversed());
         getSivilstander().sort(Comparator.comparing(Sivilstand::getSivilstandRegdato).reversed());
-        getBoadresse().sort(Comparator.comparing(Adresse::getFlyttedato).reversed());
+        getBoadresse().sort(Comparator.comparing(Adresse::getId).reversed());
         getPostadresse().sort(Comparator.comparing(Postadresse::getId).reversed());
         return this;
     }

@@ -8,7 +8,6 @@ import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.K
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -164,7 +163,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
             }
 
-        } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
+        } else if (kriteriumRequest.isKode6()) {
             person.setBoadresse(null);
             person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
@@ -172,19 +171,16 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         } else if (isUtenFastBopel(kriteriumRequest)) {
             person.getBoadresse().add(dummyAdresseService.createAdresseUfb(person, mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class)));
 
-        } else if (nonNull(kriteriumRequest.getBoadresse())) {
+        } else if (nonNull(kriteriumRequest.getBoadresse()) && kriteriumRequest.getBoadresse().isValidAdresse()) {
             Adresse adresse = mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class);
             adresse.setPerson(person);
             adresse.setFlyttedato(nullcheckSetDefaultValue(adresse.getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())));
             person.getBoadresse().add(adresse);
-
-        } else {
-            person.getBoadresse().add(dummyAdresseService.createDummyBoAdresse(person));
         }
     }
 
-    private static boolean isUtenFastBopel(RsSimplePersonRequest kriteriumRequest) {
-        return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && !SPSF.name().equals(kriteriumRequest.getSpesreg());
+    private static boolean isUtenFastBopel(RsSimplePersonRequest request) {
+        return "UFB".equals(request.getSpesreg()) || request.isUtenFastBopel();
     }
 
     private static IdentpoolKjoenn extractKjoenn(String kjoenn) {
