@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindIdenterNotUsedInDBTest {
@@ -30,7 +30,7 @@ public class FindIdenterNotUsedInDBTest {
     private final Person person3 = new Person();
 
     @Mock
-    private FindPersonerByIdIn findPersonerByIdIn;
+    private PersonService personService;
 
     @InjectMocks
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -44,7 +44,7 @@ public class FindIdenterNotUsedInDBTest {
 
     @Test
     public void fjernerIdenterFraInputSetSomManFinnerIDB() {
-        when(findPersonerByIdIn.execute(any())).thenReturn(Arrays.asList(person1, person2));
+        when(personService.getPersonerByIdenter(any())).thenReturn(asList(person1, person2));
 
         Set<String> identer = new HashSet<>();
         identer.add(dummyIdent1);
@@ -60,7 +60,7 @@ public class FindIdenterNotUsedInDBTest {
 
     @Test
     public void hvisIngenIdenterErIDBSaaReturnerersAlleIdenter() {
-        when(findPersonerByIdIn.execute(any())).thenReturn(new ArrayList<>());
+        when(personService.getPersonerByIdenter(any())).thenReturn(new ArrayList<>());
 
         Set<String> identer = new HashSet<>();
         identer.add(dummyIdent1);
@@ -76,7 +76,7 @@ public class FindIdenterNotUsedInDBTest {
 
     @Test
     public void returnererTomListeHvisAlleErTatt() {
-        when(findPersonerByIdIn.execute(any())).thenReturn(Arrays.asList(person1, person2, person3));
+        when(personService.getPersonerByIdenter(any())).thenReturn(asList(person1, person2, person3));
 
         Set<String> identer = new HashSet<>();
         identer.add(dummyIdent1);

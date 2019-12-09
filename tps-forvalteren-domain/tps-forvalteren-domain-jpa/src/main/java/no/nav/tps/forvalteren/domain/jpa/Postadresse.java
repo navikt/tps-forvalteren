@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,4 +54,19 @@ public class Postadresse {
     @Column(name = "POST_LAND", length = 3)
     private String postLand;
 
+    public Postadresse toUppercase() {
+        if (isNotBlank(getPostLinje1())) {
+            setPostLinje1(getPostLinje1().toUpperCase());
+        }
+        if (isNotBlank(getPostLinje2())) {
+            setPostLinje2(getPostLinje2().toUpperCase());
+        }
+        if (isNotBlank(getPostLinje3())) {
+            setPostLinje3(getPostLinje3().toUpperCase());
+        }
+        if (isNotBlank(getPostLand())) {
+            setPostLand(getPostLand().toUpperCase());
+        }
+        return this;
+    }
 }

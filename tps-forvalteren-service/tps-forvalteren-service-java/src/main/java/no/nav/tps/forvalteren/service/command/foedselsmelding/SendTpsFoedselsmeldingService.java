@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.foedselsmelding;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.FAR;
@@ -8,23 +10,21 @@ import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.LAGNY;
 import static no.nav.tps.forvalteren.domain.rs.skd.AddressOrigin.MOR;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.codehaus.plexus.util.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
-import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -53,9 +53,6 @@ public class SendTpsFoedselsmeldingService {
     private OpprettPersonMedEksisterendeForeldreService opprettPersonMedEksisterendeForeldreService;
 
     @Autowired
-    private UppercaseDataInPerson uppercaseDataInPerson;
-
-    @Autowired
     private SkdMeldingResolver foedselsmelding;
 
     @SuppressWarnings("fb-contrib:WOC_WRITE_ONLY_COLLECTION_LOCAL")
@@ -72,7 +69,7 @@ public class SendTpsFoedselsmeldingService {
             try {
                 persondataMor = getPersonhistorikk(request.getIdentMor(), request.getFoedselsdato(), miljoe);
 
-                if (StringUtils.isNotBlank(request.getIdentFar())) {
+                if (isNotBlank(request.getIdentFar())) {
                     persondataFar = getPersonhistorikk(request.getIdentFar(), request.getFoedselsdato(), miljoe);
                 }
             } catch (TpsfTechnicalException | TpsfFunctionalException e) {
@@ -84,16 +81,8 @@ public class SendTpsFoedselsmeldingService {
         Person person = null;
         if (!request.getMiljoer().isEmpty()) {
             person = opprettPersonMedEksisterendeForeldreService.execute(request);
-            if (LAGNY != request.getAdresseFra()) {
-                AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
-                if (nonNull(adresser)) {
-                    person.setBoadresse(adresser.getBoadresse());
-                    if (nonNull(adresser.getPostadresse())) {
-                        person.getPostadresse().add(adresser.getPostadresse());
-                    }
-                }
-            }
-            uppercaseDataInPerson.execute(person);
+            prepNyAdresse(request, persondataMor, persondataFar, person);
+            person.toUppercase();
 
             for (String miljoe : request.getMiljoer()) {
                 try {
@@ -103,8 +92,22 @@ public class SendTpsFoedselsmeldingService {
                 }
             }
         }
-        return prepareStatus(sentStatus, person != null ? person.getIdent() :
+        return prepareStatus(sentStatus, nonNull(person) ? person.getIdent() :
                 request.getFoedselsdato().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+    }
+
+    private void prepNyAdresse(RsTpsFoedselsmeldingRequest request, S018PersonType persondataMor, S018PersonType persondataFar, Person person) {
+        if (LAGNY != request.getAdresseFra()) {
+            AdresserResponse adresser = findAdresse(request, persondataMor, persondataFar);
+            if (nonNull(adresser)) {
+                if (nonNull(adresser.getBoadresse())) {
+                    person.setBoadresse(asList(adresser.getBoadresse()));
+                }
+                if (nonNull(adresser.getPostadresse())) {
+                    person.setPostadresse(asList(adresser.getPostadresse()));
+                }
+            }
+        }
     }
 
     private void validate(RsTpsFoedselsmeldingRequest request) {
@@ -139,7 +142,7 @@ public class SendTpsFoedselsmeldingService {
     private Map sendMeldingToTps(Person personSomSkalFoedes, String miljoe) {
 
         SkdMeldingTrans1 melding = skdMessageCreatorTrans1.execute(FOEDSEL_MLD_NAVN, personSomSkalFoedes, true);
-        return sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), Sets.newHashSet(miljoe));
+        return sendSkdMeldingTilGitteMiljoer.execute(melding.toString(), foedselsmelding.resolve(), newHashSet(miljoe));
     }
 
     private SendSkdMeldingTilTpsResponse prepareStatus(Map<String, String> sentStatus, String ident) {

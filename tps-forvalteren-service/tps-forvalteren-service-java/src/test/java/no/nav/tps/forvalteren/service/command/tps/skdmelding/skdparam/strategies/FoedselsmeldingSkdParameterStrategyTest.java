@@ -95,7 +95,8 @@ public class FoedselsmeldingSkdParameterStrategyTest {
 
         gateadresse.setKommunenr("0341");
         gateadresse.setPostnr("1234");
-        barn.setBoadresse(gateadresse);
+        gateadresse.setFlyttedato(LocalDateTime.now());
+        barn.getBoadresse().add(gateadresse);
     }
 
     @Test
@@ -136,7 +137,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
     @Test
     public void createFoedselsmeldingParamsWithGateadresse() {
         barn.getRelasjoner().addAll(Arrays.asList(morsrelasjon, farsrelasjon));
-        barn.setBoadresse(gateadresse);
+        barn.getBoadresse().add(gateadresse);
 
         result = foedselsmeldingSkdParameterStrategy.execute(barn);
 

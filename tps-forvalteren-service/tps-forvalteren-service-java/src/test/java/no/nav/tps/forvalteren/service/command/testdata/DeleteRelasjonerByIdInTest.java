@@ -36,8 +36,8 @@ public class DeleteRelasjonerByIdInTest {
     @Test
     public void verifyServiceCall() {
         deleteRelasjonerByIdIn.execute(personIds);
-        
-        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(personIds);
+
+        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
     }
 
     @Test

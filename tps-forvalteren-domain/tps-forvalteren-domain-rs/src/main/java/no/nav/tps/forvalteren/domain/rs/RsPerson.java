@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -78,7 +79,7 @@ public class RsPerson {
 
     private LocalDateTime utvandretTilLandRegdato;
 
-    private RsAdresse boadresse;
+    private List<RsAdresse> boadresse;
 
     private List<RsPostadresse> postadresse;
 
@@ -147,5 +148,13 @@ public class RsPerson {
             identHistorikk = new ArrayList();
         }
         return identHistorikk;
+    }
+
+    public RsPerson sorterPersondetaljer() {
+        getIdentHistorikk().sort(Comparator.comparing(RsIdenthistorikk::getHistoricIdentOrder).reversed());
+        getSivilstander().sort(Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
+        getBoadresse().sort(Comparator.comparing(RsAdresse::getAdresseId).reversed());
+        getPostadresse().sort(Comparator.comparing(RsPostadresse::getId).reversed());
+        return this;
     }
 }

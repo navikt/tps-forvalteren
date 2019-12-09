@@ -167,7 +167,7 @@ public class SendDodsmeldingTilTpsServiceTest {
         verify(sendSkdMeldingTilMiljoe, times(2)).execute(eq(SKDMLD), eq(tpsSkdRequestMeldingDefinition), anySet());
         verify(deathRowRepository).save(any(DeathRow.class));
         assertThat(personCaptor.getValue().getIdent(), is(equalTo(IDENT)));
-        assertThat(personCaptor.getValue().getBoadresse(), is(equalTo(adresse.getBoadresse())));
+        assertThat(personCaptor.getValue().getBoadresse().get(0), is(equalTo(adresse.getBoadresse())));
     }
 
     private DeathRow buildDoedsmelding(DoedsmeldingHandlingType action) {

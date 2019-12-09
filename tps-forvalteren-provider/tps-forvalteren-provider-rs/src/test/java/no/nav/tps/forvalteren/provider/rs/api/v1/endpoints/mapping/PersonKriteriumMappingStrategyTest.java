@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
@@ -48,6 +51,9 @@ public class PersonKriteriumMappingStrategyTest {
     @Before
     public void setup() {
         mapper = MapperTestUtils.createMapperFacadeForMappingStrategy(personKriteriumMappingStrategy);
+        Gateadresse gateadresse = new Gateadresse();
+        gateadresse.setFlyttedato(LocalDateTime.now());
+        when(dummyAdresseService.createDummyBoAdresse(any(Person.class))).thenReturn(gateadresse);
     }
 
     @Test

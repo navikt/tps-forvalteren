@@ -2,9 +2,11 @@ package no.nav.tps.forvalteren.domain.jpa;
 
 import static java.util.Objects.isNull;
 import static javax.persistence.CascadeType.ALL;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -86,7 +87,7 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Sivilstand> sivilstander;
 
-    @Column(name ="SIVILSTAND_REGDATO")
+    @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
     @Column(name = "INNVANDRET_FRA_LAND", length = 3)
@@ -125,9 +126,8 @@ public class Person extends ChangeStamp {
     @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
     private String beskrSikkerhetsTiltak;
 
-    @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private Adresse boadresse;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Adresse> boadresse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
@@ -213,5 +213,43 @@ public class Person extends ChangeStamp {
             sivilstander = new ArrayList();
         }
         return sivilstander;
+    }
+
+    public List<Adresse> getBoadresse() {
+        if (isNull(boadresse)) {
+            boadresse = new ArrayList<>();
+        }
+        return boadresse;
+    }
+
+    public Person toUppercase() {
+        if (isNotBlank(getFornavn())) {
+            setFornavn(getFornavn().toUpperCase());
+        }
+        if (isNotBlank(getMellomnavn())) {
+            setMellomnavn(getMellomnavn().toUpperCase());
+        }
+        if (isNotBlank(getEtternavn())) {
+            setEtternavn(getEtternavn().toUpperCase());
+        }
+        if (isNotBlank(getForkortetNavn())) {
+            setForkortetNavn(getForkortetNavn().toUpperCase());
+        }
+        if (isNotBlank(getIdenttype())) {
+            setIdenttype(getIdenttype().toUpperCase());
+        }
+
+        getBoadresse().forEach(Adresse::toUppercase);
+        getPostadresse().forEach(Postadresse::toUppercase);
+
+        return this;
+    }
+
+    public Person sorterPersondetaljer() {
+        getIdentHistorikk().sort(Comparator.comparing(IdentHistorikk::getHistoricIdentOrder).reversed());
+        getSivilstander().sort(Comparator.comparing(Sivilstand::getSivilstandRegdato).reversed());
+        getBoadresse().sort(Comparator.comparing(Adresse::getId).reversed());
+        getPostadresse().sort(Comparator.comparing(Postadresse::getId).reversed());
+        return this;
     }
 }

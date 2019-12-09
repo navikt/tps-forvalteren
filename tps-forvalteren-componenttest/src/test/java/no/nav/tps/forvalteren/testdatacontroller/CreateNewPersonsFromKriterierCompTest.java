@@ -113,7 +113,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
             assertThat(person.getKjonn(), is(equalTo("K")));
             assertTrue(IDENTER.contains(person.getIdent()));
             assertNotNull(person.getBoadresse());
-            assertThat(person.getBoadresse().getKommunenr(), is(equalTo("0901")));
+            assertThat(person.getBoadresse().get(0).getKommunenr(), is(equalTo("0901")));
         });
     }
 }

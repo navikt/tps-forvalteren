@@ -8,7 +8,6 @@ import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.K
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -164,26 +163,24 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
             }
 
-        } else if (SPSF.name().equals(kriteriumRequest.getSpesreg())) {
+        } else if (kriteriumRequest.isKode6()) {
             person.setBoadresse(null);
             person.getPostadresse().clear();
             person.getPostadresse().add(dummyAdresseService.createDummyPostAdresse(person));
 
         } else if (isUtenFastBopel(kriteriumRequest)) {
-            person.setBoadresse(dummyAdresseService.createAdresseUfb(person, mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class)));
+            person.getBoadresse().add(dummyAdresseService.createAdresseUfb(person, mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class)));
 
-        } else if (nonNull(kriteriumRequest.getBoadresse())) {
-            person.setBoadresse(mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class));
-            person.getBoadresse().setPerson(person);
-            person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(person.getBoadresse().getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())));
-
-        } else {
-            person.setBoadresse(dummyAdresseService.createDummyBoAdresse(person));
+        } else if (nonNull(kriteriumRequest.getBoadresse()) && kriteriumRequest.getBoadresse().isValidAdresse()) {
+            Adresse adresse = mapperFacade.map(kriteriumRequest.getBoadresse(), Adresse.class);
+            adresse.setPerson(person);
+            adresse.setFlyttedato(nullcheckSetDefaultValue(adresse.getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())));
+            person.getBoadresse().add(adresse);
         }
     }
 
-    private static boolean isUtenFastBopel(RsSimplePersonRequest kriteriumRequest) {
-        return (UFB.name().equals(kriteriumRequest.getSpesreg()) || kriteriumRequest.isUtenFastBopel()) && !SPSF.name().equals(kriteriumRequest.getSpesreg());
+    private static boolean isUtenFastBopel(RsSimplePersonRequest request) {
+        return "UFB".equals(request.getSpesreg()) || request.isUtenFastBopel();
     }
 
     private static IdentpoolKjoenn extractKjoenn(String kjoenn) {
@@ -207,8 +204,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (nonNull(person.getInnvandretFraLandFlyttedato())) {
             return person.getInnvandretFraLandFlyttedato();
-        } else if (nonNull(person.getBoadresse()) && nonNull(person.getBoadresse().getFlyttedato())) {
-            return person.getBoadresse().getFlyttedato();
+        } else if (!person.getBoadresse().isEmpty() && nonNull(person.getBoadresse().get(0).getFlyttedato())) {
+            return person.getBoadresse().get(0).getFlyttedato();
         } else {
             return hentDatoFraIdentService.extract(person.getIdent());
         }

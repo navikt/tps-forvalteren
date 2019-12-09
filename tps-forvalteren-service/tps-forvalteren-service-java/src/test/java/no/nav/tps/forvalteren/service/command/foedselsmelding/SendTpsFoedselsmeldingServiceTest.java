@@ -30,7 +30,6 @@ import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
-import no.nav.tps.forvalteren.service.command.testdata.UppercaseDataInPerson;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SendSkdMeldingTilGitteMiljoer;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -69,13 +68,10 @@ public class SendTpsFoedselsmeldingServiceTest {
     @Mock
     private SkdMeldingTrans1 skdMeldingTrans1;
 
-    @Mock
-    private UppercaseDataInPerson uppercaseDataInPerson;
-
     @InjectMocks
     private SendTpsFoedselsmeldingService sendTpsFoedselsmeldingService;
 
-    RsTpsFoedselsmeldingRequest rsTpsFoedselsmeldingRequest;
+    private RsTpsFoedselsmeldingRequest rsTpsFoedselsmeldingRequest;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

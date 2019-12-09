@@ -9,9 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +34,7 @@ public abstract class Adresse {
     @Column(name = "ADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "PERSON_ID")
     private Person person;
 
@@ -47,4 +49,32 @@ public abstract class Adresse {
 
     @Transient
     private String bolignr;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Adresse)) {
+            return false;
+        }
+
+        Adresse adresse = (Adresse) o;
+
+        return new EqualsBuilder()
+                .append(getKommunenr(), adresse.getKommunenr())
+                .append(getPostnr(), adresse.getPostnr())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getKommunenr())
+                .append(getPostnr())
+                .toHashCode();
+    }
+
+    public abstract Adresse toUppercase();
 }

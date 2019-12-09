@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.C;
 import static no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType.D;
@@ -10,13 +12,11 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Sets;
 
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -101,7 +101,7 @@ public class SendDodsmeldingTilTpsService {
 
             return sendMelding(person, DOEDSMELDING_MLD_NAVN, doedsmelding, miljoe);
         }
-        return Collections.emptyMap();
+        return emptyMap();
     }
 
     protected Map<String, String> sendAnnulering(Person person, String doedsdato, String handling, String miljoe) {
@@ -116,13 +116,13 @@ public class SendDodsmeldingTilTpsService {
 
             return sendMelding(person, DOEDSMELDINGANNULLERING_MLD_NAVN, doedsmeldingAnnuller, miljoe);
         }
-        return Collections.emptyMap();
+        return emptyMap();
     }
 
     private Map<String, String> sendMelding(Person person, String type, SkdMeldingResolver resolver, String miljoe) {
 
         String melding = skdCreator.execute(type, person, true).toString();
-        return sendSkdMeldingTilMiljoe.execute(melding, resolver.resolve(), Sets.newHashSet(miljoe));
+        return sendSkdMeldingTilMiljoe.execute(melding, resolver.resolve(), newHashSet(miljoe));
     }
 
     private void findLastAddress(Person person, String doedsdato, String miljoe) {
@@ -132,7 +132,7 @@ public class SendDodsmeldingTilTpsService {
         if (nonNull(adresser)) {
             if (nonNull(adresser.getBoadresse())) {
                 adresser.getBoadresse().setPerson(person);
-                person.setBoadresse(adresser.getBoadresse());
+                person.setBoadresse(asList(adresser.getBoadresse()));
             }
 
             if (nonNull(adresser.getPostadresse())) {

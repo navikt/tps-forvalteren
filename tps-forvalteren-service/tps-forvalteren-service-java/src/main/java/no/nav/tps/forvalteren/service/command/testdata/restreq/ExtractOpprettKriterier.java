@@ -27,8 +27,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
-import no.nav.tps.forvalteren.domain.rs.RsGateadresse;
-import no.nav.tps.forvalteren.domain.rs.RsMatrikkeladresse;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
@@ -120,7 +118,7 @@ public class ExtractOpprettKriterier {
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
-        List<Adresse> adresser = isNull(req.getBoadresse()) || isInvalidGateadresse(req.getBoadresse()) || isInvalidMatrikkeladresse(req.getBoadresse()) ?
+        List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
                 getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
 
         hovedPersoner.forEach(person -> {
@@ -130,7 +128,7 @@ public class ExtractOpprettKriterier {
             mapperFacade.map(req, person);
         });
 
-        if (isNull(req.getBoadresse()) || isInvalidGateadresse(req.getBoadresse()) || isInvalidMatrikkeladresse(req.getBoadresse())) {
+        if (isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse()) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
                 mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()));
             }
@@ -142,14 +140,6 @@ public class ExtractOpprettKriterier {
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
         return personer;
-    }
-
-    private boolean isInvalidGateadresse(RsAdresse adresse) {
-        return adresse instanceof RsGateadresse && isNull(((RsGateadresse) adresse).getGatekode());
-    }
-
-    private boolean isInvalidMatrikkeladresse(RsAdresse adresse) {
-        return adresse instanceof RsMatrikkeladresse && isNull(((RsMatrikkeladresse) adresse).getBruksnr());
     }
 
     private void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
@@ -170,7 +160,7 @@ public class ExtractOpprettKriterier {
                         adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
                     } else {
                         adresse = TRUE.equals(partnerRequest.getHarFellesAdresse()) || (isNull(partnerRequest.getHarFellesAdresse()) && j == 0) ?
-                                hovedPersoner.get(i).getBoadresse() : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
+                                hovedPersoner.get(i).getBoadresse().get(0) : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
                     mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
                     ammendDetailedPersonAttributes(partnerRequest, partnere.get(partnerStartIndex + j));
@@ -195,7 +185,7 @@ public class ExtractOpprettKriterier {
                     barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
                     mapBoadresse(barn.get(barnStartIndex + j), hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0 ?
-                                    hovedPersoner.get(i).getBoadresse() :
+                                    hovedPersoner.get(i).getBoadresse().get(0) :
                                     getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
                             extractFlyttedato(barnRequest.getBoadresse()));
                     ammendDetailedPersonAttributes(barnRequest, barn.get(barnStartIndex + j));
@@ -217,7 +207,8 @@ public class ExtractOpprettKriterier {
     }
 
     private static Adresse getPartnerAdresse(List<Person> partnere, int partnerStartIndex, RsBarnRequest barnRequest, int partnerNr) {
-        return (nonNull(barnRequest.getPartnerNr()) ? partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) : partnere.get(partnerStartIndex + partnerNr)).getBoadresse();
+        return (nonNull(barnRequest.getPartnerNr()) ? partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
+                partnere.get(partnerStartIndex + partnerNr)).getBoadresse().get(0);
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
@@ -250,13 +241,14 @@ public class ExtractOpprettKriterier {
             adresse.setPerson(null);
 
             // avoid Orika cyclic mapping overflow
-            person.setBoadresse(mapperFacade.map(adresse, Adresse.class));
-
+            Adresse adresse1 = mapperFacade.map(adresse, Adresse.class);
             adresse.setPerson(tempPerson);
 
-            person.getBoadresse().setPerson(person);
-            person.getBoadresse().setFlyttedato(nullcheckSetDefaultValue(flyttedato,
+            adresse1.setFlyttedato(nullcheckSetDefaultValue(flyttedato,
                     hentDatoFraIdentService.extract(person.getIdent())));
+            adresse1.setPerson(person);
+
+            person.getBoadresse().add(adresse1);
         } else {
             dummyAdresseService.createDummyBoAdresse(person);
         }

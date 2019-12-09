@@ -5,6 +5,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,8 @@ public class RandomAdresseService {
         for (int i = 0; i < persons.size(); i++) {
             adresser.get(i).setFlyttedato(hentDatoFraIdentService.extract(persons.get(i).getIdent()));
             adresser.get(i).setPerson(persons.get(i));
-            persons.get(i).setBoadresse(adresser.get(i));
+            adresser.get(i).setFlyttedato(LocalDateTime.now());
+            persons.get(i).getBoadresse().add(adresser.get(i));
         }
 
         return persons;

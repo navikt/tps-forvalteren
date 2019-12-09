@@ -25,8 +25,8 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @Slf4j
 @Service
@@ -38,7 +38,7 @@ public class ExcelService {
     private static final String SEP_STRING_DUAL = "\";\"\t";
 
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     public Resource getPersonFile(List<String> identer) {
 
@@ -47,7 +47,7 @@ public class ExcelService {
         List<Person> resultat = new ArrayList<>(identer.size());
 
         identLists.forEach(subset ->
-            resultat.addAll(personRepository.findByIdentIn(subset)));
+                resultat.addAll(personService.getPersonerByIdenter(subset)));
 
         try {
             File excelFile = File.createTempFile("Excel-", ".csv");
@@ -135,41 +135,34 @@ public class ExcelService {
 
     private static String getBoadresse(Person person) {
 
-        return person.getBoadresse() instanceof Gateadresse ?
+        return person.getBoadresse().get(0) instanceof Gateadresse ?
                 getGateadresse(person) : getMatrikkeladresse(person);
     }
 
     private static String getGateadresse(Person person) {
         return new StringBuilder()
-                .append(((Gateadresse) person.getBoadresse()).getAdresse())
+                .append(((Gateadresse) person.getBoadresse().get(0)).getAdresse())
                 .append(SEP)
-                .append(((Gateadresse) person.getBoadresse()).getHusnummer())
+                .append(((Gateadresse) person.getBoadresse().get(0)).getHusnummer())
                 .append(SEP_STRING_START)
-                .append(((Gateadresse) person.getBoadresse()).getGatekode())
+                .append(((Gateadresse) person.getBoadresse().get(0)).getGatekode())
                 .append(SEP_STRING_DUAL)
-                .append(person.getBoadresse().getPostnr())
-                .append(SEP_STRING_DUAL)
-                .append(person.getBoadresse().getKommunenr())
-                .append(SEP_STRING_END)
-                .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
-                .toString();
+                .toString()
+                .concat(commonAdresse(person));
     }
 
     private static String getMatrikkeladresse(Person person) {
-        return nonNull(person.getBoadresse()) ?
+        return !person.getBoadresse().isEmpty() ?
                 new StringBuilder()
-                        .append(((Matrikkeladresse) person.getBoadresse()).getMellomnavn())
+                        .append(((Matrikkeladresse) person.getBoadresse().get(0)).getMellomnavn())
                         .append(";GNR: ")
-                        .append(((Matrikkeladresse) person.getBoadresse()).getGardsnr())
+                        .append(((Matrikkeladresse) person.getBoadresse().get(0)).getGardsnr())
                         .append(";BNR: ")
-                        .append(((Matrikkeladresse) person.getBoadresse()).getBruksnr())
+                        .append(((Matrikkeladresse) person.getBoadresse().get(0)).getBruksnr())
                         .append(SEP_STRING_START)
-                        .append(person.getBoadresse().getPostnr())
-                        .append(SEP_STRING_DUAL)
-                        .append(person.getBoadresse().getKommunenr())
-                        .append(SEP_STRING_END)
-                        .append(person.getBoadresse().getFlyttedato().format(ISO_LOCAL_DATE))
                         .toString()
+                        .concat(commonAdresse(person))
+
                 : format("%s%s%s%s%s", SEP, SEP, SEP, SEP, SEP);
     }
 
@@ -185,5 +178,15 @@ public class ExcelService {
                         .append(person.getPostadresse().get(0).getPostLand())
                         .toString()
                 : format("%s%s%s", SEP, SEP, SEP);
+    }
+
+    private static String commonAdresse(Person person) {
+        return new StringBuilder()
+                .append(person.getBoadresse().get(0).getPostnr())
+                .append(SEP_STRING_DUAL)
+                .append(person.getBoadresse().get(0).getKommunenr())
+                .append(SEP_STRING_END)
+                .append(person.getBoadresse().get(0).getFlyttedato().format(ISO_LOCAL_DATE))
+                .toString();
     }
 }

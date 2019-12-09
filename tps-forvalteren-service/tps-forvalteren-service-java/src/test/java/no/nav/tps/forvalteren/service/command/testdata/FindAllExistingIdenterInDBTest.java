@@ -19,12 +19,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindAllExistingIdenterInDBTest {
 
     @Mock
-    private FindPersonerByIdIn findPersonerByIdIn;
+    private PersonService personService;
 
     @InjectMocks
     private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
@@ -50,7 +51,7 @@ public class FindAllExistingIdenterInDBTest {
 
     @Test
     public void removesExistingIdenter() {
-        when(findPersonerByIdIn.execute(any(List.class))).thenReturn(existingIdenterInDB);
+        when(personService.getPersonerByIdenter(any(List.class))).thenReturn(existingIdenterInDB);
         Set<String> result = findIdenterNotUsedInDB.filtrer(new HashSet<>(newIdenter));
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(newIdenter.get(2)));
