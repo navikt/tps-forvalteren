@@ -42,11 +42,6 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                 .byDefault()
                 .register();
 
-        factory.classMap(RsPerson.class, Person.class)
-                .field(PERSON_ID, ID)
-                .byDefault()
-                .register();
-
         factory.classMap(Person.class, RsPersonUtenIdenthistorikk.class)
                 .field(ID, PERSON_ID)
                 .customize(new CustomMapper<Person, RsPersonUtenIdenthistorikk>() {
