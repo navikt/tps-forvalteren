@@ -10,7 +10,6 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
@@ -28,6 +27,7 @@ import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsReques
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -83,8 +83,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
-                .exclude("identtype")
                 .exclude("identHistorikk")
+                .exclude("statsborgerskap")
                 .exclude(KJONN)
                 .byDefault()
                 .register();
@@ -108,19 +108,26 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     }
 
     private void mapBasicProperties(RsSimplePersonRequest kriteriumRequest, Person person) {
+
         person.setIdenttype(nullcheckSetDefaultValue(person.getIdenttype(), "FNR"));
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
-        if (isBlank(person.getStatsborgerskap())) {
-            if (DNR.name().equals(person.getIdenttype())) {
-                person.setStatsborgerskap(person.getInnvandretFraLand());
-            }else{
-                person.setStatsborgerskap("NOR");
-            }
+        if (FNR.name().equals(person.getIdenttype())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap("NOR")
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
+                            nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))))
+                    .build());
+
+        } else if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .build());
         }
-        person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
-                nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))));
 
         person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), DNR.name().equals(person.getIdenttype()) ? dummyLanguageService.getRandomLanguage() : "NB"));
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),

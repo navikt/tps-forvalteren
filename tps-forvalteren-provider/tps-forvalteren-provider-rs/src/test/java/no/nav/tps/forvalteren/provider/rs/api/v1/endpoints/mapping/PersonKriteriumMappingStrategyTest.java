@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,7 +32,7 @@ public class PersonKriteriumMappingStrategyTest {
     private static final String TYPESIKKERHET = "tøys";
     private static final String SPRAK = "EN";
     private static final String STATSBORGERSKAP = "SWE";
-    private static final String IDENTTYPE = "FNR";
+    private static final String IDENTTYPE = FNR.name();
     private static final String SPESREG = "KODE6";
 
     private MapperFacade mapper;
@@ -66,7 +67,6 @@ public class PersonKriteriumMappingStrategyTest {
         bestilling.setSprakKode(SPRAK);
         bestilling.setStatsborgerskap(STATSBORGERSKAP);
         bestilling.setStatsborgerskapRegdato(TIMENOW);
-        bestilling.setIdenttype(IDENTTYPE);
         bestilling.setSpesreg(SPESREG);
         bestilling.setSpesregDato(TIMENOW);
         bestilling.setEgenAnsattDatoFom(TIMENOW);
@@ -75,8 +75,8 @@ public class PersonKriteriumMappingStrategyTest {
         Person person = mapper.map(bestilling, Person.class);
 
         assertThat(person.getIdenttype(), is(equalTo(IDENTTYPE)));
-        assertThat(person.getStatsborgerskap(), is(equalTo(STATSBORGERSKAP)));
-        assertThat(person.getStatsborgerskapRegdato(), is(equalTo(TIMENOW)));
+        assertThat(person.getStatsborgerskap().get(0).getStatsborgerskap(), is(equalTo("NOR")));
+        assertThat(person.getStatsborgerskap().get(0).getStatsborgerskapRegdato(), is(equalTo(TIMENOW)));
         assertThat(person.getSprakKode(), is(equalTo(SPRAK)));
         assertThat(person.getDatoSprak(), is(equalTo(TIMENOW)));
         assertThat(person.getBeskrSikkerhetsTiltak(), is(equalTo(SIKKERHETSTILTAK)));

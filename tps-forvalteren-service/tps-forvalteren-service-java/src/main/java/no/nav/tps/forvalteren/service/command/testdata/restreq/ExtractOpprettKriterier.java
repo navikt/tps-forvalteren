@@ -7,6 +7,7 @@ import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.MEG;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.OSS;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
@@ -163,9 +165,7 @@ public class ExtractOpprettKriterier {
                                 hovedPersoner.get(i).getBoadresse().get(0) : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
                     mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
-                    ammendDetailedPersonAttributes(partnerRequest, partnere.get(partnerStartIndex + j));
-                    partnere.get(partnerStartIndex + j).setInnvandretFraLand(nullcheckSetDefaultValue(partnere.get(partnerStartIndex + j).getInnvandretFraLand(),
-                            hovedPersoner.get(i).getInnvandretFraLand()));
+                    alignStatsborgerskapAndInnvandretFraLand(partnere.get(partnerStartIndex + j), hovedPersoner.get(i));
                 }
             }
         }
@@ -188,11 +188,8 @@ public class ExtractOpprettKriterier {
                                     hovedPersoner.get(i).getBoadresse().get(0) :
                                     getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
                             extractFlyttedato(barnRequest.getBoadresse()));
-                    ammendDetailedPersonAttributes(barnRequest, barn.get(barnStartIndex + j));
+                    alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
                     barn.get(barnStartIndex + j).setSivilstand(null);
-                    if (DNR.name().equals(barn.get(barnStartIndex + j).getIdenttype())) {
-                        barn.get(barnStartIndex + j).setInnvandretFraLand(nullcheckSetDefaultValue(barn.get(barnStartIndex + j).getInnvandretFraLand(), hovedPersoner.get(i).getInnvandretFraLand()));
-                    }
                 }
             }
         }
@@ -224,13 +221,16 @@ public class ExtractOpprettKriterier {
         return nonNull(adresse) ? adresse.getFlyttedato() : null;
     }
 
-    private static Person ammendDetailedPersonAttributes(RsSimplePersonRequest kriterier, Person person) {
+    private void alignStatsborgerskapAndInnvandretFraLand(Person person, Person hovedperson) {
 
-        person.setStatsborgerskap(nullcheckSetDefaultValue(kriterier.getStatsborgerskap(), person.getStatsborgerskap()));
-        person.setSprakKode(nullcheckSetDefaultValue(kriterier.getSprakKode(), person.getSprakKode()));
-        person.setDatoSprak(nullcheckSetDefaultValue(kriterier.getDatoSprak(), person.getDatoSprak()));
+        person.setInnvandretFraLand(nullcheckSetDefaultValue(person.getInnvandretFraLand(), hovedperson.getInnvandretFraLand()));
 
-        return person;
+        if (!FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap(hovedperson.getStatsborgerskap().get(0).getStatsborgerskap())
+                    .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
+                    .build());
+        }
     }
 
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {

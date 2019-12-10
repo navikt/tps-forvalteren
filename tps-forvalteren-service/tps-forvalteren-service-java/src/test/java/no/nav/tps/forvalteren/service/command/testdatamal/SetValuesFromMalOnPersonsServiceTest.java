@@ -33,13 +33,13 @@ public class SetValuesFromMalOnPersonsServiceTest {
     }
 
     @Test
-    public void executeOk() throws Exception {
+    public void executeOk() {
 
         setValuesFromMalOnPersonsService.execute(personer, personmalListe);
         assertThat(personer.get(0).getSivilstand(), is(equalTo(personmalListe.get(0).getSivilstand())));
         assertThat(toLocalDate(personer.get(0).getDoedsdato()), is(equalTo(personmalListe.get(0).getDoedsdato())));
-        assertThat(personer.get(0).getStatsborgerskap(), is(equalTo(personmalListe.get(0).getStatsborgerskap())));
-        assertThat(toLocalDate(personer.get(0).getStatsborgerskapRegdato()), is(equalTo(personmalListe.get(0).getStatsborgerskapRegdato())));
+        assertThat(personer.get(0).getStatsborgerskap().get(0).getStatsborgerskap(), is(equalTo(personmalListe.get(0).getStatsborgerskap())));
+        assertThat(toLocalDate(personer.get(0).getStatsborgerskap().get(0).getStatsborgerskapRegdato()), is(equalTo(personmalListe.get(0).getStatsborgerskapRegdato())));
         assertThat(personer.get(0).getSpesreg(), is(equalTo(personmalListe.get(0).getSpesreg())));
         assertThat(toLocalDate(personer.get(0).getSpesregDato()), is(equalTo(personmalListe.get(0).getSpesregDato())));
         assertThat(toLocalDate(personer.get(0).getEgenAnsattDatoFom()), is(equalTo(personmalListe.get(0).getEgenAnsattDatoFom())));

@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdatamal;
 
+import static java.util.Arrays.asList;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Personmal;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 
 @Service
 public class SetValuesFromMalOnPersonsService {
@@ -21,8 +24,10 @@ public class SetValuesFromMalOnPersonsService {
                     Person person = personIterator.next();
                     person.setSivilstand(personmal.getSivilstand());
                     person.setDoedsdato(tolocalDateTime(personmal.getDoedsdato()));
-                    person.setStatsborgerskap(personmal.getStatsborgerskap());
-                    person.setStatsborgerskapRegdato(tolocalDateTime(personmal.getStatsborgerskapRegdato()));
+                    person.setStatsborgerskap(asList(Statsborgerskap.builder()
+                            .statsborgerskap(personmal.getStatsborgerskap())
+                            .statsborgerskapRegdato(tolocalDateTime(personmal.getStatsborgerskapRegdato()))
+                            .build()));
                     person.setSpesreg(personmal.getSpesreg());
                     person.setSpesregDato(tolocalDateTime(personmal.getSpesregDato()));
                     person.setEgenAnsattDatoFom(tolocalDateTime(personmal.getEgenAnsattDatoFom()));

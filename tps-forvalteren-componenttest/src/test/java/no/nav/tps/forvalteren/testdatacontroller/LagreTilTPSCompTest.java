@@ -33,6 +33,7 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 
 /**
  * Komptesten utfører følgende fra REST-grensesnitt til mock-versjon av messageQueueConsumer:
@@ -128,7 +129,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilPerson3.setPostnr("1001");
         adressenTilPerson3.setFlyttedato(LocalDateTime.of(2018, 04, 26, 12, 11, 10));
         Person person3 = Person.builder().gruppe(testgruppe).ident("04121656499").identtype("FNR")
-                .fornavn("GLITRENDE").etternavn("NORDMANN").statsborgerskap("349")
+                .fornavn("GLITRENDE").etternavn("NORDMANN").statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("349").build()))
                 .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
                 .opprettetDato(LocalDateTime.now())
@@ -156,7 +157,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilEktemann.setPostnr("0557");
         adressenTilEktemann.setFlyttedato(LocalDateTime.of(2018, 04, 05, 11, 30, 28));
         Person ektemann = Person.builder().gruppe(testgruppe).ident("10050552565").identtype("FNR")
-                .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap("000")
+                .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").build()))
                 .kjonn("K")
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .opprettetDato(LocalDateTime.now())
@@ -170,7 +171,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilKone.setPostnr("0195");
         adressenTilKone.setFlyttedato(LocalDateTime.of(2018, 05, 15, 14, 10, 44));
         Person kone = Person.builder().gruppe(testgruppe).ident("12017500617").identtype("FNR")
-                .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap("000")
+                .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").build()))
                 .kjonn("M")
                 .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
                 .opprettetDato(LocalDateTime.now())

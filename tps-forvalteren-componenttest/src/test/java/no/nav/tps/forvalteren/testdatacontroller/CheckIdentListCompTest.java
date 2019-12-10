@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_LES_TIMEOUT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -13,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.service.command.testdata.response.IdentMedStatus;
 
 public class CheckIdentListCompTest extends AbstractTestdataControllerComponentTest {
@@ -54,7 +55,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     public void setup() throws JMSException {
         reset(messageQueueConsumer);
         
-        fasitRegistrerteEnvMedTps.addAll(Arrays.asList("q0"));
+        fasitRegistrerteEnvMedTps.addAll(asList("q0"));
         when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
         
         mockTps();
@@ -67,7 +68,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldReturnStatusOnAllIdents() throws Exception {
         setupTestdataInTpsfDatabase();
-        List<IdentMedStatus> expectedResponse = Arrays.asList(
+        List<IdentMedStatus> expectedResponse = asList(
                 new IdentMedStatus("12017500617", "IL"),
                 new IdentMedStatus("32156489777", "IG"),
                 new IdentMedStatus("03051750127", "LOG"),
@@ -116,7 +117,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 .regdato(LocalDateTime.now())
                 .fornavn("lol")
                 .etternavn("sdf")
-                .statsborgerskap("nor")
+                .statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("nor").build()))
                 .opprettetDato(LocalDateTime.now())
                 .opprettetAv("a123456")
                 .build();

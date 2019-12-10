@@ -19,6 +19,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpprettPersonerServiceTest {
@@ -37,6 +38,9 @@ public class OpprettPersonerServiceTest {
 
     @Mock
     private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Mock
+    private LandkodeEncoder landkodeEncoder;
 
     @InjectMocks
     private OpprettPersonerService opprettPersonerService;
