@@ -32,7 +32,6 @@ public class Sivilstand {
     private static final String SEQ = "T_SIVILSTAND_SEQ";
 
     @Id
-    @JsonIgnore
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
     @Column(name = "ID", nullable = false, updatable = false)

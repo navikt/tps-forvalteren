@@ -32,7 +32,6 @@ public class Statsborgerskap {
     private static final String SEQ = "T_STATSBORGERSKAP_SEQ";
 
     @Id
-    @JsonIgnore
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
     @Column(name = "ID", nullable = false, updatable = false)
@@ -44,9 +43,9 @@ public class Statsborgerskap {
     @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
-    @Column(name = "T_STATSBORGERSKAP", nullable = false)
+    @Column(name = "STATSBORGERSKAP", nullable = false)
     private String statsborgerskap;
 
-    @Column(name = "T_STATSBORGERSKAP_REGDATO", nullable = false)
+    @Column(name = "STATSBORGERSKAP_REGDATO", nullable = false)
     private LocalDateTime statsborgerskapRegdato;
 }

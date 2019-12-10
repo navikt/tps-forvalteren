@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.transaction.Transactional;
@@ -13,6 +15,7 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -31,12 +34,25 @@ public class EndrePersonBestillingService {
 
         Person person = personRepository.findByIdent(ident);
 
-        updateAdresse(person, request);
+        updateAdresse(request, person);
+        updateStatsborgerskap(request, person);
 
         return personRepository.save(person);
     }
 
-    private void updateAdresse(Person person, RsPersonBestillingKriteriumRequest request) {
+    private void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+
+        if (isNotBlank(request.getStatsborgerskap())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap(request.getStatsborgerskap())
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(request.getStatsborgerskapRegdato(), now()))
+                    .person(person)
+                    .build());
+        }
+    }
+
+    private void updateAdresse(RsPersonBestillingKriteriumRequest request, Person person) {
 
         if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
 
