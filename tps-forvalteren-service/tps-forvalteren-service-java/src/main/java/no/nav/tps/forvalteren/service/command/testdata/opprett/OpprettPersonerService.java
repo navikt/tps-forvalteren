@@ -32,21 +32,31 @@ public class OpprettPersonerService {
 
         List<Person> personer = Lists.newArrayListWithExpectedSize(tilgjengeligIdenter.size());
 
-        tilgjengeligIdenter.forEach(ident ->
-                personer.add(Person.builder()
-                        .ident(ident)
-                        .identtype(hentIdenttypeFraIdentService.execute(ident))
-                        .kjonn(hentKjoennFraIdentService.execute(ident))
-                        .regdato(now())
-                        .statsborgerskap(asList(Statsborgerskap.builder()
-                                .statsborgerskap(FNR.name().equals(hentIdenttypeFraIdentService.execute(ident)) ? "NOR" :
-                                        landkodeEncoder.getRandomLandTla())
-                                .statsborgerskapRegdato(hentDatoFraIdentService.extract(ident))
-                                .build()))
-                        .opprettetDato(now())
-                        .opprettetAv(nonNull(SecurityContextHolder.getContext().getAuthentication()) ?
-                                SecurityContextHolder.getContext().getAuthentication().getName() : null)
-                        .build()));
+        tilgjengeligIdenter.forEach(ident -> {
+            Person person = Person.builder()
+                    .ident(ident)
+                    .identtype(hentIdenttypeFraIdentService.execute(ident))
+                    .kjonn(hentKjoennFraIdentService.execute(ident))
+                    .regdato(now())
+                    .statsborgerskap(asList(Statsborgerskap.builder()
+                            .statsborgerskap(FNR.name().equals(hentIdenttypeFraIdentService.execute(ident)) ? "NOR" :
+                                    landkodeEncoder.getRandomLandTla())
+                            .statsborgerskapRegdato(hentDatoFraIdentService.extract(ident))
+                            .build()))
+                    .opprettetDato(now())
+                    .opprettetAv(nonNull(SecurityContextHolder.getContext().getAuthentication()) ?
+                            SecurityContextHolder.getContext().getAuthentication().getName() : null)
+                    .build();
+
+            person.setStatsborgerskap(asList(Statsborgerskap.builder()
+                    .statsborgerskap(FNR.name().equals(hentIdenttypeFraIdentService.execute(ident)) ? "NOR" :
+                            landkodeEncoder.getRandomLandTla())
+                    .statsborgerskapRegdato(hentDatoFraIdentService.extract(ident))
+                    .person(person)
+                    .build()));
+
+            personer.add(person);
+        });
 
         return personer;
     }

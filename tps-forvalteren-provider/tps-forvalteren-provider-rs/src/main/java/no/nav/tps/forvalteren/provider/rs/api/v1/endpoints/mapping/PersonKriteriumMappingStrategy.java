@@ -119,6 +119,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                     .statsborgerskap("NOR")
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
                             nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))))
+                    .person(person)
                     .build());
 
         } else if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
@@ -126,6 +127,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .person(person)
                     .build());
         }
 

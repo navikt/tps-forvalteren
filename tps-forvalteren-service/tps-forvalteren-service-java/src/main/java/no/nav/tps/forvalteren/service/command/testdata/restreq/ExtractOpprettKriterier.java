@@ -229,6 +229,7 @@ public class ExtractOpprettKriterier {
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap(hovedperson.getStatsborgerskap().get(0).getStatsborgerskap())
                     .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
+                    .person(person)
                     .build());
         }
     }

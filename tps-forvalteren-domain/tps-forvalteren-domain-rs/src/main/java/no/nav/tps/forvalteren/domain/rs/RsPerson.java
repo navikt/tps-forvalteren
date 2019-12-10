@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 
 @Getter
 @Setter
@@ -50,9 +51,7 @@ public class RsPerson {
 
     private String forkortetNavn;
 
-    private String statsborgerskap;
-
-    private LocalDateTime statsborgerskapRegdato;
+    private List<Statsborgerskap> statsborgerskap;
 
     @Size(min = 1, max = 1)
     private String spesreg;
@@ -150,11 +149,19 @@ public class RsPerson {
         return identHistorikk;
     }
 
+    public List<Statsborgerskap> getStatsborgerskap() {
+        if (isNull(statsborgerskap)) {
+            statsborgerskap = new ArrayList();
+        }
+        return statsborgerskap;
+    }
+
     public RsPerson sorterPersondetaljer() {
         getIdentHistorikk().sort(Comparator.comparing(RsIdenthistorikk::getHistoricIdentOrder).reversed());
         getSivilstander().sort(Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
         getBoadresse().sort(Comparator.comparing(RsAdresse::getAdresseId).reversed());
         getPostadresse().sort(Comparator.comparing(RsPostadresse::getId).reversed());
+        getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId).reversed());
         return this;
     }
 }

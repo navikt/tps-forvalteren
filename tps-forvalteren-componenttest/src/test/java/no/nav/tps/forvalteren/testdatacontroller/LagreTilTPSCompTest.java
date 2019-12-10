@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.time.LocalDateTime.now;
+import static java.time.LocalDateTime.of;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static org.junit.Assert.assertEquals;
@@ -14,7 +16,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 /**
  * Komptesten utfører følgende fra REST-grensesnitt til mock-versjon av messageQueueConsumer:
@@ -69,6 +71,9 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
 
     @Autowired
     private MessageQueueConsumer messageQueueConsumer;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Override
     protected String getServiceUrl() {
@@ -127,14 +132,22 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Adresse adressenTilPerson3 = Gateadresse.builder().husnummer("9354").gatekode("01415").adresse("KJØLVEGEN").build();
         adressenTilPerson3.setKommunenr("1112");
         adressenTilPerson3.setPostnr("1001");
-        adressenTilPerson3.setFlyttedato(LocalDateTime.of(2018, 04, 26, 12, 11, 10));
+        adressenTilPerson3.setFlyttedato(of(2018, 04, 26, 12, 11, 10));
         Person person3 = Person.builder().gruppe(testgruppe).ident("04121656499").identtype("FNR")
-                .fornavn("GLITRENDE").etternavn("NORDMANN").statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("349").build()))
+                .fornavn("GLITRENDE").etternavn("NORDMANN")
                 .kjonn("M")
-                .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
-                .opprettetDato(LocalDateTime.now())
+                .regdato(of(2018, 04, 26, 00, 00, 00))
+                .opprettetDato(now())
                 .opprettetAv("A123456")
-                .boadresse(asList(adressenTilPerson3)).build();
+                .boadresse(asList(adressenTilPerson3))
+                .build();
+
+        person3.setStatsborgerskap(asList(Statsborgerskap.builder()
+                .statsborgerskap("349")
+                .statsborgerskapRegdato(hentDatoFraIdentService.extract(person3.getIdent()))
+                .person(person3)
+                .build()));
+
         adressenTilPerson3.setPerson(person3);
 
         personRepository.save(person3);
@@ -144,8 +157,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person person5 = Person.builder().gruppe(testgruppe).ident("02020403694").identtype("FNR")
                 .etternavn("Kake").fornavn("Snill")
                 .kjonn("M")
-                .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
-                .opprettetDato(LocalDateTime.now())
+                .regdato(of(2018, 04, 26, 00, 00, 00))
+                .opprettetDato(now())
                 .opprettetAv("A123456")
                 .build();
         personRepository.save(person5);
@@ -155,28 +168,42 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Adresse adressenTilEktemann = Gateadresse.builder().husnummer("2").gatekode("16188").adresse("SANNERGATA").build();
         adressenTilEktemann.setKommunenr("0301");
         adressenTilEktemann.setPostnr("0557");
-        adressenTilEktemann.setFlyttedato(LocalDateTime.of(2018, 04, 05, 11, 30, 28));
+        adressenTilEktemann.setFlyttedato(of(2018, 04, 05, 11, 30, 28));
         Person ektemann = Person.builder().gruppe(testgruppe).ident("10050552565").identtype("FNR")
-                .fornavn("KRIMINELL").etternavn("BUSK").statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").build()))
+                .fornavn("KRIMINELL").etternavn("BUSK")
                 .kjonn("K")
-                .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
-                .opprettetDato(LocalDateTime.now())
+                .regdato(of(2018, 04, 05, 00, 00, 00))
+                .opprettetDato(now())
                 .opprettetAv("A123456")
                 .boadresse(asList(adressenTilEktemann)).build();
+
+        ektemann.setStatsborgerskap(asList(Statsborgerskap.builder()
+                .statsborgerskap("000")
+                .statsborgerskapRegdato(hentDatoFraIdentService.extract(ektemann.getIdent()))
+                .person(ektemann)
+                .build()));
+
         adressenTilEktemann.setPerson(ektemann);
         final Person lagretEktemann = personRepository.save(ektemann);
 
         Adresse adressenTilKone = Gateadresse.builder().husnummer("8400").gatekode("21485").adresse("SMELTEDIGELEN").build();
         adressenTilKone.setKommunenr("0301");
         adressenTilKone.setPostnr("0195");
-        adressenTilKone.setFlyttedato(LocalDateTime.of(2018, 05, 15, 14, 10, 44));
+        adressenTilKone.setFlyttedato(of(2018, 05, 15, 14, 10, 44));
         Person kone = Person.builder().gruppe(testgruppe).ident("12017500617").identtype("FNR")
-                .fornavn("BLÅ").etternavn("KAFFI").statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").build()))
+                .fornavn("BLÅ").etternavn("KAFFI")
                 .kjonn("M")
-                .regdato(LocalDateTime.of(2018, 04, 05, 00, 00, 00))
-                .opprettetDato(LocalDateTime.now())
+                .regdato(of(2018, 04, 05, 00, 00, 00))
+                .opprettetDato(now())
                 .opprettetAv("A123456")
                 .boadresse(asList(adressenTilKone)).build();
+
+        kone.setStatsborgerskap(asList(Statsborgerskap.builder()
+                .statsborgerskap("000")
+                .statsborgerskapRegdato(hentDatoFraIdentService.extract(kone.getIdent()))
+                .person(kone)
+                .build()));
+
         adressenTilKone.setPerson(kone);
         final Person lagretKone = personRepository.save(kone);
 
@@ -186,13 +213,19 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
 
     private void opprettPersonerSomTriggerDoedsmeldinger() {
         Person doedPerson = Person.builder().gruppe(testgruppe).ident("11031250155").identtype("FNR")
-                .doedsdato(LocalDateTime.of(2018, 05, 15, 14, 10, 44))
+                .doedsdato(of(2018, 05, 15, 14, 10, 44))
                 .kjonn("M")
                 .fornavn("Døende").etternavn("Person")
-                .regdato(LocalDateTime.of(2018, 04, 26, 00, 00, 00))
-                .opprettetDato(LocalDateTime.now())
+                .regdato(of(2018, 04, 26, 00, 00, 00))
+                .opprettetDato(now())
                 .opprettetAv("A123456")
                 .build();
+
+        doedPerson.setStatsborgerskap(asList(Statsborgerskap.builder()
+                .statsborgerskap("000")
+                .statsborgerskapRegdato(hentDatoFraIdentService.extract(doedPerson.getIdent()))
+                .person(doedPerson)
+                .build()));
         personRepository.save(doedPerson);
     }
 

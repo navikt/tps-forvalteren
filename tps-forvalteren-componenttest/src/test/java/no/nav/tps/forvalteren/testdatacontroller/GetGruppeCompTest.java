@@ -62,7 +62,10 @@ public class GetGruppeCompTest extends AbstractTestdataControllerComponentTest {
         assertEquals(person.getIdent(), rsPerson.getIdent());
         assertEquals(person.getFornavn(), rsPerson.getFornavn());
         assertEquals(person.getEtternavn(), rsPerson.getEtternavn());
-        assertEquals(person.getStatsborgerskap(), rsPerson.getStatsborgerskap());
+        if (!person.getStatsborgerskap().isEmpty()) {
+            assertEquals(person.getStatsborgerskap().get(0).getStatsborgerskap(), rsPerson.getStatsborgerskap().get(0).getStatsborgerskap());
+            assertEquals(person.getStatsborgerskap().get(0).getStatsborgerskapRegdato(), rsPerson.getStatsborgerskap().get(0).getStatsborgerskapRegdato());
+        }
     }
     
     private void setupTestdataInTpsfDatabase() {

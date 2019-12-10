@@ -1,11 +1,8 @@
 package no.nav.tps.forvalteren.domain.test.provider;
 
-import static java.util.Arrays.asList;
-
-import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 
 public final class PersonProvider {
 
@@ -19,9 +16,8 @@ public final class PersonProvider {
                 .fornavn("Ola")
                 .mellomnavn("0")
                 .etternavn("Nordmann")
-                .statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").build()))
-                .regdato(LocalDateTime.now())
-                .opprettetDato(LocalDateTime.now())
+                .regdato(now())
+                .opprettetDato(now())
                 .opprettetAv("a123456");
     }
 
@@ -33,9 +29,8 @@ public final class PersonProvider {
                 .fornavn("Kari")
                 .mellomnavn("0")
                 .etternavn("Nordmann")
-                .statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").build()))
-                .regdato(LocalDateTime.now())
-                .opprettetDato(LocalDateTime.now())
+                .regdato(now())
+                .opprettetDato(now())
                 .opprettetAv("b234567");
     }
 }

@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
+import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.NameValuePair;
@@ -61,25 +61,37 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
                 .gruppe(gruppe)
                 .identtype("per")
                 .kjonn("m")
-                .regdato(LocalDateTime.now())
+                .regdato(now())
                 .fornavn("lol").etternavn("sdf")
                 .ident(IDENT1)
-                .statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("nor").build()))
-                .opprettetDato(LocalDateTime.now())
+                .opprettetDato(now())
                 .opprettetAv("a123456")
                 .build());
+
+        person.setStatsborgerskap(asList(
+                Statsborgerskap.builder().statsborgerskap("nor")
+                        .statsborgerskapRegdato(now())
+                        .person(person)
+                        .build()));
+
         Person person2 = personRepository.save(Person.builder()
                 .gruppe(gruppe)
                 .identtype("per")
                 .kjonn("k")
-                .regdato(LocalDateTime.now())
+                .regdato(now())
                 .fornavn("fnavn")
                 .etternavn("etternavn2")
                 .ident(IDENT2)
-                .statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("nor").build()))
-                .opprettetDato(LocalDateTime.now())
+                .opprettetDato(now())
                 .opprettetAv("b234567")
                 .build());
+
+        person2.setStatsborgerskap(asList(Statsborgerskap.builder()
+                .statsborgerskap("nor")
+                .statsborgerskapRegdato(now())
+                .person(person2)
+                .build()));
+
         return asList(person, person2);
     }
 
