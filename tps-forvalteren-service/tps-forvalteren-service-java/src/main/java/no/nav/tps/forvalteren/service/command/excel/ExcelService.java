@@ -105,7 +105,7 @@ public class ExcelService {
                 .append(person.getGtType()).append(SEP)
                 .append(person.getGtRegel()).append(SEP)
                 .append(person.getSprakKode()).append(SEP)
-                .append(person.getStatsborgerskap()).append(SEP)
+                .append(!person.getStatsborgerskap().isEmpty() ? person.getStatsborgerskap().get(0).getStatsborgerskap() : "").append(SEP)
                 .append(person.getTypeSikkerhetsTiltak()).append(SEP)
                 .append(person.getBeskrSikkerhetsTiltak())
                 .append(getRelasjoner(person));
