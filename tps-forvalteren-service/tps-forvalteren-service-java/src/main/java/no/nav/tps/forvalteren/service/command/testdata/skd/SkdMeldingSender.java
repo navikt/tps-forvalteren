@@ -10,6 +10,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmDubletter.MELDING_OM_DUBLETTER;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmForsvunnetAarsakskode82.MELDING_OM_FORSVUNNET;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmStatsborgerskap.ENDRING_AV_STATSBORGERSKAP;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.NavneEndringsmeldingAarsakskode06.NAVN_ENDRING_MLD;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32.UTVANDRING_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -19,9 +20,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
@@ -29,43 +30,22 @@ import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.Send
 import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 
 @Service
+@RequiredArgsConstructor
 public class SkdMeldingSender {
 
-    @Autowired
-    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
-
-    @Autowired
-    private CreateRelasjoner createRelasjoner;
-
-    @Autowired
-    private CreateDoedsmeldinger createDoedsmeldinger;
-
-    @Autowired
-    private CreateFoedselsmeldinger createFoedselsmeldinger;
-
-    @Autowired
-    private CreateNavnEndringsmeldinger createNavnEndringsmeldinger;
-
-    @Autowired
-    private CreateVergemaal createVergemaal;
-
-    @Autowired
-    private CreateUtvandring createUtvandring;
-
-    @Autowired
-    private CreateMeldingerOmForsvunnet createMeldingerOmForsvunnet;
-
-    @Autowired
-    private SivilstandMeldinger sivilstandMeldinger;
-
-    @Autowired
-    private CreateMeldingerOmDubletter createMeldingerOmDubletter;
-
-    @Autowired
-    private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
-
-    @Autowired
-    private SkdMeldingResolver innvandring;
+    private final SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
+    private final CreateRelasjoner createRelasjoner;
+    private final CreateDoedsmeldinger createDoedsmeldinger;
+    private final CreateFoedselsmeldinger createFoedselsmeldinger;
+    private final CreateNavnEndringsmeldinger createNavnEndringsmeldinger;
+    private final CreateVergemaal createVergemaal;
+    private final CreateUtvandring createUtvandring;
+    private final CreateMeldingerOmForsvunnet createMeldingerOmForsvunnet;
+    private final SivilstandMeldinger sivilstandMeldinger;
+    private final CreateMeldingerOmDubletter createMeldingerOmDubletter;
+    private final StatsborgerskapOgBibehold statsborgerskapOgBibehold;
+    private final SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
+    private final SkdMeldingResolver innvandring;
 
     public List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(List<Person> personer, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
@@ -163,6 +143,15 @@ public class SkdMeldingSender {
         List<SkdMeldingTrans1> meldingerOmDubletter = createMeldingerOmDubletter.filterDubletter(personerIGruppen, true);
         meldingerOmDubletter.forEach(skdMelding ->
                 listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(MELDING_OM_DUBLETTER, skdMelding, environments))
+        );
+        return listTpsResponsene;
+    }
+
+    public Collection sendEndringAvStatsborgerskapOgBibehold(List<Person> personerIGruppen, Set<String> environments) {
+        List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
+        List<SkdMelding> endringOmStatsborgerskap = statsborgerskapOgBibehold.createMeldinger(personerIGruppen, true);
+        endringOmStatsborgerskap.forEach(skdMelding ->
+                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(ENDRING_AV_STATSBORGERSKAP, skdMelding, environments))
         );
         return listTpsResponsene;
     }

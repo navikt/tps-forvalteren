@@ -121,6 +121,7 @@ public class LagreTilTpsService {
         skdMldResponse.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendMeldingerOmForsvunnet(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendMeldingerOmDubletter(personerIGruppen, safeEnvironments));
+        skdMldResponse.addAll(skdMeldingSender.sendEndringAvStatsborgerskapOgBibehold(personerIGruppen, safeEnvironments));
 
         personStatusFraMiljoService.hentStatusOgSettPaaPerson(personerIGruppen, safeEnvironments);
 
