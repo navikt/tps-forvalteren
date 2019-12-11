@@ -48,7 +48,7 @@
         </div>
     </md-input-container>
 
-    <statsborgerskap landkoden="person.statsborgerskap" endret-fn="endret" class="autocomplete"
+    <statsborgerskap landkoden="person.statsborgerskap[0].statsborgerskap" endret-fn="endret" class="autocomplete"
                index="$index + pager.startIndex" flex="20">
     </statsborgerskap>
 
@@ -57,7 +57,7 @@
         <label>Statsborg. dato</label>
         <md-datepicker name="statsborgerskapRegdato"
                        md-current-view="year"
-                       ng-model="person.statsborgerskapRegdato"
+                       ng-model="person.statsborgerskap[0].statsborgerskapRegdato"
                        ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.statsborgerskapRegdato.$error"
