@@ -24,6 +24,7 @@ public class FasitResourcMappingStrategy implements MappingStrategy {
                         fasitResource.setProperties(mapperFacade.map(fasitResourceWithUnmappedProperties.getProperties(), fasitPropertyClass));
                     }
                 })
+                .exclude("properties")
                 .byDefault()
                 .register();
     }
