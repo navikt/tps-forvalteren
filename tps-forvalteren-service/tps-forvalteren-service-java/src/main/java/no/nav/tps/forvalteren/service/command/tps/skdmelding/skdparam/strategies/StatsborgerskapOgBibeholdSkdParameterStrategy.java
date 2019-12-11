@@ -9,15 +9,20 @@ import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Service
+@RequiredArgsConstructor
 public class StatsborgerskapOgBibeholdSkdParameterStrategy {
 
     private static final String AARSAK_KO_DE_FOR_STATSBORGERSKAP = "35";
+
+    private final LandkodeEncoder landkodeEncoder;
 
     public List<SkdMeldingTrans1> execute(Person person) {
 
@@ -48,8 +53,8 @@ public class StatsborgerskapOgBibeholdSkdParameterStrategy {
                 .maskindato(yyyyMMdd)
                 .maskintid(hhMMss)
                 .regDato(ConvertDateToString.yyyyMMdd(statsborgerskap.getStatsborgerskapRegdato()))
-                .statsborgerskap(statsborgerskap.getStatsborgerskap())
-                .regdatoStatsb(ConvertDateToString.yyyyMMdd(statsborgerskap.getStatsborgerskapRegdato()))
+                .statsborgerskap(landkodeEncoder.encode(statsborgerskap.getStatsborgerskap()))
+                .regdatoStatsb(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(statsborgerskap.getStatsborgerskapRegdato())))
                 .build();
     }
 }
