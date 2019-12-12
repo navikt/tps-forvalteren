@@ -11,6 +11,7 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.assertj.core.util.Lists.newArrayList;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -115,20 +116,20 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (FNR.name().equals(person.getIdenttype())) {
 
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
+            person.setStatsborgerskap(newArrayList(Statsborgerskap.builder()
                     .statsborgerskap("NOR")
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
                             nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))))
                     .person(person)
-                    .build());
+                    .build()));
 
         } else if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
 
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
+            person.setStatsborgerskap(newArrayList(Statsborgerskap.builder()
                     .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
                     .person(person)
-                    .build());
+                    .build()));
         }
 
         person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), DNR.name().equals(person.getIdenttype()) ? dummyLanguageService.getRandomLanguage() : "NB"));

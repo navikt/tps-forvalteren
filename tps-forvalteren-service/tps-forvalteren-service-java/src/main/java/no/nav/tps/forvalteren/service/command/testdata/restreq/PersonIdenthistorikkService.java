@@ -97,10 +97,12 @@ public class PersonIdenthistorikkService {
 
     public void prepareIdenthistorikk(Person person, List<RsIdenthistorikkKriterium> identhistorikk) {
 
-        List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(person, identhistorikk));
+        if (!identhistorikk.isEmpty()) {
+            List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(person, identhistorikk));
 
-        personRepository.save(dubletter);
-        identhistorikkService.save(person.getIdent(), dubletter, identhistorikk);
+            personRepository.save(dubletter);
+            identhistorikkService.save(person.getIdent(), dubletter, identhistorikk);
+        }
     }
 
     private void addToResponse(RsAliasResponse response, Person aliasPerson, String ident) {

@@ -13,6 +13,7 @@ import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBes
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.assertj.core.util.Lists.newArrayList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -226,11 +227,11 @@ public class ExtractOpprettKriterier {
         person.setInnvandretFraLand(nullcheckSetDefaultValue(person.getInnvandretFraLand(), hovedperson.getInnvandretFraLand()));
 
         if (!FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
+            person.setStatsborgerskap(newArrayList(Statsborgerskap.builder()
                     .statsborgerskap(hovedperson.getStatsborgerskap().get(0).getStatsborgerskap())
                     .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
                     .person(person)
-                    .build());
+                    .build()));
         }
     }
 
