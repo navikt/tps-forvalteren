@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
@@ -48,4 +50,26 @@ public class Statsborgerskap {
 
     @Column(name = "STATSBORGERSKAP_REGDATO", nullable = false)
     private LocalDateTime statsborgerskapRegdato;
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Statsborgerskap))
+            return false;
+
+        Statsborgerskap that = (Statsborgerskap) o;
+
+        return new EqualsBuilder()
+                .append(getStatsborgerskap(), that.getStatsborgerskap())
+                .append(getStatsborgerskapRegdato(), that.getStatsborgerskapRegdato())
+                .isEquals();
+    }
+
+    @Override public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getStatsborgerskap())
+                .append(getStatsborgerskapRegdato())
+                .toHashCode();
+    }
 }

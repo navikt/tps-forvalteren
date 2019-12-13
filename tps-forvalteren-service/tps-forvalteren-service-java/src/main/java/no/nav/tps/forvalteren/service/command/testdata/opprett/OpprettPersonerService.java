@@ -1,9 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static java.time.LocalDateTime.now;
-import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +11,6 @@ import com.google.common.collect.Lists;
 
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
@@ -38,22 +35,10 @@ public class OpprettPersonerService {
                     .identtype(hentIdenttypeFraIdentService.execute(ident))
                     .kjonn(hentKjoennFraIdentService.execute(ident))
                     .regdato(now())
-                    .statsborgerskap(asList(Statsborgerskap.builder()
-                            .statsborgerskap(FNR.name().equals(hentIdenttypeFraIdentService.execute(ident)) ? "NOR" :
-                                    landkodeEncoder.getRandomLandTla())
-                            .statsborgerskapRegdato(hentDatoFraIdentService.extract(ident))
-                            .build()))
                     .opprettetDato(now())
                     .opprettetAv(nonNull(SecurityContextHolder.getContext().getAuthentication()) ?
                             SecurityContextHolder.getContext().getAuthentication().getName() : null)
                     .build();
-
-            person.setStatsborgerskap(asList(Statsborgerskap.builder()
-                    .statsborgerskap(FNR.name().equals(hentIdenttypeFraIdentService.execute(ident)) ? "NOR" :
-                            landkodeEncoder.getRandomLandTla())
-                    .statsborgerskapRegdato(hentDatoFraIdentService.extract(ident))
-                    .person(person)
-                    .build()));
 
             personer.add(person);
         });
