@@ -1,8 +1,9 @@
 package no.nav.tps.forvalteren.testdatacontroller;
 
-import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
+import static java.util.Arrays.asList;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -15,6 +16,7 @@ import com.google.common.base.Charsets;
 import no.nav.tps.forvalteren.AbstractRsProviderComponentTest;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.GruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -59,26 +61,38 @@ public abstract class AbstractTestdataControllerComponentTest extends AbstractRs
                 .gruppe(gruppe)
                 .identtype("per")
                 .kjonn("m")
-                .regdato(LocalDateTime.now())
+                .regdato(now())
                 .fornavn("lol").etternavn("sdf")
                 .ident(IDENT1)
-                .statsborgerskap("nor")
-                .opprettetDato(LocalDateTime.now())
+                .opprettetDato(now())
                 .opprettetAv("a123456")
                 .build());
+
+        person.setStatsborgerskap(asList(
+                Statsborgerskap.builder().statsborgerskap("nor")
+                        .statsborgerskapRegdato(now())
+                        .person(person)
+                        .build()));
+
         Person person2 = personRepository.save(Person.builder()
                 .gruppe(gruppe)
                 .identtype("per")
                 .kjonn("k")
-                .regdato(LocalDateTime.now())
+                .regdato(now())
                 .fornavn("fnavn")
                 .etternavn("etternavn2")
                 .ident(IDENT2)
-                .statsborgerskap("nor")
-                .opprettetDato(LocalDateTime.now())
+                .opprettetDato(now())
                 .opprettetAv("b234567")
                 .build());
-        return Arrays.asList(person, person2);
+
+        person2.setStatsborgerskap(asList(Statsborgerskap.builder()
+                .statsborgerskap("nor")
+                .statsborgerskapRegdato(now())
+                .person(person2)
+                .build()));
+
+        return asList(person, person2);
     }
 
     protected List<Person> setupTestdataPersonerInTpsfDatabase() {

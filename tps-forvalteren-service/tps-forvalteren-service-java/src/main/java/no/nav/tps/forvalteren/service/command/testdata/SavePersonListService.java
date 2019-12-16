@@ -57,6 +57,9 @@ public class SavePersonListService {
             }
 
             adresseOgSpesregService.updateAdresseOgSpesregAttributes(person);
+            if (!person.getStatsborgerskap().isEmpty()) {
+                person.getStatsborgerskap().get(0).setPerson(person);
+            }
 
             if (!utdaterteRelasjonIder.isEmpty()) {
                 relasjonRepository.deleteByIdIn(utdaterteRelasjonIder);

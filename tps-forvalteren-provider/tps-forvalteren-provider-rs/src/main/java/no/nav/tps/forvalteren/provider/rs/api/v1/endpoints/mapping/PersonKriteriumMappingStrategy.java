@@ -10,14 +10,13 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -28,6 +27,7 @@ import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsReques
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -36,18 +36,14 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyLanguageServ
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Component
+@RequiredArgsConstructor
 public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private static final String KJONN = "kjonn";
 
-    @Autowired
-    private HentDatoFraIdentService hentDatoFraIdentService;
-
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
-
-    @Autowired
-    private DummyLanguageService dummyLanguageService;
+    private final HentDatoFraIdentService hentDatoFraIdentService;
+    private final DummyAdresseService dummyAdresseService;
+    private final DummyLanguageService dummyLanguageService;
 
     @Override
     public void register(MapperFactory factory) {
@@ -83,8 +79,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
-                .exclude("identtype")
                 .exclude("identHistorikk")
+                .exclude("statsborgerskap")
                 .exclude(KJONN)
                 .byDefault()
                 .register();
@@ -108,19 +104,28 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     }
 
     private void mapBasicProperties(RsSimplePersonRequest kriteriumRequest, Person person) {
+
         person.setIdenttype(nullcheckSetDefaultValue(person.getIdenttype(), "FNR"));
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
-        if (isBlank(person.getStatsborgerskap())) {
-            if (DNR.name().equals(person.getIdenttype())) {
-                person.setStatsborgerskap(person.getInnvandretFraLand());
-            }else{
-                person.setStatsborgerskap("NOR");
-            }
+        if (FNR.name().equals(person.getIdenttype())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap("NOR")
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
+                            nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))))
+                    .person(person)
+                    .build());
+
+        } else if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .person(person)
+                    .build());
         }
-        person.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
-                nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))));
 
         person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), DNR.name().equals(person.getIdenttype()) ? dummyLanguageService.getRandomLanguage() : "NB"));
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),

@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.test.provider;
 
-import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
@@ -16,9 +16,8 @@ public final class PersonProvider {
                 .fornavn("Ola")
                 .mellomnavn("0")
                 .etternavn("Nordmann")
-                .statsborgerskap("000")
-                .regdato(LocalDateTime.now())
-                .opprettetDato(LocalDateTime.now())
+                .regdato(now())
+                .opprettetDato(now())
                 .opprettetAv("a123456");
     }
 
@@ -30,9 +29,8 @@ public final class PersonProvider {
                 .fornavn("Kari")
                 .mellomnavn("0")
                 .etternavn("Nordmann")
-                .statsborgerskap("000")
-                .regdato(LocalDateTime.now())
-                .opprettetDato(LocalDateTime.now())
+                .regdato(now())
+                .opprettetDato(now())
                 .opprettetAv("b234567");
     }
 }

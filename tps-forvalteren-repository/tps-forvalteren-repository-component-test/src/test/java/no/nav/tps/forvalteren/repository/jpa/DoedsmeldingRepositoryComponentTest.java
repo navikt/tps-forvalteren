@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
+import static java.time.LocalDateTime.now;
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.test.provider.PersonProvider;
 import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
 
@@ -46,8 +49,10 @@ public class DoedsmeldingRepositoryComponentTest {
 
     @Before
     public void setup() {
-        person1 = PersonProvider.aMalePerson().build();
-        person2 = PersonProvider.aFemalePerson().build();
+        person1 = PersonProvider.aMalePerson().statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").statsborgerskapRegdato(now()).build())).build();
+        person1.getStatsborgerskap().get(0).setPerson(person1);
+        person2 = PersonProvider.aFemalePerson().statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").statsborgerskapRegdato(now()).build())).build();
+        person2.getStatsborgerskap().get(0).setPerson(person2);
         personRepository.save(Arrays.asList(person1, person2));
 
         doedsmelding1 = new Doedsmelding();

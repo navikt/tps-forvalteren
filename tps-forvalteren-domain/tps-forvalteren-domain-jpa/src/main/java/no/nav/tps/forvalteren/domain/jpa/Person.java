@@ -66,11 +66,8 @@ public class Person extends ChangeStamp {
     @Column(name = "FORKORTET_NAVN")
     private String forkortetNavn;
 
-    @Column(name = "STATSBORGERSKAP", length = 3)
-    private String statsborgerskap;
-
-    @Column(name = "STATSBORGERSKAP_REGDATO")
-    private LocalDateTime statsborgerskapRegdato;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Statsborgerskap> statsborgerskap;
 
     @Column(name = "SPESREG", length = 1)
     private String spesreg;
@@ -217,9 +214,16 @@ public class Person extends ChangeStamp {
 
     public List<Adresse> getBoadresse() {
         if (isNull(boadresse)) {
-            boadresse = new ArrayList<>();
+            boadresse = new ArrayList();
         }
         return boadresse;
+    }
+
+    public List<Statsborgerskap> getStatsborgerskap() {
+        if (isNull(statsborgerskap)) {
+            statsborgerskap = new ArrayList();
+        }
+        return statsborgerskap;
     }
 
     public Person toUppercase() {
@@ -248,6 +252,7 @@ public class Person extends ChangeStamp {
     public Person sorterPersondetaljer() {
         getIdentHistorikk().sort(Comparator.comparing(IdentHistorikk::getHistoricIdentOrder).reversed());
         getSivilstander().sort(Comparator.comparing(Sivilstand::getSivilstandRegdato).reversed());
+        getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId).reversed());
         getBoadresse().sort(Comparator.comparing(Adresse::getId).reversed());
         getPostadresse().sort(Comparator.comparing(Postadresse::getId).reversed());
         return this;

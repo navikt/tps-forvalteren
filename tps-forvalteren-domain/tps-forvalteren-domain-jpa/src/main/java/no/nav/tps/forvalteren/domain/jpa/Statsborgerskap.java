@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
@@ -26,10 +28,10 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "T_SIVILSTAND")
-public class Sivilstand {
+@Table(name = "T_STATSBORGERSKAP")
+public class Statsborgerskap {
 
-    private static final String SEQ = "T_SIVILSTAND_SEQ";
+    private static final String SEQ = "T_STATSBORGERSKAP_SEQ";
 
     @Id
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
@@ -43,13 +45,31 @@ public class Sivilstand {
     @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
-    @Column(name = "SIVILSTAND", nullable = false)
-    private String sivilstand;
+    @Column(name = "STATSBORGERSKAP", nullable = false)
+    private String statsborgerskap;
 
-    @Column(name = "SIVILSTAND_REGDATO", nullable = false)
-    private LocalDateTime sivilstandRegdato;
+    @Column(name = "STATSBORGERSKAP_REGDATO", nullable = false)
+    private LocalDateTime statsborgerskapRegdato;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERSON_RELASJON_MED")
-    private Person personRelasjonMed;
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Statsborgerskap))
+            return false;
+
+        Statsborgerskap that = (Statsborgerskap) o;
+
+        return new EqualsBuilder()
+                .append(getStatsborgerskap(), that.getStatsborgerskap())
+                .append(getStatsborgerskapRegdato(), that.getStatsborgerskapRegdato())
+                .isEquals();
+    }
+
+    @Override public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getStatsborgerskap())
+                .append(getStatsborgerskapRegdato())
+                .toHashCode();
+    }
 }

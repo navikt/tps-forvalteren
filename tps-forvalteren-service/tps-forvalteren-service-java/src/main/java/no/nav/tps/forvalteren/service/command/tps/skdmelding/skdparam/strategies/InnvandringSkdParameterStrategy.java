@@ -4,9 +4,12 @@ import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRAN
 import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -46,8 +49,8 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setFornavn(person.getFornavn());
         skdMeldingTrans1.setMellomnavn(person.getMellomnavn());
         skdMeldingTrans1.setSlektsnavn(person.getEtternavn());
-        skdMeldingTrans1.setStatsborgerskap(landkodeEncoder.encode(person.getStatsborgerskap()));
-        skdMeldingTrans1.setRegdatoStatsb(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(person.getStatsborgerskapRegdato())));
+        skdMeldingTrans1.setStatsborgerskap(landkodeEncoder.encode(getFirstStatsborgerskap(person)));
+        skdMeldingTrans1.setRegdatoStatsb(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(getFirstStatsborgerskapRegdato(person))));
         skdMeldingTrans1.setFamilienummer(person.getIdent());
 
         skdMeldingTrans1.setSivilstand(Sivilstand.lookup(person.getSivilstand()).getRelasjonTypeKode());
@@ -73,7 +76,26 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(person.getSpesregDato()));
     }
 
-    private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
+    private static String getFirstStatsborgerskap(Person person) {
+
+        if (person.getStatsborgerskap().isEmpty()) {
+            return null;
+        }
+        person.getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId));
+        return person.getStatsborgerskap().get(0).getStatsborgerskap();
+    }
+
+    private static LocalDateTime getFirstStatsborgerskapRegdato(Person person) {
+
+        if (person.getStatsborgerskap().isEmpty()) {
+            return null;
+        }
+        person.getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId));
+        return person.getStatsborgerskap().get(0).getStatsborgerskapRegdato();
+    }
+
+
+    private static void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
 
         skdMeldingTrans1.setAarsakskode(AARSAK_KO_DE_FOR_INNVANDRING);
         skdMeldingTrans1.setTranstype(TRANSTYPE_1);
