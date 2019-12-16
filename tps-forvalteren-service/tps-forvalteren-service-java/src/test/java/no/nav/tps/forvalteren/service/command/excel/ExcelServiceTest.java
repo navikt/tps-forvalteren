@@ -56,6 +56,31 @@ public class ExcelServiceTest {
                         + "2B;\"12345\";\"1234\";\"5678\";2018-10-10;;;;;SAU;\"0617\";KNR;A;NB;;;"));
     }
 
+    @Test
+    public void getPersonFileMedKode6_OK() throws Exception {
+
+        Person kode6Person = buildPerson();
+        kode6Person.setBoadresse(null);
+
+        when(personService.getPersonerByIdenter(singletonList(IDENT))).thenReturn(singletonList(kode6Person));
+        Resource resultat = excelService.getPersonFile(singletonList(IDENT));
+
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resultat.getInputStream(), UTF_8));
+        String line;
+        while (nonNull((line = reader.readLine()))) {
+            builder.append(line);
+        }
+        assertThat(builder.toString().replaceAll("\t", ""),
+                is("Ident;Identtype;Kjønn;Sivilstand;Diskresjonskode;ErUtenFastBopel;Egenansatt;"
+                        + "Etternavn;Fornavn;Gateadresse;Husnummer;Gatekode;Postnr;Kommunenr;Flyttedato;"
+                        + "Postlinje1;Postlinje2;Postlinje3;Postland;InnvandretFraLand;GtVerdi;GtType;"
+                        + "GtRegel;Språkkode;Statsborgerskap;TypeSikkerhetTiltak;BeskrivelseSikkerhetTiltak;"
+                        + "Relasjon1-Type;Relasjon1-Ident;Relasjon2-Type;Relasjon2-Ident;Relasjon3-Type;"
+                        + "Relasjon3-Ident\"111111111111\";FNR;M;GIFT;;false;false;MASKIN;GOD;;;;;;"
+                        + ";;;;;SAU;\"0617\";KNR;A;NB;;;"));
+    }
+
     private static Person buildPerson() {
         Adresse adresse = Gateadresse.builder()
                 .adresse("Tveterveien")

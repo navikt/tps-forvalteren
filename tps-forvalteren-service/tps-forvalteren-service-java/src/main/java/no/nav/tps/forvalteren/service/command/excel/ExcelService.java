@@ -135,8 +135,12 @@ public class ExcelService {
 
     private static String getBoadresse(Person person) {
 
-        return person.getBoadresse().get(0) instanceof Gateadresse ?
-                getGateadresse(person) : getMatrikkeladresse(person);
+        if (!person.getBoadresse().isEmpty()) {
+            return person.getBoadresse().get(0) instanceof Gateadresse ?
+                    getGateadresse(person) : getMatrikkeladresse(person);
+        } else {
+            return ";;;;;";
+        }
     }
 
     private static String getGateadresse(Person person) {
