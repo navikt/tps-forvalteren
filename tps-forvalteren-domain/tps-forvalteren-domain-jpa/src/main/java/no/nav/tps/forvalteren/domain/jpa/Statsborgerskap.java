@@ -52,11 +52,13 @@ public class Statsborgerskap {
     private LocalDateTime statsborgerskapRegdato;
 
     @Override public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
+        }
 
-        if (!(o instanceof Statsborgerskap))
+        if (!(o instanceof Statsborgerskap)) {
             return false;
+        }
 
         Statsborgerskap that = (Statsborgerskap) o;
 
