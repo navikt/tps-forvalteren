@@ -162,7 +162,7 @@ public class ExtractOpprettKriterier {
                     if (nonNull(partnerRequest.getBoadresse())) {
                         adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
                     } else {
-                        adresse = TRUE.equals(partnerRequest.getHarFellesAdresse()) || (isNull(partnerRequest.getHarFellesAdresse()) && j == 0) ?
+                        adresse = hasAdresseMedHovedperson(partnerRequest, j) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
                                 hovedPersoner.get(i).getBoadresse().get(0) : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
                     mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
@@ -185,7 +185,8 @@ public class ExtractOpprettKriterier {
                     RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
                     barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    mapBoadresse(barn.get(barnStartIndex + j), hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0 ?
+                    mapBoadresse(barn.get(barnStartIndex + j),
+                            (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
                                     hovedPersoner.get(i).getBoadresse().get(0) :
                                     getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
                             extractFlyttedato(barnRequest.getBoadresse()));
@@ -196,17 +197,26 @@ public class ExtractOpprettKriterier {
         }
     }
 
-    private boolean hasAdresseMedHovedperson(RsBarnRequest barnRequest) {
-        return isNull(barnRequest.getBorHos()) || OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos();
+    private static boolean hasAdresseMedHovedperson(RsBarnRequest barnRequest) {
+        return !SPSF.name().equals(barnRequest.getSpesreg()) &&
+                (isNull(barnRequest.getBorHos()) || OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos());
     }
 
-    private int getPartnerNr(int barnIndex, int totalPartners) {
+    private static boolean hasAdresseMedHovedperson(RsPartnerRequest partnerRequest, int partnerNumber) {
+        return !SPSF.name().equals(partnerRequest.getSpesreg()) &&
+                (TRUE.equals(partnerRequest.getHarFellesAdresse()) || isNull(partnerRequest.getHarFellesAdresse()) && partnerNumber == 0);
+    }
+
+    private static int getPartnerNr(int barnIndex, int totalPartners) {
         return totalPartners > 0 ? barnIndex % totalPartners : 0;
     }
 
     private static Adresse getPartnerAdresse(List<Person> partnere, int partnerStartIndex, RsBarnRequest barnRequest, int partnerNr) {
-        return (nonNull(barnRequest.getPartnerNr()) ? partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
-                partnere.get(partnerStartIndex + partnerNr)).getBoadresse().get(0);
+        Person partner = nonNull(barnRequest.getPartnerNr()) ?
+                partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
+                partnere.get(partnerStartIndex + partnerNr);
+
+        return !SPSF.name().equals(partner.getSpesreg()) ? partner.getBoadresse().get(0) : null;
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
@@ -237,7 +247,11 @@ public class ExtractOpprettKriterier {
 
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {
 
-        if (!DNR.name().equals(person.getIdenttype()) && !SPSF.name().equals(person.getSpesreg()) && !nonNull(person.getUtvandretTilLand()) && nonNull(adresse)) {
+        if (SPSF.name().equals(person.getSpesreg())) {
+            return;
+        }
+
+        if (!DNR.name().equals(person.getIdenttype()) && !nonNull(person.getUtvandretTilLand()) && nonNull(adresse)) {
 
             Person tempPerson = adresse.getPerson();
             adresse.setPerson(null);
@@ -251,7 +265,9 @@ public class ExtractOpprettKriterier {
             adresse1.setPerson(person);
 
             person.getBoadresse().add(adresse1);
+
         } else {
+
             dummyAdresseService.createDummyBoAdresse(person);
         }
     }
