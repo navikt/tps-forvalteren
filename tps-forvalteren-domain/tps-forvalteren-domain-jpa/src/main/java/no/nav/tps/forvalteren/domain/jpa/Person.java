@@ -1,7 +1,9 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.ALL;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
@@ -256,5 +258,21 @@ public class Person extends ChangeStamp {
         getBoadresse().sort(Comparator.comparing(Adresse::getId).reversed());
         getPostadresse().sort(Comparator.comparing(Postadresse::getId).reversed());
         return this;
+    }
+
+    public boolean isUtenFastBopel() {
+        return isTrue(isUtenFastBopel()) || "UFB".equals(getSpesreg());
+    }
+
+    public boolean isKode6() {
+        return "SPSF".equals(getSpesreg());
+    }
+
+    public boolean isForsvunnet() {
+        return isTrue(isForsvunnet());
+    }
+
+    public boolean isEgenansatt() {
+        return nonNull(getEgenAnsattDatoFom()) && isNull(getEgenAnsattDatoTom());
     }
 }

@@ -2,11 +2,8 @@ package no.nav.tps.forvalteren.service.command.excel;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.collect.Lists.partition;
-import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -92,8 +89,8 @@ public class ExcelService {
                 .append(person.getKjonn()).append(SEP)
                 .append(person.getSivilstand()).append(SEP)
                 .append(person.getSpesreg()).append(SEP)
-                .append(isUtenFastBobel(person)).append(SEP)
-                .append(isEgenAnsatt(person)).append(SEP)
+                .append(person.isUtenFastBopel()).append(SEP)
+                .append(person.isEgenansatt()).append(SEP)
                 .append(person.getEtternavn()).append(SEP)
                 .append(person.getFornavn()).append(SEP)
                 .append(getBoadresse(person)).append(SEP)
@@ -123,14 +120,6 @@ public class ExcelService {
                     .append('\"');
         }
         return row.toString();
-    }
-
-    private static boolean isUtenFastBobel(Person person) {
-        return TRUE.equals(person.getUtenFastBopel());
-    }
-
-    private static boolean isEgenAnsatt(Person person) {
-        return TRUE.equals(nonNull(person.getEgenAnsattDatoFom())) && TRUE.equals(isNull(person.getEgenAnsattDatoTom()));
     }
 
     private static String getBoadresse(Person person) {

@@ -9,11 +9,9 @@ import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.OSS;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.assertj.core.util.Lists.newArrayList;
 
@@ -218,7 +216,7 @@ public class ExtractOpprettKriterier {
                 partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
                 partnere.get(partnerStartIndex + partnerNr);
 
-        return !SPSF.name().equals(partner.getSpesreg()) ? partner.getBoadresse().get(0) : null;
+        return !partner.isKode6() ? partner.getBoadresse().get(0) : null;
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
@@ -247,9 +245,13 @@ public class ExtractOpprettKriterier {
         }
     }
 
+    private static boolean hasAdresse(Person person) {
+        return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet();
+    }
+
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {
 
-        if (SPSF.name().equals(person.getSpesreg()) || UFB.name().equals(person.getSpesreg()) || isTrue(person.getUtenFastBopel())) {
+        if (!hasAdresse(person)) {
             return;
         }
 
