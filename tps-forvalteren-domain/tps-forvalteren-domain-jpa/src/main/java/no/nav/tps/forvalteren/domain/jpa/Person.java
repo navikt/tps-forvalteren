@@ -261,7 +261,7 @@ public class Person extends ChangeStamp {
     }
 
     public boolean isUtenFastBopel() {
-        return isTrue(isUtenFastBopel()) || "UFB".equals(getSpesreg());
+        return isTrue(utenFastBopel) || "UFB".equals(getSpesreg());
     }
 
     public boolean isKode6() {
@@ -269,7 +269,7 @@ public class Person extends ChangeStamp {
     }
 
     public boolean isForsvunnet() {
-        return isTrue(isForsvunnet());
+        return nonNull(getForsvunnetDato());
     }
 
     public boolean isEgenansatt() {
