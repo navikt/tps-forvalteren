@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -10,6 +9,7 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
@@ -141,7 +141,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
         }
 
-        if (TRUE.equals(kriteriumRequest.getErForsvunnet()) && isNull(kriteriumRequest.getForsvunnetDato())) {
+        if (isTrue(kriteriumRequest.getErForsvunnet()) && isNull(kriteriumRequest.getForsvunnetDato())) {
             person.setForsvunnetDato(now());
         }
     }

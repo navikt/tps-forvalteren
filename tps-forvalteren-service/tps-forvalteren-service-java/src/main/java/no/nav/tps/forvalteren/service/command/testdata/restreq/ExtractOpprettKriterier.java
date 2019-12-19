@@ -216,7 +216,7 @@ public class ExtractOpprettKriterier {
                 partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
                 partnere.get(partnerStartIndex + partnerNr);
 
-        return !SPSF.name().equals(partner.getSpesreg()) ? partner.getBoadresse().get(0) : null;
+        return hasAdresse(partner) ? partner.getBoadresse().get(0) : null;
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
@@ -245,9 +245,13 @@ public class ExtractOpprettKriterier {
         }
     }
 
+    private static boolean hasAdresse(Person person) {
+        return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet();
+    }
+
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {
 
-        if (SPSF.name().equals(person.getSpesreg())) {
+        if (!hasAdresse(person)) {
             return;
         }
 

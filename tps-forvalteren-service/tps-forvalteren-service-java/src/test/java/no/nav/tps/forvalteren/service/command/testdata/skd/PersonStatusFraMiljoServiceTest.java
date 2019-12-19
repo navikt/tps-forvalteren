@@ -159,18 +159,16 @@ public class PersonStatusFraMiljoServiceTest {
         geografiskTilknytning.put("bydel", bydel);
         bruker.put("geografiskTilknytning", geografiskTilknytning);
 
-        Map fullBostedsAdresse = new HashMap();
-        fullBostedsAdresse.put("tknr", tknr);
-        Map bostedsAdresse = new HashMap();
-        bostedsAdresse.put("fullBostedsAdresse", fullBostedsAdresse);
+        Map navEnhetDeralj = new HashMap();
+        navEnhetDeralj.put("kodeNAVenhet", tknr);
 
         Map personstatusDetalj = new HashMap();
         personstatusDetalj.put("kodePersonstatus", PERSON_STATUS);
 
         Map data = new HashMap();
-        data.put("bostedsAdresse", bostedsAdresse);
         data.put("bruker", bruker);
         data.put("personstatusDetalj", personstatusDetalj);
+        bruker.put("NAVenhetDetalj", navEnhetDeralj);
 
         Map response = new HashMap();
         response.put("data1", data);
