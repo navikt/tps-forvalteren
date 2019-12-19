@@ -117,7 +117,8 @@ public class PersonStatusFraMiljoService {
 
     private String getTknr(TpsServiceRoutineResponse response) {
 
-        return getArtifact((Map) getArtifact(getBruker(response), NAV_ENHET), TKNR).toString();
+        Object tknr = getArtifact((Map) getArtifact(getBruker(response), NAV_ENHET), TKNR);
+        return nonNull(tknr) ? tknr.toString() : null;
     }
 
     private String getTknavn(TpsServiceRoutineResponse response) {
