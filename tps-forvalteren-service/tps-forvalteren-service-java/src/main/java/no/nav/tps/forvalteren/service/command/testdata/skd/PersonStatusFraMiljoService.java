@@ -26,9 +26,9 @@ public class PersonStatusFraMiljoService {
     private static final String KOMMUNE = "kommunenr";
     private static final String LAND = "landKode";
     private static final String BYDEL = "bydel";
-    private static final String TKNR = "tknr";
-    private static final String TKNAVN = "tkNavn";
-    private static final String FULL_BOSTED_ADR = "fullBostedsAdresse";
+    private static final String NAV_ENHET = "NAVenhetDetalj";
+    private static final String TKNR = "kodeNAVenhet";
+    private static final String TKNAVN = "kodeNAVenhetBeskr";
     private static final String BOSTED_ADR = "bostedsAdresse";
     private static final String BRUKER = "bruker";
     private static final String GEO_TILKNYT = "geografiskTilknytning";
@@ -120,31 +120,14 @@ public class PersonStatusFraMiljoService {
         return (Map) getArtifact(getData(response), BRUKER);
     }
 
-    private Map getBostedAdr(TpsServiceRoutineResponse response) {
-
-        return (Map) getArtifact(getData(response), BOSTED_ADR);
-    }
-
-    private Map getFullBostedAdr(TpsServiceRoutineResponse response) {
-
-        return (Map) getArtifact(getBostedAdr(response), FULL_BOSTED_ADR);
-    }
-
     private String getTknr(TpsServiceRoutineResponse response) {
 
-        Map fullbostedAdr = getFullBostedAdr(response);
-
-        if (getArtifact(fullbostedAdr, TKNR) instanceof String) {
-            return (String) fullbostedAdr.get(TKNR);
-        } else if (getArtifact(fullbostedAdr, TKNR) instanceof Integer) {
-            return ((Integer) fullbostedAdr.get(TKNR)).toString();
-        }
-        return null;
+        return (String) getArtifact((Map) getArtifact(getBruker(response), NAV_ENHET), TKNR);
     }
 
     private String getTknavn(TpsServiceRoutineResponse response) {
 
-        return (String) getArtifact(getFullBostedAdr(response), TKNAVN);
+        return (String) getArtifact((Map) getArtifact(getBruker(response), NAV_ENHET), TKNAVN);
     }
 
     private Map getGeoTilknytning(TpsServiceRoutineResponse response) {
