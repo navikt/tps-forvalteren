@@ -216,7 +216,7 @@ public class ExtractOpprettKriterier {
                 partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
                 partnere.get(partnerStartIndex + partnerNr);
 
-        return !partner.isKode6() ? partner.getBoadresse().get(0) : null;
+        return hasAdresse(partner) ? partner.getBoadresse().get(0) : null;
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {

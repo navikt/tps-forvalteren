@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -20,6 +20,7 @@ import no.nav.tps.forvalteren.service.command.testdata.TpsServiceroutineFnrReque
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 
 @Service
+@RequiredArgsConstructor
 public class PersonStatusFraMiljoService {
 
     private static final String DATA = "data1";
@@ -29,7 +30,6 @@ public class PersonStatusFraMiljoService {
     private static final String NAV_ENHET = "NAVenhetDetalj";
     private static final String TKNR = "kodeNAVenhet";
     private static final String TKNAVN = "kodeNAVenhetBeskr";
-    private static final String BOSTED_ADR = "bostedsAdresse";
     private static final String BRUKER = "bruker";
     private static final String GEO_TILKNYT = "geografiskTilknytning";
     private static final String REGEL_FOR_GEO_TILKNYTNING = "regelForGeografiskTilknytning";
@@ -42,14 +42,9 @@ public class PersonStatusFraMiljoService {
     private static final String ALLE_PERSONNAVN = "allePersonnavn";
     private static final String FORKORTET_NAVN = "kortnavn";
 
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private TpsServiceRoutineService tpsServiceRoutineService;
-
-    @Autowired
-    private TpsServiceroutineFnrRequest tpsFnrRequest;
+    private final PersonRepository personRepository;
+    private final TpsServiceRoutineService tpsServiceRoutineService;
+    private final TpsServiceroutineFnrRequest tpsFnrRequest;
 
     public List<Person> hentStatusOgSettPaaPerson(List<Person> personer, Set<String> environments) {
 
