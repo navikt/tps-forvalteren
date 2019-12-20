@@ -21,13 +21,15 @@ public class PostadresseMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsPostadresse, Postadresse>() {
                             @Override
                             public void mapAtoB(RsPostadresse rsPostadresse, Postadresse postadresse, MappingContext context) {
-                                if (isBlank(postadresse.getPostLinje1()) && isBlank(postadresse.getPostLinje2())) {
-                                    postadresse.setPostLinje1(postadresse.getPostLinje3());
-                                    postadresse.setPostLinje3(null);
-                                } else if (isBlank(postadresse.getPostLinje1())) {
-                                    postadresse.setPostLinje1(postadresse.getPostLinje2());
-                                    postadresse.setPostLinje2(postadresse.getPostLinje3());
-                                    postadresse.setPostLinje3(null);
+                                if (isBlank(postadresse.getPostLinje1())) {
+                                    if (isBlank(postadresse.getPostLinje2())) {
+                                        postadresse.setPostLinje1(postadresse.getPostLinje3());
+                                        postadresse.setPostLinje3(null);
+                                    } else {
+                                        postadresse.setPostLinje1(postadresse.getPostLinje2());
+                                        postadresse.setPostLinje2(postadresse.getPostLinje3());
+                                        postadresse.setPostLinje3(null);
+                                    }
                                 } else if (isBlank(postadresse.getPostLinje2())) {
                                     postadresse.setPostLinje2(postadresse.getPostLinje3());
                                     postadresse.setPostLinje3(null);
