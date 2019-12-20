@@ -93,6 +93,6 @@ public class SendNavEndringsmeldinger {
 
     private String formaterFeilmelding(ResponseStatus status) {
         return isNotBlank(status.getUtfyllendeMelding()) ?
-                format("FEIL: %s", status.getUtfyllendeMelding()) : "STATUS: UKJENT";
+                format("FEIL: %s", status.getUtfyllendeMelding()) : ""; //Silently discard
     }
 }
