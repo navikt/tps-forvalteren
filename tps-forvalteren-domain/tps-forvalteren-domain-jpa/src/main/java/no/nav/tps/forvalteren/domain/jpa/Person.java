@@ -8,7 +8,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -68,6 +68,7 @@ public class Person extends ChangeStamp {
     @Column(name = "FORKORTET_NAVN")
     private String forkortetNavn;
 
+    @OrderBy("id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Statsborgerskap> statsborgerskap;
 
@@ -83,6 +84,7 @@ public class Person extends ChangeStamp {
     @Column(name = "SIVILSTAND", length = 4)
     private String sivilstand;
 
+    @OrderBy("sivilstandRegdato desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Sivilstand> sivilstander;
 
@@ -125,9 +127,11 @@ public class Person extends ChangeStamp {
     @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
     private String beskrSikkerhetsTiltak;
 
+    @OrderBy("id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Adresse> boadresse;
 
+    @OrderBy("id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
 
@@ -141,6 +145,7 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner;
 
+    @OrderBy("historicIdentOrder desc")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = ALL)
     private List<IdentHistorikk> identHistorikk;
 
@@ -248,15 +253,6 @@ public class Person extends ChangeStamp {
         getBoadresse().forEach(Adresse::toUppercase);
         getPostadresse().forEach(Postadresse::toUppercase);
 
-        return this;
-    }
-
-    public Person sorterPersondetaljer() {
-        getIdentHistorikk().sort(Comparator.comparing(IdentHistorikk::getHistoricIdentOrder).reversed());
-        getSivilstander().sort(Comparator.comparing(Sivilstand::getSivilstandRegdato).reversed());
-        getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId).reversed());
-        getBoadresse().sort(Comparator.comparing(Adresse::getId).reversed());
-        getPostadresse().sort(Comparator.comparing(Postadresse::getId).reversed());
         return this;
     }
 
