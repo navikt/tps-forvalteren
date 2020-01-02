@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import com.google.common.collect.Sets;
 
 import ma.glasnost.orika.MapperFacade;
@@ -15,7 +16,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.IdentpoolService;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
 @Service
@@ -66,13 +67,17 @@ public class OpprettPersonerOgSjekkMiljoeService {
             Set<String> identpoolIdents;
             Set<String> filteredDbIdents;
             int count = 5;
-            do {
-                identpoolIdents = identpoolService.getAvailableIdents(mapperFacade.map(kriterium, IdentpoolNewIdentsRequest.class));
-                filteredDbIdents = findIdenterNotUsedInDB.filtrer(identpoolIdents);
-            } while (identpoolIdents.size() - filteredDbIdents.size() > 0 && --count > 0);
-            nyeIdenter.addAll(identpoolIdents);
-            if (identpoolIdents.size() < kriterium.getAntall()) {
-                throw new TpsfFunctionalException("Ingen ledige identer funnet i miljø.");
+            try {
+                do {
+                    identpoolIdents = identpoolService.getAvailableIdents(mapperFacade.map(kriterium, IdentpoolNewIdentsRequest.class));
+                    filteredDbIdents = findIdenterNotUsedInDB.filtrer(identpoolIdents);
+                } while (identpoolIdents.size() - filteredDbIdents.size() > 0 && --count > 0);
+                nyeIdenter.addAll(identpoolIdents);
+                if (identpoolIdents.size() < kriterium.getAntall()) {
+                    throw new TpsfTechnicalException("Ingen ledige identer funnet i miljø.");
+                }
+            } catch (ResourceAccessException e) {
+                throw new TpsfTechnicalException("Identpool besvarte ikke forespørselen i tide", e);
             }
         });
 
