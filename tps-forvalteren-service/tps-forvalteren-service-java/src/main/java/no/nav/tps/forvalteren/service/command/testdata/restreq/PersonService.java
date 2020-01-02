@@ -42,27 +42,6 @@ public class PersonService {
     private final IdentpoolService identpoolService;
     private final TpsPersonService tpsPersonService;
 
-    public Person getPerson(Long id) {
-        Person person = personRepository.findById(id);
-        return nonNull(person) ? person.sorterPersondetaljer() : null;
-    }
-
-    public Person getPerson(String ident) {
-        Person person = personRepository.findByIdent(ident);
-        return nonNull(person) ? person.sorterPersondetaljer() : null;
-    }
-
-    public List<Person> getPersonerFraIds(List<Long> ids) {
-
-        //Begrenser maks antall identer i SQL spørring
-        List<List<Long>> identLists = partition(ids, ORACLE_MAX_IN_SET_ELEMENTS);
-        List<Person> resultat = new ArrayList<>(ids.size());
-        for (List<Long> subset : identLists) {
-            resultat.addAll(personRepository.findByIdIn(subset));
-        }
-        return resultat.stream().map(Person::sorterPersondetaljer).collect(toList());
-    }
-
     public List<Person> getPersonerByIdenter(List<String> identer) {
 
         //Begrenser maks antall identer i SQL spørring
@@ -71,7 +50,7 @@ public class PersonService {
         for (List<String> subset : identLists) {
             resultat.addAll(personRepository.findByIdentIn(subset));
         }
-        return resultat.stream().map(Person::sorterPersondetaljer).collect(toList());
+        return resultat;
     }
 
     @Transactional
