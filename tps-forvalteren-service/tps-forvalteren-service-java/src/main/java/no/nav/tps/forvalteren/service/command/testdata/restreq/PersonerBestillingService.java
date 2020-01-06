@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
@@ -40,14 +40,22 @@ import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 
 @Service
-@RequiredArgsConstructor
 public class PersonerBestillingService {
 
-    private final SavePersonBulk savePersonBulk;
-    private final ExtractOpprettKriterier extractOpprettKriterier;
-    private final ValidateOpprettRequest validateOpprettRequest;
-    private final OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
-    private final PersonIdenthistorikkService personIdenthistorikkService;
+    @Autowired
+    private SavePersonBulk savePersonBulk;
+
+    @Autowired
+    private ExtractOpprettKriterier extractOpprettKriterier;
+
+    @Autowired
+    private ValidateOpprettRequest validateOpprettRequest;
+
+    @Autowired
+    private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
+
+    @Autowired
+    private PersonIdenthistorikkService personIdenthistorikkService;
 
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
