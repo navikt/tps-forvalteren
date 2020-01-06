@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
@@ -40,49 +40,42 @@ import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 
 @Service
+@RequiredArgsConstructor
 public class PersonerBestillingService {
 
-    @Autowired
-    private SavePersonBulk savePersonBulk;
-
-    @Autowired
-    private ExtractOpprettKriterier extractOpprettKriterier;
-
-    @Autowired
-    private ValidateOpprettRequest validateOpprettRequest;
-
-    @Autowired
-    private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
-
-    @Autowired
-    private PersonIdenthistorikkService personIdenthistorikkService;
+    private final SavePersonBulk savePersonBulk;
+    private final ExtractOpprettKriterier extractOpprettKriterier;
+    private final ValidateOpprettRequest validateOpprettRequest;
+    private final OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
+    private final PersonIdenthistorikkService personIdenthistorikkService;
 
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
 
         List<Person> hovedPersoner;
-        List<Person> partnere = new ArrayList<>();
-        List<Person> barn = new ArrayList<>();
         if (request.getOpprettFraIdenter().isEmpty()) {
             RsPersonKriteriumRequest personKriterier = extractMainPerson(request);
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
-
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
-            if (!request.getRelasjoner().getPartnere().isEmpty()) {
-                partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
-            }
-            if (!request.getRelasjoner().getBarn().isEmpty()) {
-                barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
-            }
-
-            setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
-            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
-            setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
         } else {
             hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
         }
+
+        List<Person> partnere = new ArrayList<>();
+        if (!request.getRelasjoner().getPartnere().isEmpty()) {
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
+            partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
+        }
+
+        List<Person> barn = new ArrayList<>();
+        if (!request.getRelasjoner().getBarn().isEmpty()) {
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
+            barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
+        }
+
+        setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
+        setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
+        setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
 
         List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
 

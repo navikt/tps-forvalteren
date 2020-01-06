@@ -15,9 +15,9 @@ import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
@@ -26,12 +26,12 @@ import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @Service
+@RequiredArgsConstructor
 public class ValidateSivilstandService {
 
     private static final LocalDateTime PARTNERSKAP_SKD = LocalDateTime.of(2009, 1, 1, 0, 0);
 
-    @Autowired
-    private MessageProvider messageProvider;
+    private final MessageProvider messageProvider;
 
     public void validateStatus(RsPersonBestillingKriteriumRequest request) {
 
@@ -76,7 +76,7 @@ public class ValidateSivilstandService {
 
     private void validateDatoer(List<RsPartnerRequest> partnereRequest) {
 
-        LocalDateTime dateComperator = LocalDateTime.now();
+        LocalDateTime dateComperator = LocalDateTime.now().plusDays(2);
 
         for (int i = 0; i < partnereRequest.size(); i++) {
             for (int j = 0; j < partnereRequest.get(i).getSivilstander().size(); j++) {
