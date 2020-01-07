@@ -61,28 +61,29 @@ public class PersonerBestillingService {
         validateOpprettRequest.validate(request);
 
         List<Person> hovedPersoner;
-        List<Person> partnere = new ArrayList<>();
-        List<Person> barn = new ArrayList<>();
         if (request.getOpprettFraIdenter().isEmpty()) {
             RsPersonKriteriumRequest personKriterier = extractMainPerson(request);
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
-
             hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
 
-            if (!request.getRelasjoner().getPartnere().isEmpty()) {
-                partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
-            }
-            if (!request.getRelasjoner().getBarn().isEmpty()) {
-                barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
-            }
-
-            setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
-            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
-            setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
         } else {
             hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
         }
+
+        List<Person> partnere = new ArrayList<>();
+        if (!request.getRelasjoner().getPartnere().isEmpty()) {
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
+            partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
+        }
+
+        List<Person> barn = new ArrayList<>();
+        if (!request.getRelasjoner().getBarn().isEmpty()) {
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
+            barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
+        }
+
+        setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
+        setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
+        setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
 
         List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
 
