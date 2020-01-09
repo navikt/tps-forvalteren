@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.transaction.Transactional;
@@ -30,7 +29,6 @@ import com.google.common.collect.Lists;
 
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -38,7 +36,6 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @Service
@@ -49,7 +46,7 @@ public class RelasjonPersonBestillingService {
     private final PersonRepository personRepository;
     private final RandomAdresseService randomAdresseService;
     private final MapperFacade mapperFacade;
-    private final MessageProvider messageProvider;
+    private final ValidateRelasjonerService validateRelasjonerService;
 
     public Person makeRelasjon(String hovedperson, RsPersonBestillingRelasjonRequest request) {
 
@@ -61,40 +58,41 @@ public class RelasjonPersonBestillingService {
                         .map(RsBarnRelasjonRequest::getIdent).collect(toList())
         ).forEach(idents::addAll);
 
-        List<Person> personer = personRepository.findByIdentIn(idents);
-        Map<String, Person> personMap = personer.stream().collect(Collectors.toMap(Person::getIdent, person -> person));
+        List<Person> personerliste = personRepository.findByIdentIn(idents);
+        Map<String, Person> personer = personerliste.stream().collect(Collectors.toMap(Person::getIdent, person -> person));
 
-        setRelasjonerPaaPersoner(hovedperson, request, personMap);
-        setAdresserPaaPersoner(hovedperson, request, personMap);
-        setSivilstandHistorikkPaaPersoner(hovedperson, request.getRelasjoner().getPartner(), personMap);
+        validateRelasjonerService.isGyldig(hovedperson, request, personer);
+        setRelasjonerPaaPersoner(hovedperson, request, personer);
+        setAdresserPaaPersoner(hovedperson, request, personer);
+        setSivilstandHistorikkPaaPersoner(hovedperson, request.getRelasjoner().getPartner(), personer);
 
-        return personRepository.save(personMap.get(hovedperson));
+        return personRepository.save(personer.get(hovedperson));
     }
 
-    private void setAdresserPaaPersoner(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personMap) {
+    private void setAdresserPaaPersoner(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
         request.getRelasjoner().getPartner().forEach(partner -> {
 
             if ((isNull(partner.getHarFellesAdresse()) || isFalse(partner.getHarFellesAdresse())) &&
-                    personMap.get(hovedperson).getBoadresse().equals(personMap.get(partner.getIdent()).getBoadresse())) {
-                randomAdresseService.execute(asList(personMap.get(partner.getIdent())), null);
+                    personer.get(hovedperson).getBoadresse().equals(personer.get(partner.getIdent()).getBoadresse())) {
+                randomAdresseService.execute(asList(personer.get(partner.getIdent())), null);
 
             } else if (isTrue(partner.getHarFellesAdresse()) &&
-                    !personMap.get(hovedperson).getBoadresse().equals(personMap.get(partner.getIdent()).getBoadresse())) {
-                kopierAdresse(personMap.get(hovedperson), personMap.get(partner.getIdent()));
+                    !personer.get(hovedperson).getBoadresse().equals(personer.get(partner.getIdent()).getBoadresse())) {
+                kopierAdresse(personer.get(hovedperson), personer.get(partner.getIdent()));
             }
         });
 
         request.getRelasjoner().getBarn().forEach(barnet -> {
 
             if ((isNull(barnet.getBorHos()) || BorHos.MEG == barnet.getBorHos() || BorHos.OSS == barnet.getBorHos()) &&
-                    !personMap.get(barnet.getIdent()).getBoadresse().equals(personMap.get(hovedperson).getBoadresse())) {
-                kopierAdresse(personMap.get(hovedperson), personMap.get(barnet.getIdent()));
+                    !personer.get(barnet.getIdent()).getBoadresse().equals(personer.get(hovedperson).getBoadresse())) {
+                kopierAdresse(personer.get(hovedperson), personer.get(barnet.getIdent()));
 
             } else if (nonNull(barnet.getBorHos()) && BorHos.DEG == barnet.getBorHos() &&
-                    !personMap.get(barnet.getIdent()).getBoadresse().equals(personMap.get(barnet.getPartnerIdent()).getBoadresse())) {
+                    !personer.get(barnet.getIdent()).getBoadresse().equals(personer.get(barnet.getPartnerIdent()).getBoadresse())) {
 
-                kopierAdresse(personMap.get(barnet.getPartnerIdent()), personMap.get(barnet.getIdent()));
+                kopierAdresse(personer.get(barnet.getPartnerIdent()), personer.get(barnet.getIdent()));
             }
         });
     }
@@ -143,51 +141,12 @@ public class RelasjonPersonBestillingService {
     private void setRelasjonerPaaPersoner(String hovedperson,
             RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
-        validateRelasjoner(hovedperson, request, personer);
-
         request.getRelasjoner().getPartner().forEach(partner ->
                 setPartnerRelasjon(personer.get(hovedperson), personer.get(partner.getIdent())));
 
         request.getRelasjoner().getBarn().forEach(barnet ->
                 setBarnRelasjon(personer.get(hovedperson), personer.get(barnet.getPartnerIdent()),
                         personer.get(barnet.getIdent()), barnet));
-    }
-
-    private void validateRelasjoner(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
-
-        personer.get(hovedperson).getRelasjoner().forEach(relasjon -> {
-            request.getRelasjoner().getPartner().forEach(partner -> {
-                if (relasjon.getPersonRelasjonMed().getIdent().equals(partner.getIdent())) {
-                    throw new TpsfFunctionalException(
-                            messageProvider.get("bestilling.relasjon.input.validation.duplikat.partner", partner.getIdent()));
-                }
-            });
-
-            request.getRelasjoner().getBarn().forEach(barnet -> {
-                if (relasjon.getPersonRelasjonMed().getIdent().equals(barnet.getIdent())) {
-                    throw new TpsfFunctionalException(
-                            messageProvider.get("bestilling.relasjon.input.validation.duplikat.barn", barnet.getIdent()));
-                }
-            });
-        });
-
-        request.getRelasjoner().getBarn().forEach(barnet -> {
-            AtomicInteger counter = new AtomicInteger(0);
-            personer.get(barnet.getIdent()).getRelasjoner().forEach(barnRelasjon -> {
-
-                if ("FAR".equals(barnRelasjon.getRelasjonTypeNavn()) || "MOR".equals(barnRelasjon.getRelasjonTypeNavn())) {
-                    barnRelasjon.getPersonRelasjonMed().getRelasjoner().forEach(foreldreRelasjon -> {
-                        if ("FOEDSEL".equals(foreldreRelasjon.getRelasjonTypeNavn())) {
-                            counter.incrementAndGet();
-                        }
-                    });
-                }
-            });
-            if (counter.intValue() > 1 && !isTrue(barnet.getErAdoptert())) {
-                throw new TpsfFunctionalException(
-                        messageProvider.get("bestilling.relasjon.input.validation.barn.har.foreldre", barnet.getIdent()));
-            }
-        });
     }
 
     private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn,
