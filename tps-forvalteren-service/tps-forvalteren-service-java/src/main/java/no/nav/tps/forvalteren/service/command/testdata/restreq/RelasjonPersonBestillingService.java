@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
@@ -75,7 +74,7 @@ public class RelasjonPersonBestillingService {
 
             if ((isNull(partner.getHarFellesAdresse()) || isFalse(partner.getHarFellesAdresse())) &&
                     personer.get(hovedperson).getBoadresse().equals(personer.get(partner.getIdent()).getBoadresse())) {
-                randomAdresseService.execute(asList(personer.get(partner.getIdent())), null);
+                personer.put(partner.getIdent(), randomAdresseService.execute(newArrayList(personer.get(partner.getIdent())), null).get(0));
 
             } else if (isTrue(partner.getHarFellesAdresse()) &&
                     !personer.get(hovedperson).getBoadresse().equals(personer.get(partner.getIdent()).getBoadresse())) {

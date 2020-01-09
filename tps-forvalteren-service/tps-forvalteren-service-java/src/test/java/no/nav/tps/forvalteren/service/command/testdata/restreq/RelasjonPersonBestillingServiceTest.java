@@ -6,16 +6,17 @@ import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonR
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsRelasjoner;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.builder;
+import static org.assertj.core.util.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -24,7 +25,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -36,6 +40,13 @@ public class RelasjonPersonBestillingServiceTest {
     private static final String IDENT_HOVEDPERSON = "11111111111";
     private static final String IDENT_PARTNER = "22222222222";
     private static final String IDENT_BARN = "33333333333";
+
+    private static final String GATENAVN_1 = "Lurumlia";
+    private static final String GATEKODE_1 = "01234";
+    private static final String KOMMUNENR_1 = "5555";
+    private static final String GATENAVN_2 = "Hengemyra";
+    private static final String GATEKODE_2 = "56789";
+    private static final String KOMMUNENR_2 = "6666";
 
     @Mock
     private MapperFacade mapperFacade;
@@ -54,22 +65,18 @@ public class RelasjonPersonBestillingServiceTest {
 
     private ArgumentCaptor<Person> argumentCaptor;
 
-    @Before
-    public void setup() {
+    @Test
+    public void makeRelasjon_Ok() {
 
         when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).kjonn("M").build(),
                 Person.builder().ident(IDENT_PARTNER).kjonn("K").build(),
                 Person.builder().ident(IDENT_BARN).build()));
-    }
 
-    @Test
-    public void makeRelasjonOk() {
-
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        when(randomAdresseService.execute(anyList(), any(AdresseNrInfo.class))).thenReturn(newArrayList(Person.builder().build()));
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, relasjonRequest);
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(argumentCaptor.getValue().getIdent(), is(equalTo(IDENT_HOVEDPERSON)));
@@ -89,13 +96,123 @@ public class RelasjonPersonBestillingServiceTest {
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getRelasjoner().get(1).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_PARTNER)));
     }
 
-    private static RsPersonBestillingRelasjonRequest buildRequest() {
+    @Test
+    public void makeAdresse_HarFellesAdresse() {
+
+        Adresse adresse1 = Gateadresse.builder()
+                .adresse(GATENAVN_1)
+                .gatekode(GATEKODE_1)
+                .build();
+        adresse1.setKommunenr(KOMMUNENR_1);
+        when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
+                Person.builder().ident(IDENT_HOVEDPERSON)
+                        .boadresse(newArrayList(adresse1))
+                        .build(),
+                Person.builder().ident(IDENT_PARTNER)
+                        .boadresse(newArrayList(Gateadresse.builder()
+                                .adresse(GATENAVN_2)
+                                .gatekode(GATEKODE_2)
+                                .build()))
+                        .build(),
+                Person.builder().ident(IDENT_BARN).build()));
+
+        when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse1);
+
+        argumentCaptor = ArgumentCaptor.forClass(Person.class);
+
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true));
+        verify(personRepository).save(argumentCaptor.capture());
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+    }
+
+    @Test
+    public void makeAdresse_HarUlikAdresse() {
+
+        Adresse adresse1 = Gateadresse.builder()
+                .adresse(GATENAVN_1)
+                .gatekode(GATEKODE_1)
+                .build();
+        adresse1.setKommunenr(KOMMUNENR_1);
+        when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
+                Person.builder().ident(IDENT_HOVEDPERSON)
+                        .boadresse(newArrayList(adresse1))
+                        .build(),
+                Person.builder().ident(IDENT_PARTNER)
+                        .boadresse(newArrayList(Gateadresse.builder()
+                                .adresse(GATENAVN_2)
+                                .gatekode(GATEKODE_2)
+                                .build()))
+                        .build(),
+                Person.builder().ident(IDENT_BARN).build()));
+
+        when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse1);
+
+        argumentCaptor = ArgumentCaptor.forClass(Person.class);
+
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false));
+        verify(personRepository).save(argumentCaptor.capture());
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_2)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_2)));
+    }
+
+    @Test
+    public void makeAdresse_SkalHaUlikAdresse() {
+
+        Adresse adresse1 = Gateadresse.builder()
+                .adresse(GATENAVN_1)
+                .gatekode(GATEKODE_1)
+                .build();
+        adresse1.setKommunenr(KOMMUNENR_1);
+        Adresse adresse2 = Gateadresse.builder()
+                .adresse(GATENAVN_2)
+                .gatekode(GATEKODE_2)
+                .build();
+        adresse2.setKommunenr(KOMMUNENR_2);
+        Person partner = Person.builder().ident(IDENT_PARTNER)
+                .boadresse(newArrayList(adresse1,adresse2))
+                .build();
+        when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
+                Person.builder().ident(IDENT_HOVEDPERSON)
+                        .boadresse(newArrayList(adresse1))
+                        .build(),
+                partner,
+                Person.builder().ident(IDENT_BARN).build()));
+
+        when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse1);
+        when(randomAdresseService.execute(anyList(), any(AdresseNrInfo.class))).thenReturn(newArrayList(partner));
+
+        argumentCaptor = ArgumentCaptor.forClass(Person.class);
+
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false));
+        verify(personRepository).save(argumentCaptor.capture());
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_2)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_2)));
+    }
+
+    private static RsPersonBestillingRelasjonRequest buildRequest(Boolean harFellesAdresse) {
 
         return builder()
                 .relasjoner(RsRelasjoner.builder()
                         .partner(asList(RsPartnerRelasjonRequest.builder()
                                 .ident(IDENT_PARTNER)
-                                .harFellesAdresse(true)
+                                .harFellesAdresse(harFellesAdresse)
                                 .sivilstander(asList(RsSivilstandRequest.builder()
                                         .sivilstand("GIFT")
                                         .sivilstandRegdato(LocalDateTime.now())
