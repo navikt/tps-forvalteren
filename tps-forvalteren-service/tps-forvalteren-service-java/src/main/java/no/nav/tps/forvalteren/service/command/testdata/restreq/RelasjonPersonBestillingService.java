@@ -102,6 +102,7 @@ public class RelasjonPersonBestillingService {
         adresse.setPerson(null);
         Adresse kopiertAdresse = mapperFacade.map(adresse, Gateadresse.class);
         kopiertAdresse.setPerson(personAdresseTil);
+        kopiertAdresse.setId(null);
         adresse.setPerson(personAdresseFra);
         personAdresseTil.getBoadresse().add(kopiertAdresse);
     }

@@ -36,7 +36,9 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPerson rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
-                        rsPerson.sorterPersondetaljer();
+                        if (!person.getSivilstander().isEmpty()) {
+                            rsPerson.setSivilstand(person.getSivilstander().get(0).getSivilstand());
+                        }
                     }
                 })
                 .byDefault()
@@ -48,7 +50,9 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPersonUtenIdenthistorikk rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
-                        rsPerson.sorterPersondetaljer();
+                        if (!person.getSivilstander().isEmpty()) {
+                            rsPerson.setSivilstand(person.getSivilstander().get(0).getSivilstand());
+                        }
                     }
                 })
                 .byDefault()
@@ -65,7 +69,9 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                     @Override public void mapAtoB(Person person, RsPersonUtenRelasjon rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
-                        rsPerson.sorterPersondetaljer();
+                        if (!person.getSivilstander().isEmpty()) {
+                            rsPerson.setSivilstand(person.getSivilstander().get(0).getSivilstand());
+                        }
                     }
                 })
                 .exclude(RELASJONER)
