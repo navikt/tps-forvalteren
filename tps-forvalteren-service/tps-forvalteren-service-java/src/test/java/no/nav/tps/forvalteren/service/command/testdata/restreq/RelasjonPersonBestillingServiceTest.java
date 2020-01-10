@@ -275,7 +275,7 @@ public class RelasjonPersonBestillingServiceTest {
                         .boadresse(newArrayList(adresse1))
                         .build()));
 
-        when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse2);
+        when(mapperFacade.map(adresse2, Gateadresse.class)).thenReturn((Gateadresse) adresse2);
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
@@ -289,7 +289,7 @@ public class RelasjonPersonBestillingServiceTest {
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_2)));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_2)));
-        assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_2)));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_2)));
     }
 
     private static RsPersonBestillingRelasjonRequest buildRequest(Boolean harFellesAdresse, BorHos borhos) {
