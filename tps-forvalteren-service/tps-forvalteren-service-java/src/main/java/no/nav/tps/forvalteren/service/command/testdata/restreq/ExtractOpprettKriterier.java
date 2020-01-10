@@ -76,9 +76,6 @@ public class ExtractOpprettKriterier {
 
     public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
 
-        if (nonNull(request.getRelasjoner().getPartner())) {
-            request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
-        }
         List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getPartnere().size());
         request.getRelasjoner().getPartnere().forEach(partnerReq -> {
             RsPersonKriterier kriterium = prepareKriterium(partnerReq);
