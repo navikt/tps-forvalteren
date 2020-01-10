@@ -69,6 +69,9 @@ public class PersonerBestillingService {
             hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
         }
 
+        if (nonNull(request.getRelasjoner().getPartner())) {
+            request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
+        }
         List<Person> partnere = new ArrayList<>();
         if (!request.getRelasjoner().getPartnere().isEmpty()) {
             RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
