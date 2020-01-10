@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BarnType;
+import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsBarnRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsRelasjoner;
@@ -76,7 +77,7 @@ public class RelasjonPersonBestillingServiceTest {
         when(randomAdresseService.execute(anyList(), any(AdresseNrInfo.class))).thenReturn(newArrayList(Person.builder().build()));
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false));
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(null, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(argumentCaptor.getValue().getIdent(), is(equalTo(IDENT_HOVEDPERSON)));
@@ -120,7 +121,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true));
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -156,7 +157,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false));
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -195,7 +196,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false));
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -204,9 +205,94 @@ public class RelasjonPersonBestillingServiceTest {
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_2)));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_2)));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_2)));
     }
 
-    private static RsPersonBestillingRelasjonRequest buildRequest(Boolean harFellesAdresse) {
+    @Test
+    public void makeAdresse_BarnBorOss() {
+
+        Adresse adresse1 = Gateadresse.builder()
+                .adresse(GATENAVN_1)
+                .gatekode(GATEKODE_1)
+                .build();
+        adresse1.setKommunenr(KOMMUNENR_1);
+        Adresse adresse2 = Gateadresse.builder()
+                .adresse(GATENAVN_2)
+                .gatekode(GATEKODE_2)
+                .build();
+        adresse2.setKommunenr(KOMMUNENR_2);
+
+        when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
+                Person.builder().ident(IDENT_HOVEDPERSON)
+                        .boadresse(newArrayList(adresse1))
+                        .build(),
+                Person.builder().ident(IDENT_PARTNER)
+                        .boadresse(newArrayList(adresse1))
+                        .build(),
+                Person.builder().ident(IDENT_BARN)
+                        .boadresse(newArrayList(adresse2))
+                        .build()));
+
+        when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse1);
+
+        argumentCaptor = ArgumentCaptor.forClass(Person.class);
+
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true, BorHos.OSS));
+        verify(personRepository).save(argumentCaptor.capture());
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+    }
+
+    @Test
+    public void makeAdresse_BarnBorDeg() {
+
+        Adresse adresse1 = Gateadresse.builder()
+                .adresse(GATENAVN_1)
+                .gatekode(GATEKODE_1)
+                .build();
+        adresse1.setKommunenr(KOMMUNENR_1);
+        Adresse adresse2 = Gateadresse.builder()
+                .adresse(GATENAVN_2)
+                .gatekode(GATEKODE_2)
+                .build();
+        adresse2.setKommunenr(KOMMUNENR_2);
+
+        when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
+                Person.builder().ident(IDENT_HOVEDPERSON)
+                        .boadresse(newArrayList(adresse1))
+                        .build(),
+                Person.builder().ident(IDENT_PARTNER)
+                        .boadresse(newArrayList(adresse2))
+                        .build(),
+                Person.builder().ident(IDENT_BARN)
+                        .boadresse(newArrayList(adresse1))
+                        .build()));
+
+        when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse2);
+
+        argumentCaptor = ArgumentCaptor.forClass(Person.class);
+
+        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, BorHos.DEG));
+        verify(personRepository).save(argumentCaptor.capture());
+
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
+        assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
+
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_2)));
+        assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_2)));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_2)));
+    }
+
+    private static RsPersonBestillingRelasjonRequest buildRequest(Boolean harFellesAdresse, BorHos borhos) {
 
         return builder()
                 .relasjoner(RsRelasjoner.builder()
@@ -222,6 +308,7 @@ public class RelasjonPersonBestillingServiceTest {
                                 .ident(IDENT_BARN)
                                 .partnerIdent(IDENT_PARTNER)
                                 .barnType(BarnType.FELLES)
+                                .borHos(borhos)
                                 .build()))
                         .build())
                 .build();

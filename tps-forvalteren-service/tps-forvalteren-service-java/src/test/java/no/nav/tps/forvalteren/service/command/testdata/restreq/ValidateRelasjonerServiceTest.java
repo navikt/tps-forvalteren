@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BarnType;
+import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsBarnRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsRelasjoner;
@@ -49,6 +50,7 @@ public class ValidateRelasjonerServiceTest {
     private static final String EKSISTENSSJEKK_HOVEDPERSON_FEILER = "Hovedperson eksisterer ikke";
     private static final String EKSISTENSSJEKK_PARTNER_FEILER = "Partner eksisterer ikke";
     private static final String EKSISTENSSJEKK_BARN_FEILER = "Barn eksisterer ikke";
+    private static final String FELLES_ADRESSE_BOR_HOS_DEG="Kombinasjonen felles adresse og barn bor hos DEG er ikke mulig";
 
     @Mock
     private MessageProvider messageProvider;
@@ -76,12 +78,14 @@ public class ValidateRelasjonerServiceTest {
         when(messageProvider.get(eq("bestilling.relasjon.input.validation.hovedperson.ekistere.ikke"), anyString())).thenReturn(EKSISTENSSJEKK_HOVEDPERSON_FEILER);
         when(messageProvider.get(eq("bestilling.relasjon.input.validation.partner.ekistere.ikke"), anyString())).thenReturn(EKSISTENSSJEKK_PARTNER_FEILER);
         when(messageProvider.get(eq("bestilling.relasjon.input.validation.barn.ekistere.ikke"), anyString())).thenReturn(EKSISTENSSJEKK_BARN_FEILER);
+
+        when(messageProvider.get(eq("bestilling.relasjon.input.validation.felles.adresse.barn.bor.hos.deg"), anyString())).thenReturn(FELLES_ADRESSE_BOR_HOS_DEG);
     }
 
     @Test
     public void makeRelasjonPartnerFinnesFraFoer() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).kjonn("M")
@@ -105,7 +109,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonBarnFinnesFraFoer() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).kjonn("M")
@@ -129,7 +133,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonBarnHarAlleredeForeldre() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).kjonn("M").build(),
@@ -167,7 +171,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonBarnHarAlleredeForeldreMenGjelderAdopsjon() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).kjonn("M").build(),
@@ -205,7 +209,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonPartnerFellesAdresse_IkkeFNR() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(true, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).identtype(IdentType.FNR.name()).build(),
@@ -222,7 +226,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonPartnerFellesAdresse_Kode6() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(true, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).build(),
@@ -239,7 +243,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonPartnerFellesAdresse_Ufb() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(true, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).build(),
@@ -256,7 +260,7 @@ public class ValidateRelasjonerServiceTest {
     @Test
     public void makeRelasjonPartnerFellesAdresse_Forsvunnet() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(true, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).build(),
@@ -271,9 +275,9 @@ public class ValidateRelasjonerServiceTest {
     }
 
     @Test
-    public void makeRelasjonPartnerEksistenssjekk_HovedpersonMangler() {
+    public void makeRelasjonPartnerEksistenssjekk_DbHovedpersonIkkeFunnet() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_PARTNER).forsvunnetDato(LocalDateTime.now()).build(),
@@ -287,9 +291,9 @@ public class ValidateRelasjonerServiceTest {
     }
 
     @Test
-    public void makeRelasjonPartnerEksistenssjekk_PartnerMangler() {
+    public void makeRelasjonPartnerEksistenssjekk_DbPartnerIkkeFunnet() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).build(),
@@ -303,9 +307,9 @@ public class ValidateRelasjonerServiceTest {
     }
 
     @Test
-    public void makeRelasjonPartnerEksistenssjekk_BarnMangler() {
+    public void makeRelasjonPartnerEksistenssjekk_DbBarnIkkeFunnet() {
 
-        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest();
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(null, null);
 
         personer = asList(
                 Person.builder().ident(IDENT_HOVEDPERSON).build(),
@@ -318,13 +322,30 @@ public class ValidateRelasjonerServiceTest {
         validateRelasjonerService.isGyldig(IDENT_HOVEDPERSON, relasjonRequest, personer);
     }
 
-    private static RsPersonBestillingRelasjonRequest buildRequest() {
+    @Test
+    public void makeRelasjon_PartnerFellesAdresseMenBorHosDeg() {
+
+        RsPersonBestillingRelasjonRequest relasjonRequest = buildRequest(true, BorHos.DEG);
+
+        personer = asList(
+                Person.builder().ident(IDENT_HOVEDPERSON).build(),
+                Person.builder().ident(IDENT_PARTNER).build(),
+                Person.builder().ident(IDENT_BARN).build())
+                .stream().collect(Collectors.toMap(Person::getIdent, person -> person));
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage(FELLES_ADRESSE_BOR_HOS_DEG);
+
+        validateRelasjonerService.isGyldig(IDENT_HOVEDPERSON, relasjonRequest, personer);
+    }
+
+    private static RsPersonBestillingRelasjonRequest buildRequest(Boolean harFellesAdresse, BorHos borHos) {
 
         return builder()
                 .relasjoner(RsRelasjoner.builder()
                         .partner(asList(RsPartnerRelasjonRequest.builder()
                                 .ident(IDENT_PARTNER)
-                                .harFellesAdresse(true)
+                                .harFellesAdresse(harFellesAdresse)
                                 .sivilstander(asList(RsSivilstandRequest.builder()
                                         .sivilstand("GIFT")
                                         .sivilstandRegdato(LocalDateTime.now())
@@ -334,6 +355,7 @@ public class ValidateRelasjonerServiceTest {
                                 .ident(IDENT_BARN)
                                 .partnerIdent(IDENT_PARTNER)
                                 .barnType(BarnType.FELLES)
+                                .borHos(borHos)
                                 .build()))
                         .build())
                 .build();

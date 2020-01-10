@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 import java.util.Map;
@@ -24,7 +25,25 @@ public class ValidateRelasjonerService {
         validateAtPersonerEksister(hovedperson, request, personer);
         validateEksisterendeIdent(hovedperson, request, personer);
         validateHarBarnEksisterendeForeldre(request, personer);
-        validateHarFellesAdresse(hovedperson, request, personer);
+        validateHarFellesAdresseSpesreg(hovedperson, request, personer);
+        validateHarFellesAdresseAnnet(hovedperson, request, personer);
+        validateHarFellesAdresseBarnBorHosDeg(request);
+    }
+
+    private void validateHarFellesAdresseBarnBorHosDeg(RsPersonBestillingRelasjonRequest request) {
+
+        request.getRelasjoner().getPartner().forEach(partner ->
+
+                request.getRelasjoner().getBarn().forEach(barn -> {
+
+                    if ((partner.getIdent().equals(barn.getPartnerIdent()) || request.getRelasjoner().getPartner().size() == 1) &&
+                            isTrue(partner.getHarFellesAdresse()) &&
+                            BorHos.DEG == barn.getBorHos()) {
+                        throw new TpsfFunctionalException(
+                                messageProvider.get("bestilling.relasjon.input.validation.felles.adresse.barn.bor.hos.deg", barn.getIdent()));
+                    }
+                })
+        );
     }
 
     private void validateAtPersonerEksister(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
@@ -49,15 +68,9 @@ public class ValidateRelasjonerService {
         });
     }
 
-    private void validateHarFellesAdresse(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
+    private void validateHarFellesAdresseSpesreg(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
         request.getRelasjoner().getPartner().forEach(partner -> {
-
-            if (isTrue(partner.getHarFellesAdresse()) && !isIdentTypeFnr(personer.get(partner.getIdent()).getIdenttype()) ||
-                    !isIdentTypeFnr(personer.get(hovedperson).getIdenttype())) {
-                throw new TpsfFunctionalException(
-                        messageProvider.get("bestilling.relasjon.input.validation.felles.adresse.ikke.fnr"));
-            }
 
             if (isTrue(partner.getHarFellesAdresse()) && (personer.get(partner.getIdent()).isKode6() ||
                     personer.get(hovedperson).isKode6())) {
@@ -69,6 +82,18 @@ public class ValidateRelasjonerService {
                     personer.get(hovedperson).isUtenFastBopel())) {
                 throw new TpsfFunctionalException(
                         messageProvider.get("bestilling.relasjon.input.validation.felles.adresse.ufb"));
+            }
+        });
+    }
+
+    private void validateHarFellesAdresseAnnet(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
+
+        request.getRelasjoner().getPartner().forEach(partner -> {
+
+            if (isTrue(partner.getHarFellesAdresse()) && !isIdentTypeFnr(personer.get(partner.getIdent()).getIdenttype()) ||
+                    !isIdentTypeFnr(personer.get(hovedperson).getIdenttype())) {
+                throw new TpsfFunctionalException(
+                        messageProvider.get("bestilling.relasjon.input.validation.felles.adresse.ikke.fnr"));
             }
 
             if (isTrue(partner.getHarFellesAdresse()) && (personer.get(partner.getIdent()).isForsvunnet() ||
