@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Arrays.asList;
-import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BarnType;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsBarnRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
@@ -182,7 +181,7 @@ public class RelasjonPersonBestillingServiceTest {
                 .build();
         adresse2.setKommunenr(KOMMUNENR_2);
         Person partner = Person.builder().ident(IDENT_PARTNER)
-                .boadresse(newArrayList(adresse1,adresse2))
+                .boadresse(newArrayList(adresse1, adresse2))
                 .build();
         when(personRepository.findByIdentIn(anyList())).thenReturn(asList(
                 Person.builder().ident(IDENT_HOVEDPERSON)
@@ -307,7 +306,6 @@ public class RelasjonPersonBestillingServiceTest {
                         .barn(asList(RsBarnRelasjonRequest.builder()
                                 .ident(IDENT_BARN)
                                 .partnerIdent(IDENT_PARTNER)
-                                .barnType(BarnType.FELLES)
                                 .borHos(borhos)
                                 .build()))
                         .build())

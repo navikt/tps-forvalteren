@@ -19,7 +19,6 @@ import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 @AllArgsConstructor
 public class RsPersonBestillingRelasjonRequest {
 
-    public enum BarnType {MITT, FELLES, DITT}
     public enum BorHos {MEG, OSS, DEG}
 
     private RsRelasjoner relasjoner;
@@ -76,9 +75,7 @@ public class RsPersonBestillingRelasjonRequest {
     public static class RsBarnRelasjonRequest {
 
         private String ident;
-        private BarnType barnType;
         private String partnerIdent;
         private BorHos borHos;
-        private Boolean erAdoptert;
     }
 }

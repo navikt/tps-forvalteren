@@ -136,7 +136,7 @@ public class ValidateRelasjonerService {
                     });
                 }
             });
-            if (counter.intValue() > 1 && !isTrue(barnet.getErAdoptert())) {
+            if (counter.intValue() > 1) {
                 throw new TpsfFunctionalException(
                         messageProvider.get("bestilling.relasjon.input.validation.barn.har.foreldre", barnet.getIdent()));
             }

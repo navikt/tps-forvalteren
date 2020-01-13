@@ -3,13 +3,11 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
-import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BarnType;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsBarnRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.BARN;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
@@ -152,27 +150,14 @@ public class RelasjonPersonBestillingService {
     private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn,
             RsBarnRelasjonRequest request) {
 
-        if (isNull(request.getBarnType()) || BarnType.FELLES == request.getBarnType()) {
-
-            setRelasjonForBarn(hovedPerson, barn, isTrue(request.getErAdoptert()));
-            setRelasjonForBarn(partner, barn, isTrue(request.getErAdoptert()));
-
-        } else if (BarnType.MITT == request.getBarnType()) {
-
-            setRelasjonForBarn(hovedPerson, barn, isTrue(request.getErAdoptert()));
-            setRelasjonForBarn(partner, barn, true);
-
-        } else if (BarnType.DITT == request.getBarnType()) {
-
-            setRelasjonForBarn(partner, barn, isTrue(request.getErAdoptert()));
-            setRelasjonForBarn(hovedPerson, barn, true);
-        }
+            setRelasjonForBarn(hovedPerson, barn);
+            setRelasjonForBarn(partner, barn);
     }
 
-    private static void setRelasjonForBarn(Person forelder, Person barn, boolean isAdopted) {
+    private static void setRelasjonForBarn(Person forelder, Person barn) {
 
         if (nonNull(forelder)) {
-            forelder.getRelasjoner().add(Relasjon.builder().person(forelder).personRelasjonMed(barn).relasjonTypeNavn((isAdopted ? BARN : FOEDSEL).name()).build());
+            forelder.getRelasjoner().add(Relasjon.builder().person(forelder).personRelasjonMed(barn).relasjonTypeNavn(BARN.name()).build());
             barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(forelder).relasjonTypeNavn((isKvinne(forelder) ? MOR : FAR).name()).build());
         }
     }

@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
-import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BarnType;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsBarnRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
@@ -50,7 +49,7 @@ public class ValidateRelasjonerServiceTest {
     private static final String EKSISTENSSJEKK_HOVEDPERSON_FEILER = "Hovedperson eksisterer ikke";
     private static final String EKSISTENSSJEKK_PARTNER_FEILER = "Partner eksisterer ikke";
     private static final String EKSISTENSSJEKK_BARN_FEILER = "Barn eksisterer ikke";
-    private static final String FELLES_ADRESSE_BOR_HOS_DEG="Kombinasjonen felles adresse og barn bor hos DEG er ikke mulig";
+    private static final String FELLES_ADRESSE_BOR_HOS_DEG = "Kombinasjonen felles adresse og barn bor hos DEG er ikke mulig";
 
     @Mock
     private MessageProvider messageProvider;
@@ -354,7 +353,6 @@ public class ValidateRelasjonerServiceTest {
                         .barn(asList(RsBarnRelasjonRequest.builder()
                                 .ident(IDENT_BARN)
                                 .partnerIdent(IDENT_PARTNER)
-                                .barnType(BarnType.FELLES)
                                 .borHos(borHos)
                                 .build()))
                         .build())
