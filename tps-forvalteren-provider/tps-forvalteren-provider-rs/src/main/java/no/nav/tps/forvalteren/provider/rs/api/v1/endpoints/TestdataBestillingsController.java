@@ -159,8 +159,8 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "relasjonperson") })
     @RequestMapping(value = "/relasjonperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public RsPerson relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
+    public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
 
-        return mapperFacade.map(relasjonPersonBestillingService.makeRelasjon(ident, request), RsPerson.class);
+        return relasjonPersonBestillingService.makeRelasjon(ident, request);
     }
 }

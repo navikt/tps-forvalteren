@@ -85,10 +85,10 @@ public class RelasjonPersonBestillingServiceTest {
         assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_PARTNER)));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getRelasjoner().get(0).getRelasjonTypeNavn(), is(equalTo("PARTNER")));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getRelasjoner().get(0).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_HOVEDPERSON)));
-        assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("BARN")));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(0).getPersonRelasjonMed().getRelasjoner().get(1).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_BARN)));
 
-        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("BARN")));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_BARN)));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getRelasjoner().get(0).getRelasjonTypeNavn(), is(equalTo("FAR")));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getRelasjoner().get(0).getPersonRelasjonMed().getIdent(), is(equalTo(IDENT_HOVEDPERSON)));
@@ -243,7 +243,7 @@ public class RelasjonPersonBestillingServiceTest {
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
         assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
 
-        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("BARN")));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_1)));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_1)));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_1)));
@@ -285,7 +285,7 @@ public class RelasjonPersonBestillingServiceTest {
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getGatekode(), is(equalTo(GATEKODE_1)));
         assertThat(argumentCaptor.getValue().getBoadresse().get(0).getKommunenr(), is(equalTo(KOMMUNENR_1)));
 
-        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("FOEDSEL")));
+        assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getRelasjonTypeNavn(), is(equalTo("BARN")));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getAdresse(), is(equalTo(GATENAVN_2)));
         assertThat(((Gateadresse) argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1)).getGatekode(), is(equalTo(GATEKODE_2)));
         assertThat(argumentCaptor.getValue().getRelasjoner().get(1).getPersonRelasjonMed().getBoadresse().get(1).getKommunenr(), is(equalTo(KOMMUNENR_2)));

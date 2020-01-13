@@ -45,7 +45,7 @@ public class RelasjonPersonBestillingService {
     private final MapperFacade mapperFacade;
     private final ValidateRelasjonerService validateRelasjonerService;
 
-    public Person makeRelasjon(String hovedperson, RsPersonBestillingRelasjonRequest request) {
+    public List<String> makeRelasjon(String hovedperson, RsPersonBestillingRelasjonRequest request) {
 
         List<String> idents = new ArrayList();
         Stream.of(newArrayList(hovedperson),
@@ -63,7 +63,9 @@ public class RelasjonPersonBestillingService {
         setAdresserPaaPersoner(hovedperson, request, personer);
         setSivilstandHistorikkPaaPersoner(hovedperson, request.getRelasjoner().getPartner(), personer);
 
-        return personRepository.save(personer.get(hovedperson));
+        personRepository.save(personer.get(hovedperson));
+
+        return idents;
     }
 
     private void setAdresserPaaPersoner(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
