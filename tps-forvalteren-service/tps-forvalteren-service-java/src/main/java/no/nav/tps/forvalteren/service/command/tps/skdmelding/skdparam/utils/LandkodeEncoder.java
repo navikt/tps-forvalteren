@@ -297,7 +297,8 @@ public class LandkodeEncoder {
             landkode = (String) landkoderMap.keySet().toArray()[1 + random.nextInt(landkoderMap.size() - 2)];
 
         } while (landkoderMap.get(landkode).fom.isAfter(START_OF_ERA) ||
-                landkoderMap.get(landkode).tom.isBefore(FORESEEABLE_FUTURE));
+                landkoderMap.get(landkode).tom.isBefore(FORESEEABLE_FUTURE) ||
+                "NOR".equals(landkode));
 
         return landkode;
     }

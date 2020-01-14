@@ -7,24 +7,24 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteS
 import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FamilieendringSkdParametre;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.BarnForeldrerelasjonSkdParametre;
 
 @Service
-public class Familieendring implements SkdMeldingResolver {
+public class BarnForeldrerelasjonEndringAarsakskode98 implements SkdMeldingResolver {
 
-    public static final String FAMILIEENDRING_MLD_NAVN = "Familieendring";
+    public static final String BARN_FORELDRE_RELASJON_ENDRING = "BarnForeldreRelasjonEndring";
 
     @Override
     public TpsSkdRequestMeldingDefinition resolve() {
         return TpsSkdMeldingDefinitionBuilder.aTpsSkdMelding()
-                .name(FAMILIEENDRING_MLD_NAVN)
+                .name(BARN_FORELDRE_RELASJON_ENDRING)
 
                 .config()
                 .requestQueue(TpsConstants.REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
 
                 .skdParameters()
-                .addSkdParametersCreator(FamilieendringSkdParametre.familieendringSkdParametreCreator())
+                .addSkdParametersCreator(BarnForeldrerelasjonSkdParametre.barnForeldrerelasjonSkdParametreCreator())
                 .addParameterCreator()
 
                 .and()

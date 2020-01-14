@@ -4,7 +4,6 @@ import static java.util.Objects.isNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -154,14 +153,5 @@ public class RsPerson {
             statsborgerskap = new ArrayList();
         }
         return statsborgerskap;
-    }
-
-    public RsPerson sorterPersondetaljer() {
-        getIdentHistorikk().sort(Comparator.comparing(RsIdenthistorikk::getHistoricIdentOrder).reversed());
-        getSivilstander().sort(Comparator.comparing(RsSivilstand::getSivilstandRegdato).reversed());
-        getBoadresse().sort(Comparator.comparing(RsAdresse::getAdresseId).reversed());
-        getPostadresse().sort(Comparator.comparing(RsPostadresse::getId).reversed());
-        getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId).reversed());
-        return this;
     }
 }
