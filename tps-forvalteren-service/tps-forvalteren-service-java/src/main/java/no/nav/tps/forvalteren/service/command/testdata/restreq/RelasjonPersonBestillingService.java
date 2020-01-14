@@ -138,7 +138,7 @@ public class RelasjonPersonBestillingService {
                         .build());
     }
 
-    private void setRelasjonerPaaPersoner(String hovedperson,
+    private static void setRelasjonerPaaPersoner(String hovedperson,
             RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
         request.getRelasjoner().getPartner().forEach(partner ->
@@ -146,11 +146,10 @@ public class RelasjonPersonBestillingService {
 
         request.getRelasjoner().getBarn().forEach(barnet ->
                 setBarnRelasjon(personer.get(hovedperson), personer.get(barnet.getPartnerIdent()),
-                        personer.get(barnet.getIdent()), barnet));
+                        personer.get(barnet.getIdent())));
     }
 
-    private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn,
-            RsBarnRelasjonRequest request) {
+    private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn) {
 
             setRelasjonForBarn(hovedPerson, barn);
             setRelasjonForBarn(partner, barn);
