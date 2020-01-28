@@ -1,10 +1,11 @@
-applicationPipeline {
+naiseratorApplicationPipeline {
     applicationName = "tps-forvalteren"
+    team = "registre"
     javaVersion = "1.8"
-    environment = "q1"
-    namespace="default"
-    hasPerformanceTest = false
-    hasSmoketests = false
+    namespace = "default"
+    branchDeployments = [
+        [branch: "release/test", namespace: "u2"],
+        [branch: "feature/test-t1", namespace: "t1"]
+    ]
     isTestApplication = true
-    nodeJsVersion = "8"
 }
