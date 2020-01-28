@@ -185,13 +185,11 @@ public class ExtractOpprettKriterier {
                     RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
                     barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    if (hasAdresse(barnRequest)) {
-                        mapBoadresse(barn.get(barnStartIndex + j),
-                                (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
-                                        hovedPersoner.get(i).getBoadresse().get(0) :
-                                        getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
-                                extractFlyttedato(barnRequest.getBoadresse()));
-                    }
+                    mapBoadresse(barn.get(barnStartIndex + j),
+                            (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
+                                    hovedPersoner.get(i).getBoadresse().get(0) :
+                                    getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
+                            extractFlyttedato(barnRequest.getBoadresse()));
                     alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
                     barn.get(barnStartIndex + j).setSivilstand(null);
                 }
@@ -249,13 +247,6 @@ public class ExtractOpprettKriterier {
 
     private static boolean hasAdresse(Person person) {
         return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet();
-    }
-
-    private static boolean hasAdresse(RsBarnRequest request) {
-        return !SPSF.name().equals(request.getSpesreg()) &&
-                !request.isUtenFastBopel() &&
-                nonNull(request.getForsvunnetDato()) &&
-                nonNull(request.getUtvandretTilLand());
     }
 
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {
