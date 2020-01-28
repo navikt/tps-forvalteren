@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import no.nav.fregpropertyreader.PropertyReader;
-import no.nav.tps.forvalteren.provider.web.config.ApplicationConfig;
 
 @SpringBootApplication
 public class ApplicationStarter {

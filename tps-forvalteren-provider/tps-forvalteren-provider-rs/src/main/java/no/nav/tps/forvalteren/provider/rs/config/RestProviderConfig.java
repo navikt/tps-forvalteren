@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import no.nav.tps.forvalteren.provider.rs.api.v1.RestAuthorizationService;
 import no.nav.tps.forvalteren.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.advices.HttpExceptionAdvice;
@@ -28,7 +29,8 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
 @ComponentScan(basePackageClasses = {
         UserController.class,
         NaisEndpointController.class,
-        HttpExceptionAdvice.class
+        HttpExceptionAdvice.class,
+        RestAuthorizationService.class
 })
 public class RestProviderConfig extends WebMvcConfigurerAdapter {
     

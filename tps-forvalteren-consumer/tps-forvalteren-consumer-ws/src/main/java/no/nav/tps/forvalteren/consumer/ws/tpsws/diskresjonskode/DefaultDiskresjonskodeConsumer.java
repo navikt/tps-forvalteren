@@ -1,5 +1,11 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
+import java.util.List;
+import javax.xml.ws.soap.SOAPFaultException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
@@ -7,15 +13,6 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResp
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 
-import javax.xml.ws.soap.SOAPFaultException;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-
-@Component
 public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDiskresjonskodeConsumer.class);
 
