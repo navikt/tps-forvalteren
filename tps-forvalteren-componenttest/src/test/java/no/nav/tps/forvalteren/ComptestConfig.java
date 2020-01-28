@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,7 +28,6 @@ import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Configuration
-@Import(ApplicationStarter.class)
 @ComponentScan(basePackageClasses = ComptestConfig.class)
 public class ComptestConfig {
     

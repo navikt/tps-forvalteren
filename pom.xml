@@ -18,6 +18,7 @@
     <modules>
         <module>tps-forvalteren-application</module>
         <module>tps-forvalteren-app-nais</module>
+        <module>tps-forvalteren-app-local</module>
         <module>tps-forvalteren-common</module>
         <module>tps-forvalteren-config</module>
         <module>tps-forvalteren-consumer</module>

@@ -16,5 +16,5 @@ import no.nav.tps.forvalteren.repository.jpa.config.RepositoryConfig;
         MapperConfig.class
 })
 @ComponentScan
-public class ApplicationConfig {
+public class ApplicationWebConfig {
 }
