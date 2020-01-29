@@ -18,7 +18,7 @@ import no.nav.tps.forvalteren.consumer.rs.identpool.config.IdentpoolConfig;
 })
 public class RestConsumerConfig {
 
-    private static final int TIMEOUT = 30_000;
+    private static final int TIMEOUT = 45_000;
 
     @Bean
     public RestTemplate restTemplate() {
