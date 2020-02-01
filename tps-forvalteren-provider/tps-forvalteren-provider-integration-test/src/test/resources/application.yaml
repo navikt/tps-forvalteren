@@ -5,16 +5,16 @@ application:
 
 spring:
   datasource:
-    url: jdbc:oracle:thin:@d26dbfl023.test.local:1521/tpsforvalteren_u2
-    username: TPSFORVALTEREN_U2
-    password: JfLeGbWL09xs
+    url: jdbc:oracle:thin:@d26dbfl021.test.local:1521/tpsforvalteren_t1
+    username: tpsforvalteren
+    password: JfLeGbWL09xs2019
     driver-class-name: oracle.jdbc.driver.OracleDriver
     continue-on-error: true
   jpa:
     properties:
       hibernate:
         ddl-auto: none
-        default_schema: TPSFORVALTEREN_U6
+        default_schema: TPSFORVALTEREN_T1
   messages:
     basename: messages/messages
   profiles:
