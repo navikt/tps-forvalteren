@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;

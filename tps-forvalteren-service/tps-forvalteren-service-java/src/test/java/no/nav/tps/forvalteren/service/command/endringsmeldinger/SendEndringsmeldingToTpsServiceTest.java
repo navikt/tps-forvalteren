@@ -1,15 +1,14 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -95,7 +94,6 @@ public class SendEndringsmeldingToTpsServiceTest {
         when(convertJsonToRsMeldingstype.execute(skdEndringsmelding)).thenReturn(rsMeldingstype1Felter);
         when(innvandring.resolve()).thenReturn(new TpsSkdRequestMeldingDefinition());
         when(skdAddHeaderToSkdMelding.execute(any(StringBuilder.class))).thenReturn(new StringBuilder("lol"));
-        when(skdEndringsmeldinger.stream()).thenReturn(Stream.of(skdEndringsmelding));
         when(convertMeldingFromJsonToText.execute(rsMeldingstype1Felter)).thenReturn("aSimpleSkdMeldingMock");
     }
 
@@ -123,7 +121,7 @@ public class SendEndringsmeldingToTpsServiceTest {
 
         verify(convertMeldingFromJsonToText, times(3)).execute(rsMeldingstype1Felter);
         verify(skdAddHeaderToSkdMelding, times(3)).execute(any(StringBuilder.class));
-        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(), anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString(), anyString(), anyString());
+        verify(sendSkdMeldinger, times(3)).sendSkdMeldingAndAddResponseToList(any(), anyString(), any(TpsSkdRequestMeldingDefinition.class), anyString(), anyString(), any());
 
         verify(skdEndringsmeldingLoggRepository, times(3)).save(any(SkdEndringsmeldingLogg.class));
     }

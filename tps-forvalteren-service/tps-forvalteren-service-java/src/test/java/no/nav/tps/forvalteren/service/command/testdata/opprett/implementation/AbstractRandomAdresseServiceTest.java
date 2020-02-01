@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.assertj.core.util.Lists.newArrayList;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -13,7 +14,6 @@ import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBes
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.assertj.core.util.Lists.newArrayList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

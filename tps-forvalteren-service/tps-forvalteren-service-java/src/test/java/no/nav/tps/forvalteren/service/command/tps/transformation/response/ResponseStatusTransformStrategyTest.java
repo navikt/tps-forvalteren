@@ -1,17 +1,18 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.response;
 
-import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.service.tps.Response;
+import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResponseStatusTransformStrategyTest {

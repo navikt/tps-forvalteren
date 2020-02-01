@@ -7,8 +7,6 @@ import org.apache.catalina.authenticator.jaspic.AuthConfigFactoryImpl;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
-import no.nav.tps.forvalteren.provider.web.config.ApplicationWebConfig;
-
 @SpringBootApplication
 public class LocalApplicationStarter {
 
@@ -19,7 +17,7 @@ public class LocalApplicationStarter {
         }
 
         new SpringApplicationBuilder()
-                .sources(ApplicationWebConfig.class)
+                .sources(LocalApplicationStarter.class)
                 .profiles("local")
                 .run(args);
     }

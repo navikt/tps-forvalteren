@@ -7,8 +7,8 @@ import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.ComptestConfig.actualConnectedToEnvironments;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -90,7 +90,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldSendSuccesfulSkdMessagesToTPS() throws Exception {
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content("[\"" + String.join("\",\"", ENVIRONMENTS) + "\"]"))
                 .andExpect(status().isOk());
 

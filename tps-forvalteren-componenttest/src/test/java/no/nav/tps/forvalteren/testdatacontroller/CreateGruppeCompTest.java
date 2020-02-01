@@ -31,7 +31,7 @@ public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTes
     @Test
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldCreateGruppe() throws Exception {
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content("{\"navn\":\"" + GRUPPENAVN + "\", \"beskrivelse\":\"" + BESKRIVELSE + "\"}"))
                 .andExpect(status().isOk());
         assertTrue(gruppeRepository.findAllByOrderByIdAsc().stream().anyMatch(gruppe -> GRUPPENAVN.equals(gruppe.getNavn()) && BESKRIVELSE.equals(gruppe.getBeskrivelse())));
@@ -47,7 +47,7 @@ public class CreateGruppeCompTest extends AbstractTestdataControllerComponentTes
     public void shouldThrowExceptionAsGroupAlreadyExists() throws Exception {
         expectedException.expectCause(Matchers.allOf(Matchers.instanceOf(DataIntegrityViolationException.class)));
         makeSureGroupExistsInDatabase(GRUPPENAVN);
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content("{\"navn\":\"" + GRUPPENAVN + "\", \"beskrivelse\":\"" + BESKRIVELSE + "\"}"));
     }
     

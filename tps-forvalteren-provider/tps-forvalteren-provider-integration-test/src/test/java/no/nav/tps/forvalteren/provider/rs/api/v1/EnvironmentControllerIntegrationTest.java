@@ -30,7 +30,7 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
         ReflectionTestUtils.setField(environmentController, "currentEnvironmentIsProd", false);
         mvc.perform(get("/api/v1/environments"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.environments", hasSize(greaterThanOrEqualTo(8))))
                 .andExpect(jsonPath("$.productionMode", is(false)));
     }

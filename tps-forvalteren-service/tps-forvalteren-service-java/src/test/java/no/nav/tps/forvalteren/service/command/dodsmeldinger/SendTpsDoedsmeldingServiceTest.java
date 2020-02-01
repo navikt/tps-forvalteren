@@ -2,11 +2,11 @@ package no.nav.tps.forvalteren.service.command.dodsmeldinger;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anySet;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,12 +21,11 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.DoedsmeldingHandlingType;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
@@ -44,7 +43,7 @@ public class SendTpsDoedsmeldingServiceTest {
 
     private static final String IDENT = "12345678901";
     private static final List<String> MILJOER = Arrays.asList("u2");
-    
+
     @Mock
     private SkdMessageCreatorTrans1 skdCreator;
 
@@ -86,7 +85,6 @@ public class SendTpsDoedsmeldingServiceTest {
         when(personstatusService.hentPersonstatus(eq(IDENT), anyString())).thenReturn(persondataFraTps);
 
         when(skdCreator.execute(anyString(), any(Person.class), anyBoolean())).thenReturn(skdMeldingTrans1);
-        when(sendSkdMeldingTilMiljoe.execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet())).thenReturn(sendStatus);
     }
 
     @Test
@@ -115,7 +113,7 @@ public class SendTpsDoedsmeldingServiceTest {
         sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.D));
 
         verify(personstatusService).hentPersonstatus(eq(IDENT), anyString());
-        verify(sendSkdMeldingTilMiljoe).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
+        verify(sendSkdMeldingTilMiljoe).execute(anyString(), any(), anySet());
     }
 
     @Test
@@ -136,7 +134,7 @@ public class SendTpsDoedsmeldingServiceTest {
         sendTpsDoedsmeldingService.sendDoedsmelding(buildRequest(DoedsmeldingHandlingType.C));
 
         verify(personstatusService).hentPersonstatus(eq(IDENT), anyString());
-        verify(sendSkdMeldingTilMiljoe).execute(anyString(), any(TpsSkdRequestMeldingDefinition.class), anySet());
+        verify(sendSkdMeldingTilMiljoe).execute(anyString(), any(), anySet());
     }
 
     private RsTpsDoedsmeldingRequest buildRequest(DoedsmeldingHandlingType handling) {

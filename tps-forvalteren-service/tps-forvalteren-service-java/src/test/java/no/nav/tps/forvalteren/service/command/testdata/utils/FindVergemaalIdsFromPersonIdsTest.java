@@ -2,8 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.utils;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
@@ -52,8 +51,8 @@ public class FindVergemaalIdsFromPersonIdsTest {
         listeMedPersoner = new ArrayList<>();
         listeMedVergemaal = new ArrayList<>();
 
-        when(personRepository.findByIdIn(anyListOf(Long.class))).thenReturn(listeMedPersoner);
-        when(vergemaalRepository.findAllByIdentIn(anyListOf(String.class))).thenReturn(listeMedVergemaal);
+        when(personRepository.findByIdIn(anyList())).thenReturn(listeMedPersoner);
+        when(vergemaalRepository.findAllByIdentIn(anyList())).thenReturn(listeMedVergemaal);
     }
 
     @Test

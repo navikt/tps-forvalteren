@@ -5,11 +5,15 @@ application:
 
 spring:
   datasource:
-    url: jdbc:oracle:thin:@d26dbfl023.test.local:1521/tpsforvalteren_u2
-    username: TPSFORVALTEREN_U2
-    password: JfLeGbWL09xs
+    url: jdbc:oracle:thin:@d26dbfl021.test.local:1521/tpsforvalteren_t1
+    username: tpsforvalteren
+    password: JfLeGbWL09xs2019
     driver-class-name: oracle.jdbc.driver.OracleDriver
     continue-on-error: true
+  flyway:
+    check-location: true
+    locations: classpath:db/migration
+    enabled: true
   jpa:
     properties:
       hibernate:
@@ -21,6 +25,7 @@ spring:
     active: local
   main:
     banner-mode: 'off'
+    allow-bean-definition-overriding: true
 
 enable.caching: false
 
@@ -31,12 +36,6 @@ spring.session:
   jdbc:
     initializer.enabled: true
     table-name: SPRING_SESSION
-
-## Flyway ##
-flyway:
-  check-location: true
-  locations: classpath:db/migration
-  enabled: true
 
 tps.forvalteren.production.mode: false
 

@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,13 +22,12 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -73,7 +72,7 @@ public class RelasjonPersonBestillingServiceTest {
                 Person.builder().ident(IDENT_PARTNER).kjonn("K").build(),
                 Person.builder().ident(IDENT_BARN).build()));
 
-        when(randomAdresseService.execute(anyList(), any(AdresseNrInfo.class))).thenReturn(newArrayList(Person.builder().build()));
+        when(randomAdresseService.execute(anyList(), any())).thenReturn(newArrayList(Person.builder().build()));
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
         relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(null, null));
@@ -191,7 +190,6 @@ public class RelasjonPersonBestillingServiceTest {
                 Person.builder().ident(IDENT_BARN).build()));
 
         when(mapperFacade.map(adresse1, Gateadresse.class)).thenReturn((Gateadresse) adresse1);
-        when(randomAdresseService.execute(anyList(), any(AdresseNrInfo.class))).thenReturn(newArrayList(partner));
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 

@@ -10,13 +10,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
@@ -75,7 +76,7 @@ public class SavePersonListServiceTest {
         person.setEndretDato(LocalDateTime.now());
         persons.add(person);
 
-        when(personRepository.findById(person.getId())).thenReturn(person);
+        when(personRepository.findById(person.getId())).thenReturn(Optional.of(person));
         when(hentUtdaterteRelasjonIder.execute(person, person)).thenReturn(utdaterteRelasjonIder);
     }
 

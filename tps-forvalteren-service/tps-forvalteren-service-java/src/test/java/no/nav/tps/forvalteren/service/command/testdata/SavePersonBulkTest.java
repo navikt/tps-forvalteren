@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -45,7 +45,7 @@ public class SavePersonBulkTest {
 
         savePersonBulk.execute(persons);
 
-        verify(personRepository).save(persons);
+        verify(personRepository).saveAll(persons);
     }
 
     @Test
@@ -54,13 +54,13 @@ public class SavePersonBulkTest {
 
         savePersonBulk.execute(persons);
 
-        verify(personRepository, times(10)).save(anyListOf(Person.class));
+        verify(personRepository, times(10)).saveAll(anyList());
     }
 
     @Test
     public void checkThatExceptionIsThrown() {
         when(persons.size()).thenReturn(1);
-        when(personRepository.save(persons)).thenThrow(dataIntegrityViolationException);
+        when(personRepository.saveAll(persons)).thenThrow(dataIntegrityViolationException);
         when(dataIntegrityViolationException.getCause()).thenReturn(throwable);
 
         expectedException.expect(DataIntegrityViolationException.class);

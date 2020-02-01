@@ -4,8 +4,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

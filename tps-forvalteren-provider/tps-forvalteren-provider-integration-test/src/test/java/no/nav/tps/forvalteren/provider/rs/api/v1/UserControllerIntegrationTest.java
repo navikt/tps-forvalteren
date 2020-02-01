@@ -30,7 +30,7 @@ public class UserControllerIntegrationTest extends AbstractRsProviderIntegration
 
         mvc.perform(get(BASE_URL+"/user"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is(equalTo(TestUserDetails.DISPLAY_NAME))))
                 .andExpect(jsonPath("$.username", is(equalTo(TestUserDetails.USERNAME))));
     }

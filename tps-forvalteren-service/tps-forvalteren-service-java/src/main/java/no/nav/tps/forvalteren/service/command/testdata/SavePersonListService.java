@@ -4,6 +4,7 @@ import static java.util.Objects.nonNull;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,13 @@ public class SavePersonListService {
         for (Person person : personer) {
             Set<Long> utdaterteRelasjonIder = new HashSet<>();
 
-            Person personDb = personRepository.findById(person.getId());
-            if (nonNull(personDb)) {
-                oppdaterRelasjonReferanser.execute(person, personDb);
+            Optional<Person> personDb = personRepository.findById(person.getId());
+            if (nonNull(personDb) && personDb.isPresent()) {
+                oppdaterRelasjonReferanser.execute(person, personDb.get());
                 person.getSivilstander().forEach(sivilstand -> sivilstand.setPerson(person));
-                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
-                adresseRepository.deleteAllByPerson(personDb);
-                personDb.getPostadresse().forEach(adresse -> postadresseRepository.deletePostadresseById(adresse.getId()));
+                utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb.get());
+                adresseRepository.deleteAllByPerson(personDb.get());
+                personDb.get().getPostadresse().forEach(adresse -> postadresseRepository.deletePostadresseById(adresse.getId()));
             }
 
             adresseOgSpesregService.updateAdresseOgSpesregAttributes(person);

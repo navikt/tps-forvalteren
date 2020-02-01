@@ -31,7 +31,7 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
     public void shouldUpdatePersons() throws Exception {
         endTransactionIfActive();
         List<Person> personList = setupTestdataPersonerInTpsfDatabase();
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestBody(personList)))
                 .andExpect(status().isOk());
         
@@ -48,8 +48,8 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
     }
     
     public void assertUpdatedTestdataInDatabase(List<Person> originalPersonList) {
-        Person updatedPerson1 = personRepository.findById(originalPersonList.get(0).getId());
-        Person updatedPerson2 = personRepository.findById(originalPersonList.get(1).getId());
+        Person updatedPerson1 = personRepository.findById(originalPersonList.get(0).getId()).get();
+        Person updatedPerson2 = personRepository.findById(originalPersonList.get(1).getId()).get();
         assertEquals(expectedIdent1AfterUpdate, updatedPerson1.getIdent());
         assertEquals(expectedIdent2AfterUpdate, updatedPerson2.getIdent());
         assertNotEquals(IDENT1, updatedPerson1.getIdent());

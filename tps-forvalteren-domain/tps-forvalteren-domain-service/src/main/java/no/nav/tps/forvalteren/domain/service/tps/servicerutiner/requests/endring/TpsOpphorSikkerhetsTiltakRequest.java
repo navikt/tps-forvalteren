@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
-import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

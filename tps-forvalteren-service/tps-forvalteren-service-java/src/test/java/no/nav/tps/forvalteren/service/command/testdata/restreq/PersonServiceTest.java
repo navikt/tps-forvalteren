@@ -2,7 +2,8 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.singletonList;
-import static org.mockito.Matchers.anySet;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
@@ -72,21 +73,21 @@ public class PersonServiceTest {
     public void deletePersons_OK() {
 
         when(personRepository.findByIdentIn(anyList())).thenReturn(singletonList(Person.builder().build()));
-        when(relasjonRepository.findByPersonRelasjonMedIdIn(anyList())).thenReturn(Optional.of(newArrayList(Relasjon.builder()
+        when(relasjonRepository.findByPersonRelasjonMedIdIn(anySet())).thenReturn(Optional.of(newArrayList(Relasjon.builder()
                 .id(ID)
                 .person(Person.builder().ident(IDENT1).build())
                 .build())));
         Gateadresse gateadresse = Gateadresse.builder().build();
         gateadresse.setId(ID);
-        when(adresseRepository.findAdresseByPersonIdIn(anyList())).thenReturn(Optional.of(newArrayList(gateadresse)));
+        when(adresseRepository.findAdresseByPersonIdIn(any())).thenReturn(Optional.of(newArrayList(gateadresse)));
 
         personService.deletePersons(new ArrayList<>(), newArrayList(IDENT1));
 
         verify(relasjonRepository).deleteByIdIn(anySet());
         verify(sivilstandRepository).deleteByIdIn(anySet());
         verify(adresseRepository).deleteByIdIn(anyList());
-        verify(doedsmeldingRepository).deleteByPersonIdIn(anyList());
-        verify(personRepository).deleteByIdIn(anyList());
+        verify(doedsmeldingRepository).deleteByPersonIdIn(any());
+        verify(personRepository).deleteByIdIn(anySet());
         verify(tpsPersonService).sendDeletePersonMeldinger(anyList() ,anySet());
         verify(identpoolService).recycleIdents(anySet());
     }
@@ -103,6 +104,6 @@ public class PersonServiceTest {
 
         personService.deleteIdenthistorikk(singletonList(person));
 
-        verify(identhistorikkRepository).deleteByIdIn(anyList());
+        verify(identhistorikkRepository).deleteByIdIn(anySet());
     }
 }

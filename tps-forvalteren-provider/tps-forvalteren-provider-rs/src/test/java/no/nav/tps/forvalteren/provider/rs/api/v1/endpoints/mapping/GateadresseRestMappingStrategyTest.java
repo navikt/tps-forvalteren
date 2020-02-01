@@ -1,19 +1,19 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.rs.RsGateadresse;
-import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
+import static no.nav.tps.forvalteren.domain.test.provider.GateadresseProvider.standardGateadresse;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static no.nav.tps.forvalteren.domain.test.provider.GateadresseProvider.standardGateadresse;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.rs.RsGateadresse;
+import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GateadresseRestMappingStrategyTest {

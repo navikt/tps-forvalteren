@@ -1,14 +1,13 @@
 package no.nav.tps.forvalteren.consumer.rs.fasit;
 
-import no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 
-import static org.mockito.Mockito.verify;
+import no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConfig;
 
 
 @RunWith(MockitoJUnitRunner.class)

@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.provider.rs.security.config;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import no.nav.tps.forvalteren.provider.rs.security.PackageMarker;
 import no.nav.tps.forvalteren.provider.rs.security.authentication.TpsfLdapAuthenticationProvider;
 import no.nav.tps.forvalteren.provider.rs.security.mapping.RestAuthoritiesMapper;
 import no.nav.tps.forvalteren.provider.rs.security.mapping.RestUserDetailsMapper;
@@ -25,9 +23,9 @@ import no.nav.tps.forvalteren.provider.rs.security.mapping.RestUserDetailsMapper
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan(basePackageClasses = {
-        PackageMarker.class
-})
+//@ComponentScan(basePackageClasses = {
+//        PackageMarker.class
+//})
 public class RestSecurityConfig {
 
     @Value("${ldap.url}")

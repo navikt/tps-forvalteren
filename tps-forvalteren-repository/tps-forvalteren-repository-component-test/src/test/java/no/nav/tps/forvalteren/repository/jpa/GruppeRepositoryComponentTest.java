@@ -1,7 +1,13 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
+import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RepositoryTestConfig.class)
@@ -63,7 +63,7 @@ public class GruppeRepositoryComponentTest {
     public void save() {
         Gruppe gruppeMedId = repository.save(gruppe);
 
-        Gruppe result = testRepository.findOne(gruppeMedId.getId());
+        Gruppe result = testRepository.findById(gruppeMedId.getId()).get();
 
         assertThat(result.getId(), is(gruppe.getId()));
         assertThat(result.getNavn(), is(gruppe.getNavn()));

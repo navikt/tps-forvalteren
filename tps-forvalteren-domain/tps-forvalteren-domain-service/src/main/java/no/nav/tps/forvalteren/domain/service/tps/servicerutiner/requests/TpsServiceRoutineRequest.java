@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TpsServiceRoutineRequest {
-    
+
     private String serviceRutinenavn;
-    
+
 }
 

@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -46,7 +46,7 @@ public class DeletePersonerByIdInTest {
 
     @Before
     public void setup() {
-        when(findVergemaalIdsFromPersonIds.execute(anyListOf(Long.class))).thenReturn(personIds);
+        when(findVergemaalIdsFromPersonIds.execute(anyList())).thenReturn(personIds);
         when(personIds.size()).thenReturn(ORACLE_MAX_IN_SET_ELEMENTS);
     }
 
@@ -54,10 +54,10 @@ public class DeletePersonerByIdInTest {
     public void verifyAllServices() {
         deletePersonerByIdIn.execute(personIds);
 
-        verify(doedsmeldingRepository).deleteByPersonIdIn(anyListOf(Long.class));
-        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
-        verify(vergemaalRepository).deleteByIdIn(anyListOf(Long.class));
-        verify(personRepository).deleteByIdIn(anyListOf(Long.class));
+        verify(doedsmeldingRepository).deleteByPersonIdIn(anyList());
+        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(anyList());
+        verify(vergemaalRepository).deleteByIdIn(anyList());
+        verify(personRepository).deleteByIdIn(anyList());
     }
 
     @Test
@@ -66,9 +66,9 @@ public class DeletePersonerByIdInTest {
 
         deletePersonerByIdIn.execute(personIds);
 
-        verify(doedsmeldingRepository, times(10)).deleteByPersonIdIn(anyListOf(Long.class));
-        verify(relasjonRepository, times(10)).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
-        verify(vergemaalRepository, times(10)).deleteByIdIn(anyListOf(Long.class));
-        verify(personRepository, times(10)).deleteByIdIn(anyListOf(Long.class));
+        verify(doedsmeldingRepository, times(10)).deleteByPersonIdIn(anyList());
+        verify(relasjonRepository, times(10)).deleteByPersonRelasjonMedIdIn(anyList());
+        verify(vergemaalRepository, times(10)).deleteByIdIn(anyList());
+        verify(personRepository, times(10)).deleteByIdIn(anyList());
     }
 }

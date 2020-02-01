@@ -4,7 +4,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

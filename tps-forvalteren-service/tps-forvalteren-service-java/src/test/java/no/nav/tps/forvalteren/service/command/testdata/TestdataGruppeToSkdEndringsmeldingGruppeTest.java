@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +18,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
@@ -40,7 +40,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTran
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
-    
+
     private static final String NAVN_INNVANDRINGSMELDING = "InnvandringOpprettingsmelding";
     private static final Long GRUPPE_ID = 1337L;
     private static final boolean ADD_HEADER = false;
@@ -81,50 +81,50 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     private SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = aSkdEndringsmeldingGruppe().id(GRUPPE_ID).build();
     private List<SkdMeldingTrans1> utvandringsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding1).build());
     private List<SkdMeldingTrans1> foedselsMeldinger = Arrays.asList(SkdMeldingTrans1.builder().fornavn(melding4).build());
-    
+
     @Before
     public void setup() {
         when(gruppeRepository.findById(GRUPPE_ID)).thenReturn(testdataGruppe);
         when(skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(innvandringsMeldinger);
         when(createRelasjoner.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(relasjonsMeldinger);
         when(createDoedsmeldinger.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(doedsMeldinger);
-        when(createMeldingWithMeldingstypeService.execute(anyListOf(SkdMelding.class))).thenReturn(rsMeldinger);
+        when(createMeldingWithMeldingstypeService.execute(anyList())).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
         when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
         when(createFoedselsmeldinger.executeFromPersons(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(foedselsMeldinger);
     }
-    
+
     @Test
     public void verifyServices() {
         testdataGruppeToSkdEndringsmeldingGruppe.execute(GRUPPE_ID);
-        
+
         verify(gruppeRepository).findById(GRUPPE_ID);
         verify(skdMessageCreatorTrans1).execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createRelasjoner).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createDoedsmeldinger).execute(testdataGruppe.getPersoner(), ADD_HEADER);
-        verify(createMeldingWithMeldingstypeService).execute(anyListOf(SkdMelding.class));
+        verify(createMeldingWithMeldingstypeService).execute(anyList());
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
-        verify(createMeldingWithMeldingstypeService).execute(anyListOf(SkdMelding.class));
+        verify(createMeldingWithMeldingstypeService).execute(anyList());
         verify(saveSkdEndringsmeldingerService).save(rsMeldinger, GRUPPE_ID);
         verify(createVergemaal).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createFoedselsmeldinger).executeFromPersons(testdataGruppe.getPersoner(), ADD_HEADER);
-        
+
     }
-    
+
     @Test
     public void throwsGruppeNotFoundException() {
         String exception = "error";
         when(gruppeRepository.findById(GRUPPE_ID)).thenReturn(null);
         when(messageProvider.get(GRUPPE_NOT_FOUND_KEY, GRUPPE_ID)).thenReturn(exception);
-        
+
         expectedException.expect(GruppeNotFoundException.class);
         expectedException.expectMessage(exception);
-        
+
         testdataGruppeToSkdEndringsmeldingGruppe.execute(GRUPPE_ID);
-        
+
         verify(messageProvider).get(GRUPPE_NOT_FOUND_KEY, GRUPPE_ID);
-        
+
     }
 }

@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
-import static org.assertj.core.util.Sets.newHashSet;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 
-@Log4j
+@Slf4j
 @Service
 public class IdentpoolService {
 

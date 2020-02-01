@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -53,7 +54,7 @@ public class DoedsmeldingRepositoryComponentTest {
         person1.getStatsborgerskap().get(0).setPerson(person1);
         person2 = PersonProvider.aFemalePerson().statsborgerskap(asList(Statsborgerskap.builder().statsborgerskap("000").statsborgerskapRegdato(now()).build())).build();
         person2.getStatsborgerskap().get(0).setPerson(person2);
-        personRepository.save(Arrays.asList(person1, person2));
+        personRepository.saveAll(newArrayList(person1, person2));
 
         doedsmelding1 = new Doedsmelding();
         doedsmelding1.setPerson(person1);
@@ -68,7 +69,7 @@ public class DoedsmeldingRepositoryComponentTest {
     @Test
     @Rollback
     public void findByPersonIdTest() {
-        doedsmeldingTestRepository.save(doedsmeldinger);
+        doedsmeldingTestRepository.saveAll(doedsmeldinger);
 
         Doedsmelding result = doedsmeldingRepository.findByPersonId(person1.getId());
 
@@ -81,7 +82,7 @@ public class DoedsmeldingRepositoryComponentTest {
     @Test
     @Rollback
     public void saveTest() {
-        doedsmeldingRepository.save(doedsmeldinger);
+        doedsmeldingRepository.saveAll(doedsmeldinger);
 
         List<Doedsmelding> results = (List<Doedsmelding>) doedsmeldingTestRepository.findAll();
 
@@ -93,7 +94,7 @@ public class DoedsmeldingRepositoryComponentTest {
     @Test
     @Rollback
     public void deleteOneByPersonIdInTest() {
-        doedsmeldingTestRepository.save(doedsmeldinger);
+        doedsmeldingTestRepository.saveAll(doedsmeldinger);
         List<Long> idsToDelete = Arrays.asList(person1.getId());
 
         doedsmeldingRepository.deleteByPersonIdIn(idsToDelete);
@@ -107,7 +108,7 @@ public class DoedsmeldingRepositoryComponentTest {
     @Test
     @Rollback
     public void deleteMultipleByPersonIdInTest() {
-        doedsmeldingTestRepository.save(doedsmeldinger);
+        doedsmeldingTestRepository.saveAll(doedsmeldinger);
         List<Long> idsToDelete = Arrays.asList(person1.getId(), person2.getId());
 
         doedsmeldingRepository.deleteByPersonIdIn(idsToDelete);

@@ -1,28 +1,25 @@
 package no.nav.tps.forvalteren.service.kodeverk;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
+import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
+import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KodeverkUpdaterTest {
@@ -41,7 +38,7 @@ public class KodeverkUpdaterTest {
     private KodeverkUpdater kodeverkUpdater;
 
     @Test
-    public void hvisKodeverkBlirHentetSaaClearesCacheOgNyeKommunekoderBlirSatt () {
+    public void hvisKodeverkBlirHentetSaaClearesCacheOgNyeKommunekoderBlirSatt() {
         kodeverkMock = mock(Kodeverk.class);
 
         Kode kodeTest = new Kode();
@@ -51,7 +48,7 @@ public class KodeverkUpdaterTest {
         when(kodeverkConsumerMock.hentKodeverk(anyString())).thenReturn(kodeverkMock);
 
         kodeverkUpdater.updateTpsfKodeverkCache();
-        
+
         InOrder inOrder = Mockito.inOrder(kodeverkCacheMock);
         inOrder.verify(kodeverkCacheMock).clearKommuneCache();
         inOrder.verify(kodeverkCacheMock).setKodeverkKommuneKoder(koder);
@@ -62,19 +59,18 @@ public class KodeverkUpdaterTest {
     }
 
     @Test
-    public void hvisKodeverkIKKEKanBliHentetSaaClearesIkkeCache () {
+    public void hvisKodeverkIKKEKanBliHentetSaaClearesIkkeCache() {
         Kode kodeTest = new Kode();
         koder.add(kodeTest);
 
         when(kodeverkConsumerMock.hentKodeverk(anyString())).thenReturn(null);
 
         kodeverkUpdater.updateTpsfKodeverkCache();
-        
+
         verify(kodeverkCacheMock, never()).clearKommuneCache();
         verify(kodeverkCacheMock, never()).setKodeverkKommuneKoder(any());
         verify(kodeverkCacheMock, never()).clearPostnummerCache();
         verify(kodeverkCacheMock, never()).setKodeverkPostnummerKoder(any());
     }
-
 
 }

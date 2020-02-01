@@ -3,17 +3,18 @@ package no.nav.tps.forvalteren.provider.rs.security.logging;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.MDC;
+
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 
 
@@ -60,7 +61,7 @@ public class MDCInterceptorTest {
     public void postHandleDoesNothing() {
         interceptor.postHandle(null, null, null, null);
 
-        verifyZeroInteractions(userContextHolderMock);
+        verify(userContextHolderMock, never());
     }
 
     @Test

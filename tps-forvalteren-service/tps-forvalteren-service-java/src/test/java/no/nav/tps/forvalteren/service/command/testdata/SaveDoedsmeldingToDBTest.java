@@ -15,7 +15,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -48,7 +48,7 @@ public class SaveDoedsmeldingToDBTest {
     public void allDoedsmeldingerAreSavedToRepository() {
         saveDoedsmeldingToDB.execute(personer);
 
-        verify(doedsmeldingRepositoryMock).save(doedsmeldingerCaptor.capture());
+        verify(doedsmeldingRepositoryMock).saveAll(doedsmeldingerCaptor.capture());
         assertThat(doedsmeldingerCaptor.getValue().size(), is(equalTo(personer.size())));
     }
 }

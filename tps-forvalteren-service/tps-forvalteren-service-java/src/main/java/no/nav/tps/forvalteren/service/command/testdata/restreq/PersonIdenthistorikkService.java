@@ -100,7 +100,7 @@ public class PersonIdenthistorikkService {
         if (!identhistorikk.isEmpty()) {
             List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(person, identhistorikk));
 
-            personRepository.save(dubletter);
+            personRepository.saveAll(dubletter);
             identhistorikkService.save(person.getIdent(), dubletter, identhistorikk);
         }
     }

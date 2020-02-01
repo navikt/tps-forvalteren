@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -15,8 +15,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import com.fasterxml.jackson.xml.XmlMapper;
+import org.mockito.junit.MockitoJUnitRunner;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
@@ -114,8 +114,6 @@ public class TpsRequestServiceTest {
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
 
-        when(messageQueueConsumerMock.sendMessage(REQUEST_XML)).thenReturn(RESPONSE_XML);
-
         inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML, timeout);
         inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));
 
@@ -134,8 +132,6 @@ public class TpsRequestServiceTest {
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
-
-        when(messageQueueConsumerMock.sendMessage(REQUEST_XML)).thenReturn(RESPONSE_XML);
 
         inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML,timeout);
         inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));

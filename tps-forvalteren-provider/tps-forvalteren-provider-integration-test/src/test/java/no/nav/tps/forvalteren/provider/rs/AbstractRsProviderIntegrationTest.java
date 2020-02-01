@@ -1,8 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -59,9 +58,9 @@ public abstract class AbstractRsProviderIntegrationTest {
         doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
 
         HentDiskresjonskodeBolkResponse bolkResponse = new HentDiskresjonskodeBolkResponse();
-        when(diskresjonskodeConsumerMock.getDiskresjonskodeBolk(anyListOf(String.class))).thenReturn(bolkResponse);
+        when(diskresjonskodeConsumerMock.getDiskresjonskodeBolk(anyList())).thenReturn(bolkResponse);
 
-        when(egenAnsattConsumerMock.isEgenAnsatt(any(String.class))).thenReturn(false);
+        when(egenAnsattConsumerMock.isEgenAnsatt(anyString())).thenReturn(false);
     }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {

@@ -1,7 +1,15 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
+import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +18,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
-import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RepositoryTestConfig.class)
@@ -38,7 +38,7 @@ public class PersonRepositoryComponentTest {
     @Test
     @Rollback
     public void findAllReturnsAll() {
-        repository.save(Arrays.asList(personKari, personOla));
+        repository.saveAll(Arrays.asList(personKari, personOla));
         List<Person> result = repository.findAllByOrderByIdAsc();
 
         assertThat(result, hasSize(2));
@@ -66,7 +66,7 @@ public class PersonRepositoryComponentTest {
     @Rollback
     public void saveSavesAll() {
         List<Person> persons = Arrays.asList(personOla, personKari);
-        repository.save(persons);
+        repository.saveAll(persons);
 
         List<Person> resultList = testRepository.findAll();
 
@@ -79,7 +79,7 @@ public class PersonRepositoryComponentTest {
     @Rollback
     public void FindByIdentInReturnsAll() {
         List<Person> persons = Arrays.asList(personOla, personKari);
-        testRepository.save(persons);
+        testRepository.saveAll(persons);
 
         List<String> identList = persons.stream()
                 .map(Person::getIdent)

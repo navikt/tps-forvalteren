@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspillerProgress;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
 import no.nav.tps.forvalteren.repository.jpa.AvspillerProgressRepository;
 import no.nav.tps.forvalteren.repository.jpa.AvspillerRepository;
 
-@Log4j
+@Slf4j
 @Service
 @Transactional
 public class AvspillerDaoService {
@@ -60,12 +60,12 @@ public class AvspillerDaoService {
 
     public TpsAvspiller getStatus(Long avspillerId) {
 
-        return avspillerRepository.findOne(avspillerId);
+        return avspillerRepository.findById(avspillerId).get();
     }
 
     public TpsAvspiller cancelRequest(Long avspillerId) {
 
-        TpsAvspiller avspiller = avspillerRepository.findOne(avspillerId);
+        TpsAvspiller avspiller = avspillerRepository.findById(avspillerId).get();
         avspiller.setAvbrutt(true);
         avspiller.setTidspunkt(LocalDateTime.now());
         return avspillerRepository.save(avspiller);

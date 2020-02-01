@@ -1,26 +1,26 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.response;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.domain.service.user.User;
-import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
-import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.service.tps.Response;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
+import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RemoveUnauthorizedPeopleFromResponseTransformStrategyTest {

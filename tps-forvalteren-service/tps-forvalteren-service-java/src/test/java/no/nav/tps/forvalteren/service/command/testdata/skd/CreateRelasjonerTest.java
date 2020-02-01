@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
@@ -96,7 +96,7 @@ public class CreateRelasjonerTest {
     public void checkThatNothingGetsCalled() {
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
-        verify(skdMessageCreatorTrans1, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
+        verify(skdMessageCreatorTrans1, never()).execute(anyString(), anyList(), anyBoolean());
     }
 
 }

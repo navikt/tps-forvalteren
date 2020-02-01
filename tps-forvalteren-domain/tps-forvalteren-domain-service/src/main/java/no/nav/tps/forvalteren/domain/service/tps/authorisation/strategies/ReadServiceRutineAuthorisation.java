@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies;
 
-import org.codehaus.jackson.annotate.JsonIgnoreType;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
 public class ReadServiceRutineAuthorisation implements ServiceRutineAuthorisationStrategy {

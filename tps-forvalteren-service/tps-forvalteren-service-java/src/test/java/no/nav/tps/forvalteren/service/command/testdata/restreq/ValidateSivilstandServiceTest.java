@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.service.command.testdata;
+package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.domain.service.Sivilstand.ENKE_ELLER_ENKEMANN;
@@ -18,14 +18,13 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.restreq.ValidateSivilstandService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidateSivilstandServiceTest {
@@ -46,8 +45,6 @@ public class ValidateSivilstandServiceTest {
 
         when(messageProvider.get("bestilling.input.validation.sivilstand.partnere"))
                 .thenReturn("Kun EN av relasjonene \"partner\" eller \"partnere\" benyttes ved bestilling");
-        when(messageProvider.get("bestilling.input.validation.sivilstand.required"))
-                .thenReturn("Sivilstand og dato-sivilstand må være angitt på historikk.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.partner"))
                 .thenReturn("Partner er ikke støttet etter 1. januar 2009.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.ugift"))
@@ -62,8 +59,6 @@ public class ValidateSivilstandServiceTest {
                 .thenReturn("Sivilstand SKILT er ugyldig uten å ha vært gift.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.separert.ugift"))
                 .thenReturn("Sivilstand SEPARERT er ugyldig uten å ha vært gift.");
-        when(messageProvider.get("bestilling.input.validation.sivilstand.samboer"))
-                .thenReturn("Samboer er ikke støttet som sivilstand på historikk.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.ugyldig-kode", UGYLDIG))
                 .thenReturn("Sivilstand '" + UGYLDIG + "' er ugyldig.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.datoer"))

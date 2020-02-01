@@ -1,23 +1,23 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import java.util.List;
-import javax.transaction.Transactional;
-
-import no.nav.tps.forvalteren.domain.jpa.Personmal;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonmalProvider.personmalA;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonmalProvider.personmalB;
-import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import no.nav.tps.forvalteren.domain.jpa.Personmal;
+import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RepositoryTestConfig.class)
@@ -36,7 +36,7 @@ public class PersonmalRepositoryComponentTest {
         Personmal personmal = personmalA().build();
         personmalRepository.save(personmal);
 
-        Personmal resultPersonmal = personmalTestRepository.findOne(personmal.getId());
+        Personmal resultPersonmal = personmalTestRepository.findById(personmal.getId()).get();
 
         assertThat(resultPersonmal, is(personmal));
     }
@@ -48,9 +48,9 @@ public class PersonmalRepositoryComponentTest {
 
         personmalRepository.deleteById(personmal.getId());
 
-        Personmal resultPersonmal = personmalTestRepository.findOne(personmal.getId());
+        Optional<Personmal> resultPersonmal = personmalTestRepository.findById(personmal.getId());
 
-        assertThat(resultPersonmal, is(nullValue()));
+        assertThat(resultPersonmal.isPresent(), is(false));
     }
 
     @Test

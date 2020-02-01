@@ -2,8 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
@@ -53,7 +52,6 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
         testdataRequest2.setIdenterGenerertForKriteria(new HashSet<>());
 
         environments.add("test");
-        when(getEnvironmentsCommand.getEnvironmentsFromFasit(anyString())).thenReturn(environments);
     }
 
     @Test
@@ -66,7 +64,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(new HashSet<>());
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1, testdataRequest2));
 
         verify(filtrerPaaIdenterTilgjengeligIMiljoMock).filtrer(arg.capture(), any());
 
@@ -87,7 +85,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1, testdataRequest2));
 
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(true));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(false));
@@ -107,7 +105,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1, testdataRequest2));
 
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(true));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(true));
@@ -124,7 +122,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoeTest {
 
         when(filtrerPaaIdenterTilgjengeligIMiljoMock.filtrer(any(), any())).thenReturn(identerTilgjenglig);
 
-        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1,testdataRequest2));
+        filtererUtMiljoeUtilgjengeligeIdenterFraTestdatarequest.executeMotProdliktMiljoe(Arrays.asList(testdataRequest1, testdataRequest2));
 
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent1), is(false));
         assertThat(testdataRequest1.getIdenterTilgjengligIMiljoe().contains(dummyIdent2), is(false));
