@@ -1,13 +1,11 @@
 package no.nav.tps.forvalteren.domain.service.tps;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
 
 @Getter
 @Setter

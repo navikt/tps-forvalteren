@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +31,7 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
         ReflectionTestUtils.setField(environmentController, "currentEnvironmentIsProd", false);
         mvc.perform(get("/api/v1/environments"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.environments", hasSize(greaterThanOrEqualTo(8))))
                 .andExpect(jsonPath("$.productionMode", is(false)));

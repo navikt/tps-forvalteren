@@ -1,14 +1,12 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
-
-
 
 @Getter
 @Setter
@@ -26,9 +24,10 @@ public class TpsEndreUtenlandskGironummerEndringsmeldingRequest extends TpsServi
     private String bankAdresse1;
     private String bankAdresse2;
     private String bankAdresse3;
-    
+
     @Builder
-    public TpsEndreUtenlandskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrUtland, String datoGiroNr, String kodeSwift, String kodeLand, String bankNavn, //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
+    public TpsEndreUtenlandskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrUtland, String datoGiroNr, String kodeSwift, String kodeLand, String bankNavn,
+            //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
             String bankKode, String valuta, String bankAdresse1, String bankAdresse2, String bankAdresse3) { //NOSONAR
         super(serviceRutinenavn, offentligIdent);
         this.giroNrUtland = giroNrUtland;

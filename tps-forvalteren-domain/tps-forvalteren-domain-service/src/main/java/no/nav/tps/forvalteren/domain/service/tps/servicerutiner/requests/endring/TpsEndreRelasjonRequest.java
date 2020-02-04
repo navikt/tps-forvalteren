@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class TpsEndreRelasjonRequest extends TpsServiceRoutineEndringRequest {
     private String relasjonsFnr2;
     private String fomRelasjon;
     private String tomRelasjon;
-    
+
     @Builder
     public TpsEndreRelasjonRequest(String serviceRutinenavn, String offentligIdent, String typeRelasjon, String relasjonsFnr1, String relasjonsFnr2, String fomRelasjon, String tomRelasjon) {
         super(serviceRutinenavn, offentligIdent);

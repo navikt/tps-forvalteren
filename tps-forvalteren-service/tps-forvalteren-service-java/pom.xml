@@ -61,6 +61,13 @@
 <!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
 <!--        </dependency>-->
 
+        <!-- JSON -->
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>jackson-xml-databind</artifactId>
+            <version>${jackson-xml-databind.version}</version>
+        </dependency>
+
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>org.apache.directory.studio</groupId>

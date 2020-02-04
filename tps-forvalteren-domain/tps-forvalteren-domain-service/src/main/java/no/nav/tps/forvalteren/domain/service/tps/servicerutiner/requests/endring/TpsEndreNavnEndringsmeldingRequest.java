@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +20,10 @@ public class TpsEndreNavnEndringsmeldingRequest extends TpsServiceRoutineEndring
     private String tidligerenavn;
     private String kortnavn;
     private String datoNyttNavn;
-    
+
     @Builder
-    public TpsEndreNavnEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String fornavn, String mellomnavn, String etternavn, String tidligerenavn, String kortnavn, String datoNyttNavn) { //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
+    public TpsEndreNavnEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String fornavn, String mellomnavn, String etternavn, String tidligerenavn, String kortnavn,
+            String datoNyttNavn) { //NOSONAR inheritance Builder krever super i allArgsConstructor. Lombok har ikke støtte for det.
         super(serviceRutinenavn, offentligIdent);
         this.fornavn = fornavn;
         this.mellomnavn = mellomnavn;

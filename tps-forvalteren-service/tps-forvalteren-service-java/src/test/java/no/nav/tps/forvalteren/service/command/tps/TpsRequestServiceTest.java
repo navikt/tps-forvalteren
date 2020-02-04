@@ -16,7 +16,7 @@ import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.xml.XmlMapper;
 
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
@@ -38,7 +38,6 @@ public class TpsRequestServiceTest {
 
     private static final String REQUEST_XML = "<request></request>";
     private static final String RESPONSE_XML = "<responses><response>response</response></responses>";
-
 
     private static final String NAME = "name";
     private static final String USERNAME = "username";
@@ -67,7 +66,6 @@ public class TpsRequestServiceTest {
                 .thenReturn(messageQueueConsumerMock);
     }
 
-
     @Test
     public void callsAuthorisationService() throws Exception {
 
@@ -76,11 +74,10 @@ public class TpsRequestServiceTest {
         TpsRequestContext context = createDefaultContext();
 
         when(tpsRequestMock.getServiceRutinenavn()).thenReturn("servicerutine");
-        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context,timeout);
+        defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
 
         verify(ForbiddenCallHandlerServiceMock, never()).authoriseRestCall(serviceRoutine);
     }
-
 
     @Test
     public void callsTransformeServiceWithRequestBeforeMessageIsSent() throws Exception {
@@ -95,7 +92,6 @@ public class TpsRequestServiceTest {
         when(xmlMapperMock.writeValueAsString(tpsRequestMock)).thenReturn(REQUEST_XML);
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
-
 
         inOrder.verify(transformationService).transform(any(Request.class), eq(serviceRoutine));
         inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML, timeout);
@@ -117,7 +113,6 @@ public class TpsRequestServiceTest {
         inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML, timeout);
         inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));
 
-
     }
 
     @Test
@@ -133,11 +128,10 @@ public class TpsRequestServiceTest {
 
         defaultGetTpsRequestService.executeServiceRutineRequest(tpsRequestMock, serviceRoutine, context, timeout);
 
-        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML,timeout);
+        inOrder.verify(messageQueueConsumerMock).sendMessage(REQUEST_XML, timeout);
         inOrder.verify(transformationService).transform(any(Response.class), eq(serviceRoutine));
 
     }
-
 
     private TpsRequestContext createDefaultContext() {
 

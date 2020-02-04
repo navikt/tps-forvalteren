@@ -59,7 +59,7 @@ srvtps.forvalteren.password: NCeyl5Tz83aO5hq
 
 securitytokenservice.url: https://sts-t6.test.local/SecurityTokenServiceProvider/
 
-ldap.url: ldap\://ldapgw.test.local
+ldap.url: ldap\://ldapgw.test.local,
 ldap.basedn: dc\=test,dc\=local
 ldap.username: srvSSOLinux
 ldap.password: khFKL0GCusWe72
