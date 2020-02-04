@@ -34,6 +34,10 @@ public class HentGyldigeAdresserService {
     private ObjectMapper objectMapper;
 
     public TpsFinnGyldigeAdresserResponse hentTilfeldigAdresse(Integer maxantall, String kommuneNr, String postNr) {
+        // TODO fix for object mapper problem
+        if (maxantall < 2) {
+            maxantall = 2;
+        }
         TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest = TpsFinnGyldigeAdresserRequest.builder()
                 .typesok(Typesok.T)
                 .maxRetur(maxantall)
