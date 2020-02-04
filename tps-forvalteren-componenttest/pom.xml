@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
-            <artifactId>tps-forvalteren-app-local</artifactId>
+            <artifactId>tps-forvalteren-application</artifactId>
             <version>4.66.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
