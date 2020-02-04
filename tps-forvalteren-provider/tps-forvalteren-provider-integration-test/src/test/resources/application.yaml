@@ -26,6 +26,13 @@ spring:
   main:
     banner-mode: 'off'
     allow-bean-definition-overriding: true
+  ldap:
+    urls: ldap\://ldapgw.test.local
+    username: srvSSOLinux
+    password: khFKL0GCusWe72
+    base: dc=test,dc=local
+    base-environment.serviceuser: ou\=ServiceAccounts,dc\=test,dc\=local
+    base-environment.user: ou\=NAV,ou\=BusinessUnits,dc\=test,dc\=local
 
 enable.caching: false
 
@@ -59,12 +66,6 @@ srvtps.forvalteren.password: NCeyl5Tz83aO5hq
 
 securitytokenservice.url: https://sts-t6.test.local/SecurityTokenServiceProvider/
 
-ldap.url: ldap\://ldapgw.test.local,
-ldap.basedn: dc\=test,dc\=local
-ldap.username: srvSSOLinux
-ldap.password: khFKL0GCusWe72
-ldap.domain: TEST.LOCAL
-ldap.serviceuser.basedn: ou\=ServiceAccounts,dc\=test,dc\=local
-ldap.user.basedn: ou\=NAV,ou\=BusinessUnits,dc\=test,dc\=local
-
 identpool.host.url: nada
+
+ldap.domain: test.local

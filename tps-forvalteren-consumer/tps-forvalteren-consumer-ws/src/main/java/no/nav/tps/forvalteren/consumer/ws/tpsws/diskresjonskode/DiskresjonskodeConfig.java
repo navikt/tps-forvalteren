@@ -35,9 +35,4 @@ public class DiskresjonskodeConfig {
     TpsfStsClient cxfStsClientDiskresjonskode(DiskresjonskodePortType diskresjonskode) {
         return new TpsfStsClient(ClientProxy.getClient(diskresjonskode));
     }
-
-    @Bean
-    DiskresjonskodeConsumer diskresjonskodeConsumer() {
-        return new DefaultDiskresjonskodeConsumer();
-    }
 }

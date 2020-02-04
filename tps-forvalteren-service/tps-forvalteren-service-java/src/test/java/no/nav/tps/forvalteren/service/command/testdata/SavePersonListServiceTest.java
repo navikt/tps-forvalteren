@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +75,7 @@ public class SavePersonListServiceTest {
         person.setEndretDato(LocalDateTime.now());
         persons.add(person);
 
-        when(personRepository.findById(person.getId())).thenReturn(Optional.of(person));
+        when(personRepository.findByIdent(person.getIdent())).thenReturn(person);
         when(hentUtdaterteRelasjonIder.execute(person, person)).thenReturn(utdaterteRelasjonIder);
     }
 
@@ -84,29 +83,26 @@ public class SavePersonListServiceTest {
     public void verifyThatAllServicesGetsCalled() {
         savePersonListService.execute(persons);
 
-        verify(personRepository).findById(person.getId());
+        verify(personRepository).findByIdent(person.getIdent());
         verify(oppdaterRelasjonReferanser).execute(person, person);
         verify(hentUtdaterteRelasjonIder).execute(person, person);
         verify(adresseRepository).deleteAllByPerson(person);
         verify(personRepository).save(persons.get(0));
         verify(relasjonRepository).deleteByIdIn(utdaterteRelasjonIder);
-
     }
 
     @Test
     public void verifyThatMandatoryServicesGetsCalled() {
         persons.get(0).setBoadresse(null);
-        when(personRepository.findById(person.getId())).thenReturn(null);
+        when(personRepository.findByIdent(person.getIdent())).thenReturn(null);
 
         savePersonListService.execute(persons);
 
-        verify(personRepository).findById(person.getId());
+        verify(personRepository).findByIdent(person.getIdent());
         verify(oppdaterRelasjonReferanser, never()).execute(person, person);
         verify(hentUtdaterteRelasjonIder, never()).execute(person, person);
         verify(adresseRepository, never()).deleteAllByPerson(person);
         verify(personRepository).save(persons.get(0));
         verify(relasjonRepository, never()).deleteByIdIn(utdaterteRelasjonIder);
-
     }
-
 }

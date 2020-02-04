@@ -5,12 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkPortType;
+import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
 
 @Configuration
-//@ComponentScan(basePackageClasses = KodeverkConsumer.class)
+@ComponentScan(basePackageClasses = KodeverkConsumer.class)
 public class KodeverkConsumerConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(KodeverkConsumerConfig.class);

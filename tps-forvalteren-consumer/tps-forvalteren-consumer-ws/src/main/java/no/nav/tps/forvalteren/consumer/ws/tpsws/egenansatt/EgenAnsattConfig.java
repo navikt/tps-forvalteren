@@ -35,9 +35,4 @@ public class EgenAnsattConfig {
     TpsfStsClient cxfStsClientEgenAnsatt(EgenAnsattV1 egenAnsatt) {
         return new TpsfStsClient(ClientProxy.getClient(egenAnsatt));
     }
-
-    @Bean
-    EgenAnsattConsumer egenAnsattConsumer() {
-        return new DefaultEgenAnsattConsumer();
-    }
 }
