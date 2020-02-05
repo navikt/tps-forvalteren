@@ -61,7 +61,7 @@ public class MDCInterceptorTest {
     public void postHandleDoesNothing() {
         interceptor.postHandle(null, null, null, null);
 
-        verify(userContextHolderMock.getUsername(), never());
+        verify(userContextHolderMock, never()).getUsername();
     }
 
     @Test
