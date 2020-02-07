@@ -37,7 +37,7 @@ public class FasitClient {
 
     private Cache<String, ResourceElement> cache;
 
-    @Value("${fasit.environment.name}")
+    @Value("${tpsf.environment.name}")
     private String deployedEnvironment;
 
     @Value("${mqgateway.hostname}")

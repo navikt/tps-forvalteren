@@ -59,7 +59,7 @@ public class CommandConfig {
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
-    @Value("${fasit.environment.name}")
+    @Value("${tpsf.environment.name}")
     private String deployedEnvironment;
 
     @Bean

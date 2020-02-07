@@ -29,10 +29,10 @@ public class RestSecurityConfig {
     @Value("${spring.ldap.urls}")
     private String ldapUrl;
 
-    @Value("${ldap.domain}")
+    @Value("${spring.ldap.domain}")
     private String ldapDomain;
 
-    @Value("${spring.ldap.base-environment.user}")
+    @Value("${spring.ldap.base}")
     private String rootDn;
 
     @Bean

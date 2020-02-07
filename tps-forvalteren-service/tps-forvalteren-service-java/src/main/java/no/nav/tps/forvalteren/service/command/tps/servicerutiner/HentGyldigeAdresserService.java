@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 @Slf4j
 @Service
 public class HentGyldigeAdresserService {
-    @Value("${fasit.environment.name}")
+    @Value("${tpsf.environment.name}")
     private String env;
 
     @Autowired
