@@ -59,6 +59,7 @@
         <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg.property.version>1.2.0</freg.property.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
+        <papertrailapp.version>1.0.0</papertrailapp.version>
         <freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
 
         <!--Dependency versions-->
