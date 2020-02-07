@@ -2,3 +2,5 @@ spring:
   cloud:
     vault:
       enabled: false
+  datasource:
+    url: ${TPSF_DATASOURCE_URL}
