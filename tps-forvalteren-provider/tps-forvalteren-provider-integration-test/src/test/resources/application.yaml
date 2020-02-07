@@ -4,68 +4,49 @@ application:
   version: 1
 
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration
   datasource:
-    url: jdbc:oracle:thin:@d26dbfl021.test.local:1521/tpsforvalteren_t1
-    username: tpsforvalteren
-    password: JfLeGbWL09xs2019
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    continue-on-error: true
+    url: jdbc:h2:mem:tpsfDB
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2
   flyway:
     check-location: true
     locations: classpath:db/migration
     enabled: true
-  jpa:
-    properties:
-      hibernate:
-        ddl-auto: none
-        default_schema: TPSFORVALTEREN_U6
-  messages:
-    basename: messages/messages
-  profiles:
-    active: local
   main:
-    banner-mode: 'off'
     allow-bean-definition-overriding: true
   ldap:
-    urls: ldap\://ldapgw.test.local
-    username: srvSSOLinux
-    password: khFKL0GCusWe72
-    base: dc=test,dc=local
-    base-environment.serviceuser: ou\=ServiceAccounts,dc\=test,dc\=local
-    base-environment.user: ou\=NAV,ou\=BusinessUnits,dc\=test,dc\=local
-
-enable.caching: false
-
-### JDBC SEssions Spring ###
-spring.session:
-  store-type: jdbc
-  timeout: 5
-  jdbc:
-    initializer.enabled: true
-    table-name: SPRING_SESSION
+    urls: nada
+    username: anda
+    password: nada
+    domain: nada
+    base: nada
 
 tps.forvalteren.production.mode: false
 
-environment.name: u6
-environment.class: u
+tpsf.environment.name: u2
 
-fasit.environment.name: u6
+mqgateway:
+  hostname: nada
+  port: nada
+  name: nada
 
-mqgateway.hostname: e26apvl121.test.local
-mqgateway.port: 1411
-mqgateway.name: MUXLSC01
-tps.foresporsel.xml.o.queuename: QA.D8_411.TPS_FORESPORSEL_XML_O
+virksomhet:
+  kodeverk.v2.endpointurl: nada
+  diskresjonskode.v1.endpointurl: nada
+  egenansatt.v1.endpointurl: nada
 
-virksomhet.kodeverk.v2.endpointurl: https://modapp-t5.adeo.no/kodeverk/ws/Kodeverk/v2
+srvtps:
+  forvalteren:
+    username: nada
+    password: nada
 
-virksomhet.diskresjonskode.v1.endpointurl: https://wasapp-t5.adeo.no/tpsws/Diskresjonskode
-virksomhet.egenansatt.v1.endpointurl: https://wasapp-t9.adeo.no/tpsws/EgenAnsatt_v1
-
-srvtps.forvalteren.username: srvdrek_u
-srvtps.forvalteren.password: NCeyl5Tz83aO5hq
-
-securitytokenservice.url: https://sts-t6.test.local/SecurityTokenServiceProvider/
+securitytokenservice.url: nada
 
 identpool.host.url: nada
-
-ldap.domain: test.local

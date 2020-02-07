@@ -54,13 +54,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Så alle bruker samme versjon-->
-<!--        <dependency>-->
-<!--            <groupId>com.sun.xml.bind</groupId>-->
-<!--            <artifactId>jaxb-core</artifactId>-->
-<!--            <version>2.2.7</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-repository-jpa</artifactId>
@@ -108,12 +101,6 @@
             <artifactId>activemq-broker</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.fasterxml.jackson.module</groupId>-->
-        <!--            <artifactId>jackson-modules-java8</artifactId>-->
-        <!--            <version>2.10.2</version>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>com.h2database</groupId>
