@@ -2,5 +2,3 @@ spring:
   cloud:
     vault:
       enabled: false
-  datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
