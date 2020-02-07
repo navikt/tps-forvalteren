@@ -22,7 +22,7 @@ public class ApplicationStarter {
         Map<String, Object> properties = PropertyReader.builder()
                 .readSecret("SPRING_DATASOURCE_USERNAME", "/var/run/secrets/nais.io/db/username")
                 .readSecret("SPRING_DATASOURCE_PASSWORD", "/var/run/secrets/nais.io/db/password")
-                .readSecret("TPSF_DATASOURCE_URL", "/var/run/secrets/nais.io/dbPath/jdbc_url")
+                .readSecret("SPRING_DATASOURCE_URL", "/var/run/secrets/nais.io/dbPath/jdbc_url")
                 .build();
 
         new SpringApplicationBuilder()
