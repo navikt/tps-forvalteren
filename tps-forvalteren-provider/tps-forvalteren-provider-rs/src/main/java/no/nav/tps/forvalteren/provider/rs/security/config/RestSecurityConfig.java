@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import no.nav.tps.forvalteren.provider.rs.api.v1.RestAuthorizationService;
 import no.nav.tps.forvalteren.provider.rs.security.PackageMarker;
 import no.nav.tps.forvalteren.provider.rs.security.authentication.TpsfLdapAuthenticationProvider;
 import no.nav.tps.forvalteren.provider.rs.security.mapping.RestAuthoritiesMapper;
@@ -72,5 +73,9 @@ public class RestSecurityConfig {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName("X-XSRF-TOKEN");
         return repository;
+    }
+
+    @Bean RestAuthorizationService restAuthorizationService() {
+        return new RestAuthorizationService();
     }
 }

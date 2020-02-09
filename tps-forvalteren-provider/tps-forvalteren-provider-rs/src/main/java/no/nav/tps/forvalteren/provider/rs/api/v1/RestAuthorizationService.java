@@ -1,14 +1,12 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1;
 
+import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import no.nav.tps.forvalteren.service.user.UserRole;
 
-import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
 public class RestAuthorizationService {
 
     @Autowired
