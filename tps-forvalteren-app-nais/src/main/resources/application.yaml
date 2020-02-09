@@ -9,3 +9,8 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     url: ${SPRING_DATASOURCE_URL}
     driver-class-name: oracle.jdbc.OracleDriver
+
+srvtps:
+  forvalteren:
+    username: ${TPSF_CREDENTIAL_USERNAME}
+    password: ${TPSF_CREDENTIAL_PASSWORD}
