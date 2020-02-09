@@ -24,7 +24,7 @@ public class DiskresjonskodeConfig {
     private static final QName DISKRESJON_QNAME = new QName("http://nav.no/tjeneste/pip/diskresjonskode/", "DiskresjonskodePortTypePort");
 
     @Bean
-    DiskresjonskodePortType diskresjonskodePortType() {
+    public DiskresjonskodePortType diskresjonskodePortType() {
         if (logger.isInfoEnabled()) {
             logger.info("Tjeneste etablert med endepunkt: {}", diskresjonskodeAddress);
         }
@@ -32,7 +32,12 @@ public class DiskresjonskodeConfig {
     }
 
     @Bean
-    TpsfStsClient cxfStsClientDiskresjonskode(DiskresjonskodePortType diskresjonskode) {
+    public TpsfStsClient cxfStsClientDiskresjonskode(DiskresjonskodePortType diskresjonskode) {
         return new TpsfStsClient(ClientProxy.getClient(diskresjonskode));
+    }
+
+    @Bean
+    public DiskresjonskodeConsumer diskresjonskodeConsumer() {
+        return new DefaultDiskresjonskodeConsumer();
     }
 }
