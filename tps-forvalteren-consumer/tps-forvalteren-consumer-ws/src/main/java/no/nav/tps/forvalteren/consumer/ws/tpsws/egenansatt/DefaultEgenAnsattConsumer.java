@@ -4,14 +4,12 @@ import javax.xml.ws.soap.SOAPFaultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import no.nav.modig.common.MDCOperations;
 import no.nav.tjeneste.pip.egenansatt.v1.binding.EgenAnsattV1;
 import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 
-@Component
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
 
