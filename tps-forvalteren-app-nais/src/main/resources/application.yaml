@@ -9,6 +9,9 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     url: ${SPRING_DATASOURCE_URL}
     driver-class-name: oracle.jdbc.OracleDriver
+  ldap:
+    username: ${LDAP_USERNAME}
+    password: ${LDAP_PASSWORD}
 
 srvtps:
   forvalteren:

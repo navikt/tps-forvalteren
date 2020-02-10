@@ -25,6 +25,8 @@ public class ApplicationStarter {
                 .readSecret("SPRING_DATASOURCE_URL", "/var/run/secrets/nais.io/dbPath/jdbc_url")
                 .readSecret("TPSF_CREDENTIAL_USERNAME", "/var/run/secrets/nais.io/srvtpsf/username")
                 .readSecret("TPSF_CREDENTIAL_PASSWORD", "/var/run/secrets/nais.io/srvtpsf/password")
+                .readSecret("LDAP_USERNAME", "/var/run/secrets/nais.io/ldap/username")
+                .readSecret("LDAP_PASSWORD", "/var/run/secrets/nais.io/ldap/password")
                 .build();
 
         new SpringApplicationBuilder()

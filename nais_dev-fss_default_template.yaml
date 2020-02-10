@@ -43,3 +43,5 @@ spec:
         mountPath: /var/run/secrets/nais.io/db
       - kvPath: /serviceuser/data/dev/srvtps-forvalteren
         mountPath: /var/run/secrets/nais.io/srvtpsf
+      - kvPath: /serviceuser/data/dev/srvssolinux
+        mountPath: /var/run/secrets/nais.io/ldap
