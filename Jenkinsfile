@@ -7,5 +7,5 @@ naiseratorApplicationPipeline {
         [branch: "release/test", namespace: "u2"],
         [branch: "feature/test-t1", namespace: "t1"]
     ]
-    isTestApplication = true
+    isWhitelisted = true
 }
