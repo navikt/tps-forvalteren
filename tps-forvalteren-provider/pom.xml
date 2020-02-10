@@ -25,11 +25,6 @@
             <artifactId>tps-forvalteren-config</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.session</groupId>-->
-<!--            <artifactId>spring-session-jdbc</artifactId>-->
-<!--        </dependency>-->
-
         <!--LANGUAGE EXTENSIONS-->
         <dependency>
             <groupId>com.google.guava</groupId>
