@@ -41,3 +41,5 @@ spec:
         mountPath: /var/run/secrets/nais.io/dbPath
       - kvPath: /oracle/data/prod/creds/tpsforvalteren-user
         mountPath: /var/run/secrets/nais.io/db
+      - kvPath: /serviceuser/data/prod/srvtps-forvalteren
+        mountPath: /var/run/secrets/nais.io/srvtpsf
