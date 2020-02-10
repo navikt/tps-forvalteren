@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
-public class TpsServiceRoutineHentByFnrRequest extends TpsServiceRoutineHentRequest{
+public class TpsServiceRoutineHentByFnrRequest extends TpsServiceRoutineHentRequest {
 
     private String fnr;
 }

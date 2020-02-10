@@ -41,7 +41,7 @@ public class CreatePersonerFraIdentlisteTestdataControllerCompTest extends Abstr
     public void shouldCreatePerson() throws Exception {
         setupTestdataInTpsfDatabase();
         mvc.perform(post(getUrl())
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("[\"" + IDENT1 + "\",\"" + IDENT2 + "\"]"))
                 .andExpect(status().isOk());
         //sjekk db

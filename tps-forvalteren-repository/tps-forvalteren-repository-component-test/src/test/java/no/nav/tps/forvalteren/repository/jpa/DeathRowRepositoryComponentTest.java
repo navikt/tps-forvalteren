@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.repository.jpa;
 
 import static no.nav.tps.forvalteren.domain.test.provider.DeathRowProvider.aDeathRow;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class DeathRowRepositoryComponentTest {
     public void saveDeathRow() {
         DeathRow deathRow = deathRowRepository.save(aDeathRow().build());
 
-        DeathRow result = deathRowTestRepository.findOne(deathRow.getId());
+        DeathRow result = deathRowTestRepository.findById(deathRow.getId()).get();
 
         assertThat(result, is(deathRow));
     }
@@ -54,9 +54,8 @@ public class DeathRowRepositoryComponentTest {
 
         deathRowRepository.deleteById(deathRow.getId());
 
-        DeathRow result = deathRowTestRepository.findOne(deathRow.getId());
+        Optional<DeathRow> result = deathRowTestRepository.findById(deathRow.getId());
 
-        assertThat(result, is(nullValue()));
+        assertThat(result.isPresent(), is(false));
     }
-
 }

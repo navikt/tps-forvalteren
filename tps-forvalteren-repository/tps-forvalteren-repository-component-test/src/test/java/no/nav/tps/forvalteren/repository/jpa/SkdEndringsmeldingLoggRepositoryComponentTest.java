@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 import java.util.List;
 import javax.transaction.Transactional;
@@ -36,7 +36,7 @@ public class SkdEndringsmeldingLoggRepositoryComponentTest {
     public void save() {
         SkdEndringsmeldingLogg storedLogg = repository.save(logg);
 
-        SkdEndringsmeldingLogg result = testRepository.findOne(storedLogg.getId());
+        SkdEndringsmeldingLogg result = testRepository.findById(storedLogg.getId()).get();
         
         assertThat(result, is(storedLogg));
     }
@@ -54,5 +54,4 @@ public class SkdEndringsmeldingLoggRepositoryComponentTest {
         assertThat(result, hasItem(logg1));
         assertThat(result, hasItem(logg2));
     }
-
 }

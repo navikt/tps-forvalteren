@@ -4,9 +4,9 @@ import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGrup
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
 
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +61,7 @@ public class SkdEndringsmeldingGruppeRepositoryComponentTest {
     public void save() {
         SkdEndringsmeldingGruppe storedGruppe = repository.save(gruppe);
 
-        SkdEndringsmeldingGruppe result = testRepository.findOne(storedGruppe.getId());
+        SkdEndringsmeldingGruppe result = testRepository.findById(storedGruppe.getId()).get();
         
         assertThat(result, is(storedGruppe));
     }
@@ -73,9 +73,9 @@ public class SkdEndringsmeldingGruppeRepositoryComponentTest {
 
         repository.deleteById(storedGruppe.getId());
 
-        SkdEndringsmeldingGruppe result = testRepository.findOne(storedGruppe.getId());
+        Optional<SkdEndringsmeldingGruppe> result = testRepository.findById(storedGruppe.getId());
 
-        assertThat(result, is(nullValue()));
+        assertThat(result.isPresent(), is(false));
     }
 
 }

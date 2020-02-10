@@ -39,15 +39,15 @@ public class TpsRequestService {
     public Response executeServiceRutineRequest(TpsServiceRoutineRequest tpsRequest, TpsServiceRoutineDefinitionRequest serviceRoutine, TpsRequestContext context, long timeout)
             throws JMSException, IOException {
 
-        if(currentEnvironmentIsProd){
+        if (currentEnvironmentIsProd) {
             forbiddenCallHandlerService.authoriseRestCall(serviceRoutine);
         }
 
         MessageQueueConsumer messageQueueConsumer =
                 messageQueueServiceFactory.createMessageQueueConsumer(context.getEnvironment(), serviceRoutine.getConfig().getRequestQueue(), false);
 
-        if(currentEnvironmentIsProd && (tpsRequest instanceof TpsServiceRoutineHentByFnrRequest) ){
-            forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine,((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
+        if (currentEnvironmentIsProd && (tpsRequest instanceof TpsServiceRoutineHentByFnrRequest)) {
+            forbiddenCallHandlerService.authorisePersonSearch(serviceRoutine, ((TpsServiceRoutineHentByFnrRequest) tpsRequest).getFnr());
         }
 
         tpsRequest.setServiceRutinenavn(removeTestdataFromServicerutinenavn(tpsRequest.getServiceRutinenavn()));
@@ -64,9 +64,9 @@ public class TpsRequestService {
         return response;
     }
 
-    private String removeTestdataFromServicerutinenavn(String serviceRutinenavn){
+    private String removeTestdataFromServicerutinenavn(String serviceRutinenavn) {
 
-        if(serviceRutinenavn.endsWith("TESTDATA")){
+        if (serviceRutinenavn.endsWith("TESTDATA")) {
             return serviceRutinenavn.replace("-TESTDATA", "");
         }
         return serviceRutinenavn;

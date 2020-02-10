@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
@@ -32,14 +32,14 @@ public class TpsMeldingControllerTest {
     private RsTpsDoedsmeldingRequest rsTpsDoedsmeldingRequest;
 
     @Test
-    public void sendFoedselsmeldingOk() throws Exception {
+    public void sendFoedselsmeldingOk() {
         tpsMeldingController.sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
 
         verify(sendTpsFoedselsmeldingService).sendFoedselsmelding(rsTpsFoedselsmeldingRequest);
     }
 
     @Test
-    public void sendDoedsmeldingOk() throws Exception {
+    public void sendDoedsmeldingOk() {
         tpsMeldingController.sendDoedsmelding(rsTpsDoedsmeldingRequest);
 
         verify(sendTpsDoedsmeldingService).sendDoedsmelding(rsTpsDoedsmeldingRequest);

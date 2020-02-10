@@ -7,7 +7,7 @@ import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.EnvironmentController;

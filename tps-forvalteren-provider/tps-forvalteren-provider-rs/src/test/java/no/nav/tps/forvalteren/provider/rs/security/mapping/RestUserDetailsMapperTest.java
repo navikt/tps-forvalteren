@@ -1,25 +1,25 @@
 package no.nav.tps.forvalteren.provider.rs.security.mapping;
 
-import no.nav.tps.forvalteren.service.user.UserRole;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.ldap.core.DirContextAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
-
-import javax.naming.Name;
-import java.util.Set;
-
 import static com.google.common.collect.Sets.newHashSet;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.Set;
+import javax.naming.Name;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.ldap.core.DirContextAdapter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
+
+import no.nav.tps.forvalteren.service.user.UserRole;
 
 
 @RunWith(MockitoJUnitRunner.class)

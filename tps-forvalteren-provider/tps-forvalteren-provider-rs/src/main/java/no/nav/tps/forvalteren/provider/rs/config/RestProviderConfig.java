@@ -3,12 +3,8 @@ package no.nav.tps.forvalteren.provider.rs.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import no.nav.tps.forvalteren.provider.rs.api.v1.documentation.SwaggerConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
@@ -36,15 +32,5 @@ public class RestProviderConfig extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/api").setViewName("redirect:/swagger-ui.html");
     }
-    
-    @Component
-    public class MyObjectMapper extends ObjectMapper {
-        public MyObjectMapper() {
-            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-            enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-            findAndRegisterModules();
-        }
-    }
+
 }

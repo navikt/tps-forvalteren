@@ -3,9 +3,9 @@ package no.nav.tps.forvalteren.domain.rs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

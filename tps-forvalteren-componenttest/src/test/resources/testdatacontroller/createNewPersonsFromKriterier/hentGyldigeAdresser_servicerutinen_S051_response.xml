@@ -10,7 +10,7 @@
 		<husNrsok/>
 		<kommuneNrsok/>
 		<postNrsok/>
-		<maxRetur>1</maxRetur>
+		<maxRetur>2</maxRetur>
 		<alltidRetur>J</alltidRetur>
 		<alleSkrivevarianter>J</alleSkrivevarianter>
 		<visPostnr>J</visPostnr>
@@ -24,6 +24,18 @@
 		</svarStatus>
 		<adresseDataS051>
 			<antallForekomster>001</antallForekomster>
+			<adrData>
+				<knr>0901</knr>
+				<knavn>Risør</knavn>
+				<adrnavn>GRANLIVEIEN</adrnavn>
+				<husnrfra>0005</husnrfra>
+				<husnrtil>0011</husnrtil>
+				<pnr>4950</pnr>
+				<psted>RISØR</psted>
+				<geotilk>0901</geotilk>
+				<gkode>01372</gkode>
+				<bydel></bydel>
+			</adrData>
 			<adrData>
 				<knr>0901</knr>
 				<knavn>Risør</knavn>

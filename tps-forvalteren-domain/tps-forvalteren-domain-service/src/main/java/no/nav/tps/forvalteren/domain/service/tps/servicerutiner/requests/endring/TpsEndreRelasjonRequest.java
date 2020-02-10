@@ -19,7 +19,7 @@ public class TpsEndreRelasjonRequest extends TpsServiceRoutineEndringRequest {
     private String relasjonsFnr2;
     private String fomRelasjon;
     private String tomRelasjon;
-    
+
     @Builder
     public TpsEndreRelasjonRequest(String serviceRutinenavn, String offentligIdent, String typeRelasjon, String relasjonsFnr1, String relasjonsFnr2, String fomRelasjon, String tomRelasjon) {
         super(serviceRutinenavn, offentligIdent);

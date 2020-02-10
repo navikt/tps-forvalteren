@@ -9,9 +9,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -77,7 +77,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
         endTransactionIfActive();
         setupTestdataInTpsfDatabase();
 
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content(
                         "{\"personKriterierListe\":[{\"identtype\":\"FNR\",\"kjonn\":\"K\",\"foedtEtter\":\"2016-02-16T00:00:00.000Z\",\"foedtFoer\":\"2018-04-20T00:00:00.000Z\",\"antall\":\"2\"}],\"withAdresse\":true}"))
                 .andExpect(status().isOk());

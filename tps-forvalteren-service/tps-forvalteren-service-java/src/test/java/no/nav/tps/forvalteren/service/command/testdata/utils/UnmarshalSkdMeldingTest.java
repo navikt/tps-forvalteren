@@ -5,20 +5,18 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalMeldingstypeException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans2;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * @author Jarl Øystein Samseth, Visma Consulting
- */
 @RunWith(MockitoJUnitRunner.class)
 public class UnmarshalSkdMeldingTest {
 	private static final String ILLEGAL_TRANSTYPE = "0";

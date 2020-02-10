@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils.RsTpsResponseMappingUtils.STATUS_KEY;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
@@ -108,7 +108,6 @@ public class SendNavEndringsmeldingerTest {
 
         when(opprettEgenAnsattMelding.execute(any(), eq(environments))).thenReturn(opprettEgenAnsattResultat);
         when(opprettSikkerhetstiltakMelding.execute(any(), eq(environments))).thenReturn(opprettSikTiltakResultat);
-        when(tpsNavEndringsMelding.getMelding()).thenReturn(tpsServiceRoutineRequest);
 
         sendNavEndringsmeldinger.execute(testPersonerListe, environments);
 

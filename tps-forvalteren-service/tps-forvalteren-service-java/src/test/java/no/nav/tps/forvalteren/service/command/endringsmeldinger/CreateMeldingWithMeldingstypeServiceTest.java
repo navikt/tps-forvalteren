@@ -2,16 +2,16 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static org.mockito.Mockito.verify;
 
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
-import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans2;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.List;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
+import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateMeldingWithMeldingstypeServiceTest {

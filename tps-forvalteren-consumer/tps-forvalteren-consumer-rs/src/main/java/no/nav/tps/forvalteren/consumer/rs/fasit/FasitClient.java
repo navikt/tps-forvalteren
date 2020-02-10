@@ -4,9 +4,6 @@ import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.QUE
 import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.TPSF_FASIT_APP_NAME;
 
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -20,14 +17,8 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 public class FasitClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FasitClient.class);
-
     private static final long CACHE_MAX_SIZE = 100;
     private static final long CACHE_MINUTES_TO_LIVE = 30;
-    private static final String DEFAULT_ENVIRONMENT_NUMBER = "6";
-    private static final String PING_QUEUE_MANAGER_ALIAS = "mqGateway";
-    private static final ResourceTypeDO PING_TYPE = ResourceTypeDO.QueueManager;
-    private static final String PING_APPLICATION_NAME = "tpsws";
     private static final String PREFIX_MQ_QUEUES = "QA.";
     private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
     private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
@@ -36,18 +27,6 @@ public class FasitClient {
     private FasitRestClient restClient;
 
     private Cache<String, ResourceElement> cache;
-
-    @Value("${fasit.environment.name}")
-    private String deployedEnvironment;
-
-    @Value("${mqgateway.hostname}")
-    private String mqHostname;
-
-    @Value("${mqgateway.port}")
-    private String mqPort;
-
-    @Value("${mqgateway.name}")
-    private String mqManagerName;
 
     public FasitClient(String baseUrl, String username, String password) {
         this.restClient = new FasitRestClient(baseUrl, username, password);
@@ -117,23 +96,4 @@ public class FasitClient {
             return PREFIX_MQ_QUEUES + environmentForQueueName.toUpperCase() + MID_PREFIX_QUEUE_ENDRING + alias;
         }
     }
-
-     // Ping på isReady()
-    public boolean ping() {
-        try {
-            String environmentClass = deployedEnvironment.substring(0,1);
-            if (!"p".equalsIgnoreCase(deployedEnvironment)) {
-                environmentClass = deployedEnvironment + DEFAULT_ENVIRONMENT_NUMBER;
-            }
-
-            DomainDO domain = FasitUtilities.domainFor(environmentClass);
-
-            this.restClient.getResource(environmentClass, PING_QUEUE_MANAGER_ALIAS, PING_TYPE, domain, PING_APPLICATION_NAME);
-        } catch (RuntimeException exception) {
-            LOGGER.warn("Pinging Fasit failed with exception: {}", exception.toString());
-            throw exception;
-        }
-        return true;
-    }
-
 }

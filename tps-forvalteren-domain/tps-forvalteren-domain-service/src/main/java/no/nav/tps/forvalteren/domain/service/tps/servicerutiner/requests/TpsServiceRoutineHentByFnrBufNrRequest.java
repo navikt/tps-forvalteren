@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
-public class TpsServiceRoutineHentByFnrBufNrRequest extends TpsServiceRoutineHentByFnrRequest{
+public class TpsServiceRoutineHentByFnrBufNrRequest extends TpsServiceRoutineHentByFnrRequest {
 
     private String buffNr;
 }

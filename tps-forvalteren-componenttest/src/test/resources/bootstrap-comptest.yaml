@@ -1,0 +1,6 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    vault:
+      enabled: false

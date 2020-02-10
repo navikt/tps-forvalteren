@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.prometheus;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.spring.autoconfigure.MeterRegistryCustomizer;
-import no.nav.tps.forvalteren.service.prometheus.timed.TimedMethodInterceptor;
-import no.nav.tps.forvalteren.service.prometheus.timed.TimedPointcutAdvisor;
-
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import no.nav.tps.forvalteren.service.prometheus.timed.TimedMethodInterceptor;
+import no.nav.tps.forvalteren.service.prometheus.timed.TimedPointcutAdvisor;
 
 @Configuration
 public class MicrometerConfig {
@@ -25,4 +25,9 @@ public class MicrometerConfig {
     public TimedMethodInterceptor timedMethodInterceptor() {
         return new TimedMethodInterceptor();
     }
+
+//    @Bean
+//    InitializingBean prometheusBeanPostProcessor(BeanPostProcessor meterRegistryPostProcessor, PrometheusMeterRegistry prometheusMeterRegistry) {
+//        return () -> meterRegistryPostProcessor.postProcessAfterInitialization(prometheusMeterRegistry, "");
+//    }
 }

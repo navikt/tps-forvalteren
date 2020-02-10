@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_GRUPPE_NOT_FOUND;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,7 +13,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -51,7 +51,6 @@ public class CreateSkdEndringsmeldingFromTypeServiceTest {
     
     @Before
     public void setup() {
-        when(rsMeldingstype.getId()).thenReturn(MELDING_ID);
         when(skdEndringsmeldingGruppeRepository.findById(GRUPPE_ID)).thenReturn(gruppe);
         when(rsNewSkdEndringsmelding.getMeldingstype()).thenReturn(MELDINGSTYPE);
         when(rsNewSkdEndringsmelding.getNavn()).thenReturn(MELDING_NAVN);

@@ -1,8 +1,9 @@
 package no.nav.tps.forvalteren.domain.service.config;
 
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 
 @Configuration
 @ComponentScan(basePackageClasses = RelasjonType.class)

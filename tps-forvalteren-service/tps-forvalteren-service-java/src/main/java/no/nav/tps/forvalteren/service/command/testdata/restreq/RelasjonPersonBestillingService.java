@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.reverse;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
@@ -12,7 +14,6 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.assertj.core.util.Lists.newArrayList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Lists;
 
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
@@ -111,7 +111,7 @@ public class RelasjonPersonBestillingService {
             List<RsPartnerRelasjonRequest> partnere,
             Map<String, Person> personer) {
 
-        Lists.reverse(partnere).forEach(partner ->
+        reverse(partnere).forEach(partner ->
 
                 partner.getSivilstander().forEach(sivilstand ->
 
@@ -151,8 +151,8 @@ public class RelasjonPersonBestillingService {
 
     private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn) {
 
-            setRelasjonForBarn(hovedPerson, barn);
-            setRelasjonForBarn(partner, barn);
+        setRelasjonForBarn(hovedPerson, barn);
+        setRelasjonForBarn(partner, barn);
     }
 
     private static void setRelasjonForBarn(Person forelder, Person barn) {

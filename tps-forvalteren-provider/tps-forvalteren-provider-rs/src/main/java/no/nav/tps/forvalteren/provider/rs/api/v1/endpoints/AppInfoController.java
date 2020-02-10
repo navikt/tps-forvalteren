@@ -11,7 +11,7 @@ import no.nav.tps.forvalteren.domain.service.appinfo.ApplicationInfo;
 @RequestMapping(value = "api/v1")
 public class AppInfoController {
 
-    @Value("${fasit.environment.name}")
+    @Value("${tpsf.environment.name}")
     private String environmentName;
 
     @Value("${application.version}")

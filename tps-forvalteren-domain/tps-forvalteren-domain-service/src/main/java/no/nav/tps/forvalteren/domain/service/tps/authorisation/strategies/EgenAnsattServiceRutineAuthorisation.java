@@ -1,11 +1,10 @@
 package no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies;
 
-import org.codehaus.jackson.annotate.JsonIgnoreType;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
 public class EgenAnsattServiceRutineAuthorisation implements ServiceRutineAuthorisationStrategy {
-    public static EgenAnsattServiceRutineAuthorisation egenAnsattAuthorisation(){
+    public static EgenAnsattServiceRutineAuthorisation egenAnsattAuthorisation() {
         return new EgenAnsattServiceRutineAuthorisation();
     }
 }

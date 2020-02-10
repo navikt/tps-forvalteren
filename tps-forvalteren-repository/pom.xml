@@ -15,5 +15,20 @@
         <module>tps-forvalteren-repository-component-test</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ucp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ons</artifactId>
+        </dependency>
+    </dependencies>
 </project>

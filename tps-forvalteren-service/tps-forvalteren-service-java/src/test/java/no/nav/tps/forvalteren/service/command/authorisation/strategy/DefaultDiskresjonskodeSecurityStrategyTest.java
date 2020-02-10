@@ -1,28 +1,28 @@
 package no.nav.tps.forvalteren.service.command.authorisation.strategy;
 
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.service.user.UserRole;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.HashSet;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation;
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation;
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import no.nav.tps.forvalteren.service.user.UserRole;
 
 
 @RunWith(MockitoJUnitRunner.class)

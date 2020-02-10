@@ -1,12 +1,11 @@
 package no.nav.tps.forvalteren.consumer.ws.config;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.KodeverkConsumerConfig;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConfig;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConfig;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.KodeverkConsumerConfig;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConfig;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConfig;
 
 @Configuration
 @Import({

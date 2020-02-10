@@ -47,7 +47,7 @@ public class SavePersonListService {
         for (Person person : personer) {
             Set<Long> utdaterteRelasjonIder = new HashSet<>();
 
-            Person personDb = personRepository.findById(person.getId());
+            Person personDb = personRepository.findByIdent(person.getIdent());
             if (nonNull(personDb)) {
                 oppdaterRelasjonReferanser.execute(person, personDb);
                 person.getSivilstander().forEach(sivilstand -> sivilstand.setPerson(person));

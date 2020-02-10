@@ -25,7 +25,7 @@ public class DeletePersonsCompTest extends AbstractTestdataControllerComponentTe
     public void shouldDeletePersons() throws Exception {
         List ids = setupTestdataPersonerInTpsfDatabase()
                 .stream().map(Person::getId).collect(Collectors.toList());
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8).content("{\"ids\":" + ids.toString() + "}")).andExpect(status().isOk());
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON).content("{\"ids\":" + ids.toString() + "}")).andExpect(status().isOk());
         
         assertTrue(personRepository.findAllByOrderByIdAsc().isEmpty());
     }
@@ -38,7 +38,7 @@ public class DeletePersonsCompTest extends AbstractTestdataControllerComponentTe
     @Test
     public void shouldReturnOkIfDeletionOfNonexistingPerson() throws Exception {
         personRepository.deleteAll();
-        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8).content("{\"ids\":[100053405,100053406]}")).andExpect(status().isOk());
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON).content("{\"ids\":[100053405,100053406]}")).andExpect(status().isOk());
         
     }
 }

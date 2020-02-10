@@ -1,13 +1,12 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.time.LocalDateTime;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import java.time.LocalDateTime;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetStringVersionOfLocalDateTimeTest {

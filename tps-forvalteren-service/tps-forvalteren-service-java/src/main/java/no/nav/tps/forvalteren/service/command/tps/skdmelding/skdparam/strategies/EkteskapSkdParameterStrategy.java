@@ -1,6 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import static java.util.Objects.isNull;
+
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +66,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setRegDato(yyyyMMdd);
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
-        Person ektefelle = null;
+        Optional<Person> ektefelle = null;
         List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
         for (Relasjon relasjon : personRelasjoner) {
             if (RelasjonType.EKTEFELLE.getName().equals(relasjon.getRelasjonTypeNavn())) {
@@ -71,11 +74,11 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
                 break;
             }
         }
-        if (ektefelle == null) {
+        if (isNull(ektefelle) || !ektefelle.isPresent()) {
             return;
         }
 
-        if (person.getKjonn().equals(ektefelle.getKjonn())) {
+        if (person.getKjonn().equals(ektefelle.get().getKjonn())) {
             skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
             skdMeldingTrans1.setSivilstand(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode());
         } else {
@@ -83,10 +86,10 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
             skdMeldingTrans1.setSivilstand(Sivilstand.GIFT.getRelasjonTypeKode());
         }
 
-        skdMeldingTrans1.setFamilienummer(ektefelle.getIdent());
+        skdMeldingTrans1.setFamilienummer(ektefelle.get().getIdent());
 
-        skdMeldingTrans1.setEktefellePartnerFoedselsdato(ektefelle.getIdent().substring(0, 6));
-        skdMeldingTrans1.setEktefellePartnerPersonnr(ektefelle.getIdent().substring(6, 11));
+        skdMeldingTrans1.setEktefellePartnerFoedselsdato(ektefelle.get().getIdent().substring(0, 6));
+        skdMeldingTrans1.setEktefellePartnerPersonnr(ektefelle.get().getIdent().substring(6, 11));
         skdMeldingTrans1.setEktefelleEkteskapPartnerskapNr(Integer.toString(1));
         skdMeldingTrans1.setEkteskapPartnerskapNr(Integer.toString(1));
 

@@ -15,7 +15,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 public class TpsEndreEgenansattRequest extends TpsServiceRoutineEndringRequest {
     private String fom;
     private String tom;
-    
+
     @Builder
     public TpsEndreEgenansattRequest(String serviceRutinenavn, String offentligIdent, String fom, String tom) {
         super(serviceRutinenavn, offentligIdent);

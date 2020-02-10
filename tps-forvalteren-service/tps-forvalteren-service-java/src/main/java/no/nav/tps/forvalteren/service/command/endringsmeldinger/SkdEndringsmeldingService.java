@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
@@ -46,7 +44,7 @@ public class SkdEndringsmeldingService {
 
     public List<SkdEndringsmelding> findSkdEndringsmeldingerOnPage(Long gruppeId, int pageNumber) {
         SkdEndringsmeldingGruppe gruppe = gruppeRepository.findById(gruppeId);
-        return skdEndringsmeldingRepository.findAllByGruppe(gruppe, new PageRequest(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
+        return skdEndringsmeldingRepository.findAllByGruppe(gruppe, PageRequest.of(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
     }
 
     public List<RsMeldingstype> convertSkdEndringsmeldingerToRsMeldingstyper(List<SkdEndringsmelding> skdEndringsmeldinger) throws IOException {

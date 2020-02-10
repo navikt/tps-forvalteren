@@ -1,10 +1,18 @@
 package no.nav.tps.forvalteren.service.command.authorisation;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
-import no.nav.tps.forvalteren.service.command.authorisation.strategy.SearchSecurityStrategy;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -12,21 +20,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.service.command.authorisation.strategy.RestSecurityStrategy;
+import no.nav.tps.forvalteren.service.command.authorisation.strategy.SearchSecurityStrategy;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -140,7 +140,6 @@ public class DefaultForbiddenCallHandlerServiceTest {
 
         when(s1.isAuthorised()).thenReturn(true);
         when(s2.isAuthorised()).thenReturn(false);
-        when(s3.isAuthorised()).thenReturn(false);
 
         authorisationService.authoriseRestCall(serviceRoutine);
 
@@ -221,7 +220,6 @@ public class DefaultForbiddenCallHandlerServiceTest {
 
         when(s1.isAuthorised(anyString())).thenReturn(true);
         when(s2.isAuthorised(anyString())).thenReturn(false);
-        when(s3.isAuthorised(anyString())).thenReturn(false);
 
         authorisationService.authorisePersonSearch(serviceRoutine, FNR);
 

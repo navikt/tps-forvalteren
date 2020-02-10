@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 
@@ -37,7 +37,7 @@ public class DeleteRelasjonerByIdInTest {
     public void verifyServiceCall() {
         deleteRelasjonerByIdIn.execute(personIds);
 
-        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
+        verify(relasjonRepository).deleteByPersonRelasjonMedIdIn(anyList());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class DeleteRelasjonerByIdInTest {
         
         deleteRelasjonerByIdIn.execute(personIds);
         
-        verify(relasjonRepository, times(10)).deleteByPersonRelasjonMedIdIn(anyListOf(Long.class));
+        verify(relasjonRepository, times(10)).deleteByPersonRelasjonMedIdIn(anyList());
     }
     
 }

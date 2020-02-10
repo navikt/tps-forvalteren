@@ -1,19 +1,20 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
-import no.nav.tps.forvalteren.domain.rs.RsMatrikkeladresse;
-import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
+import static no.nav.tps.forvalteren.domain.test.provider.MatrikkeladresseProvider.standardMatrikkeladresse;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static no.nav.tps.forvalteren.domain.test.provider.MatrikkeladresseProvider.standardMatrikkeladresse;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
+import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
+import no.nav.tps.forvalteren.domain.rs.RsMatrikkeladresse;
+import no.nav.tps.forvalteren.provider.rs.util.MapperTestUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MatrikkeladresseRestMappingStrategyTest {

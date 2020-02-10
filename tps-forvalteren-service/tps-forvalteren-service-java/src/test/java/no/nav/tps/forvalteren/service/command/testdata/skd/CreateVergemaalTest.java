@@ -1,24 +1,25 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
+import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateVergemaalTest {
@@ -52,7 +53,7 @@ public class CreateVergemaalTest {
         listeMedPersoner.add(person);
 
         when(vergemaalRepository.findAllByIdent(anyString())).thenReturn(listeMedVergemaal);
-        when(skdMessageCreatorTrans1.createVergemaalSkdMelding(anyListOf(Vergemaal.class), anyBoolean())).thenReturn(listeSkdMeldinger);
+        when(skdMessageCreatorTrans1.createVergemaalSkdMelding(anyList(), anyBoolean())).thenReturn(listeSkdMeldinger);
     }
 
     @Test
@@ -60,7 +61,7 @@ public class CreateVergemaalTest {
         List<SkdMeldingTrans1> result = createVergemaal.execute(listeMedPersoner, false);
 
         verify(vergemaalRepository).findAllByIdent(anyString());
-        verify(skdMessageCreatorTrans1).createVergemaalSkdMelding(anyListOf(Vergemaal.class), anyBoolean());
+        verify(skdMessageCreatorTrans1).createVergemaalSkdMelding(anyList(), anyBoolean());
         assertThat(result, is(listeSkdMeldinger));
 
     }

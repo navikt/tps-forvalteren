@@ -2,12 +2,11 @@ package no.nav.tps.forvalteren.domain.rs.skd;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import lombok.Builder;
-import org.hibernate.validator.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
