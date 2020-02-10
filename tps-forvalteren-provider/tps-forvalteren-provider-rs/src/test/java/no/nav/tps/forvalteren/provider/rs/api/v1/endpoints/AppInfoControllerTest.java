@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import no.nav.tps.forvalteren.domain.service.appinfo.ApplicationInfo;
@@ -18,7 +18,7 @@ public class AppInfoControllerTest {
     private AppInfoController appInfoController;
 
     @Test
-    public void happyPath(){
+    public void happyPath() {
         ReflectionTestUtils.setField(appInfoController, "environmentName", "testEnv");
         ReflectionTestUtils.setField(appInfoController, "appVersion", "testAppV");
 

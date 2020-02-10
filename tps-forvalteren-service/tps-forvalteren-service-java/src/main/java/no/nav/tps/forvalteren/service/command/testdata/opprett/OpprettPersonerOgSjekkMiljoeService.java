@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import static org.assertj.core.util.Sets.newHashSet;
+import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
-import com.google.common.collect.Sets;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
@@ -46,7 +45,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
         Set<String> ledigeIdenterDB = findIdenterNotUsedInDB.filtrer(newHashSet(request.getOpprettFraIdenter()));
 
-        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, Sets.newHashSet(PROD_ENV));
+        Set<String> ledigeIdenterMiljo = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(ledigeIdenterDB, newHashSet(PROD_ENV));
 
         Set<String> ledigeIdenterKorrigert = identpoolService.whitelistAjustmentOfIdents(request.getOpprettFraIdenter(), ledigeIdenterDB, ledigeIdenterMiljo);
 

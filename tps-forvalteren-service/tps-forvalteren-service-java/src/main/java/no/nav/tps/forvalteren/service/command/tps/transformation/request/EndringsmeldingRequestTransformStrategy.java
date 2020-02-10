@@ -1,18 +1,19 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.request;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.xml.XmlMapper;
-import no.nav.tps.forvalteren.domain.service.tps.Request;
-import no.nav.tps.forvalteren.domain.service.tps.TpsSystemInfo;
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.TPSF_KILDE;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Transformer;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
-import no.nav.tps.forvalteren.service.command.exceptions.XmlWriteException;
+
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.xml.XmlMapper;
+
+import no.nav.tps.forvalteren.domain.service.tps.Request;
+import no.nav.tps.forvalteren.domain.service.tps.TpsSystemInfo;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Transformer;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
+import no.nav.tps.forvalteren.service.command.exceptions.XmlWriteException;
 
 @Component
 public class EndringsmeldingRequestTransformStrategy implements RequestTransformStrategy {

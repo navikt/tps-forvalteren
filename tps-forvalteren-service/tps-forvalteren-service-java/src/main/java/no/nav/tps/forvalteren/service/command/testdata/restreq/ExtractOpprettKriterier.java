@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -13,7 +14,6 @@ import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBes
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.assertj.core.util.Lists.newArrayList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -76,9 +76,6 @@ public class ExtractOpprettKriterier {
 
     public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
 
-        if (nonNull(request.getRelasjoner().getPartner())) {
-            request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
-        }
         List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getPartnere().size());
         request.getRelasjoner().getPartnere().forEach(partnerReq -> {
             RsPersonKriterier kriterium = prepareKriterium(partnerReq);
@@ -185,11 +182,13 @@ public class ExtractOpprettKriterier {
                     RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
                     barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    mapBoadresse(barn.get(barnStartIndex + j),
-                            (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
-                                    hovedPersoner.get(i).getBoadresse().get(0) :
-                                    getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
-                            extractFlyttedato(barnRequest.getBoadresse()));
+                    if (hasAdresse(barnRequest)) {
+                        mapBoadresse(barn.get(barnStartIndex + j),
+                                (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
+                                        hovedPersoner.get(i).getBoadresse().get(0) :
+                                        getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
+                                extractFlyttedato(barnRequest.getBoadresse()));
+                    }
                     alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
                     barn.get(barnStartIndex + j).setSivilstand(null);
                 }
@@ -247,6 +246,13 @@ public class ExtractOpprettKriterier {
 
     private static boolean hasAdresse(Person person) {
         return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet();
+    }
+
+    private static boolean hasAdresse(RsBarnRequest request) {
+        return !SPSF.name().equals(request.getSpesreg()) &&
+                !request.isUtenFastBopel() &&
+                nonNull(request.getForsvunnetDato()) &&
+                nonNull(request.getUtvandretTilLand());
     }
 
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {

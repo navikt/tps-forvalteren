@@ -19,6 +19,6 @@ import no.nav.tps.forvalteren.repository.jpa.config.RepositoryConfig;
         MapperConfig.class,
         RestProviderConfig.class
 })
-public class LocalApplicationConfig {
+public class ApplicationConfig {
 
 }

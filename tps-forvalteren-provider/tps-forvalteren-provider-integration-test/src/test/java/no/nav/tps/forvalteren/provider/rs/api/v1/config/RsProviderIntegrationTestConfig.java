@@ -18,13 +18,16 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
 import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
+import no.nav.tps.forvalteren.service.IdentpoolService;
 
 @Configuration
 @ComponentScan(basePackages = "no.nav.tps.forvalteren.provider")
@@ -109,5 +112,20 @@ public class RsProviderIntegrationTestConfig {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         jmsTemplate.setReceiveTimeout(100);
         return jmsTemplate;
+    }
+
+    @Bean
+    public MessageProvider messageProvider() {
+        return mock(MessageProvider.class);
+    }
+
+    @Bean
+    public IdentpoolService identpoolService() {
+        return mock(IdentpoolService.class);
+    }
+
+    @Bean
+    public IdentpoolConsumer identpoolConsumer() {
+        return mock(IdentpoolConsumer.class);
     }
 }

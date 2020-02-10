@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
@@ -75,7 +75,7 @@ public class SavePersonListServiceTest {
         person.setEndretDato(LocalDateTime.now());
         persons.add(person);
 
-        when(personRepository.findById(person.getId())).thenReturn(person);
+        when(personRepository.findByIdent(person.getIdent())).thenReturn(person);
         when(hentUtdaterteRelasjonIder.execute(person, person)).thenReturn(utdaterteRelasjonIder);
     }
 
@@ -83,29 +83,26 @@ public class SavePersonListServiceTest {
     public void verifyThatAllServicesGetsCalled() {
         savePersonListService.execute(persons);
 
-        verify(personRepository).findById(person.getId());
+        verify(personRepository).findByIdent(person.getIdent());
         verify(oppdaterRelasjonReferanser).execute(person, person);
         verify(hentUtdaterteRelasjonIder).execute(person, person);
         verify(adresseRepository).deleteAllByPerson(person);
         verify(personRepository).save(persons.get(0));
         verify(relasjonRepository).deleteByIdIn(utdaterteRelasjonIder);
-
     }
 
     @Test
     public void verifyThatMandatoryServicesGetsCalled() {
         persons.get(0).setBoadresse(null);
-        when(personRepository.findById(person.getId())).thenReturn(null);
+        when(personRepository.findByIdent(person.getIdent())).thenReturn(null);
 
         savePersonListService.execute(persons);
 
-        verify(personRepository).findById(person.getId());
+        verify(personRepository).findByIdent(person.getIdent());
         verify(oppdaterRelasjonReferanser, never()).execute(person, person);
         verify(hentUtdaterteRelasjonIder, never()).execute(person, person);
         verify(adresseRepository, never()).deleteAllByPerson(person);
         verify(personRepository).save(persons.get(0));
         verify(relasjonRepository, never()).deleteByIdIn(utdaterteRelasjonIder);
-
     }
-
 }

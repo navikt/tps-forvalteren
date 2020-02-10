@@ -76,7 +76,7 @@ public class ValidateSivilstandService {
 
     private void validateDatoer(List<RsPartnerRequest> partnereRequest) {
 
-        LocalDateTime dateComperator = LocalDateTime.now();
+        LocalDateTime dateComperator = LocalDateTime.now().plusDays(2);
 
         for (int i = 0; i < partnereRequest.size(); i++) {
             for (int j = 0; j < partnereRequest.get(i).getSivilstander().size(); j++) {

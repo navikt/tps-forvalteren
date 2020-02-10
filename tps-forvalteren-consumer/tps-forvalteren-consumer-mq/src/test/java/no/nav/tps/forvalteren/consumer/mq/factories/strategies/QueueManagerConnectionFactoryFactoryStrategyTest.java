@@ -1,17 +1,18 @@
 package no.nav.tps.forvalteren.consumer.mq.factories.strategies;
 
-import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class QueueManagerConnectionFactoryFactoryStrategyTest {

@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 
@@ -46,7 +46,7 @@ public class DeleteDoedsmeldingByPersonIdInTest {
 
         deleteDoedsmeldingByPersonIdIn.execute(personIds);
 
-        verify(doedsmeldingRepository, times(10)).deleteByPersonIdIn(anyListOf(Long.class));
+        verify(doedsmeldingRepository, times(10)).deleteByPersonIdIn(anyList());
     }
     
 }

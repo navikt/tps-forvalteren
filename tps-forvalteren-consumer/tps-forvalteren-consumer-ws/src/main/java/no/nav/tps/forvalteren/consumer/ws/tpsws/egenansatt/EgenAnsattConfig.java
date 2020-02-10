@@ -24,7 +24,7 @@ public class EgenAnsattConfig {
     private static final QName PIP_EGENANSATT_SERVICE_NAME = new QName("http://nav.no/tjeneste/pip/egenAnsatt/v1/", "EgenAnsatt_v1Port");
 
     @Bean
-    EgenAnsattV1 egenAnsatt() {
+    public EgenAnsattV1 egenAnsatt() {
         if (logger.isInfoEnabled()) {
             logger.info("Tjeneste etablert med endepunkt: {}", egenAnsattAddress);
         }
@@ -32,7 +32,12 @@ public class EgenAnsattConfig {
     }
 
     @Bean
-    TpsfStsClient cxfStsClientEgenAnsatt(EgenAnsattV1 egenAnsatt) {
+    public TpsfStsClient cxfStsClientEgenAnsatt(EgenAnsattV1 egenAnsatt) {
         return new TpsfStsClient(ClientProxy.getClient(egenAnsatt));
+    }
+
+    @Bean
+    public EgenAnsattConsumer egenAnsattConsumer() {
+        return new DefaultEgenAnsattConsumer();
     }
 }

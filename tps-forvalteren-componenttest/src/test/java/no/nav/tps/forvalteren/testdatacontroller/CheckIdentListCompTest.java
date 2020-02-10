@@ -4,8 +4,8 @@ import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer.DEFAULT_LES_TIMEOUT;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -76,7 +76,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
                 new IdentMedStatus(GYLDIG_IDENT_EKSISTERER_I_TPSF, "IL")
         );
 
-        MvcResult mvcResult = mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON_UTF8)
+        MvcResult mvcResult = mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestContent(expectedResponse)))
                 .andExpect(status().isOk()).andReturn();
 

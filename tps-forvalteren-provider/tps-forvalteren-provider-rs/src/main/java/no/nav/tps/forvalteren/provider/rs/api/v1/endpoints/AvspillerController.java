@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.parse;
@@ -9,7 +10,6 @@ import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.DISTRIBUSJONSMELDING;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.assertj.core.util.Lists.newArrayList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

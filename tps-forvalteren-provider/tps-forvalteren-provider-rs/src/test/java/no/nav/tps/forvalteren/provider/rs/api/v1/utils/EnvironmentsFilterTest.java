@@ -1,16 +1,16 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.utils;
 
-import no.nav.tps.forvalteren.service.command.EnvironmentsFilter;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import no.nav.tps.forvalteren.service.command.EnvironmentsFilter;
 
 
 

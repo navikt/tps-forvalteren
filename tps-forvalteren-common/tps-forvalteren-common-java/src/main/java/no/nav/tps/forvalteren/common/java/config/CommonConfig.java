@@ -11,7 +11,6 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import no.nav.tps.forvalteren.common.java.mapping.MapperConfig;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 
-
 @Configuration
 @ComponentScan(basePackageClasses = {
         MessageProvider.class

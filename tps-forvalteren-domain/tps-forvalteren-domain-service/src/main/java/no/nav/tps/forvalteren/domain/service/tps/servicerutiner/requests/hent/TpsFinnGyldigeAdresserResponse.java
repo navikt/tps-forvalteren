@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent;
 
+import static java.util.Objects.isNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -41,6 +44,13 @@ public class TpsFinnGyldigeAdresserResponse {
 
         private Integer antallForekomster;
         private List<Adressedata> adrData;
+
+        public List<Adressedata> getAdrData() {
+            if (isNull(adrData)) {
+                adrData = new ArrayList();
+            }
+            return adrData;
+        }
     }
 
     @Getter

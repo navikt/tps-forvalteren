@@ -1,23 +1,24 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static junit.framework.TestCase.assertTrue;
-import no.nav.tps.forvalteren.domain.jpa.Person;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateUtvandringTest {
@@ -55,7 +56,7 @@ public class CreateUtvandringTest {
 
         captor = ArgumentCaptor.forClass(List.class);
 
-        when(skdMessageCreatorTrans1.execute(anyString(), anyListOf(Person.class), anyBoolean())).thenReturn(Arrays.asList(skdmelding));
+        when(skdMessageCreatorTrans1.execute(anyString(), anyList(), anyBoolean())).thenReturn(Arrays.asList(skdmelding));
     }
 
     @Test

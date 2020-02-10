@@ -1,11 +1,10 @@
 package no.nav.tps.forvalteren.domain.rs;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -121,11 +120,4 @@ public class RsPersonUtenIdenthistorikk {
     private String personStatus;
 
     private String forsvunnetDato;
-
-    public RsPersonUtenIdenthistorikk sorterPersondetaljer() {
-        getBoadresse().sort(Comparator.comparing(RsAdresse::getAdresseId).reversed());
-        getPostadresse().sort(Comparator.comparing(RsPostadresse::getId).reversed());
-        getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId).reversed());
-        return this;
-    }
 }

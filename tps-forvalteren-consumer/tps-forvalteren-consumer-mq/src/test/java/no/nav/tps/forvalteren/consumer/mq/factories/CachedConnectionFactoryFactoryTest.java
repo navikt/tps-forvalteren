@@ -1,19 +1,5 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
-import com.google.common.cache.Cache;
-import com.ibm.mq.jms.MQConnectionFactory;
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -25,7 +11,19 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import com.google.common.cache.Cache;
+import com.ibm.mq.jms.MQConnectionFactory;
 
+import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
+import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
+import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 
 @RunWith(MockitoJUnitRunner.class)

@@ -1,22 +1,5 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import no.nav.tps.forvalteren.domain.jpa.Gruppe;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
-import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aFemalePerson;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
@@ -25,6 +8,23 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.transaction.Transactional;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
+import no.nav.tps.forvalteren.repository.jpa.config.RepositoryTestConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,7 +55,7 @@ public class RelasjonRepositoryComponentTest {
 
         gruppeRepository.save(enGruppe);
 
-        personRepository.save(Arrays.asList(personKari, personOla));
+        personRepository.saveAll(Arrays.asList(personKari, personOla));
 
         Relasjon rel = new Relasjon();
         rel.setPerson(personKari);
@@ -86,7 +86,7 @@ public class RelasjonRepositoryComponentTest {
 
         gruppeRepository.save(enGruppe);
 
-        personRepository.save(Arrays.asList(personKari, personOla));
+        personRepository.saveAll(Arrays.asList(personKari, personOla));
 
         Relasjon rel = new Relasjon();
         rel.setPerson(personKari);
@@ -97,7 +97,7 @@ public class RelasjonRepositoryComponentTest {
 
         relasjonRepository.save(rel);
 
-        Relasjon relasjonFetched = relasjonRepository.findById(rel.getId());
+        Relasjon relasjonFetched = relasjonRepository.findById(rel.getId()).get();
 
         assertNotNull(relasjonFetched);
 
@@ -113,7 +113,7 @@ public class RelasjonRepositoryComponentTest {
 
         gruppeRepository.save(enGruppe);
 
-        personRepository.save(Arrays.asList(personKari,personOla));
+        personRepository.saveAll(Arrays.asList(personKari,personOla));
 
         Person kari = personRepository.findByIdentIn(Arrays.asList(personKari.getIdent())).get(0);
         Person ola = personRepository.findByIdentIn(Arrays.asList(personOla.getIdent())).get(0);

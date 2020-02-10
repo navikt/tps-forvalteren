@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.ResourceHandling.resourceUrlToString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -73,7 +73,8 @@ public class StatusPaaIdenterITpsTest {
     
     private void mockTpsRequestSender() {
         
-        when(tpsRequestSender.sendTpsRequest(any(), any())).thenAnswer(invocation -> createResponseFromTPS(invocation.getArgumentAt(1, TpsRequestContext.class)));
+        when(tpsRequestSender.sendTpsRequest(any(), any()))
+                .thenAnswer(invocation -> createResponseFromTPS(invocation.getArgument(1, TpsRequestContext.class)));
     }
     
     private TpsServiceRoutineResponse createResponseFromTPS(TpsRequestContext context) {

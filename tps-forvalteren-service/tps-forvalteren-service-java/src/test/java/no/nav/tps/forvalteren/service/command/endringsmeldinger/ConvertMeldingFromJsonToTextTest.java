@@ -1,16 +1,18 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMap;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
@@ -56,8 +58,10 @@ public class ConvertMeldingFromJsonToTextTest {
 
     @Test
     public void verifyCorrectServiceForRsMeldingstype2Felter() {
+
         RsMeldingstype melding = new RsMeldingstype2Felter();
-        
+        when(mapper.convertValue(any(RsMeldingstype.class), any(TypeReference.class))).thenReturn(new HashMap());
+
         convertMeldingFromJsonToText.execute(melding);
 
         verify(skdInputParamsToSkdMeldingInnhold).execute(anyMap(), any(SkdFelterContainerTrans2.class));

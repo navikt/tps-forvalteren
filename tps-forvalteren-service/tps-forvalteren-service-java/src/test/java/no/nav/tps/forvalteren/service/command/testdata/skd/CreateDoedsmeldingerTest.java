@@ -3,10 +3,10 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -22,7 +22,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -80,13 +80,9 @@ public class CreateDoedsmeldingerTest {
         alivePersoner = Arrays.asList(anAlivePerson);
         doedePersonerWithoutDoedsmelding = Arrays.asList(aDeadPersonWithoutDoedsmelding);
 
-        when(findGruppeByIdMock.execute(GRUPPE_ID)).thenReturn(gruppeMock);
-        when(gruppeMock.getPersoner()).thenReturn(personer);
         when(findDoedePersonerMock.execute(personer)).thenReturn(doedePersoner);
         when(findPersonerWithoutDoedsmeldingMock.execute(doedePersoner)).thenReturn(doedePersonerWithoutDoedsmelding);
 
-        when(findGruppeByIdMock.execute(GRUPPE_ID_NO_DEAD_PERSONS)).thenReturn(gruppeNoDeadMock);
-        when(gruppeNoDeadMock.getPersoner()).thenReturn(alivePersoner);
         when(findDoedePersonerMock.execute(alivePersoner)).thenReturn(Collections.emptyList());
         when(findPersonerWithoutDoedsmeldingMock.execute(Collections.emptyList())).thenReturn(Collections.emptyList());
     }
@@ -111,7 +107,7 @@ public class CreateDoedsmeldingerTest {
     public void noFurtherCallsWhenNoDoedePersoner() {
         createDoedsmeldinger.execute(alivePersoner, ADD_HEADER);
 
-        verify(skdMessageCreatorTrans1Mock, never()).execute(anyString(), anyListOf(Person.class), anyBoolean());
-        verify(saveDoedsmeldingToDBMock, never()).execute(anyListOf(Person.class));
+        verify(skdMessageCreatorTrans1Mock, never()).execute(anyString(), anyList(), anyBoolean());
+        verify(saveDoedsmeldingToDBMock, never()).execute(anyList());
     }
 }

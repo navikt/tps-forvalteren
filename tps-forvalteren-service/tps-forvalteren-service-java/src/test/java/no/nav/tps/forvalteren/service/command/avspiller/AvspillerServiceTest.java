@@ -4,19 +4,20 @@ import static java.lang.Long.valueOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
@@ -58,6 +59,11 @@ public class AvspillerServiceTest {
 
     @InjectMocks
     private AvspillerService avspillerService;
+
+    @Before
+    public void setup() {
+        when(avspillerDaoService.getStatus(anyLong())).thenReturn(new TpsAvspiller());
+    }
 
     @Test
     public void getTyperOgKilder_OK() {
@@ -109,7 +115,7 @@ public class AvspillerServiceTest {
                 .miljoeFra(ENVIRONMENT)
                 .timeout(TIMEOUT)
                 .build();
-        TpsAvspiller tpsAvspiller = new TpsAvspiller();
+        TpsAvspiller tpsAvspiller = TpsAvspiller.builder().bestillingId(1L).build();
 
         when(mapperFacade.map(any(RsAvspillerRequest.class), eq(TpsPersonData.class))).thenReturn(buildTpsPersonData());
         when(tpsDistribusjonsmeldingService.getDistribusjonsmeldinger(any(TpsPersonData.class), eq(ENVIRONMENT), eq(TIMEOUT))).thenReturn(buildTpsPersonData());

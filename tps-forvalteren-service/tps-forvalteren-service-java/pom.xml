@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-service</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>4.64.0-SNAPSHOT</version>
+        <version>4.65.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -25,6 +25,10 @@
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-consumer-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-consumer-ws</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
@@ -51,23 +55,17 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-spring-legacy</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
-
         <!-- JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>jackson-xml-databind</artifactId>
+            <version>${jackson-xml-databind.version}</version>
         </dependency>
-
-
 
         <!-- Apache Commons IO -->
         <dependency>
@@ -75,15 +73,10 @@
             <artifactId>org.apache.commons.io</artifactId>
         </dependency>
 
-        <!-- Spring Security. So UserRole can be placed in the service layer. -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-ldap</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>

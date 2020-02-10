@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly;
 
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

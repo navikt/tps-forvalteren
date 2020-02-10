@@ -5,9 +5,8 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,8 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import com.fasterxml.jackson.databind.JsonNode;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
@@ -43,7 +41,6 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
     private TpsServiceRoutineRequest tpsServiceRoutineRequestTom;
     private TpsServiceRoutineResponse tpsResponse2Identer, tpsResponse3Identer;
     private Map data1, data2, data3, data4;
-    private JsonNode jsonNodeTom;
     private ResponseStatus responseStatusDummy;
 
     private int ANTALL_LOOP_I_EN_KJOERING = 1;
@@ -83,8 +80,6 @@ public class FiltrerPaaIdenterTilgjengeligIMiljoTest {
 
         when(tpsRequestMappingUtils.convertToTpsServiceRoutineRequest(anyString(), any(Map.class)))
                 .thenReturn(tpsServiceRoutineRequestTom);
-
-        when(tpsRequestMappingUtils.convert(any(Map.class), eq(JsonNode.class))).thenReturn(jsonNodeTom);
 
         data1 = new HashMap();
         data2 = new HashMap();

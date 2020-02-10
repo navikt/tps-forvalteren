@@ -1,12 +1,10 @@
 package no.nav.tps.forvalteren.common.java.config;
 
-import java.util.concurrent.TimeUnit;
-import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.guava.GuavaCache;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.google.common.cache.CacheBuilder;
 
 @Configuration
 @EnableCaching
@@ -16,16 +14,7 @@ public class CacheConfig {
     public static final String CACHE_AVSPILLER = "Avspiller";
 
     @Bean
-    public Cache cacheFasit() {
-        return new GuavaCache(CACHE_FASIT, CacheBuilder.newBuilder()
-                .expireAfterWrite(4, TimeUnit.HOURS)
-                .build());
-    }
-
-    @Bean
-    public Cache cacheAvspiller() {
-        return new GuavaCache(CACHE_AVSPILLER, CacheBuilder.newBuilder()
-                .expireAfterWrite(24, TimeUnit.HOURS)
-                .build());
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager(CACHE_FASIT, CACHE_AVSPILLER);
     }
 }

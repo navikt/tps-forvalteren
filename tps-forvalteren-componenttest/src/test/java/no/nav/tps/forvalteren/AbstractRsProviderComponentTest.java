@@ -27,6 +27,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
 
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
+import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.TestdataController;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ComptestConfig.class)
@@ -40,6 +41,9 @@ public abstract class AbstractRsProviderComponentTest {
     
     @Autowired(required = false)
     protected WebApplicationContext context;
+
+    @Autowired
+    protected TestdataController testdataController;
 
     public MockMvc mvc;
 

@@ -59,7 +59,7 @@ public class CommandConfig {
     @Autowired
     MessageQueueServiceFactory messageQueueServiceFactory;
 
-    @Value("${fasit.environment.name}")
+    @Value("${tpsf.environment.name}")
     private String deployedEnvironment;
 
     @Bean
@@ -251,7 +251,7 @@ public class CommandConfig {
     }
 
     @Bean
-    SkdMeldingResolver meldingOmStatsborgerskap () {
+    SkdMeldingResolver meldingOmStatsborgerskap() {
         return new MeldingOmStatsborgerskap();
     }
 

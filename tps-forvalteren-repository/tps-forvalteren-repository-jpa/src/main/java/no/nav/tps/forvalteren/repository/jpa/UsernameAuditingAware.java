@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ public class UsernameAuditingAware implements AuditorAware<String> {
     private UsernameResolver resolver;
 
     @Override
-    public String getCurrentAuditor() {
-        return resolver.getUsername();
+    public Optional<String> getCurrentAuditor() {
+        return Optional.of(resolver.getUsername());
     }
 }

@@ -1,8 +1,7 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_NOT_FOUND;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -56,10 +55,7 @@ public class UpdateSkdEndringsmeldingServiceTest {
         when(meldingType2.getId()).thenReturn(MELDING_ID2);
         when(skdEndringsmeldingRepository.findById(MELDING_ID1)).thenReturn(skdMelding1);
         when(skdEndringsmeldingRepository.findById(MELDING_ID2)).thenReturn(skdMelding2);
-        when(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, MELDING_ID1)).thenReturn("json");
-        when(messageProvider.get(SKD_ENDRINGSMELDING_JSON_PROCESSING, MELDING_ID2)).thenReturn("json");
         when(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID1)).thenReturn("not found");
-        when(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, MELDING_ID2)).thenReturn("not found");
     }
     
     @Test

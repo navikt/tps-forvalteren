@@ -54,9 +54,9 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
     private static final int PASSWORD_NEEDS_RESET = 0x773;
     private static final int ACCOUNT_LOCKED = 0x775;
 
-    private final String domain;
-    private final String rootDn;
-    private final String url;
+    private  String domain;
+    private  String rootDn;
+    private  String url;
     // Only used to allow tests to substitute a mock LdapContext
     TpsfLdapAuthenticationProvider.ContextFactory contextFactory = new TpsfLdapAuthenticationProvider.ContextFactory();
     private boolean convertSubErrorCodesToExceptions;
@@ -67,8 +67,7 @@ public class TpsfLdapAuthenticationProvider extends AbstractLdapAuthenticationPr
      * @param url    an LDAP url (or multiple URLs)
      * @param rootDn the root DN (may be null or empty)
      */
-    public TpsfLdapAuthenticationProvider(String domain, String url,
-            String rootDn) {
+    public TpsfLdapAuthenticationProvider(String domain, String url, String rootDn) {
         Assert.isTrue(StringUtils.hasText(url), "Url cannot be empty");
         this.domain = StringUtils.hasText(domain) ? domain.toLowerCase() : null;
         this.url = url;

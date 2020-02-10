@@ -6,27 +6,24 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Collections;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
-import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
-import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;
 import no.nav.tps.forvalteren.domain.rs.RsAvspillerRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsAvspiller;
@@ -105,7 +102,6 @@ public class AvspillerControllerTest {
     @Test
     public void sendTilTps_OwnQueue_Ok() {
 
-        when(messageProvider.get(QUEUE_NOT_FOUND, QUEUE, MILJOE)).thenReturn(QUEUE_DONT_EXIST);
         when(avspillerService.isValid(MILJOE, QUEUE)).thenReturn(true);
 
         avspillerController.sendTilTps(RsAvspillerRequest.builder()
@@ -118,7 +114,7 @@ public class AvspillerControllerTest {
         verify(avspillerDaoService).save(any(RsAvspillerRequest.class));
         verify(avspillerService).isValid(MILJOE, QUEUE);
         verify(messageProvider, never()).get(QUEUE_NOT_FOUND, QUEUE, MILJOE);
-        verify(avspillerService).sendTilTps(any(RsAvspillerRequest.class), any(TpsAvspiller.class));
+        verify(avspillerService).sendTilTps(any(RsAvspillerRequest.class), any());
     }
 
     @Test(expected = NotFoundException.class)
@@ -141,9 +137,6 @@ public class AvspillerControllerTest {
     @Test
     public void sendTilTps_FasitQueue_Ok() {
 
-        when(messageProvider.get(QUEUE_NOT_FOUND, QUEUE, MILJOE)).thenReturn(QUEUE_DONT_EXIST);
-        when(avspillerService.isValid(MILJOE, QUEUE)).thenReturn(true);
-
         avspillerController.sendTilTps(RsAvspillerRequest.builder()
                 .ownQueue(false)
                 .miljoeFra(MILJOE)
@@ -154,14 +147,11 @@ public class AvspillerControllerTest {
         verify(avspillerDaoService).save(any(RsAvspillerRequest.class));
         verify(avspillerService, never()).isValid(MILJOE, QUEUE);
         verify(messageProvider, never()).get(QUEUE_NOT_FOUND, QUEUE, MILJOE);
-        verify(avspillerService).sendTilTps(any(RsAvspillerRequest.class), any(TpsAvspiller.class));
+        verify(avspillerService).sendTilTps(any(RsAvspillerRequest.class), any());
     }
 
     @Test
     public void getMeldingskoer_Ok() {
-
-        when(fasitApiConsumer.getResourcesByAliasAndTypeAndEnvironment(SKD_MELDING, FasitPropertyTypes.QUEUE, MILJOE.substring(1)))
-                .thenReturn(Collections.singletonList(new FasitResource()));
 
         avspillerController.getMeldingskoer(MILJOE, MELDINGSFORMAT);
 
@@ -174,7 +164,7 @@ public class AvspillerControllerTest {
         avspillerController.getStatuser(BESTILLING_ID);
 
         verify(avspillerDaoService).getStatus(BESTILLING_ID);
-        verify(mapperFacade).map(any(TpsAvspiller.class), eq(RsTpsAvspiller.class));
+        verify(mapperFacade).map(any(), eq(RsTpsAvspiller.class));
     }
 
     @Test
@@ -193,6 +183,6 @@ public class AvspillerControllerTest {
         avspillerController.cancelSendTilTps(BESTILLING_ID);
 
         verify(avspillerDaoService).cancelRequest(BESTILLING_ID);
-        verify(mapperFacade).map(any(TpsAvspiller.class), eq(RsTpsAvspiller.class));
+        verify(mapperFacade).map(any(), eq(RsTpsAvspiller.class));
     }
 }

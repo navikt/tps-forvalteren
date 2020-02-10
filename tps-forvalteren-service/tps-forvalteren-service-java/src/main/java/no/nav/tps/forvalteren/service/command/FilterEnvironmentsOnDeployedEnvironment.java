@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FilterEnvironmentsOnDeployedEnvironment {
 
-    @Value("${fasit.environment.name}")
+    @Value("${tpsf.environment.name}")
     private String deployedEnvironment;
 
     public Set<String> execute(Set<String> environments) {

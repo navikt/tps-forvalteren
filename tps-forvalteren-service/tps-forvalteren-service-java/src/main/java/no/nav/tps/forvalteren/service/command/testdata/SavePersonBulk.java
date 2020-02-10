@@ -32,11 +32,11 @@ public class SavePersonBulk {
             if (persons.size() > ORACLE_MAX_SUM_IN_QUERY) {
                 List<List<Person>> partitionsIds = Lists.partition(persons, ORACLE_MAX_SUM_IN_QUERY);
                 for (List<Person> partition : partitionsIds) {
-                    personerTilLagring.addAll(personRepository.save(partition));
+                    personerTilLagring.addAll((List) personRepository.saveAll(partition));
                 }
                 return persons;
             } else {
-                personerTilLagring.addAll(personRepository.save(persons));
+                personerTilLagring.addAll((List) personRepository.saveAll(persons));
                 return personerTilLagring;
             }
 

@@ -1,21 +1,5 @@
 package no.nav.tps.forvalteren.consumer.ws.kodeverk.mapping;
 
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.EnkeltKodeverk;
-import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Kode;
-import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Periode;
-import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Term;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Collections;
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.consumer.ws.kodeverk.mapping.KodeverkTestUtils.createGyldighetsperiode;
@@ -25,6 +9,22 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.List;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.EnkeltKodeverk;
+import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Kode;
+import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Periode;
+import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Term;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HentKodeverkMappingStrategyTest {

@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import java.util.List;
 
 @Getter
 @Setter

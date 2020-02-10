@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +16,7 @@ public class TpsEndreNorskGironummerEndringsmeldingRequest extends TpsServiceRou
 
     private String giroNrNorsk;
     private String datogiroNrNorsk;
-    
+
     @Builder
     public TpsEndreNorskGironummerEndringsmeldingRequest(String serviceRutinenavn, String offentligIdent, String giroNrNorsk, String datogiroNrNorsk) {
         super(serviceRutinenavn, offentligIdent);

@@ -1,21 +1,19 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
+import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingProvider.aSkdEndringsmelding;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.hamcrest.core.IsNull.nullValue;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.Optional;
 import javax.transaction.Transactional;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +66,7 @@ public class SkdEndringsmeldingRepositoryComponentTest {
     public void save() {
         SkdEndringsmelding storedSkdEndringsmelding = repository.save(skdEndringsmelding);
 
-        SkdEndringsmelding result = testRepository.findOne(storedSkdEndringsmelding.getId());
+        SkdEndringsmelding result = testRepository.findById(storedSkdEndringsmelding.getId()).get();
 
         assertThat(result, is(storedSkdEndringsmelding));
     }
@@ -78,11 +76,11 @@ public class SkdEndringsmeldingRepositoryComponentTest {
     public void deleteByIdIn() {
         SkdEndringsmelding storedSkdEndringsmelding = testRepository.save(skdEndringsmelding);
 
-        repository.deleteByIdIn(Arrays.asList(storedSkdEndringsmelding.getId()));
+        repository.deleteByIdIn(asList(storedSkdEndringsmelding.getId()));
 
-        SkdEndringsmelding result = testRepository.findOne(storedSkdEndringsmelding.getId());
+        Optional<SkdEndringsmelding> result = testRepository.findById(storedSkdEndringsmelding.getId());
 
-        assertThat(result, is(nullValue()));
+        assertThat(result.isPresent(), is(false));
     }
 
     @Test
@@ -92,7 +90,7 @@ public class SkdEndringsmeldingRepositoryComponentTest {
         SkdEndringsmelding storedSkdEndringsmelding2 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
         SkdEndringsmelding storedSkdEndringsmelding3 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
 
-        Page<SkdEndringsmelding> result = repository.findAllByGruppe(skdEndringsmelding.getGruppe(), new PageRequest(0, 10));
+        Page<SkdEndringsmelding> result = repository.findAllByGruppe(skdEndringsmelding.getGruppe(), PageRequest.of(0, 10));
 
         assertThat(result.getTotalElements(), equalTo(3L));
         assertThat(result.getContent(), hasItems(storedSkdEndringsmelding1, storedSkdEndringsmelding2, storedSkdEndringsmelding3));
@@ -121,7 +119,7 @@ public class SkdEndringsmeldingRepositoryComponentTest {
         testRepository.save(aSkdEndringsmelding()
                 .aarsakskode("01").foedselsnummer(foedselsnummer3).gruppe(gruppe).build());
 
-        List<String> resultFoedselsnumre = repository.findFoedselsnummerBy(Arrays.asList("01", "02"), "1", gruppe);
+        List<String> resultFoedselsnumre = repository.findFoedselsnummerBy(asList("01", "02"), "1", gruppe);
 
         assertThat(resultFoedselsnumre, hasSize(2));
         assertThat(resultFoedselsnumre, hasItems(foedselsnummer2, foedselsnummer3));

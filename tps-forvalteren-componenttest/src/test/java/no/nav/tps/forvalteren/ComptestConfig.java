@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,18 +29,19 @@ import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Configuration
-@Import(ApplicationStarter.class)
-@ComponentScan(basePackageClasses = ComptestConfig.class)
+@ComponentScan(excludeFilters = {
+        @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE, value = FetchEnvironmentsManager.class)
+})
 public class ComptestConfig {
     
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
     public static List<Pair<String, String >> actualConnectedToEnvironments = new ArrayList<>();
-    
+
     @Bean
     @Primary
-    public FetchEnvironmentsManager fetchEnvironmentsManager() {
-        return Mockito.spy(new FetchEnvironmentsManager());
+    public FetchEnvironmentsManager fetchEnvironmentsManagerSpy(FetchEnvironmentsManager fetchEnvironmentsManager) {
+        return Mockito.spy(fetchEnvironmentsManager);
     }
     
     @Bean

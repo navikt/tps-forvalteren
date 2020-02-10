@@ -41,5 +41,4 @@ public class BarnetranseSkdParameterStrategy {
         skdParams.put("transtype", "2");
         skdParams.put("aarsakskode", "98");
     }
-
 }

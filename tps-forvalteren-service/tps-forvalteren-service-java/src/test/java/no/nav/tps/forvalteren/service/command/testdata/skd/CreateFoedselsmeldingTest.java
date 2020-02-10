@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
@@ -41,14 +41,14 @@ public class CreateFoedselsmeldingTest {
 
         listeMedPersoner.add(person);
 
-        when(skdMessageCreatorTrans1.execute(anyString(), anyListOf(Person.class), anyBoolean())).thenReturn(skdMeldinger);
+        when(skdMessageCreatorTrans1.execute(anyString(), anyList(), anyBoolean())).thenReturn(skdMeldinger);
     }
 
     @Test
     public void execute() {
         List<SkdMeldingTrans1> result = createFoedselsmeldinger.executeFromPersons(listeMedPersoner, ADD_HEADER);
 
-        verify(skdMessageCreatorTrans1).execute(anyString(), anyListOf(Person.class), anyBoolean());
+        verify(skdMessageCreatorTrans1).execute(anyString(), anyList(), anyBoolean());
 
         assertThat(result, is(skdMeldinger));
     }

@@ -13,12 +13,12 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "opprettSikkerhetsTiltak")
 public class TpsEndreSikkerhetstiltakRequest extends TpsServiceRoutineEndringRequest {
-    
+
     private String typeSikkerhetsTiltak;
     private String fom;
     private String tom;
     private String beskrSikkerhetsTiltak;
-    
+
     @Builder
     public TpsEndreSikkerhetstiltakRequest(String serviceRutinenavn, String offentligIdent, String typeSikkerhetsTiltak, String fom, String tom, String beskrSikkerhetsTiltak) {
         super(serviceRutinenavn, offentligIdent);

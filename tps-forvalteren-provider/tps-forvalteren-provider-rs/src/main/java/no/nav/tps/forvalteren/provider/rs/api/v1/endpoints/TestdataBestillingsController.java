@@ -32,6 +32,7 @@ import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
 import no.nav.tps.forvalteren.service.command.excel.ExcelService;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -42,6 +43,7 @@ import no.nav.tps.forvalteren.service.command.testdata.restreq.EndrePersonBestil
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonIdenthistorikkService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.RelasjonPersonBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @Slf4j
@@ -63,6 +65,7 @@ public class TestdataBestillingsController {
     private final PersonService personService;
     private final PersonIdenthistorikkService personIdenthistorikkService;
     private final EndrePersonBestillingService endrePersonBestillingService;
+    private final RelasjonPersonBestillingService relasjonPersonBestillingService;
     private final MapperFacade mapperFacade;
 
     @Transactional
@@ -144,11 +147,20 @@ public class TestdataBestillingsController {
     }
 
     @LogExceptions
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "opprettaliaser") })
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
     @RequestMapping(value = "/oppdaterperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public RsPerson oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
 
         return mapperFacade.map(endrePersonBestillingService.execute(ident, request), RsPerson.class);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "relasjonperson") })
+    @RequestMapping(value = "/relasjonperson", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
+
+        return relasjonPersonBestillingService.makeRelasjon(ident, request);
     }
 }

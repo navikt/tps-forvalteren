@@ -26,6 +26,6 @@ public class SaveDoedsmeldingToDB {
             newDoedsmelding.setIsMeldingSent(MELDING_SENT_CONFIRMED);
             doedsmeldinger.add(newDoedsmelding);
         }
-        doedsmeldingRepository.save(doedsmeldinger);
+        doedsmeldingRepository.saveAll(doedsmeldinger);
     }
 }

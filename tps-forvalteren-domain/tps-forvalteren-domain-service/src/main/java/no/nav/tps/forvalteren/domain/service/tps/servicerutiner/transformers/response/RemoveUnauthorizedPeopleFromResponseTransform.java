@@ -1,10 +1,11 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.codehaus.jackson.annotate.JsonIgnoreType;
 
 @Getter
 @Setter

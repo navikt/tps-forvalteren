@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett.implementation;
 
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.FindIdenterNotUsedInDB;
@@ -39,14 +39,14 @@ public class FindIdenterNotUsedInDBTest {
     
     @Before
     public void setup() {
-        when(personService.getPersonerByIdenter(anyListOf(String.class))).thenReturn(persistedPersons);
+        when(personService.getPersonerByIdenter(anyList())).thenReturn(persistedPersons);
     }
     
     @Test
     public void asd() {
         Set<String> result = findIdenterNotUsedInDB.filtrer(identer);
         
-        verify(personService).getPersonerByIdenter(anyListOf(String.class));
+        verify(personService).getPersonerByIdenter(anyList());
         
         assertThat(result, hasSize(1));
         assertThat(result, hasItem(IDENT_AVAILABLE));
