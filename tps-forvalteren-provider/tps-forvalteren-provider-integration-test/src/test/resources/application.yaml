@@ -32,6 +32,11 @@ tps.forvalteren.production.mode: false
 
 tpsf.environment.name: u2
 
+fasit:
+  url: nada
+  username: nada
+  password: nada
+
 mqgateway:
   hostname: nada
   port: nada
