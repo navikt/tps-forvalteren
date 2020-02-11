@@ -1,0 +1,30 @@
+<div flex-xs flex-gt-xs="1" layout="column">
+    <md-item class="tps-vk-response" ng-show="responseData">
+        <md-item-content>
+            <!-- Results expanded   -->
+            <div class="tps-vk-response-expanded">
+                <div flex="5"></div>
+                <div layout="row" layout-wrap>
+                    <div layout="row" layout-wrap flex="100" ng-if="isArray(adresseHistorikk['AFnr']['EFnr'])"
+                         ng-repeat="vari in adresseHistorikk.AFnr.EFnr">
+                        <tps-output-field label="fnr" flex="20" field-model="vari.fnr" title="fnr"></tps-output-field>
+                        <tps-output-field label="sp" flex="20" field-model="vari.sp" title="sp"></tps-output-field>
+                        <tps-output-field label="kn" flex="20" field-model="vari.kn" title="kn"></tps-output-field>
+                        <tps-output-field label="fn" flex="20" field-model="vari.fn" title="fn"></tps-output-field>
+                        <tps-output-field label="mn" flex="20" field-model="vari.mn" title="mn"></tps-output-field>
+                        <tps-output-field label="en" flex="20" field-model="vari.en" title="en"></tps-output-field>
+                    </div>
+                    <div layout="row" layout-wrap flex="100" ng-if="!isArray(adresseHistorikk['AFnr']['EFnr'])">
+                        <tps-output-field label="fnr" flex="20" field-model="responseData.data1.AFnr.EFnr.fnr" title="fnr"></tps-output-field>
+                        <tps-output-field label="sp" flex="20" field-model="responseData.data1.AFnr.EFnr.sp" title="sp"></tps-output-field>
+                        <tps-output-field label="kn" flex="20" field-model="responseData.data1.AFnr.EFnr.kn" title="kn"></tps-output-field>
+                        <tps-output-field label="fn" flex="20" field-model="responseData.data1.AFnr.EFnr.fn" title="fn"></tps-output-field>
+                        <tps-output-field label="mn" flex="20" field-model="responseData.data1.AFnr.EFnr.mn" title="mn"></tps-output-field>
+                        <tps-output-field label="en" flex="20" field-model="responseData.data1.AFnr.EFnr.en" title="en"></tps-output-field>
+                    </div>
+                </div>
+            </div>
+        </md-item-content>
+    </md-item>
+</div>
+

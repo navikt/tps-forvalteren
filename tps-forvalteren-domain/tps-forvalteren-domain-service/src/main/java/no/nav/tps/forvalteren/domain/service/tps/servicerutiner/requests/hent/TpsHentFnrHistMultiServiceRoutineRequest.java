@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent;
 import com.fasterxml.jackson.xml.annotate.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.xml.annotate.JacksonXmlProperty;
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

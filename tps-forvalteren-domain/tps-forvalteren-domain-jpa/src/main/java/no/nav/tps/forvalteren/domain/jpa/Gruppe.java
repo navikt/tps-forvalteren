@@ -1,12 +1,9 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import static java.util.Objects.isNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +18,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
@@ -49,12 +51,24 @@ public class Gruppe extends ChangeStamp {
 
     @OrderBy
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "gruppe")
-    private List<Person> personer = new ArrayList<>();
+    private List<Person> personer;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "T_GRUPPE_TAG",
-            joinColumns = { @JoinColumn(name = "GRUPPE_ID", nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "TAG_ID", nullable = false, updatable = false) })
-    private List<Tag> tags = new ArrayList<>();
+    @JoinTable(name = "T_GRUPPE_TAG", joinColumns = { @JoinColumn(name = "GRUPPE_ID", nullable = false, updatable = false) }, inverseJoinColumns = {
+            @JoinColumn(name = "TAG_ID", nullable = false, updatable = false) })
+    private List<Tag> tags;
 
+    public List<Person> getPersoner() {
+        if (isNull(personer)) {
+            personer = new ArrayList();
+        }
+        return personer;
+    }
+
+    public List<Tag> getTags() {
+        if (isNull(tags)) {
+            tags = new ArrayList();
+        }
+        return tags;
+    }
 }

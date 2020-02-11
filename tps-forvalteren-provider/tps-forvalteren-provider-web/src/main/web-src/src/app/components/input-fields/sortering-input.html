@@ -1,0 +1,6 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Sortering</label>
+    <md-select ng-model="formData.sortering" placeholder="Sortering">
+        <md-option ng-repeat="val in selectValues.sortering" selected="true" ng-value="val">{{ val}}</md-option>
+    </md-select>
+</md-input-container>

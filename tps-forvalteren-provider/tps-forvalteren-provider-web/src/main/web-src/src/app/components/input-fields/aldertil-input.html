@@ -1,0 +1,9 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Alder Til</label>
+    <md-tooltip>Alder, hvis angitt vil overstyre fødselsdato</md-tooltip>
+    <input name="alderTilInput" md-maxlength="4" ng-pattern="onlyNumbers" ng-model="formData.alderTil"/>
+    <div ng-messages="requestForm.alderTilInput.$error" ng-show="requestForm.alderTilInput.$touched">
+        <div ng-message="pattern">Feltet kan kun inneholde tall</div>
+        <div ng-message="md-maxlength">Feltet kan maksimalt inneholde fire siffer</div>
+    </div>
+</md-input-container>

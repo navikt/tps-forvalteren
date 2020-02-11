@@ -5,6 +5,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.Tra
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform;
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
@@ -17,7 +18,10 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
     private static final String PERSON_PATTERN = "<enPersonRes>.+?</enPersonRes>";
 
     @Autowired
-    private ForbiddenCallHandlerService ForbiddenCallHandlerService;
+    private ForbiddenCallHandlerService forbiddenCallHandlerService;
+
+    @Value("${tps.forvalteren.production.mode}")
+    private boolean currentEnvironmentIsProd;
 
     @Override
     public boolean isSupported(Object o) {
@@ -26,7 +30,9 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
 
     @Override
     public void execute(Response response, Transformer transformer) {
-        removeUnauthorizedPeopleFromResponse(response, (RemoveUnauthorizedPeopleFromResponseTransform) transformer);
+        if(currentEnvironmentIsProd){
+            removeUnauthorizedPeopleFromResponse(response, (RemoveUnauthorizedPeopleFromResponseTransform) transformer);
+        }
     }
 
     private void removeUnauthorizedPeopleFromResponse(Response response, RemoveUnauthorizedPeopleFromResponseTransform transformer) {
@@ -40,7 +46,7 @@ public class RemoveUnauthorizedPeopleFromResponseTransformStrategy implements Re
             Matcher fnrMatcher = Pattern.compile(FODSELSNUMMER_PATTERN, Pattern.DOTALL).matcher(personXml);
             if (fnrMatcher.find()) {
                 String fnr = fnrMatcher.group(1);
-                if (!ForbiddenCallHandlerService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
+                if (!forbiddenCallHandlerService.isAuthorisedToFetchPersonInfo(response.getServiceRoutine(), fnr)) {
                     response.setRawXml(response.getRawXml().replace(personXml, ""));
                     ++numberOfFnrRemoved;
                 }

@@ -6,18 +6,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import java.util.Date;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 
 import no.nav.tps.forvalteren.service.command.exceptions.ExceptionInformation;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpBadRequestException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
 
 
 @RunWith(MockitoJUnitRunner.class)

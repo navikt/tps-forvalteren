@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<sfePersonData xmlns="http://www.rtv.no/NamespaceSFE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rtv.no/NamespaceTPS X:\FAGOMR~1\SYSTEM~1\00226D73\FS03TP~1\DOKUME~1\XML-SK~1\SFEDAT~2.XSD">
+	<sfeAjourforing>
+		<systemInfo>
+			<kilde>FS22</kilde>
+			<brukerID>s124792</brukerID>
+		</systemInfo>
+		<opprettSikkerhetsTiltak>
+			<offentligIdent>1234538826</offentligIdent>
+			<typeSikkerhetsTiltak>USKK</typeSikkerhetsTiltak>
+			<beskrSikkerhetsTiltak>Usedvanlig sterk kvinne</beskrSikkerhetsTiltak>
+			<fom>2014-10-29</fom>
+			<tom>2014-10-30</tom>
+		</opprettSikkerhetsTiltak>
+	</sfeAjourforing>
+	<sfeTilbakeMelding>
+		<svarStatus>
+			<returStatus>00</returStatus>
+			<returMelding />
+			<utfyllendeMelding />
+		</svarStatus>
+	</sfeTilbakeMelding>
+</sfePersonData>

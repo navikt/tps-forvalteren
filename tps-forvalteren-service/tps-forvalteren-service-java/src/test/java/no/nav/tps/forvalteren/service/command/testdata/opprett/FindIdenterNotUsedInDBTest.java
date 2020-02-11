@@ -1,24 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.implementation.DefaultFindIdenterNotUsedInDB;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindIdenterNotUsedInDBTest {
@@ -31,10 +30,10 @@ public class FindIdenterNotUsedInDBTest {
     private final Person person3 = new Person();
 
     @Mock
-    private PersonRepository personRepositoryMock;
+    private PersonService personService;
 
     @InjectMocks
-    private DefaultFindIdenterNotUsedInDB findIdenterNotUsedInDB;
+    private FindIdenterNotUsedInDB findIdenterNotUsedInDB;
 
     @Before
     public void setup() {
@@ -43,10 +42,9 @@ public class FindIdenterNotUsedInDBTest {
         person3.setIdent(dummyIdent3);
     }
 
-
     @Test
     public void fjernerIdenterFraInputSetSomManFinnerIDB() {
-        when(personRepositoryMock.findByIdentIn(any())).thenReturn(Arrays.asList(person1,person2));
+        when(personService.getPersonerByIdenter(any())).thenReturn(asList(person1, person2));
 
         Set<String> identer = new HashSet<>();
         identer.add(dummyIdent1);
@@ -62,7 +60,7 @@ public class FindIdenterNotUsedInDBTest {
 
     @Test
     public void hvisIngenIdenterErIDBSaaReturnerersAlleIdenter() {
-        when(personRepositoryMock.findByIdentIn(any())).thenReturn(new ArrayList<>());
+        when(personService.getPersonerByIdenter(any())).thenReturn(new ArrayList<>());
 
         Set<String> identer = new HashSet<>();
         identer.add(dummyIdent1);
@@ -78,7 +76,7 @@ public class FindIdenterNotUsedInDBTest {
 
     @Test
     public void returnererTomListeHvisAlleErTatt() {
-        when(personRepositoryMock.findByIdentIn(any())).thenReturn(Arrays.asList(person1,person2, person3));
+        when(personService.getPersonerByIdenter(any())).thenReturn(asList(person1, person2, person3));
 
         Set<String> identer = new HashSet<>();
         identer.add(dummyIdent1);

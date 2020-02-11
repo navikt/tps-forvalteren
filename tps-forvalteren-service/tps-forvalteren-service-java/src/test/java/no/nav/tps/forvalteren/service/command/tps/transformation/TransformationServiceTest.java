@@ -1,26 +1,26 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation;
 
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.service.command.tps.transformation.response.ResponseTransformStrategy;
-import no.nav.tps.forvalteren.domain.service.tps.Request;
-import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.RequestTransformer;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseTransformer;
-import no.nav.tps.forvalteren.service.command.tps.transformation.request.RequestTransformStrategy;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.domain.service.tps.Request;
+import no.nav.tps.forvalteren.domain.service.tps.Response;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.RequestTransformer;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseTransformer;
+import no.nav.tps.forvalteren.service.command.tps.transformation.request.RequestTransformStrategy;
+import no.nav.tps.forvalteren.service.command.tps.transformation.response.ResponseTransformStrategy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransformationServiceTest {

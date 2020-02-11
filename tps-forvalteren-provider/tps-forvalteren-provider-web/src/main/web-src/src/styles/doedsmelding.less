@@ -1,0 +1,96 @@
+div.doedsmelding-dashboard {
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-left: 20%;
+  margin-right: 20%;
+
+  .no-scroll-view {
+    height: 88%;
+  }
+
+  .top {
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 10px 15px;
+    position: relative;
+
+    .input-container {
+      margin: 14px 10px 0 0;
+      label {
+        z-index: auto;
+      }
+    }
+    .button-container {
+      margin-top: 3px;
+      label {
+        z-index: auto;
+      }
+    }
+    .datepicker-container {
+      margin: 4px 10px 5px -16px;
+      label {
+        z-index: auto;
+      }
+    }
+    .card-content {
+      padding-bottom: 0;
+      padding-top: 10px;
+      margin: -3px 0;
+    }
+    .form-btns {
+      text-align: center;
+
+      @media (min-width: 600px) {
+        text-align: right;
+      }
+
+      .refresh-btn {
+        width: 40px;
+        height: 40px;
+        z-index: auto;
+
+        svg {
+          width: 30px;
+          height: 40px;
+          fill: white;
+        }
+      }
+    }
+
+    md-progress-linear {
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+    .align-button {
+      margin-top: -10px;
+    }
+  }
+  .progress {
+    margin: 30px 0 0 20px;
+    padding: 0 34px 24px 0;
+  }
+  .request-form {
+    margin: 0 20px;
+  }
+  .accent {
+    margin-bottom: -18px;
+  }
+  .response-form {
+    margin-top: 25px;
+  }
+  .title {
+    margin: 30px 0 10px 15px;
+  }
+  .center {
+    margin: 0 auto;
+  }
+  .transparent {
+    background-color: transparent;
+  }
+  .btn-group {
+    margin-right: 9px;
+  }
+}

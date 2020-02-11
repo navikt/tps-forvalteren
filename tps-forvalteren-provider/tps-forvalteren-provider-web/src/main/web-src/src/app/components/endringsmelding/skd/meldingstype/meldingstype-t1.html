@@ -1,0 +1,1576 @@
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Fodselsdato</md-tooltip>
+        <label>Fodselsdato</label>
+        <input name="fodselsdato" ng-required="false" pattern="\d{6}" md-maxlength="6" md-autofocus
+               ng-model="melding.fodselsdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fodselsdato.$error"
+             ng-show="requestForm.fodselsdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Seks sifre (DDMMÅÅ) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Personnummer</md-tooltip>
+        <label>Personnummer</label>
+        <input name="personnummer" ng-required="false" pattern="\d{5}" md-maxlength="5"
+               ng-model="melding.personnummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.personnummer.$error"
+             ng-show="requestForm.personnummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fem sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Maskindato</md-tooltip>
+        <label>Maskindato</label>
+        <input name="maskindato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.maskindato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.maskindato.$error"
+             ng-show="requestForm.maskindato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Maskintid</md-tooltip>
+        <label>Maskintid</label>
+        <input name="maskintid" ng-required="false" pattern="\d{6}" md-maxlength="6"
+               ng-model="melding.maskintid" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.maskintid.$error"
+             ng-show="requestForm.maskintid.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Seks sifre (TTMMSS) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Transtype</md-tooltip>
+        <label>Transtype</label>
+        <input name="transtype" ng-required="true" pattern="[1]{1}" md-maxlength="1" disabled
+               ng-model="melding.transtype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.transtype.$error"
+             ng-show="requestForm.transtype.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Numerisk verdi 1 forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Aarsakskode</md-tooltip>
+        <label>Aarsakskode</label>
+        <input name="aarsakskode" ng-required="false" pattern="\d{2}" md-maxlength="2"
+               ng-model="melding.aarsakskode" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.aarsakskode.$error"
+             ng-show="requestForm.aarsakskode.$dirty">
+            <div ng-message="required">Feltet er påkrevd</div>
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">To sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegDato</md-tooltip>
+        <label>RegDato</label>
+        <input name="regDato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regDato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regDato.$error"
+             ng-show="requestForm.regDato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statuskode</md-tooltip>
+        <label>Statuskode</label>
+        <input name="statuskode" ng-required="false" md-maxlength="1"
+               ng-model="melding.statuskode" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statuskode.$error"
+             ng-show="requestForm.statuskode.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DatoDoed</md-tooltip>
+        <label>DatoDoed</label>
+        <input name="datoDoed" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoDoed" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoDoed.$error"
+             ng-show="requestForm.datoDoed.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Slektsnavn</md-tooltip>
+        <label>Slektsnavn</label>
+        <input name="slektsnavn" ng-required="false" md-maxlength="50"
+               ng-model="melding.slektsnavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.slektsnavn.$error"
+             ng-show="requestForm.slektsnavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Fornavn</md-tooltip>
+        <label>Fornavn</label>
+        <input name="fornavn" ng-required="false" md-maxlength="50"
+               ng-model="melding.fornavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fornavn.$error"
+             ng-show="requestForm.fornavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Mellomnavn</md-tooltip>
+        <label>Mellomnavn</label>
+        <input name="mellomnavn" ng-required="false" md-maxlength="50"
+               ng-model="melding.mellomnavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.mellomnavn.$error"
+             ng-show="requestForm.mellomnavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex="35">
+        <md-tooltip>SlekstnavnUgift</md-tooltip>
+        <label>SlekstnavnUgift</label>
+        <input name="slekstnavnUgift" ng-required="false" md-maxlength="50"
+               ng-model="melding.slekstnavnUgift" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.slekstnavnUgift.$error"
+             ng-show="requestForm.slekstnavnUgift.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>ForkortetNavn</md-tooltip>
+        <label>ForkortetNavn</label>
+        <input name="forkortetNavn" ng-required="false" md-maxlength="25"
+               ng-model="melding.forkortetNavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.forkortetNavn.$error"
+             ng-show="requestForm.forkortetNavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>RegDatoNavn</md-tooltip>
+        <label>RegDatoNavn</label>
+        <input name="regDatoNavn" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regDatoNavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regDatoNavn.$error"
+             ng-show="requestForm.regDatoNavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FoedekommLand</md-tooltip>
+        <label>FoedekommLand</label>
+        <input name="foedekommLand" ng-required="false" md-maxlength="4"
+               ng-model="melding.foedekommLand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.foedekommLand.$error"
+             ng-show="requestForm.foedekommLand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Foedested</md-tooltip>
+        <label>Foedested</label>
+        <input name="foedested" ng-required="false" md-maxlength="20"
+               ng-model="melding.foedested" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.foedested.$error"
+             ng-show="requestForm.foedested.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap</md-tooltip>
+        <label>Statsborgerskap</label>
+        <input name="statsborgerskap" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap.$error"
+             ng-show="requestForm.statsborgerskap.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>StatsborgerskapRegdato</md-tooltip>
+        <label>StatsborgerskapRegdato</label>
+        <input name="regdatoStatsb" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.statsborgerskapRegdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskapRegdato.$error"
+             ng-show="requestForm.statsborgerskapRegdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Familienummer</md-tooltip>
+        <label>Familienummer</label>
+        <input name="familienummer" ng-required="false" pattern="\d{11}" md-maxlength="11"
+               ng-model="melding.familienummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.familienummer.$error"
+             ng-show="requestForm.familienummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Elleve sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoFamnr</md-tooltip>
+        <label>RegdatoFamnr</label>
+        <input name="regdatoFamnr" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoFamnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoFamnr.$error"
+             ng-show="requestForm.regdatoFamnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Personkode</md-tooltip>
+        <label>Personkode</label>
+        <input name="personkode" ng-required="false" pattern="\d{1}" md-maxlength="1"
+               ng-model="melding.personkode" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.personkode.$error"
+             ng-show="requestForm.personkode.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Numerisk verdi forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>SpesRegType</md-tooltip>
+        <label>SpesRegType</label>
+        <input name="spesRegType" ng-required="false" md-maxlength="1"
+               ng-model="melding.spesRegType" pattern="\d{1}" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.spesRegType.$error"
+             ng-show="requestForm.spesRegType.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Numerisk verdi forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DatoSpesRegType</md-tooltip>
+        <label>DatoSpesRegType</label>
+        <input name="datoSpesRegType" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoSpesRegType" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoSpesRegType.$error"
+             ng-show="requestForm.datoSpesRegType.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Sivilstand</md-tooltip>
+        <label>Sivilstand</label>
+        <input name="sivilstand" ng-required="false" pattern="\d{1}" md-maxlength="1"
+               ng-model="melding.sivilstand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.sivilstand.$error"
+             ng-show="requestForm.sivilstand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Numerisk verdi forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>RegdatoSivilstand</md-tooltip>
+        <label>RegdatoSivilstand</label>
+        <input name="regdatoSivilstand" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoSivilstand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoSivilstand.$error"
+             ng-show="requestForm.regdatoSivilstand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>EktefellePartnerFdato</md-tooltip>
+        <label>EktefellePartnerFdato</label>
+        <input name="ektefellePartnerFdato" ng-required="false" pattern="\d{6}" md-maxlength="6"
+               ng-model="melding.ektefellePartnerFdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ektefellePartnerFdato.$error"
+             ng-show="requestForm.ektefellePartnerFdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Seks sifre (DDMMÅÅ) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>EktefellePartnerPnr</md-tooltip>
+        <label>EktefellePartnerPnr</label>
+        <input name="ektefellePartnerPnr" ng-required="false" pattern="\d{5}" md-maxlength="5"
+               ng-model="melding.ektefellePartnerPnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ektefellePartnerPnr.$error"
+             ng-show="requestForm.ektefellePartnerPnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fem sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>EktefellePartnerNavn</md-tooltip>
+        <label>EktefellePartnerNavn</label>
+        <input name="ektefellePartnerNavn" ng-required="false" md-maxlength="50"
+               ng-model="melding.ektefellePartnerNavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ektefellePartnerNavn.$error"
+             ng-show="requestForm.ektefellePartnerNavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>EktefellePartnerStatsb</md-tooltip>
+        <label>EktefellePartnerStatsb</label>
+        <input name="ektefellePartnerStatsb" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.ektefellePartnerStatsb" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ektefellePartnerStatsb.$error"
+             ng-show="requestForm.ektefellePartnerStatsb.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>RegdatoAdr</md-tooltip>
+        <label>RegdatoAdr</label>
+        <input name="regdatoAdr" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoAdr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoAdr.$error"
+             ng-show="requestForm.regdatoAdr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FlyttedatoAdr</md-tooltip>
+        <label>FlyttedatoAdr</label>
+        <input name="flyttedatoAdr" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.flyttedatoAdr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.flyttedatoAdr.$error"
+             ng-show="requestForm.flyttedatoAdr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Kommunenummer</md-tooltip>
+        <label>Kommunenummer</label>
+        <input name="kommunenummer" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.kommunenummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.kommunenummer.$error"
+             ng-show="requestForm.kommunenummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>GateGaard</md-tooltip>
+        <label>GateGaard</label>
+        <input name="gateGaard" ng-required="false" pattern="\d{5}" md-maxlength="5"
+               ng-model="melding.gateGaard" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.gateGaard.$error"
+             ng-show="requestForm.gateGaard.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fem sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>HusBruk</md-tooltip>
+        <label>HusBruk</label>
+        <input name="husBruk" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.husBruk" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.husBruk.$error"
+             ng-show="requestForm.husBruk.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>BokstavFestenr</md-tooltip>
+        <label>BokstavFestenr</label>
+        <input name="bokstavFestenr" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.bokstavFestenr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.bokstavFestenr.$error"
+             ng-show="requestForm.bokstavFestenr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Undernr</md-tooltip>
+        <label>Undernr</label>
+        <input name="undernr" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.undernr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.undernr.$error"
+             ng-show="requestForm.undernr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adressenavn</md-tooltip>
+        <label>Adressenavn</label>
+        <input name="adressenavn" ng-required="false" md-maxlength="25"
+               ng-model="melding.adressenavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.adressenavn.$error"
+             ng-show="requestForm.adressenavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Adressetype</md-tooltip>
+        <label>Adressetype</label>
+        <input name="adressetype" ng-required="false" md-maxlength="1"
+               ng-model="melding.adressetype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.adressetype.$error"
+             ng-show="requestForm.adressetype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Tilleggsadresse</md-tooltip>
+        <label>Tilleggsadresse</label>
+        <input name="tilleggsadresse" ng-required="false" md-maxlength="25"
+               ng-model="melding.tilleggsadresse" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tilleggsadresse.$error"
+             ng-show="requestForm.tilleggsadresse.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Postnummer</md-tooltip>
+        <label>Postnummer</label>
+        <input name="postnummer" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.postnummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.postnummer.$error"
+             ng-show="requestForm.postnummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Valgkrets</md-tooltip>
+        <label>Valgkrets</label>
+        <input name="valgkrets" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.valgkrets" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.valgkrets.$error"
+             ng-show="requestForm.valgkrets.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adresse1</md-tooltip>
+        <label>Adresse1</label>
+        <input name="adresse1" ng-required="false" md-maxlength="30"
+               ng-model="melding.adresse1" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.adresse1.$error"
+             ng-show="requestForm.adresse1.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adresse2</md-tooltip>
+        <label>Adresse2</label>
+        <input name="adresse2" ng-required="false" md-maxlength="30"
+               ng-model="melding.adresse2" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.adresse2.$error"
+             ng-show="requestForm.adresse2.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Adresse3</md-tooltip>
+        <label>Adresse3</label>
+        <input name="adresse3" ng-required="false" md-maxlength="30"
+               ng-model="melding.adresse3" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.adresse3.$error"
+             ng-show="requestForm.adresse3.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>PostadrLand</md-tooltip>
+        <label>PostadrLand</label>
+        <input name="postadrLand" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.postadrLand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.postadrLand.$error"
+             ng-show="requestForm.postadrLand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>InnvandretFraLand</md-tooltip>
+        <label>InnvandretFraLand</label>
+        <input name="innvandretFraLand" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.innvandretFraLand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.innvandretFraLand.$error"
+             ng-show="requestForm.innvandretFraLand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FraLandRegdato</md-tooltip>
+        <label>FraLandRegdato</label>
+        <input name="fraLandRegdato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.fraLandRegdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fraLandRegdato.$error"
+             ng-show="requestForm.fraLandRegdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FraLandFlyttedato</md-tooltip>
+        <label>FraLandFlyttedato</label>
+        <input name="fraLandFlyttedato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.fraLandFlyttedato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fraLandFlyttedato.$error"
+             ng-show="requestForm.fraLandFlyttedato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FraKommune</md-tooltip>
+        <label>FraKommune</label>
+        <input name="fraKommune" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.fraKommune" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fraKommune.$error"
+             ng-show="requestForm.fraKommune.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FraKommRegdato</md-tooltip>
+        <label>FraKommRegdato</label>
+        <input name="fraKommRegdato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.fraKommRegdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fraKommRegdato.$error"
+             ng-show="requestForm.fraKommRegdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FraKommFlyttedato</md-tooltip>
+        <label>FraKommFlyttedato</label>
+        <input name="fraKommFlyttedato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.fraKommFlyttedato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fraKommFlyttedato.$error"
+             ng-show="requestForm.fraKommFlyttedato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>UtvandretTilLand</md-tooltip>
+        <label>UtvandretTilLand</label>
+        <input name="utvandretTilLand" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.utvandretTilLand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.utvandretTilLand.$error"
+             ng-show="requestForm.utvandretTilLand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>TilLandRegdato</md-tooltip>
+        <label>TilLandRegdato</label>
+        <input name="tilLandRegdato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.tilLandRegdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tilLandRegdato.$error"
+             ng-show="requestForm.tilLandRegdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>TilLandFlyttedato</md-tooltip>
+        <label>TilLandFlyttedato</label>
+        <input name="tilLandFlyttedato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.tilLandFlyttedato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tilLandFlyttedato.$error"
+             ng-show="requestForm.tilLandFlyttedato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Samemanntall</md-tooltip>
+        <label>Samemanntall</label>
+        <input name="samemanntall" ng-required="false" md-maxlength="1"
+               ng-model="melding.samemanntall" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.samemanntall.$error"
+             ng-show="requestForm.samemanntall.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DatoSamemanntall</md-tooltip>
+        <label>DatoSamemanntall</label>
+        <input name="datoSamemanntall" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoSamemanntall" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoSamemanntall.$error"
+             ng-show="requestForm.datoSamemanntall.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Umyndiggjort</md-tooltip>
+        <label>Umyndiggjort</label>
+        <input name="umyndiggjort" ng-required="false" md-maxlength="1"
+               ng-model="melding.umyndiggjort" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.umyndiggjort.$error"
+             ng-show="requestForm.umyndiggjort.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DatoUmyndiggjort</md-tooltip>
+        <label>DatoUmyndiggjort</label>
+        <input name="datoUmyndiggjort" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoUmyndiggjort" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoUmyndiggjort.$error"
+             ng-show="requestForm.datoUmyndiggjort.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Foreldreansvar</md-tooltip>
+        <label>Foreldreansvar</label>
+        <input name="foreldreansvar" ng-required="false" md-maxlength="1"
+               ng-model="melding.foreldreansvar" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.foreldreansvar.$error"
+             ng-show="requestForm.foreldreansvar.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>DatoForeldreansvar</md-tooltip>
+        <label>DatoForeldreansvar</label>
+        <input name="datoForeldreansvar" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoForeldreansvar" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoForeldreansvar.$error"
+             ng-show="requestForm.datoForeldreansvar.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Arbeidstillatelse</md-tooltip>
+        <label>Arbeidstillatelse</label>
+        <input name="arbeidstillatelse" ng-required="false" md-maxlength="1"
+               ng-model="melding.arbeidstillatelse" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.arbeidstillatelse.$error"
+             ng-show="requestForm.arbeidstillatelse.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>DatoArbeidstillatelse</md-tooltip>
+        <label>DatoArbeidstillatelse</label>
+        <input name="datoArbeidstillatelse" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoArbeidstillatelse" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoArbeidstillatelse.$error"
+             ng-show="requestForm.datoArbeidstillatelse.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>Fremkonnummer</md-tooltip>
+        <label>Fremkonnummer</label>
+        <input name="fremkonnummer" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.fremkonnummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fremkonnummer.$error"
+             ng-show="requestForm.fremkonnummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>MorsFodselsdato</md-tooltip>
+        <label>MorsFodselsdato</label>
+        <input name="morsFodselsdato" ng-required="false" pattern="\d{6}" md-maxlength="6"
+               ng-model="melding.morsFodselsdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.morsFodselsdato.$error"
+             ng-show="requestForm.morsFodselsdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Seks sifre (DDMMÅÅ) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>MorsPersonnummer</md-tooltip>
+        <label>MorsPersonnummer</label>
+        <input name="morsPersonnummer" ng-required="false" pattern="\d{5}" md-maxlength="5"
+               ng-model="melding.morsPersonnummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.morsPersonnummer.$error"
+             ng-show="requestForm.morsPersonnummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fem sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>MorsNavn</md-tooltip>
+        <label>MorsNavn</label>
+        <input name="morsNavn" ng-required="false" md-maxlength="50"
+               ng-model="melding.morsNavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.morsNavn.$error"
+             ng-show="requestForm.morsNavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>MorsStatsbSkap</md-tooltip>
+        <label>MorsStatsbSkap</label>
+        <input name="morsStatsbSkap" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.morsStatsbSkap" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.morsStatsbSkap.$error"
+             ng-show="requestForm.morsStatsbSkap.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FarsFodselsdato</md-tooltip>
+        <label>FarsFodselsdato</label>
+        <input name="farsFodselsdato" ng-required="false" pattern="\d{6}" md-maxlength="6"
+               ng-model="melding.farsFodselsdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.farsFodselsdato.$error"
+             ng-show="requestForm.farsFodselsdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Seks sifre (DDMMÅÅ) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FarsPersonnummer</md-tooltip>
+        <label>FarsPersonnummer</label>
+        <input name="farsPersonnummer" ng-required="false" pattern="\d{5}" md-maxlength="5"
+               ng-model="melding.farsPersonnummer" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.farsPersonnummer.$error"
+             ng-show="requestForm.farsPersonnummer.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fem sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>FarsNavn</md-tooltip>
+        <label>FarsNavn</label>
+        <input name="farsFarsNavn" ng-required="false" md-maxlength="50"
+               ng-model="melding.farsFarsNavn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.farsFarsNavn.$error"
+             ng-show="requestForm.farsFarsNavn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>FarsStatsbSkap</md-tooltip>
+        <label>FarsStatsbSkap</label>
+        <input name="farsStatsbSkap" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.farsStatsbSkap" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.farsStatsbSkap.$error"
+             ng-show="requestForm.farsStatsbSkap.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>TidligereFnrDnr</md-tooltip>
+        <label>TidligereFnrDnr</label>
+        <input name="tidligereFnrDnr" ng-required="false" pattern="\d{11}" md-maxlength="11"
+               ng-model="melding.tidligereFnrDnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tidligereFnrDnr.$error"
+             ng-show="requestForm.tidligereFnrDnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Elleve sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="10">
+        <md-tooltip>DatoTidlFnrDnr</md-tooltip>
+        <label>DatoTidlFnrDnr</label>
+        <input name="datoTidlFnrDnr" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoTidlFnrDnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoTidlFnrDnr.$error"
+             ng-show="requestForm.datoTidlFnrDnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>NyttFnr</md-tooltip>
+        <label>NyttFnr</label>
+        <input name="nyttFnr" ng-required="false" pattern="\d{11}" md-maxlength="11"
+               ng-model="melding.nyttFnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.nyttFnr.$error"
+             ng-show="requestForm.nyttFnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Elleve sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DatoNyttFnr</md-tooltip>
+        <label>DatoNyttFnr</label>
+        <input name="datoNyttFnr" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.datoNyttFnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.datoNyttFnr.$error"
+             ng-show="requestForm.datoNyttFnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>LevendeDoed</md-tooltip>
+        <label>LevendeDoed</label>
+        <input name="levendeDoed" ng-required="false" md-maxlength="1"
+               ng-model="melding.levendeDoed" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.levendeDoed.$error"
+             ng-show="requestForm.levendeDoed.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Kjonn</md-tooltip>
+        <label>Kjonn</label>
+        <input name="kjonn" ng-required="false" md-maxlength="1"
+               ng-model="melding.kjonn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.kjonn.$error"
+             ng-show="requestForm.kjonn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Tildelingskode</md-tooltip>
+        <label>Tildelingskode</label>
+        <input name="tildelingskode" ng-required="false" md-maxlength="1"
+               ng-model="melding.tildelingskode" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tildelingskode.$error"
+             ng-show="requestForm.tildelingskode.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Foedselstype</md-tooltip>
+        <label>Foedselstype</label>
+        <input name="foedselstype" ng-required="false" md-maxlength="2"
+               ng-model="melding.foedselstype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.foedselstype.$error"
+             ng-show="requestForm.foedselstype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>MorsSiviltilstand</md-tooltip>
+        <label>MorsSiviltilstand</label>
+        <input name="morsSiviltilstand" ng-required="false" md-maxlength="1"
+               ng-model="melding.morsSiviltilstand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.morsSiviltilstand.$error"
+             ng-show="requestForm.morsSiviltilstand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>EkteskPartnskNr</md-tooltip>
+        <label>EkteskPartnskNr</label>
+        <input name="ekteskPartnskNr" ng-required="false" md-maxlength="1"
+               ng-model="melding.ekteskPartnskNr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ekteskPartnskNr.$error"
+             ng-show="requestForm.ekteskPartnskNr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>EktfEkteskPartnskNr</md-tooltip>
+        <label>EktfEkteskPartnskNr</label>
+        <input name="ektfEkteskPartnskNr" ng-required="false" md-maxlength="1"
+               ng-model="melding.ektfEkteskPartnskNr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ektfEkteskPartnskNr.$error"
+             ng-show="requestForm.ektfEkteskPartnskNr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Vigselstype</md-tooltip>
+        <label>Vigselstype</label>
+        <input name="vigselstype" ng-required="false" md-maxlength="1"
+               ng-model="melding.vigselstype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vigselstype.$error"
+             ng-show="requestForm.vigselstype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>ForsByrde</md-tooltip>
+        <label>ForsByrde</label>
+        <input name="forsByrde" ng-required="false" md-maxlength="2"
+               ng-model="melding.forsByrde" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.forsByrde.$error"
+             ng-show="requestForm.forsByrde.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Dombevilling</md-tooltip>
+        <label>Dombevilling</label>
+        <input name="dombevilling" ng-required="false" md-maxlength="1"
+               ng-model="melding.dombevilling" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dombevilling.$error"
+             ng-show="requestForm.dombevilling.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>AntallBarn</md-tooltip>
+        <label>AntallBarn</label>
+        <input name="antallBarn" ng-required="false" md-maxlength="2"
+               ng-model="melding.antallBarn" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.antallBarn.$error"
+             ng-show="requestForm.antallBarn.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>TidlSivilstand</md-tooltip>
+        <label>TidlSivilstand</label>
+        <input name="tidlSivilstand" ng-required="false" md-maxlength="1"
+               ng-model="melding.tidlSivilstand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tidlSivilstand.$error"
+             ng-show="requestForm.tidlSivilstand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>EktfTidlSivilstand</md-tooltip>
+        <label>EktfTidlSivilstand</label>
+        <input name="ektfTidlSivilstand" ng-required="false" md-maxlength="1"
+               ng-model="melding.ektfTidlSivilstand" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.ektfTidlSivilstand.$error"
+             ng-show="requestForm.ektfTidlSivilstand.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Hjemmel</md-tooltip>
+        <label>Hjemmel</label>
+        <input name="hjemmel" ng-required="false" md-maxlength="1"
+               ng-model="melding.hjemmel" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.hjemmel.$error"
+             ng-show="requestForm.hjemmel.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Fylke</md-tooltip>
+        <label>Fylke</label>
+        <input name="fylke" ng-required="false" md-maxlength="2"
+               ng-model="melding.fylke" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.fylke.$error"
+             ng-show="requestForm.fylke.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Vigselskomm</md-tooltip>
+        <label>Vigselskomm</label>
+        <input name="vigselskomm" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.vigselskomm" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vigselskomm.$error"
+             ng-show="requestForm.vigselskomm.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>TidlSepDomBev</md-tooltip>
+        <label>TidlSepDomBev</label>
+        <input name="tidlSepDomBev" ng-required="false" md-maxlength="1"
+               ng-model="melding.tidlSepDomBev" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tidlSepDomBev.$error"
+             ng-show="requestForm.tidlSepDomBev.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>BegjertAv</md-tooltip>
+        <label>BegjertAv</label>
+        <input name="begjertAv" ng-required="false" md-maxlength="1"
+               ng-model="melding.begjertAv" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.begjertAv.$error"
+             ng-show="requestForm.begjertAv.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegistrGrunnlag</md-tooltip>
+        <label>RegistrGrunnlag</label>
+        <input name="registrGrunnlag" ng-required="false" md-maxlength="1"
+               ng-model="melding.registrGrunnlag" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.registrGrunnlag.$error"
+             ng-show="requestForm.registrGrunnlag.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Doedssted</md-tooltip>
+        <label>Doedssted</label>
+        <input name="doedssted" ng-required="false" md-maxlength="4"
+               ng-model="melding.doedssted" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.doedssted.$error"
+             ng-show="requestForm.doedssted.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>TypeDoedssted</md-tooltip>
+        <label>TypeDoedssted</label>
+        <input name="typeDoedssted" ng-required="false" md-maxlength="1"
+               ng-model="melding.typeDoedssted" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.typeDoedssted.$error"
+             ng-show="requestForm.typeDoedssted.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Vigselsdato</md-tooltip>
+        <label>Vigselsdato</label>
+        <input name="vigselsdato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.vigselsdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vigselsdato.$error"
+             ng-show="requestForm.vigselsdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>MedlKirken</md-tooltip>
+        <label>MedlKirken</label>
+        <input name="medlKirken" ng-required="false" md-maxlength="1"
+               ng-model="melding.medlKirken" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.medlKirken.$error"
+             ng-show="requestForm.medlKirken.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Sekvensnr</md-tooltip>
+        <label>Sekvensnr</label>
+        <input name="sekvensnr" ng-required="false" pattern="\d{6}" md-maxlength="6"
+               ng-model="melding.sekvensnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.sekvensnr.$error"
+             ng-show="requestForm.sekvensnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Seks sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Bolignr</md-tooltip>
+        <label>Bolignr</label>
+        <input name="bolignr" ng-required="false" md-maxlength="5"
+               ng-model="melding.bolignr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.bolignr.$error"
+             ng-show="requestForm.bolignr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DufId</md-tooltip>
+        <label>DufId</label>
+        <input name="dufId" ng-required="false" pattern="\d{12}" md-maxlength="12"
+               ng-model="melding.dufId" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dufId.$error"
+             ng-show="requestForm.dufId.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tolv sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Brukerident</md-tooltip>
+        <label>Brukerident</label>
+        <input name="brukerident" ng-required="false" md-maxlength="8"
+               ng-model="melding.brukerident" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.brukerident.$error"
+             ng-show="requestForm.brukerident.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Skolerets</md-tooltip>
+        <label>Skolerets</label>
+        <input name="skolerets" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.skolerets" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.skolerets.$error"
+             ng-show="requestForm.skolerets.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>TkNr</md-tooltip>
+        <label>TkNr</label>
+        <input name="tkNr" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.tkNr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.tkNr.$error"
+             ng-show="requestForm.tkNr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DnrHjemlandsadresse1</md-tooltip>
+        <label>DnrHjemlandsadresse1</label>
+        <input name="dnrHjemlandsadresse1" ng-required="false" md-maxlength="40"
+               ng-model="melding.dnrHjemlandsadresse1" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dnrHjemlandsadresse1.$error"
+             ng-show="requestForm.dnrHjemlandsadresse1.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DnrHjemlandsadresse2</md-tooltip>
+        <label>DnrHjemlandsadresse2</label>
+        <input name="dnrHjemlandsadresse2" ng-required="false" md-maxlength="40"
+               ng-model="melding.dnrHjemlandsadresse2" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dnrHjemlandsadresse2.$error"
+             ng-show="requestForm.dnrHjemlandsadresse2.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DnrHjemlandsadresse3</md-tooltip>
+        <label>DnrHjemlandsadresse3</label>
+        <input name="dnrHjemlandsadresse3" ng-required="false" md-maxlength="40"
+               ng-model="melding.dnrHjemlandsadresse3" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dnrHjemlandsadresse3.$error"
+             ng-show="requestForm.dnrHjemlandsadresse3.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DnrHjemlandLandkode</md-tooltip>
+        <label>DnrHjemlandLandkode</label>
+        <input name="dnrHjemlandLandkode" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.dnrHjemlandLandkode" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dnrHjemlandLandkode.$error"
+             ng-show="requestForm.dnrHjemlandLandkode.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DnrHjemlandRegDato</md-tooltip>
+        <label>DnrHjemlandRegDato</label>
+        <input name="dnrHjemlandRegDato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.dnrHjemlandRegDato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dnrHjemlandRegDato.$error"
+             ng-show="requestForm.dnrHjemlandRegDato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>DnrIdKontroll</md-tooltip>
+        <label>DnrIdKontroll</label>
+        <input name="dnrIdKontroll" ng-required="false" md-maxlength="1"
+               ng-model="melding.dnrIdKontroll" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.dnrIdKontroll.$error"
+             ng-show="requestForm.dnrIdKontroll.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>PostadrRegDato</md-tooltip>
+        <label>PostadrRegDato</label>
+        <input name="postadrRegDato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.postadrRegDato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.postadrRegDato.$error"
+             ng-show="requestForm.postadrRegDato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Utvandringstype</md-tooltip>
+        <label>Utvandringstype</label>
+        <input name="utvandringstype" ng-required="false" md-maxlength="1"
+               ng-model="melding.utvandringstype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.utvandringstype.$error"
+             ng-show="requestForm.utvandringstype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Grunnkrets</md-tooltip>
+        <label>Grunnkrets</label>
+        <input name="grunnkrets" ng-required="false" pattern="\d{4}" md-maxlength="4"
+               ng-model="melding.grunnkrets" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.grunnkrets.$error"
+             ng-show="requestForm.grunnkrets.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Fire sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap2</md-tooltip>
+        <label>Statsborgerskap2</label>
+        <input name="statsborgerskap2" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap2" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap2.$error"
+             ng-show="requestForm.statsborgerskap2.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb2</md-tooltip>
+        <label>RegdatoStatsb2</label>
+        <input name="regdatoStatsb2" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb2" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb2.$error"
+             ng-show="requestForm.regdatoStatsb2.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap3</md-tooltip>
+        <label>Statsborgerskap3</label>
+        <input name="statsborgerskap3" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap3" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap3.$error"
+             ng-show="requestForm.statsborgerskap3.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex=>
+        <md-tooltip>RegdatoStatsb3</md-tooltip>
+        <label>RegdatoStatsb3</label>
+        <input name="regdatoStatsb3" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb3" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb3.$error"
+             ng-show="requestForm.regdatoStatsb3.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap4</md-tooltip>
+        <label>Statsborgerskap4</label>
+        <input name="statsborgerskap4" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap4" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap4.$error"
+             ng-show="requestForm.statsborgerskap4.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb4</md-tooltip>
+        <label>RegdatoStatsb4</label>
+        <input name="regdatoStatsb4" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb4" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb4.$error"
+             ng-show="requestForm.regdatoStatsb4.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap5</md-tooltip>
+        <label>Statsborgerskap5</label>
+        <input name="statsborgerskap5" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap5" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap5.$error"
+             ng-show="requestForm.statsborgerskap5.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb5</md-tooltip>
+        <label>RegdatoStatsb5</label>
+        <input name="regdatoStatsb5" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb5" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb5.$error"
+             ng-show="requestForm.regdatoStatsb5.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap6</md-tooltip>
+        <label>Statsborgerskap6</label>
+        <input name="statsborgerskap6" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap6" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap6.$error"
+             ng-show="requestForm.statsborgerskap6.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb6</md-tooltip>
+        <label>RegdatoStatsb6</label>
+        <input name="regdatoStatsb2" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb6" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb6.$error"
+             ng-show="requestForm.regdatoStatsb6.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap7</md-tooltip>
+        <label>Statsborgerskap7</label>
+        <input name="statsborgerskap7" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap7" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap7.$error"
+             ng-show="requestForm.statsborgerskap7.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb7</md-tooltip>
+        <label>RegdatoStatsb7</label>
+        <input name="regdatoStatsb7" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb7" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb7.$error"
+             ng-show="requestForm.regdatoStatsb7.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap8</md-tooltip>
+        <label>Statsborgerskap8</label>
+        <input name="statsborgerskap8" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap8" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap8.$error"
+             ng-show="requestForm.statsborgerskap8.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb8</md-tooltip>
+        <label>RegdatoStatsb8</label>
+        <input name="regdatoStatsb8" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb8" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb8.$error"
+             ng-show="requestForm.regdatoStatsb8.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap9</md-tooltip>
+        <label>Statsborgerskap9</label>
+        <input name="statsborgerskap9" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap9" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap9.$error"
+             ng-show="requestForm.statsborgerskap9.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb9</md-tooltip>
+        <label>RegdatoStatsb9</label>
+        <input name="regdatoStatsb9" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb9" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb9.$error"
+             ng-show="requestForm.regdatoStatsb9.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Statsborgerskap10</md-tooltip>
+        <label>Statsborgerskap10</label>
+        <input name="statsborgerskap10" ng-required="false" pattern="\d{3}" md-maxlength="3"
+               ng-model="melding.statsborgerskap10" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.statsborgerskap10.$error"
+             ng-show="requestForm.statsborgerskap10.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Tre sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoStatsb10</md-tooltip>
+        <label>RegdatoStatsb10</label>
+        <input name="regdatoStatsb10" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoStatsb10" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoStatsb10.$error"
+             ng-show="requestForm.regdatoStatsb10.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Bibehold</md-tooltip>
+        <label>Bibehold</label>
+        <input name="bibehold" ng-required="false" md-maxlength="1"
+               ng-model="melding.bibehold" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.bibehold.$error"
+             ng-show="requestForm.bibehold.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>RegdatoBibehold</md-tooltip>
+        <label>RegdatoBibehold</label>
+        <input name="regdatoBibehold" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.regdatoBibehold" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.regdatoBibehold.$error"
+             ng-show="requestForm.regdatoBibehold.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Saksid</md-tooltip>
+        <label>Saksid</label>
+        <input name="saksid" ng-required="false" pattern="\d{7}" md-maxlength="7"
+               ng-model="melding.saksid" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.saksid.$error"
+             ng-show="requestForm.saksid.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Sju sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Embete</md-tooltip>
+        <label>Embete</label>
+        <input name="embete" ng-required="false" md-maxlength="4"
+               ng-model="melding.embete" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.embete.$error"
+             ng-show="requestForm.embete.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Sakstype</md-tooltip>
+        <label>Sakstype</label>
+        <input name="sakstype" ng-required="false" md-maxlength="3"
+               ng-model="melding.sakstype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.sakstype.$error"
+             ng-show="requestForm.sakstype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Vedtaksdato</md-tooltip>
+        <label>Vedtaksdato</label>
+        <input name="vedtaksdato" ng-required="false" pattern="\d{8}" md-maxlength="8"
+               ng-model="melding.vedtaksdato" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vedtaksdato.$error"
+             ng-show="requestForm.vedtaksdato.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Åtte sifre (ÅÅÅÅMMDD) forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>InternVergeid</md-tooltip>
+        <label>InternVergeid</label>
+        <input name="internVergeid" ng-required="false" pattern="\d{7}" md-maxlength="7"
+               ng-model="melding.internVergeid" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.internVergeid.$error"
+             ng-show="requestForm.internVergeid.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Sju sifre forventet</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>VergeFnrDnr</md-tooltip>
+        <label>VergeFnrDnr</label>
+        <input name="vergeFnrDnr" ng-required="false" pattern="\d{11}" md-maxlength="11"
+               ng-model="melding.vergeFnr" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vergeFnr.$error"
+             ng-show="requestForm.vergeFnr.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+            <div ng-message="pattern">Elleve sifre forventet</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Vergetype</md-tooltip>
+        <label>Vergetype</label>
+        <input name="vergetype" ng-required="false" md-maxlength="3"
+               ng-model="melding.vergetype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.vergetype.$error"
+             ng-show="requestForm.vergetype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>Mandattype</md-tooltip>
+        <label>Mandattype</label>
+        <input name="mandattype" ng-required="false" md-maxlength="3"
+               ng-model="melding.mandattype" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.mandattype.$error"
+             ng-show="requestForm.mandattype.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container" flex="75">
+        <md-tooltip>MandatTekst</md-tooltip>
+        <label>MandatTekst</label>
+        <input name="mandatTekst" ng-required="false" md-maxlength="100"
+               ng-model="melding.mandatTekst" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.mandatTekst.$error"
+             ng-show="requestForm.mandatTekst.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>
+<div layout="row">
+    <md-input-container class="tps-vk-input-container" flex>
+        <md-tooltip>ReserverFramtidigBruk</md-tooltip>
+        <label>ReserverFramtidigBruk</label>
+        <input name="reserverFramtidigBruk" ng-required="false" md-maxlength="140"
+               ng-model="melding.reserverFramtidigBruk" ng-change="endret($index + pager.startIndex)"/>
+        <div ng-messages="requestForm.reserverFramtidigBruk.$error"
+             ng-show="requestForm.reserverFramtidigBruk.$dirty">
+            <div ng-message="md-maxlength">Verdi har for mange tegn</div>
+        </div>
+    </md-input-container>
+</div>

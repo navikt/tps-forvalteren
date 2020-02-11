@@ -1,0 +1,7 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Ident Type</label>
+    <md-select ng-model="formData.identType" placeholder="Ident Type">
+        <md-option>Blankt</md-option>
+        <md-option ng-repeat="val in selectValues.identType" ng-value="val">{{ val}}</md-option>
+    </md-select>
+</md-input-container>

@@ -1,0 +1,49 @@
+<div flex-xs flex-gt-xs="1" layout="column">
+    <md-item class="tps-vk-response" ng-show="responseData">
+        <md-item-content>
+            <!-- Results expanded   -->
+            <div class="tps-vk-response-expanded">
+                <div flex="5"></div>
+                <div layout="row" layout-wrap>
+                    <tps-output-field label="fodselsnummer" flex="20" field-model="responseData.data1.fodselsnummer" title="fodselsnummer"></tps-output-field>
+                    <tps-output-field label="identType" flex="20" field-model="responseData.data1.identType" title="identType"></tps-output-field>
+
+                    <div layout="row" flex="100" layout-wrap ng-if="isArray(adresseHistorikk['vergemaal'])"
+                         ng-repeat="vari in adresseHistorikk.vergemaal">
+                        <tps-output-field label="vmSaksid" flex="20" field-model="vari.vmSaksid" title="vmSaksid"></tps-output-field>
+                        <tps-output-field label="vmInternVergeid" flex="20" field-model="vari.vmInternVergeid" title="vmInternVergeid"></tps-output-field>
+                        <tps-output-field label="vmVedtaksdato" flex="20" field-model="vari.vmVedtaksdato" title="vmVedtaksdato"></tps-output-field>
+                        <tps-output-field label="vmVergeIdent" flex="20" field-model="vari.vmVergeIdent" title="vmVergeIdent"></tps-output-field>
+                        <tps-output-field label="vmVergeIdentType" flex="20" field-model="vari.vmVergeIdentType" title="vmVergeIdentType"></tps-output-field>
+                        <tps-output-field label="vmVirkningsDatoFom" flex="20" field-model="vari.vmVirkningDatoFom" title="vmVirkningsDatoFom"></tps-output-field>
+                        <tps-output-field label="vmVirkningsDatoTom" flex="20" field-model="vari.vmVirkningDatoTom" title="vmVirkningsDatoTom"></tps-output-field>
+                        <tps-output-field label="vmMandatTekst" flex="20" field-model="vari.vmMandatTekst" title="vmMandatTekst"></tps-output-field>
+                        <tps-output-field label="vmEmbete" flex="20" field-model="vari.vmEmbete" title="vmEmbete"></tps-output-field>
+                        <tps-output-field label="vmSaksType" flex="20" field-model="vari.vmSaksType" title="vmSaksType"></tps-output-field>
+                        <tps-output-field label="vmVergeType" flex="20" field-model="vari.vmVergeType" title="vmVergeType"></tps-output-field>
+                        <tps-output-field label="vmMandatType" flex="20" field-model="vari.vmMandatType" title="vmMandatType"></tps-output-field>
+                        <tps-output-field label="vmSaksbehandler" flex="20" field-model="vari.vmSaksbehandler" title="vmSaksbehandler"></tps-output-field>
+                        <tps-output-field label="vmSaksbehandlerTidspunkt" flex="20" field-model="vari.vmSaksbehandlerTidspunkt" title="vmSaksbehandlerTidspunkt"></tps-output-field>
+                    </div>
+                    <div layout="row" flex="100" layout-wrap ng-if="!isArray(adresseHistorikk['vergemaal'])">
+                        <tps-output-field label="vmSaksid" flex="20" field-model="responseData.data1.vergemaal.vmSaksid" title="vmSaksid"></tps-output-field>
+                        <tps-output-field label="vmInternVergeid" flex="20" field-model="responseData.data1.vergemaal.vmInternVergeid" title="vmInternVergeid"></tps-output-field>
+                        <tps-output-field label="vmVedtaksdato" flex="20" field-model="responseData.data1.vergemaal.vmVedtaksdato" title="vmVedtaksdato"></tps-output-field>
+                        <tps-output-field label="vmVergeIdent" flex="20" field-model="responseData.data1.vergemaal.vmVergeIdent" title="vmVergeIdent"></tps-output-field>
+                        <tps-output-field label="vmVergeIdentType" flex="20" field-model="responseData.data1.vergemaal.vmVergeIdentType" title="vmVergeIdentType"></tps-output-field>
+                        <tps-output-field label="vmVirkningsDatoFom" flex="20" field-model="responseData.data1.vergemaal.vmVirkningDatoFom" title="vmVirkningsDatoFom"></tps-output-field>
+                        <tps-output-field label="vmVirkningsDatoTom" flex="20" field-model="responseData.data1.vergemaal.vmVirkningDatoTom" title="vmVirkningsDatoTom"></tps-output-field>
+                        <tps-output-field label="vmMandatTekst" flex="20" field-model="responseData.data1.vergemaal.vmMandatTekst" title="vmMandatTekst"></tps-output-field>
+                        <tps-output-field label="vmEmbete" flex="20" field-model="responseData.data1.vergemaal.vmEmbete" title="vmEmbete"></tps-output-field>
+                        <tps-output-field label="vmSaksType" flex="20" field-model="responseData.data1.vergemaal.vmSaksType" title="vmSaksType"></tps-output-field>
+                        <tps-output-field label="vmVergeType" flex="20" field-model="responseData.data1.vergemaal.vmVergeType" title="vmVergeType"></tps-output-field>
+                        <tps-output-field label="vmMandatType" flex="20" field-model="responseData.data1.vergemaal.vmMandatType" title="vmMandatType"></tps-output-field>
+                        <tps-output-field label="vmSaksbehandler" flex="20" field-model="responseData.data1.vergemaal.vmSaksbehandler" title="vmSaksbehandler"></tps-output-field>
+                        <tps-output-field label="vmSaksbehandlerTidspunkt" flex="20" field-model="responseData.data1.vergemaal.vmSaksbehandlerTidspunkt" title="vmSaksbehandlerTidspunkt"></tps-output-field>
+                    </div>
+                </div>
+            </div>
+        </md-item-content>
+    </md-item>
+</div>
+

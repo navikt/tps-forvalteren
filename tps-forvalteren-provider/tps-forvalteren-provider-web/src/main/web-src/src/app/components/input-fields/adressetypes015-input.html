@@ -1,0 +1,6 @@
+<md-input-container class="tps-vk-input-container" flex>
+    <label>Adressetype</label>
+    <md-select ng-model="formData.adresseType" placeholder="Adressetype">
+        <md-option ng-repeat="val in selectValues.adresseType" ng-value="val">{{ val}}</md-option>
+    </md-select>
+</md-input-container>

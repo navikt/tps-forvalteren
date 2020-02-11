@@ -1,16 +1,11 @@
 package no.nav.tps.forvalteren.consumer.rs.fasit.config;
 
-import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
-import no.nav.tps.forvalteren.consumer.rs.fasit.queues.DefaultFasitMessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.rs.fasit.queues.FasitMessageQueueConsumer;
-import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-
+import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
 
 @Configuration
 @ComponentScan(basePackageClasses = {
@@ -18,28 +13,20 @@ import org.springframework.context.annotation.Configuration;
 })
 public class FasitConfig {
 
-    @Autowired
-    private AutowireCapableBeanFactory beanFactory;
+    @Value("${fasit.url}")
+    private String fasitUrl;
 
-    @Bean
-    public FasitMessageQueueConsumer getTpswsFasitMessageQueueQueueConsumer() {
-        FasitMessageQueueConsumer consumer = new DefaultFasitMessageQueueConsumer(
-                FasitConstants.FASIT_APPLICATION_NAME,
-                TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS,
-                FasitConstants.QUEUE_MANAGER_ALIAS
-        );
+    @Value("$fasit.username}")
+    private String fasitUsername;
 
-        /* Inject a FasitClient object */
-        beanFactory.autowireBean(consumer);
-        return consumer;
-    }
+    @Value("${fasit.password}")
+    private String password;
 
     @Bean
     public FasitClient getFasitClient() {
         return new FasitClient(
-                FasitConstants.BASE_URL,
-                FasitConstants.USERNAME,
-                FasitConstants.PASSWORD
-        );
+                fasitUrl,
+                fasitUsername,
+                password);
     }
 }

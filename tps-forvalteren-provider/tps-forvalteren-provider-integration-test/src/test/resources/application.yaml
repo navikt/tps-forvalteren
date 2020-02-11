@@ -1,0 +1,57 @@
+application:
+  descriptiveName: tpsf
+  name: tpsf
+  version: 1
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration
+  datasource:
+    url: jdbc:h2:mem:tpsfDB
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  flyway:
+    check-location: true
+    locations: classpath:db/migration
+    enabled: true
+  main:
+    allow-bean-definition-overriding: true
+  ldap:
+    urls: nada
+    username: anda
+    password: nada
+    domain: nada
+    base: nada
+
+tps.forvalteren.production.mode: false
+
+tpsf.environment.name: u2
+
+fasit:
+  url: nada
+  username: nada
+  password: nada
+
+mqgateway:
+  hostname: nada
+  port: nada
+  name: nada
+
+virksomhet:
+  kodeverk.v2.endpointurl: nada
+  diskresjonskode.v1.endpointurl: nada
+  egenansatt.v1.endpointurl: nada
+
+srvtps:
+  forvalteren:
+    username: nada
+    password: nada
+
+securitytokenservice.url: nada
+
+identpool.host.url: nada

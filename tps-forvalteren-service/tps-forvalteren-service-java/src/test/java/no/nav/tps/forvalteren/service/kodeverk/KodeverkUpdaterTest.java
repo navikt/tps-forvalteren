@@ -1,24 +1,25 @@
 package no.nav.tps.forvalteren.service.kodeverk;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
+import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
+import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KodeverkUpdaterTest {
@@ -37,7 +38,7 @@ public class KodeverkUpdaterTest {
     private KodeverkUpdater kodeverkUpdater;
 
     @Test
-    public void hvisKodeverkBlirHentetSaaClearesCacheOgNyeKommunekoderBlirSatt () {
+    public void hvisKodeverkBlirHentetSaaClearesCacheOgNyeKommunekoderBlirSatt() {
         kodeverkMock = mock(Kodeverk.class);
 
         Kode kodeTest = new Kode();
@@ -48,12 +49,17 @@ public class KodeverkUpdaterTest {
 
         kodeverkUpdater.updateTpsfKodeverkCache();
 
-        verify(kodeverkCacheMock).clearKommuneCache();
-        verify(kodeverkCacheMock).setKodeverkKommuneKoder(koder);
+        InOrder inOrder = Mockito.inOrder(kodeverkCacheMock);
+        inOrder.verify(kodeverkCacheMock).clearKommuneCache();
+        inOrder.verify(kodeverkCacheMock).setKodeverkKommuneKoder(koder);
+        inOrder.verify(kodeverkCacheMock).clearPostnummerCache();
+        inOrder.verify(kodeverkCacheMock).setKodeverkPostnummerKoder(koder);
+        inOrder.verify(kodeverkCacheMock).clearLandkoderCache();
+        inOrder.verify(kodeverkCacheMock).setKodeverkLandkoder(koder);
     }
 
     @Test
-    public void hvisKodeverkIKKEKanBliHentetSaaClearesIkkeCache () {
+    public void hvisKodeverkIKKEKanBliHentetSaaClearesIkkeCache() {
         Kode kodeTest = new Kode();
         koder.add(kodeTest);
 
@@ -63,7 +69,8 @@ public class KodeverkUpdaterTest {
 
         verify(kodeverkCacheMock, never()).clearKommuneCache();
         verify(kodeverkCacheMock, never()).setKodeverkKommuneKoder(any());
+        verify(kodeverkCacheMock, never()).clearPostnummerCache();
+        verify(kodeverkCacheMock, never()).setKodeverkPostnummerKoder(any());
     }
-
 
 }

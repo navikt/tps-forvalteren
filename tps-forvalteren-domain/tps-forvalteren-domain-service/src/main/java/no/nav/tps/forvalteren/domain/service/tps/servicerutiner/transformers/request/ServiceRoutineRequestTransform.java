@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request;
 
-import org.codehaus.jackson.annotate.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
 public class ServiceRoutineRequestTransform implements RequestTransformer {

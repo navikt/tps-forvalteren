@@ -1,0 +1,67 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Oppdater testgruppe dialog">
+        <form id="gruppeform2" name="gruppeForm2">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Opprett TPS Endringsmeldinger</h2>
+
+                <md-tabs md-border-bottom>
+                    <md-tab label="Opprett manuelt" md-on-select="selectTab(1)">
+                        <md-content class="md-padding">
+                            <div layout="row" layout-align="start end">
+                                <div layout="column">
+                                    <div layout="row">
+                                        <h4>Velg meldingstype</h4>
+                                    </div>
+                                    <div layout="row">
+                                        <div flex="5"></div>
+                                        <md-radio-group ng-model="melding.meldingstype" aria-label="Meldingstype">
+                                            <md-radio-button aria-label="Meldingstype T1" value="T1">Type 1</md-radio-button>
+                                            <md-radio-button aria-label="Meldingstype T2" value="T2">Type 2</md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                </div>
+                                <div layout="column" flex="10"></div>
+                                <div layout="column" flex>
+                                    <md-input-container class="testdata-input-row" aria-label="Meldingsnavn">
+                                        <label>Navn/beskrivelse av melding</label>
+                                        <input md-autofocus name="navn" ng-model="melding.navn" md-maxlength="200">
+                                        <div ng-messages="gruppeForm2.navn.$error" ng-show="gruppeForm2.navn.$dirty">
+                                            <div ng-message="md-maxlength">For mange tegn</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                    <md-tab label="Opprett fra eksisterende" md-on-select="selectTab(2)">
+                        <md-content class="md-padding" flex>
+                            <div layout="row" flex="100">
+                                <md-input-container class="testdata-input-row" aria-label="Fri-format Melding(er)" flex>
+                                    <label>Kopier inn eksisterende melding(er)</label>
+                                    <textarea name="rawMelding" ng-model="melding.raw" md-maxlength="1500000" ng-change="rawCheck()"></textarea>
+                                    <div ng-messages="gruppeForm2.rawMelding.$error" ng-show="gruppeForm2.rawMelding.$dirty">
+                                        <div ng-message="validationError">Forventer et helt antall meldinger a 1500 tegn</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </md-dialog-content>
+
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Avbryt">
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Avbryt</md-button>
+                </md-input-container>
+                <md-input-container class="testdata-input-row" aria-label="Opprett SKD endringsmelding">
+                    <md-button class="md-button md-raised md-accent" ng-click="createMelding()"
+                               ng-disabled="selectedTab === 1 ? !melding.meldingstype || !melding.navn || melding.navn.length === 0 :
+                                            !melding.raw || melding.raw.length === 0 || melding.raw.length % 1500">Opprett
+                    </md-button>
+                </md-input-container>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+
+</div>

@@ -21,4 +21,8 @@ angular.module('tps-forvalteren.service')
         self.getHeader = function () {
             return $rootScope.header;
         };
+
+        self.eventUpdate = function () {
+            $rootScope.$broadcast('updateEvent', 'Status er endret');
+        }
     }]);

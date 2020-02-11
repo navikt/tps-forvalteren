@@ -1,0 +1,42 @@
+<div class="tps-testdata-dashboard tps-content" layout="column" layout-padding ng-cloak>
+
+    <!-- Resulting Response -->
+    <form name="requestForm" class="tps-vk-top">
+
+        <h3 style="margin-left: 20px; margin-bottom: 10px;">TPS Meldingsgrupper</h3>
+
+        <md-card id="vis-testdata-main" class="tps-vk-top" ng-if="meldingsgrupper.length == 0">
+
+            <md-card-content flex class="testdata-card-content md-whiteframe-z2">
+                <div layout="column" class="md-raised" style="height: 200px;" flex layout-align="center center" ng-show="!personer">
+                    <div>
+                        <md-icon md-svg-icon="assets/icons/ic_message_black_24px.svg"
+                                 class="testdata-big-icon">
+                        </md-icon>
+                    </div>
+                    <div>Ingen gruppe med TPS endringsmeldinger lagt til ennå</div>
+                </div>
+            </md-card-content>
+        </md-card>
+
+        <div ng-repeat="meldingsgruppe in meldingsgrupper | orderBy: ['navn','beskrivelse']">
+            <div layout="row" flex="100" style="cursor: pointer">
+                <md-card flex md-whiteframe="{{height}}"
+                         ng-init="height = 1"
+                         ng-mouseenter="height = 5"
+                         ng-mouseleave="height = 1"
+                         ng-click="aapneFane(meldingsgruppe.id)" style="margin-top: 4px; margin-bottom: 4px;">
+                    <md-card-content class="testdata-card-content" flex style="padding-bottom: 0; padding-top: 10px;">
+                        <div layout="row" style="font-style: oblique; margin-top: -3px; margin-bottom: 7px;">
+                            <div flex="20" class="dont-break-out">{{meldingsgruppe.navn}}</div>
+                            <span flex="5"></span>
+                            <div flex="70" class="dont-break-out">
+                                {{meldingsgruppe.beskrivelse}}
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,16 +1,14 @@
 angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
-    .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', 'serviceRutineFactory', 'testdataService', '$location', 'utilsService',
-        function ($scope, $mdDialog, serviceRutineFactory, testdataService, $location, utilsService) {
+    .controller('SendTilTpsCtrl', ['$scope', '$mdDialog', '$stateParams','$rootScope', 'serviceRutineFactory', 'testdataService', 'utilsService',
+        function ($scope, $mdDialog, $stateParams, $rootScope, serviceRutineFactory, testdataService, utilsService) {
 
-            var gruppeId = $location.url().match(/\d+/g)[0];
+            var gruppeId = $stateParams.gruppeId;
 
-            var miljoer = serviceRutineFactory.getEnvironments().environments;
             $scope.showSpinner = false;
-            $scope.valgt_u_miljoer = [];
-            $scope.valgt_t_miljoer = [];
-            $scope.valgt_q_miljoer = [];
-            $scope.valgt_p_miljoer = [];
             $scope.alleMiljoe = false;
+            $scope.alleUMiljoer = false;
+            $scope.alleTMiljoer = false;
+            $scope.alleQMiljoer = false;
             $scope.miljoeValgt = false;
 
             $scope.avbryt = function () {
@@ -19,17 +17,17 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
 
             $scope.send = function () {
                 $scope.showSpinner = true;
-                var valgt_miljoer = $scope.hent_valgt_miljoer();
-                testdataService.sendTilTps(gruppeId, valgt_miljoer).then(
+                testdataService.sendTilTps(gruppeId, getSelectedMiljoer()).then(
                     function () {
                         $scope.showSpinner = false;
                         $mdDialog.hide();
                         var alert = $mdDialog.alert()
                             .title('Bekreftelse')
-                            .textContent('Testpersoner for gruppe har blitt sendt til TPS')
+                            .htmlContent('Testpersoner for gruppe har blitt sendt til TPS.')
                             .ariaLabel('Bekreftelse på at testpersoner har blitt sendt til TPS')
                             .ok('OK');
                         $mdDialog.show(alert);
+                        $rootScope.$broadcast('tps-sent');
                     },
                     function (error) {
                         $mdDialog.hide();
@@ -38,105 +36,247 @@ angular.module('tps-forvalteren.vis-testdata.sendtiltps', ['ngMaterial'])
                 );
             };
 
-            $scope.hent_valgt_miljoer = function () {
-                var send_til_miljoer = hent_valgt_miljoer_med_navn($scope.valgt_u_miljoer, $scope.u_miljoer);
-                send_til_miljoer = send_til_miljoer.concat(hent_valgt_miljoer_med_navn($scope.valgt_t_miljoer, $scope.t_miljoer));
-                send_til_miljoer = send_til_miljoer.concat(hent_valgt_miljoer_med_navn($scope.valgt_q_miljoer, $scope.q_miljoer));
-                send_til_miljoer = send_til_miljoer.concat(hent_valgt_miljoer_med_navn($scope.valgt_p_miljoer, $scope.p_miljoer));
-                return send_til_miljoer;
-            };
+            function getSelectedMiljoer() {
+                var miljoer = [];
 
-            function hent_valgt_miljoer_med_navn (valgt_miljoer, miljoer) {
-                var miljo_liste = [];
-                for (var index = 0; index < valgt_miljoer.length; index++) {
-                    if (valgt_miljoer[index]) {
-                        miljo_liste.push(miljoer[index]);
-                    }
-                }
-                return miljo_liste;
+                Object.keys($scope.sortedMiljoer).forEach(function (key) {
+                    $scope.sortedMiljoer[key].forEach(function (env, index) {
+                        if ($scope.valgteMiljoer[key][index]) {
+                            miljoer.push(env);
+                        }
+                    })
+                });
+
+                return miljoer;
             }
 
-            $scope.velgAlleMiljoe = function (status) {
-                function setValgteMiljoer (status) {
-                    sett_array_til($scope.u_miljoer, $scope.valgt_u_miljoer, status);
-                    sett_array_til($scope.t_miljoer, $scope.valgt_t_miljoer, status);
-                    sett_array_til($scope.q_miljoer, $scope.valgt_q_miljoer, status);
-                    sett_array_til($scope.p_miljoer, $scope.valgt_p_miljoer, status);
+            $scope.velgAlleMiljoe = function () {
+
+                if ($scope.sortedMiljoer.u) {
+                    $scope.sortedMiljoer.u.forEach(function (env, index) {
+                        $scope.valgteMiljoer.u[index] = !$scope.alleMiljoe;
+                    });
+
+                    var env_status = true;
+                    $scope.valgteMiljoer.u.forEach(function (env) {
+                        if (!env) {
+                            env_status = false;
+                        }
+                    });
+                    $scope.alleUMiljoer = env_status;
                 }
-                setValgteMiljoer(status !== undefined ? status : !$scope.alleMiljoe);
-                $scope.miljoeValgt = status !== undefined ? status : !$scope.alleMiljoe;
+
+                if ($scope.sortedMiljoer.t) {
+                    $scope.sortedMiljoer.t.forEach(function (env, index) {
+                        $scope.valgteMiljoer.t[index] = !$scope.alleMiljoe;
+                    });
+                    var env_status = true;
+                    $scope.valgteMiljoer.t.forEach(function (env) {
+                        if (!env) {
+                            env_status = false;
+                        }
+                    });
+                    $scope.alleTMiljoer = env_status;
+                }
+
+                if ($scope.sortedMiljoer.q) {
+                    $scope.sortedMiljoer.q.forEach(function (env, index) {
+                        $scope.valgteMiljoer.q[index] = !$scope.alleMiljoe;
+                    });
+
+                    var env_status = true;
+                    $scope.valgteMiljoer.q.forEach(function (env) {
+                        if (!env) {
+                            env_status = false;
+                        }
+                    });
+                    $scope.alleQMiljoer = env_status;
+                }
+
+                isMiljoeSelected();
+            };
+
+            $scope.velgAlleFraUMiljoe = function () {
+                if ($scope.sortedMiljoer.u) {
+                    $scope.sortedMiljoer.u.forEach(function (env, index) {
+                        $scope.valgteMiljoer.u[index] = !$scope.alleUMiljoer;
+                    });
+                }
+
+                var sortedMiljoer_length = antallMiljoerTotalt();
+                var valgteMiljoer_counter = antallValgteMiljoer();
+
+                if (sortedMiljoer_length === valgteMiljoer_counter) {
+                    $scope.alleMiljoe = true;
+                } else {
+                    $scope.alleMiljoe = false;
+                }
+
+                isMiljoeSelected();
+            };
+
+            $scope.velgAlleFraTMiljoe = function () {
+                if ($scope.sortedMiljoer.t) {
+                    $scope.sortedMiljoer.t.forEach(function (env, index) {
+                        $scope.valgteMiljoer.t[index] = !$scope.alleTMiljoer;
+                    });
+                }
+
+                var sortedMiljoer_length = antallMiljoerTotalt();
+                var valgteMiljoer_counter = antallValgteMiljoer();
+
+                if (sortedMiljoer_length === valgteMiljoer_counter) {
+                    $scope.alleMiljoe = true;
+                } else {
+                    $scope.alleMiljoe = false;
+                }
+
+                isMiljoeSelected();
+            };
+
+            $scope.velgAlleFraQMiljoe = function () {
+                if ($scope.sortedMiljoer.q) {
+                    $scope.sortedMiljoer.q.forEach(function (env, index) {
+                        $scope.valgteMiljoer.q[index] = !$scope.alleQMiljoer;
+                    });
+                }
+
+                var sortedMiljoer_length = antallMiljoerTotalt();
+                var valgteMiljoer_counter = antallValgteMiljoer();
+
+                if (sortedMiljoer_length === valgteMiljoer_counter) {
+                    $scope.alleMiljoe = true;
+                } else {
+                    $scope.alleMiljoe = false;
+                }
+
+                isMiljoeSelected();
             };
 
             $scope.oppdaterVelgAlle = function () {
-                $scope.alleMiljoe = erAlleValgt($scope.valgt_u_miljoer) &&
-                    erAlleValgt($scope.valgt_t_miljoer) &&
-                    erAlleValgt($scope.valgt_q_miljoer) &&
-                    erAlleValgt($scope.valgt_p_miljoer);
-                $scope.miljoeValgt = erValgt($scope.valgt_u_miljoer) ||
-                    erValgt($scope.valgt_t_miljoer) ||
-                    erValgt($scope.valgt_q_miljoer) ||
-                    erValgt($scope.valgt_p_miljoer);
+                var allEnvironmentsChecked = true;
+                var sortedMiljoer_length = antallMiljoerTotalt();
+                var valgteMiljoer_counter = antallValgteMiljoer();
+
+                if (!(sortedMiljoer_length === valgteMiljoer_counter)) {
+
+                    if ($scope.valgteMiljoer.u) {
+                        var env_status = true;
+                        $scope.valgteMiljoer.u.forEach(function (env) {
+                            if (!env) {
+                                env_status = false;
+                            }
+                        });
+
+                        if ($scope.sortedMiljoer.u.length !== $scope.valgteMiljoer.u.length) {
+                            env_status = false;
+                        }
+                        $scope.alleUMiljoer = env_status;
+                    }
+
+                    if ($scope.valgteMiljoer.t) {
+                        var env_status = true;
+                        $scope.valgteMiljoer.t.forEach(function (env) {
+                            if (!env) {
+                                env_status = false;
+                            }
+                        });
+
+                        if ($scope.sortedMiljoer.t.length !== $scope.valgteMiljoer.t.length) {
+                            env_status = false;
+                        }
+                        $scope.alleTMiljoer = env_status;
+                    }
+
+                    if ($scope.valgteMiljoer.q) {
+                        var env_status = true;
+                        $scope.valgteMiljoer.q.forEach(function (env) {
+                            if (!env) {
+                                env_status = false;
+                            }
+                        });
+
+                        if ($scope.sortedMiljoer.q.length !== $scope.valgteMiljoer.q.length) {
+                            env_status = false;
+                        }
+                        $scope.alleQMiljoer = env_status;
+                    }
+
+                    allEnvironmentsChecked = false;
+
+                } else {
+                    allEnvironmentsChecked = true;
+                }
+
+                $scope.alleMiljoe = allEnvironmentsChecked;
+
+                isMiljoeSelected();
             };
 
-            function erAlleValgt(array) {
-                for (var index = 0; index < array.length; index++) {
-                    if(!array[index]){
-                        return false;
+            function isMiljoeSelected() {
+                $scope.miljoeValgt = false;
+
+                Object.keys($scope.valgteMiljoer).forEach(function (key) {
+                    $scope.valgteMiljoer[key].forEach(function (env) {
+                        if (env) {
+                            $scope.miljoeValgt = true;
+                        }
+                    });
+                });
+            }
+
+            $scope.reloadPage = function () {
+                location.reload();
+            }
+
+            function antallValgteMiljoer() {
+                var valgteMiljoer_counter = 0; //Counts how many environments that are checked.
+
+                Object.keys($scope.valgteMiljoer).forEach(function (key) {
+                    if ($scope.valgteMiljoer[key]) {
+                        $scope.valgteMiljoer[key].forEach(function (env_checked) {
+                            if (env_checked) {
+                                valgteMiljoer_counter++; //Increments if a 'checked' environment is found.
+                            }
+                        })
                     }
-                }
-                return true;
+                });
+
+                return valgteMiljoer_counter;
             }
 
-            function sett_array_til (array, array2, verdi) {
-                for (var index = 0; index < array.length; index++) {
-                    array2[index] = verdi;
-                }
+            function antallMiljoerTotalt() {
+                var sortedMiljoer_length = 0;
+
+                Object.keys($scope.sortedMiljoer).forEach(function (key) {
+                    sortedMiljoer_length += $scope.sortedMiljoer[key].length;
+                });
+
+                return sortedMiljoer_length;
             }
 
-            function hasLetter (letter) {
-                for (var i = 0; i < miljoer.length; i++) {
-                    if (miljoer[i].toUpperCase().substring(0, 1) === letter) {
-                        return true;
+            function init() {
+                var miljoer = serviceRutineFactory.getEnvironments().environments;
+                $scope.valgteMiljoer = {};
+
+                miljoer.sort(function (a, b) {
+                    return a.substring(1) - b.substring(1);
+                });
+
+                $scope.sortedMiljoer = {};
+                angular.forEach(miljoer, function (miljoe) {
+                    var substrMiljoe = miljoe.charAt(0);
+
+                    if ($scope.sortedMiljoer[substrMiljoe]) {
+                        $scope.sortedMiljoer[substrMiljoe].push(miljoe);
+                    } else {
+                        $scope.sortedMiljoer[substrMiljoe] = [];
+                        $scope.sortedMiljoer[substrMiljoe].push(miljoe);
+                        $scope.valgteMiljoer[substrMiljoe] = [];
                     }
-                }
-                return false;
+                });
+
             }
 
-            if (!hasLetter('U') && hasLetter('Q')) {
-                $scope.miljo = 'Q';
-            } else if (hasLetter('T')) {
-                $scope.miljo = 'T';
-            } else if (hasLetter('U') && !hasLetter('Q')) {
-                $scope.miljo = 'U';
-            } else {
-                $scope.miljo = 'P';
-            }
-
-            function byggMiljoliste (letter) {
-                var liste = [];
-                for (var i = 0; i < miljoer.length; i++) {
-                    if (miljoer[i].toUpperCase().substring(0, 1) === letter) {
-                        liste.push(miljoer[i]);
-                    }
-                }
-                return liste;
-            }
-
-            function erValgt(miljoe) {
-                for (var i = 0; i<miljoe.length; i++) {
-                    if (miljoe[i]) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            miljoer.sort(function (a, b) {
-                return a.substring(1) - b.substring(1);
-            });
-            $scope.u_miljoer = byggMiljoliste('U');
-            $scope.t_miljoer = byggMiljoliste('T');
-            $scope.q_miljoer = byggMiljoliste('Q');
-            $scope.p_miljoer = byggMiljoliste('P');
-            $scope.velgAlleMiljoe(false);
+            init();
         }]);

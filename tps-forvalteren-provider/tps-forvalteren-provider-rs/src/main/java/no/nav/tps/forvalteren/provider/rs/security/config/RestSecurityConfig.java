@@ -1,8 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.security.config;
 
-import no.nav.tps.forvalteren.provider.rs.security.PackageMarker;
-import no.nav.tps.forvalteren.provider.rs.security.mapping.RestAuthoritiesMapper;
-import no.nav.tps.forvalteren.provider.rs.security.mapping.RestUserDetailsMapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,18 +10,14 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.List;
-
-/**
- * Created by Tobias Hansen (Visma Consulting AS)
- */
+import no.nav.tps.forvalteren.provider.rs.api.v1.RestAuthorizationService;
+import no.nav.tps.forvalteren.provider.rs.security.PackageMarker;
+import no.nav.tps.forvalteren.provider.rs.security.authentication.TpsfLdapAuthenticationProvider;
+import no.nav.tps.forvalteren.provider.rs.security.mapping.RestAuthoritiesMapper;
+import no.nav.tps.forvalteren.provider.rs.security.mapping.RestUserDetailsMapper;
 
 @Configuration
 @EnableWebSecurity
@@ -33,11 +27,14 @@ import java.util.List;
 })
 public class RestSecurityConfig {
 
-    @Value("${ldap.url}")
+    @Value("${spring.ldap.urls}")
     private String ldapUrl;
 
-    @Value("${ldap.domain}")
+    @Value("${spring.ldap.domain}")
     private String ldapDomain;
+
+    @Value("${spring.ldap.base}")
+    private String rootDn;
 
     @Bean
     AuthenticationManager authenticationManager(List<AuthenticationProvider> providers) {
@@ -50,8 +47,8 @@ public class RestSecurityConfig {
     }
 
     @Bean
-    ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
-        ActiveDirectoryLdapAuthenticationProvider provider = new ActiveDirectoryLdapAuthenticationProvider(ldapDomain, ldapUrl);
+    TpsfLdapAuthenticationProvider authenticationProvider() {
+        TpsfLdapAuthenticationProvider provider = new TpsfLdapAuthenticationProvider(ldapDomain, ldapUrl, rootDn);
 
         provider.setAuthoritiesMapper(authoritiesMapper());
         provider.setUserDetailsContextMapper(userDetailsMapper());
@@ -78,13 +75,7 @@ public class RestSecurityConfig {
         return repository;
     }
 
-    @Bean
-    WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**");
-            }
-        };
+    @Bean RestAuthorizationService restAuthorizationService() {
+        return new RestAuthorizationService();
     }
 }

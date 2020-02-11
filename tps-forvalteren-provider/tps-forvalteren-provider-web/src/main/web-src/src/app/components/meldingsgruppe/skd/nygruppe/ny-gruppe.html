@@ -1,0 +1,45 @@
+<div class="md-padding" id="popupContainer" style="min-width: 800px;">
+
+    <md-dialog aria-label="Ny meldingsgruppe dialog">
+        <form name="gruppeForm">
+            <md-dialog-content class="md-dialog-content">
+                <h2>Opprett ny gruppe</h2>
+                <div layout="row">
+                    <md-input-container class="testdata-input-row" aria-label="Gruppenavn">
+                        <label>Navn</label>
+                        <input name="navn" ng-model="gruppe.navn" required md-maxlength="50"
+                               md-autofocus ng-change="checkNavn()">
+                        <div ng-messages="gruppeForm.navn.$error" ng-show="gruppeForm.navn.$dirty">
+                            <div ng-message="required">Feltet er påkrevet</div>
+                            <div ng-message="md-maxlength">For mange tegn</div>
+                            <div ng-message="validationError">Navn finnes allerede</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="testdata-input-row" aria-label="Beskrivelse" flex>
+                        <label>Beskrivelse</label>
+                        <textarea name="beskrivelse" ng-model="gruppe.beskrivelse" md-maxlength="200"></textarea>
+                        <div ng-messages="gruppeForm.beskrivelse.$error" ng-show="gruppeForm.beskrivelse.$dirty">
+                            <div ng-message="md-maxlength">For mange tegn</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions class="testdata-footer">
+                <md-input-container class="testdata-input-row" aria-label="Avbryt">
+                    <md-tooltip md-direction="top">Avbryt opprett ny gruppe</md-tooltip>
+                    <md-button class="md-button md-raised" ng-click="avbryt()">Avbryt</md-button>
+                </md-input-container>
+                <md-input-container class="testdata-input-row" aria-label="Lagre ny gruppe">
+                    <md-tooltip md-direction="top">Lagre ny gruppe</md-tooltip>
+                    <md-button class="md-button md-raised md-accent" ng-click="lagre()" ng-disabled="gruppeForm.$invalid">
+                        Lagre
+                    </md-button>
+                </md-input-container>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+
+</div>

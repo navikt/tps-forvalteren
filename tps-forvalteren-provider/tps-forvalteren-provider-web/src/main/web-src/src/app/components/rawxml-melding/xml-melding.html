@@ -1,0 +1,106 @@
+<div class="xmlMelding-page" layout="column" flex layout-padding ng-cloak>
+    <!--<md-progress-linear class="progress" md-mode="indeterminate" ng-show="showProgress"></md-progress-linear>-->
+    <h3 class="title">Send XML melding</h3>
+    <div class="xmlMelding-content md-whiteframe-z1 request-form">
+        <!--Form - Sending a xml message-->
+        <form name="xmlMeldingForm" flex="100" class="accent">
+
+            <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column" flex="30">
+                    <md-input-container class="input-container">
+                        <label>Fasit app-navn søk</label>
+                        <input name="appsok" md-maxlength="25"
+                               ng-model="sokefelt"/>
+                    </md-input-container>
+                </div>
+
+                <div class="input-container-div" layout="column" flex="30">
+                    <md-input-container class="input-container">
+                        <md-button type="submit" class="md-button md-raised md-accent"
+                                   aria-label="Send til kø" ng-click="findApps(sokefelt)">
+                            Søk
+                        </md-button>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div layout="row" class="xmlMelding-content-row">
+
+                <div class="input-container-div" layout="column" flex="20">
+                    <md-input-container class="input-container">
+                        <label>Applikasjon</label>
+                        <md-select name="applikasjon" ng-model="valgtApp" ng-required="" ng-change="onChangeApp()">
+                            <md-option ng-value="app" ng-repeat="app in applications | orderBy">{{ app }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div class="input-container-div" layout="column" flex="10">
+                    <md-input-container class="input-container">
+                        <label>Miljø</label>
+                        <md-select name="miljoe" ng-model="valgtMiljoe" ng-required="" ng-change="onChangeMiljoe()">
+                            <md-option ng-value="env" ng-repeat="env in displayEnvironments">{{ env }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div class="input-container-div" layout="column" flex="40">
+                    <md-input-container class="input-container">
+                        <label>Til kø</label>
+                        <md-select name="tilKoe" ng-model="valgtKoe" ng-required="" ng-change="onChangeQueue()">
+                            <md-option ng-value="queue" ng-repeat="queue in displayQueues">{{ queue }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout="column">
+                    <md-input-container aria-label="Send til kø">
+                        <md-button type="submit" class="md-button md-raised md-accent" ng-click="sendTilTps()"
+                                   ng-disabled="xmlMeldingForm.$invalid || !valgtKoe || !valgtMiljoe || (!egenkoe && showOwnQueue) || !melding">
+                            Send til TPS
+                        </md-button>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column" flex="15">
+                    <md-input-container class="input-container">
+                        <label>Timeout</label>
+                        <input name="timeout" ng-model="timeout" pattern="[0-9]+" maxlength="3" required
+                               placeholder="Timeout i sekunder">
+                    </md-input-container>
+                </div>
+                <div class="input-container-div" layout="column" flex="35" ng-show="showOwnQueue">
+                    <md-input-container class="input-container">
+                        <label>Egendefinert kø</label>
+                        <input name="egenkoe" ng-model="egenkoe"
+                               placeholder="QA.{{valgtMiljoe | uppercase}}_xxx.beskrivelse egendefinert kø">
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div layout="row" class="xmlMelding-content-row">
+                <div class="input-container-div" layout="column">
+                    <md-input-container class="tps-vk-input-container">
+                        <label>XML melding</label>
+                        <textarea cols="120" name="xmlMelding" ng-model="melding" class="textarea-xmlMelding"
+                                  placeholder="Skriv eller lim inn melding i XML format">
+                        </textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+
+    <!--View result of the request-->
+
+    <h3 ng-show="showResponse">Resultat</h3>
+    <div class="xmlMelding-content md-whiteframe-z1 xmlMelding-response" ng-show="showResponse">
+        <md-content flex="" class="tps-vk-bottom">
+            <div class="tps-vk-xml-panel" hljs hljs-source="responseMelding" hljs-language="xml">
+            </div>
+        </md-content>
+    </div>
+
+</div>

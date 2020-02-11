@@ -4,13 +4,14 @@ angular.module('tps-forvalteren.directives')
             restrict: 'E',
             replace: true,
             scope: {
-                gruppeId: '='
+                gruppeId: '=',
+                service: '='
             },
             templateUrl: 'app/directives/gruppeinfo/vis-gruppeinfo.html',
-            controller: ["$scope", 'testdataService', 'utilsService', function ($scope, testdataService, utilsService) {
+            controller: ["$scope", 'utilsService', function ($scope, utilsService) {
 
-                function hentGruppe () {
-                    testdataService.getTestpersoner($scope.gruppeId).then(
+                function hentGruppe (force) {
+                    $scope.service.getGruppe($scope.gruppeId, force).then(
                         function (result) {
                             $scope.gruppe = result.data;
                         },
@@ -21,7 +22,7 @@ angular.module('tps-forvalteren.directives')
                 }
 
                 $scope.$on('gruppeEvent', function (event, arg) {
-                    hentGruppe();
+                    hentGruppe(true);
                 });
 
                 hentGruppe();

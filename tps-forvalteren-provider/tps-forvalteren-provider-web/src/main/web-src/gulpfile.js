@@ -11,7 +11,6 @@ var stylish = require('jshint-stylish');
 
 var less = require('gulp-less');
 var cssnano = require('gulp-cssnano');
-var sourcemaps = require('gulp-sourcemaps');
 var lessAutoprefix = require('less-plugin-autoprefix');
 var hash = require('gulp-hash');
 var livereload = require('gulp-livereload');
@@ -23,7 +22,6 @@ var runSequence = require('run-sequence');
 var autoprefix = new lessAutoprefix({
    browsers: ['last 2 versions']
 });
-
 
 var proxyServer = 'localhost:8080';
 

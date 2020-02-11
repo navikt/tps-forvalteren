@@ -1,30 +1,27 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import no.nav.tps.forvalteren.domain.service.user.User;
-import no.nav.tps.forvalteren.service.user.UserContextHolder;
-import no.nav.tps.forvalteren.service.user.UserRole;
-import org.springframework.security.core.context.SecurityContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
+import no.nav.tps.forvalteren.service.user.UserRole;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,7 +30,7 @@ public class UserControllerTest {
     private static final String DISTINGUISHED_NAME  = "distinguishedName";
     private static final String USERNAME            = "username";
     private static final String SESSION_ID          = "sessionID";
-    private static final Set<UserRole> ROLES       = new HashSet<>(Arrays.asList(UserRole.ROLE_ACCESS));
+    private static final Set<UserRole> ROLES       = new HashSet(asList(UserRole.ROLE_ACCESS));
 
     @Mock
     private HttpSession httpSessionMock;
@@ -50,25 +47,6 @@ public class UserControllerTest {
     @Before
     public void setUp() {
         SecurityContextHolder.setContext(securityContextMock);
-
-        doReturn(ROLES).when(userContextHolderMock).getRoles();
-
-        when( userContextHolderMock.getUsername() ).thenReturn(USERNAME);
-
-        when( userContextHolderMock.getDisplayName() ).thenReturn(DISTINGUISHED_NAME);
-
-        when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
-    }
-
-    @Test
-    public void getUserReturnsUserWithToken() {
-        User user = mock(User.class);
-        when(userContextHolderMock.getUser()).thenReturn(user);
-
-        User result = controller.getUser(httpSessionMock);
-
-        assertThat(result, is(sameInstance(user)));
-        verify(user).setToken(SESSION_ID);
     }
 
     @Test

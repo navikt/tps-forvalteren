@@ -17,8 +17,8 @@ angular.module('tps-forvalteren.service')
             $state.go('endringer');
         };
 
-        self.redirectToServiceRutineState = function () {
-            $state.go('servicerutine');
+        self.redirectToServiceRutineState = function (rutine) {
+            $state.go('servicerutine', {serviceRutineName: rutine});
         };
 
         self.redirectToGT = function() {
@@ -30,31 +30,56 @@ angular.module('tps-forvalteren.service')
         };
 
         self.redirectToVisTestdata = function(index) {
-            $state.go("vis-testdata", {id: index});
+            $state.go("vis-testdata", {gruppeId: index});
         };
 
         self.redirectToOpprettTestdata = function(index) {
-            $state.go("opprett-testdata", {id: index});
+            $state.go("opprett-testdata", {gruppeId: index});
+        };
+
+        self.redirectToSkdEndringsmeldingGrupper = function() {
+            $state.go("skd-meldingsgrupper");
+        };
+
+        self.redirectToOpprettSkdMeldinger = function(index) {
+            $state.go("skd-vis-meldingsgruppe", {gruppeId: index});
         };
 
         self.isServicerutineState = function(){
             return $state.current.name === 'servicerutine';
         };
 
+        self.redirectToSendDoedsmeldinger = function(){
+            $state.go("send-doedsmeldinger");
+        };
+
+        self.redirectToRawXmlMelding = function(){
+            $state.go("xml-melding");
+        };
+
+        self.redirectToAvspiller = function(){
+            $state.go("avspiller");
+        };
+
         self.redirectUrl = function(url, param) {
-            if ('/' === url) {
-                self.redirectToHomeState();
-            } else {
-                if (url.indexOf('/:') != -1) {
-                    $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
-                }
-                else {
-                    $state.go(url.substr(1)); // Ta bort ledende "/"
+            if (url.indexOf('/:') !== -1) {
+                $state.go(url.substr(1).replace(/\/:\s*\S*/, ''), param);
+            }
+            else {
+                switch (url) {
+                    case '/endringsmelding/skd/grupper':
+                        self.redirectToSkdEndringsmeldingGrupper();
+                        break;
+                    case '/testgruppe':
+                        self.redirectToTestgruppe();
+                        break;
+                    default:
+                        self.redirectToHomeState();
                 }
             }
         };
 
         self.isRoot = function () {
-            return $location.url() == '/';
+            return $location.url() === '/';
         };
     }]);

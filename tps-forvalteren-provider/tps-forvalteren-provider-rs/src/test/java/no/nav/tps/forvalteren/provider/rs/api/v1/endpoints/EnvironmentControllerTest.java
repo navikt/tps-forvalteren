@@ -1,28 +1,29 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import no.nav.tps.forvalteren.domain.service.environment.Environment;
-import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
-import no.nav.tps.forvalteren.service.command.vera.GetEnvironments;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anySet;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import javax.servlet.http.HttpSession;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import no.nav.tps.forvalteren.domain.service.environment.Environment;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
+import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,18 +39,20 @@ public class EnvironmentControllerTest {
     private HttpSession httpSessionMock;
 
     @Mock
-    public GetEnvironments getEnvironmentsCommandMock;
+    private GetEnvironments getEnvironmentsCommandMock;
 
     @Mock
-    public FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironmentMock;
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironmentMock;
+
+    @Mock
+    private UserContextHolder userContextHolder;
 
     @InjectMocks
     private EnvironmentController controller;
 
     @Before
     public void setUp() {
-        when( getEnvironmentsCommandMock.getEnvironmentsFromVera("tpsws") ).thenReturn(ENVIRONMENTS_Q);
-        when( httpSessionMock.getId() ).thenReturn(SESSION_ID);
+        when( getEnvironmentsCommandMock.getEnvironmentsFromFasit("tpsws") ).thenReturn(ENVIRONMENTS_Q);
     }
 
     @Test

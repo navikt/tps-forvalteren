@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-repository</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>2.12.0</version>
+        <version>4.65.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,6 +13,10 @@
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-domain-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-domain-service</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
@@ -33,11 +37,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

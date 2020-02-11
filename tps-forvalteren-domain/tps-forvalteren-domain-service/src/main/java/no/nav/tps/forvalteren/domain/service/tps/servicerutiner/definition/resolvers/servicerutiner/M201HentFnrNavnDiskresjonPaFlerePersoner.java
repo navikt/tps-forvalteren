@@ -2,17 +2,15 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.reso
 
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrHistMultiServiceRoutineRequest;
-
 import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveTakenFnrFromResponseTransform.removeTakenFnrFromResponseTransform;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataListTransformer.extractDataListFromXml;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer.extractStatusFromXmlElement;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrHistMultiServiceRoutineRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.ServiceRoutineRequestTransform;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseDataTransformer;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
-public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineResolver{
+public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineResolver {
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
@@ -28,20 +26,25 @@ public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineR
                 .name("antallFnr")
                 .required()
                 .type(TpsParameterType.STRING)
-
                 .and()
+
+                .parameter()
+                .name("nFnr")
+                .required()
+                .type(TpsParameterType.STRING)
+                .and()
+
                 .parameter()
                 .name("aksjonsKode")
                 .required()
                 .type(TpsParameterType.STRING)
-                .values("A0")
+                .values("A0", "B0", "A1", "B1")
 
                 .and()
                 .transformer()
-                .preSend(serviceRoutineXmlWrappingAppender())
-                .postSend(removeTakenFnrFromResponseTransform("antallFM201"))
-                .postSend(extractDataListFromXml("personDataM201", "EFnr", "antallFM201"))
-                .postSend(extractStatusFromXmlElement("svarStatus"))
+                .preSend(ServiceRoutineRequestTransform.serviceRoutineXmlWrappingAppender())
+                .postSend(ResponseDataTransformer.extractDataFromXmlElement("personDataM201"))
+                .postSend(ResponseStatusTransformer.extractStatusFromXmlElement("svarStatus"))
                 .and()
 
                 .securityBuilder()

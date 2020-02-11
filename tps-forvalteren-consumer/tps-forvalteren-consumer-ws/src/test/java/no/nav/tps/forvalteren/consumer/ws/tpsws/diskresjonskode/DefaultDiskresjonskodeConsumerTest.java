@@ -1,9 +1,16 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
-import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+import javax.xml.ws.soap.SOAPFaultException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -11,19 +18,12 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.xml.ws.soap.SOAPFaultException;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDiskresjonskodeConsumerTest {
@@ -80,7 +80,7 @@ public class DefaultDiskresjonskodeConsumerTest {
     }
 
     @Test
-    public void getDiskresjonskodeRequestIsSentWithCorrectFNr() throws Exception {
+    public void getDiskresjonskodeRequestIsSentWithCorrectFNr() {
         diskresjonskodeConsumer.getDiskresjonskodeResponse(TEST_FNR);
 
         ArgumentCaptor<HentDiskresjonskodeRequest> captor = ArgumentCaptor.forClass(HentDiskresjonskodeRequest.class);

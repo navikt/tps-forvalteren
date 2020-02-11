@@ -16,14 +16,15 @@ public class KodeverkUpdater {
     private KodeverkConsumer kodeverkConsumer;
 
     public void updateTpsfKodeverkCache() {
-        updateTPSFKommunenummerCache();
-        updateTPSFPostnummerCache();
+        updateTpsfKommuneNummerCache();
+        updateTpsfPostNummerCache();
+        updateTpsfLandkoderCache();
     }
 
-    private void updateTPSFKommunenummerCache(){
+    private void updateTpsfKommuneNummerCache() {
         Kodeverk remoteKodeverkKommune = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_KOMMUNER_NAVN);
 
-        if(remoteKodeverkKommune != null) {
+        if (remoteKodeverkKommune != null) {
 
             kodeverkCache.clearKommuneCache();
             kodeverkCache.setKodeverkKommuneKoder(remoteKodeverkKommune.getKoder());
@@ -34,16 +35,30 @@ public class KodeverkUpdater {
         }
     }
 
-    private void updateTPSFPostnummerCache(){
+    private void updateTpsfPostNummerCache() {
         Kodeverk remoteKodeverkPostnummer = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_POSTNUMMER_NAVN);
 
-        if(remoteKodeverkPostnummer != null) {
+        if (remoteKodeverkPostnummer != null) {
 
             kodeverkCache.clearPostnummerCache();
             kodeverkCache.setKodeverkPostnummerKoder(remoteKodeverkPostnummer.getKoder());
 
             for (Kode kode : remoteKodeverkPostnummer.getKoder()) {
                 kodeverkCache.getKodeverkPostnummerMap().put(kode.getNavn(), kode);
+            }
+        }
+    }
+    
+    private void updateTpsfLandkoderCache() {
+        Kodeverk remoteKodeverkLandkoder = kodeverkConsumer.hentKodeverk(KodeverkConstants.KODEVERK_LANDKODER_NAVN);
+
+        if (remoteKodeverkLandkoder != null) {
+
+            kodeverkCache.clearLandkoderCache();
+            kodeverkCache.setKodeverkLandkoder(remoteKodeverkLandkoder.getKoder());
+
+            for (Kode kode : remoteKodeverkLandkoder.getKoder()) {
+                kodeverkCache.getKodeverkLandkoderMap().put(kode.getNavn(), kode);
             }
         }
     }

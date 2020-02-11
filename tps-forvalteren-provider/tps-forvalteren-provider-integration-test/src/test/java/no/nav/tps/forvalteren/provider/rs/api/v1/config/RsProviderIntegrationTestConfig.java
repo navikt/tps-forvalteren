@@ -1,13 +1,10 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.config;
 
-import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
-import no.nav.tps.forvalteren.consumer.mq.consumers.DefaultMessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
-import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
-import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
-import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
+import static org.mockito.Mockito.mock;
+
+import java.io.IOException;
+import javax.jms.Queue;
+import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.mockito.Mockito;
@@ -20,14 +17,20 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import javax.jms.Queue;
-import javax.jms.QueueConnectionFactory;
-import java.io.IOException;
-
-import static org.mockito.Mockito.mock;
+import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
+import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
+import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
+import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
+import no.nav.tps.forvalteren.provider.config.IntegrationTestConfig;
+import no.nav.tps.forvalteren.provider.rs.config.RestProviderConfig;
+import no.nav.tps.forvalteren.service.IdentpoolService;
 
 @Configuration
-@ComponentScan(basePackageClasses = TestUserDetails.class)
+@ComponentScan(basePackages = "no.nav.tps.forvalteren.provider")
 @EnableJms
 @Import({
         IntegrationTestConfig.class,
@@ -38,6 +41,11 @@ public class RsProviderIntegrationTestConfig {
     public static final String TPS_TEST_REQUEST_QUEUE = "tps.test.request.queue";
     public static final String TPS_TEST_RESPONSE_QUEUE = "tps.test.response.queue";
 
+    @Bean
+    @Primary
+    public DiskresjonskodePortType diskresjonskodePortType() {
+        return mock(DiskresjonskodePortType.class);
+    }
 
     @Bean
     @Primary
@@ -47,8 +55,24 @@ public class RsProviderIntegrationTestConfig {
 
     @Bean
     @Primary
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        return mock(DiskresjonskodePortType.class);
+    public EgenAnsattConsumer egenAnsattConsumer() {
+        return mock(EgenAnsattConsumer.class);
+    }
+
+    /*
+    Legger til TpsfSts klient som mocker og @Primary, slik at Spring prioriterer Mockene når de finner flere bønner --
+    -- av type TpsfStsClient. Hvis man ikke mocker, men mocker consumer, så får man en feil om at input proxy type ikker er riktig bla bla...
+     */
+    @Bean(name = "cxfStsClientDiskresjonskode")
+    @Primary
+    public TpsfStsClient cxfStsClientDiskresjonskode() {
+        return mock(TpsfStsClient.class);
+    }
+
+    @Bean(name = "cxfStsClientEgenAnsatt")
+    @Primary
+    public TpsfStsClient cxfStsClientEgenAnsatt() {
+        return mock(TpsfStsClient.class);
     }
 
     @Bean
@@ -58,20 +82,14 @@ public class RsProviderIntegrationTestConfig {
 
     @Bean
     @Primary
-    public EgenAnsattConsumer egenAnsattConsumer() {
-        return mock(EgenAnsattConsumer.class);
-    }
-
-    @Bean
-    @Primary
     public MessageQueueServiceFactory defaultMessageQueueServiceFactory() {
-        return (environment, requestQueueAlias) -> defaultMessageQueueConsumer();
+        return (environment, requestQueueAlias, isQueName) -> defaultMessageQueueConsumer();
     }
 
     @Bean
     @Primary
     public MessageQueueConsumer defaultMessageQueueConsumer() {
-        return Mockito.spy(new DefaultMessageQueueConsumer(TPS_TEST_REQUEST_QUEUE, connectionFactory()));
+        return Mockito.spy(new MessageQueueConsumer(TPS_TEST_REQUEST_QUEUE, connectionFactory()));
     }
 
     @Bean
@@ -94,5 +112,20 @@ public class RsProviderIntegrationTestConfig {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         jmsTemplate.setReceiveTimeout(100);
         return jmsTemplate;
+    }
+
+    @Bean
+    public MessageProvider messageProvider() {
+        return mock(MessageProvider.class);
+    }
+
+    @Bean
+    public IdentpoolService identpoolService() {
+        return mock(IdentpoolService.class);
+    }
+
+    @Bean
+    public IdentpoolConsumer identpoolConsumer() {
+        return mock(IdentpoolConsumer.class);
     }
 }

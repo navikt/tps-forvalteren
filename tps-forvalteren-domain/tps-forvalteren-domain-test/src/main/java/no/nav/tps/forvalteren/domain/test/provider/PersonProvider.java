@@ -1,32 +1,36 @@
 package no.nav.tps.forvalteren.domain.test.provider;
 
+import static java.time.LocalDateTime.now;
+
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
-import java.time.LocalDateTime;
+public final class PersonProvider {
 
-public class PersonProvider {
+    private PersonProvider() {}
 
     public static Person.PersonBuilder aMalePerson() {
         return Person.builder()
-                .ident("12345678910")
+                .ident("12125678910")
                 .identtype("FNR")
-                .kjonn('M')
+                .kjonn("M")
                 .fornavn("Ola")
                 .mellomnavn("0")
                 .etternavn("Nordmann")
-                .statsborgerskap("000")
-                .regdato(LocalDateTime.now());
+                .regdato(now())
+                .opprettetDato(now())
+                .opprettetAv("a123456");
     }
 
     public static Person.PersonBuilder aFemalePerson() {
         return Person.builder()
-                .ident("22245678910")
+                .ident("22045678910")
                 .identtype("FNR")
-                .kjonn('K')
+                .kjonn("K")
                 .fornavn("Kari")
                 .mellomnavn("0")
                 .etternavn("Nordmann")
-                .statsborgerskap("000")
-                .regdato(LocalDateTime.now());
+                .regdato(now())
+                .opprettetDato(now())
+                .opprettetAv("b234567");
     }
 }

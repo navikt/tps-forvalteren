@@ -1,15 +1,14 @@
 package no.nav.tps.forvalteren.service.command;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FilterEnvironmentsOnDeployedEnvironmentTest {
@@ -22,7 +21,7 @@ public class FilterEnvironmentsOnDeployedEnvironmentTest {
     FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
     @Test
-    public void hvisErIUMiljoeSaaReturnerUOgT() {
+    public void hvisErIUMiljoeSaaReturnerU() {
 
         ReflectionTestUtils.setField(filterEnvironmentsOnDeployedEnvironment, ENVIRONMENT_PROPERTY_VALUE, "u");
 
@@ -33,8 +32,8 @@ public class FilterEnvironmentsOnDeployedEnvironmentTest {
 
         Set<String> ret = filterEnvironmentsOnDeployedEnvironment.execute(envIn);
 
-        assertFalse(ret.contains("q1"));
-        assertFalse(ret.contains("t1"));
+        assertTrue(ret.contains("q1"));
+        assertTrue(ret.contains("t1"));
         assertTrue(ret.contains("u1"));
         assertTrue(ret.contains("u2"));
     }

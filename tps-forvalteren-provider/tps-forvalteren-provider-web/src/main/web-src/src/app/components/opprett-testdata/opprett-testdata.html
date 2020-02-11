@@ -4,7 +4,7 @@
     <md-content flex class="md-whiteframe-z1">
 
         <!-- Setup Tabs -->
-        <md-tabs md-border-bottom class="tps-no-scroll-view">
+        <md-tabs  md-border-bottom class="tps-no-scroll-view" style="min-height: 100%;" >
             <!-- Tab Readable Result -->
             <md-tab label="Opprett person fra kriterier">
                 <form name="requestForm" class="tps-vk-form content-block">
@@ -19,7 +19,7 @@
                             <md-select ng-model="kriterium.identtype" class="md-no-underline" ng-disabled="!editMode">
                                 <md-option selected value="FNR">FNR</md-option>
                                 <md-option value="DNR">DNR</md-option>
-                                <md-option value="BNR">BNR</md-option>
+                                <md-option value="BOST">BOST</md-option>
                             </md-select>
                         </md-input-container>
 
@@ -29,7 +29,7 @@
                             <md-tooltip>Velg kjønn</md-tooltip>
                             <label>Kjønn</label>
                             <md-select ng-model="kriterium.kjonn" placeholder="Velg kjønn"
-                                        ng-disabled="!editMode">
+                                       ng-disabled="!editMode">
                                 <md-option value=""><em>Uspesifisert</em></md-option>
                                 <md-option value="K">Kvinne</md-option>
                                 <md-option value="M">Mann</md-option>
@@ -65,13 +65,13 @@
                             <md-tooltip>Bestem "Født før" dato</md-tooltip>
                             <label>Født før</label>
                             <md-datepicker name="foedtFoer"
-                                    md-placeholder="Angi dato"
-                                    md-current-view="year"
-                                    ng-model="kriterium.foedtFoer"
-                                    md-max-date="today"
-                                    md-min-date="foedtEtterMax"
-                                    ng-disabled="!editMode"
-                                    ng-change="foedtFoerChanged()">
+                                           md-placeholder="Angi dato"
+                                           md-current-view="year"
+                                           ng-model="kriterium.foedtFoer"
+                                           md-max-date="today"
+                                           md-min-date="foedtEtterMax"
+                                           ng-disabled="!editMode"
+                                           ng-change="foedtFoerChanged()">
                             </md-datepicker>
                             <div ng-messages="requestForm.foedtFoer.$error" ng-show="requestForm.foedtFoer.$pristine" ng-messages-multiple>
                                 <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
@@ -85,7 +85,7 @@
                             <md-tooltip>Antall testpersoner som skal genereres</md-tooltip>
                             <label>Antall*</label>
                             <input name="antall" ng-model="kriterium.antall"
-                                   maxlength="2" pattern="[0-9]+" ng-disabled="!editMode">
+                                   maxlength="4" pattern="[0-9]+" ng-disabled="!editMode">
                             <div ng-messages="requestForm.antall.$error" ng-show="requestForm.antall.$dirty">
                                 <div ng-message="pattern">Ugyldig tallverdi</div>
                             </div>
@@ -95,8 +95,9 @@
                         <md-input-container class="tps-vk-input-container"
                                             aria-label="Legg til kriterium">
                             <md-tooltip>Legg til kriterium</md-tooltip>
-                                <md-button ng-disabled="!requestForm.$valid || !kriterium.antall || kriterium.antall == 0 || !editMode"
-                                           ng-click="addKriterium()" class="md-raised md-accent">Legg til</md-button>
+                            <md-button ng-disabled="!requestForm.$valid || !kriterium.antall || kriterium.antall == 0 || !editMode"
+                                       ng-click="addKriterium()" class="md-raised md-accent">Legg til
+                            </md-button>
                         </md-input-container>
                     </div>
                     <div style="margin-left: 30px; margin-top: 30px;" flex>
@@ -105,7 +106,7 @@
                                 <md-tooltip>Slett denne raden</md-tooltip>
                                 <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg" ng-click="removeDialog($index)"></md-icon>
                             </div>
-                            <div >Type = "{{kriterium.identtype}}"</div>
+                            <div>Type = "{{kriterium.identtype}}"</div>
                             <div ng-if="kriterium.kjonn">, Kjonn = "{{kriterium.kjonn}}"</div>
                             <div ng-if="kriterium.foedtEtter">, Født etter = "{{kriterium.foedtEtter | date:'dd-MM-yyyy'}}"</div>
                             <div ng-if="kriterium.foedtFoer">, Født før = "{{kriterium.foedtFoer | date:'dd-MM-yyyy'}}"</div>
@@ -114,18 +115,39 @@
 
                         <div layout="row" layout-align="center center" flex="90" ng-if="kriterier.length == 0">Det er ikke lagt til noen kriterier</div>
                     </div>
-                    <div layout="row" flex>
+                    <div layout="row" class="adresse">
+                        <div flex="10" class="label">Adresse</div>
+                        <md-input-container class="tps-vk-input-container" flex="15">
+                            <md-tooltip>Valgfritt: Velg ingen spesifikasjoner, kommunenummer eller postnummer som kriterium for adressen</md-tooltip>
+                            <label>Adresse-kriterium</label>
+                            <md-select ng-model="adresseNrInfo.nummertype" class="md-no-underline"
+                                       ng-change="endret($index + pager.startIndex)">
+                                <md-option selected value="Uspesifisert">Uspesifisert</md-option>
+                                <md-option value="KOMMUNENR">Kommunenr</md-option>
+                                <md-option value="POSTNR">Postnummer</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <postnummer postnummer="adresseNrInfo.nummer" endret-fn="endret" class="autocomplete"
+                                    index="$index + pager.startIndex" paakrevet=false ng-if="adresseNrInfo.nummertype == 'POSTNR'">
+                        </postnummer>
+
+                        <kommunenr kommunenr="adresseNrInfo.nummer" endret-fn="endret" class="autocomplete"
+                                   index="$index + pager.startIndex" paakrevet=false ng-if="adresseNrInfo.nummertype == 'KOMMUNENR'">
+                        </kommunenr>
+
                         <div flex></div>
                         <md-input-container class="tps-vk-input-container">
                             <md-tooltip>Avbryt operasjon "Legg til testpersoner"</md-tooltip>
                             <md-button class="md-raised" ng-disabled="!editMode" ng-click="avbryt()"
-                                   aria-label='Avbryt operasjon "Legg til testpersoner"'>Avbryt</md-button>
+                                       aria-label='Avbryt operasjon "Legg til testpersoner"'>Avbryt
+                            </md-button>
                         </md-input-container>
                         <md-input-container class="tps-vk-input-container">
                             <md-tooltip>Utfør operasjon "Legg til testpersoner"</md-tooltip>
                             <md-button class="md-raised md-accent" ng-disabled="kriterier.length == 0 || !editMode"
-                                   aria-label='Utfør operasjon "Legg til testpersoner"'
-                                   ng-click="opprettTestpersoner()">Opprett</md-button>
+                                       aria-label='Utfør operasjon "Legg til testpersoner"'
+                                       ng-click="opprettTestpersoner()">Opprett
+                            </md-button>
                         </md-input-container>
                     </div>
                     <div layout="row" class="testdata-progress-bar" flex style="margin-right: 10px;" ng-show="showSpinner">
@@ -133,6 +155,7 @@
                     </div>
                 </form>
             </md-tab>
+
             <md-tab label="Opprett person fra liste over identer" style="background-color: rgb(250,250,250)">
 
                 <div class="content-block">
@@ -158,7 +181,8 @@
                             <md-input-container class="tps-vk-input-container" style="margin-bottom: 23px;">
                                 <md-tooltip>Sjekk om identer finnes fra før</md-tooltip>
                                 <md-button class="md-raised md-accent" ng-disabled="requestForm2.$invalid"
-                                           aria-label="Sjekk om identer finnes fra før" ng-click="sjekkIdenter()">Sjekk</md-button>
+                                           aria-label="Sjekk om identer finnes fra før" ng-click="sjekkIdenter()">Sjekk
+                                </md-button>
                             </md-input-container>
                         </div>
                         <div layout="row" class="testdata-progress-bar" ng-show="showSjekkSpinner">
@@ -189,12 +213,14 @@
                                         <md-input-container class="tps-vk-input-container">
                                             <md-tooltip>Avbryt opprett fra liste</md-tooltip>
                                             <md-button class="md-raised"
-                                                       aria-label="Sjekk om identer finnes fra før" ng-click="avbrytFraIdentliste()" >Avbryt</md-button>
+                                                       aria-label="Sjekk om identer finnes fra før" ng-click="avbrytFraIdentliste()">Avbryt
+                                            </md-button>
                                         </md-input-container>
                                         <md-input-container class="tps-vk-input-container">
                                             <md-tooltip>Opprett testpersoner</md-tooltip>
                                             <md-button class="md-raised md-accent" ng-disabled="antallLedig == 0"
-                                                       aria-label="Opprett identer fra liste" ng-click="opprettFraIdentliste()">Opprett</md-button>
+                                                       aria-label="Opprett identer fra liste" ng-click="opprettFraIdentliste()">Opprett
+                                            </md-button>
                                         </md-input-container>
                                     </div>
                                 </div>

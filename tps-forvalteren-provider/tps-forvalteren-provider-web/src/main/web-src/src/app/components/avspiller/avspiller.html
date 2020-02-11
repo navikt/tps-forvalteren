@@ -1,0 +1,275 @@
+<div class="tps-vk-service-rutine-dashboard tps-content" layout="column" flex layout-padding ng-cloak>
+
+    <div class="tps-vk-top md-whiteframe-z1" flex="20" layout="column">
+
+        <form flex="100" name="requestForm" ng-submit="requestForm.$valid && submit()" layout-align="start start">
+
+            <div layout="row" class="avspiller-row">
+                <md-input-container flex="10">
+                    <label>Miljø</label>
+                    <md-select ng-model="request.miljoe" required ng-change="checkOversikt()" ng-disabled="progress || loading || loading2"
+                               title="Velg miljø som meldinger (hendelser) skal avspilles fra">
+                        <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container flex="25">
+                    <label>Periode fra</label>
+                    <input mdc-datetime-picker date="true" time="true" type="text"
+                           id="periodeFra" name="periodeFra"
+                           click-outside-to-close="true" ng-disabled="loading || loading2 || progress"
+                           placeholder="Velg periode fra" auto-ok="true" week-start="1"
+                           min-date="startOfEra" max-date="request.periodeTil" minute-steps="1"
+                           format="DD-MM-YYYY HH.mm" edit-input="true"
+                           title="Velg periode, dato fra (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)"
+                           ng-change="checkOversiktPeriodeFra()" today-btn="false" cancel-text="Avbryt" show-icon="true"
+                           ng-model="request.periodeFra" ng-blur="enforceFocus(requestForm.periodeFra)">
+
+                    <div ng-messages="requestForm.periodeFra.$error" class="validation-messages">
+                        <div ng-message="pattern">Gyldig format er DD-MM-ÅÅÅÅ tt.mm</div>
+                        <div ng-message="minDate">Dato kan ikke være før {{startOfEra| date: 'dd-MM-yyyy'}}</div>
+                        <div ng-message="maxDate">Periode-fra må være lavere enn Periode-til</div>
+                        <div ng-message="futureDate">Dato kan ikke settes frem i tid</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container flex="25">
+                    <label>Periode til</label>
+                    <input mdc-datetime-picker date="true" time="true" type="text"
+                           id="periodeTil" name="periodeTil" ng-disabled="loading || loading2 || progress"
+                           click-outside-to-close="true" ng-pattern="/^\d{2}-\d{2}-\d{4} \d{2}.\d{2}$/"
+                           placeholder="Velg periode til" auto-ok="true" week-start="1"
+                           min-date="request.periodeFra" max-date="today" minute-steps="1"
+                           format="DD-MM-YYYY HH.mm" edit-input="true"
+                           title="Velg periode, dato til (hvis både 'fra' og 'til' er tomme vises alle hendelse og kildetyper)"
+                           ng-change="checkOversiktPeriodeTil()" today-btn="false" cancel-text="Avbryt" show-icon="true"
+                           ng-model="request.periodeTil" ng-blur="enforceFocus(requestForm.periodeTil)">
+
+                    <div ng-messages="requestForm.periodeTil.$error" class="validation-messages" ng-show="true">
+                        <div ng-message="pattern">Gyldig format er DD-MM-ÅÅÅÅ tt.mm</div>
+                        <div ng-message="minDate">Periode-til må være høyere enn Periode-fra</div>
+                        <div ng-message="maxDate">Dato kan ikke settes frem i tid</div>
+                    </div>
+                </md-input-container>
+
+                <div flex="5"></div>
+
+                <div class="avspiller-checkbox" ng-show="showTpsBtn">
+                    <md-checkbox ng-model="ajourholdFmt" ng-click="meldFmtClick()"
+                                 title="Type av meldinger valgt er {{request.format}}"
+                                 ng-disabled="progress || loading || loading2">Tps
+                    </md-checkbox>
+                </div>
+
+                <div flex="5"></div>
+
+                <md-input-container flex="10" aria-label="Timeout">
+                    <input name="timeout" ng-model="timeout" style="text-align: center;"
+                           placeholder="Timeout" ng-disabled="loading || loading2 || progress"
+                           ng-pattern="/^\d{1,3}$/" maxlength="999" ng-blur="enforceFocus(requestForm.timeout)"
+                           title="Maksimum antall sekunder for TPS forespørsel"></input>
+                    <div ng-messages="requestForm.timeout.$error"
+                         ng-show="requestForm.timeout.$dirty">
+                        <div ng-message="pattern">Kun sifre opp til 999 er forventet</div>
+                    </div>
+                </md-input-container>
+
+                <div flex></div>
+                <div flex="10" layout="column" layout-align="end end">
+                    <md-button type="submit" class="md-raised md-accent md-ink-ripple tps-vk-submit-btn"
+                               ng-disabled="requestForm.$invalid || loading || loading2 || progress || invalidRequest"
+                               title="Hent meldinger basert på valgte filtere.">
+                        Hent
+                    </md-button>
+                </div>
+                <div flex="5"></div>
+            </div>
+            <div layout="row" class="avspiller-row">
+                <md-input-container class="tps-vk-input-container" flex="20"
+                                    aria-label="Hendelse(r)">
+                    <label>Meldingstype(r)</label>
+                    <md-select name="typer" ng-model="request.typer" placeholder="Velg hendelse(r)"
+                               multiple="true" ng-change="paramUpdate()" ng-disabled="progress"
+                               title="Filtrer på meldingsnavn (hendelser) {{request.typer}}">
+                        <md-option ng-value="type.type" ng-repeat="type in typer">{{type.type + getAntall(type.antall)}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="tps-vk-input-container" flex="20"
+                                    aria-label="Kilde(r)">
+                    <label>Kilde(r)</label>
+                    <md-select name="kilder" ng-model="request.kilder" placeholder="Velg kilde(r)" multiple="true"
+                               ng-change="paramUpdate()" ng-disabled="progress"
+                               title="Filtrer på kilder {{request.kilder}}">
+                        <md-option ng-value="kilde.type" ng-repeat="kilde in kilder">{{kilde.type + getAntall(kilde.antall)}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="tps-vk-input-container" flex>
+                    <label>Liste av identer</label>
+                    <input name="identer" ng-model="request.identer" class="testdata-ident-liste"
+                           placeholder="Kopier inn liste av identer" ng-disabled="progress"
+                           ng-pattern="/^(\d{11}[\W\s]*)+$/"
+                           ng-change="changeIdenter()" ng-blur="enforceFocus(requestForm.identer)"
+                           title="Filtrer på fødselsnummere {{request.identer}}"></input>
+                    <div ng-messages="requestForm.identer.$error"
+                         ng-show="requestForm.identer.$dirty">
+                        <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
+                    </div>
+
+                    <div class="validation-messages" ng-messages="requestForm.identer.$error" ng-show="requestForm.identer.$pristine">
+                        <div ng-message="pattern">Kun identer på 11 sifre og separatortegn er forventet</div>
+                    </div>
+                </md-input-container>
+                <div flex="5"></div>
+            </div>
+
+        </form>
+        <md-progress-linear style="margin-top: 30px;" md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+
+    </div>
+
+    <!-- Resulting Response -->
+    <md-content flex="90" class="tps-vk-bottom md-whiteframe-z1" ng-show="meldinger || loading2">
+        <form name="responseForm" class="top transparent response-form" ng-cloak>
+            <div layout="column" ng-show="pager.totalt > pagesize"  style="white-space: nowrap; margin-top: 20px;">
+                <div layout="row" layout-align="end end" style="margin-bottom: -15px;">
+                    <div> Viser hendelsenr {{pager.currentPage === pager.totalPages ? '1-' + pager.totalt : pager.viser.display}} av {{pager.totalt}}</div>
+                    <div flex="5"></div>
+                </div>
+                <div layout="row" layout-align="end end" class="pagination" style="cursor: pointer;">
+
+                    <li ng-class="{disabled:pager.currentPage === 1 || disable}">
+                        <a ng-click="setPage(1)">&lt;&lt;</a>
+                    </li>
+                    <li ng-class="{disabled:pager.currentPage === 1 || disable}">
+                        <a ng-click="setPage(pager.currentPage - 1)">&lt;</a>
+                    </li>
+                    <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page, disabled:disable}">
+                        <a ng-click="setPage(page.pagenum)">{{page.display}}</a>
+                    </li>
+                    <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
+                        <a ng-click="setPage(pager.currentPage + 1)">&gt;</a>
+                    </li>
+                    <li ng-class="{disabled:pager.currentPage === pager.totalPages || disable}">
+                        <a ng-click="setPage(pager.totalPages)">&gt;&gt;</a>
+                    </li>
+                    <div flex="5"></div>
+                </div>
+            </div>
+
+            <div layout="row" layout-align="end end" class="nopagination" ng-hide="pager.totalt > pagesize">
+            </div>
+
+            <h3 layout="row" class="flexbox-parent" ng-show="pager.totalt">
+                <div flex="15" style="text-align: center;">Hendelsenr</div>
+                <div flex="10" style="text-align: right;">Meldingsnr</div>
+                <div flex="5"></div>
+                <div flex="20">Tidspunkt</div>
+                <div flex="25">Hendelse</div>
+                <div flex="5">Kilde</div>
+                <div flex="10">Ident</div>
+                <div flex="5">Sendt</div>
+            </h3>
+            <div layout="row" ng-repeat="message in meldinger | miljoefilter:melding.miljoe"
+                 ng-class="{'ident-included': requestForm.$dirty && identer.length > 0 && identer.indexOf(message.ident) !== -1,
+                  'ident-excluded': requestForm.$dirty && identer.length > 0 && identer.indexOf(message.ident) === -1}">
+                <div flex="10" align="end">{{message.index}}</div>
+                <div flex="15" align="end" class="animate-selection"
+                     title="Klikk for å vise meldingsinnhold"
+                     ng-click="getMelding(message.meldingNummer)">{{message.meldingNummer}}
+                </div>
+                <div flex="5"></div>
+                <div flex="20">{{message.tidspunkt | date: 'dd-MM-yyyy HH:mm:ss.sss'}}</div>
+                <div flex="25" title="{{message.hendelseType}}">{{message.hendelseType | hendelse}}</div>
+                <div flex="5">{{message.systemkilde }}</div>
+                <div flex="10" class="animate-selection" ng-click="addIdent(message.ident)"
+                     title="{{progress ? 'Liste av identer kan ikke endres når sending pågår' :
+                     'Klikk for å legge til eller ta bort fra liste av identer'}}">{{message.ident}}
+                </div>
+                <div flex="5" align="center" title="{{status.progressMap[message.index].sendStatus}}"
+                     class="animate-selection" ng-show="status.progressMap[message.index]"
+                     ng-click="sendtDialog(message.index)">
+                    <a> <img ng-show="status.progressMap[message.index].sendStatus === 'OK'"
+                             src="assets/icons/baseline-done-24px.svg" class="status-icon"></a>
+                    <a ng-show="status.progressMap[message.index].sendStatus.includes('Sending OK')">
+                        <img src="assets/icons/baseline-done-24px.svg" class="status-icon">*</a>
+                    <a> <img ng-show="status.progressMap[message.index].sendStatus.includes('FEIL')"
+                             src="assets/icons/baseline-warning-24px.svg" class="status-icon"></a>
+                </div>
+            </div>
+        </form>
+
+        <div layout="row">
+            <md-progress-linear flex="90" class="avspiller-progress" md-mode="indeterminate" ng-show="loading2"></md-progress-linear>
+        </div>
+
+        <form flex="95" name="requestForm2" ng-submit="requestForm.$valid && submit()"
+              ng-show="meldinger" class="avspiller-requestform2">
+            <div layout-align="end end" layout="row" class="btn-group">
+
+                <div flex="5"></div>
+                <div flex="15" class="avspiller-checkbox" style="margin-bottom: 7px;">
+                    <md-checkbox ng-model="ownQueue" ng-change="toggleOwnQueue()" ng-disabled="progress"
+                                 title="Velg denne når eget kønavn skal angis (fritekst)">Egen kø
+                    </md-checkbox>
+                </div>
+
+                <div flex="10">
+                    <md-input-container aria-label="Velg miljø">
+                        <label>Miljø</label>
+                        <md-select ng-model="target.miljoe" ng-change="checkMeldingskoer()" ng-disabled="progress"
+                                   title="Velg miljø det skal avspilles meldinger til">
+                            <md-option ng-repeat="env in environments" value="{{env}}">{{ env }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div flex="45" ng-show="!ownQueue">
+                    <md-input-container aria-label="Velg kønavn">
+                        <label>Meldingskø</label>
+                        <md-select ng-model="target.messageQueue" ng-disabled="!koer || progress"
+                                   title="Velg kø (og dermed system) det skal avspilles meldinger til">
+                            <md-option ng-repeat="koe in koer" value="{{koe}}">{{koe}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <md-input-container flex="45" style="margin-bottom: -6px;" ng-show="ownQueue">
+                    <md-tooltip>Egendefinert mottakskø</md-tooltip>
+                    <input ng-model="target.privateQueue" ng-disabled="progress"
+                           title="Angi kønavn for system det skal avspilles meldinger til"
+                           placeholder="QA.miljø_xxx.beskrivelse egendefinert kø">
+                </md-input-container>
+
+                <div flex></div>
+
+                <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
+                    <md-button class="md-button md-raised md-accent"
+                               ng-click="avbrytSendTilTps()"
+                               ng-disabled="!progress"
+                               title="Avbryt meldingsavspilling">Avbryt
+                    </md-button>
+                </md-input-container>
+                <md-input-container class="input-row" aria-label="Sende meldinger til valgt kø">
+                    <md-button class="md-button md-raised md-accent"
+                               ng-disabled="!target.miljoe  ||
+                               ownQueue && !target.privateQueue ||
+                               !ownQueue && !target.messageQueue ||
+                               requestForm.$dirty || progress"
+                               ng-click="sendTilTps()"
+                               title="Send meldinger (start avspilling) til angitt kø (system)">Send
+                    </md-button>
+                </md-input-container>
+            </div>
+        </form>
+        <div layout="row" style="margin-top: -10px;" ng-show="status.antall">
+            <div flex></div>
+            Sendt {{status.progressAntall}} (av {{status.antall}})
+            <div flex="10"></div>
+        </div>
+        <div layout="row">
+            <md-progress-linear md-mode="determinate" class="avspiller-progress" value="{{completeProgress}}" ng-show="progress"></md-progress-linear>
+        </div>
+    </md-content>
+</div>

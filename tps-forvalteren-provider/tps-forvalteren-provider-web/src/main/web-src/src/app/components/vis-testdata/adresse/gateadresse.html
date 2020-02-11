@@ -1,12 +1,12 @@
-<div layout="row" ng-if="person.boadresse.adressetype == 'GATE'">
+<div layout="row" ng-if="person.boadresse[0].adressetype == 'GATE'">
     <md-input-container class="tps-vk-input-container" flex>
         <md-tooltip>Gatenavn</md-tooltip>
         <label>Gatenavn</label>
         <input name="gateadresse" ng-required="false" md-maxlength="25"
-               ng-model="person.gateadresse.gateadresse"
-               ng-change="endretGatenavn($index)"/>
+               ng-model="person.gateadresse[0].gateadresse"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gateadresse.$error"
-             ng-show="requestForm.gateadresse.$dirty">
+             ng-show="requestForm.gateadresse.$error">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
@@ -14,11 +14,13 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Husnummer</md-tooltip>
         <label>Husnummer</label>
-        <input name="husnummer" ng-required="false" md-maxlength="4"
-               ng-model="person.gateadresse.husnummer"
-               ng-change="endretHusnummer($index)"/>
+        <input name="husnummer" pattern="\d{1,4}[a-zA-ZæÆøØåÅáÁ]{0,1}" ng-required="person.gateadresse[0].gateadresse" md-maxlength="5"
+               ng-model="person.gateadresse[0].husnummer"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.husnummer.$error"
-             ng-show="requestForm.husnummer.$dirty">
+             ng-show="requestForm.husnummer.$error">
+            <div ng-message="required">Feltet er påkrevd</div>
+            <div ng-message="pattern">En til fire sifre + evt husbokstav forventet</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
@@ -26,40 +28,52 @@
     <md-input-container class="tps-vk-input-container" flex="10">
         <md-tooltip>Gatekode</md-tooltip>
         <label>Gatekode</label>
-        <input name="gatekode" ng-required="false" md-maxlength="5"
-               ng-model="person.gateadresse.gatekode"
-               ng-change="endret($index)"/>
+        <input name="gatekode" pattern="\d{5}" ng-required="person.gateadresse[0].gateadresse" md-maxlength="5"
+               ng-model="person.gateadresse[0].gatekode"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gatekode.$error"
-             ng-show="requestForm.gatekode.$dirty">
+             ng-show="requestForm.gatekode.$error">
+            <div ng-message="required">Feltet er påkrevd</div>
+            <div ng-message="pattern">Fem sifre forventet (evt. med ledende nuller)</div>
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
 
-    <md-autocomplete md-no-cache="false" md-selected-item="person.gateadresse.postnr"  md-selected-item-change="endret($index)" md-items="postnummer in getPostnummerMatches(postnummerSoek)" md-search-text="postnummerSoek"
-                     md-item-text="postnummer.visningsnavn"  md-require-match="true" md-select-on-match="true" md-delay="300" placeholder="Postnummer" md-floating-label="Postnummer">
-        <md-item-template>
-            <span md-highlight-text="postnummerSoek" md-highlight-flags="i">{{ postnummer.visningsnavn }}</span>
-        </md-item-template>
-    </md-autocomplete>
+    <postnummer postnummer="person.gateadresse[0].postnr" endret-fn="endret" class="autocomplete"
+                index="$index + pager.startIndex" paakrevet="person.gateadresse[0].gateadresse">
+    </postnummer>
 
-    <md-autocomplete md-no-cache="false" md-selected-item="person.gateadresse.kommunenr" md-selected-item-change="endret($index)" md-items="kommune in getKommuneMatches(kommuneSoek)" md-search-text="kommuneSoek"
-                     md-item-text="kommune.visningsnavn" md-select-on-match="true" md-require-match="true" md-delay="300" placeholder="Kommune" md-floating-label="Kommune" flex="10">
-        <md-item-template>
-            <span md-highlight-text="kommuneSoek" md-highlight-flags="i">{{ kommune.visningsnavn }}</span>
-        </md-item-template>
-    </md-autocomplete>
+    <kommunenr kommunenr="person.gateadresse[0].kommunenr" endret-fn="endret" class="autocomplete"
+               index="$index + pager.startIndex" paakrevet="person.gateadresse[0].gateadresse">
+    </kommunenr>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Flyttedato</md-tooltip>
         <label>Flyttedato</label>
         <md-datepicker name="gtFlytteDato"
                        md-current-view="year"
-                       ng-model="person.gateadresse.flytteDato"
-                       ng-change="endret($index)">
+                       ng-required="person.gateadresse[0].gateadresse"
+                       ng-model="person.gateadresse[0].flyttedato"
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.gtFlytteDato.$error"
-             ng-show="requestForm.gtFlytteDato.$pristine">
+             ng-show="requestForm.gtFlytteDato.$error">
+            <div ng-message="required">Feltet er påkrevd</div>
             <div ng-message="valid">Gyldig datoformat er DD-MM-ÅÅÅÅ</div>
         </div>
+    </md-input-container>
+
+</div>
+<div layout="row" layout-align="end" ng-if="person.boadresse.adressetype == 'GATE'">
+    <md-input-container>
+        <md-select ng-model="selectedGyldigAdresse" aria-label="Velg en gyldig adresse" placeholder="Velg en gyldig adresse" class="vis-testdata-ctrl" ng-change="updateAdresseGyldig(selectedGyldigAdresse,person);">
+            <md-option ng-value="adresse" ng-repeat="adresse in gyldigeAdresser">{{adresse.visningsnavn}}</md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container class="tps-vk-input-container">
+        <md-tooltip>Søk etter gyldige adresser. Gatenavn må være minst 3 tegn og kommunenummeret må være satt.</md-tooltip>
+        <md-button class="md-raised md-accent" ng-disabled="person.gateadresse[0].gateadresse.length<3 && person.gateadresse[0].kommunenr.length<4"
+                   aria-label="Finn gyldig adresse" ng-click="hentgyldigeAdresser(person)">Finn gyldig adresse
+        </md-button>
     </md-input-container>
 </div>

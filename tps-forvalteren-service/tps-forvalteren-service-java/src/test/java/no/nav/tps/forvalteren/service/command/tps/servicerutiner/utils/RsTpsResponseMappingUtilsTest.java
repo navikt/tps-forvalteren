@@ -1,23 +1,5 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tps.forvalteren.domain.service.tps.Response;
-import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import static junit.framework.TestCase.assertSame;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -26,9 +8,23 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import no.nav.tps.forvalteren.domain.service.tps.Response;
+import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RsTpsResponseMappingUtilsTest {
@@ -51,7 +47,7 @@ public class RsTpsResponseMappingUtilsTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
-    private ObjectMapper objectMapperMock;
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private RsTpsResponseMappingUtils responseMappingUtilsMock;
@@ -163,9 +159,6 @@ public class RsTpsResponseMappingUtilsTest {
         statusMap.put("kode", "00");
         statusMap.put("melding", "melding");
         statusMap.put("utfyllendeMelding", "utfyllende melding");
-
-        when(objectMapperMock.writeValueAsString(responseStatus)).thenReturn(statusAsString);
-        when(objectMapperMock.readValue(statusAsString, Map.class)).thenReturn(statusMap);
 
         TpsServiceRoutineResponse result = responseMappingUtilsMock.convertToTpsServiceRutineResponse(response);
 

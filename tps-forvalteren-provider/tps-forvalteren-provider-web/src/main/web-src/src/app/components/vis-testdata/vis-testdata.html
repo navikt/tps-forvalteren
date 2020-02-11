@@ -1,110 +1,137 @@
 <div class="tps-testdata-dashboard" layout-padding ng-cloak>
+    <div layout="column" flex>
+        <div layout="row" class="testdata-progress-bar" flex style="margin-left: 10px; margin-top: 10px;" ng-show="showSpinner">
+            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+        </div>
 
-    <div id="body" class="testdata-body-block" layout="column" flex="70">
-
-        <h3 style="margin-left: 15px; margin-top: 10px; margin-bottom: -5px;">Testpersoner</h3>
-
-        <md-card id="vis-testdata-main" class="tps-vk-top ">
-
-            <md-card-content flex class="testdata-card-content md-whiteframe-1p">
-                <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
-                     flex layout-align="center center"
-                     ng-show="personer.length == 0">
-                    <div>
-                        <md-icon md-svg-icon="assets/icons/ic_people_outline_black_24px.svg"
-                                 class="testdata-big-icon"></md-icon>
-                    </div>
-                    <div>Ingen testpersoner er lagt til ennå</div>
+        <div layout="column" layout-gt-md="row" class="tpsf-testdata-container">
+            <form name="requestForm" layout="column" flex-gt-md="66" style="margin-top:15px;">
+                <div layout="row">
+                    <h3 class="tpsf-testdata-personer-header">Testpersoner<span ng-show="personer.length>0">&nbsp;({{personer.length}})</span>
+                    </h3>
+                    <div flex></div>
+                    <div ng-show="requestForm.$invalid" class="alert warning">Åpen fane inneholder feil og blokkerer andre valg</div>
+                    <paginering contents="personer" slice="slice" pager="pager" disabled="requestForm.$invalid" layout="column" layout-align="start end"></paginering>
                 </div>
-                <div layout="row" style="margin-top: 3px;" flex ng-if="personer.length > 0">
-
-                    <md-checkbox data-ng-model="allePersoner.checked" ng-click="velgAlle()" flex="15">
-                        Velg alle<span ng-if="visEndret"> endrede</span>
-                    </md-checkbox>
-
-                    <div style="margin-top: 3px;">
-                        Valgt: {{antallValgt}}
-                    </div>
-
-                    <div layout="row" layout-align="end center" flex style="margin-top: -13px;">
-                        <div ng-show="visEndret" flex="10">
-                            Endret: {{antallEndret}}
+                <md-card id="vis-testdata-main" class="tps-vk-top">
+                    <md-card-content flex class="testdata-card-content md-whiteframe-1p">
+                        <div class="md-raised" style="height: 150px; text-align: center; margin-top: 50px;"
+                             flex layout-align="center center"
+                             ng-show="!personer || personer.length == 0">
+                            <div>
+                                <md-icon md-svg-icon="assets/icons/ic_people_outline_black_24px.svg"
+                                         class="testdata-big-icon"></md-icon>
+                            </div>
+                            <div>Ingen testpersoner er lagt til ennå</div>
                         </div>
+                        <div layout="row" style="margin-top: 3px;" flex ng-if="personer.length > 0">
 
-                        <md-button class="md-accent md-raised md-title" ng-click="sletteDialog()"
-                                   ng-disabled="antallValgt == 0" ng-if="!visEndret"
-                                   aria-label="Slett valgte rader">Slett
-                        </md-button>
-                        <md-button class="md-accent md-raised md-title" ng-disabled="antallValgt == 0" ng-show="visEndret"
-                                   ng-click="avbryteDialog()"
-                                   aria-label="Avbryt valgte rader">Avbryt endring
-                        </md-button>
-
-                        <md-button class="md-accent md-raised md-title" ng-show="visEndret"
-                                   ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
-                                   aria-label="Lagre valgte rader">Lagre
-                        </md-button>
-                    </div>
-                </div>
-            </md-card-content>
-        </md-card>
-
-        <!-- Resulting Response -->
-
-        <form name="requestForm" class="tps-vk-top" style="background-color: transparent;">
-
-            <div ng-repeat="person in personer">
-                <md-card id="person_{{$index}}" flex md-whiteframe="{{height}}"
-                         ng-init="height = 1"
-                         ng-mouseover="height = 5"
-                         ng-mouseleave="height = 1" ng-class="control[$index].aapen ? 'testdata-open-card' : ''">
-                    <md-card-content flex class="testdata-card-content">
-                        <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" ng-click="toggleFane($index)">
-                            <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
-                                         ng-model="control[$index].velg"
-                                         ng-change="oppdaterValgt($index)"
-                                         ng-disabled="control[$index].disabled"
-                                         aria-label="Marker person{{person.ident}} for sletting"
-                                         ng-click="checkIt()">
+                            <md-checkbox data-ng-model="allePersoner.checked" ng-click="velgAlle()" flex="15">
+                                Velg&nbsp;alle<span ng-if="visEndret"> endrede</span>
                             </md-checkbox>
-                            <div flex="15">{{person.ident}} ({{person.identtype}})</div>
-                            <div flex="50">
-                                {{person.fornavn | titlecase}} {{person.mellomnavn | titlecase}} {{person.etternavn | titlecase}}
-                            </div>
-                            <div flex="20">{{getKjonn(person.kjonn)}}</div>
-                            <div flex></div>
-                            <div ng-if="control[$index].endret" style="color: red;">Endret</div>
-                            <div flex="5"></div>
-                            <div flex="5">
-                                <md-button id="cancel" ng-class="{flipped: control[$index].aapen}"
-                                           class="md-icon-button"
-                                           type="button" style="margin-top: -10px;"
-                                           aria-label="Vis testdata detaljer"
-                                           ng-disabled="!requestForm.$valid">
-                                    <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
-                                </md-button>
-                            </div>
-                        </div>
-                        <div layout="row" ng-if="control[$index].aapen">
-                            <div class="line">
-                                <div ng-include="persondetalj"></div>
-                                <div class="testdata-boadr">Boadresse</div>
-                                <md-radio-group ng-model="person.boadresse.adressetype"
-                                                layout="row" class="testdata-adr-btn">
-                                    <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
-                                    <md-radio-button value="MATR">Matrikkeladresse</md-radio-button>
-                                </md-radio-group>
 
-                                <div ng-include="gateadresse"></div>
-                                <div ng-include="matradresse"></div>
-                                <div ng-include="postadresse"></div>
+                            <div style="margin-top: 2px;">
+                                Valgt:&nbsp;{{antallValgt}}
+                            </div>
+
+                            <div layout="row" layout-align="end center" flex style="margin-top: -13px;">
+                                <div ng-show="visEndret" flex="10">
+                                    Endret:&nbsp;{{antallEndret}}
+                                </div>
+
+                                <md-button class="md-accent md-raised md-title" ng-click="sletteDialog()"
+                                           ng-disabled="antallValgt == 0" ng-if="!visEndret"
+                                           aria-label="Slett valgte rader">Slett
+                                </md-button>
+                                <md-button class="md-accent md-raised md-title" ng-disabled="antallValgt == 0" ng-show="visEndret"
+                                           ng-click="avbryteDialog()"
+                                           aria-label="Avbryt valgte rader">Avbryt endring
+                                </md-button>
+
+                                <md-button class="md-accent md-raised md-title" ng-show="visEndret"
+                                           ng-disabled="antallValgt == 0 || !requestForm.$valid" ng-click="lagre()"
+                                           aria-label="Lagre valgte rader">Lagre
+                                </md-button>
+                                <div>
+                                    <md-button class="md-accent md-raised md-title" ng-disabled="requestForm.$invalid"
+                                               ng-click="toggleAlleFaner()"
+                                               aria-label="Åpne/lukke alle">
+                                        <md-icon ng-class="{flipped: aapneAlleFaner}"
+                                                 md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                                        <span ng-if="!aapneAlleFaner">Åpne alle</span>
+                                        <span ng-if="aapneAlleFaner">Lukke alle</span>
+                                    </md-button>
+                                </div>
                             </div>
                         </div>
                     </md-card-content>
                 </md-card>
-            </div>
-        </form>
-    </div>
 
-    <vis-gruppeinfo gruppe-id="gruppeId"></vis-gruppeinfo>
+                <!-- Resulting Response -->
+
+                <div class="tps-vk-top" style="background-color: transparent;">
+
+                    <div ng-repeat="person in slice">
+                        <md-card id="person_{{$index + pager.startIndex}}" flex md-whiteframe="{{height}}"
+                                 ng-init="height = 1"
+                                 ng-mouseover="height = 5"
+                                 ng-mouseleave="height = 1" ng-class="control[$index + pager.startIndex].aapen ? 'testdata-open-card' : ''">
+                            <md-card-content flex class="testdata-card-content">
+                                <div class="tps-vk-form noframe" layout="row" style="font-style: oblique;" disable="true" ng-click="toggleFane($index + pager.startIndex)">
+                                    <md-checkbox flex="5" class="marker-inntekt-sjekkboks"
+                                                 ng-model="control[$index + pager.startIndex].velg"
+                                                 ng-change="oppdaterValgt($index + pager.startIndex)"
+                                                 ng-disabled="control[$index + pager.startIndex].disabled"
+                                                 aria-label="Marker person{{person.ident}} for sletting"
+                                                 ng-click="checkIt()">
+                                    </md-checkbox>
+                                    <div flex="20">{{person.ident}}&nbsp;({{person.identtype}})</div>
+                                    <div flex="45">
+                                        {{person.fornavn | titlecase}}&nbsp;{{person.mellomnavn | titlecase}}&nbsp;{{person.etternavn | titlecase}}
+                                    </div>
+                                    <div flex="20" style="white-space: nowrap">
+                                        {{person.kjonn| kjonn}},&nbsp;&nbsp;{{person.alder}} år&nbsp;&nbsp;
+                                        <md-icon ng-show="person.doedsdato" md-svg-icon="assets/icons/skull_24px.svg"></md-icon>
+                                    </div>
+
+                                    <div flex></div>
+                                    <div flex="5" ng-if="control[$index + pager.startIndex].endret" class="alert">Endret</div>
+                                    <div flex="5">
+                                        <md-button id="cancel" ng-class="{flipped: control[$index + pager.startIndex].aapen}"
+                                                   class="md-icon-button"
+                                                   type="button" style="margin-top: -10px;"
+                                                   aria-label="Vis testdata detaljer">
+                                            <md-icon md-svg-icon="assets/icons/keyboard_arrow_down.svg"></md-icon>
+                                        </md-button>
+                                    </div>
+                                </div>
+                                <div layout="row" ng-if="control[$index + pager.startIndex].aapen">
+                                    <div class="line" flex="auto">
+                                        <div ng-include="persondetalj"></div>
+                                        <div layout="row">
+                                            <h3 class="testdata-sub-header">Boadresse</h3>
+                                            <md-icon class="info-icon" ng-click="showAddrInfo()"
+                                                     md-svg-icon="assets/icons/ic_info_outline_black_24px.svg"></md-icon>
+                                            <div flex></div>
+                                        </div>
+                                        <md-radio-group ng-model="person.boadresse[0].adressetype"
+                                                        layout="row" class="testdata-adr-btn">
+                                            <md-radio-button value="GATE">Offentlig adresse</md-radio-button>
+                                            <md-radio-button value="MATR">Matrikkeladresse</md-radio-button>
+                                        </md-radio-group>
+
+                                        <div ng-include="gateadresse"></div>
+                                        <div ng-include="matradresse"></div>
+                                        <div ng-include="postadresse"></div>
+                                        <familierelasjon person="person" personer="personer" index="$index + pager.startIndex" endret-fn="endret"></familierelasjon>
+                                    </div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </form>
+            <vis-gruppeinfo service="service" gruppe-id="gruppeId"></vis-gruppeinfo>
+        </div>
+    </div>
 </div>

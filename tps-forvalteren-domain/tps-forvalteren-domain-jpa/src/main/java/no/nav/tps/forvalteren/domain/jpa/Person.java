@@ -1,13 +1,14 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static javax.persistence.CascadeType.ALL;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import javax.persistence.CascadeType;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,17 +18,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Transient;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "T_PERSON")
@@ -48,7 +54,7 @@ public class Person extends ChangeStamp {
     private String identtype;
 
     @Column(name = "KJONN", nullable = false)
-    private Character kjonn;
+    private String kjonn;
 
     @Column(name = "FORNAVN", nullable = false, length = 50)
     private String fornavn;
@@ -59,21 +65,75 @@ public class Person extends ChangeStamp {
     @Column(name = "ETTERNAVN", nullable = false, length = 50)
     private String etternavn;
 
-    @Column(name = "STATSBORGERSKAP", length = 3)
-    private String statsborgerskap;
+    @Column(name = "FORKORTET_NAVN")
+    private String forkortetNavn;
 
-    @Column(name = "SPESREG", length = 4)
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Statsborgerskap> statsborgerskap;
+
+    @Column(name = "SPESREG", length = 1)
     private String spesreg;
 
     @Column(name = "SPESREG_DATO")
     private LocalDateTime spesregDato;
 
-    @JoinColumn(name = "ADRESSE_ID")
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
-    private Adresse boadresse;
+    @Column(name = "DOEDSDATO")
+    private LocalDateTime doedsdato;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
-    private List<Postadresse> postadresse = new ArrayList<>();
+    @Column(name = "SIVILSTAND", length = 4)
+    private String sivilstand;
+
+    @OrderBy("sivilstandRegdato desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Sivilstand> sivilstander;
+
+    @Column(name = "SIVILSTAND_REGDATO")
+    private LocalDateTime sivilstandRegdato;
+
+    @Column(name = "INNVANDRET_FRA_LAND", length = 3)
+    private String innvandretFraLand;
+
+    @Column(name = "INNVANDRET_FRA_LAND_FLYTTEDATO")
+    private LocalDateTime innvandretFraLandFlyttedato;
+
+    @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
+    private LocalDateTime innvandretFraLandRegdato;
+
+    @Column(name = "UTVANDRET_TIL_LAND", length = 3)
+    private String utvandretTilLand;
+
+    @Column(name = "UTVANDRET_TIL_LAND_FLYTTEDATO")
+    private LocalDateTime utvandretTilLandFlyttedato;
+
+    @Column(name = "UTVANDRET_TIL_LAND_REGDATO")
+    private LocalDateTime utvandretTilLandRegdato;
+
+    @Column(name = "EGEN_ANSATT_DATO_FOM")
+    private LocalDateTime egenAnsattDatoFom;
+
+    @Column(name = "EGEN_ANSATT_DATO_TOM")
+    private LocalDateTime egenAnsattDatoTom;
+
+    @Column(name = "TYPE_SIKKERHETSTILTAK", length = 4)
+    private String typeSikkerhetsTiltak;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_FOM")
+    private LocalDateTime sikkerhetsTiltakDatoFom;
+
+    @Column(name = "SIKKERHETSTILTAK_DATO_TOM")
+    private LocalDateTime sikkerhetsTiltakDatoTom;
+
+    @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
+    private String beskrSikkerhetsTiltak;
+
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Adresse> boadresse;
+
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Postadresse> postadresse;
 
     @Column(name = "REGDATO", nullable = false)
     private LocalDateTime regdato;
@@ -82,4 +142,133 @@ public class Person extends ChangeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Relasjon> relasjoner;
+
+    @OrderBy("historicIdentOrder desc")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = ALL)
+    private List<IdentHistorikk> identHistorikk;
+
+    @Column(name = "OPPRETTET_DATO")
+    private LocalDateTime opprettetDato;
+
+    @Column(name = "OPPRETTET_AV")
+    private String opprettetAv;
+
+    @Column(name = "SPRAK_KODE")
+    private String sprakKode;
+
+    @Column(name = "DATO_SPRAK")
+    private LocalDateTime datoSprak;
+
+    @Column(name = "TKNR")
+    private String tknr;
+
+    @Column(name = "TKNAVN")
+    private String tknavn;
+
+    @Column(name = "GT_TYPE")
+    private String gtType;
+
+    @Column(name = "GT_VERDI")
+    private String gtVerdi;
+
+    @Column(name = "GT_REGEL")
+    private String gtRegel;
+
+    @Column(name = "UTEN_FAST_BOPEL")
+    private Boolean utenFastBopel;
+
+    @Column(name = "PERSON_STATUS")
+    private String personStatus;
+
+    @Column(name = "FORSVUNNET_DATO")
+    private LocalDateTime forsvunnetDato;
+
+    @Transient
+    private String replacedByIdent;
+
+    @Transient
+    private LocalDateTime aliasRegdato;
+
+    public List<Postadresse> getPostadresse() {
+        if (isNull(postadresse)) {
+            postadresse = new ArrayList();
+        }
+        return postadresse;
+    }
+
+    public List<Relasjon> getRelasjoner() {
+        if (isNull(relasjoner)) {
+            relasjoner = new ArrayList();
+        }
+        return relasjoner;
+    }
+
+    public List<IdentHistorikk> getIdentHistorikk() {
+        if (isNull(identHistorikk)) {
+            identHistorikk = new ArrayList();
+        }
+        return identHistorikk;
+    }
+
+    public List<Sivilstand> getSivilstander() {
+        if (isNull(sivilstander)) {
+            sivilstander = new ArrayList();
+        }
+        return sivilstander;
+    }
+
+    public List<Adresse> getBoadresse() {
+        if (isNull(boadresse)) {
+            boadresse = new ArrayList();
+        }
+        return boadresse;
+    }
+
+    public List<Statsborgerskap> getStatsborgerskap() {
+        if (isNull(statsborgerskap)) {
+            statsborgerskap = new ArrayList();
+        }
+        return statsborgerskap;
+    }
+
+    public Person toUppercase() {
+        if (isNotBlank(getFornavn())) {
+            setFornavn(getFornavn().toUpperCase());
+        }
+        if (isNotBlank(getMellomnavn())) {
+            setMellomnavn(getMellomnavn().toUpperCase());
+        }
+        if (isNotBlank(getEtternavn())) {
+            setEtternavn(getEtternavn().toUpperCase());
+        }
+        if (isNotBlank(getForkortetNavn())) {
+            setForkortetNavn(getForkortetNavn().toUpperCase());
+        }
+        if (isNotBlank(getIdenttype())) {
+            setIdenttype(getIdenttype().toUpperCase());
+        }
+
+        getBoadresse().forEach(Adresse::toUppercase);
+        getPostadresse().forEach(Postadresse::toUppercase);
+
+        return this;
+    }
+
+    public boolean isUtenFastBopel() {
+        return isTrue(utenFastBopel) || "UFB".equals(getSpesreg());
+    }
+
+    public boolean isKode6() {
+        return "SPSF".equals(getSpesreg());
+    }
+
+    public boolean isForsvunnet() {
+        return nonNull(getForsvunnetDato());
+    }
+
+    public boolean isEgenansatt() {
+        return nonNull(getEgenAnsattDatoFom()) && isNull(getEgenAnsattDatoTom());
+    }
 }

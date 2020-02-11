@@ -1,11 +1,6 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -52,4 +54,19 @@ public class Postadresse {
     @Column(name = "POST_LAND", length = 3)
     private String postLand;
 
+    public Postadresse toUppercase() {
+        if (isNotBlank(getPostLinje1())) {
+            setPostLinje1(getPostLinje1().toUpperCase());
+        }
+        if (isNotBlank(getPostLinje2())) {
+            setPostLinje2(getPostLinje2().toUpperCase());
+        }
+        if (isNotBlank(getPostLinje3())) {
+            setPostLinje3(getPostLinje3().toUpperCase());
+        }
+        if (isNotBlank(getPostLand())) {
+            setPostLand(getPostLand().toUpperCase());
+        }
+        return this;
+    }
 }

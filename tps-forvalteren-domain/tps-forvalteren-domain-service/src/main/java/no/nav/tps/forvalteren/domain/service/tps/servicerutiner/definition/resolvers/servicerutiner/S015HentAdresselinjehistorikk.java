@@ -46,6 +46,7 @@ public class S015HentAdresselinjehistorikk implements ServiceRoutineResolver{
                     .name("adresseType")
                     .required()
                     .type(TpsParameterType.STRING)
+                    .values("TIAD","POST", "UTAD", "ALLE")
                 .and()
 
                 .transformer()

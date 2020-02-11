@@ -1,19 +1,28 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import org.springframework.data.repository.Repository;
-
+import java.util.Collection;
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.repository.CrudRepository;
 
-public interface PersonRepository extends Repository<Person, Long> {
+import no.nav.tps.forvalteren.domain.jpa.Person;
+
+public interface PersonRepository extends CrudRepository<Person, Long> {
 
     List<Person> findAllByOrderByIdAsc();
 
-    void deleteByIdIn(List<Long> ids);
+    @Modifying
+    int deleteByIdIn(Collection<Long> ids);
 
-    void save(Iterable<Person> personer);
+    List<Person> findByIdentIn(Collection<String> identListe);
 
-    List<Person> findByIdentIn(List<String> identListe);
+    List<Person> findByIdIn(List<Long> ids);
 
+    Person findByIdent(String ident);
 
+    List<Person> findAll();
+
+    void deleteByGruppeId(Long gruppeId);
+
+    void deleteAll();
 }

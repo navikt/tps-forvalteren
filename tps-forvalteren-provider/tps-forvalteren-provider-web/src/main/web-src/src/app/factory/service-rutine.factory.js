@@ -1,11 +1,10 @@
-
 angular.module('tps-forvalteren.factory')
-    .factory('serviceRutineFactory', ['$http', function ($http) {
+    .factory('serviceRutineFactory', ['$http', 'utilsService', function ($http, utilsService) {
 
         var serviceRutineFactory = {};
 
-        var urlBase = 'api/v1/service';
-        var urlRoutinesBase = 'api/v1/serviceroutine';
+        var urlBase = 'api/v1/serviceroutine';
+        var urlRoutinesBase = 'api/v1/tpsservices';
         var urlEndrinsmeldinger = 'api/v1/endringsmeldinger';
         var urlGetEnvironments = 'api/v1/environments';
         var urlConfig = 'assets/config/';
@@ -35,7 +34,6 @@ angular.module('tps-forvalteren.factory')
             return $http({method: 'GET', url: urlRoutinesBase}).then(function (response) {
                 if (response.data) {
                     var serviceRutineList = response.data;
-
                     for (var i = 0; i < serviceRutineList.length; i++) {
                         serviceRutines[serviceRutineList[i].name] = serviceRutineList[i];
                     }
@@ -46,6 +44,7 @@ angular.module('tps-forvalteren.factory')
                     return null;
                 }
             }, function (error) {
+                utilsService.showAlertError(error, '0000-GA-TPSF-SERVICERUTINER');
                 return null;
             });
         };
@@ -69,13 +68,17 @@ angular.module('tps-forvalteren.factory')
         };
 
         serviceRutineFactory.loadFromServerEnvironments = function () {
-            return $http({method: 'GET', url: urlGetEnvironments}).then(function (res) {
-                environments = res.data;
-                isSetEnvironments = true;
+            if (isSetEnvironments) {
                 return environments;
-            }, function (error) {
-                return error;
-            });
+            } else {
+                return $http({method: 'GET', url: urlGetEnvironments}).then(function (res) {
+                    environments = res.data;
+                    isSetEnvironments = true;
+                    return environments;
+                }, function (error) {
+                    return error;
+                });
+            }
         };
 
         serviceRutineFactory.getServiceRutines = function () {

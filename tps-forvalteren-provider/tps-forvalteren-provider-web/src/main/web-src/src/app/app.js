@@ -10,18 +10,27 @@ require('angular-moment');
 require('angular-sanitize');
 require('pikaday');
 require('pikaday-angular');
+require('lodash');
+require('moment');
+require('ng-material-datetimepicker');
 
 require('./components/index');
 require('./services/service.module');
 require('./directives/directives.module');
 require('./factory/factory.module');
 require('./filters/filter.module');
+require('./providers/providers.module');
 
 var app = angular.module('tps-forvalteren', ['ui.router', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'angularMoment', 'tps-forvalteren.login',
     'tps-forvalteren.service', 'tps-forvalteren.factory', 'tps-forvalteren.service-rutine', 'tps-forvalteren.directives', 'tps-forvalteren.gt',
     'tps-forvalteren.opprett-testdata', 'tps-forvalteren.vis-testdata', 'pikaday', 'tps-forvalteren.filter', 'tps-forvalteren.welcome',
     'tps-forvalteren.testgruppe', 'tps-forvalteren.testgruppe.nygruppe', 'ngSanitize', 'tps-forvalteren.vis-testdata.endregruppe',
-    'tps-forvalteren.vis-testdata.sendtiltps']);
+    'tps-forvalteren.vis-testdata.sendtiltps', 'tps-forvalteren.skd-meldingsgruppe', 'tps-forvalteren.skd-meldingsgruppe.nygruppe',
+    'tps-forvalteren.skd-vis-meldingsgruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.endregruppe', 'tps-forvalteren.skd-vis-meldingsgruppe.nymelding',
+    'tps-forvalteren.providers', 'tps-forvalteren.skd-vis-meldingsgruppe.sendtiltps', 'tps-forvalteren.service-rutine',
+    'tps-forvalteren.service-rutine.velg-service-rutine', 'tps-forvalteren.doedsmeldinger', 'tps-forvalteren.doedsmeldinger.endremelding',
+    'tps-forvalteren.rawxml-melding','tps-forvalteren.avspiller', 'ngMaterialDatePicker']);
+
 
 require('./shared/index');
 
@@ -58,8 +67,10 @@ app.config(['pikadayConfigProvider', 'moment', '$mdDateLocaleProvider', function
     };
     $mdDateLocaleProvider.parseDate = function(dateString) {
         var m = moment(dateString, 'DD-MM-YYYY', true);
-        return m.isValid() ? m.toDate() : ' ';
+        return m.isValid() ? m.toDate() : new Date(NaN);
     };
+    $mdDateLocaleProvider.firstRenderableDate = new Date(1850, 0, 1);
+    $mdDateLocaleProvider.lastRenderableDate = new Date(2099, 11, 31);
 }]);
 
 app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdThemingProvider',
@@ -83,9 +94,6 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
-                    }],
-                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
-                        return serviceRutineFactory.loadFromServerServiceRutines();
                     }],
                     environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
                         return serviceRutineFactory.loadFromServerEnvironments();
@@ -134,7 +142,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('vis-testdata', {
-                url: "/vis-testdata/:id",
+                url: "/vis-testdata/{gruppeId:[0-9]{9}}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -160,7 +168,7 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
             })
 
             .state('opprett-testdata', {
-                url: "/opprett-testdata/:id",
+                url: "/opprett-testdata/{gruppeId:[0-9]*}",
                 resolve: {
                     user: ['authenticationService', function (authenticationService) {
                         return authenticationService.loadUser();
@@ -185,8 +193,60 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                 }
             })
 
+            .state('skd-meldingsgrupper', {
+                url: "/endringsmelding/skd/grupper",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/meldingsgruppe/skd/meldingsgruppe.html",
+                        controller: 'SkdMeldingsgruppeCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('skd-vis-meldingsgruppe', {
+                url: "/endringsmelding/skd/gruppe/{gruppeId:[0-9]*}",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/endringsmelding/skd/vis-meldingsgruppe.html",
+                        controller: 'SkdVisMeldigsgruppeCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
             .state('servicerutine', {
-                url: "/serviceRutineName/{serviceRutineName}",
+                url: "/servicerutine/{serviceRutineName}",
                 params: {
                     serviceRutineName: null
                 },
@@ -205,6 +265,113 @@ app.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$mdTheming
                     'content@': {
                         templateUrl: "app/components/service-rutine/service-rutine.html",
                         controller: 'ServiceRutineCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('velg-servicerutine', {
+                url: "/servicerutine/velg-service-rutine",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    serviceRutinesPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerServiceRutines();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/components/service-rutine/velg-service-rutine/velg-service-rutine.html',
+                        controller: 'VelgServiceRutineCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('send-doedsmeldinger', {
+                url: "/doedsmeldinger/",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/doedsmeldinger/doedsmeldinger.html",
+                        controller: 'SendDoedsmeldingerCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('xml-melding', {
+                url: "/xml-melding/",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/rawxml-melding/xml-melding.html",
+                        controller: 'RawXmlCtrl'
+                    },
+                    'header@': {
+                        templateUrl: "app/shared/header/header.html",
+                        controller: 'HeaderCtrl'
+                    },
+                    'side-navigator@': {
+                        templateUrl: "app/shared/side-navigator/side-navigator-sr.html",
+                        controller: 'SideNavigatorCtrl'
+                    }
+                }
+            })
+
+            .state('avspiller', {
+                url: "/avspiller",
+                resolve: {
+                    user: ['authenticationService', function (authenticationService) {
+                        return authenticationService.loadUser();
+                    }],
+                    environmentsPromise: ['user', 'serviceRutineFactory', function (user, serviceRutineFactory) {
+                        return serviceRutineFactory.loadFromServerEnvironments();
+                    }]
+                },
+                views: {
+                    'content@': {
+                        templateUrl: "app/components/avspiller/avspiller.html",
+                        controller: 'AvspillerCtrl'
                     },
                     'header@': {
                         templateUrl: "app/shared/header/header.html",
@@ -299,7 +466,7 @@ app.filter('removeDuplicateKeys', function () {
     return function (inputObject, objectComp) {
         var outputObject = {};
         for(var i in inputObject){
-            jsonObject = inputObject[i];
+            var jsonObject = inputObject[i];
             if(jsonObject.fieldData.indexOf("[") ){
                 var res = jsonObject.fieldData.split("[");
                 jsonObject.fieldData = res[0];

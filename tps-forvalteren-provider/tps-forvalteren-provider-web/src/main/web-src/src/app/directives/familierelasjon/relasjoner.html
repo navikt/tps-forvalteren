@@ -1,0 +1,24 @@
+<h3 class="testdata-relasjon-header">Familierelasjoner</h3>
+<md-button class="md-title nav-blaa" style="margin: -8px 0 0 0;"
+           ng-click="leggTilRelasjonDialog()"
+           ng-hide="person.relasjoner.length === personer.length - 1"
+           aria-label="Legg til relasjon">
+    <md-icon md-svg-icon="assets/icons/ic_add_circle_outline_black_24px.svg" class="nav-blaa" style="margin-top: -3px;"></md-icon>
+    Legg Til
+</md-button>
+<div ng-if="person.relasjoner">
+    <div ng-repeat="relasjon in person.relasjoner" layout="row">
+        <div flex="5" ng-click="removePerson(relasjon)">
+            <md-icon md-svg-icon="assets/icons/ic_delete_black_24px.svg"></md-icon>
+        </div>
+        <div>{{ relasjon.relasjonTypeNavn === 'FOEDSEL' ? 'Barn -- Fødsel' : relasjon.relasjonTypeNavn | titlecase}}:&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.personRelasjonMed.ident }},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.personRelasjonMed.fornavn | titlecase }}
+            {{ relasjon.personRelasjonMed.mellomnavn | titlecase }}
+            {{ relasjon.personRelasjonMed.etternavn | titlecase }},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.personRelasjonMed.kjonn | kjonn}},&nbsp;&nbsp;&nbsp;</div>
+        <div>{{ relasjon.personRelasjonMed.alder}} år</div>
+    </div>
+</div>
+
+<div ng-if="!person.relasjoner || person.relasjoner.length === 0">Har ingen relasjoner</div>

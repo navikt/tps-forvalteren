@@ -1,10 +1,10 @@
-<div layout="row" ng-if="person.boadresse.adressetype == 'MATR'">
+<div layout="row" ng-if="person.boadresse[0].adressetype == 'MATR'">
     <md-input-container class="tps-vk-input-container" flex>
-        <md-tooltip>Mellomnavn</md-tooltip>
-        <label>Mellomnavn</label>
+        <md-tooltip>Stedsnavn</md-tooltip>
+        <label>Stedsnavn</label>
         <input name="matrMellomnavn" ng-required="false" md-maxlength="25"
-               ng-model="person.matrikkeladresse.mellomnavn"
-               ng-change="endretMatrikkelnavn($index)"/>
+               ng-model="person.matrikkeladresse[0].mellomnavn"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.matrMellomnavn.$error"
              ng-show="requestForm.matrMellomnavn.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -15,8 +15,8 @@
         <md-tooltip>Gårdsnummer</md-tooltip>
         <label>Gårdsnr</label>
         <input name="gardsnr" ng-required="false" md-maxlength="4"
-               ng-model="person.matrikkeladresse.gardsnr"
-               ng-change="endret($index)"/>
+               ng-model="person.matrikkeladresse[0].gardsnr"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.gardsnr.$error"
              ng-show="requestForm.gardsnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -27,8 +27,8 @@
         <md-tooltip>Bruksnummer</md-tooltip>
         <label>Bruksnr</label>
         <input name="bruksnr" ng-required="false" md-maxlength="4"
-               ng-model="person.matrikkeladresse.bruksnr"
-               ng-change="endret($index)"/>
+               ng-model="person.matrikkeladresse[0].bruksnr"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.bruksnr.$error"
              ng-show="requestForm.bruksnr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -39,8 +39,8 @@
         <md-tooltip>Festenummer</md-tooltip>
         <label>Festenr</label>
         <input name="festenr" ng-required="false" md-maxlength="4"
-               ng-model="person.matrikkeladresse.festenr"
-               ng-change="endret($index)"/>
+               ng-model="person.matrikkeladresse[0].festenr"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.festenr.$error"
              ng-show="requestForm.festenr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
@@ -51,35 +51,25 @@
         <md-tooltip>Undernummer</md-tooltip>
         <label>Undernr</label>
         <input name="undernr" ng-required="false" md-maxlength="3"
-               ng-model="person.matrikkeladresse.undernr"
-               ng-change="endret($index)"/>
+               ng-model="person.matrikkeladresse[0].undernr"
+               ng-change="endret($index + pager.startIndex)"/>
         <div ng-messages="requestForm.undernr.$error"
              ng-show="requestForm.undernr.$dirty">
             <div ng-message="md-maxlength">Verdi har for mange tegn</div>
         </div>
     </md-input-container>
 
-    <md-autocomplete md-no-cache="false" md-selected-item="person.matrikkeladresse.postnr"  md-selected-item-change="endret($index)" md-items="postnummer in getPostnummerMatches(postnummerSoek)" md-search-text="postnummerSoek"
-                     md-item-text="postnummer.visningsnavn"  md-require-match="true" md-select-on-match="true" md-delay="300" placeholder="Postnummer" md-floating-label="Postnummer">
-        <md-item-template>
-            <span md-highlight-text="postnummerSoek" md-highlight-flags="i">{{ postnummer.visningsnavn }}</span>
-        </md-item-template>
-    </md-autocomplete>
+    <postnummer postnummer="person.matrikkeladresse[0].postnr" endret-fn="endret" index="$index + pager.startIndex"></postnummer>
 
-    <md-autocomplete md-no-cache="false" md-selected-item="person.matrikkeladresse.kommunenr" md-selected-item-change="endret($index)" md-items="kommune in getKommuneMatches(kommuneSoek)" md-search-text="kommuneSoek"
-                     md-item-text="kommune.visningsnavn" md-select-on-match="true" md-require-match="true" md-delay="300" placeholder="Kommune" md-floating-label="Kommune" flex="10">
-        <md-item-template>
-            <span md-highlight-text="kommuneSoek" md-highlight-flags="i">{{ kommune.visningsnavn }}</span>
-        </md-item-template>
-    </md-autocomplete>
+    <kommunenr kommunenr="person.matrikkeladresse[0].kommunenr" endret-fn="endret" index="$index + pager.startIndex"></kommunenr>
 
     <md-input-container class="tps-vk-input-container" flex="20">
         <md-tooltip>Flyttedato</md-tooltip>
         <label>Flyttedato</label>
         <md-datepicker name="matrFlyttedato"
                        md-current-view="year"
-                       ng-model="person.matrikkeladresse.flytteDato"
-                       ng-change="endret($index)">
+                       ng-model="person.matrikkeladresse[0].flyttedato"
+                       ng-change="endret($index + pager.startIndex)">
         </md-datepicker>
         <div ng-messages="requestForm.matrFlyttedato.$error"
              ng-show="requestForm.matrFlyttedato.$pristine">

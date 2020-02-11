@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-forvalteren-consumer</artifactId>
         <groupId>no.nav.tps.forvalteren</groupId>
-        <version>2.12.0</version>
+        <version>4.65.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -30,12 +30,6 @@
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-common-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!--SELFTEST-->
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
         </dependency>
 
         <!--SPRING-->

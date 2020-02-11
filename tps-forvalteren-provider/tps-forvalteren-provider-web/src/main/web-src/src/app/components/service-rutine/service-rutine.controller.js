@@ -1,6 +1,8 @@
 angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
-    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService',
-        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService) {
+    .controller('ServiceRutineCtrl', ['$scope', '$stateParams', '$mdDialog', '$document', 'utilsService', 'serviceRutineFactory', 'environmentsPromise','locationService', 'headerService',
+        function ($scope, $stateParams, $mdDialog, $document, utilsService, serviceRutineFactory, environmentsPromise, locationService, headerService) {
+
+            headerService.setHeader('Servicerutiner');
 
             $scope.serviceRutineName = $stateParams.serviceRutineName;
             $scope.loading = false;
@@ -21,6 +23,10 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 return isValidServiceRutineName && !apiError;
             };
 
+            $scope.openServiceRutine = function (rutine) {
+                locationService.redirectToServiceRutineState(rutine);
+            };
+
             $scope.submit = function () {
             var params = utilsService.createParametersFromFormData($scope.formData);
 
@@ -32,37 +38,49 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                     $scope.clearResponseForm();
 
                     var response = res.data.response;
-                    var xml = res.data.xml;
 
-                    $scope.xmlForm = utilsService.formatXml(xml);
+                    $scope.xmlForm = utilsService.formatXml(res.data.xml);
 
                     $scope.svarStatus = "STATUS: " + response.status.kode + " " + response.status.melding + " " + response.status.utfyllendeMelding;
                     $scope.returStatus = response.status.kode;
 
                     $scope.responseData = response;
 
-                    /* Brukes kun til å hente Tags som skal inn i servicerutinenes html fil */
-                    // var jup = utilsService.flattenObject($scope.responseData);
-                    // var str = JSON.stringify(jup, null, 2);
-                    // console.log(str);
+                    $scope.adresseHistorikk = response.data1;
 
                     if(response.data === undefined) return;
-                    //$scope.personsData = extractPersonsData(response, nonUniqueProperties);
 
                     var antallTreff = response.antallTotalt;
                     if(antallTreff === undefined || antallTreff == 1) $scope.toggle = true;
                 }, function (error) {
                     $scope.loading = false;
-                    showAlertTPSError(error);
+                    utilsService.showAlertError(error, '0000-GA-TPSF-SERVICERUTINER');
                 });
             };
 
+            headerService.setButtons([{
+                icon: 'assets/icons/keyboard_arrow_down.svg',
+                text: "Velg servicerutine",
+                click: function (ev) {
+                    var confirm = $mdDialog.confirm({
+                        scope: $scope,
+                        controller: 'VelgServiceRutineCtrl',
+                        templateUrl: 'app/components/service-rutine/velg-service-rutine/velg-service-rutine.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose:true
+                    });
+                    $mdDialog.show(confirm);
+                }
+            }]);
 
             $scope.clearResponseForm = function () {
                 $scope.personsData = {};
                 $scope.toggle = false;
                 $scope.svarStatus = null;
                 $scope.xmlForm = null;
+                $scope.adresseHistorikk = null;
+                $scope.responseData = null;
             };
 
             $scope.isRequired = function (type) {
@@ -149,30 +167,6 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 return personsData;
             }
 
-            function showAlertTPSError(error) {
-                var errorMessages = {
-                    401: {
-                        title: 'Ikke autorisert',
-                        text: 'Din bruker har ikke tillatelse til denne spørringen.',
-                        ariaLabel: 'Din bruker har ikke tillatelse til denne spørringen.'
-                    },
-                    500: {
-                        title: 'Serverfeil',
-                        text: 'Fikk ikke hentet informasjon om TPS fra server.',
-                        ariaLabel: 'Feil ved henting av data fra TPS'
-                    }
-                };
-
-                var errorObj = error.status === 401 ? errorMessages[401] : errorMessages[500];
-                $mdDialog.show(
-                    $mdDialog.alert()
-                        .title(errorObj.title)
-                        .textContent(errorObj.text)
-                        .ariaLabel(errorObj.ariaLabel)
-                        .ok('OK')
-                );
-            }
-
             function showAlertApiError() {
                 $mdDialog.show(
                     $mdDialog.alert()
@@ -248,6 +242,44 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 $scope.formData.environment = $scope.environments ? $scope.environments[0] : null;
             }
 
+            function sortEnvironmentsForDisplay(environments) {
+                var filteredEnvironments = {};
+                var sortedEnvironments = [];
+
+                environments = utilsService.sortEnvironments(environments);
+
+                angular.forEach(environments, function (env) {
+                    var substrMiljoe = env.charAt(0);
+
+                    if(filteredEnvironments[substrMiljoe]) {
+                        filteredEnvironments[substrMiljoe].push(env);
+                    } else {
+                        filteredEnvironments[substrMiljoe] = [];
+                        filteredEnvironments[substrMiljoe].push(env);
+                    }
+                });
+
+                if (filteredEnvironments['u']) {
+                    angular.forEach(filteredEnvironments['u'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['t']) {
+                    angular.forEach(filteredEnvironments['t'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                if (filteredEnvironments['q']) {
+                    angular.forEach(filteredEnvironments['q'], function (env) {
+                        sortedEnvironments.push(env);
+                    });
+                }
+
+                return sortedEnvironments;
+            }
+
             // ##################################
 
             function init() {
@@ -259,7 +291,7 @@ angular.module('tps-forvalteren.service-rutine', ['ngMessages', 'hljs'])
                 }
 
                 if (environmentsPromise) {
-                    $scope.environments = serviceRutineFactory.getEnvironments();
+                    $scope.environments = sortEnvironmentsForDisplay(serviceRutineFactory.getEnvironments().environments);
                     apiError = false;
                 } else {
                     apiError = true;

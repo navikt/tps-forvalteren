@@ -1,0 +1,62 @@
+<div flex-xs flex-gt-xs="1" layout="column">
+    <md-item class="tps-vk-response" ng-show="responseData">
+        <md-item-content>
+            <!-- Results expanded   -->
+            <div class="tps-vk-response-expanded">
+                <div flex="5"></div>
+                <div layout="column" >
+                    <div layout="row">
+                        <tps-output-field label="fnr" flex="30" field-model="responseData.data1.fnr" title="fnr"></tps-output-field>
+                        <tps-output-field label="spesregType" flex="30" field-model="responseData.data1.spesregType" title="spesregType"></tps-output-field>
+                        <tps-output-field label="kortnavn" flex="30" field-model="responseData.data1.kortnavn" title="kortnavn"></tps-output-field>
+                        <tps-output-field label="datoDo" flex="30" field-model="responseData.data1.datoDo" title="datoDo"></tps-output-field>
+                        <tps-output-field label="antallFS010" name="antall" flex="30" field-model="responseData.data1.antallFS010" title="antallFS010"></tps-output-field>
+                    </div>
+                    <div class="tpsf-sr-response" layout="column" flex="100" ng-if="isArray(adresseHistorikk['boAdresser']['boAdresse'])"
+                         ng-repeat="adresse in adresseHistorikk.boAdresser.boAdresse">
+                        <div layout="row">
+                            <tps-output-field label="adresseFom" flex="30" field-model="adresse.adresseFom" title="adresseFom"></tps-output-field>
+                            <tps-output-field label="adresseTom" flex="30" field-model="adresse.adresseTom" title="adresseTom"></tps-output-field>
+                            <tps-output-field label="periodeSpesreg" flex="30" field-model="adresse.periodeSpesreg" title="periodeSpesreg"></tps-output-field>
+                            <tps-output-field label="boAdresse1" flex="30" field-model="adresse.boAdresse1" title="boAdresse1"></tps-output-field>
+                            <tps-output-field label="boAdresse2" flex="30" field-model="adresse.boAdresse2" title="boAdresse2"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="bolignr" flex="30" field-model="adresse.bolignr" title="bolignr"></tps-output-field>
+                            <tps-output-field label="postnr" flex="30" field-model="adresse.postnr" title="postnr"></tps-output-field>
+                            <tps-output-field label="poststed" flex="30" field-model="adresse.poststed" title="poststed"></tps-output-field>
+                            <tps-output-field label="kommunenr" flex="30" field-model="adresse.kommunenr" title="kommunenr"></tps-output-field>
+                            <tps-output-field label="tknr" flex="30" field-model="adresse.tknr" title="tknr"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="endringsType" flex="30" field-model="adresse.endringsType" title="endringsType"></tps-output-field>
+                            <tps-output-field label="beskrEndrType" flex="30" field-model="adresse.beskrEndrType" title="beskrEndrType"></tps-output-field>
+                            <tps-output-field label="kommunenavn" flex="30" field-model="adresse.kommuneNavn" title="kommunenavn"></tps-output-field>
+                        </div>
+                    </div>
+                    <div layout="column" flex="100" ng-if="!isArray(adresseHistorikk['boAdresser']['boAdresse'])">
+                        <div layout="row">
+                            <tps-output-field label="adresseFom" flex="30" field-model="responseData.data1.boAdresser.boAdresse.adresseFom" title="adresseFom"></tps-output-field>
+                            <tps-output-field label="adresseTom" flex="30" field-model="responseData.data1.boAdresser.boAdresse.adresseTom" title="adresseTom"></tps-output-field>
+                            <tps-output-field label="periodeSpesreg" flex="30" field-model="responseData.data1.boAdresser.boAdresse.periodeSpesreg" title="periodeSpesreg"></tps-output-field>
+                            <tps-output-field label="boAdresse1" flex="30" field-model="responseData.data1.boAdresser.boAdresse.boAdresse1" title="boAdresse1"></tps-output-field>
+                            <tps-output-field label="boAdresse2" flex="30" field-model="responseData.data1.boAdresser.boAdresse.boAdresse2" title="boAdresse2"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="bolignr" flex="30" field-model="responseData.data1.boAdresser.boAdresse.bolignr" title="bolignr"></tps-output-field>
+                            <tps-output-field label="postnr" flex="30" field-model="responseData.data1.boAdresser.boAdresse.postnr" title="postnr"></tps-output-field>
+                            <tps-output-field label="poststed" flex="30" field-model="responseData.data1.boAdresser.boAdresse.poststed" title="poststed"></tps-output-field>
+                            <tps-output-field label="kommunenr" flex="30" field-model="responseData.data1.boAdresser.boAdresse.kommunenr" title="kommunenr"></tps-output-field>
+                            <tps-output-field label="tknr" flex="30" field-model="responseData.data1.boAdresser.boAdresse.tknr" title="tknr"></tps-output-field>
+                        </div>
+                        <div layout="row">
+                            <tps-output-field label="endringsType" flex="30" field-model="responseData.data1.boAdresser.boAdresse.endringsType" title="endringsType"></tps-output-field>
+                            <tps-output-field label="beskrEndrType" flex="30" field-model="responseData.data1.boAdresser.boAdresse.beskrEndrType" title="beskrEndrType"></tps-output-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-item-content>
+    </md-item>
+</div>
+

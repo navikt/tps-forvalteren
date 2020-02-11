@@ -1,165 +1,56 @@
-
 angular.module('tps-forvalteren.service')
     .service('testdataService', ['$http', '$q', function($http, $q) {
 
         var self =  this;
         var url = 'api/v1/testdata/';
-        var kodeverkUrl = 'api/v1/kodeverk/';
 
-        self.getTestpersoner = function(id){
-            var defer = $q.defer();
-            $http.get(url + 'gruppe/' + id).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+        var gruppeCache;
+
+        self.getGruppe = function(id, fromSource){
+            if (!gruppeCache || fromSource) {
+                gruppeCache = $http.get(url + 'gruppe/' + id);
+            }
+            return gruppeCache;
         };
 
-        self.opprettTestpersoner = function(gruppeId, kriterier){
-            var defer = $q.defer();
-            $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier}).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+        self.opprettTestpersoner = function(gruppeId, kriterier, adresseNrInfo){
+            return $http.post(url + 'personer/' + gruppeId, {personKriterierListe: kriterier, adresseNrInfo: adresseNrInfo});
         };
 
         self.sletteTestpersoner = function(identer){
-            var defer = $q.defer();
-            $http.post(url + 'deletepersoner', {ids: identer}).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'deletepersoner', {ids: identer});
         };
 
         self.oppdaterTestpersoner = function(personer){
-            var defer = $q.defer();
-            $http.post(url + 'updatepersoner', personer).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'updatepersoner', personer);
         };
 
         self.validerListe = function(identer){
-            var defer = $q.defer();
-            $http.post(url + 'checkpersoner', identer).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'checkpersoner', identer);
         };
 
         self.opprettFraListe = function(gruppeId, identer){
-            var defer = $q.defer();
-            $http.post(url + 'createpersoner/' + gruppeId, identer).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'createpersoner/' + gruppeId, identer);
         };
 
         self.hentTestgrupper = function () {
-            var defer = $q.defer();
-            $http.get(url + 'grupper').then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.get(url + 'grupper');
         };
 
         self.lagreTestgruppe = function (gruppe) {
-            var defer = $q.defer();
-            $http.post(url + 'gruppe', gruppe).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'gruppe', gruppe);
         };
 
         self.sletteTestgruppe = function (gruppeId) {
-            var defer = $q.defer();
-            $http.post(url + 'deletegruppe/' + gruppeId).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'deletegruppe/' + gruppeId);
         };
 
         self.sendTilTps = function (gruppeId, miljoer) {
-            var defer = $q.defer();
-            $http.post(url + 'tps/' + gruppeId, miljoer).then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
+            return $http.post(url + 'tps/' + gruppeId, miljoer);
         };
-
-        self.hentKommuner = function () {
-            var defer = $q.defer();
-            $http.get(kodeverkUrl + 'knr').then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
-        };
-
-        self.hentPostnummer = function () {
-            var defer = $q.defer();
-            $http.get(kodeverkUrl + 'postnummer').then(
-                function (data) {
-                    defer.resolve(data);
-                },
-                function (error) {
-                    defer.reject(error);
-                }
-            );
-            return defer.promise;
-        };
-
+        
+        self.opprettSkdEndringsmeldingGruppe = function (gruppeId) {
+            return $http.get(url + "skd/" + gruppeId);
+        }
+        
     }]);

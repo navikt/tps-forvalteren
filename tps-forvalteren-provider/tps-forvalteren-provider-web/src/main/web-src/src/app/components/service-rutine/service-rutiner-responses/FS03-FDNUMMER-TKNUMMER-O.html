@@ -1,0 +1,55 @@
+<div flex-xs flex-gt-xs="1" layout="column">
+    <md-item class="tps-vk-response" ng-show="responseData">
+        <md-item-content>
+            <!-- Results expanded   -->
+            <div class="tps-vk-response-expanded">
+                <div flex="5"></div>
+                    <div layout="column">
+                        <div layout="row" layout-wrap>
+                            <tps-output-field label="fnr" flex="20" field-model="responseData.data1.fnr" title="fnr"></tps-output-field>
+                            <tps-output-field label="fnrTidspunkt" flex="20" field-model="responseData.data1.fnrTidspunkt" title="fnrTidspunkt"></tps-output-field>
+                            <tps-output-field label="fnrSaksbehandler" flex="20" field-model="responseData.data1.fnrSaksbehandler" title="fnrSaksbehandler"></tps-output-field>
+                            <tps-output-field label="fnrSystem" flex="20" field-model="responseData.data1.fnrSystem" title="fnrSystem"></tps-output-field>
+                            <tps-output-field label="spesregType" flex="20" field-model="responseData.data1.spesregType" title="spesregType"></tps-output-field>
+                            <tps-output-field label="dagensTknr" flex="20" field-model="responseData.data1.dagensTknr" title="dagensTknr"></tps-output-field>
+                            <tps-output-field label="tknrTidspunkt" flex="20" field-model="responseData.data1.tknrTidspunkt" title="tknrTidspunkt"></tps-output-field>
+                            <tps-output-field label="tknrSaksbehandler" flex="20" field-model="responseData.data1.tknrSaksbehandler" title="tknrSaksbehandler"></tps-output-field>
+                            <tps-output-field label="tknrSystem" flex="20" field-model="responseData.data1.tknrSystem" title="tknrSystem"></tps-output-field>
+                            <tps-output-field label="datoensTknr" flex="20" field-model="responseData.data1.datoensTknr" title="datoensTknr"></tps-output-field>
+                            <tps-output-field label="datoensTknrTidspunkt" flex="20" field-model="responseData.data1.datoensTknrTidspunkt" title="datoensTknrTidspunkt"></tps-output-field>
+                            <tps-output-field label="datoensTknrSaksbehandler" flex="20" field-model="responseData.data1.datoensTknrSaksbehandler" title="datoensTknrSaksbehandler"></tps-output-field>
+                            <tps-output-field label="datoensTknrSystem" flex="20" field-model="responseData.data1.datoensTknrSystem" title="datoensTknrSystem"></tps-output-field>
+                            <tps-output-field label="forrigeTknr" flex="20" field-model="responseData.data1.forrigeTknr" title="forrigeTknr"></tps-output-field>
+                            <tps-output-field label="forrigeTknrTidspunkt" flex="20" field-model="responseData.data1.forrigeTknrTidspunkt" title="forrigeTknrTidspunkt"></tps-output-field>
+                            <tps-output-field label="forrigeTknrSaksbehandler" flex="20" field-model="responseData.data1.forrigeTknrSaksbehandler" title="forrigeTknrSaksbehandler"></tps-output-field>
+                            <tps-output-field label="forrigeTknrSystem" flex="20" field-model="responseData.data1.forrigeTknrSystem" title="forrigeTknrSystem"></tps-output-field>
+                            <tps-output-field label="antallFS002" flex="20" field-model="responseData.data1.antallFS002" title="antallFS002"></tps-output-field>
+                            <tps-output-field label="alternativeTknr" flex="20" ng-if="responseData.data1.alternativeTknr != '[object Object]'" field-model="responseData.data1.alternativeTknr" title="alternativeTknr"></tps-output-field>
+                            <div layout="row" layout-wrap flex="100" ng-if="isArray(adresseHistorikk['alternativeTknr']['alternativtTknr'])"
+                                ng-repeat="tknr in adresseHistorikk.alternativeTknr.alternativtTknr">
+                                <tps-output-field label="alternativTknr" flex="20" field-model="tknr.alternativTknr" title="alternativTknr"></tps-output-field>
+                                <tps-output-field label="atknrFraDato" flex="20" field-model="tknr.atknrFraDato" title="atknrFraDato"></tps-output-field>
+                                <tps-output-field label="atknrTilDato" flex="20" field-model="tknr.atknrTilDato" title="atknrTilDato"></tps-output-field>
+                                <tps-output-field label="atknrType" flex="20" field-model="tknr.atknrType" title="atknrType"></tps-output-field>
+                                <tps-output-field label="atknrTypeBeskr" flex="20" field-model="tknr.atknrTypeBeskr" title="atknrTypeBeskr"></tps-output-field>
+                                <tps-output-field label="atknrTidspunktReg" flex="20" field-model="tknr.atknrTidspunktReg" title="atknrTidspunktReg"></tps-output-field>
+                                <tps-output-field label="atknrSystem" flex="20" field-model="tknr.atknrSystem" title="atknrSystem"></tps-output-field>
+                                <tps-output-field label="atknrSaksbehandler" flex="20" field-model="tknr.atknrSaksbehandler" title="atknrSaksbehandler"></tps-output-field>
+                            </div>
+                            <div layout="row" layout-wrap flex="100" ng-if="!isArray(adresseHistorikk['alternativeTknr']['alternativtTknr'])">
+                                <tps-output-field label="alternativTknr" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.alternativTknr" title="alternativTknr"></tps-output-field>
+                                <tps-output-field label="atknrFraDato" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrFraDato" title="atknrFraDato"></tps-output-field>
+                                <tps-output-field label="atknrTilDato" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrTilDato" title="atknrTilDato"></tps-output-field>
+                                <tps-output-field label="atknrType" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrType" title="atknrType"></tps-output-field>
+                                <tps-output-field label="atknrTypeBeskr" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrTypeBeskr" title="atknrTypeBeskr"></tps-output-field>
+                                <tps-output-field label="atknrTidspunktReg" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrTidspunktReg" title="atknrTidspunktReg"></tps-output-field>
+                                <tps-output-field label="atknrSystem" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrSystem" title="atknrSystem"></tps-output-field>
+                                <tps-output-field label="atknrSaksbehandler" flex="20" field-model="responseData.data1.alternativeTknr.alternativtTknr.atknrSaksbehandler" title="atknrSaksbehandler"></tps-output-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </md-item-content>
+    </md-item>
+</div>
+

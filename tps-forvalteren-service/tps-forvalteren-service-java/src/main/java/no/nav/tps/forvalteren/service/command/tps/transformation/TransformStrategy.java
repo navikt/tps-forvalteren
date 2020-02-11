@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation;
 
-import org.codehaus.jackson.annotate.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
 @FunctionalInterface

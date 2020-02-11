@@ -8,4 +8,5 @@ public class MessageQueueConsumerConstants {
 
     /* Used to create a channel name by combining it with the environment name. E.g. 'T1_TPSWS'*/
     public static final String CHANNEL_POSTFIX = "_TPSWS";
+    public static final String CHANNEL_PREFIX = "TPSWS.";
 }

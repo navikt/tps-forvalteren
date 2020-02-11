@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,6 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @JacksonXmlRootElement(localName = "nyAdresseNavNorge")
 public class TpsEndreTiadEndringsmeldingRequest extends TpsServiceRoutineEndringRequest {
 
-    private String offentligIdent;
     private String datoTom;
     private String typeAdresseNavNorge;
     private String typeTilleggslinje;
@@ -27,5 +27,4 @@ public class TpsEndreTiadEndringsmeldingRequest extends TpsServiceRoutineEndring
     private String eiendomsnav;
     private String postboksnr;
     private String postboksAnlegg;
-
 }

@@ -1,0 +1,21 @@
+<md-input-container  class="tps-vk-input-container" flex>
+    <label for="fodselsDatoTil">Fødseldato Til</label>
+    <input name="fodselsDatoTil"
+           id="fodselsDatoTil"
+           type="text"
+           pikaday="fodselsDatoTil"
+           set-default-date="false"
+           autocomplete="off"
+           ng-model="formData.fodselsDatoTil"
+           on-open="repositionDatePicker(fodselsDatoTil)"
+           ng-pattern="/^\d{4}-\d{2}-\d{2}$/"
+           fdate>
+    <ng-messages for="requestForm.fodselsDatoTil.$error">
+        <ng-message when="isRequired('fodselsDatoTil')" ng-show="requestForm.fodselsDatoTil.$touched">
+            Gyldig dato er påkrevd
+        </ng-message>
+        <ng-message when="pattern">
+            Ugyldig datoformat (YYYY-MM-DD)
+        </ng-message>
+    </ng-messages>
+</md-input-container>

@@ -1,26 +1,18 @@
 package no.nav.tps.forvalteren.domain.ws.fasit;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Queue {
+
     private String name;
     private String manager;
-
-    public Queue(String name, String manager) {
-        this.name    = name;
-        this.manager = manager;
-    }
-
-    //TODO Fjern senere. Bare for testing av SKD melding
-    public void setName(String qName){
-        this.name = qName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getManager() {
-        return manager;
-    }
 }

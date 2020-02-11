@@ -1,155 +1,219 @@
 .tps-testdata-dashboard {
 
-   display: flex;
+  // For small screen
+  margin-left: 0;
+  margin-right: 0;
 
-   .tps-no-scroll-view {
-     height: 88%;
-   }
+  @media only screen and (min-width: 1280px) {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
 
-   .tps-vk-top {
-     //margin-bottom: 10px;
-     //background-color: white;
-     //padding: 10px 15px;
-     //position: relative;
-     padding: 0;
+  .alert {
+    color: red;
+  }
+  .warning {
+    margin-right: 20px; margin-top: 8px;
+  }
 
-     .tps-vk-input-container {
-       margin: 4px 10px 5px 0;
-       label {
-         z-index: auto;
-       }
-     }
-     .tps-vk-datepicker-container {
-       margin: 4px 10px 5px -16px;
-       label {
-         z-index: auto;
-       }
-     }
-     .tps-vk-form-btns {
-       text-align: center;
+  .info-icon {
+    margin-top: -18px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
 
-       @media (min-width: 600px) {
-         text-align: right;
-       }
+  .tpsf-testdata-container {
+    // For small screen
+    flex-direction: column-reverse;
 
-       .tps-vk-refresh-btn {
-         width: 40px;
-         height: 40px;
-         z-index: auto;
+    @media only screen and (min-width: 1280px) {
+      flex-direction: row;
+    }
+  }
 
-         svg {
-           width: 30px;
-           height: 40px;
-           fill: white;
-         }
-       }
-     }
+  .tpsf-testdata-personer-header {
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
 
-     md-progress-linear {
-       right: 0;
-       left: 0;
-       bottom: 0;
-     }
-   }
+  // IE fix
+  md-card-content {
+    flex-basis: auto;
+  }
 
-   .tps-vk-bottom {
+  .tps-no-scroll-view {
+    height: 88%;
+  }
 
-     .tps-vk-scrollable-tabs {
-       height: 100%;
-     }
+  .tps-vk-top {
+    //margin-bottom: 10px;
+    //background-color: white;
+    //padding: 10px 15px;
+    //position: relative;
+    padding: 0;
 
-     .tps-vk-xml-panel {
-       pre {
-         margin: 0;
-       }
-       .hljs {
-         background-color: white;
-       }
-     }
+    .tps-vk-input-container {
+      margin: 4px 10px 5px 0;
+      label {
+        z-index: auto;
+      }
+    }
+    .autocomplete {
+      margin-top: -14px;
+    }
+    .tps-vk-datepicker-container {
+      margin: 4px 10px 5px -16px;
+      label {
+        z-index: auto;
+      }
+    }
+    .tps-vk-form-btns {
+      text-align: center;
 
-     .tps-vk-bottom-undertitle {
-       margin-bottom: 10px;
-     }
+      @media (min-width: 600px) {
+        text-align: right;
+      }
 
-     .row {
-       display: flex;
-     }
+      .tps-vk-refresh-btn {
+        width: 40px;
+        height: 40px;
+        z-index: auto;
 
-     .tps-vk-response-form {
-       padding: 28px 35px 0;
+        svg {
+          width: 30px;
+          height: 40px;
+          fill: white;
+        }
+      }
+    }
 
-       .tps-vk-output-container {
-         margin: 3px 0;
-         padding: 2px 3px;
+    md-progress-linear {
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
 
-         .tps-vk-output-data,
-         .tps-vk-output-label {
-           border-color: rgba(0, 0, 0, 0.12);
-           color: rgba(0, 0, 0, 0.74);
+  .tps-vk-bottom {
 
-           &.filled,
-           &.empty {
-             background-color: rgb(250, 255, 189);
-           }
-           &.noValue {
-             background-color: white;
-           }
-         }
-         .tps-vk-output-label {
-           color: #000;
-         }
-       }
-     }
-   }
+    .tps-vk-scrollable-tabs {
+      height: 100%;
+    }
 
-   .tps-vk-status-container {
-     padding: 0 33px;
-     border-top: 1px solid rgba(0, 0, 0, .12);
-     min-height: 30px;
+    .tps-vk-xml-panel {
+      pre {
+        margin: 0;
+      }
+      .hljs {
+        background-color: white;
+      }
+    }
 
-     .tps-vk-hits {
-       text-align: left;
-       font-size: 12px;
-       color: rgba(0, 0, 0, .54);
+    .tps-vk-bottom-undertitle {
+      margin-bottom: 10px;
+    }
 
-       .tps-vk-hits-message {
-         height: 100%;
-         display: inline-block;
-         vertical-align: middle;
-       }
+    .row {
+      display: flex;
+    }
 
-       .tps-vk-hits-paging {
+    .tps-vk-response-form {
+      padding: 28px 35px 0;
 
-       }
-     }
+      .tps-vk-output-container {
+        margin: 3px 0;
+        padding: 2px 3px;
 
-     .tps-vk-status {
-       text-align: right;
-       font-size: 12px;
-       color: rgba(0, 0, 0, .54);
+        .tps-vk-output-data,
+        .tps-vk-output-label {
+          border-color: rgba(0, 0, 0, 0.12);
+          color: rgba(0, 0, 0, 0.74);
 
-       .tps-vk-status-message,
-       .tps-vk-status-icon {
-         height: 100%;
-         display: inline-block;
-         vertical-align: middle;
-       }
+          &.filled,
+          &.empty {
+            background-color: rgb(250, 255, 189);
+          }
+          &.noValue {
+            background-color: white;
+          }
+        }
+        .tps-vk-output-label {
+          color: #000;
+        }
+      }
+    }
+  }
 
-       .tps-vk-status-icon {
-         &.error {
-           svg {
-             fill: red;
-           }
-         }
-         &.success {
-           svg {
-             fill: green;
-           }
-         }
-       }
-     }
-   }
- }
+  .tps-vk-status-container {
+    padding: 0 33px;
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    min-height: 30px;
+
+    .tps-vk-hits {
+      text-align: left;
+      font-size: 12px;
+      color: rgba(0, 0, 0, .54);
+
+      .tps-vk-hits-message {
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .tps-vk-hits-paging {
+
+      }
+    }
+
+    .tps-vk-status {
+      text-align: right;
+      font-size: 12px;
+      color: rgba(0, 0, 0, .54);
+
+      .tps-vk-status-message,
+      .tps-vk-status-icon {
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .tps-vk-status-icon {
+        &.error {
+          svg {
+            fill: red;
+          }
+        }
+        &.success {
+          svg {
+            fill: green;
+          }
+        }
+      }
+    }
+  }
+}
+
+#tpsf-testdata-gruppe-description-block {
+  min-height: 310px;
+
+  .testdata-side-content {
+    padding: 28px;
+  }
+}
+
+.dont-break-out {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 
 .flipped {
   transform: rotateZ(180deg);
@@ -165,6 +229,7 @@
 .tps-card {
   padding: 2px;
 }
+
 .tps-content {
   display: block;
   margin-left: 20%;
@@ -177,22 +242,6 @@
   }
 }
 
-.testdata-body-block {
-  display: block;
-  margin-left: 5%;
-  margin-right: 0.5%;
-}
-
-.testdata-side-block {
-  float: right;
-  display: flex;
-  margin-top: 32px;
-  margin-left: 0.5%;
-  margin-right: 5%;
-}
-.testdata-side-content {
-  margin: 12px 10px 20px 10px;
-}
 .line {
   border-top: dotted;
   padding-top: 18px;
@@ -267,8 +316,8 @@ body {
 }
 
 .testdata-big-icon {
-  font-size:45px;
-  height:45px;
+  font-size: 45px;
+  height: 45px;
 }
 
 .testdata-input-row {
@@ -279,19 +328,17 @@ body {
   margin: -20px 20px 20px 0;
 }
 
-.testdata-boadr {
-  margin: -1px 0 12px 0;
-  font-style: oblique;
-}
-
 .testdata-adr-btn {
   margin: -1px 0 12px 0;
   font-style: oblique;
 }
 
-.testdata-postadr {
+.testdata-sub-header {
   margin: -16px 0 8px 0;
-  font-style: oblique;
+}
+
+.testdata-relasjon-header {
+  margin: -6px 0 8px 0;
 }
 
 .noframe {
@@ -299,8 +346,32 @@ body {
   outline: none;
 }
 
-.testdata-open-card{
-  border-color: rgba(2,91,206,0.4);
+.testdata-open-card {
+  border-color: rgba(2, 91, 206, 0.4);
   border-width: medium;
   border-style: solid;
+}
+
+.testdata-legg-til-relasjon {
+  margin-top: -10px;
+}
+
+.md-button.nav-blaa-ready {
+  color: #0056a7;
+  font-weight: bold;
+  background-color: rgba(150, 224, 133, 0.4);
+}
+
+.md-button.nav-blaa-ready:hover {
+  color: #0056a7;
+  font-weight: bold;
+  background-color: rgba(61, 224, 83, 0.4);
+}
+
+.adresse {
+  margin-top: 100px;
+
+  .label {
+    margin-top: 26px;
+  }
 }

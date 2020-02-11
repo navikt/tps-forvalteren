@@ -1,12 +1,14 @@
 package no.nav.tps.forvalteren.domain.rs;
 
+import static java.util.Objects.nonNull;
+
+import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -24,4 +26,8 @@ public class RsGateadresse extends RsAdresse{
     @Size(min = 1, max = 4)
     private String gatekode;
 
+    @Override
+    public boolean isValidAdresse() {
+        return nonNull(getGatekode());
+    }
 }

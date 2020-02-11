@@ -26,8 +26,9 @@
                          ng-click="aapneFane(testgruppe.id)" style="margin-top: 4px; margin-bottom: 4px;">
                     <md-card-content class="testdata-card-content" flex style="padding-bottom: 0; padding-top: 10px;">
                         <div layout="row" style="font-style: oblique; margin-top: -3px; margin-bottom: 7px;">
-                            <div flex="20">{{testgruppe.navn}}</div>
-                            <div flex="75">
+                            <div flex="20" class="dont-break-out">{{testgruppe.navn}}</div>
+                            <span flex="5"></span>
+                            <div flex="70" class="dont-break-out">
                                 {{testgruppe.beskrivelse}}
                             </div>
                         </div>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tpsPersonData>
+	<tpsServiceRutine>
+		<serviceRutinenavn>FS03-FDLISTER-DISKNAVN-M</serviceRutinenavn>
+		<aksjonsDato/>
+		<aksjonsKode>A</aksjonsKode>
+		<aksjonsKode2>0</aksjonsKode2>
+		<antallFnr>2</antallFnr>
+		<nFnr>
+			<fnr>11111111111</fnr>
+			<fnr>22222222222</fnr>
+		</nFnr>
+	</tpsServiceRutine>
+	<tpsSvar>
+		<svarStatus>
+			<returStatus>08</returStatus>
+			<returMelding>S201005F</returMelding>
+			<utfyllendeMelding>Person ikke funnet</utfyllendeMelding>
+		</svarStatus>
+		<personDataM201>
+			<antallFM201>2</antallFM201>
+			<AFnr>
+				<EFnr>
+					<fnr>11111111111</fnr>
+					<sp></sp>
+					<kn></kn>
+					<fn></fn>
+					<mn></mn>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
+				</EFnr>
+				<EFnr>
+					<fnr>22222222222</fnr>
+					<sp></sp>
+					<kn></kn>
+					<fn></fn>
+					<mn></mn>
+					<en></en>
+					<svarStatus>
+						<returStatus>08</returStatus>
+						<returMelding>S201005F</returMelding>
+						<utfyllendeMelding></utfyllendeMelding>
+					</svarStatus>
+				</EFnr>
+			</AFnr>
+		</personDataM201>
+	</tpsSvar>
+</tpsPersonData>
