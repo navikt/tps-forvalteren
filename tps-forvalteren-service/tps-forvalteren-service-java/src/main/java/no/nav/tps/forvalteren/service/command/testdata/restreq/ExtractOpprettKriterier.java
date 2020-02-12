@@ -67,8 +67,8 @@ public class ExtractOpprettKriterier {
                         .antall(nonNull(request.getAntall()) && request.getAntall() > 0 ? request.getAntall() : 1)
                         .identtype(nullcheckSetDefaultValue(request.getIdenttype(), "FNR"))
                         .kjonn(nullcheckSetDefaultValue(request.getKjonn(), "U"))
-                        .foedtEtter(getProcessedFoedtEtter(request.getFoedtEtter(), request.getFoedtFoer(), false))
-                        .foedtFoer(getProcessedFoedtFoer(request.getFoedtEtter(), request.getFoedtFoer(), false))
+                        .foedtEtter(getProcessedFoedtEtter(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
+                        .foedtFoer(getProcessedFoedtFoer(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
                         .harMellomnavn(request.getHarMellomnavn())
                         .build()))
                 .build();
@@ -79,8 +79,8 @@ public class ExtractOpprettKriterier {
         List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getPartnere().size());
         request.getRelasjoner().getPartnere().forEach(partnerReq -> {
             RsPersonKriterier kriterium = prepareKriterium(partnerReq);
-            kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
-            kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
+            kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
+            kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
             kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), request.getHarMellomnavn()));
             kriterier.add(kriterium);
         });
@@ -95,8 +95,8 @@ public class ExtractOpprettKriterier {
         List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getBarn().size());
         request.getRelasjoner().getBarn().forEach(barnReq -> {
             RsPersonKriterier kriterium = prepareKriterium(barnReq);
-            kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
-            kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
+            kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
+            kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
             kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), request.getHarMellomnavn()));
             kriterier.add(kriterium);
         });
