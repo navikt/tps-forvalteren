@@ -27,6 +27,8 @@ public class RsSimplePersonRequest {
 
     protected String kjonn;
 
+    protected Integer alder;
+
     protected LocalDateTime foedtEtter;
 
     protected LocalDateTime foedtFoer;
