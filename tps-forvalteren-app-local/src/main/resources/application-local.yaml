@@ -1,6 +1,6 @@
 server.port: 8050
 
 application:
-  descriptiveName: @application.descriptiveName@
-  name: @application.name@
-  version: @application.version@
+  descriptiveName: tps-forvalteren
+  name: tps-forvalteren
+  version: 1

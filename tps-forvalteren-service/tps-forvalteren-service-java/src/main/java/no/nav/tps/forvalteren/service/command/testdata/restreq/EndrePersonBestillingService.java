@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -19,6 +20,7 @@ import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @Service
@@ -34,6 +36,9 @@ public class EndrePersonBestillingService {
 
         Person person = personRepository.findByIdent(ident);
 
+        if (isNull(person)) {
+            throw new TpsfFunctionalException(format("Person med ident %s ble ikke funnet", ident));
+        }
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
 
