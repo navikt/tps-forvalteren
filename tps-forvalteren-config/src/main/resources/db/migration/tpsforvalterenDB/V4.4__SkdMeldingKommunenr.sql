@@ -315,6 +315,6 @@ SET endringsmelding_json =
             WHEN endringsmelding_json LIKE '%"kommunenummer":"5051"%' THEN REPLACE(endringsmelding_json, '"kommunenummer":"5051"', '"kommunenummer":"5060"')
             ELSE endringsmelding_json
             END
-WHERE endringsmelding_json NOT LIKE '%"kommunenummer":"0000"%';
+WHERE skd_endringsmelding_gruppe_id = '100001008';
 
 COMMIT;
