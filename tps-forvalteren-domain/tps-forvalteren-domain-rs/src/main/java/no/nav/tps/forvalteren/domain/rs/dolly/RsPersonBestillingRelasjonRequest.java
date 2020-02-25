@@ -30,14 +30,14 @@ public class RsPersonBestillingRelasjonRequest {
     @AllArgsConstructor
     public static class RsRelasjoner {
 
-        private List<RsPartnerRelasjonRequest> partner;
+        private List<RsPartnerRelasjonRequest> partnere;
         private List<RsBarnRelasjonRequest> barn;
 
-        public List<RsPartnerRelasjonRequest> getPartner() {
-            if (isNull(partner)) {
-                partner = new ArrayList();
+        public List<RsPartnerRelasjonRequest> getPartnere() {
+            if (isNull(partnere)) {
+                partnere = new ArrayList();
             }
-            return partner;
+            return partnere;
         }
 
         public List<RsBarnRelasjonRequest> getBarn() {

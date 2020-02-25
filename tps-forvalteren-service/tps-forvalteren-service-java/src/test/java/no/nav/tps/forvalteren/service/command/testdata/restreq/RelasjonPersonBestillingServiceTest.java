@@ -293,7 +293,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         return builder()
                 .relasjoner(RsRelasjoner.builder()
-                        .partner(asList(RsPartnerRelasjonRequest.builder()
+                        .partnere(asList(RsPartnerRelasjonRequest.builder()
                                 .ident(IDENT_PARTNER)
                                 .harFellesAdresse(harFellesAdresse)
                                 .sivilstander(asList(RsSivilstandRequest.builder()

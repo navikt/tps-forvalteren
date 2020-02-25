@@ -32,11 +32,11 @@ public class ValidateRelasjonerService {
 
     private void validateHarFellesAdresseBarnBorHosDeg(RsPersonBestillingRelasjonRequest request) {
 
-        request.getRelasjoner().getPartner().forEach(partner ->
+        request.getRelasjoner().getPartnere().forEach(partner ->
 
                 request.getRelasjoner().getBarn().forEach(barn -> {
 
-                    if ((partner.getIdent().equals(barn.getPartnerIdent()) || request.getRelasjoner().getPartner().size() == 1) &&
+                    if ((partner.getIdent().equals(barn.getPartnerIdent()) || request.getRelasjoner().getPartnere().size() == 1) &&
                             isTrue(partner.getHarFellesAdresse()) &&
                             BorHos.DEG == barn.getBorHos()) {
                         throw new TpsfFunctionalException(
@@ -53,7 +53,7 @@ public class ValidateRelasjonerService {
                     messageProvider.get("bestilling.relasjon.input.validation.hovedperson.ekistere.ikke", hovedperson));
         }
 
-        request.getRelasjoner().getPartner().forEach(partner -> {
+        request.getRelasjoner().getPartnere().forEach(partner -> {
             if (!personer.containsKey(partner.getIdent())) {
                 throw new TpsfFunctionalException(
                         messageProvider.get("bestilling.relasjon.input.validation.partner.ekistere.ikke", partner.getIdent()));
@@ -70,7 +70,7 @@ public class ValidateRelasjonerService {
 
     private void validateHarFellesAdresseSpesreg(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
-        request.getRelasjoner().getPartner().forEach(partner -> {
+        request.getRelasjoner().getPartnere().forEach(partner -> {
 
             if (isTrue(partner.getHarFellesAdresse()) && (personer.get(partner.getIdent()).isKode6() ||
                     personer.get(hovedperson).isKode6())) {
@@ -88,7 +88,7 @@ public class ValidateRelasjonerService {
 
     private void validateHarFellesAdresseAnnet(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
-        request.getRelasjoner().getPartner().forEach(partner -> {
+        request.getRelasjoner().getPartnere().forEach(partner -> {
 
             if (isTrue(partner.getHarFellesAdresse()) && !isIdentTypeFnr(personer.get(partner.getIdent()).getIdenttype()) ||
                     !isIdentTypeFnr(personer.get(hovedperson).getIdenttype())) {
@@ -107,7 +107,7 @@ public class ValidateRelasjonerService {
     private void validateEksisterendeIdent(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
         personer.get(hovedperson).getRelasjoner().forEach(relasjon -> {
-            request.getRelasjoner().getPartner().forEach(partner -> {
+            request.getRelasjoner().getPartnere().forEach(partner -> {
                 if (relasjon.getPersonRelasjonMed().getIdent().equals(partner.getIdent())) {
                     throw new TpsfFunctionalException(
                             messageProvider.get("bestilling.relasjon.input.validation.duplikat.partner", partner.getIdent()));

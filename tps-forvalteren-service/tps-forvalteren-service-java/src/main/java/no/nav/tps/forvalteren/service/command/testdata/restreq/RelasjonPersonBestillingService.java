@@ -49,7 +49,7 @@ public class RelasjonPersonBestillingService {
 
         List<String> idents = new ArrayList();
         Stream.of(newArrayList(hovedperson),
-                request.getRelasjoner().getPartner().stream()
+                request.getRelasjoner().getPartnere().stream()
                         .map(RsPartnerRelasjonRequest::getIdent).collect(toList()),
                 request.getRelasjoner().getBarn().stream()
                         .map(RsBarnRelasjonRequest::getIdent).collect(toList())
@@ -61,7 +61,7 @@ public class RelasjonPersonBestillingService {
         validateRelasjonerService.isGyldig(hovedperson, request, personer);
         setRelasjonerPaaPersoner(hovedperson, request, personer);
         setAdresserPaaPersoner(hovedperson, request, personer);
-        setSivilstandHistorikkPaaPersoner(hovedperson, request.getRelasjoner().getPartner(), personer);
+        setSivilstandHistorikkPaaPersoner(hovedperson, request.getRelasjoner().getPartnere(), personer);
 
         personRepository.save(personer.get(hovedperson));
 
@@ -70,7 +70,7 @@ public class RelasjonPersonBestillingService {
 
     private void setAdresserPaaPersoner(String hovedperson, RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
-        request.getRelasjoner().getPartner().forEach(partner -> {
+        request.getRelasjoner().getPartnere().forEach(partner -> {
 
             if ((isNull(partner.getHarFellesAdresse()) || isFalse(partner.getHarFellesAdresse())) &&
                     personer.get(hovedperson).getBoadresse().equals(personer.get(partner.getIdent()).getBoadresse())) {
@@ -141,7 +141,7 @@ public class RelasjonPersonBestillingService {
     private static void setRelasjonerPaaPersoner(String hovedperson,
             RsPersonBestillingRelasjonRequest request, Map<String, Person> personer) {
 
-        request.getRelasjoner().getPartner().forEach(partner ->
+        request.getRelasjoner().getPartnere().forEach(partner ->
                 setPartnerRelasjon(personer.get(hovedperson), personer.get(partner.getIdent())));
 
         request.getRelasjoner().getBarn().forEach(barnet ->

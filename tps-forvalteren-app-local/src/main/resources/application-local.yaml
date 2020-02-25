@@ -4,3 +4,8 @@ application:
   descriptiveName: tps-forvalteren
   name: tps-forvalteren
   version: 1
+
+tps:
+  forvalteren:
+    production:
+      mode: false
