@@ -117,11 +117,11 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(RsSivilstandRequest.builder().sivilstand(UGIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build(),
                 RsSivilstandRequest.builder()
                         .sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build()
         ));
 
@@ -139,7 +139,7 @@ public class ValidateSivilstandServiceTest {
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2014, 1, 1, 0, 0))
                         .build(),
                 RsSivilstandRequest.builder()
                         .sivilstand(SEPARERT.getKodeverkskode())
@@ -147,7 +147,7 @@ public class ValidateSivilstandServiceTest {
                         .build(),
                 RsSivilstandRequest.builder()
                         .sivilstand(SKILT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2014, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build()
         ));
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
@@ -222,10 +222,10 @@ public class ValidateSivilstandServiceTest {
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(newArrayList(
                 RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build(),
                 RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
-                        .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
+                        .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build()
         ));
 

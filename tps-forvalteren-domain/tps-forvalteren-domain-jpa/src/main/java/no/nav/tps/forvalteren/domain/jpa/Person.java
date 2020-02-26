@@ -142,6 +142,7 @@ public class Person extends ChangeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Gruppe gruppe;
 
+    @OrderBy("relasjonTypeNavn desc, id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner;
 

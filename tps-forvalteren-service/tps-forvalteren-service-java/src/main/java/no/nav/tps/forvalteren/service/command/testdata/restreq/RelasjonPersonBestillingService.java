@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.reverse;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
@@ -111,7 +110,7 @@ public class RelasjonPersonBestillingService {
             List<RsPartnerRelasjonRequest> partnere,
             Map<String, Person> personer) {
 
-        reverse(partnere).forEach(partner ->
+        partnere.forEach(partner ->
 
                 partner.getSivilstander().forEach(sivilstand ->
 
