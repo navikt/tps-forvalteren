@@ -116,11 +116,11 @@ public class ValidateSivilstandServiceTest {
         expectedException.expectMessage("Sivilstand kan ikke være UGIFT etter annen sivilstand.");
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(newArrayList(RsSivilstandRequest.builder().sivilstand(UGIFT.getKodeverkskode())
+        partnerRequest.setSivilstander(newArrayList(RsSivilstandRequest.builder().sivilstand(GIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
                         .build(),
                 RsSivilstandRequest.builder()
-                        .sivilstand(GIFT.getKodeverkskode())
+                        .sivilstand(UGIFT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2018, 1, 1, 0, 0))
                         .build()
         ));
@@ -142,11 +142,11 @@ public class ValidateSivilstandServiceTest {
                         .sivilstandRegdato(LocalDateTime.of(2014, 1, 1, 0, 0))
                         .build(),
                 RsSivilstandRequest.builder()
-                        .sivilstand(SEPARERT.getKodeverkskode())
+                        .sivilstand(SKILT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2017, 1, 1, 0, 0))
                         .build(),
                 RsSivilstandRequest.builder()
-                        .sivilstand(SKILT.getKodeverkskode())
+                        .sivilstand(SEPARERT.getKodeverkskode())
                         .sivilstandRegdato(LocalDateTime.of(2019, 1, 1, 0, 0))
                         .build()
         ));
