@@ -251,8 +251,8 @@ public class ExtractOpprettKriterier {
     private static boolean hasAdresse(RsBarnRequest request) {
         return !SPSF.name().equals(request.getSpesreg()) &&
                 !request.isUtenFastBopel() &&
-                nonNull(request.getForsvunnetDato()) &&
-                nonNull(request.getUtvandretTilLand());
+                isNull(request.getForsvunnetDato()) &&
+                isNull(request.getUtvandretTilLand());
     }
 
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {
