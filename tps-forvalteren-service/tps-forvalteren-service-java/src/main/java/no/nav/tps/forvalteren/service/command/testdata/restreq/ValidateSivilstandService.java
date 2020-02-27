@@ -79,13 +79,13 @@ public class ValidateSivilstandService {
 
         LocalDateTime dateComperator = START_OF_ERA;
 
-        for (int i = 0; i < partnereRequest.size(); i++) {
-            for (int j = 0; j < partnereRequest.get(i).getSivilstander().size(); j++) {
+        for (RsPartnerRequest partner : partnereRequest) {
+            for (RsSivilstandRequest sivilstandRequest : partner.getSivilstander()) {
 
-                if (partnereRequest.get(i).getSivilstander().get(j).getSivilstandRegdato().isBefore(dateComperator.plusDays(2))) {
+                if (sivilstandRequest.getSivilstandRegdato().isBefore(dateComperator.plusDays(2))) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.datoer"));
                 } else {
-                    dateComperator = partnereRequest.get(i).getSivilstander().get(j).getSivilstandRegdato();
+                    dateComperator = sivilstandRequest.getSivilstandRegdato();
                 }
             }
         }
@@ -116,21 +116,21 @@ public class ValidateSivilstandService {
 
         String currentSivilstand = UGIFT.getKodeverkskode();
 
-        for (int i = partnereRequest.size() - 1; i >= 0; i--) {
-            for (int j = partnereRequest.get(i).getSivilstander().size() - 1; j >= 0; j--) {
+        for (RsPartnerRequest partner : partnereRequest) {
+            for (RsSivilstandRequest sivilstandRequest : partner.getSivilstander()) {
 
-                if (isUgift(partnereRequest.get(i).getSivilstander().get(j).getSivilstand()) && !isUgift(currentSivilstand)) {
+                if (isUgift(sivilstandRequest.getSivilstand()) && !isUgift(currentSivilstand)) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.ugift"));
                 }
-                if (isSeparert(partnereRequest.get(i).getSivilstander().get(j).getSivilstand()) && isSkilt(currentSivilstand)) {
+                if (isSeparert(sivilstandRequest.getSivilstand()) && isSkilt(currentSivilstand)) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.separert"));
                 }
-                if (partnereRequest.get(i).getSivilstander().get(j).getSivilstand().equals(currentSivilstand)) {
+                if (sivilstandRequest.getSivilstand().equals(currentSivilstand)) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.samme"));
                 }
-                currentSivilstand = partnereRequest.get(i).getSivilstander().get(j).getSivilstand();
+                currentSivilstand = sivilstandRequest.getSivilstand();
 
-                validateUgiftAndSivilstandHistorikk(partnereRequest.get(i).getSivilstander().get(j), harVaertGift);
+                validateUgiftAndSivilstandHistorikk(sivilstandRequest, harVaertGift);
             }
         }
     }
