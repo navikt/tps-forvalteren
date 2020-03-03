@@ -3,7 +3,8 @@ package no.nav.tps.forvalteren.domain.jpa;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.ALL;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.*;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -229,11 +230,19 @@ public class Person extends ChangeStamp {
     }
 
     public String getLandkodeOfFirstInnvandret() {
-        return !getInnvandretUtvandret().isEmpty() ? getInnvandretUtvandret().get(0).getLandkode() : null;
+
+        return getInnvandretUtvandret().stream()
+                .filter(innutvandret -> INNVANDRET == innutvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getLandkode)
+                .reduce((a, b) -> b).orElse(null);
     }
 
     public LocalDateTime getFlyttedatoOfFirstInnvandret() {
-        return !getInnvandretUtvandret().isEmpty() ? getInnvandretUtvandret().get(0).getFlyttedato() : null;
+
+        return getInnvandretUtvandret().stream()
+                .filter(innutvandret -> INNVANDRET == innutvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getFlyttedato)
+                .reduce((a, b) -> b).orElse(null);
     }
 
     public Person toUppercase() {

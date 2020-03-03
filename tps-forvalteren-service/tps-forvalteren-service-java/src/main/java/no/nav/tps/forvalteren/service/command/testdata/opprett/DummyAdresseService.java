@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -117,7 +117,7 @@ public class DummyAdresseService {
         return gateadresse;
     }
 
-    private static String getInnUtvandretLand(Person person, InnvandretUtvandret.INNUTVANDRET innutvandret) {
+    private static String getInnUtvandretLand(Person person, InnvandretUtvandret.InnUtvandret innutvandret) {
 
         Optional<String> land = person.getInnvandretUtvandret().stream()
                 .filter(innUtvandret -> innutvandret == innUtvandret.getInnutvandret())

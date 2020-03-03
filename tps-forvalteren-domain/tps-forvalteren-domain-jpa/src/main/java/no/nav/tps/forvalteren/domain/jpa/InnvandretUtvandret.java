@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.domain.jpa;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +31,8 @@ import lombok.Setter;
 @Table(name = "T_INNVANDRET_UTVANDRET")
 public class InnvandretUtvandret {
 
-    public enum INNUTVANDRET {INNVANDRET, UTVANDRET}
+    public enum InnUtvandret {INNVANDRET, UTVANDRET}
+
     private static final String SEQ = "T_INNVANDRET_UTVANDRET_SEQ";
 
     @Id
@@ -44,8 +47,9 @@ public class InnvandretUtvandret {
     @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "INNUTVANDRET", nullable = false)
-    private INNUTVANDRET innutvandret;
+    private InnUtvandret innutvandret;
 
     @Column(name = "LANDKODE")
     private String landkode;

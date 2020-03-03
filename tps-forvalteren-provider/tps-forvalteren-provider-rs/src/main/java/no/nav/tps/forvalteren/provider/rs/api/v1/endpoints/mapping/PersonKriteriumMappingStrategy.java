@@ -5,8 +5,8 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
@@ -92,8 +92,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsPersonKriterier, IdentpoolNewIdentsRequest>() {
                             @Override public void mapAtoB(RsPersonKriterier personKriterier, IdentpoolNewIdentsRequest newIdentsRequest, MappingContext context) {
 
-                                newIdentsRequest.setFoedtEtter(convertDate(personKriterier.getFoedtEtter()));
-                                newIdentsRequest.setFoedtFoer(convertDate(personKriterier.getFoedtFoer()));
+                                newIdentsRequest.setFoedtEtter(convert2LocalDate(personKriterier.getFoedtEtter()));
+                                newIdentsRequest.setFoedtFoer(convert2LocalDate(personKriterier.getFoedtFoer()));
                                 newIdentsRequest.setKjoenn(extractKjoenn(personKriterier.getKjonn()));
                                 newIdentsRequest.setRekvirertAv("TPSF");
                             }
@@ -222,7 +222,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         }
     }
 
-    private static LocalDate convertDate(LocalDateTime dateTime) {
+    private static LocalDate convert2LocalDate(LocalDateTime dateTime) {
         return nonNull(dateTime) ? dateTime.toLocalDate() : null;
     }
 }

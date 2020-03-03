@@ -2,7 +2,8 @@ package no.nav.tps.forvalteren.service.command.testdatamal;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,30 +27,30 @@ public class SetValuesFromMalOnPersonsService {
                 if (personIterator.hasNext()) {
                     Person person = personIterator.next();
                     person.setSivilstand(personmal.getSivilstand());
-                    person.setDoedsdato(tolocalDateTime(personmal.getDoedsdato()));
+                    person.setDoedsdato(toLocalDateTime(personmal.getDoedsdato()));
                     person.setStatsborgerskap(asList(Statsborgerskap.builder()
                             .statsborgerskap(personmal.getStatsborgerskap())
-                            .statsborgerskapRegdato(tolocalDateTime(personmal.getStatsborgerskapRegdato()))
+                            .statsborgerskapRegdato(toLocalDateTime(personmal.getStatsborgerskapRegdato()))
                             .build()));
                     person.setSpesreg(personmal.getSpesreg());
-                    person.setSpesregDato(tolocalDateTime(personmal.getSpesregDato()));
-                    person.setEgenAnsattDatoFom(tolocalDateTime(personmal.getEgenAnsattDatoFom()));
-                    person.setEgenAnsattDatoTom(tolocalDateTime(personmal.getEgenAnsattDatoTom()));
+                    person.setSpesregDato(toLocalDateTime(personmal.getSpesregDato()));
+                    person.setEgenAnsattDatoFom(toLocalDateTime(personmal.getEgenAnsattDatoFom()));
+                    person.setEgenAnsattDatoTom(toLocalDateTime(personmal.getEgenAnsattDatoTom()));
                     person.setInnvandretUtvandret(singletonList(
                             InnvandretUtvandret.builder()
                                     .innutvandret(INNVANDRET)
                                     .landkode(personmal.getInnvandretFraLand())
-                                    .flyttedato(tolocalDateTime(personmal.getInnvandretFraLandFlyttedato()))
+                                    .flyttedato(toLocalDateTime(personmal.getInnvandretFraLandFlyttedato()))
                                     .build()));
-                    person.setSikkerhetsTiltakDatoFom(tolocalDateTime(personmal.getSikkerhetsTiltakDatoFom()));
-                    person.setSikkerhetsTiltakDatoTom(tolocalDateTime(personmal.getSikkerhetsTiltakDatoTom()));
+                    person.setSikkerhetsTiltakDatoFom(toLocalDateTime(personmal.getSikkerhetsTiltakDatoFom()));
+                    person.setSikkerhetsTiltakDatoTom(toLocalDateTime(personmal.getSikkerhetsTiltakDatoTom()));
                     person.setBeskrSikkerhetsTiltak(personmal.getBeskrSikkerhetsTiltak());
                 }
             }
         }
     }
 
-    private LocalDateTime tolocalDateTime(LocalDate localDate) {
-        return localDate != null ? localDate.atStartOfDay() : null;
+    private LocalDateTime toLocalDateTime(LocalDate localDate) {
+        return nonNull(localDate) ? localDate.atStartOfDay() : null;
     }
 }

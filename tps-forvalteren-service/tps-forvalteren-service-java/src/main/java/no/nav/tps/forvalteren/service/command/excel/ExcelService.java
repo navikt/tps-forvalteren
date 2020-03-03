@@ -4,7 +4,7 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.collect.Lists.partition;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -100,7 +100,7 @@ public class ExcelService {
                 .append(person.getInnvandretUtvandret().stream()
                         .filter(innvandretUtvandret -> INNVANDRET == innvandretUtvandret.getInnutvandret())
                         .map(InnvandretUtvandret::getLandkode)
-                        .findFirst().get())
+                        .findFirst().orElse(""))
                 .append(SEP_STRING_START)
                 .append(person.getGtVerdi())
                 .append(SEP_STRING_END)

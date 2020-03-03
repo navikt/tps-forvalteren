@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
 import static java.util.Collections.singletonList;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -41,7 +41,7 @@ public class UtvandringsSkdParameterStrategyTest {
     private static final String UTVANDRET_LANDKODE = "500";
     private static final String UTVANDRET_TIL_LAND = "CYP";
     private static final LocalDateTime UTVANDRET_DATO = LocalDateTime.of(2000, 1, 1, 12, 00, 00);
-    private static final LocalDateTime FLYTTE_DATO = LocalDateTime.of(2010, 2, 2, 14, 00, 00);
+    private static final LocalDateTime FLYTTE_DATO = LocalDateTime.of(2010, 2, 2,0,0);
 
     private static final String UTVANDRET_DATO_STRING = "20000101";
     private static final String FLYTTE_DATO_STRING = "20100202";

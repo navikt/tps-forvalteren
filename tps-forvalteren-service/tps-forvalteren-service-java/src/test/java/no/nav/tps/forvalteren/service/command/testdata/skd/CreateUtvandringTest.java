@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertTrue;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;

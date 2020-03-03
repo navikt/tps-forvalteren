@@ -5,7 +5,7 @@ import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.MEG;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.OSS;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
