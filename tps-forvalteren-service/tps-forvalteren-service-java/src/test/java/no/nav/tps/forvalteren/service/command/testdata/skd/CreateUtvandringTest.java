@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertTrue;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.UTVANDRET;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -18,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -45,9 +48,9 @@ public class CreateUtvandringTest {
         person3 = new Person();
         person4 = new Person();
 
-        person.setUtvandretTilLand("777");
-        person2.setUtvandretTilLand("888");
-        person3.setUtvandretTilLand("999");
+        person.setInnvandretUtvandret(singletonList(buildUtvandretLand("777")));
+        person2.setInnvandretUtvandret(singletonList(buildUtvandretLand("888")));
+        person3.setInnvandretUtvandret(singletonList(buildUtvandretLand("999")));
 
         listeMedPersoner = new ArrayList();
         listeMedPersoner.addAll(Arrays.asList(person, person2, person3, person4));
@@ -66,5 +69,12 @@ public class CreateUtvandringTest {
         verify(skdMessageCreatorTrans1).execute(anyString(), captor.capture(), anyBoolean());
 
         assertTrue(captor.getValue().containsAll(Arrays.asList(person, person2, person3)));
+    }
+
+    private static InnvandretUtvandret buildUtvandretLand(String landkode) {
+        return InnvandretUtvandret.builder()
+                .innutvandret(UTVANDRET)
+                .landkode(landkode)
+                .build();
     }
 }

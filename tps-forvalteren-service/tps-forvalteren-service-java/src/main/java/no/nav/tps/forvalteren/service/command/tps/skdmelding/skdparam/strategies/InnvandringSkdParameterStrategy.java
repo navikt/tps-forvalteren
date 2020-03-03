@@ -1,15 +1,16 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.service.Sivilstand;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -54,8 +55,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setFamilienummer(person.getIdent());
 
         skdMeldingTrans1.setSivilstand(Sivilstand.lookup(person.getSivilstand()).getRelasjonTypeKode());
-        skdMeldingTrans1.setInnvandretFraLand(landkodeEncoder.encode(
-                nullcheckSetDefaultValue(person.getInnvandretFraLand(), "???")));
+        skdMeldingTrans1.setInnvandretFraLand(landkodeEncoder.encode(getInnvandretFraLand(person)));
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(enforceValidTpsDate(person.getRegdato()));
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
@@ -66,34 +66,29 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setRegdatoAdr(yyyyMMdd);
 
         skdMeldingTrans1.setFraLandRegdato(yyyyMMdd);
+
         skdMeldingTrans1.setFraLandFlyttedato(ConvertDateToString.yyyyMMdd(
-                enforceValidTpsDate(nullcheckSetDefaultValue(person.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())))));
+                enforceValidTpsDate(nullcheckSetDefaultValue(getInnvandretFraLandFlyttedato(person),
+                        hentDatoFraIdentService.extract(person.getIdent())))));
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
         setAdresseService.execute(skdMeldingTrans1, person);
 
-        skdMeldingTrans1.setSpesRegType(person.getSpesreg() != null ? DiskresjonskoderType.valueOf(person.getSpesreg()).getKodeverdi() : null);
+        skdMeldingTrans1.setSpesRegType(isNotBlank(person.getSpesreg()) ? DiskresjonskoderType.valueOf(person.getSpesreg()).getKodeverdi() : null);
         skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(person.getSpesregDato()));
     }
 
     private static String getFirstStatsborgerskap(Person person) {
 
-        if (person.getStatsborgerskap().isEmpty()) {
-            return null;
-        }
-        person.getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId));
-        return person.getStatsborgerskap().get(0).getStatsborgerskap();
+        return person.getStatsborgerskap().isEmpty() ? null :
+                person.getStatsborgerskap().get(person.getStatsborgerskap().size() - 1).getStatsborgerskap();
     }
 
     private static LocalDateTime getFirstStatsborgerskapRegdato(Person person) {
 
-        if (person.getStatsborgerskap().isEmpty()) {
-            return null;
-        }
-        person.getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId));
-        return person.getStatsborgerskap().get(0).getStatsborgerskapRegdato();
+        return person.getStatsborgerskap().isEmpty() ? null :
+                person.getStatsborgerskap().get(person.getStatsborgerskap().size() - 1).getStatsborgerskapRegdato();
     }
-
 
     private static void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
 
@@ -102,5 +97,21 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
 
         skdMeldingTrans1.setPersonkode("1");
         skdMeldingTrans1.setStatuskode("1");
+    }
+
+    private static String getInnvandretFraLand(Person person) {
+
+        return person.getInnvandretUtvandret().stream()
+                .filter(innvandretUtvandret -> INNVANDRET == innvandretUtvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getLandkode)
+                .reduce((a, b) -> b).orElse("???");
+    }
+
+    private static LocalDateTime getInnvandretFraLandFlyttedato(Person person) {
+
+        return person.getInnvandretUtvandret().stream()
+                .filter(innUtvandret -> INNVANDRET == innUtvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getFlyttedato)
+                .reduce((a, b) -> b).orElse(null);
     }
 }

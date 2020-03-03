@@ -5,6 +5,7 @@ import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.MEG;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.OSS;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
@@ -19,12 +20,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
@@ -43,22 +45,14 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Land
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ExtractOpprettKriterier {
 
-    @Autowired
-    private MapperFacade mapperFacade;
-
-    @Autowired
-    private RandomAdresseService randomAdresseService;
-
-    @Autowired
-    private HentDatoFraIdentService hentDatoFraIdentService;
-
-    @Autowired
-    private LandkodeEncoder landkodeEncoder;
-
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
+    private final MapperFacade mapperFacade;
+    private final RandomAdresseService randomAdresseService;
+    private final HentDatoFraIdentService hentDatoFraIdentService;
+    private final LandkodeEncoder landkodeEncoder;
+    private final DummyAdresseService dummyAdresseService;
 
     public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest request) {
 
@@ -233,7 +227,13 @@ public class ExtractOpprettKriterier {
 
     private void alignStatsborgerskapAndInnvandretFraLand(Person person, Person hovedperson) {
 
-        person.setInnvandretFraLand(nullcheckSetDefaultValue(person.getInnvandretFraLand(), hovedperson.getInnvandretFraLand()));
+        person.getInnvandretUtvandret().add(
+                InnvandretUtvandret.builder()
+                        .innutvandret(INNVANDRET)
+                        .landkode(nullcheckSetDefaultValue(person.getLandkodeOfFirstInnvandret(), hovedperson.getLandkodeOfFirstInnvandret()))
+                        .flyttedato(nullcheckSetDefaultValue(person.getFlyttedatoOfFirstInnvandret(), hovedperson.getFlyttedatoOfFirstInnvandret()))
+                        .build()
+        );
 
         if (!FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
             person.setStatsborgerskap(newArrayList(Statsborgerskap.builder()
@@ -261,7 +261,7 @@ public class ExtractOpprettKriterier {
             return;
         }
 
-        if (!DNR.name().equals(person.getIdenttype()) && !nonNull(person.getUtvandretTilLand()) && nonNull(adresse)) {
+        if (!DNR.name().equals(person.getIdenttype()) && !person.isUtvandret() && nonNull(adresse)) {
 
             Person tempPerson = adresse.getPerson();
             adresse.setPerson(null);

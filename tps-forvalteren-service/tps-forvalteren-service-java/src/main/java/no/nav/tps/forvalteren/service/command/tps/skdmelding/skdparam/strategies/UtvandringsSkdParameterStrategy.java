@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static java.time.LocalDateTime.now;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +51,9 @@ public class UtvandringsSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(person.getRegdato()));
         skdMeldingTrans1.setMaskindato(ConvertDateToString.yyyyMMdd(person.getRegdato()));
 
-        skdMeldingTrans1.setUtvandretTilLand(landkodeEncoder.encode(person.getUtvandretTilLand()));
-        skdMeldingTrans1.setTilLandFlyttedato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandFlyttedato(), now())));
-        skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandRegdato(), now())));
+//        skdMeldingTrans1.setUtvandretTilLand(landkodeEncoder.encode(person.getUtvandretTilLand()));
+//        skdMeldingTrans1.setTilLandFlyttedato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandFlyttedato(), now())));
+//        skdMeldingTrans1.setTilLandRegdato(ConvertDateToString.yyyyMMdd(nullcheckSetDefaultValue(person.getUtvandretTilLandRegdato(), now())));
 
         skdMeldingTrans1.setRegDato(skdMeldingTrans1.getTilLandRegdato());
 

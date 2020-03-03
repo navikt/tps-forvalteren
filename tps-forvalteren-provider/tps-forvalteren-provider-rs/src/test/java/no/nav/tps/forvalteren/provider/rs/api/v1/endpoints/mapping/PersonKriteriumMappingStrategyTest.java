@@ -4,6 +4,8 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import org.junit.Before;
@@ -54,6 +56,8 @@ public class PersonKriteriumMappingStrategyTest {
     @Test
     public void matchVerificationOk() {
 
+        when(hentDatoFraIdentService.extract(any())).thenReturn(LocalDateTime.now().minusYears(3));
+
         RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
         bestilling.setTypeSikkerhetsTiltak(TYPESIKKERHET);
         bestilling.setBeskrSikkerhetsTiltak(SIKKERHETSTILTAK);
@@ -69,8 +73,10 @@ public class PersonKriteriumMappingStrategyTest {
         Person person = mapper.map(bestilling, Person.class);
 
         assertThat(person.getIdenttype(), is(equalTo(IDENTTYPE)));
-        assertThat(person.getStatsborgerskap().get(0).getStatsborgerskap(), is(equalTo("NOR")));
+        assertThat(person.getStatsborgerskap().get(0).getStatsborgerskap(), is(equalTo(STATSBORGERSKAP)));
         assertThat(person.getStatsborgerskap().get(0).getStatsborgerskapRegdato(), is(equalTo(TIMENOW)));
+        assertThat(person.getStatsborgerskap().get(1).getStatsborgerskap(), is(equalTo("NOR")));
+        assertThat(person.getStatsborgerskap().get(1).getStatsborgerskapRegdato(), is(equalTo(TIMENOW.plusYears(3))));
         assertThat(person.getSprakKode(), is(equalTo(SPRAK)));
         assertThat(person.getDatoSprak(), is(equalTo(TIMENOW)));
         assertThat(person.getBeskrSikkerhetsTiltak(), is(equalTo(SIKKERHETSTILTAK)));

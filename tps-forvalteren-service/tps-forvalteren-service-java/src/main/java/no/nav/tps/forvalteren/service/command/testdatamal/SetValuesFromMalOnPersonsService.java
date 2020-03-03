@@ -1,6 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdatamal;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Personmal;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
@@ -32,9 +35,12 @@ public class SetValuesFromMalOnPersonsService {
                     person.setSpesregDato(tolocalDateTime(personmal.getSpesregDato()));
                     person.setEgenAnsattDatoFom(tolocalDateTime(personmal.getEgenAnsattDatoFom()));
                     person.setEgenAnsattDatoTom(tolocalDateTime(personmal.getEgenAnsattDatoTom()));
-                    person.setInnvandretFraLand(personmal.getInnvandretFraLand());
-                    person.setInnvandretFraLandFlyttedato(tolocalDateTime(personmal.getInnvandretFraLandFlyttedato()));
-                    person.setInnvandretFraLandRegdato(tolocalDateTime(personmal.getInnvandretFraLandRegdato()));
+                    person.setInnvandretUtvandret(singletonList(
+                            InnvandretUtvandret.builder()
+                                    .innutvandret(INNVANDRET)
+                                    .landkode(personmal.getInnvandretFraLand())
+                                    .flyttedato(tolocalDateTime(personmal.getInnvandretFraLandFlyttedato()))
+                                    .build()));
                     person.setSikkerhetsTiltakDatoFom(tolocalDateTime(personmal.getSikkerhetsTiltakDatoFom()));
                     person.setSikkerhetsTiltakDatoTom(tolocalDateTime(personmal.getSikkerhetsTiltakDatoTom()));
                     person.setBeskrSikkerhetsTiltak(personmal.getBeskrSikkerhetsTiltak());

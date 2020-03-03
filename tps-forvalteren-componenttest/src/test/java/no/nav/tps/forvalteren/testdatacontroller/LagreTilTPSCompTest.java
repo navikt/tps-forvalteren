@@ -129,7 +129,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
 
     private void opprettPersonerSomTriggerInnvandringsMelding() {
-        Adresse adressenTilPerson3 = Gateadresse.builder().husnummer("9354").gatekode("01415").adresse("KJØLVEGEN").build();
+        Adresse adressenTilPerson3 = Gateadresse.builder().husnummer("9354").gatekode("01415").adresse("KJOSVEGEN").build();
         adressenTilPerson3.setKommunenr("1112");
         adressenTilPerson3.setPostnr("1001");
         adressenTilPerson3.setFlyttedato(of(2018, 04, 26, 12, 11, 10));
@@ -191,7 +191,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         adressenTilKone.setPostnr("0195");
         adressenTilKone.setFlyttedato(of(2018, 05, 15, 14, 10, 44));
         Person kone = Person.builder().gruppe(testgruppe).ident("12017500617").identtype("FNR")
-                .fornavn("BLÅ").etternavn("KAFFI")
+                .fornavn("BLID").etternavn("KAFFI")
                 .kjonn("M")
                 .regdato(of(2018, 04, 05, 00, 00, 00))
                 .opprettetDato(now())
@@ -215,7 +215,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
         Person doedPerson = Person.builder().gruppe(testgruppe).ident("11031250155").identtype("FNR")
                 .doedsdato(of(2018, 05, 15, 14, 10, 44))
                 .kjonn("M")
-                .fornavn("Døende").etternavn("Person")
+                .fornavn("Levende").etternavn("Person")
                 .regdato(of(2018, 04, 26, 00, 00, 00))
                 .opprettetDato(now())
                 .opprettetAv("A123456")

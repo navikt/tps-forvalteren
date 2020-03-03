@@ -5,6 +5,8 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
 import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.INNUTVANDRET.UTVANDRET;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
@@ -25,6 +27,7 @@ import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
@@ -72,7 +75,6 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
                                 mapBasicProperties(kriteriumRequest, person);
                                 mapAdresser(kriteriumRequest, person, mapperFacade);
-                                person.setInnvandretFraLandFlyttedato(getInnvandretFraLandFlyttedato(person));
                             }
                         })
                 .exclude("spesreg")
@@ -109,20 +111,20 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
-        if (FNR.name().equals(person.getIdenttype())) {
-
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap("NOR")
-                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(),
-                            nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent()))))
-                    .person(person)
-                    .build());
-
-        } else if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
+        if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .person(person)
+                    .build());
+        }
+        if (FNR.name().equals(person.getIdenttype())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap("NOR")
+                    .statsborgerskapRegdato(person.getStatsborgerskap().isEmpty() ? hentDatoFraIdentService.extract(person.getIdent()) :
+                                    person.getStatsborgerskap().get(0).getStatsborgerskapRegdato().plusYears(3))
                     .person(person)
                     .build());
         }
@@ -134,15 +136,35 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         if (FNR.name().equals(person.getIdenttype())) {
             person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
             person.setUtenFastBopel(kriteriumRequest.isUtenFastBopel());
-            person.setEgenAnsattDatoFom(kriteriumRequest.getEgenAnsattDatoFom());
         }
+        person.setEgenAnsattDatoFom(kriteriumRequest.getEgenAnsattDatoFom());
 
-        if (nonNull(person.getSpesreg())) {
+        if (isNotBlank(person.getSpesreg())) {
             person.setSpesregDato(nullcheckSetDefaultValue(person.getSpesregDato(), hentDatoFraIdentService.extract(person.getIdent())));
         }
 
         if (isTrue(kriteriumRequest.getErForsvunnet()) && isNull(kriteriumRequest.getForsvunnetDato())) {
             person.setForsvunnetDato(now());
+        }
+
+        if (isNotBlank(kriteriumRequest.getInnvandretFraLand())) {
+            person.getInnvandretUtvandret().add(
+                    InnvandretUtvandret.builder()
+                            .innutvandret(INNVANDRET)
+                            .landkode(kriteriumRequest.getInnvandretFraLand())
+                            .flyttedato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(),
+                                    hentDatoFraIdentService.extract(person.getIdent())))
+                    .build());
+        }
+
+        if (isNotBlank(kriteriumRequest.getUtvandretTilLand())) {
+            person.getInnvandretUtvandret().add(
+                    InnvandretUtvandret.builder()
+                            .innutvandret(UTVANDRET)
+                            .landkode(kriteriumRequest.getUtvandretTilLand())
+                            .flyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(),
+                                    hentDatoFraIdentService.extract(person.getIdent()).plusYears(3)))
+                            .build());
         }
     }
 
@@ -160,12 +182,11 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
             }
 
-        } else if (isNotBlank(person.getUtvandretTilLand())) {
+        } else if (person.isUtvandret()) {
             person.setBoadresse(null);
             if (kriteriumRequest.getPostadresse().isEmpty() || "NOR".equals(kriteriumRequest.getPostadresse().get(0).getPostLand())) {
                 person.getPostadresse().clear();
                 person.getPostadresse().add(dummyAdresseService.createPostAdresseUtvandret(person));
-                person.setUtvandretTilLandFlyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(), now()));
             }
 
         } else if (kriteriumRequest.isKode6()) {
@@ -203,16 +224,5 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private static LocalDate convertDate(LocalDateTime dateTime) {
         return nonNull(dateTime) ? dateTime.toLocalDate() : null;
-    }
-
-    private LocalDateTime getInnvandretFraLandFlyttedato(Person person) {
-
-        if (nonNull(person.getInnvandretFraLandFlyttedato())) {
-            return person.getInnvandretFraLandFlyttedato();
-        } else if (!person.getBoadresse().isEmpty() && nonNull(person.getBoadresse().get(0).getFlyttedato())) {
-            return person.getBoadresse().get(0).getFlyttedato();
-        } else {
-            return hentDatoFraIdentService.extract(person.getIdent());
-        }
     }
 }
