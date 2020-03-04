@@ -31,7 +31,7 @@ import lombok.Setter;
 @Table(name = "T_INNVANDRET_UTVANDRET")
 public class InnvandretUtvandret {
 
-    public enum InnUtvandret {INNVANDRET, UTVANDRET}
+    public enum InnUtvandret {INNVANDRET, UTVANDRET, NIL}
 
     private static final String SEQ = "T_INNVANDRET_UTVANDRET_SEQ";
 
