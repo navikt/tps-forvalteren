@@ -154,6 +154,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             .landkode(kriteriumRequest.getInnvandretFraLand())
                             .flyttedato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(),
                                     hentDatoFraIdentService.extract(person.getIdent())))
+                            .person(person)
                     .build());
         }
 
@@ -164,6 +165,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             .landkode(kriteriumRequest.getUtvandretTilLand())
                             .flyttedato(nullcheckSetDefaultValue(kriteriumRequest.getUtvandretTilLandFlyttedato(),
                                     hentDatoFraIdentService.extract(person.getIdent()).plusYears(3)))
+                            .person(person)
                             .build());
         }
     }
