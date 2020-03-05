@@ -7,6 +7,7 @@ import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.NIL;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -64,6 +65,9 @@ public class EndrePersonBestillingService {
 
         Set<InnvandretUtvandret> innvandretUtvandretSet = new TreeSet(Comparator.comparing(InnvandretUtvandret::getFlyttedato));
         if (nonNull(request.getUtvandretTilLandFlyttedato())) {
+            if (!FNR.name().equals(person.getIdenttype())) {
+                throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.identtype"));
+            }
             innvandretUtvandretSet.add(
                     buildInnutvandret(UTVANDRET, request.getUtvandretTilLand(), request.getUtvandretTilLandFlyttedato(), person));
         }

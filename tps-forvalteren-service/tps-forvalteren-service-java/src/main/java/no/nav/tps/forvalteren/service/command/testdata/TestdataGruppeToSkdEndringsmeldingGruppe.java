@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
+import no.nav.tps.forvalteren.service.command.testdata.skd.UtvandringOgInnvandring;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -51,7 +51,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
     private CreateVergemaal createVergemaal;
     
     @Autowired
-    private CreateUtvandring createUtvandring;
+    private UtvandringOgInnvandring utvandringOgInnvandring;
     
     @Autowired
     private GruppeRepository gruppeRepository;
@@ -79,7 +79,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> vergemaalMeldinger = createVergemaal.execute(testdataGruppe.getPersoner(), false);
-            List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(testdataGruppe.getPersoner(), false);
+            List<SkdMeldingTrans1> utvandringsMeldinger = utvandringOgInnvandring.createMeldinger(testdataGruppe.getPersoner(), false);
             skdMeldinger.addAll(foedselsMeldinger);
             skdMeldinger.addAll(innvandringsMeldinger);
             skdMeldinger.addAll(relasjonsMeldinger);

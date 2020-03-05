@@ -28,7 +28,8 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
 public class EndrePersonBestillingServiceTest {
 
     private static final String IDENT = "12028039031";
-    private static final LocalDateTime FOEDSEL_DATO = LocalDateTime.of(1980,2,12,0,0);
+    private static final String IDENTTYPE = "FNR";
+    private static final LocalDateTime FOEDSEL_DATO = LocalDateTime.of(1980, 2, 12, 0, 0);
     private static final LocalDateTime INNVANDRING_DATO = LocalDateTime.of(1993, 8, 14, 0, 0);
     private static final LocalDateTime TIDLIG_FLYTTEDATO = LocalDateTime.of(1990, 12, 1, 0, 0);
     private static final LocalDateTime FLYTTEDATO = LocalDateTime.of(2016, 12, 1, 0, 0);
@@ -56,6 +57,8 @@ public class EndrePersonBestillingServiceTest {
                 .thenReturn("Flyttedato kan ikke vaere tidligere enn dato paa forrige bevegelse");
         when(messageProvider.get("endre.person.innutvandring.validation.samme.aksjon"))
                 .thenReturn("To like hendelser på hverandre med innvandring eller utvandring er ikke tillatt");
+        when(messageProvider.get("endre.person.innutvandring.validation.identtype"))
+                .thenReturn("Person som utvandrer maa ha identtype FNR");
 
         when(hentDatoFraIdentService.extract(IDENT)).thenReturn(FOEDSEL_DATO);
     }
@@ -65,6 +68,7 @@ public class EndrePersonBestillingServiceTest {
 
         when(personRepository.findByIdent(IDENT)).thenReturn(Person.builder()
                 .ident(IDENT)
+                .identtype(IDENTTYPE)
                 .innvandretUtvandret(newArrayList(InnvandretUtvandret.builder()
                         .innutvandret(INNVANDRET)
                         .landkode("AUS")
@@ -87,6 +91,7 @@ public class EndrePersonBestillingServiceTest {
 
         when(personRepository.findByIdent(IDENT)).thenReturn(Person.builder()
                 .ident(IDENT)
+                .identtype(IDENTTYPE)
                 .innvandretUtvandret(newArrayList(InnvandretUtvandret.builder()
                         .innutvandret(INNVANDRET)
                         .landkode("AUS")
@@ -108,8 +113,9 @@ public class EndrePersonBestillingServiceTest {
     public void utenInnvandringUtvandring_personIkkeEndret() {
 
         Person person = Person.builder()
-                        .ident(IDENT)
-                        .build();
+                .ident(IDENT)
+                .identtype(IDENTTYPE)
+                .build();
         when(personRepository.findByIdent(IDENT)).thenReturn(person);
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
@@ -124,6 +130,7 @@ public class EndrePersonBestillingServiceTest {
 
         Person person = Person.builder()
                 .ident(IDENT)
+                .identtype(IDENTTYPE)
                 .innvandretUtvandret(newArrayList(InnvandretUtvandret.builder()
                         .innutvandret(INNVANDRET)
                         .landkode("AUS")
@@ -141,5 +148,27 @@ public class EndrePersonBestillingServiceTest {
         endrePersonBestillingService.execute(IDENT, request);
 
         assertThat(person.getInnvandretUtvandret(), hasSize(3));
+    }
+
+    @Test
+    public void utvandreDnrPerson_skalFeile() {
+
+        when(personRepository.findByIdent(IDENT)).thenReturn(Person.builder()
+                .ident(IDENT)
+                .innvandretUtvandret(newArrayList(InnvandretUtvandret.builder()
+                        .innutvandret(INNVANDRET)
+                        .landkode("AUS")
+                        .flyttedato(INNVANDRING_DATO)
+                        .build()))
+                .build());
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage("Person som utvandrer maa ha identtype FNR");
+
+        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
+        request.setUtvandretTilLand("SAU");
+        request.setUtvandretTilLandFlyttedato(TIDLIG_FLYTTEDATO);
+
+        endrePersonBestillingService.execute(IDENT, request);
     }
 }

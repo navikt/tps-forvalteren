@@ -32,7 +32,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.skd.CreateUtvandring;
+import no.nav.tps.forvalteren.service.command.testdata.skd.UtvandringOgInnvandring;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
@@ -62,7 +62,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
     @Mock
     private CreateFoedselsmeldinger createFoedselsmeldinger;
     @Mock
-    private CreateUtvandring createUtvandring;
+    private UtvandringOgInnvandring utvandringOgInnvandring;
     @Mock
     private GruppeRepository gruppeRepository;
     @Mock
@@ -91,7 +91,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(createMeldingWithMeldingstypeService.execute(anyList())).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
-        when(createUtvandring.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
+        when(utvandringOgInnvandring.createMeldinger(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(utvandringsMeldinger);
         when(createFoedselsmeldinger.executeFromPersons(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(foedselsMeldinger);
     }
 
@@ -108,7 +108,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(createMeldingWithMeldingstypeService).execute(anyList());
         verify(saveSkdEndringsmeldingerService).save(rsMeldinger, GRUPPE_ID);
         verify(createVergemaal).execute(testdataGruppe.getPersoner(), ADD_HEADER);
-        verify(createUtvandring).execute(testdataGruppe.getPersoner(), ADD_HEADER);
+        verify(utvandringOgInnvandring).createMeldinger(testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createFoedselsmeldinger).executeFromPersons(testdataGruppe.getPersoner(), ADD_HEADER);
 
     }
