@@ -147,6 +147,11 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.setForsvunnetDato(now());
         }
 
+        mapInnvandringUtvandring(kriteriumRequest, person);
+    }
+
+    private void mapInnvandringUtvandring(RsSimplePersonRequest kriteriumRequest, Person person) {
+
         if (isNotBlank(kriteriumRequest.getInnvandretFraLand())) {
             person.getInnvandretUtvandret().add(
                     InnvandretUtvandret.builder()
@@ -155,7 +160,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             .flyttedato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(),
                                     hentDatoFraIdentService.extract(person.getIdent())))
                             .person(person)
-                    .build());
+                            .build());
         }
 
         if (isNotBlank(kriteriumRequest.getUtvandretTilLand())) {
