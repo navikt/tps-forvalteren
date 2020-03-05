@@ -111,23 +111,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
-        if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
-
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
-                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
-                    .person(person)
-                    .build());
-        }
-        if (FNR.name().equals(person.getIdenttype())) {
-
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap("NOR")
-                    .statsborgerskapRegdato(person.getStatsborgerskap().isEmpty() ? hentDatoFraIdentService.extract(person.getIdent()) :
-                                    person.getStatsborgerskap().get(0).getStatsborgerskapRegdato().plusYears(3))
-                    .person(person)
-                    .build());
-        }
+        mapStatsborgerskap(kriteriumRequest, person);
 
         person.setSprakKode(nullcheckSetDefaultValue(kriteriumRequest.getSprakKode(), DNR.name().equals(person.getIdenttype()) ? dummyLanguageService.getRandomLanguage() : "NB"));
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
@@ -148,6 +132,27 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         }
 
         mapInnvandringUtvandring(kriteriumRequest, person);
+    }
+
+    private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
+
+        if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .person(person)
+                    .build());
+        }
+        if (FNR.name().equals(person.getIdenttype())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap("NOR")
+                    .statsborgerskapRegdato(person.getStatsborgerskap().isEmpty() ? hentDatoFraIdentService.extract(person.getIdent()) :
+                            person.getStatsborgerskap().get(0).getStatsborgerskapRegdato().plusYears(3))
+                    .person(person)
+                    .build());
+        }
     }
 
     private void mapInnvandringUtvandring(RsSimplePersonRequest kriteriumRequest, Person person) {
