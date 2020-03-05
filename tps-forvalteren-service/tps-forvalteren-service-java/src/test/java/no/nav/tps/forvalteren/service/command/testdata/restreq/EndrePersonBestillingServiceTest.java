@@ -56,7 +56,7 @@ public class EndrePersonBestillingServiceTest {
         when(messageProvider.get("endre.person.innutvandring.validation.flyttedato"))
                 .thenReturn("Flyttedato kan ikke vaere tidligere enn dato paa forrige bevegelse");
         when(messageProvider.get("endre.person.innutvandring.validation.samme.aksjon"))
-                .thenReturn("To like hendelser på hverandre med innvandring eller utvandring er ikke tillatt");
+                .thenReturn("To like hendelser paa hverandre med innvandring eller utvandring er ikke tillatt");
         when(messageProvider.get("endre.person.innutvandring.validation.identtype"))
                 .thenReturn("Person som utvandrer maa ha identtype FNR");
 
@@ -104,7 +104,7 @@ public class EndrePersonBestillingServiceTest {
         request.setInnvandretFraLandFlyttedato(FLYTTEDATO);
 
         expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage("To like hendelser på hverandre med innvandring eller utvandring er ikke tillatt");
+        expectedException.expectMessage("To like hendelser paa hverandre med innvandring eller utvandring er ikke tillatt");
 
         endrePersonBestillingService.execute(IDENT, request);
     }
