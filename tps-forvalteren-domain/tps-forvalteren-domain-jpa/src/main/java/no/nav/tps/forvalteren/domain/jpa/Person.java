@@ -285,7 +285,6 @@ public class Person extends ChangeStamp {
     }
 
     public boolean isUtvandret() {
-        return getInnvandretUtvandret().isEmpty() || !getInnvandretUtvandret().isEmpty() &&
-                UTVANDRET == getInnvandretUtvandret().get(0).getInnutvandret();
+        return !getInnvandretUtvandret().isEmpty() && UTVANDRET == getInnvandretUtvandret().get(0).getInnutvandret();
     }
 }
