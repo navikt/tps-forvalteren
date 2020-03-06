@@ -136,20 +136,27 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
 
-        if (nonNull(kriteriumRequest.getStatsborgerskap()) || nonNull(kriteriumRequest.getInnvandretFraLand())) {
+        if (nonNull(kriteriumRequest.getStatsborgerskap())) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskap(), kriteriumRequest.getInnvandretFraLand()))
+                    .statsborgerskap(kriteriumRequest.getStatsborgerskap())
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
                     .person(person)
                     .build());
-        }
-        if (FNR.name().equals(person.getIdenttype())) {
+
+        } else if (FNR.name().equals(person.getIdenttype())) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap("NOR")
-                    .statsborgerskapRegdato(person.getStatsborgerskap().isEmpty() ? hentDatoFraIdentService.extract(person.getIdent()) :
-                            person.getStatsborgerskap().get(0).getStatsborgerskapRegdato().plusYears(3))
+                    .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
+                    .person(person)
+                    .build());
+
+        } else if (nonNull(kriteriumRequest.getInnvandretFraLand())) {
+
+            person.getStatsborgerskap().add(Statsborgerskap.builder()
+                    .statsborgerskap(kriteriumRequest.getInnvandretFraLand())
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())))
                     .person(person)
                     .build());
         }
