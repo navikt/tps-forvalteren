@@ -105,7 +105,6 @@ public class LagreTilTpsService {
                     .build());
         }
 
-
         List skdMldResponse = new ArrayList();
 
         skdMldResponse.addAll(envNotFound.values());
@@ -118,10 +117,10 @@ public class LagreTilTpsService {
         skdMldResponse.addAll(skdMeldingSender.sendSivilstand(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendDoedsmeldinger(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendVergemaalsmeldinger(personerIGruppen, safeEnvironments));
-        skdMldResponse.addAll(skdMeldingSender.sendUtvandringsmeldinger(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendMeldingerOmForsvunnet(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendMeldingerOmDubletter(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendEndringAvStatsborgerskapOgBibehold(personerIGruppen, safeEnvironments));
+        skdMldResponse.addAll(skdMeldingSender.sendUtvandringOgNyeInnvandringsmeldinger(personerIGruppen, safeEnvironments));
 
         personStatusFraMiljoService.hentStatusOgSettPaaPerson(personerIGruppen, safeEnvironments);
 

@@ -4,6 +4,7 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.collect.Lists.partition;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
@@ -95,7 +97,10 @@ public class ExcelService {
                 .append(person.getFornavn()).append(SEP)
                 .append(getBoadresse(person)).append(SEP)
                 .append(getPostadresse(person)).append(SEP)
-                .append(person.getInnvandretFraLand())
+                .append(person.getInnvandretUtvandret().stream()
+                        .filter(innvandretUtvandret -> INNVANDRET == innvandretUtvandret.getInnutvandret())
+                        .map(InnvandretUtvandret::getLandkode)
+                        .findFirst().orElse(""))
                 .append(SEP_STRING_START)
                 .append(person.getGtVerdi())
                 .append(SEP_STRING_END)

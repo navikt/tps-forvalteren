@@ -12,7 +12,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmForsvunnetAarsakskode82.MELDING_OM_FORSVUNNET;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmStatsborgerskap.ENDRING_AV_STATSBORGERSKAP;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.NavneEndringsmeldingAarsakskode06.NAVN_ENDRING_MLD;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32.UTVANDRING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32.UTVANDRING_INNVANDRING_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class SkdMeldingSender {
     private final CreateFoedselsmeldinger createFoedselsmeldinger;
     private final CreateNavnEndringsmeldinger createNavnEndringsmeldinger;
     private final CreateVergemaal createVergemaal;
-    private final CreateUtvandring createUtvandring;
+    private final UtvandringOgInnvandring utvandringOgInnvandring;
     private final CreateMeldingerOmForsvunnet createMeldingerOmForsvunnet;
     private final SivilstandMeldinger sivilstandMeldinger;
     private final CreateMeldingerOmDubletter createMeldingerOmDubletter;
@@ -94,11 +94,11 @@ public class SkdMeldingSender {
         return listTpsResponsene;
     }
 
-    public List<SendSkdMeldingTilTpsResponse> sendUtvandringsmeldinger(List<Person> personerIGruppen, Set<String> environmentsSet) {
+    public List<SendSkdMeldingTilTpsResponse> sendUtvandringOgNyeInnvandringsmeldinger(List<Person> personerIGruppen, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> utvandringsMeldinger = createUtvandring.execute(personerIGruppen, true);
+        List<SkdMeldingTrans1> utvandringsMeldinger = utvandringOgInnvandring.createMeldinger(personerIGruppen, true);
         utvandringsMeldinger.forEach(skdMelding ->
-                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(UTVANDRING_MLD_NAVN, skdMelding, environmentsSet))
+                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(UTVANDRING_INNVANDRING_MLD_NAVN, skdMelding, environmentsSet))
         );
         return listTpsResponsene;
     }

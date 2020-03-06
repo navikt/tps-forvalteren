@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.domain.jpa;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static javax.persistence.CascadeType.ALL;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -91,23 +93,9 @@ public class Person extends ChangeStamp {
     @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
-    @Column(name = "INNVANDRET_FRA_LAND", length = 3)
-    private String innvandretFraLand;
-
-    @Column(name = "INNVANDRET_FRA_LAND_FLYTTEDATO")
-    private LocalDateTime innvandretFraLandFlyttedato;
-
-    @Column(name = "INNVANDRET_FRA_LAND_REGDATO")
-    private LocalDateTime innvandretFraLandRegdato;
-
-    @Column(name = "UTVANDRET_TIL_LAND", length = 3)
-    private String utvandretTilLand;
-
-    @Column(name = "UTVANDRET_TIL_LAND_FLYTTEDATO")
-    private LocalDateTime utvandretTilLandFlyttedato;
-
-    @Column(name = "UTVANDRET_TIL_LAND_REGDATO")
-    private LocalDateTime utvandretTilLandRegdato;
+    @OrderBy("flyttedato desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<InnvandretUtvandret> innvandretUtvandret;
 
     @Column(name = "EGEN_ANSATT_DATO_FOM")
     private LocalDateTime egenAnsattDatoFom;
@@ -234,6 +222,29 @@ public class Person extends ChangeStamp {
         return statsborgerskap;
     }
 
+    public List<InnvandretUtvandret> getInnvandretUtvandret() {
+        if (isNull(innvandretUtvandret)) {
+            innvandretUtvandret = new ArrayList();
+        }
+        return innvandretUtvandret;
+    }
+
+    public String getLandkodeOfFirstInnvandret() {
+
+        return getInnvandretUtvandret().stream()
+                .filter(innutvandret -> INNVANDRET == innutvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getLandkode)
+                .reduce((a, b) -> b).orElse(null);
+    }
+
+    public LocalDateTime getFlyttedatoOfFirstInnvandret() {
+
+        return getInnvandretUtvandret().stream()
+                .filter(innutvandret -> INNVANDRET == innutvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getFlyttedato)
+                .reduce((a, b) -> b).orElse(null);
+    }
+
     public Person toUppercase() {
         if (isNotBlank(getFornavn())) {
             setFornavn(getFornavn().toUpperCase());
@@ -271,5 +282,10 @@ public class Person extends ChangeStamp {
 
     public boolean isEgenansatt() {
         return nonNull(getEgenAnsattDatoFom()) && isNull(getEgenAnsattDatoTom());
+    }
+
+    public boolean isUtvandret() {
+        return getInnvandretUtvandret().isEmpty() || !getInnvandretUtvandret().isEmpty() &&
+                UTVANDRET != getInnvandretUtvandret().get(0).getInnutvandret();
     }
 }

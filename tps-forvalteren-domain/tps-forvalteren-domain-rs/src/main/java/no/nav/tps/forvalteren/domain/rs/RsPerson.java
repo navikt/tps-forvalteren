@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 
 @Getter
@@ -63,19 +64,7 @@ public class RsPerson {
 
     private LocalDateTime sivilstandRegdato;
 
-    @Size(max = 3)
-    private String innvandretFraLand;
-
-    private LocalDateTime innvandretFraLandFlyttedato;
-
-    private LocalDateTime innvandretFraLandRegdato;
-
-    @Size(max = 3)
-    private String utvandretTilLand;
-
-    private LocalDateTime utvandretTilLandFlyttedato;
-
-    private LocalDateTime utvandretTilLandRegdato;
+    private List<InnvandretUtvandret> innvandretUtvandret;
 
     private List<RsAdresse> boadresse;
 

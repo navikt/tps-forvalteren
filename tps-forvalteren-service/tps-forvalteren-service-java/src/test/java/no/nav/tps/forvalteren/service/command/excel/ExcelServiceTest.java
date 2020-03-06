@@ -4,6 +4,7 @@ import static com.google.common.base.Charsets.UTF_8;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
@@ -20,6 +21,7 @@ import org.springframework.core.io.Resource;
 
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
@@ -96,7 +98,11 @@ public class ExcelServiceTest {
                 .kjonn("M")
                 .fornavn("GOD")
                 .etternavn("MASKIN")
-                .innvandretFraLand("SAU")
+                .innvandretUtvandret(singletonList(InnvandretUtvandret.builder()
+                        .innutvandret(INNVANDRET)
+                        .landkode("SAU")
+                        .flyttedato(LocalDateTime.of(2018, 10, 10, 0, 0))
+                        .build()))
                 .gtType("KNR")
                 .gtVerdi("0617")
                 .gtRegel("A")

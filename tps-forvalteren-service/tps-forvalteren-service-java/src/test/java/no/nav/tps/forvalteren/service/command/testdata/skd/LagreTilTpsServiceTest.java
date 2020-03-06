@@ -103,7 +103,7 @@ public class LagreTilTpsServiceTest {
         when(skdMeldingSender.sendRelasjonsmeldinger(anyList(), anySet())).thenReturn(relasjonsResponse);
         when(skdMeldingSender.sendDoedsmeldinger(anyList(), anySet())).thenReturn(doedsmeldingResponse);
         when(skdMeldingSender.sendVergemaalsmeldinger(anyList(), anySet())).thenReturn(vergemaalsresponse);
-        when(skdMeldingSender.sendUtvandringsmeldinger(anyList(), anySet())).thenReturn(utvandringsResponse);
+        when(skdMeldingSender.sendUtvandringOgNyeInnvandringsmeldinger(anyList(), anySet())).thenReturn(utvandringsResponse);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LagreTilTpsServiceTest {
         verify(skdMeldingSender, times(3)).sendInnvandringsMeldinger(any(), anySet());
         verify(skdMeldingSender, times(3)).sendUpdateInnvandringsMeldinger(anyList(), anySet());
         verify(skdMeldingSender, times(3)).sendFoedselsMeldinger(anyList(), anySet());
-        verify(skdMeldingSender).sendUtvandringsmeldinger(anyList(), anySet());
+        verify(skdMeldingSender).sendUtvandringOgNyeInnvandringsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendRelasjonsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendDoedsmeldinger(anyList(), anySet());
         verify(skdMeldingSender).sendVergemaalsmeldinger(anyList(), anySet());

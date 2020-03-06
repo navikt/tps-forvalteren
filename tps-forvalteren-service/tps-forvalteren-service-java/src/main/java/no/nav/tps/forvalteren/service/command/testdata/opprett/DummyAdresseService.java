@@ -1,20 +1,25 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
+@RequiredArgsConstructor
 public class DummyAdresseService {
 
     public static final String UTEN_FAST_BOSTED = "UTEN FAST BOSTED";
@@ -36,8 +41,7 @@ public class DummyAdresseService {
     private static final String ADRESSE_3_UTLAND = "CAPITAL WEST 3000";
     private static final String POST_LAND_UTLAND = "POL";
 
-    @Autowired
-    private HentDatoFraIdentService hentDatoFraIdentService;
+    private final HentDatoFraIdentService hentDatoFraIdentService;
 
     public Adresse createDummyBoAdresse(Person person) {
 
@@ -73,7 +77,7 @@ public class DummyAdresseService {
                 .postLinje1(ADRESSE_1_UTLAND)
                 .postLinje2(ADRESSE_2_UTLAND)
                 .postLinje3(ADRESSE_3_UTLAND)
-                .postLand(isNotBlank(person.getInnvandretFraLand()) ? person.getInnvandretFraLand() : POST_LAND_UTLAND)
+                .postLand(getInnUtvandretLand(person, INNVANDRET))
                 .person(person)
                 .build();
     }
@@ -81,13 +85,15 @@ public class DummyAdresseService {
     public Postadresse createPostAdresseUtvandret(Person person) {
 
         if (person.getPostadresse().isEmpty()) {
+
             return Postadresse.builder()
                     .postLinje1(ADRESSE_1_UTLAND)
                     .postLinje2(ADRESSE_2_UTLAND)
-                    .postLand(person.getUtvandretTilLand())
+                    .postLand(getInnUtvandretLand(person, UTVANDRET))
                     .person(person)
                     .build();
         } else {
+
             return Postadresse.builder()
                     .postLinje1(person.getPostadresse().get(0).getPostLinje1())
                     .postLinje2(person.getPostadresse().get(0).getPostLinje2())
@@ -109,5 +115,15 @@ public class DummyAdresseService {
         gateadresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
 
         return gateadresse;
+    }
+
+    private static String getInnUtvandretLand(Person person, InnvandretUtvandret.InnUtvandret innutvandret) {
+
+        Optional<String> land = person.getInnvandretUtvandret().stream()
+                .filter(innUtvandret -> innutvandret == innUtvandret.getInnutvandret())
+                .map(InnvandretUtvandret::getLandkode)
+                .findFirst();
+
+        return land.isPresent() ? land.get() : POST_LAND_UTLAND;
     }
 }
