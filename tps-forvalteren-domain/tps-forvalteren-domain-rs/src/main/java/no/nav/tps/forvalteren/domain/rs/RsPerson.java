@@ -119,6 +119,10 @@ public class RsPerson {
 
     private String forsvunnetDato;
 
+    private String bankkontonr;
+
+    private String bankkontonrRegdato;
+
     private List<RsIdenthistorikk> identHistorikk;
 
     private List<RsSivilstand> sivilstander;

@@ -73,6 +73,10 @@ public class RsSimplePersonRequest {
 
     private List<RsIdenthistorikkKriterium> identHistorikk;
 
+    private Boolean harBankkontonr;
+
+    private LocalDateTime bankkontonrRegdato;
+
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();

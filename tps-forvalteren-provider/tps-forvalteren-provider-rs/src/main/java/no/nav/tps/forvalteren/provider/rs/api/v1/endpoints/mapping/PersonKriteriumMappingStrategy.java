@@ -36,6 +36,7 @@ import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyLanguageService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.KontonrGeneratorService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Component
@@ -47,6 +48,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private final HentDatoFraIdentService hentDatoFraIdentService;
     private final DummyAdresseService dummyAdresseService;
     private final DummyLanguageService dummyLanguageService;
+    private final KontonrGeneratorService kontonrGeneratorService;
 
     @Override
     public void register(MapperFactory factory) {
@@ -132,6 +134,12 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         }
 
         mapInnvandringUtvandring(kriteriumRequest, person);
+
+        if (kriteriumRequest.getHarBankkontonr()) {
+            person.setBankkontonr(kontonrGeneratorService.generateNumber());
+            person.setBankkontonrRegdato(nullcheckSetDefaultValue(kriteriumRequest.getBankkontonrRegdato(),
+                    hentDatoFraIdentService.extract(person.getIdent())));
+        }
     }
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
