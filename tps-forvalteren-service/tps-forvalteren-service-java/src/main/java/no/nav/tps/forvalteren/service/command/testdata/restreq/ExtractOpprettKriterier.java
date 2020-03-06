@@ -232,6 +232,7 @@ public class ExtractOpprettKriterier {
                         .innutvandret(INNVANDRET)
                         .landkode(nullcheckSetDefaultValue(person.getLandkodeOfFirstInnvandret(), hovedperson.getLandkodeOfFirstInnvandret()))
                         .flyttedato(nullcheckSetDefaultValue(person.getFlyttedatoOfFirstInnvandret(), hovedperson.getFlyttedatoOfFirstInnvandret()))
+                        .person(person)
                         .build()
         );
 
