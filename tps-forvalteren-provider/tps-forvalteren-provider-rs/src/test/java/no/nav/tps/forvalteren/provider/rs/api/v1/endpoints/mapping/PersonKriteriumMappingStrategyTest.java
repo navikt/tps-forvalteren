@@ -75,8 +75,6 @@ public class PersonKriteriumMappingStrategyTest {
         assertThat(person.getIdenttype(), is(equalTo(IDENTTYPE)));
         assertThat(person.getStatsborgerskap().get(0).getStatsborgerskap(), is(equalTo(STATSBORGERSKAP)));
         assertThat(person.getStatsborgerskap().get(0).getStatsborgerskapRegdato(), is(equalTo(TIMENOW)));
-        assertThat(person.getStatsborgerskap().get(1).getStatsborgerskap(), is(equalTo("NOR")));
-        assertThat(person.getStatsborgerskap().get(1).getStatsborgerskapRegdato(), is(equalTo(TIMENOW.plusYears(3))));
         assertThat(person.getSprakKode(), is(equalTo(SPRAK)));
         assertThat(person.getDatoSprak(), is(equalTo(TIMENOW)));
         assertThat(person.getBeskrSikkerhetsTiltak(), is(equalTo(SIKKERHETSTILTAK)));
