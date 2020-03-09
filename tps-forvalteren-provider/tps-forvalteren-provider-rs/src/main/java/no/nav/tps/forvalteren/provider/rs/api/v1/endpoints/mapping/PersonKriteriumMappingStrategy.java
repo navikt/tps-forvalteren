@@ -135,7 +135,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         mapInnvandringUtvandring(kriteriumRequest, person);
 
-        if (kriteriumRequest.getHarBankkontonr()) {
+        if (isTrue(kriteriumRequest.getHarBankkontonr())) {
             person.setBankkontonr(kontonrGeneratorService.generateNumber());
             person.setBankkontonrRegdato(nullcheckSetDefaultValue(kriteriumRequest.getBankkontonrRegdato(),
                     hentDatoFraIdentService.extract(person.getIdent())));
