@@ -187,7 +187,7 @@ public class CommandConfig {
     }
 
     @Bean
-    ServiceRoutineResolver endreNors() {
+    ServiceRoutineResolver endreNorskGironummer() {
         return new EndreNorskGironummer();
     }
 
