@@ -9,19 +9,19 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreSprakkodeRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreNorskGironummerRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
-public class EndreSpraakkode implements ServiceRoutineResolver {
-    public static final String ENDRE_SPRAKKODE = "SpråkkodeEndringsmelding";
+public class EndreNorskGironummer implements ServiceRoutineResolver {
+    public static final String ENDRE_KONTONUMMER = "KontonummerEndringsmelding";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name(ENDRE_SPRAKKODE)
-                .internalName("Endre Sprakkode")
-                .javaClass(TpsEndreSprakkodeRequest.class)
+                .name(ENDRE_KONTONUMMER)
+                .internalName("Endre kontonummer")
+                .javaClass(TpsEndreNorskGironummerRequest.class)
                 .config()
                 .requestQueue(REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
@@ -33,13 +33,13 @@ public class EndreSpraakkode implements ServiceRoutineResolver {
                 .and()
 
                 .parameter()
-                .name("sprakKode")
+                .name("giroNrNorsk")
                 .required()
                 .type(TpsParameterType.STRING)
                 .and()
 
                 .parameter()
-                .name("datoSprak")
+                .name("datoGiroNrNorsk")
                 .optional()
                 .type(TpsParameterType.DATE)
                 .and()

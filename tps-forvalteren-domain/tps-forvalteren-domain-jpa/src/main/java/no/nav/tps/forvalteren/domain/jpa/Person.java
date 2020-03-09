@@ -174,6 +174,12 @@ public class Person extends ChangeStamp {
     @Column(name = "FORSVUNNET_DATO")
     private LocalDateTime forsvunnetDato;
 
+    @Column(name = "BANKKONTONR")
+    private String bankkontonr;
+
+    @Column(name = "BANKKONTONR_REGDATO")
+    private LocalDateTime bankkontonrRegdato;
+
     @Transient
     private String replacedByIdent;
 

@@ -28,6 +28,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreSikkerhetstiltakRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.domain.service.user.User;
+import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
 import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
@@ -46,6 +47,9 @@ public class SendNavEndringsmeldingerTest {
 
     @Mock
     private EndreSprakkodeService endreSprakkodeService;
+
+    @Mock
+    private EndreNorskGironummerService endreNorskGironummerService;
 
     @Mock
     private UserContextHolder userContextHolder;

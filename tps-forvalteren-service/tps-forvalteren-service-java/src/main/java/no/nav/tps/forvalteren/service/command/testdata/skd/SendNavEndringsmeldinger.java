@@ -4,21 +4,22 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.String.format;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.BehandleTpsRespons.ekstraherStatusFraServicerutineRespons;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
 import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
@@ -28,25 +29,16 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsRequestSende
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 
 @Service
+@RequiredArgsConstructor
 public class SendNavEndringsmeldinger {
 
-    @Autowired
-    private OpprettEgenAnsattMelding opprettEgenAnsattMelding;
-
-    @Autowired
-    private OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
-
-    @Autowired
-    private EndreSprakkodeService endreSprakkodeService;
-
-    @Autowired
-    private TpsRequestSender tpsRequestSender;
-
-    @Autowired
-    private UserContextHolder userContextHolder;
-
-    @Autowired
-    private TpsPacemaker tpsPacemaker;
+    private final OpprettEgenAnsattMelding opprettEgenAnsattMelding;
+    private final OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
+    private final EndreSprakkodeService endreSprakkodeService;
+    private final EndreNorskGironummerService endreNorskGironummerService;
+    private final TpsRequestSender tpsRequestSender;
+    private final UserContextHolder userContextHolder;
+    private final TpsPacemaker tpsPacemaker;
 
     public List<ServiceRoutineResponseStatus> execute(List<Person> listeMedPersoner, Set<String> environmentsSet) {
 
@@ -58,6 +50,7 @@ public class SendNavEndringsmeldinger {
             navEndringsMeldinger.addAll(opprettEgenAnsattMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
+            navEndringsMeldinger.addAll(endreNorskGironummerService.execute(person, environmentsSet));
         });
 
         Map<String, ServiceRoutineResponseStatus> responseStatuses = new HashMap<>();
@@ -69,15 +62,16 @@ public class SendNavEndringsmeldinger {
             tpsRequestContext.setEnvironment(serviceRoutineRequest.getMiljo());
             TpsServiceRoutineResponse svar = tpsRequestSender.sendTpsRequest(serviceRoutineRequest.getMelding(), tpsRequestContext);
 
-            if (!responseStatuses.containsKey(ident)) {
-                responseStatuses.put(ident, ServiceRoutineResponseStatus.builder()
+            String key = format("%s %s", ident, serviceRoutineRequest.getMelding().getServiceRutinenavn());
+            if (!responseStatuses.containsKey(key)) {
+                responseStatuses.put(key, ServiceRoutineResponseStatus.builder()
                         .personId(ident)
                         .serviceRutinenavn(serviceRoutineRequest.getMelding().getServiceRutinenavn())
                         .status(newHashMap())
                         .build()
                 );
             }
-            responseStatuses.get(ident).getStatus().put(serviceRoutineRequest.getMiljo(), formatResultatMelding(svar));
+            responseStatuses.get(key).getStatus().put(serviceRoutineRequest.getMiljo(), formatResultatMelding(svar));
 
             tpsPacemaker.iteration(i);
         }
@@ -85,14 +79,9 @@ public class SendNavEndringsmeldinger {
         return newArrayList(responseStatuses.values());
     }
 
-    private String formatResultatMelding(TpsServiceRoutineResponse response) {
+    private static String formatResultatMelding(TpsServiceRoutineResponse response) {
         ResponseStatus status = ekstraherStatusFraServicerutineRespons(response);
-        return "00".equals(status.getKode()) || "04".equals(status.getKode()) ? "OK" :
-                formaterFeilmelding(status);
-    }
-
-    private String formaterFeilmelding(ResponseStatus status) {
-        return isNotBlank(status.getUtfyllendeMelding()) ?
-                format("FEIL: %s", status.getUtfyllendeMelding()) : ""; //Silently discard
+        return isBlank(status.getKode()) || "00".equals(status.getKode()) || "04".equals(status.getKode()) ? "OK" :
+                format("FEIL: %s", status.getUtfyllendeMelding());
     }
 }

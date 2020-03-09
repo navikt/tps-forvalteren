@@ -1,25 +1,24 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
+import java.util.List;
+import java.util.Map;
+import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRutinerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class RsTpsRequestMappingUtils {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private GetTpsServiceRutinerService getTpsServiceRutinerService;
+    private final ObjectMapper objectMapper;
+    private final MessageProvider messageProvider;
+    private final GetTpsServiceRutinerService getTpsServiceRutinerService;
 
     public <T> T convert(Map<String, Object> params, Class<T> type) {
         return objectMapper.convertValue(params, type);
@@ -48,7 +47,7 @@ public class RsTpsRequestMappingUtils {
         List<String> requiredParameterNameList = tpsServiceRoutineDefinitionRequest.getRequiredParameterNameList();
         requiredParameterNameList.removeAll(map.keySet());
         if (!requiredParameterNameList.isEmpty()) {
-            throw new TpsfFunctionalException("Følgende påkrevde felter mangler:" + requiredParameterNameList);
+            throw new TpsfFunctionalException(messageProvider.get("rest.service.request.exception.required", requiredParameterNameList));
         }
     }
 }

@@ -20,6 +20,7 @@ import no.nav.tps.forvalteren.provider.rs.AbstractRsProviderIntegrationTest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.RequestQueueListener;
 
 public abstract class AbstractServiceroutineControllerIntegrationTest extends AbstractRsProviderIntegrationTest {
+
     @Autowired
     protected RequestQueueListener requestQueueListener;
 

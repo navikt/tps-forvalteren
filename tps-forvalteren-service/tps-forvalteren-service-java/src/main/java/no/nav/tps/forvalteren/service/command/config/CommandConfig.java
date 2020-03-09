@@ -10,6 +10,7 @@ import com.fasterxml.jackson.xml.XmlMapper;
 
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreNorskGironummer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetstiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode;
@@ -183,6 +184,11 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver endreSprakkode() {
         return new EndreSpraakkode();
+    }
+
+    @Bean
+    ServiceRoutineResolver endreNorskGironummer() {
+        return new EndreNorskGironummer();
     }
 
     @Bean
