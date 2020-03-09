@@ -18,7 +18,7 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.TpsNavEndringsMelding
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 
 @Service
-public class EndreNorskGironummer {
+public class EndreNorskGironummerService {
 
     public List<TpsNavEndringsMelding> execute(Person person, Set<String> environmentSet) {
         List<TpsNavEndringsMelding> navMeldinger = new ArrayList<>();

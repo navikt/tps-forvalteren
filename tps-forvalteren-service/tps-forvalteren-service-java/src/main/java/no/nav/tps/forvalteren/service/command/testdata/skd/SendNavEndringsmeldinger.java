@@ -19,7 +19,7 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummer;
+import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
 import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
@@ -35,7 +35,7 @@ public class SendNavEndringsmeldinger {
     private final OpprettEgenAnsattMelding opprettEgenAnsattMelding;
     private final OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
     private final EndreSprakkodeService endreSprakkodeService;
-    private final EndreNorskGironummer endreNorskGironummer;
+    private final EndreNorskGironummerService endreNorskGironummerService;
     private final TpsRequestSender tpsRequestSender;
     private final UserContextHolder userContextHolder;
     private final TpsPacemaker tpsPacemaker;
@@ -50,7 +50,7 @@ public class SendNavEndringsmeldinger {
             navEndringsMeldinger.addAll(opprettEgenAnsattMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
-            navEndringsMeldinger.addAll(endreNorskGironummer.execute(person, environmentsSet));
+            navEndringsMeldinger.addAll(endreNorskGironummerService.execute(person, environmentsSet));
         });
 
         Map<String, ServiceRoutineResponseStatus> responseStatuses = new HashMap<>();
