@@ -116,7 +116,7 @@ public class RsProviderIntegrationTestConfig {
 
     @Bean
     public MessageProvider messageProvider() {
-        return mock(MessageProvider.class);
+        return new MessageProvider();
     }
 
     @Bean

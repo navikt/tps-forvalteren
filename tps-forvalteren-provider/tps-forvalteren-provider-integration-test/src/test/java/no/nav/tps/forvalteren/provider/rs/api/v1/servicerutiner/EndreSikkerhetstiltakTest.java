@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.provider.rs.api.v1.config.TestUserDetails;
 public class EndreSikkerhetstiltakTest extends AbstractServiceroutineControllerIntegrationTest {
     
     private static final String serviceRutineNavn = "SikkerhetstiltakEndringsmelding";
-    
+
     @Override
     protected String getServiceName() {
         return serviceRutineNavn;
@@ -40,7 +40,7 @@ public class EndreSikkerhetstiltakTest extends AbstractServiceroutineControllerI
                 .andExpect(status().isBadRequest())
                 .andReturn();
         
-        assertEquals("Følgende påkrevde felter mangler:[typeSikkerhetsTiltak]", result.getResolvedException().getMessage());
+        assertEquals("F\u00F8lgende p\u00E5krevde felter mangler: [typeSikkerhetsTiltak]", result.getResolvedException().getMessage());
         
         verify(messageQueueConsumer, Mockito.never()).sendMessage(any());
     }
