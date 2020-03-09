@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.service.command.tps.servicerutiner.utils;
 
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,9 +18,7 @@ public class RsTpsRequestMappingUtils {
 
     private final ObjectMapper objectMapper;
     private final MessageProvider messageProvider;
-
-    @Autowired
-    private GetTpsServiceRutinerService getTpsServiceRutinerService;
+    private final GetTpsServiceRutinerService getTpsServiceRutinerService;
 
     public <T> T convert(Map<String, Object> params, Class<T> type) {
         return objectMapper.convertValue(params, type);

@@ -27,21 +27,21 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.GetTpsServiceRu
 public class RsTpsRequestMappingUtilsTest {
 
     @Mock
-    private ObjectMapper objectMapperMock;
+    private ObjectMapper objectMapper;
 
     @Mock
-    private GetTpsServiceRutinerService serviceMock;
+    private GetTpsServiceRutinerService getTpsServiceRutinerService;
 
     @InjectMocks
-    private RsTpsRequestMappingUtils utils;
+    private RsTpsRequestMappingUtils rsTpsRequestMappingUtils;
 
     @Test
     public void convertConvertsToTypeAndReturnsResult() {
         Object val = new Object();
         Map<String, Object> params = new HashMap<>();
-        doReturn(val).when(objectMapperMock).convertValue(params, Object.class);
+        doReturn(val).when(objectMapper).convertValue(params, Object.class);
 
-        Object result = utils.convert(params, Object.class);
+        Object result = rsTpsRequestMappingUtils.convert(params, Object.class);
 
         assertThat(result, is(sameInstance(val)));
     }
@@ -52,14 +52,14 @@ public class RsTpsRequestMappingUtilsTest {
         doReturn("name").when(routine).getName();
         doReturn(TpsHentPersonServiceRoutineRequest.class).when(routine).getJavaClass();
         List<TpsServiceRoutineDefinitionRequest> routines = Collections.singletonList(routine);
-        when(serviceMock.execute()).thenReturn(routines);
+        when(getTpsServiceRutinerService.execute()).thenReturn(routines);
 
         Map parametersMap = mock(Map.class);
 
         TpsHentPersonServiceRoutineRequest respMock = mock(TpsHentPersonServiceRoutineRequest.class);
-        when(objectMapperMock.convertValue(parametersMap, TpsHentPersonServiceRoutineRequest.class)).thenReturn(respMock);
+        when(objectMapper.convertValue(parametersMap, TpsHentPersonServiceRoutineRequest.class)).thenReturn(respMock);
 
-        TpsServiceRoutineRequest result = utils.convertToTpsServiceRoutineRequest("name", parametersMap);
+        TpsServiceRoutineRequest result = rsTpsRequestMappingUtils.convertToTpsServiceRoutineRequest("name", parametersMap);
 
         assertThat(result, is(sameInstance(respMock)));
     }
