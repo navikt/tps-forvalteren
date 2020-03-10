@@ -2,15 +2,15 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.ENKE_ELLER_ENKEMANN;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.GIFT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.GJENLEVENDE_PARTNER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.REGISTRERT_PARTNER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SEPARERT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SEPARERT_PARTNER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SKILT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SKILT_PARTNER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GJENLEVENDE_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +22,7 @@ import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.domain.service.Sivilstand;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @Service
@@ -61,7 +61,7 @@ public class ValidateSivilstandService {
 
         for (int i = 0; i < request.getRelasjoner().getPartnere().size(); i++) {
             for (int j = 0; j < request.getRelasjoner().getPartnere().get(i).getSivilstander().size(); j++) {
-                if (!Sivilstand.exists(request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstand())) {
+                if (!Sivilstatus.exists(request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstand())) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.ugyldig-kode",
                             request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstand()));
                 }
@@ -142,7 +142,7 @@ public class ValidateSivilstandService {
         validateUgiftAndSivilstandHistorikk(harVaertGift, sivilstand, ENKE_ELLER_ENKEMANN, GJENLEVENDE_PARTNER, "bestilling.input.validation.sivilstand.enke.ugift");
     }
 
-    private void validateUgiftAndSivilstandHistorikk(boolean harVaertGift, RsSivilstandRequest sivilstand, Sivilstand gift, Sivilstand partner, String error) {
+    private void validateUgiftAndSivilstandHistorikk(boolean harVaertGift, RsSivilstandRequest sivilstand, Sivilstatus gift, Sivilstatus partner, String error) {
         if (!harVaertGift && gift.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
                 partner.getKodeverkskode().equals(sivilstand.getSivilstand())) {
             throw new TpsfFunctionalException(messageProvider.get(error));

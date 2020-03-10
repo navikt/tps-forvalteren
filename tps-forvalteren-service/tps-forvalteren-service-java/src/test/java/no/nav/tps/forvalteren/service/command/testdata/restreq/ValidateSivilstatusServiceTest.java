@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Collections.singletonList;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.ENKE_ELLER_ENKEMANN;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.GIFT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.REGISTRERT_PARTNER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SEPARERT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SKILT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +27,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ValidateSivilstandServiceTest {
+public class ValidateSivilstatusServiceTest {
 
     private static final String UGYLDIG = "TULL";
 

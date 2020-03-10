@@ -13,6 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,10 +45,11 @@ public class EndrePersonBestillingService {
     private final PersonRepository personRepository;
     private final RandomAdresseService randomAdresseService;
     private final HentDatoFraIdentService hentDatoFraIdentService;
+    private final RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
 
-    public Person execute(String ident, RsPersonBestillingKriteriumRequest request) {
+    public List<Person> execute(String ident, RsPersonBestillingKriteriumRequest request) {
 
         Person person = personRepository.findByIdent(ident);
 
@@ -57,8 +59,10 @@ public class EndrePersonBestillingService {
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
         updateInnvandringUtvandring(request, person);
+        List<Person> personer = relasjonNyePersonerBestillingService.makeRelasjoner(request, person);
 
-        return personRepository.save(person);
+        personRepository.save(personer.get(0));
+        return personer;
     }
 
     private void updateInnvandringUtvandring(RsPersonBestillingKriteriumRequest request, Person person) {

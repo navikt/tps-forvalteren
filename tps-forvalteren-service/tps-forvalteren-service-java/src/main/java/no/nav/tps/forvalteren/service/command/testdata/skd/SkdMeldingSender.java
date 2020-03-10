@@ -3,7 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.fetchSivilstand;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.fetchSivilstand;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;

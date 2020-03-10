@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.lookup;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.lookup;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.Sivilstand;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 
@@ -83,8 +83,8 @@ public class SivilstandSkdParameterStrategy {
         return ident.substring(6, 11);
     }
 
-    private static String getAarsakskode(Sivilstand sivilstand) {
-        switch (sivilstand) {
+    private static String getAarsakskode(Sivilstatus sivilstatus) {
+        switch (sivilstatus) {
         case GIFT:
             return AARSAKSKODE_FOR_VIGSEL;
         case REGISTRERT_PARTNER:

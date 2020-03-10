@@ -34,10 +34,14 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
+/**
+ * Denne klasse benyttes for å knytte sammen eksisterende personer <br>
+ * partner og barn eksisterer alle fra før og nyttes sammen i relasjon ved denne bestilling
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RelasjonPersonBestillingService {
+public class RelasjonEksisterendePersonerBestillingService {
 
     private final PersonRepository personRepository;
     private final RandomAdresseService randomAdresseService;

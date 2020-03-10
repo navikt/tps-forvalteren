@@ -43,7 +43,7 @@ import no.nav.tps.forvalteren.service.command.testdata.restreq.EndrePersonBestil
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonIdenthistorikkService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
-import no.nav.tps.forvalteren.service.command.testdata.restreq.RelasjonPersonBestillingService;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.RelasjonEksisterendePersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @Slf4j
@@ -65,7 +65,7 @@ public class TestdataBestillingsController {
     private final PersonService personService;
     private final PersonIdenthistorikkService personIdenthistorikkService;
     private final EndrePersonBestillingService endrePersonBestillingService;
-    private final RelasjonPersonBestillingService relasjonPersonBestillingService;
+    private final RelasjonEksisterendePersonerBestillingService relasjonEksisterendePersonerBestillingService;
     private final MapperFacade mapperFacade;
 
     @Transactional
@@ -150,9 +150,9 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
     @RequestMapping(value = "/oppdaterperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public RsPerson oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
+    public List<RsPerson> oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
 
-        return mapperFacade.map(endrePersonBestillingService.execute(ident, request), RsPerson.class);
+        return mapperFacade.mapAsList(endrePersonBestillingService.execute(ident, request), RsPerson.class);
     }
 
     @LogExceptions
@@ -161,6 +161,6 @@ public class TestdataBestillingsController {
     @ResponseStatus(HttpStatus.OK)
     public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
 
-        return relasjonPersonBestillingService.makeRelasjon(ident, request);
+        return relasjonEksisterendePersonerBestillingService.makeRelasjon(ident, request);
     }
 }
