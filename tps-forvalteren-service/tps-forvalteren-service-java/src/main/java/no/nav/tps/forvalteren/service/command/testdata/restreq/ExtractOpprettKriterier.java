@@ -147,7 +147,9 @@ public class ExtractOpprettKriterier {
                 for (int j = 0; j < antallPartnere; j++) {
                     RsPartnerRequest partnerRequest = req.getRelasjoner().getPartnere().get(j);
                     partnerRequest.setPostadresse(
-                            mapperFacade.mapAsList(nullcheckSetDefaultValue(partnerRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
+                            mapperFacade.mapAsList(
+                                    !partnerRequest.getPostadresse().isEmpty() ? partnerRequest.getPostadresse() : req.getPostadresse(),
+                                    RsPostadresse.class));
                     mapperFacade.map(partnerRequest, partnere.get(partnerStartIndex + j));
                     Adresse adresse;
                     if (nonNull(partnerRequest.getBoadresse())) {
@@ -174,9 +176,12 @@ public class ExtractOpprettKriterier {
 
                 for (int j = 0; j < antallBarn; j++) {
                     RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
-                    barnRequest.setPostadresse(mapperFacade.mapAsList(nullcheckSetDefaultValue(barnRequest.getPostadresse(), req.getPostadresse()), RsPostadresse.class));
+                    barnRequest.setPostadresse(mapperFacade.mapAsList(
+                            !barnRequest.getPostadresse().isEmpty() ? barnRequest.getPostadresse() : req.getPostadresse(),
+                            RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    if (hasAdresse(barnRequest)) {
+                    if (hasAdresse(barnRequest) && (
+                            hasBoadresse(hovedPersoner.get(i)) || hasBoadressePartner(partnere, getPartnerNr(j, antallPartnere)))) {
                         mapBoadresse(barn.get(barnStartIndex + j),
                                 (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
                                         hovedPersoner.get(i).getBoadresse().get(0) :
@@ -216,6 +221,10 @@ public class ExtractOpprettKriterier {
         return !adresser.isEmpty() ? adresser.get(index % adresser.size()) : null;
     }
 
+    private static boolean hasBoadressePartner(List<Person> partnere, int partnerNr) {
+        return !partnere.isEmpty() && !partnere.get(partnerNr).getBoadresse().isEmpty();
+    }
+
     private List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
 
         return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
@@ -247,6 +256,10 @@ public class ExtractOpprettKriterier {
 
     private static boolean hasAdresse(Person person) {
         return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet();
+    }
+
+    private static boolean hasBoadresse(Person person) {
+        return nonNull(person) && !person.getBoadresse().isEmpty();
     }
 
     private static boolean hasAdresse(RsBarnRequest request) {
