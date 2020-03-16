@@ -6,6 +6,7 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,8 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOg
 
 /**
  * Denne klasse benyttes for å legge til nye personer <br>
- * nye partner(e) og nye barn eksisterer ikke fra før og opprettes ved denne bestillingen
+ * nye partner(e) og nye barn eksisterer ikke fra før og opprettes ved denne bestillingen <br>
+ * Hvis hovedperson har partner(e) fra før betyr første partner i denne bestilling en oppdatering av sivilstand på forrige partner
  */
 @Service
 @Transactional
@@ -59,7 +61,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
 
         setIdenthistorikkPaaPersoner(request, singletonList(hovedperson), partnere, barn);
         setRelasjonerPaaPersoner(singletonList(hovedperson), partnere, barn, request);
-        setSivilstandHistorikkPaaPersoner(request, singletonList(hovedperson));
+        setSivilstandHistorikkPaaPersoner(request, hovedperson);
 
         List<Person> tpsfPersoner = relasjonExtractOpprettKriterier
                 .addExtendedKriterumValuesToPerson(request, singletonList(hovedperson), partnere, barn);
@@ -97,5 +99,26 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
             }
         }
         return false;
+    }
+
+    private static void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, Person person) {
+
+        List<Relasjon> partnerRelasjoner = person.getRelasjoner().stream()
+                .filter(relasjon -> relasjon.isPartner())
+                .collect(Collectors.toList());
+
+        List<Relasjon> nyePartnerRelasjoner = partnerRelasjoner.subList(
+                partnerRelasjoner.size() - request.getRelasjoner().getPartnere().size(),
+                partnerRelasjoner.size());
+
+        for (int i = 0; i < request.getRelasjoner().getPartnere().size(); i++) {
+
+            for (int j = 0; j < request.getRelasjoner().getPartnere().get(i).getSivilstander().size(); j++) {
+
+                setSivilstandHistory(person, nyePartnerRelasjoner.get(i),
+                        request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstand(),
+                        request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstandRegdato());
+            }
+        }
     }
 }

@@ -1,11 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -123,9 +121,6 @@ public class EndrePersonBestillingServiceTest {
                 .build();
         when(personRepository.findByIdent(IDENT)).thenReturn(person);
 
-        when(relasjonNyePersonerBestillingService.makeRelasjoner(any(RsPersonBestillingKriteriumRequest.class), any(Person.class)))
-                .thenReturn(singletonList(person));
-
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
 
         endrePersonBestillingService.execute(IDENT, request);
@@ -146,9 +141,6 @@ public class EndrePersonBestillingServiceTest {
                         .build()))
                 .build();
         when(personRepository.findByIdent(IDENT)).thenReturn(person);
-
-        when(relasjonNyePersonerBestillingService.makeRelasjoner(any(RsPersonBestillingKriteriumRequest.class), any(Person.class)))
-                .thenReturn(singletonList(person));
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setUtvandretTilLand("NRG");

@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -49,7 +51,7 @@ public class EndrePersonBestillingService {
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
 
-    public List<Person> execute(String ident, RsPersonBestillingKriteriumRequest request) {
+    public List<String> execute(String ident, RsPersonBestillingKriteriumRequest request) {
 
         Person person = personRepository.findByIdent(ident);
 
@@ -59,10 +61,17 @@ public class EndrePersonBestillingService {
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
         updateInnvandringUtvandring(request, person);
-        List<Person> personer = relasjonNyePersonerBestillingService.makeRelasjoner(request, person);
+        relasjonNyePersonerBestillingService.makeRelasjoner(request, person);
 
-        personRepository.save(personer.get(0));
-        return personer;
+        personRepository.save(person);
+
+        List<String> identer = person.getRelasjoner().stream()
+                .map(Relasjon::getPersonRelasjonMed)
+                .map(Person::getIdent)
+                .collect(Collectors.toList());
+        identer.add(0, person.getIdent());
+
+        return identer;
     }
 
     private void updateInnvandringUtvandring(RsPersonBestillingKriteriumRequest request, Person person) {

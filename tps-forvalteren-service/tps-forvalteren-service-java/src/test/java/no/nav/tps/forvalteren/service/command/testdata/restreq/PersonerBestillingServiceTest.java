@@ -39,7 +39,7 @@ public class PersonerBestillingServiceTest {
     private static final LocalDateTime DATO_4 = LocalDateTime.of(2015, 1, 1, 0, 0);
 
     @InjectMocks
-    PersonerBestillingService service;
+    PersonerBestillingService personerBestillingService;
 
     private RsPersonBestillingKriteriumRequest personBestillingKriteriumRequest;
 
@@ -59,7 +59,7 @@ public class PersonerBestillingServiceTest {
         Person mann1 = Person.builder().kjonn("M").build();
         Person mann2 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), emptyList(), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), emptyList(), personBestillingKriteriumRequest);
 
         assertThat(mann1.getRelasjoner().size(), is(1));
         assertThat(mann2.getRelasjoner().size(), is(1));
@@ -77,7 +77,7 @@ public class PersonerBestillingServiceTest {
         Person mann = Person.builder().kjonn("M").build();
         Person barn = Person.builder().kjonn("K").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(mann), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(1));
         assertThat(barn.getRelasjoner().size(), is(1));
@@ -92,7 +92,7 @@ public class PersonerBestillingServiceTest {
         Person kvinne = Person.builder().kjonn("K").build();
         Person barn = Person.builder().kjonn("K").build();
 
-        service.setRelasjonerPaaPersoner(asList(kvinne), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(kvinne), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(kvinne.getRelasjoner().size(), is(1));
         assertThat(barn.getRelasjoner().size(), is(1));
@@ -108,7 +108,7 @@ public class PersonerBestillingServiceTest {
         Person kvinne = Person.builder().kjonn("K").build();
         Person barn = Person.builder().kjonn("K").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(2));
         assertThat(kvinne.getRelasjoner().size(), is(2));
@@ -132,7 +132,7 @@ public class PersonerBestillingServiceTest {
         Person barn1 = Person.builder().kjonn("K").build();
         Person barn2 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn1, barn2), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn1, barn2), personBestillingKriteriumRequest);
 
         assertThat(mann.getRelasjoner().size(), is(3));
         assertThat(kvinne.getRelasjoner().size(), is(3));
@@ -163,7 +163,7 @@ public class PersonerBestillingServiceTest {
         mann2.setKjonn("M");
         barn.setKjonn("K");
 
-        service.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), asList(barn), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), asList(barn), personBestillingKriteriumRequest);
 
         assertThat(mann1.getRelasjoner().size(), is(2));
         assertThat(mann2.getRelasjoner().size(), is(2));
@@ -196,7 +196,7 @@ public class PersonerBestillingServiceTest {
         Person barn5 = Person.builder().kjonn("K").build();
         Person barn6 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(
+        personerBestillingService.setRelasjonerPaaPersoner(
                 asList(mann, kvinne),
                 asList(partner1, partner2, partner3, partner4),
                 asList(barn1, barn2, barn3, barn4, barn5, barn6),
@@ -257,7 +257,7 @@ public class PersonerBestillingServiceTest {
         Person partner = Person.builder().kjonn("K").build();
         Person barn = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn), personBestillingKriteriumRequest);
 
         RsPartnerRequest partnerRequest = new RsPartnerRequest();
         partnerRequest.setSivilstander(asList(RsSivilstandRequest.builder()
@@ -272,7 +272,7 @@ public class PersonerBestillingServiceTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.getRelasjoner().getPartnere().add(partnerRequest);
 
-        service.setSivilstandHistorikkPaaPersoner(request, asList(person));
+        personerBestillingService.setSivilstandHistorikkPaaPersoner(request, asList(person));
 
         assertThat(person.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(partner)));
         assertThat(person.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));
@@ -300,7 +300,7 @@ public class PersonerBestillingServiceTest {
         Person barn1 = Person.builder().kjonn("M").build();
         Person barn2 = Person.builder().kjonn("M").build();
 
-        service.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2), personBestillingKriteriumRequest);
+        personerBestillingService.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2), personBestillingKriteriumRequest);
 
         RsPartnerRequest partner1Request = new RsPartnerRequest();
         partner1Request.setSivilstander(asList(RsSivilstandRequest.builder()
@@ -325,7 +325,7 @@ public class PersonerBestillingServiceTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.getRelasjoner().getPartnere().addAll(asList(partner1Request, partner2Request));
 
-        service.setSivilstandHistorikkPaaPersoner(request, asList(person));
+        personerBestillingService.setSivilstandHistorikkPaaPersoner(request, asList(person));
 
         assertThat(person.getSivilstander().get(0).getPersonRelasjonMed(), is(equalTo(partner1)));
         assertThat(person.getSivilstander().get(0).getSivilstand(), is(equalTo(SKILT.getKodeverkskode())));

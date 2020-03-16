@@ -66,7 +66,6 @@ public class TestdataBestillingsController {
     private final PersonIdenthistorikkService personIdenthistorikkService;
     private final EndrePersonBestillingService endrePersonBestillingService;
     private final RelasjonEksisterendePersonerBestillingService relasjonEksisterendePersonerBestillingService;
-    private final MapperFacade mapperFacade;
 
     @Transactional
     @LogExceptions
@@ -148,11 +147,11 @@ public class TestdataBestillingsController {
 
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
-    @RequestMapping(value = "/oppdaterperson", method = RequestMethod.POST)
+    @RequestMapping(value = "/leggtilpaaperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public List<RsPerson> oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
+    public List<String> oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
 
-        return mapperFacade.mapAsList(endrePersonBestillingService.execute(ident, request), RsPerson.class);
+        return endrePersonBestillingService.execute(ident, request);
     }
 
     @LogExceptions

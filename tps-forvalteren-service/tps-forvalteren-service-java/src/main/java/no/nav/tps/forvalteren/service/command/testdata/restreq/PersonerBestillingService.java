@@ -136,7 +136,7 @@ public class PersonerBestillingService {
         });
     }
 
-    private static boolean isNotUgiftAndNotSamboer(String sivilstand) {
+    protected static boolean isNotUgiftAndNotSamboer(String sivilstand) {
 
         return isNotBlank(sivilstand) && !UGIFT.getKodeverkskode().equals(sivilstand) && !SAMBOER.getKodeverkskode().equals(sivilstand);
     }
