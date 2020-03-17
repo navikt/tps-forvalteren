@@ -233,7 +233,6 @@ public class ExtractOpprettKriterier {
         return !partnere.isEmpty() && !partnere.get(partnerNr).getBoadresse().isEmpty();
     }
 
-    private List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
     protected List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
 
         return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
