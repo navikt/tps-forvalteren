@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
@@ -149,7 +150,7 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
     @RequestMapping(value = "/leggtilpaaperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public List<String> oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
+    public RsOppdaterPersonResponse oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
 
         return endrePersonBestillingService.execute(ident, request);
     }

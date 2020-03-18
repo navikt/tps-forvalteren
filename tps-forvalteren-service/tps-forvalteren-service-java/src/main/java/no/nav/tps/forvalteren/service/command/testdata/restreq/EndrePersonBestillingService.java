@@ -33,6 +33,7 @@ import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -51,7 +52,7 @@ public class EndrePersonBestillingService {
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
 
-    public List<String> execute(String ident, RsPersonBestillingKriteriumRequest request) {
+    public RsOppdaterPersonResponse execute(String ident, RsPersonBestillingKriteriumRequest request) {
 
         Person person = personRepository.findByIdent(ident);
 
@@ -61,17 +62,24 @@ public class EndrePersonBestillingService {
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
         updateInnvandringUtvandring(request, person);
-        relasjonNyePersonerBestillingService.makeRelasjoner(request, person);
+
+        List<String> nyeIdenter = relasjonNyePersonerBestillingService.makeRelasjoner(request, person)
+                .stream().map(Person::getIdent).collect(Collectors.toList());
 
         personRepository.save(person);
 
-        List<String> identer = person.getRelasjoner().stream()
+        List<RsOppdaterPersonResponse.IdentTuple> identer = person.getRelasjoner().stream()
                 .map(Relasjon::getPersonRelasjonMed)
                 .map(Person::getIdent)
+                .map(ident1 -> RsOppdaterPersonResponse.IdentTuple.builder()
+                                .ident(ident1)
+                                .lagtTil(nyeIdenter.contains(ident1))
+                                .build())
                 .collect(Collectors.toList());
-        identer.add(0, person.getIdent());
 
-        return identer;
+        identer.add(0, RsOppdaterPersonResponse.IdentTuple.builder().ident(person.getIdent()).build());
+
+        return RsOppdaterPersonResponse.builder().identTupler(identer).build();
     }
 
     private void updateInnvandringUtvandring(RsPersonBestillingKriteriumRequest request, Person person) {
