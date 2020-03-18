@@ -104,7 +104,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
     private static void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, Person person) {
 
         List<Relasjon> partnerRelasjoner = person.getRelasjoner().stream()
-                .filter(relasjon -> relasjon.isPartner())
+                .filter(Relasjon::isPartner)
                 .collect(Collectors.toList());
 
         List<Relasjon> nyePartnerRelasjoner = partnerRelasjoner.subList(

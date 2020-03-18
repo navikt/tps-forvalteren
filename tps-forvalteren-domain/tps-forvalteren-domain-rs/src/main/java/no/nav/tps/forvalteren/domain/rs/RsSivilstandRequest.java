@@ -27,8 +27,8 @@ public class RsSivilstandRequest {
         case REGISTRERT_PARTNER:
         case SEPARERT_PARTNER:
             return true;
+        default:
+            return false;
         }
-
-        return false;
     }
 }
