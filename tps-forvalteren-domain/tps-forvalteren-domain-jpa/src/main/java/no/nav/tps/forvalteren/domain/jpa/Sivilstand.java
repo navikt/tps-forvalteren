@@ -52,4 +52,18 @@ public class Sivilstand {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PERSON_RELASJON_MED")
     private Person personRelasjonMed;
+
+
+    public boolean isSivilstandGift() {
+
+        switch (Sivilstatus.lookup(getSivilstand())) {
+        case GIFT:
+        case SEPARERT:
+        case REGISTRERT_PARTNER:
+        case SEPARERT_PARTNER:
+            return true;
+        default:
+            return false;
+        }
+    }
 }

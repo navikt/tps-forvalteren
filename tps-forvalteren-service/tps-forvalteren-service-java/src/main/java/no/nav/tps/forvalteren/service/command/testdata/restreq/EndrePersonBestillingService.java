@@ -13,10 +13,12 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +30,10 @@ import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -44,10 +48,11 @@ public class EndrePersonBestillingService {
     private final PersonRepository personRepository;
     private final RandomAdresseService randomAdresseService;
     private final HentDatoFraIdentService hentDatoFraIdentService;
+    private final RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
 
-    public Person execute(String ident, RsPersonBestillingKriteriumRequest request) {
+    public RsOppdaterPersonResponse execute(String ident, RsPersonBestillingKriteriumRequest request) {
 
         Person person = personRepository.findByIdent(ident);
 
@@ -58,7 +63,23 @@ public class EndrePersonBestillingService {
         updateStatsborgerskap(request, person);
         updateInnvandringUtvandring(request, person);
 
-        return personRepository.save(person);
+        List<String> nyeIdenter = relasjonNyePersonerBestillingService.makeRelasjoner(request, person)
+                .stream().map(Person::getIdent).collect(Collectors.toList());
+
+        personRepository.save(person);
+
+        List<RsOppdaterPersonResponse.IdentTuple> identer = person.getRelasjoner().stream()
+                .map(Relasjon::getPersonRelasjonMed)
+                .map(Person::getIdent)
+                .map(ident1 -> RsOppdaterPersonResponse.IdentTuple.builder()
+                                .ident(ident1)
+                                .lagtTil(nyeIdenter.contains(ident1))
+                                .build())
+                .collect(Collectors.toList());
+
+        identer.add(0, RsOppdaterPersonResponse.IdentTuple.builder().ident(person.getIdent()).build());
+
+        return RsOppdaterPersonResponse.builder().identTupler(identer).build();
     }
 
     private void updateInnvandringUtvandring(RsPersonBestillingKriteriumRequest request, Person person) {

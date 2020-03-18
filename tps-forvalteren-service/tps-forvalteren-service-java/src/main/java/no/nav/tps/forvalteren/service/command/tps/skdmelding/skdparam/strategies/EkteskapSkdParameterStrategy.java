@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.RelasjonType;
-import no.nav.tps.forvalteren.domain.service.Sivilstand;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -80,10 +80,10 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
         if (person.getKjonn().equals(ektefelle.get().getKjonn())) {
             skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
-            skdMeldingTrans1.setSivilstand(Sivilstand.REGISTRERT_PARTNER.getRelasjonTypeKode());
+            skdMeldingTrans1.setSivilstand(Sivilstatus.REGISTRERT_PARTNER.getRelasjonTypeKode());
         } else {
             skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VIGSEL);
-            skdMeldingTrans1.setSivilstand(Sivilstand.GIFT.getRelasjonTypeKode());
+            skdMeldingTrans1.setSivilstand(Sivilstatus.GIFT.getRelasjonTypeKode());
         }
 
         skdMeldingTrans1.setFamilienummer(ektefelle.get().getIdent());
@@ -95,8 +95,8 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
         skdMeldingTrans1.setVigselstype(Integer.toString(1));
 
-        skdMeldingTrans1.setTidligereSivilstand(Sivilstand.UGIFT.getRelasjonTypeKode());
-        skdMeldingTrans1.setEktefelleTidligereSivilstand(Sivilstand.UGIFT.getRelasjonTypeKode());
+        skdMeldingTrans1.setTidligereSivilstand(Sivilstatus.UGIFT.getRelasjonTypeKode());
+        skdMeldingTrans1.setEktefelleTidligereSivilstand(Sivilstatus.UGIFT.getRelasjonTypeKode());
 
         skdMeldingTrans1.setVigselskommune("0301"); // OSLO kommunenummer.
     }

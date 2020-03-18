@@ -16,7 +16,7 @@ import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
-import no.nav.tps.forvalteren.domain.service.Sivilstand;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
@@ -70,7 +70,7 @@ public class UtvandringOgInnvandringSkdParameterStrategy {
                 .personkode("1")
                 .spesRegType(isNotBlank(person.getSpesreg()) ? DiskresjonskoderType.valueOf(person.getSpesreg()).getKodeverdi() : null)
                 .datoSpesRegType(ConvertDateToString.yyyyMMdd(person.getSpesregDato()))
-                .sivilstand(Sivilstand.lookup(person.getSivilstand()).getRelasjonTypeKode())
+                .sivilstand(Sivilstatus.lookup(person.getSivilstand()).getRelasjonTypeKode())
                 .regdatoSivilstand(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(person.getSivilstandRegdato())))
                 .build();
 

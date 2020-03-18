@@ -42,6 +42,9 @@ public class EndrePersonBestillingServiceTest {
     private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Mock
+    private RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
+
+    @Mock
     private MessageProvider messageProvider;
 
     @InjectMocks

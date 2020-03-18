@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
 import static javax.persistence.GenerationType.SEQUENCE;
+import static no.nav.tps.forvalteren.domain.jpa.Relasjon.ROLLE.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,8 @@ import lombok.Setter;
 @Table(name = "T_RELASJON")
 public class Relasjon {
 
+    public enum ROLLE {PARTNER, EKTEFELLE, MOR, FAR, FOEDSEL, BARN}
+
     private static final String SEQ = "T_RELASJON_SEQ";
 
     @Id
@@ -45,4 +48,20 @@ public class Relasjon {
 
     @Column(name = "RELASJON_TYPE_NAVN", nullable = false)
     private String relasjonTypeNavn;
+
+    public boolean isPartner() {
+        return PARTNER.name().equals(getRelasjonTypeNavn()) || EKTEFELLE.name().equals(getRelasjonTypeNavn());
+    }
+
+    public boolean isBarn() {
+        return FOEDSEL.name().equals(getRelasjonTypeNavn()) || BARN.name().equals(getRelasjonTypeNavn());
+    }
+
+    public boolean isMor() {
+        return MOR.name().equals(getRelasjonTypeNavn());
+    }
+
+    public boolean isFar() {
+        return FAR.name().equals(getRelasjonTypeNavn());
+    }
 }

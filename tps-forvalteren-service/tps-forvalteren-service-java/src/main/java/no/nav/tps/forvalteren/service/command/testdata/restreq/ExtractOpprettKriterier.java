@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
@@ -45,14 +45,22 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Land
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ExtractOpprettKriterier {
 
-    private final MapperFacade mapperFacade;
-    private final RandomAdresseService randomAdresseService;
-    private final HentDatoFraIdentService hentDatoFraIdentService;
-    private final LandkodeEncoder landkodeEncoder;
-    private final DummyAdresseService dummyAdresseService;
+    @Autowired
+    private MapperFacade mapperFacade;
+
+    @Autowired
+    private RandomAdresseService randomAdresseService;
+
+    @Autowired
+    private HentDatoFraIdentService hentDatoFraIdentService;
+
+    @Autowired
+    private LandkodeEncoder landkodeEncoder;
+
+    @Autowired
+    private DummyAdresseService dummyAdresseService;
 
     public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest request) {
 
@@ -136,7 +144,7 @@ public class ExtractOpprettKriterier {
         return personer;
     }
 
-    private void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
+    protected void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
 
         if (!req.getRelasjoner().getPartnere().isEmpty()) {
             int antallPartnere = partnere.size() / hovedPersoner.size();
@@ -165,7 +173,7 @@ public class ExtractOpprettKriterier {
         }
     }
 
-    private void mapBarn(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
+    protected void mapBarn(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
         if (!req.getRelasjoner().getBarn().isEmpty()) {
             int antallBarn = barn.size() / hovedPersoner.size();
@@ -225,7 +233,7 @@ public class ExtractOpprettKriterier {
         return !partnere.isEmpty() && !partnere.get(partnerNr).getBoadresse().isEmpty();
     }
 
-    private List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
+    protected List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
 
         return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
     }

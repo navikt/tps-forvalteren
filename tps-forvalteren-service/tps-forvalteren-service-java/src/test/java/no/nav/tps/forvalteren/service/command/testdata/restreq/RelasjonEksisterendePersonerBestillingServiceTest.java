@@ -34,7 +34,7 @@ import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RelasjonPersonBestillingServiceTest {
+public class RelasjonEksisterendePersonerBestillingServiceTest {
 
     private static final String IDENT_HOVEDPERSON = "11111111111";
     private static final String IDENT_PARTNER = "22222222222";
@@ -60,7 +60,7 @@ public class RelasjonPersonBestillingServiceTest {
     private ValidateRelasjonerService validateRelasjonerService;
 
     @InjectMocks
-    private RelasjonPersonBestillingService relasjonPersonBestillingService;
+    private RelasjonEksisterendePersonerBestillingService relasjonEksisterendePersonerBestillingService;
 
     private ArgumentCaptor<Person> argumentCaptor;
 
@@ -75,7 +75,7 @@ public class RelasjonPersonBestillingServiceTest {
         when(randomAdresseService.execute(anyList(), any())).thenReturn(newArrayList(Person.builder().build()));
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(null, null));
+        relasjonEksisterendePersonerBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(null, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(argumentCaptor.getValue().getIdent(), is(equalTo(IDENT_HOVEDPERSON)));
@@ -119,7 +119,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true, null));
+        relasjonEksisterendePersonerBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -155,7 +155,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, null));
+        relasjonEksisterendePersonerBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -193,7 +193,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, null));
+        relasjonEksisterendePersonerBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, null));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -234,7 +234,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true, BorHos.OSS));
+        relasjonEksisterendePersonerBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(true, BorHos.OSS));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));
@@ -276,7 +276,7 @@ public class RelasjonPersonBestillingServiceTest {
 
         argumentCaptor = ArgumentCaptor.forClass(Person.class);
 
-        relasjonPersonBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, BorHos.DEG));
+        relasjonEksisterendePersonerBestillingService.makeRelasjon(IDENT_HOVEDPERSON, buildRequest(false, BorHos.DEG));
         verify(personRepository).save(argumentCaptor.capture());
 
         assertThat(((Gateadresse) argumentCaptor.getValue().getBoadresse().get(0)).getAdresse(), is(equalTo(GATENAVN_1)));

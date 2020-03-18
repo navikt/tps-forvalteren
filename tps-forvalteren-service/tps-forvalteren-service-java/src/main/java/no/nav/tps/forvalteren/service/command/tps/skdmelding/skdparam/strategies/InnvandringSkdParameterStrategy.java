@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
-import no.nav.tps.forvalteren.domain.service.Sivilstand;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
@@ -52,7 +52,7 @@ public abstract class InnvandringSkdParameterStrategy implements SkdParametersSt
         skdMeldingTrans1.setRegdatoStatsb(ConvertDateToString.yyyyMMdd(enforceValidTpsDate(getFirstStatsborgerskapRegdato(person))));
         skdMeldingTrans1.setFamilienummer(person.getIdent());
 
-        skdMeldingTrans1.setSivilstand(Sivilstand.lookup(person.getSivilstand()).getRelasjonTypeKode());
+        skdMeldingTrans1.setSivilstand(Sivilstatus.lookup(person.getSivilstand()).getRelasjonTypeKode());
         skdMeldingTrans1.setInnvandretFraLand(landkodeEncoder.encode(person.getLandkodeOfFirstInnvandret()));
 
         String yyyyMMdd = ConvertDateToString.yyyyMMdd(enforceValidTpsDate(person.getRegdato()));

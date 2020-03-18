@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 
 @Getter
 @Setter
@@ -17,4 +18,17 @@ public class RsSivilstandRequest {
 
     private String sivilstand;
     private LocalDateTime sivilstandRegdato;
+
+    public boolean isSivilstandGift() {
+
+        switch (Sivilstatus.lookup(getSivilstand())) {
+        case GIFT:
+        case SEPARERT:
+        case REGISTRERT_PARTNER:
+        case SEPARERT_PARTNER:
+            return true;
+        default:
+            return false;
+        }
+    }
 }

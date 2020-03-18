@@ -18,7 +18,7 @@ import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies.SivilstandSkdParameterStrategy;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SivilstandMeldingerTest {
+public class SivilstatusMeldingerTest {
 
     private static final String IDENT = "12345678901";
     private static final Person PERSON_RELASJON_MED = Person.builder().ident(IDENT).build();

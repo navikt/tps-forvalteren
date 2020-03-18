@@ -4,6 +4,9 @@ import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SAMBOER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BarnType.DITT;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BarnType.FELLES;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BarnType.MITT;
@@ -12,9 +15,6 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.GIFT;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.SAMBOER;
-import static no.nav.tps.forvalteren.domain.service.Sivilstand.UGIFT;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
@@ -136,12 +136,12 @@ public class PersonerBestillingService {
         });
     }
 
-    private static boolean isNotUgiftAndNotSamboer(String sivilstand) {
+    protected static boolean isNotUgiftAndNotSamboer(String sivilstand) {
 
         return isNotBlank(sivilstand) && !UGIFT.getKodeverkskode().equals(sivilstand) && !SAMBOER.getKodeverkskode().equals(sivilstand);
     }
 
-    private static void setSivilstandHistory(Person person, Relasjon relasjon, String sivilstand, LocalDateTime regdato) {
+    protected static void setSivilstandHistory(Person person, Relasjon relasjon, String sivilstand, LocalDateTime regdato) {
 
         person.getSivilstander().add(Sivilstand.builder()
                 .person(person)
@@ -159,7 +159,7 @@ public class PersonerBestillingService {
                         .build());
     }
 
-    private void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
+    protected void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
 
         hovedPersoner.forEach(hovedperson ->
                 personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
@@ -171,7 +171,7 @@ public class PersonerBestillingService {
         }
     }
 
-    private static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
+    protected static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
 
         List<Person> sorted = new ArrayList<>();
         if (!personer.isEmpty()) {

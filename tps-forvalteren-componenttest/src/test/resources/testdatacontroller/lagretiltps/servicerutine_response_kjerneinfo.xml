@@ -136,7 +136,7 @@
                         <adrSaksbehandler></adrSaksbehandler>
                     </fullPostAdresse>
                 </postAdresse>
-                <sivilstand>UGIF</sivilstand>
+                <sivilstatus>UGIF</sivilstatus>
                 <sivilstandDetalj>
                     <kodeSivilstand>UGIF</kodeSivilstand>
                     <kodeSivilstandBeskr>Ugift</kodeSivilstandBeskr>

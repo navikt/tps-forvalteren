@@ -1,9 +1,9 @@
-package no.nav.tps.forvalteren.domain.service;
+package no.nav.tps.forvalteren.domain.jpa;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Sivilstand {
+public enum Sivilstatus {
 
     UGIFT("1", "UGIF"),
     GIFT("2", "GIFT"),
@@ -16,11 +16,11 @@ public enum Sivilstand {
     GJENLEVENDE_PARTNER("9", "GJPA"),
     SAMBOER("1", "SAMB");
 
-    private static Map<String, Sivilstand> map = new HashMap<>();
+    private static Map<String, Sivilstatus> map = new HashMap<>();
 
     static {
-        for (Sivilstand sivilstand : Sivilstand.values()) {
-            map.put(sivilstand.kodeverkskode, sivilstand);
+        for (Sivilstatus sivilstatus : Sivilstatus.values()) {
+            map.put(sivilstatus.kodeverkskode, sivilstatus);
         }
     }
 
@@ -28,7 +28,7 @@ public enum Sivilstand {
 
     private final String kodeverkskode;
 
-    Sivilstand(final String sivilstandKode, String kodeverkkode) {
+    Sivilstatus(final String sivilstandKode, String kodeverkkode) {
         kode = sivilstandKode;
         this.kodeverkskode = kodeverkkode;
     }
@@ -41,11 +41,11 @@ public enum Sivilstand {
         return kodeverkskode;
     }
 
-    public static Sivilstand fetchSivilstand(String sivilstandKode) {
+    public static Sivilstatus fetchSivilstand(String sivilstandKode) {
         return values()[Integer.valueOf(sivilstandKode) - 1];
     }
 
-    public static Sivilstand lookup(String kodeverkkode) {
+    public static Sivilstatus lookup(String kodeverkkode) {
         return map.getOrDefault(kodeverkkode, UGIFT);
     }
 
