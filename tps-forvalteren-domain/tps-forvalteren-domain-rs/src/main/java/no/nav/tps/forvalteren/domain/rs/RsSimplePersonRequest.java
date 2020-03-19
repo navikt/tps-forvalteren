@@ -77,6 +77,14 @@ public class RsSimplePersonRequest {
 
     private LocalDateTime bankkontonrRegdato;
 
+    private String telefonLandskode_1;
+
+    private String telefonnummer_1;
+
+    private String telefonLandskode_2;
+
+    private String telefonnummer_2;
+
     public List<RsPostadresse> getPostadresse() {
         if (isNull(postadresse)) {
             postadresse = new ArrayList();

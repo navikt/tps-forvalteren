@@ -137,8 +137,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (isTrue(kriteriumRequest.getHarBankkontonr())) {
             person.setBankkontonr(kontonrGeneratorService.generateNumber());
-            person.setBankkontonrRegdato(nullcheckSetDefaultValue(kriteriumRequest.getBankkontonrRegdato(),
-                    hentDatoFraIdentService.extract(person.getIdent())));
+            person.setBankkontonrRegdato(nullcheckSetDefaultValue(kriteriumRequest.getBankkontonrRegdato(), LocalDateTime.now()));
         }
     }
 

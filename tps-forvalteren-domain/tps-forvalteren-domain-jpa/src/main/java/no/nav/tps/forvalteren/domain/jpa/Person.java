@@ -24,6 +24,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -166,8 +167,8 @@ public class Person extends ChangeStamp {
     private String gtRegel;
 
     @Column(name = "UTEN_FAST_BOPEL")
-    private Boolean utenFastBopel;
 
+    private Boolean utenFastBopel;
     @Column(name = "PERSON_STATUS")
     private String personStatus;
 
@@ -179,6 +180,19 @@ public class Person extends ChangeStamp {
 
     @Column(name = "BANKKONTONR_REGDATO")
     private LocalDateTime bankkontonrRegdato;
+
+    @Size(max = 6)
+    @Column(name = "TELEFON_LANDSKODE_1")
+    private String telefonLandskode_1;
+
+    @Column(name = "TELEFONNUMMER_1")
+    private String telefonnummer_1;
+
+    @Column(name = "TELEFON_LANDSKODE_2")
+    private String telefonLandskode_2;
+
+    @Column(name = "TELEFONNUMMER_2")
+    private String telefonnummer_2;
 
     @Transient
     private String replacedByIdent;
