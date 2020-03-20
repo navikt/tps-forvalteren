@@ -167,8 +167,8 @@ public class Person extends ChangeStamp {
     private String gtRegel;
 
     @Column(name = "UTEN_FAST_BOPEL")
-
     private Boolean utenFastBopel;
+
     @Column(name = "PERSON_STATUS")
     private String personStatus;
 
