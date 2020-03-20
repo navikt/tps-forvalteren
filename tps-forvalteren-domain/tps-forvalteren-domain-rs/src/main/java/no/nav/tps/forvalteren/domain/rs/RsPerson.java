@@ -123,6 +123,14 @@ public class RsPerson {
 
     private String bankkontonrRegdato;
 
+    private String telefonLandskode_1;
+
+    private String telefonnummer_1;
+
+    private String telefonLandskode_2;
+
+    private String telefonnummer_2;
+
     private List<RsIdenthistorikk> identHistorikk;
 
     private List<RsSivilstand> sivilstander;

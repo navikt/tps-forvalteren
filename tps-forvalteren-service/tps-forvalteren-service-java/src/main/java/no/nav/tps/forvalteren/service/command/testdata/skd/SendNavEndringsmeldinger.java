@@ -21,6 +21,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
 import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
+import no.nav.tps.forvalteren.service.command.testdata.EndreTelefonnummerService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
@@ -36,6 +37,7 @@ public class SendNavEndringsmeldinger {
     private final OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
     private final EndreSprakkodeService endreSprakkodeService;
     private final EndreNorskGironummerService endreNorskGironummerService;
+    private final EndreTelefonnummerService endreTelefonnummerService;
     private final TpsRequestSender tpsRequestSender;
     private final UserContextHolder userContextHolder;
     private final TpsPacemaker tpsPacemaker;
@@ -51,6 +53,7 @@ public class SendNavEndringsmeldinger {
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(endreNorskGironummerService.execute(person, environmentsSet));
+            navEndringsMeldinger.addAll(endreTelefonnummerService.execute(person, environmentsSet));
         });
 
         Map<String, ServiceRoutineResponseStatus> responseStatuses = new HashMap<>();
