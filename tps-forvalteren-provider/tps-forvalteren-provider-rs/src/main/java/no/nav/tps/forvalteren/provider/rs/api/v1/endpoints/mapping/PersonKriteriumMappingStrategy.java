@@ -16,6 +16,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
+                .exclude("postadresse")
                 .exclude("identtype")
                 .exclude(KJONN)
                 .exclude("relasjoner")
@@ -83,6 +85,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
                 .exclude("boadresse")
+                .exclude("postadresse")
                 .exclude("identHistorikk")
                 .exclude("statsborgerskap")
                 .exclude(KJONN)
@@ -151,7 +154,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                     .person(person)
                     .build());
 
-        } else if (FNR.name().equals(person.getIdenttype())) {
+        } else if (FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap("NOR")
@@ -196,9 +199,9 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private void mapAdresser(RsSimplePersonRequest kriteriumRequest, Person person, MapperFacade mapperFacade) {
         if (!kriteriumRequest.getPostadresse().isEmpty()) {
-            person.getPostadresse().clear();
-            person.setPostadresse(mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class));
-            person.getPostadresse().forEach(adr -> adr.setPerson(person));
+            List<Postadresse> postadresser = mapperFacade.mapAsList(kriteriumRequest.getPostadresse(), Postadresse.class);
+            postadresser.forEach(adr -> adr.setPerson(person));
+            person.getPostadresse().addAll(postadresser);
         }
 
         if (DNR.name().equals(person.getIdenttype())) {
