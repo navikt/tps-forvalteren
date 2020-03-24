@@ -90,7 +90,7 @@ public class EndrePersonBestillingService {
 
     private void validateInnvandretUtvandret(RsPersonBestillingKriteriumRequest request, Person person) {
 
-        if (nonNull(request.getUtvandretTilLandFlyttedato()) && !FNR.name().equals(person.getIdenttype())) {
+        if (nonNull(request.getUtvandretTilLand()) && !FNR.name().equals(person.getIdenttype())) {
             throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.identtype"));
         }
 

@@ -162,7 +162,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                     .person(person)
                     .build());
 
-        } else if (nonNull(kriteriumRequest.getInnvandretFraLand())) {
+        } else if (nonNull(kriteriumRequest.getInnvandretFraLand()) && person.getStatsborgerskap().isEmpty()) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap(kriteriumRequest.getInnvandretFraLand())
