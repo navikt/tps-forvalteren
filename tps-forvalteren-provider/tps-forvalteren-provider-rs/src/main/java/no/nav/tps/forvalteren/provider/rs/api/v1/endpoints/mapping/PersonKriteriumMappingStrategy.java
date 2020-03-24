@@ -154,19 +154,12 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                     .person(person)
                     .build());
 
-        } else if (FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
+        } else if (person.getStatsborgerskap().isEmpty()) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap("NOR")
-                    .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
-                    .person(person)
-                    .build());
-
-        } else if (nonNull(kriteriumRequest.getInnvandretFraLand()) && person.getStatsborgerskap().isEmpty()) {
-
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap(kriteriumRequest.getInnvandretFraLand())
-                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .statsborgerskap(FNR.name().equals(person.getIdenttype()) ? "NOR" : kriteriumRequest.getInnvandretFraLand())
+                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(),
+                            hentDatoFraIdentService.extract(person.getIdent())))
                     .person(person)
                     .build());
         }
