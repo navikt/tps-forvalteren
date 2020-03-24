@@ -74,12 +74,21 @@ public class EndrePersonBestillingService {
 
     private void validateUpdateRequest(RsPersonBestillingKriteriumRequest request, Person person) {
 
+        validateStatsborgerskap(request, person);
+        validateInnvandretUtvandret(request, person);
+    }
+
+    private void validateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+
         if (nonNull(request.getStatsborgerskap()) &&
                 person.getStatsborgerskap().stream().map(Statsborgerskap::getStatsborgerskap)
                         .anyMatch(stsbs -> stsbs.equals(request.getStatsborgerskap()))) {
             throw new TpsfFunctionalException(messageProvider.get("endre.person.statsborgerskap.validation.eksisterer.allerede",
                     request.getStatsborgerskap()));
         }
+    }
+
+    private void validateInnvandretUtvandret(RsPersonBestillingKriteriumRequest request, Person person) {
 
         if (nonNull(request.getUtvandretTilLandFlyttedato()) && !FNR.name().equals(person.getIdenttype())) {
             throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.identtype"));
@@ -99,7 +108,7 @@ public class EndrePersonBestillingService {
         }
     }
 
-    private void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+    private static void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
 
         if (isNotBlank(request.getStatsborgerskap()) && isNull(request.getStatsborgerskapRegdato())) {
 
