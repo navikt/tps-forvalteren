@@ -29,9 +29,9 @@ public class PersonNameService {
 
     public Person execute(Person person, Boolean harMellomnavn) {
 
-        person.setFornavn(randomFornavn());
-        person.setMellomnavn(TRUE.equals(harMellomnavn) ? randomMellomnavn() : null);
-        person.setEtternavn(randomEtternavn());
+        person.setFornavn(getRandomFornavn());
+        person.setMellomnavn(TRUE.equals(harMellomnavn) ? getRandomMellomnavn() : null);
+        person.setEtternavn(getRandomEtternavn());
 
         return person;
     }
@@ -44,15 +44,15 @@ public class PersonNameService {
         return personer;
     }
 
-    private static String randomFornavn() {
+    private static String getRandomFornavn() {
         return fornavn[randGenerator.nextInt(fornavn.length)];
     }
 
-    private static String randomMellomnavn() {
+    public static String getRandomMellomnavn() {
         return mellomnavn[randGenerator.nextInt(mellomnavn.length)];
     }
 
-    private static String randomEtternavn() {
+    private static String getRandomEtternavn() {
         return etternavn[randGenerator.nextInt(etternavn.length)];
     }
 }
