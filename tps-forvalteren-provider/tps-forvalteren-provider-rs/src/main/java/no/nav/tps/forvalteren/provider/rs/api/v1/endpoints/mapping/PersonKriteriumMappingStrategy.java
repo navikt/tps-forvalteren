@@ -118,9 +118,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
 
-        if (isTrue(kriteriumRequest.getHarMellomnavn()) && isBlank(person.getMellomnavn())) {
-            person.setMellomnavn(PersonNameService.getRandomMellomnavn());
-        }
+        mapMellomnavn(kriteriumRequest, person);
 
         mapStatsborgerskap(kriteriumRequest, person);
 
@@ -147,6 +145,13 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         if (isTrue(kriteriumRequest.getHarBankkontonr())) {
             person.setBankkontonr(kontonrGeneratorService.generateNumber());
             person.setBankkontonrRegdato(nullcheckSetDefaultValue(kriteriumRequest.getBankkontonrRegdato(), LocalDateTime.now()));
+        }
+    }
+
+    private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
+
+        if (isTrue(kriteriumRequest.getHarMellomnavn()) && isBlank(person.getMellomnavn())) {
+            person.setMellomnavn(PersonNameService.getRandomMellomnavn());
         }
     }
 
