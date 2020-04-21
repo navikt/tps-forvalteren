@@ -5,19 +5,11 @@ import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.NIL;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -26,19 +18,14 @@ import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
-import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
-import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
 @Transactional
@@ -47,7 +34,6 @@ public class EndrePersonBestillingService {
 
     private final PersonRepository personRepository;
     private final RandomAdresseService randomAdresseService;
-    private final HentDatoFraIdentService hentDatoFraIdentService;
     private final RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
@@ -59,9 +45,13 @@ public class EndrePersonBestillingService {
         if (isNull(person)) {
             throw new TpsfFunctionalException(format("Person med ident %s ble ikke funnet", ident));
         }
+
+        validateUpdateRequest(request, person);
+
+        mapperFacade.map(request, person);
+
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
-        updateInnvandringUtvandring(request, person);
 
         List<String> nyeIdenter = relasjonNyePersonerBestillingService.makeRelasjoner(request, person)
                 .stream().map(Person::getIdent).collect(Collectors.toList());
@@ -72,9 +62,9 @@ public class EndrePersonBestillingService {
                 .map(Relasjon::getPersonRelasjonMed)
                 .map(Person::getIdent)
                 .map(ident1 -> RsOppdaterPersonResponse.IdentTuple.builder()
-                                .ident(ident1)
-                                .lagtTil(nyeIdenter.contains(ident1))
-                                .build())
+                        .ident(ident1)
+                        .lagtTil(nyeIdenter.contains(ident1))
+                        .build())
                 .collect(Collectors.toList());
 
         identer.add(0, RsOppdaterPersonResponse.IdentTuple.builder().ident(person.getIdent()).build());
@@ -82,56 +72,49 @@ public class EndrePersonBestillingService {
         return RsOppdaterPersonResponse.builder().identTupler(identer).build();
     }
 
-    private void updateInnvandringUtvandring(RsPersonBestillingKriteriumRequest request, Person person) {
+    private void validateUpdateRequest(RsPersonBestillingKriteriumRequest request, Person person) {
 
-        Set<InnvandretUtvandret> innvandretUtvandretSet = new TreeSet(Comparator.comparing(InnvandretUtvandret::getFlyttedato));
-        if (nonNull(request.getUtvandretTilLandFlyttedato())) {
-            if (!FNR.name().equals(person.getIdenttype())) {
-                throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.identtype"));
-            }
-            innvandretUtvandretSet.add(
-                    buildInnutvandret(UTVANDRET, request.getUtvandretTilLand(), request.getUtvandretTilLandFlyttedato(), person));
-        }
-        if (nonNull(request.getInnvandretFraLandFlyttedato())) {
-            innvandretUtvandretSet.add(
-                    buildInnutvandret(INNVANDRET, request.getInnvandretFraLand(), request.getInnvandretFraLandFlyttedato(), person));
-        }
-
-        AtomicReference<InnvandretUtvandret> forrigeInnUtvandret = new AtomicReference(
-                person.getInnvandretUtvandret().isEmpty() ?
-                        buildInnutvandret(NIL, null, hentDatoFraIdentService.extract(person.getIdent()), null)
-                        : person.getInnvandretUtvandret().get(0));
-
-        innvandretUtvandretSet.forEach(innvandretUtvandret -> {
-            if (innvandretUtvandret.getFlyttedato().isBefore(forrigeInnUtvandret.get().getFlyttedato())) {
-                throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.flyttedato"));
-            }
-            if (innvandretUtvandret.getInnutvandret() == forrigeInnUtvandret.get().getInnutvandret()) {
-                throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.samme.aksjon"));
-            }
-            person.getInnvandretUtvandret().add(innvandretUtvandret);
-            forrigeInnUtvandret.set(innvandretUtvandret);
-        });
+        validateStatsborgerskap(request, person);
+        validateInnvandretUtvandret(request, person);
     }
 
-    private static InnvandretUtvandret buildInnutvandret(InnUtvandret innUtvandret, String landkode, LocalDateTime flyttedato, Person person) {
-        return InnvandretUtvandret.builder()
-                .innutvandret(innUtvandret)
-                .landkode(landkode)
-                .flyttedato(flyttedato)
-                .person(person)
-                .build();
+    private void validateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+
+        if (nonNull(request.getStatsborgerskap()) &&
+                person.getStatsborgerskap().stream().map(Statsborgerskap::getStatsborgerskap)
+                        .anyMatch(stsbs -> stsbs.equals(request.getStatsborgerskap()))) {
+            throw new TpsfFunctionalException(messageProvider.get("endre.person.statsborgerskap.validation.eksisterer.allerede",
+                    request.getStatsborgerskap()));
+        }
     }
 
-    private void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+    private void validateInnvandretUtvandret(RsPersonBestillingKriteriumRequest request, Person person) {
 
-        if (isNotBlank(request.getStatsborgerskap())) {
+        if (nonNull(request.getUtvandretTilLand()) && !FNR.name().equals(person.getIdenttype())) {
+            throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.identtype"));
+        }
 
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap(request.getStatsborgerskap())
-                    .statsborgerskapRegdato(nullcheckSetDefaultValue(request.getStatsborgerskapRegdato(), now()))
-                    .person(person)
-                    .build());
+        if (isNotBlank(request.getInnvandretFraLand()) && INNVANDRET == person.getInnvandretUtvandret().get(0).getInnutvandret() ||
+                isNotBlank(request.getUtvandretTilLand()) && UTVANDRET == person.getInnvandretUtvandret().get(0).getInnutvandret()) {
+            throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.samme.aksjon"));
+        }
+
+        if (nonNull(request.getInnvandretFraLandFlyttedato()) &&
+                request.getInnvandretFraLandFlyttedato().isBefore(person.getInnvandretUtvandret().get(0).getFlyttedato()) ||
+                nonNull(request.getUtvandretTilLandFlyttedato()) &&
+                        request.getUtvandretTilLandFlyttedato().isBefore(person.getInnvandretUtvandret().get(0).getFlyttedato())) {
+
+            throw new TpsfFunctionalException(messageProvider.get("endre.person.innutvandring.validation.flyttedato"));
+        }
+    }
+
+    private static void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+
+        if (isNotBlank(request.getStatsborgerskap()) && isNull(request.getStatsborgerskapRegdato())) {
+
+            person.getStatsborgerskap().stream()
+                    .reduce(((statsborgerskap, statsborgerskap2) -> statsborgerskap2)).get()
+                    .setStatsborgerskapRegdato(now());
         }
     }
 
@@ -139,43 +122,21 @@ public class EndrePersonBestillingService {
 
         if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
 
-            Adresse adresse = (nonNull(request.getAdresseNrInfo()) ?
-                    randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0) : mapperFacade.map(request.getBoadresse(), Adresse.class)).toUppercase();
-
-            AtomicBoolean found = new AtomicBoolean(false);
-            person.getBoadresse().forEach(boadresse -> {
-                if (adresse.equals(boadresse)) {
-                    found.set(true);
-                }
-            });
-            if (!found.get()) {
+            if (nonNull(request.getAdresseNrInfo())) {
+                Adresse adresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
+                adresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
                 adresse.setPerson(person);
-                if (isNull(adresse.getFlyttedato())) {
-                    adresse.setFlyttedato(now().minusYears(1));
-                }
                 person.getBoadresse().add(adresse);
-                person.setGtVerdi(null); // Triggers reload of TKNR
             }
-        }
 
-        if (!request.getPostadresse().isEmpty()) {
+            Adresse adresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
 
-            for (RsPostadresse postadresseRequest : request.getPostadresse()) {
+            if (nonNull(adresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
 
-                boolean found = false;
-                Postadresse postadresse = mapperFacade.map(postadresseRequest, Postadresse.class).toUppercase();
-
-                for (Postadresse postadressePerson : person.getPostadresse()) {
-                    if (postadresse.equals(postadressePerson)) {
-                        found = true;
-                    }
-                }
-
-                if (!found) {
-                    postadresse.setPerson(person);
-                    person.getPostadresse().add(postadresse);
-                }
+                adresse.setFlyttedato(now().minusYears(1));
             }
+
+            person.setGtVerdi(null); // Triggers reload of TKNR
         }
     }
 }

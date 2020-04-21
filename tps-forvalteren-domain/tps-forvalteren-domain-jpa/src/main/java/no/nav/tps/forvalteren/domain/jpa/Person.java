@@ -87,14 +87,14 @@ public class Person extends ChangeStamp {
     @Column(name = "SIVILSTAND", length = 4)
     private String sivilstand;
 
-    @OrderBy("sivilstandRegdato desc")
+    @OrderBy("sivilstandRegdato desc, id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Sivilstand> sivilstander;
 
     @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
-    @OrderBy("flyttedato desc")
+    @OrderBy("flyttedato desc, id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<InnvandretUtvandret> innvandretUtvandret;
 

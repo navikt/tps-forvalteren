@@ -1,9 +1,13 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.time.LocalDateTime.of;
+import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -16,36 +20,35 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EndrePersonBestillingServiceTest {
 
     private static final String IDENT = "12028039031";
     private static final String IDENTTYPE = "FNR";
-    private static final LocalDateTime FOEDSEL_DATO = LocalDateTime.of(1980, 2, 12, 0, 0);
-    private static final LocalDateTime INNVANDRING_DATO = LocalDateTime.of(1993, 8, 14, 0, 0);
-    private static final LocalDateTime TIDLIG_FLYTTEDATO = LocalDateTime.of(1990, 12, 1, 0, 0);
-    private static final LocalDateTime FLYTTEDATO = LocalDateTime.of(2016, 12, 1, 0, 0);
-    private static final LocalDateTime INNVANDRING_DATO_2 = LocalDateTime.of(2018, 12, 1, 0, 0);
+    private static final LocalDateTime INNVANDRING_DATO = of(1993, 8, 14, 0, 0);
+    private static final LocalDateTime TIDLIG_FLYTTEDATO = of(1990, 12, 1, 0, 0);
+    private static final LocalDateTime FLYTTEDATO = of(2016, 12, 1, 0, 0);
 
     @Mock
     private PersonRepository personRepository;
-
-    @Mock
-    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Mock
     private RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
 
     @Mock
     private MessageProvider messageProvider;
+
+    @Mock
+    private MapperFacade mapperFacade;
 
     @InjectMocks
     private EndrePersonBestillingService endrePersonBestillingService;
@@ -62,8 +65,8 @@ public class EndrePersonBestillingServiceTest {
                 .thenReturn("To like hendelser paa hverandre med innvandring eller utvandring er ikke tillatt");
         when(messageProvider.get("endre.person.innutvandring.validation.identtype"))
                 .thenReturn("Person som utvandrer maa ha identtype FNR");
-
-        when(hentDatoFraIdentService.extract(IDENT)).thenReturn(FOEDSEL_DATO);
+        when(messageProvider.get(eq("endre.person.statsborgerskap.validation.eksisterer.allerede"), anyString()))
+                .thenReturn("Statsborgerskap eksisterer allerede");
     }
 
     @Test
@@ -129,28 +132,25 @@ public class EndrePersonBestillingServiceTest {
     }
 
     @Test
-    public void leggeTilFlereInnvandringUtvandringer_OK() {
+    public void leggTilEksisterendeStatsborgerskap_skalFeile() {
 
         Person person = Person.builder()
                 .ident(IDENT)
                 .identtype(IDENTTYPE)
-                .innvandretUtvandret(newArrayList(InnvandretUtvandret.builder()
-                        .innutvandret(INNVANDRET)
-                        .landkode("AUS")
-                        .flyttedato(INNVANDRING_DATO)
+                .statsborgerskap(singletonList(Statsborgerskap.builder()
+                        .statsborgerskap("FIN")
+                        .statsborgerskapRegdato(FLYTTEDATO)
                         .build()))
                 .build();
         when(personRepository.findByIdent(IDENT)).thenReturn(person);
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
-        request.setUtvandretTilLand("NRG");
-        request.setUtvandretTilLandFlyttedato(FLYTTEDATO);
-        request.setInnvandretFraLand("NRG");
-        request.setInnvandretFraLandFlyttedato(INNVANDRING_DATO_2);
+        request.setStatsborgerskap("FIN");
+
+        expectedException.expect(TpsfFunctionalException.class);
+        expectedException.expectMessage("Statsborgerskap eksisterer allerede");
 
         endrePersonBestillingService.execute(IDENT, request);
-
-        assertThat(person.getInnvandretUtvandret(), hasSize(3));
     }
 
     @Test
