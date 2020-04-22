@@ -11,7 +11,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class EndrePersonBestillingService {
 

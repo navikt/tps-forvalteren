@@ -7,7 +7,6 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOg
  * Hvis hovedperson har partner(e) fra før betyr første partner i denne bestilling en oppdatering av sivilstand på forrige partner
  */
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class RelasjonNyePersonerBestillingService extends PersonerBestillingService {
 
