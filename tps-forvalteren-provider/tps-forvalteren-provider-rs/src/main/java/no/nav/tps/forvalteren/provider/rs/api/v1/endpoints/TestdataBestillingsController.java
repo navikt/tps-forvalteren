@@ -146,6 +146,7 @@ public class TestdataBestillingsController {
         return personIdenthistorikkService.prepareAliases(request);
     }
 
+    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
     @RequestMapping(value = "/leggtilpaaperson", method = RequestMethod.POST)

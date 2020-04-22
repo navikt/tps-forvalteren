@@ -26,7 +26,9 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
+import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
@@ -285,13 +287,23 @@ public class ExtractOpprettKriterier {
 
         if (!DNR.name().equals(person.getIdenttype()) && !person.isUtvandret() && nonNull(adresse)) {
 
-            Person tempPerson = adresse.getPerson();
-            adresse.setPerson(null);
+            Adresse adresse1 = adresse instanceof Gateadresse ?
+                    Gateadresse.builder()
+                            .adresse(((Gateadresse) adresse).getAdresse())
+                            .husnummer(((Gateadresse) adresse).getHusnummer())
+                            .gatekode(((Gateadresse) adresse).getGatekode())
+                            .build() :
+                    Matrikkeladresse.builder()
+                            .mellomnavn(((Matrikkeladresse) adresse).getMellomnavn())
+                            .gardsnr(((Matrikkeladresse) adresse).getGardsnr())
+                            .bruksnr(((Matrikkeladresse) adresse).getBruksnr())
+                            .festenr(((Matrikkeladresse) adresse).getFestenr())
+                            .undernr(((Matrikkeladresse) adresse).getUndernr())
+                            .build();
 
-            // avoid Orika cyclic mapping overflow
-            Adresse adresse1 = mapperFacade.map(adresse, Adresse.class);
-            adresse.setPerson(tempPerson);
-
+            adresse1.setKommunenr(adresse.getKommunenr());
+            adresse1.setPostnr(adresse.getPostnr());
+            adresse1.setBolignr(adresse.getBolignr());
             adresse1.setFlyttedato(nullcheckSetDefaultValue(flyttedato,
                     hentDatoFraIdentService.extract(person.getIdent())));
             adresse1.setPerson(person);

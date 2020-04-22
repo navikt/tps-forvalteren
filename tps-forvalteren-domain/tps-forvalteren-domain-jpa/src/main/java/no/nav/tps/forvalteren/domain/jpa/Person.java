@@ -124,7 +124,7 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
 
-    @Column(name = "REGDATO", nullable = false)
+    @Column(name = "REGDATO")
     private LocalDateTime regdato;
 
     @JoinColumn(name = "GRUPPE_ID")
