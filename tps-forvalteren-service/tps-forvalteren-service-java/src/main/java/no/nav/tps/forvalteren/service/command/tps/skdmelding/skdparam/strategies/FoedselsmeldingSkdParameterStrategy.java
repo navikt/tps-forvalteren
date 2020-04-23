@@ -1,16 +1,11 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static com.google.common.collect.Lists.newArrayList;
-
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FoedselsmeldingSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalFoedselsMeldingException;
@@ -19,6 +14,7 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ForeldreStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @Service
@@ -85,22 +81,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
     private void addSkdParametersExtractedFromForeldre(SkdMeldingTrans1 skdMeldingTrans1, Person barn) {
 
-        List<Person> foreldereMor = new ArrayList();
-        List<Person> foreldereFar = new ArrayList();
-
-        for (Relasjon relasjon : barn.getRelasjoner()) {
-
-            if (RelasjonType.MOR.getName().equals(relasjon.getRelasjonTypeNavn())) {
-                foreldereMor.add(relasjon.getPersonRelasjonMed());
-
-            } else if (RelasjonType.FAR.getName().equals(relasjon.getRelasjonTypeNavn())) {
-                foreldereFar.add(relasjon.getPersonRelasjonMed());
-
-            }
-        }
-
-        List<Person> foreldre = newArrayList(foreldereMor);
-        foreldre.addAll(foreldereFar);
+        List<Person> foreldre = ForeldreStrategy.getEntydigeForeldre(barn.getRelasjoner());
 
         if (foreldre.isEmpty()) {
             throw new IllegalFoedselsMeldingException(barn.getFornavn() + " " + barn.getEtternavn() + " mangler en mor i fødselsmeldingen.");

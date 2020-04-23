@@ -1,20 +1,16 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.BarnForeldrerelasjonSkdParametre;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ForeldreStrategy;
 
 @Service
 public class BarnForeldreRelasjonSkdParameterStrategy implements SkdParametersStrategy {
@@ -35,11 +31,6 @@ public class BarnForeldreRelasjonSkdParameterStrategy implements SkdParametersSt
     @Override
     public SkdMeldingTrans1 execute(Person barn) {
 
-        List<Relasjon> forelder = barn.getRelasjoner().stream()
-                .filter(relasjon -> MOR.name().equals(relasjon.getRelasjonTypeNavn()) ||
-                        FAR.name().equals(relasjon.getRelasjonTypeNavn()))
-                .collect(Collectors.toList());
-
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
 
         skdMeldingTrans1.setFodselsdato(getFoedselsdato(barn));
@@ -56,31 +47,27 @@ public class BarnForeldreRelasjonSkdParameterStrategy implements SkdParametersSt
 
         skdMeldingTrans1.setRegDato(maskindato);
 
-        if (MOR.name().equals(forelder.get(0).getRelasjonTypeNavn())) {
-            setMorRelasjon(skdMeldingTrans1, forelder.get(0));
-            if (forelder.size() > 1) {
-                setFarRelasjon(skdMeldingTrans1, forelder.get(1));
-            }
-        } else {
-            setFarRelasjon(skdMeldingTrans1, forelder.get(0));
-            if (forelder.size() > 1) {
-                setMorRelasjon(skdMeldingTrans1, forelder.get(1));
-            }
+        List<Person> foreldre = ForeldreStrategy.getEntydigeForeldre(barn.getRelasjoner());
+        if (!foreldre.isEmpty()) {
+            setMorRelasjon(skdMeldingTrans1, foreldre.get(0));
+        }
+        if (foreldre.size() > 1) {
+            setFarRelasjon(skdMeldingTrans1, foreldre.get(1));
         }
 
         return skdMeldingTrans1;
     }
 
-    private static void setMorRelasjon(SkdMeldingTrans1 skdMeldingTrans1, Relasjon relasjon) {
+    private static void setMorRelasjon(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
 
-        skdMeldingTrans1.setMorsFodselsdato(getFoedselsdato(relasjon.getPersonRelasjonMed()));
-        skdMeldingTrans1.setMorsPersonnummer(getPersonnummer(relasjon.getPersonRelasjonMed()));
+        skdMeldingTrans1.setMorsFodselsdato(getFoedselsdato(person));
+        skdMeldingTrans1.setMorsPersonnummer(getPersonnummer(person));
     }
 
-    private static void setFarRelasjon(SkdMeldingTrans1 skdMeldingTrans1, Relasjon relasjon) {
+    private static void setFarRelasjon(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
 
-        skdMeldingTrans1.setFarsFodselsdato(getFoedselsdato(relasjon.getPersonRelasjonMed()));
-        skdMeldingTrans1.setFarsPersonnummer(getPersonnummer(relasjon.getPersonRelasjonMed()));
+        skdMeldingTrans1.setFarsFodselsdato(getFoedselsdato(person));
+        skdMeldingTrans1.setFarsPersonnummer(getPersonnummer(person));
     }
 
     private static String getFoedselsdato(Person person) {
