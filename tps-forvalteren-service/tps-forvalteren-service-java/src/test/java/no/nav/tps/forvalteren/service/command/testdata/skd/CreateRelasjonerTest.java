@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,9 +56,6 @@ public class CreateRelasjonerTest {
 
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
-        verify(relasjonRepository, times(2)).findByPersonId(person.getId());
-        verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
-        verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
         verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person2), ADD_HEADER);
         verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person3), ADD_HEADER);
         verify(persistBarnTransRecordsToTps).execute(person2, ADD_HEADER);
@@ -72,9 +68,6 @@ public class CreateRelasjonerTest {
 
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
-        verify(relasjonRepository, times(1)).findByPersonId(person.getId());
-        verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
-        verify(relasjonRepository, times(2)).findByPersonId(person3.getId());
         verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person2), ADD_HEADER);
         verify(skdMessageCreatorTrans1).execute("Vigselsmelding", asList(person3), ADD_HEADER);
     }
@@ -86,9 +79,6 @@ public class CreateRelasjonerTest {
 
         createRelasjoner.execute(personerSomIkkeEksitererITpsMiljoe, ADD_HEADER);
 
-        verify(relasjonRepository, times(2)).findByPersonId(person.getId());
-        verify(relasjonRepository, times(2)).findByPersonId(person2.getId());
-        verify(relasjonRepository, times(1)).findByPersonId(person3.getId());
         verify(persistBarnTransRecordsToTps).execute(person2, ADD_HEADER);
     }
 

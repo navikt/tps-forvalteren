@@ -4,11 +4,12 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.service.command.testdata.FinnBarnTilForelder;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 
 @Service
 public class PersistBarnTransRecordsToTps {
@@ -16,14 +17,13 @@ public class PersistBarnTransRecordsToTps {
     @Autowired
     private SkdMessageCreatorTrans2 skdMessageCreatorTrans2;
 
-    @Autowired
-    private FinnBarnTilForelder finnBarnTilForelder;
-
     private static final int MAX_BARN = 26;
     private static final int MAX_BARN_PER_RECORD = 13;
 
     public List<SkdMeldingTrans2> execute(Person forelder, boolean addHeader) {
-        List<Person> barn = finnBarnTilForelder.execute(forelder);
+        List<Person> barn = forelder.getRelasjoner().stream()
+                .filter(Relasjon::isBarn)
+                .map(Relasjon::getPersonRelasjonMed).collect(Collectors.toList());
         List<SkdMeldingTrans2> skdMeldinger = new ArrayList<>();
         if (barn.size() > MAX_BARN) {
             throw new IllegalArgumentException("Personen har for mange barn.");
