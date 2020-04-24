@@ -22,8 +22,8 @@ public class CreateRelasjoner {
     private final SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
     private final PersistBarnTransRecordsToTps persistBarnTransRecordsToTps;
 
-    public List<SkdMelding> execute(List<Person> personerSomIkkeEksitererITpsMiljoe, boolean addHeader) {
-        List<Person> personerMedRelasjoner = getPersonerMedRelasjoner(personerSomIkkeEksitererITpsMiljoe);
+    public List<SkdMelding> execute(List<Person> personerMedRelasjoner, boolean addHeader) {
+
         List<SkdMelding> skdMeldinger = new ArrayList<>();
         for (Person person : personerMedRelasjoner) {
             List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
@@ -54,6 +54,7 @@ public class CreateRelasjoner {
         case "EKTEFELLE":
             return VIGSEL_MLD_NAVN;
         case "BARN":
+        case "FOEDSEL":
             return FAMILIEENDRING_MLD_NAVN;
         case "MOR":
         case "FAR":
@@ -62,16 +63,4 @@ public class CreateRelasjoner {
             return "";
         }
     }
-
-    private List<Person> getPersonerMedRelasjoner(List<Person> personerTidligereLagret) {
-        List<Person> personer = new ArrayList<>();
-        for (Person person : personerTidligereLagret) {
-            List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
-            if (!personRelasjoner.isEmpty()) {
-                personer.add(person);
-            }
-        }
-        return personer;
-    }
-
 }
