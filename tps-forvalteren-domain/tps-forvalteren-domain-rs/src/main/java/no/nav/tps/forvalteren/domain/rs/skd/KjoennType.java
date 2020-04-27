@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs.skd;
 
-public enum KjonnType {
+public enum KjoennType {
 
-    K, M
+    K, M, U
 }
