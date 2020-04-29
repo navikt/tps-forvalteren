@@ -22,6 +22,7 @@ import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,7 +33,6 @@ public class ValidateOpprettRequestTest {
     private static final String TEKST_FOEDT_ETTER = "Dato født etter kan ikke være etter dagens dato.";
     private static final String TEKST_FOEDT_FOER = "Dato født før kan ikke være før år 1900.";
     private static final String TEKST_UGYLDIG_DATO_INTERVALL = "Ugyldig datointervall er oppgitt.";
-    private static final String TEKST_UGYLDIG_KJOENN = "Ugyldig kjønn, en av U, K eller M forventet.";
     private static final String TEKST_UGYLDIG_ANTALL = "Enten antall eller eksisterende identer må spesifieseres.";
     private static final String TEKST_UGYLDIG_IDENTTYPE = "Ugyldig identtype for utvandring. Kun personer med FNR kan utvandre.";
 
@@ -53,7 +53,6 @@ public class ValidateOpprettRequestTest {
         when(messageProvider.get("bestilling.input.validation.dato.foedt.etter")).thenReturn(TEKST_FOEDT_ETTER);
         when(messageProvider.get("bestilling.input.validation.dato.foedt.foer")).thenReturn(TEKST_FOEDT_FOER);
         when(messageProvider.get("bestilling.input.validation.ugyldig.intervall")).thenReturn(TEKST_UGYLDIG_DATO_INTERVALL);
-        when(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn")).thenReturn(TEKST_UGYLDIG_KJOENN);
         when(messageProvider.get("bestilling.input.validation.ugyldig.antall")).thenReturn(TEKST_UGYLDIG_ANTALL);
         when(messageProvider.get("bestilling.input.validation.ugyldig.identtype")).thenReturn(TEKST_UGYLDIG_IDENTTYPE);
     }
@@ -87,19 +86,6 @@ public class ValidateOpprettRequestTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);
         request.setFoedtFoer(UGYLDIG_FOEDT_FOER_DATO);
-
-        validateOpprettRequest.validate(request);
-    }
-
-    @Test
-    public void validateHovedpersonUgyldigKjoenn() {
-
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
-
-        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
-        request.setAntall(1);
-        request.setKjonn("P");
 
         validateOpprettRequest.validate(request);
     }
@@ -174,24 +160,6 @@ public class ValidateOpprettRequestTest {
     }
 
     @Test
-    public void validatePartnerUgyldigKjoenn() {
-
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
-
-        RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setKjonn("T");
-
-        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
-        request.setAntall(1);
-        request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .partnere(singletonList(partnerRequest))
-                .build());
-
-        validateOpprettRequest.validate(request);
-    }
-
-    @Test
     public void validateBarnFoedtEtterUgyldigDato() {
 
         expectedException.expect(TpsfFunctionalException.class);
@@ -251,35 +219,15 @@ public class ValidateOpprettRequestTest {
         validateOpprettRequest.validate(request);
     }
 
-    @Test
-    public void validateBarnUgyldigKjoenn() {
-
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage(TEKST_UGYLDIG_KJOENN);
-
-        RsBarnRequest barn1Request = new RsBarnRequest();
-        barn1Request.setKjonn("L");
-        RsBarnRequest barn2Request = new RsBarnRequest();
-        barn2Request.setKjonn("V");
-
-        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
-        request.setAntall(1);
-        request.setRelasjoner(RsSimpleRelasjoner.builder()
-                .barn(asList(barn1Request, barn2Request))
-                .build());
-
-        validateOpprettRequest.validate(request);
-    }
-
     @Test(expected = Test.None.class)
     public void validateBarnGyldigKjoenn() {
 
         RsBarnRequest barn1Request = new RsBarnRequest();
-        barn1Request.setKjonn("U");
+        barn1Request.setKjonn(KjoennType.U);
         RsBarnRequest barn2Request = new RsBarnRequest();
-        barn2Request.setKjonn("K");
+        barn2Request.setKjonn(KjoennType.K);
         RsBarnRequest barn3Request = new RsBarnRequest();
-        barn1Request.setKjonn("M");
+        barn1Request.setKjonn(KjoennType.M);
 
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.setAntall(1);

@@ -166,6 +166,7 @@ public class FiktiveIdenterGeneratorTest {
         testpersonKriterier.setFoedtEtter(date);
         testpersonKriterier.setFoedtFoer(date);
 
+
         Set<String> fnrList = fiktiveIdenterGenerator.genererFiktiveIdenter(testpersonKriterier);
         for (String fnr : fnrList) {
             int statsborgerskapNummer = Integer.parseInt(fnr.substring(0, 1));

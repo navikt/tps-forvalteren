@@ -36,6 +36,7 @@ import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyLanguageService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.KontonrGeneratorService;
@@ -242,14 +243,14 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         return "UFB".equals(request.getSpesreg()) || request.isUtenFastBopel();
     }
 
-    private static IdentpoolKjoenn extractKjoenn(String kjoenn) {
+    private static IdentpoolKjoenn extractKjoenn(KjoennType kjoenn) {
 
         switch (kjoenn) {
-        case "K":
+        case K:
             return KVINNE;
-        case "M":
+        case M:
             return MANN;
-        case "U":
+        case U:
         default:
             return null;
         }

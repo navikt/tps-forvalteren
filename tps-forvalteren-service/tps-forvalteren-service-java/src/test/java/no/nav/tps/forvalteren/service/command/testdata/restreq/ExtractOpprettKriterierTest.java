@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
@@ -34,7 +35,7 @@ public class ExtractOpprettKriterierTest {
     private static final LocalDateTime FOEDT_ETTER = LocalDateTime.of(1950, 1, 1, 0, 0);
     private static final LocalDateTime FOEDT_FOER = LocalDateTime.of(2018, 12, 18, 0, 0);
     private static final int ANTALL = 100;
-    private static final String KJOENN = "M";
+    private static final KjoennType KJOENN = KjoennType.M;
     private static final String IDENTTYPE = "DNR";
 
     @Mock
@@ -76,7 +77,7 @@ public class ExtractOpprettKriterierTest {
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(new RsPersonBestillingKriteriumRequest());
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
-        assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
+        assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KjoennType.U)));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer().format(ISO_LOCAL_DATE),
                 greaterThanOrEqualTo(LocalDateTime.now().minusYears(30).format(ISO_LOCAL_DATE)));
@@ -118,7 +119,7 @@ public class ExtractOpprettKriterierTest {
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
-        assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
+        assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KjoennType.U)));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer().format(ISO_LOCAL_DATE),
                 greaterThanOrEqualTo(LocalDateTime.now().minusYears(30).format(ISO_LOCAL_DATE)));
@@ -160,7 +161,7 @@ public class ExtractOpprettKriterierTest {
         RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
-        assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo("U")));
+        assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KjoennType.U)));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo("FNR")));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(notNullValue()));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtEtter().format(ISO_LOCAL_DATE),
