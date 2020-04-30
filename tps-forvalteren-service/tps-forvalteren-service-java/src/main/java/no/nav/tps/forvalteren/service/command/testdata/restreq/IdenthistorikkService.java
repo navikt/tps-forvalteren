@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 
 import java.util.List;
@@ -19,15 +18,10 @@ public class IdenthistorikkService {
     @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
-    private PersonService personService;
-
     @Transactional
     public Person save(String ident, List<Person> duplicatedPersons, List<RsIdenthistorikkKriterium> identhistorikk) {
 
         Person mainPerson = personRepository.findByIdent(ident);
-
-        personService.deleteIdenthistorikk(singletonList(mainPerson));
 
         for (int i = 0; i < duplicatedPersons.size(); i++) {
             mainPerson.getIdentHistorikk().add(IdentHistorikk.builder()
