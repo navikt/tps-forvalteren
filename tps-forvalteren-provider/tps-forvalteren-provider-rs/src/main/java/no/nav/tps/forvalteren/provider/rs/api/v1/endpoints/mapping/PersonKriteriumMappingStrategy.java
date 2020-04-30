@@ -12,7 +12,6 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
@@ -151,9 +150,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
 
-        if (isTrue(kriteriumRequest.getHarMellomnavn()) && isBlank(person.getMellomnavn())) {
-            person.setMellomnavn(PersonNameService.getRandomMellomnavn());
-        }
+        person.setMellomnavn(isTrue(kriteriumRequest.getHarMellomnavn()) ? PersonNameService.getRandomMellomnavn() :null);
     }
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
