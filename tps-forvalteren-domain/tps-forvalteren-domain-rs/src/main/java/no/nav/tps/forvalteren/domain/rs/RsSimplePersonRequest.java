@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.domain.rs;
 
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -114,5 +115,9 @@ public class RsSimplePersonRequest {
 
     public boolean hasSpesificKjoenn() {
         return isKvinne() || isMann();
+    }
+
+    public boolean hasMellomnavn() {
+        return isTrue(getHarMellomnavn());
     }
 }

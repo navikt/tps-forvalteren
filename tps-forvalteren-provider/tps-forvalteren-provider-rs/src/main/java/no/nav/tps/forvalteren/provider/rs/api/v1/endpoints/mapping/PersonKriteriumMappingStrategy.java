@@ -150,7 +150,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
 
-        person.setMellomnavn(isTrue(kriteriumRequest.getHarMellomnavn()) ? PersonNameService.getRandomMellomnavn() :null);
+        person.setMellomnavn(kriteriumRequest.hasMellomnavn() ? PersonNameService.getRandomMellomnavn() :null);
     }
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
