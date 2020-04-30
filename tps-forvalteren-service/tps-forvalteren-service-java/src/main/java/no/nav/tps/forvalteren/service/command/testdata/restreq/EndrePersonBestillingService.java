@@ -25,6 +25,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class EndrePersonBestillingService {
     private final PersonRepository personRepository;
     private final RandomAdresseService randomAdresseService;
     private final RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
+    private final HentDatoFraIdentService hentDatoFraIdentService;
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
 
@@ -123,8 +125,7 @@ public class EndrePersonBestillingService {
             if (nonNull(request.getAdresseNrInfo())) {
                 Adresse adresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
                 adresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
-                adresse.setPerson(person);
-                person.getBoadresse().add(adresse);
+                setAdressePaaPerson(person, adresse);
             }
 
             Adresse adresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
@@ -133,8 +134,19 @@ public class EndrePersonBestillingService {
 
                 adresse.setFlyttedato(now().minusYears(1));
             }
-
-            person.setGtVerdi(null); // Triggers reload of TKNR
         }
+
+        if (person.getBoadresse().isEmpty() && !person.isForsvunnet()) {
+            Adresse adresse = randomAdresseService.hentRandomAdresse(1, null).get(0);
+            adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
+            setAdressePaaPerson(person, adresse);
+        }
+
+        person.setGtVerdi(null); // Triggers reload of TKNR
+    }
+
+    private void setAdressePaaPerson(Person person, Adresse adresse) {
+        adresse.setPerson(person);
+        person.getBoadresse().add(adresse);
     }
 }
