@@ -237,6 +237,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             adresse.setFlyttedato(nullcheckSetDefaultValue(adresse.getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())));
             person.getBoadresse().add(adresse);
         }
+        person.setGtVerdi(null);
     }
 
     private static boolean isUtenFastBopel(RsSimplePersonRequest request) {
