@@ -26,7 +26,6 @@ import no.nav.tps.forvalteren.domain.rs.RsIdenthistorikkKriterium;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
@@ -49,9 +48,6 @@ public class PersonIdenthistorikkServiceTest {
 
     @Mock
     private HentKjoennFraIdentService hentKjoennFraIdentService;
-
-    @Mock
-    private PersonNameService personNameService;
 
     @Mock
     private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
