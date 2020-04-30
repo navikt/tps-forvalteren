@@ -34,10 +34,6 @@ public class HentGyldigeAdresserService {
     private ObjectMapper objectMapper;
 
     public TpsFinnGyldigeAdresserResponse hentTilfeldigAdresse(Integer maxantall, String kommuneNr, String postNr) {
-        // TODO fix for object mapper problem
-        if (maxantall < 2) {
-            maxantall = 2;
-        }
         TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest = TpsFinnGyldigeAdresserRequest.builder()
                 .typesok(Typesok.T)
                 .maxRetur(maxantall)
@@ -47,11 +43,8 @@ public class HentGyldigeAdresserService {
                 .alleSkrivevarianter(JaEllerNei.J)
                 .visPostnr(JaEllerNei.J)
                 .build();
-        setServiceRoutineMeta(tpsServiceRoutineRequest);
 
-        TpsServiceRoutineResponse response = sendTpsRequest(tpsServiceRoutineRequest);
-
-        return objectMapper.convertValue(response, TpsFinnGyldigeAdresserResponse.class);
+        return finnGyldigAdresse(tpsServiceRoutineRequest);
     }
 
     public TpsFinnGyldigeAdresserResponse finnGyldigAdresse(@ModelAttribute TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
@@ -60,7 +53,6 @@ public class HentGyldigeAdresserService {
         TpsServiceRoutineResponse response = sendTpsRequest(tpsServiceRoutineRequest);
 
         return objectMapper.convertValue(response, TpsFinnGyldigeAdresserResponse.class);
-
     }
 
     private TpsServiceRoutineResponse sendTpsRequest(TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest) {
