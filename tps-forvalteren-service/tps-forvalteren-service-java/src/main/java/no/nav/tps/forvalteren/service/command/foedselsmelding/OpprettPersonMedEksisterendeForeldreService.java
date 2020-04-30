@@ -66,7 +66,7 @@ public class OpprettPersonMedEksisterendeForeldreService {
                         newArrayList(RsPersonKriterier.builder()
                                 .antall(1)
                                 .identtype(request.getIdenttype() != null ? request.getIdenttype().name() : FNR.name())
-                                .kjonn(request.getKjonn() != null ? request.getKjonn().name() : null)
+                                .kjonn(request.getKjonn())
                                 .foedtEtter(request.getFoedselsdato())
                                 .foedtFoer(request.getFoedselsdato())
                                 .build()))

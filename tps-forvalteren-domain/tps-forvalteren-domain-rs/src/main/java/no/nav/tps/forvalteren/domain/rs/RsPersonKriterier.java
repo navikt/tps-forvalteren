@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class RsPersonKriterier {
     @Size(min = 3, max = 3)
     private String identtype;
 
-    private String kjonn;
+    private KjoennType kjonn;
 
     private LocalDateTime foedtEtter;
 

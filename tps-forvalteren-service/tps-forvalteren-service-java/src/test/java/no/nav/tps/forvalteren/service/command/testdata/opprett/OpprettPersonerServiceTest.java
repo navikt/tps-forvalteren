@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentIdenttypeFraIdentService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentKjoennFraIdentService;
@@ -43,7 +44,7 @@ public class OpprettPersonerServiceTest {
 
     @Before
     public void setup() {
-        when(hentKjoennFraIdentServiceMock.execute(anyString())).thenReturn("M");
+        when(hentKjoennFraIdentServiceMock.execute(anyString())).thenReturn(KjoennType.M);
     }
 
     @Test
@@ -70,7 +71,7 @@ public class OpprettPersonerServiceTest {
 
     @Test
     public void hvisKjonnErKvinneSaErPersonKvinne() {
-        when(hentKjoennFraIdentServiceMock.execute(anyString())).thenReturn("K");
+        when(hentKjoennFraIdentServiceMock.execute(anyString())).thenReturn(KjoennType.K);
         identerInput.add(identDummy1);
         List<Person> personer = opprettPersonerService.execute(identerInput);
         assertThat(personer.get(0).getKjonn(), is("K"));

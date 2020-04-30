@@ -33,7 +33,7 @@ public class OpprettPersonerService {
             Person person = Person.builder()
                     .ident(ident)
                     .identtype(hentIdenttypeFraIdentService.execute(ident))
-                    .kjonn(hentKjoennFraIdentService.execute(ident))
+                    .kjonn(hentKjoennFraIdentService.execute(ident).name())
                     .regdato(now())
                     .opprettetDato(now())
                     .opprettetAv(nonNull(SecurityContextHolder.getContext().getAuthentication()) ?

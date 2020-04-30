@@ -57,8 +57,12 @@ public class PersonerBestillingService {
     @Autowired
     private PersonIdenthistorikkService personIdenthistorikkService;
 
+    @Autowired
+    private EnforceForeldreKjoennService enforceForeldreKjoennService;
+
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
+        enforceForeldreKjoennService.setDefaultKjoenn(request);
 
         List<Person> hovedPersoner;
         if (request.getOpprettFraIdenter().isEmpty()) {

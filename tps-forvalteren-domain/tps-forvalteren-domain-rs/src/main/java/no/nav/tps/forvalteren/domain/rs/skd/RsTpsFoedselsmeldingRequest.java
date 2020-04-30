@@ -35,7 +35,7 @@ public class RsTpsFoedselsmeldingRequest {
     private LocalDateTime foedselsdato;
 
     @Size(min = 1, max = 1)
-    private KjonnType kjonn;
+    private KjoennType kjonn;
 
     @Size(min = 3, max = 5)
     private AddressOrigin adresseFra;

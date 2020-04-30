@@ -16,6 +16,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.utils.BiasedRandom;
 import no.nav.tps.forvalteren.service.command.testdata.utils.DateGenerator;
 
@@ -53,7 +54,7 @@ public class FiktiveIdenterGenerator {
     private static final int[] KONTROLL_SIFFER_1 = { 3, 7, 6, 1, 8, 9, 4, 5, 2 };
     private static final int[] KONTROLL_SIFFER_2 = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
 
-    private static final SecureRandom randomNumberProvider = new SecureRandom();
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     public Set<String> genererFiktiveIdenter(RsPersonKriterier kriteria) {
 
@@ -112,9 +113,9 @@ public class FiktiveIdenterGenerator {
         return emptyList();
     }
 
-    private static String genererIndividnummer(int rangeStart, int rangeSlutt, String kjonn) {
+    private static String genererIndividnummer(int rangeStart, int rangeSlutt, KjoennType kjonn) {
 
-        String kjoennPaaIdent = isKvinne(kjonn) || isMann(kjonn) ? kjonn : lagTilfeldigKvinneEllerMann();
+        KjoennType kjoennPaaIdent = isKvinne(kjonn) || isMann(kjonn) ? kjonn : lagTilfeldigKvinneEllerMann();
         int individnummer = BiasedRandom.lagTopptungRandom(rangeStart, rangeSlutt);
 
         //Kvinne har partall og mann har oddetall
@@ -153,12 +154,12 @@ public class FiktiveIdenterGenerator {
         return (date.getYear() >= rangeYearStart && date.getYear() <= rangeYearEnd);
     }
 
-    private static boolean isKvinne(String kjonn) {
-        return "K".equals(kjonn);
+    private static boolean isKvinne(KjoennType kjonn) {
+        return KjoennType.K == kjonn;
     }
 
-    private static boolean isMann(String kjonn) {
-        return "M".equals(kjonn);
+    private static boolean isMann(KjoennType kjonn) {
+        return KjoennType.M == kjonn;
     }
 
     private static boolean isEven(int number) {
@@ -169,7 +170,7 @@ public class FiktiveIdenterGenerator {
         return number % 2 != 0;
     }
 
-    private static String lagTilfeldigKvinneEllerMann() {
-        return randomNumberProvider.nextDouble() < 0.5 ? "K" : "M";
+    private static KjoennType lagTilfeldigKvinneEllerMann() {
+        return secureRandom.nextBoolean() ? KjoennType.K : KjoennType.M;
     }
 }

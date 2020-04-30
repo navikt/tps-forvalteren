@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class RsSimplePersonRequest {
     @Size(min = 3, max = 3)
     protected String identtype;
 
-    protected String kjonn;
+    protected KjoennType kjonn;
 
     protected Integer alder;
 
@@ -101,5 +102,17 @@ public class RsSimplePersonRequest {
 
     public boolean isKode6() {
         return "SPSF".equals(getSpesreg());
+    }
+
+    public boolean isMann() {
+        return KjoennType.M == getKjonn();
+    }
+
+    public boolean isKvinne() {
+        return KjoennType.K == getKjonn();
+    }
+
+    public boolean hasSpesificKjoenn() {
+        return isKvinne() || isMann();
     }
 }

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 
 @Getter
 @Setter
@@ -18,6 +19,6 @@ public class RsIdenthistorikkKriterium {
     private String identtype;
     private LocalDateTime foedtEtter;
     private LocalDateTime foedtFoer;
-    private String kjonn;
+    private KjoennType kjonn;
     private LocalDateTime regdato;
 }

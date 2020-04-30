@@ -10,6 +10,7 @@ import no.nav.tps.forvalteren.domain.jpa.Personmal;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.repository.jpa.PersonmalRepository;
 import no.nav.tps.forvalteren.service.command.testdata.SetGruppeIdAndSavePersonBulkTx;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.EkstraherIdenterFraTestdataRequests;
@@ -74,7 +75,7 @@ public class CreateTestdataPerson {
                     .antall(personmal.getAntallIdenter())
                     .foedtEtter(personmal.getFodtEtter())
                     .foedtFoer(personmal.getFodtFor())
-                    .kjonn(personmal.getKjonn())
+                    .kjonn(KjoennType.valueOf(personmal.getKjonn()))
                     .identtype(personmal.getIdentType())
                     .build()
             );

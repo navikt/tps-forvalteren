@@ -5,7 +5,6 @@ import static java.time.LocalDateTime.of;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +34,6 @@ public class ValidateOpprettRequest {
         validateDatoFoedtEtter(request.getFoedtEtter());
         validateDatoFoedtFoer(request.getFoedtFoer());
         validateDatoIntervall(request.getFoedtEtter(), request.getFoedtFoer());
-        validateKjoenn(request.getKjonn());
         validateUtvandret(request);
 
         validatePartner(request.getRelasjoner().getPartner());
@@ -46,7 +44,6 @@ public class ValidateOpprettRequest {
             validateDatoFoedtEtter(barn.getFoedtEtter());
             validateDatoFoedtFoer(barn.getFoedtFoer());
             validateDatoIntervall(barn.getFoedtEtter(), barn.getFoedtFoer());
-            validateKjoenn(barn.getKjonn());
         });
 
         validateSivilstandService.validateStatus(request);
@@ -57,7 +54,6 @@ public class ValidateOpprettRequest {
             validateDatoFoedtEtter(partner.getFoedtEtter());
             validateDatoFoedtFoer(partner.getFoedtFoer());
             validateDatoIntervall(partner.getFoedtEtter(), partner.getFoedtFoer());
-            validateKjoenn(partner.getKjonn());
         }
     }
 
@@ -100,12 +96,6 @@ public class ValidateOpprettRequest {
     private void validateDatoIntervall(LocalDateTime datoFoedtEtter, LocalDateTime datoFoedtFoer) {
         if (nonNull(datoFoedtEtter) && nonNull(datoFoedtFoer) && datoFoedtFoer.isBefore(datoFoedtEtter)) {
             throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.intervall"));
-        }
-    }
-
-    private void validateKjoenn(String kjoenn) {
-        if (isNotBlank(kjoenn) && !"M".equals(kjoenn) && !"K".equals(kjoenn) && !"U".equals(kjoenn)) {
-            throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.kjoenn"));
         }
     }
 }

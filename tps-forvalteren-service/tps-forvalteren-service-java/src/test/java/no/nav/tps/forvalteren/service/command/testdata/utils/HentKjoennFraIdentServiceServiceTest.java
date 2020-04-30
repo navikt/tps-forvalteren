@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
+
 @RunWith(MockitoJUnitRunner.class)
 public class HentKjoennFraIdentServiceServiceTest {
 
@@ -20,13 +22,13 @@ public class HentKjoennFraIdentServiceServiceTest {
 
     @Test
     public void hvisIdentHarOddetallPaaNummer9individNummer3SaaMann() throws Exception {
-        String kjoenn = hentKjoennFraIdentService.execute(ODDETALL_IDENT);
-        assertThat(kjoenn, is(equalTo("M")));
+        KjoennType kjoenn = hentKjoennFraIdentService.execute(ODDETALL_IDENT);
+        assertThat(kjoenn, is(equalTo(KjoennType.M)));
     }
 
     @Test
     public void hvisIdentHarpartallPaaNummer9individNummer3SaaKvinne() throws Exception {
-        String kjoenn = hentKjoennFraIdentService.execute(PARTALL_IDENT);
-        assertThat(kjoenn, is(equalTo("K")));
+        KjoennType kjoenn = hentKjoennFraIdentService.execute(PARTALL_IDENT);
+        assertThat(kjoenn, is(equalTo(KjoennType.K)));
     }
 }

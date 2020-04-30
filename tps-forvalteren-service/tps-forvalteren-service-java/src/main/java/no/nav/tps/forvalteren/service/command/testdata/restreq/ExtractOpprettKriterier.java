@@ -40,6 +40,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
@@ -70,7 +71,7 @@ public class ExtractOpprettKriterier {
                 .personKriterierListe(singletonList(RsPersonKriterier.builder()
                         .antall(nonNull(request.getAntall()) && request.getAntall() > 0 ? request.getAntall() : 1)
                         .identtype(nullcheckSetDefaultValue(request.getIdenttype(), "FNR"))
-                        .kjonn(nullcheckSetDefaultValue(request.getKjonn(), "U"))
+                        .kjonn(nullcheckSetDefaultValue(request.getKjonn(), KjoennType.U))
                         .foedtEtter(getProcessedFoedtEtter(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
                         .foedtFoer(getProcessedFoedtFoer(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
                         .harMellomnavn(request.getHarMellomnavn())
@@ -114,7 +115,7 @@ public class ExtractOpprettKriterier {
         return RsPersonKriterier.builder()
                 .antall(1)
                 .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
-                .kjonn(nullcheckSetDefaultValue(req.getKjonn(), "U"))
+                .kjonn(nullcheckSetDefaultValue(req.getKjonn(), KjoennType.U))
                 .foedtFoer(req.getFoedtFoer())
                 .foedtEtter(req.getFoedtEtter())
                 .build();

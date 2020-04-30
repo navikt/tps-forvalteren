@@ -69,7 +69,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
         skdMeldingTrans1.setFornavn(barn.getFornavn());
         skdMeldingTrans1.setSlektsnavn(barn.getEtternavn());
-        skdMeldingTrans1.setKjoenn(hentKjoennFraIdentService.execute(barn.getIdent()));
+        skdMeldingTrans1.setKjoenn(hentKjoennFraIdentService.execute(barn.getIdent()).name());
 
         skdMeldingTrans1.setRegdatoAdr(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
         skdMeldingTrans1.setPersonkode("3");
