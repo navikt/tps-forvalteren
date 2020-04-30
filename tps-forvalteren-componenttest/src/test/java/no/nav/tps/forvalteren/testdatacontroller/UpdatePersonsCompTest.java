@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -29,7 +28,6 @@ public class UpdatePersonsCompTest extends AbstractTestdataControllerComponentTe
      */
     @Test
     @Transactional
-    @Ignore //TODO
     public void shouldUpdatePersons() throws Exception {
         endTransactionIfActive();
         List<Person> personList = setupTestdataPersonerInTpsfDatabase();
