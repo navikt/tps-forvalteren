@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static java.util.Collections.emptySet;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
@@ -87,7 +88,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         when(gruppeRepository.findById(GRUPPE_ID)).thenReturn(testdataGruppe);
         when(skdMessageCreatorTrans1.execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(innvandringsMeldinger);
         when(createRelasjoner.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(relasjonsMeldinger);
-        when(createDoedsmeldinger.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(doedsMeldinger);
+        when(createDoedsmeldinger.execute(testdataGruppe.getPersoner(), emptySet(), ADD_HEADER)).thenReturn(doedsMeldinger);
         when(createMeldingWithMeldingstypeService.execute(anyList())).thenReturn(rsMeldinger);
         when(skdEndringsmeldingGruppeRepository.save(any(SkdEndringsmeldingGruppe.class))).thenReturn(skdEndringsmeldingGruppe);
         when(createVergemaal.execute(testdataGruppe.getPersoner(), ADD_HEADER)).thenReturn(vergemaalsMeldinger);
@@ -102,7 +103,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
         verify(gruppeRepository).findById(GRUPPE_ID);
         verify(skdMessageCreatorTrans1).execute(NAVN_INNVANDRINGSMELDING, testdataGruppe.getPersoner(), ADD_HEADER);
         verify(createRelasjoner).execute(testdataGruppe.getPersoner(), ADD_HEADER);
-        verify(createDoedsmeldinger).execute(testdataGruppe.getPersoner(), ADD_HEADER);
+        verify(createDoedsmeldinger).execute(testdataGruppe.getPersoner(), emptySet(), ADD_HEADER);
         verify(createMeldingWithMeldingstypeService).execute(anyList());
         verify(skdEndringsmeldingGruppeRepository).save(any(SkdEndringsmeldingGruppe.class));
         verify(createMeldingWithMeldingstypeService).execute(anyList());

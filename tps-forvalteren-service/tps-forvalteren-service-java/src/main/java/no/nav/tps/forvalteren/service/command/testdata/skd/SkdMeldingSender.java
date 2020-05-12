@@ -49,7 +49,7 @@ public class SkdMeldingSender {
 
     public List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(List<Person> personer, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(personer, true);
+        List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(personer, environmentsSet, true);
         doedsMeldinger.forEach(skdMelding ->
                 listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet))
         );

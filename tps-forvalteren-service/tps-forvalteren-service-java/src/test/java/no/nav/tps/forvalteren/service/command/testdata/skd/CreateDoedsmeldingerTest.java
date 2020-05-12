@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static java.util.Collections.emptySet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +29,6 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindDoedePersoner;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
-import no.nav.tps.forvalteren.service.command.testdata.FindPersonerWithoutDoedsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,9 +51,6 @@ public class CreateDoedsmeldingerTest {
 
     @Mock
     private FindDoedePersoner findDoedePersonerMock;
-
-    @Mock
-    private FindPersonerWithoutDoedsmelding findPersonerWithoutDoedsmeldingMock;
 
     @Mock
     private SaveDoedsmeldingToDB saveDoedsmeldingToDBMock;
@@ -81,15 +78,13 @@ public class CreateDoedsmeldingerTest {
         doedePersonerWithoutDoedsmelding = Arrays.asList(aDeadPersonWithoutDoedsmelding);
 
         when(findDoedePersonerMock.execute(personer)).thenReturn(doedePersoner);
-        when(findPersonerWithoutDoedsmeldingMock.execute(doedePersoner)).thenReturn(doedePersonerWithoutDoedsmelding);
 
         when(findDoedePersonerMock.execute(alivePersoner)).thenReturn(Collections.emptyList());
-        when(findPersonerWithoutDoedsmeldingMock.execute(Collections.emptyList())).thenReturn(Collections.emptyList());
     }
 
     @Test
     public void skdCreatePersonerCalledWithDoedePersonerWithoutDoedsmelding() {
-        createDoedsmeldinger.execute(personer, ADD_HEADER);
+        createDoedsmeldinger.execute(personer, emptySet(), ADD_HEADER);
 
         verify(skdMessageCreatorTrans1Mock).execute(anyString(), personCaptor.capture(), eq(ADD_HEADER));
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
@@ -97,7 +92,7 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void saveDoedsmeldingToDBCalledWithDoedePersonerWithoutDoedsmelding() {
-        createDoedsmeldinger.execute(personer, ADD_HEADER);
+        createDoedsmeldinger.execute(personer, emptySet(), ADD_HEADER);
 
         verify(saveDoedsmeldingToDBMock).execute(personCaptor.capture());
         assertThat(personCaptor.getValue(), is(equalTo(doedePersonerWithoutDoedsmelding)));
@@ -105,7 +100,7 @@ public class CreateDoedsmeldingerTest {
 
     @Test
     public void noFurtherCallsWhenNoDoedePersoner() {
-        createDoedsmeldinger.execute(alivePersoner, ADD_HEADER);
+        createDoedsmeldinger.execute(alivePersoner, emptySet(), ADD_HEADER);
 
         verify(skdMessageCreatorTrans1Mock, never()).execute(anyString(), anyList(), anyBoolean());
         verify(saveDoedsmeldingToDBMock, never()).execute(anyList());
