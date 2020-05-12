@@ -2,10 +2,12 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAnnulleringAarsakskode45.DOEDSMELDINGANNULLERING_MLD_NAVN;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
 import no.nav.tps.forvalteren.service.command.foedselsmelding.AdresserResponse;
-import no.nav.tps.forvalteren.service.command.testdata.SaveDoedsmeldingToDB;
 import no.nav.tps.forvalteren.service.command.testdata.TpsServiceroutineFnrRequest;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
@@ -42,9 +43,6 @@ public class CreateDoedsmeldinger {
 
     @Autowired
     private PersonAdresseService personAdresseService;
-
-    @Autowired
-    private SaveDoedsmeldingToDB saveDoedsmeldingToDB;
 
     public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, Set<String> environments, boolean addHeader) {
 
@@ -70,21 +68,35 @@ public class CreateDoedsmeldinger {
                     }
                 });
 
-                saveDoedsmeldingToDB.execute(singletonList(person));
+                updateDoedsmeldingRepository(person, doedsmelding);
             }
         });
 
         return skdMeldinger;
     }
 
+    private void updateDoedsmeldingRepository(Person person, Doedsmelding doedsmelding) {
+
+        if (nonNull(person.getDoedsdato()) && isNull(doedsmelding)) {
+            doedsmeldingRepository.save(Doedsmelding.builder()
+                    .person(person)
+                    .isMeldingSent(true)
+                    .build());
+
+        } else if (isNull(person.getDoedsdato()) && nonNull(doedsmelding)) {
+            doedsmeldingRepository.deleteByPersonIdIn(singletonList(person.getId()));
+        }
+    }
+
     private static boolean isSendAnnuleringsmelding(Person person, LocalDate tpsDoedsdato) {
 
-        return nonNull(tpsDoedsdato) && !tpsDoedsdato.equals(person.getDoedsdato());
+        return nonNull(tpsDoedsdato) && (isNull(person.getDoedsdato()) ||
+                !tpsDoedsdato.equals(person.getDoedsdato().toLocalDate()));
     }
 
     private static boolean isSendDoedsmelding(Person person, LocalDate tpsDoedsdato) {
 
-        return nonNull(person.getDoedsdato()) && !person.getDoedsdato().equals(tpsDoedsdato);
+        return nonNull(person.getDoedsdato()) && !person.getDoedsdato().toLocalDate().equals(tpsDoedsdato);
     }
 
     private LocalDate getTpsDoedsdato(Person person, String environment) {
@@ -94,7 +106,7 @@ public class CreateDoedsmeldinger {
         String tpsDoedsdatoString =
                 (String) ((Map) ((Map) response.getResponse()).get("data1")).get("datoDo");
 
-        return nonNull(tpsDoedsdatoString) ? LocalDate.parse(tpsDoedsdatoString) : null;
+        return isNotBlank(tpsDoedsdatoString) ? LocalDate.parse(tpsDoedsdatoString) : null;
     }
 
     private void findLastAddress(Person person, LocalDate doedsdato, String miljoe) {

@@ -33,11 +33,11 @@ import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.skd.UtvandringOgInnvandring;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.UtvandringOgInnvandring;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestdataGruppeToSkdEndringsmeldingGruppeTest {
