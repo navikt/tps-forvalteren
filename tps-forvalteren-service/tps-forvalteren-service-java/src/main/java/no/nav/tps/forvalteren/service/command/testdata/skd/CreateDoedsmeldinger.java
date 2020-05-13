@@ -46,29 +46,41 @@ public class CreateDoedsmeldinger {
     public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, String environment, boolean addHeader) {
 
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
-
         personerIGruppen.forEach(person -> {
 
             Doedsmelding doedsmelding = doedsmeldingRepository.findByPersonId(person.getId());
-            if (nonNull(person.getDoedsdato()) || nonNull(doedsmelding)) {
+            if (isNotBlank(environment)) {
+                skdMeldinger.addAll(buildDoedsmeldinger(person, doedsmelding, environment, addHeader));
 
-                    LocalDate tpsDoedsdato = getTpsDoedsdato(person, environment);
-
-                    if (isSendAnnuleringsmelding(person, tpsDoedsdato)) {
-
-                        findLastAddress(person, tpsDoedsdato, environment);
-                        skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDINGANNULLERING_MLD_NAVN, singletonList(person), addHeader));
-
-                    }
-                    if (isSendDoedsmelding(person, tpsDoedsdato)) {
-
-                        skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, singletonList(person), addHeader));
-                    }
-
+            } else if (nonNull(person.getDoedsdato()) && isNull(doedsmelding)) { // Enables backwards compatibility
+                skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, singletonList(person), addHeader));
                 updateDoedsmeldingRepository(person, doedsmelding);
             }
         });
 
+        return skdMeldinger;
+    }
+
+    private List<SkdMeldingTrans1> buildDoedsmeldinger(Person person, Doedsmelding doedsmelding, String environment, boolean addHeader) {
+
+        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
+        if (nonNull(person.getDoedsdato()) || nonNull(doedsmelding)) {
+
+            LocalDate tpsDoedsdato = getTpsDoedsdato(person, environment);
+
+            if (isSendAnnuleringsmelding(person, tpsDoedsdato)) {
+
+                findLastAddress(person, tpsDoedsdato, environment);
+                skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDINGANNULLERING_MLD_NAVN, singletonList(person), addHeader));
+
+            }
+            if (isSendDoedsmelding(person, tpsDoedsdato)) {
+
+                skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, singletonList(person), addHeader));
+            }
+
+            updateDoedsmeldingRepository(person, doedsmelding);
+        }
         return skdMeldinger;
     }
 
