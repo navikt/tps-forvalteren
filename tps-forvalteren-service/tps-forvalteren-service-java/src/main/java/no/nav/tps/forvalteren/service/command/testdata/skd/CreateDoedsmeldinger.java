@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,15 +43,14 @@ public class CreateDoedsmeldinger {
     @Autowired
     private PersonAdresseService personAdresseService;
 
-    public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, Set<String> environments, boolean addHeader) {
+    public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, String environment, boolean addHeader) {
 
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
 
         personerIGruppen.forEach(person -> {
+
             Doedsmelding doedsmelding = doedsmeldingRepository.findByPersonId(person.getId());
             if (nonNull(person.getDoedsdato()) || nonNull(doedsmelding)) {
-
-                environments.forEach(environment -> {
 
                     LocalDate tpsDoedsdato = getTpsDoedsdato(person, environment);
 
@@ -66,7 +64,6 @@ public class CreateDoedsmeldinger {
 
                         skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, singletonList(person), addHeader));
                     }
-                });
 
                 updateDoedsmeldingRepository(person, doedsmelding);
             }

@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static java.util.Collections.emptySet;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 
@@ -78,7 +77,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             List<SkdMeldingTrans1> foedselsMeldinger = createFoedselsmeldinger.executeFromPersons(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, testdataGruppe.getPersoner(), false);
             List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
-            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(testdataGruppe.getPersoner(), emptySet(), false);
+            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(testdataGruppe.getPersoner(), null, false);
             List<SkdMeldingTrans1> vergemaalMeldinger = createVergemaal.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> utvandringsMeldinger = utvandringOgInnvandring.createMeldinger(testdataGruppe.getPersoner(), false);
             skdMeldinger.addAll(foedselsMeldinger);
