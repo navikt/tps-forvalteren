@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -93,7 +94,7 @@ public class CreateDoedsmeldinger {
                     .build());
 
         } else if (isNull(person.getDoedsdato()) && nonNull(doedsmelding)) {
-            doedsmeldingRepository.deleteByPersonIdIn(singletonList(person.getId()));
+            doedsmeldingRepository.deleteByPersonIdIn(newArrayList(person.getId()));
         }
     }
 
